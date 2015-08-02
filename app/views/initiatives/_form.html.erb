@@ -1,0 +1,17 @@
+<%= form_for(@initiative) do |f| %>
+  <% if @initiative.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@initiative.errors.count, "error") %> prohibited this initiative from being saved:</h2>
+
+      <ul>
+      <% @initiative.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

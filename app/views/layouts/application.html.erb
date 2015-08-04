@@ -2,15 +2,23 @@
 <html>
 <head>
   <title>WickedSoftware</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application'  %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="container">
 
-<% # SMELL Required by Devise. Refactor once a CSS framework is in place %>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+<% # SMELL Required by Devise %>
+<% if notice.present? %>
+  <aside class="alert alert-info">
+    <%= notice %>
+  </aside>
+<% end %>
+<% if alert.present? %>
+  <aside class="alert alert-danger">
+    <%= alert %>
+  </aside>
+<% end %>
 
 <%= yield %>
 

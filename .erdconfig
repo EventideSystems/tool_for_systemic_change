@@ -1,0 +1,9 @@
+attributes:
+  - content
+  - foreign_key
+  - inheritance: type
+  - timestamps
+# polymorphism: true
+disconnected: true
+#inheritance: true
+warn: true

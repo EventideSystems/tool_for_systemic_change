@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # root 'welcome#index'
 
   # Required by Devise
-  root to: "home#index"
+  root to: "dashboard#index"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,13 +1,21 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Wicked Software
 
 Things you may want to cover:
 
 * Ruby version
 
+Wicked Software uses Ruby 2.2.2
+
 * System dependencies
+
+Postgresql (pending)
+Nodejs
+
+* Preparing for development
+
+npm install bower
 
 * Configuration
 

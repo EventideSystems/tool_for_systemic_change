@@ -5,7 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/.bundle
+/.bundlex
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -22,3 +22,9 @@
 # Ignore credential-related files
 /config/database.yml
 /config/secrets.yml
+
+# Ignore frontend dependencies
+/node_modules
+
+# OS files
+.DS_Store

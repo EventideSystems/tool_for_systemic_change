@@ -1,0 +1,56 @@
+#main-nav {
+  position: absolute;
+  top: $header-height;
+  bottom: 0;
+  width: $main-nav-width;
+  background: $brand-secondary;
+
+  .menu-items {
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-items li {
+    list-style: none;
+    text-align: center;
+  }
+
+  .menu-items a {
+    display: block;
+    color: white;
+    padding: 15px 0;
+    border-bottom: 1px solid $dark-10;
+    font-weight: 200;
+    height: 60px;
+    transition: background .2s;
+    font-size: 12px;
+
+    &:hover {
+      background: $brand-primary;
+      text-decoration: none;
+
+      i {
+        font-size: 18px;
+      }
+
+      .text {
+        opacity: 1;
+      }
+    }
+  }
+
+  .menu-items a .text {
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .menu-items a > i {
+    display: block;
+    transition: font-size .2s;
+    font-size: 30px;
+  }
+
+  .menu-items a.active {
+    background: $dark-20;
+  }
+}

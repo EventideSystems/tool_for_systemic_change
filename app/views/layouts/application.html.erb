@@ -6,7 +6,7 @@
   <%= javascript_include_tag 'application'  %>
   <%= csrf_meta_tags %>
 </head>
-<body class="container" ng-app>
+<body ng-app="WKD">
 
 <% # SMELL Required by Devise %>
 <% if notice.present? %>
@@ -20,7 +20,23 @@
   </aside>
 <% end %>
 
-<%= yield %>
+  <script id="embed-current-user">
+    window.CURRENT_USER = {}; // Embed current user object here
+  </script>
+
+  <div id="login-box" ng-if="!$$authenticated" ui-view></div>
+
+  <div ng-if="$$authenticated">
+    <header id="header" ng-include="'/templates/layout/header.html'"></header>
+
+    <nav id="main-nav" ng-include="'/templates/layout/main-nav.html'"></nav>
+
+    <main id="main-content">
+      <div class="scroller" ui-view></div>
+    </main>
+
+    <wkd-sidebar></wkd-sidebar>
+  </div>
 
 </body>
 </html>

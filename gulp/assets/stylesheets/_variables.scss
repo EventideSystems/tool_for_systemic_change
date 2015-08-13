@@ -1,0 +1,43 @@
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+
+$gray-base:              #000 !default;
+$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:              lighten($gray-base, 20%) !default;   // #333
+$gray:                   lighten($gray-base, 33.5%) !default; // #555
+$gray-light:             lighten($gray-base, 46.7%) !default; // #777
+$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
+
+$light-90:              rgba(255,255,255,.9);
+$light-80:              rgba(255,255,255,.8);
+$light-70:              rgba(255,255,255,.7);
+$light-60:              rgba(255,255,255,.6);
+$light-50:              rgba(255,255,255,.5);
+$light-40:              rgba(255,255,255,.4);
+$light-30:              rgba(255,255,255,.3);
+$light-20:              rgba(255,255,255,.2);
+$light-10:              rgba(255,255,255,.1);
+
+$dark-90:              rgba(0,0,0,.9);
+$dark-80:              rgba(0,0,0,.8);
+$dark-70:              rgba(0,0,0,.7);
+$dark-60:              rgba(0,0,0,.6);
+$dark-50:              rgba(0,0,0,.5);
+$dark-40:              rgba(0,0,0,.4);
+$dark-30:              rgba(0,0,0,.3);
+$dark-20:              rgba(0,0,0,.2);
+$dark-10:              rgba(0,0,0,.1);
+
+$brand-primary:         #504f4f;
+$brand-secondary:       #169e4c;
+$brand-tertiary:        #a3c72b;
+
+$link-color:            #1dade9;
+
+// Layout
+$header-height:  60px;
+$main-nav-width: 75px;
+$sidebar-width: 320px;
+
+

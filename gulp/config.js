@@ -25,5 +25,17 @@ module.exports = {
       outputName: 'app.js',
       extensions: ['.js']
     }]
+  },
+  templates: {
+    src: sourceFiles + '/templates/**/*.html',
+    dest: publicAssets + '/javascripts',
+    cacheConfig: {
+      module: 'WKD',
+      root: '/templates'
+    }
+  },
+  fonts: {
+    src: ['./node_modules/font-awesome/fonts/*'],
+    dest: publicAssets + '/fonts'
   }
 };

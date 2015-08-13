@@ -39,14 +39,17 @@
     "gulp-sourcemaps": "^1.2.8",
     "gulp-swig": "^0.7.4",
     "gulp-util": "^3.0.0",
-    "lodash": "^2.4.1",
+    "lodash": "~2.4.2",
     "merge-stream": "^0.1.7",
     "pretty-hrtime": "~0.2.1",
     "require-dir": "^0.1.0",
     "vinyl-source-stream": "~0.1.1",
     "watchify": "^2.2.1",
     "angular": "~1.4.3",
-    "bootstrap-sass": "~3.3.5"
+    "bootstrap-sass": "~3.3.5",
+    "gulp-angular-templatecache": "~1.7.0",
+    "font-awesome": "~4.4.0",
+    "angular-ui-router": "~0.2.15"
   },
   "devDependencies": {
     "gulp-watch": "^4.1.1"

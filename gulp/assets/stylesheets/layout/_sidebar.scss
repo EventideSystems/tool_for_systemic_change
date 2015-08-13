@@ -1,0 +1,71 @@
+#sidebar {
+  position: absolute;
+  width: $sidebar-width;
+  background: $gray-lighter;
+  top: $header-height;
+  bottom: 0;
+  right: 0;
+
+  .title {
+    height: 60px;
+    background: $dark-10;
+    margin: 0;
+  }
+
+  .context-switcher {
+    position: absolute;
+    top: 15px;
+    left: 50px;
+
+    button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 200;
+    }
+  }
+
+  .new-resource {
+    background: white;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    display: block;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    line-height: 30px;
+    transition: color .2s, background .2s;
+
+    &:hover {
+      background: $brand-secondary;
+      color: white;
+    }
+  }
+
+  .context-filter {
+    position: relative;
+
+    i {
+      position: absolute;
+      top: 50%;
+      color: $dark-20;
+      left: 15px;
+      transform: translateY(-50%);
+      margin-top: -2px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      padding-left: 35px;
+      border: none;
+      background: $light-30;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+#login-box {
+  width: 360px;
+  margin: 0 auto;
+  transform: translateY(50%);
+  background: white;
+  padding: 30px;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, .15);
+
+  h1 {
+    text-align: center;
+    color: $brand-primary;
+    font-weight: 300;
+    margin: 0 0 20px;
+  }
+
+  .logo {
+    display: block;
+    width: 60px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    position: relative;
+  }
+
+  .form-control {
+    padding-left: 30px;
+  }
+
+  .login-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: $gray-light;
+  }
+
+  .submit {
+    display: block;
+    width: 100%;
+  }
+
+  .forgot {
+    background: rgba(0,0,0,.05);
+    margin: -30px;
+    margin-top: 25px;
+    border-top: 1px solid $dark-10;
+    padding: 15px 30px;
+  }
+}

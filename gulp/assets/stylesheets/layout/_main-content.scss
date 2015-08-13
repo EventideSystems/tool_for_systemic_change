@@ -1,0 +1,23 @@
+#main-content {
+  position: absolute;
+  top: $header-height;
+  left: $main-nav-width;
+  right: $sidebar-width;
+  bottom: 0;
+  overflow: hidden;
+  background: white;
+
+  .scroller {
+    padding: 0 30px 30px 30px;
+  }
+
+  .scroller h1:first-of-type {
+    background: $brand-primary;
+    margin: 0 -30px 25px;
+    padding: 0 30px;
+    color: white;
+    font-size: 16px;
+    font-weight: 200;
+    line-height: 60px;
+  }
+}

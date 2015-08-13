@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: $gray-lighter;
+}
+
+.scroller {
+  overflow-y: auto;
+  height: 100%;
+}
+
+a {
+  color: $link-color;
+
+  &:hover {
+    color: darken($link-color, 20%);
+  }
+}
+
+.form-horizontal {
+  .control-label {
+    text-align: left;
+    font-weight: 300;
+  }
+
+  .form-group {
+    border-bottom: 1px solid $dark-10;
+    padding-bottom: 15px;
+
+    .col-sm-8 {
+      padding-left: 5px;
+    }
+  }
+
+  .form-control{
+    transition: background .2s;
+
+    &:hover {
+      background: $gray-lighter;
+    }
+  }
+}

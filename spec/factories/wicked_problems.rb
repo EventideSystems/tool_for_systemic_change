@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :problem do
-    
+  factory :wicked_problem do
+
   end
 
 end

@@ -26,30 +26,8 @@ angular.module('WKD', [
   'WKD.Organisations'
 ])
 
-.config([function () {
-  // Load current user
-}])
-
-
-.config(['$stateProvider', function ($stateProvider) {
-  $stateProvider
-    .state('login', {
-      url: '/login',
-      templateUrl: '/templates/layout/login.html',
-      controller: 'WKD.Common.LoginController',
-      controllerAs: 'login'
-    })
-
-    ;
-}])
-
 .config(['$urlRouterProvider', function ($urlRouterProvider) {
   $urlRouterProvider.otherwise('/');
-}])
-
-// @todo delete this when login works
-.run(['$rootScope', function ($rootScope) {
-  $rootScope.$$authenticated = true;
 }])
 
 ;

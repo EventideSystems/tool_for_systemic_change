@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   # Required by Devise
   root to: "dashboard#index"
 
+  get 'profile' => 'profile#show', :defaults => { :format => 'json' }
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

@@ -26,5 +26,8 @@ module WickedSoftware
     # Make public assets requireable in manifest files
     config.assets.paths << Rails.root.join("public", "assets", "stylesheets")
     config.assets.paths << Rails.root.join("public", "assets", "javascripts")
+
+    config.generators.assets = false
+    config.generators.helper = false
   end
 end

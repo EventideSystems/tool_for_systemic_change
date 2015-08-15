@@ -22,6 +22,7 @@ RSpec.describe "Profiles", type: :request do
 
       expect(profile["user_email"]).to eq(user.email)
       expect(profile["user_role"]).to eq(user.role)
+      expect(profile["user_name"]).to eq(user.name)
       expect(profile["administrating_organisation_name"]).to eq(administrating_organisation.name)
     end
 
@@ -34,6 +35,7 @@ RSpec.describe "Profiles", type: :request do
 
       expect(profile["user_email"]).to eq(admin.email)
       expect(profile["user_role"]).to eq(admin.role)
+      expect(profile["user_name"]).to eq(admin.name)
       expect(profile["administrating_organisation_name"]).to eq(administrating_organisation.name)
     end
 
@@ -46,6 +48,7 @@ RSpec.describe "Profiles", type: :request do
 
       expect(profile["user_email"]).to eq(staff.email)
       expect(profile["user_role"]).to eq(staff.role)
+      expect(profile["user_name"]).to eq(staff.name)
       expect(profile["administrating_organisation_name"]).to eq('')
     end
   end

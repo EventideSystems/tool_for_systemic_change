@@ -10,6 +10,7 @@ angular.module('WKD.Common')
       restrict: 'E',
       link: function (scope) {
         scope.sidebar = sidebarService.currentSet;
+        scope.contextMenu = sidebarService.CONTEXT_MENU;
 
         scope.load = function (resource) {
           return sidebarService['load' + resource]();

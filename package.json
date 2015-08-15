@@ -9,7 +9,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "install": "napa TylerGarlick/angular.flashr"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,11 @@
     "bootstrap-sass": "~3.3.5",
     "gulp-angular-templatecache": "~1.7.0",
     "font-awesome": "~4.4.0",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "restangular": "~1.5.1",
+    "napa": "~1.2.0",
+    "toastr": "~2.1.2",
+    "jquery": "~2.1.4"
   },
   "devDependencies": {
     "gulp-watch": "^4.1.1"

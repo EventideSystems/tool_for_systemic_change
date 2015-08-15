@@ -5,15 +5,16 @@ angular.module('WKD.Organisations', [])
 
 .config(['$stateProvider', function ($stateProvider) {
   $stateProvider
-    .state('organisations', {
+    .state('wkd.organisations', {
       url: '/organisations',
       template: '<ui-view>'
     })
 
-    .state('organisations.new', {
+    .state('wkd.organisations.new', {
       url: '/new',
       templateUrl: '/templates/organisations/new.html',
-      controller: 'WKD.Organisations.Controller'
+      controller: 'WKD.Organisations.Controller',
+      controllerAs: 'vm'
     })
 
     ;

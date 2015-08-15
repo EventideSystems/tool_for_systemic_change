@@ -9,10 +9,9 @@
         {{ sidebar.options.title }} <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="context-dropdown">
-        <li role="menuitem"><a href ng-click="load('Problems')">Wicked Problems</a></li>
-        <li role="menuitem"><a href ng-click="load('Organisations')">Organisations</a></li>
-        <li role="menuitem"><a href ng-click="load('Communities')">Communities</a></li>
-        <li role="menuitem"><a href ng-click="load('Initiatives')">Initiatives</a></li>
+        <li role="menuitem" ng-repeat="(key, ops) in contextMenu">
+          <a href ng-click="load(key)">{{ ops.title }}</a>
+        </li>
       </ul>
     </div>
   </h4>

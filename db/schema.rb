@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150802123646) do
+ActiveRecord::Schema.define(version: 20150814030922) do
 
   create_table "communities", force: :cascade do |t|
     t.string   "name"
@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 20150802123646) do
     t.integer  "administrating_organisation_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.integer  "sector_id"
+    t.string   "weblink"
   end
 
   create_table "problems", force: :cascade do |t|
@@ -73,6 +75,15 @@ ActiveRecord::Schema.define(version: 20150802123646) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "sectors", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sectors", ["name"], name: "index_sectors_on_name", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

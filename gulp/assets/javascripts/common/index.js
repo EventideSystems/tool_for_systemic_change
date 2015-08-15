@@ -9,4 +9,3 @@ require('./services/SidebarService.js');
 require('./directives/wkdSidebar.js');
 
 // Controllers
-require('./controllers/LoginController.js');

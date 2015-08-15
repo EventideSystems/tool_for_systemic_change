@@ -12,7 +12,7 @@ Sector.create(name: 'Local government')
 Sector.create(name: 'State government')
 Sector.create(name: 'Federal government')
 Sector.create(name: 'Education')
-Sector.create(name: 'Education')
+sector.create(name: 'NGO')
 
 Problem.delete_all
 

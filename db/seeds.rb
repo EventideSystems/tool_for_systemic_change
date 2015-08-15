@@ -6,9 +6,23 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+Sector.delete_all
+
+Sector.create(name: 'Local government')
+Sector.create(name: 'State government')
+Sector.create(name: 'Federal government')
+Sector.create(name: 'Education')
+sector.create(name: 'NGO')
+
+Problem.delete_all
+
 Problem.create(name: "Climate change")
 Problem.create(name: "Obesity")
 Problem.create(name: "Indigenous disadvantage")
+
+Model::FocusAreaGroup.delete_all
+Model::FocusArea.delete_all
+Model::InterventionCharacteristic.delete_all
 
 Model::FocusAreaGroup.create(name: "Unlock Complex Adaptive System Dynamics") do |group|
   group.save!

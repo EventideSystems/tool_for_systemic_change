@@ -9,3 +9,4 @@
 //
 // Pull compiled from /public/assets/javascripts
 //= require app
+//= require templates

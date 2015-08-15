@@ -8,10 +8,9 @@
 </head>
 <body>
 
-  <% if !user_signed_in? %>
+  <% if user_signed_in? %>
     <div ng-app="WKD">
-      <header id="header" ng-include="'/templates/layout/header.html'">
-      </header>
+      <wkd-header></wkd-header>
 
       <nav id="main-nav" ng-include="'/templates/layout/main-nav.html'"></nav>
 
@@ -22,6 +21,18 @@
       <wkd-sidebar></wkd-sidebar>
     </div>
   <% else %>
+    <% # SMELL Required by Devise - I want these to show in the login box, just under the login button. %>
+    <% if notice.present? %>
+      <aside class="alert alert-info">
+        <%= notice %>
+      </aside>
+    <% end %>
+    <% if alert.present? %>
+      <aside class="alert alert-danger">
+        <%= alert %>
+      </aside>
+    <% end %>
+
     <%= yield %>
   <% end %>
 

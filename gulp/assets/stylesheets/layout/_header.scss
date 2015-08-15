@@ -8,4 +8,12 @@
     height: $header-height - 25px;
     margin-top: -3px;
   }
+
+  .sub-nav {
+    float: right;
+
+    ul {
+      list-style: none;
+    }
+  }
 }

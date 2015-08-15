@@ -6,6 +6,35 @@
 #   cities = City.create!([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create!(name: 'Emanuel', city: cities.first)
 
+
+User.delete_all
+
+staff_user = User.new(
+  email: 'staff@example.com', password: 'password',
+  password_confirmation: 'password', role: "staff"
+)
+staff_user.save!
+
+AdministratingOrganisation.delete_all
+Organisation.delete_all
+
+admin_org = AdministratingOrganisation.create!(name: 'Example Admin Organisation')
+
+admin_user = User.new(
+  email: 'admin@example.com', password: 'password',
+  password_confirmation: 'password', role: "admin",
+  administrating_organisation_id: admin_org.id
+)
+admin_user.save!
+
+user = User.new(
+  email: 'user@example.com', password: 'password',
+  password_confirmation: 'password', role: "user",
+  administrating_organisation_id: admin_org.id
+)
+user.save!
+
+
 Sector.delete_all
 
 Sector.create!(name: 'Local government')
@@ -14,15 +43,15 @@ Sector.create!(name: 'Federal government')
 Sector.create!(name: 'Education')
 Sector.create!(name: 'NGO')
 
-Problem.delete_all
-
-Problem.create!(name: "Climate change")
-Problem.create!(name: "Obesity")
-Problem.create!(name: "Indigenous disadvantage")
+# Problem.delete_all
+#
+# Problem.create!(name: "Climate change")
+# Problem.create!(name: "Obesity")
+# Problem.create!(name: "Indigenous disadvantage")
 
 Model::FocusAreaGroup.delete_all
 Model::FocusArea.delete_all
-Model::initiativeCharacteristic.delete_all
+Model::InitiativeCharacteristic.delete_all
 
 Model::FocusAreaGroup.create!(name: "Unlock Complex Adaptive System Dynamics") do |group|
   group.save!

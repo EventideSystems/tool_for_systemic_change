@@ -1,0 +1,19 @@
+#header {
+  background: white;
+  height: $header-height;
+  line-height: $header-height;
+  padding: 0 20px;
+
+  img {
+    height: $header-height - 25px;
+    margin-top: -3px;
+  }
+
+  .sub-nav {
+    float: right;
+
+    ul {
+      list-style: none;
+    }
+  }
+}

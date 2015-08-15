@@ -1,5 +1,14 @@
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
-body {
-  // display: none;
-}
+$fa-font-path: '/assets/fonts';
+@import '../../../node_modules/font-awesome/scss/font-awesome';
+@import '../../../node_modules/toastr/toastr.scss';
+
+@import './_variables';
+
+@import './layout/_base';
+@import './layout/_header';
+@import './layout/_main-content';
+@import './layout/_sidebar';
+@import './layout/_main-nav';
+@import './layout/_login';

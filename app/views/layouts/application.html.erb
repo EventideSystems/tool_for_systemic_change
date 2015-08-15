@@ -6,21 +6,24 @@
   <%= javascript_include_tag 'application'  %>
   <%= csrf_meta_tags %>
 </head>
-<body class="container" ng-app>
+<body>
 
-<% # SMELL Required by Devise %>
-<% if notice.present? %>
-  <aside class="alert alert-info">
-    <%= notice %>
-  </aside>
-<% end %>
-<% if alert.present? %>
-  <aside class="alert alert-danger">
-    <%= alert %>
-  </aside>
-<% end %>
+  <% if !user_signed_in? %>
+    <div ng-app="WKD">
+      <header id="header" ng-include="'/templates/layout/header.html'">
+      </header>
 
-<%= yield %>
+      <nav id="main-nav" ng-include="'/templates/layout/main-nav.html'"></nav>
+
+      <main id="main-content">
+        <div class="scroller" ui-view></div>
+      </main>
+
+      <wkd-sidebar></wkd-sidebar>
+    </div>
+  <% else %>
+    <%= yield %>
+  <% end %>
 
 </body>
 </html>

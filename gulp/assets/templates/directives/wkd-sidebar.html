@@ -1,0 +1,23 @@
+<aside id="sidebar">
+  <h4 class="title">
+    <a href class="new-resource" ng-click="gotoNewForm()" title="Create">
+      <i class="fa fa-plus"></i>
+    </a>
+
+    <div class="btn-group context-switcher" dropdown is-open="status.isopen">
+      <button id="context-dropdown" type="button" class="btn btn-default" dropdown-toggle ng-disabled="disabled">
+        {{ sidebar.options.title }} <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="context-dropdown">
+        <li role="menuitem" ng-repeat="(key, ops) in contextMenu">
+          <a href ng-click="load(key)">{{ ops.title }}</a>
+        </li>
+      </ul>
+    </div>
+  </h4>
+
+  <div class="context-filter">
+    <i class="fa fa-search"></i>
+    <input type="text" ng-model="search.text" ng-attr-placeholder="Filter {{ sidebar.options.title }}">
+  </div>
+</aside>

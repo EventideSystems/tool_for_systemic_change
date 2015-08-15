@@ -12,8 +12,6 @@ angular.module('WKD.Organisations')
 
     sidebarService.loadOrganisations();
 
-
-
     vm.organisation = {};
 
     vm.submitForm = function () {

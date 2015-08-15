@@ -13,7 +13,7 @@ angular.module('WKD.Common')
         scope.contextMenu = sidebarService.CONTEXT_MENU;
 
         scope.load = function (resource) {
-          return sidebarService['load' + resource]();
+          return sidebarService['load' + resource.replace('_', '')]();
         };
 
         scope.gotoNewForm = function () {

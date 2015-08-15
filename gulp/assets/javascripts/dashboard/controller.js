@@ -7,6 +7,6 @@ angular.module('WKD.Dashboard')
   'WKD.Common.SidebarService',
   '$rootScope',
   function (sidebarService, $rootScope) {
-    sidebarService.loadProblems();
+    sidebarService.loadWickedProblems();
   }
 ]);

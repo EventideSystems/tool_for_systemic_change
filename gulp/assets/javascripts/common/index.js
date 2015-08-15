@@ -7,5 +7,7 @@ require('./services/SidebarService.js');
 
 // Directives
 require('./directives/wkdSidebar.js');
+require('./directives/wkdHeader.js');
+
 
 // Controllers

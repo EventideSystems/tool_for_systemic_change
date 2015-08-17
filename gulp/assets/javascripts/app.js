@@ -38,13 +38,15 @@ angular.module('WKD', [
 ])
 
 
-.config(['$stateProvider', function ($stateProvider) {
+.config(['$stateProvider', 'WKD.Common.CurrentUserProvider', function ($stateProvider, CurrentUserProvider) {
   $stateProvider
     .state('wkd', {
       url: '',
       abstract: true,
+      controller: 'WKD.MainController',
+      controllerAs: 'WKD',
       template: '<ui-view>',
-      // resolve: resolve current user here
+      resolve: { currentUser: CurrentUserProvider.resolveCurrentUser }
     })
 
     ;
@@ -66,17 +68,24 @@ angular.module('WKD', [
 .controller('WKD.MainController', [
   '$state',
   '$rootScope',
-  function ($state, $rootScope) {
+  'WKD.Common.CurrentUser',
+  function ($state, $rootScope, CurrentUser) {
     var app = this;
 
-    $rootScope.$on('$stateChangeSuccess', function (e, current) {
+    $rootScope.$on('$stateChangeSuccess', setContextClass);
+
+    app.currentUser = CurrentUser.get();
+
+    setContextClass();
+
+    function setContextClass(e, cur) {
       try {
-        app.currentState = current.name.match(/wkd\.(\w+)/)[1] + '-page';
-        app.currentState = app.currentState.replace('_', '-');
+        $rootScope.contextClass = cur.name.match(/wkd\.(\w+)/)[1] + '-page';
+        $rootScope.contextClass = $rootScope.contextClass.replace('_', '-');
       } catch (e) {
-        app.currentState = null;
+        $rootScope.contextClass = 'dashboard-page';
       }
-    });
+    }
   }
 ])
 

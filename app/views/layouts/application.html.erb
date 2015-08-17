@@ -9,7 +9,7 @@
 <body>
 
   <% if user_signed_in? %>
-    <div ng-app="WKD" ng-controller="WKD.MainController as WKD" ng-class="WKD.currentState">
+    <div ng-app="WKD" ng-class="contextClass">
       <wkd-header></wkd-header>
 
       <nav id="main-nav" ng-include="'/templates/layout/main-nav.html'"></nav>

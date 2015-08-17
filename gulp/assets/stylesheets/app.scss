@@ -5,6 +5,7 @@ $fa-font-path: '/assets/fonts';
 @import '../../../node_modules/toastr/toastr.scss';
 
 @import './_variables';
+@import './_mixins';
 
 @import './layout/_base';
 @import './layout/_header';
@@ -12,3 +13,5 @@ $fa-font-path: '/assets/fonts';
 @import './layout/_sidebar';
 @import './layout/_main-nav';
 @import './layout/_login';
+
+@import './pages/_dashboard';

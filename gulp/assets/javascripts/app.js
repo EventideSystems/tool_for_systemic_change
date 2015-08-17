@@ -62,4 +62,22 @@ angular.module('WKD', [
 
 }])
 
+// @todo extract to own file
+.controller('WKD.MainController', [
+  '$state',
+  '$rootScope',
+  function ($state, $rootScope) {
+    var app = this;
+
+    $rootScope.$on('$stateChangeSuccess', function (e, current) {
+      try {
+        app.currentState = current.name.match(/wkd\.(\w+)/)[1] + '-page';
+        app.currentState = app.currentState.replace('_', '-');
+      } catch (e) {
+        app.currentState = null;
+      }
+    });
+  }
+])
+
 ;

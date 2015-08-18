@@ -10,4 +10,5 @@ class User < ActiveRecord::Base
 
   validates :administrating_organisation_id, presence: true,
     unless: Proc.new { |u| u.staff? }
+
 end

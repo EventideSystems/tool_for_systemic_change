@@ -19,10 +19,6 @@
 # Ignore temporary rspec files
 .rspec
 
-# Ignore credential-related files
-/config/database.yml
-/config/secrets.yml
-
 # Ignore frontend dependencies
 /node_modules
 

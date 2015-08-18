@@ -1,15 +1,24 @@
-class WickedProblemsController < ApplicationController
+class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
+
+  class User::NotAuthorized < Exception; end;
+
+  rescue_from User::NotAuthorized do |exception|
+    render json: exception, status: 403
+  end
 
   # GET /wicked_problems
   # GET /wicked_problems.json
   def index
-    @wicked_problems = WickedProblem.all
+    @wicked_problems = WickedProblem.for_user(current_user)
+
+    render json: @wicked_problems
   end
 
   # GET /wicked_problems/1
   # GET /wicked_problems/1.json
   def show
+    render json: @wicked_problem
   end
 
   # GET /wicked_problems/new
@@ -24,12 +33,19 @@ class WickedProblemsController < ApplicationController
   # POST /wicked_problems
   # POST /wicked_problems.json
   def create
-    @wicked_problem = WickedProblem.new(wicked_problem_params)
+    administrating_organisation_id = administrating_organisation_id_from_params(wicked_problem_params)
+    community_id = community_id_from_params(wicked_problem_params)
+
+    attributes = wicked_problem_params[:attributes].merge(
+      administrating_organisation_id: administrating_organisation_id,
+      community_id: community_id
+    )
+    @wicked_problem = WickedProblem.new(attributes)
 
     respond_to do |format|
       if @wicked_problem.save
         format.html { redirect_to @wicked_problem, notice: 'WickedProblem was successfully created.' }
-        format.json { render :show, status: :created, location: @wicked_problem }
+        format.json { render json: @wicked_problem, status: :created, location: @wicked_problem }
       else
         format.html { render :new }
         format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
@@ -62,13 +78,26 @@ class WickedProblemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_wicked_problem
-      @wicked_problem = WickedProblem.find(params[:id])
+      @wicked_problem = WickedProblem.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def wicked_problem_params
-      params[:wicked_wicked_problem]
+      params.require(:data).permit(
+        attributes: [:name, :description],
+        relationships: [
+          community: [data: [:id]],
+          administrating_organisation: [data: [:id]]
+        ]
+      )
+    end
+
+    def administrating_organisation_id_from_params(params)
+      params[:relationships][:administrating_organisation][:data][:id].to_i
+    end
+
+    def community_id_from_params(params)
+      params[:relationships][:community][:data][:id].to_i
     end
 end

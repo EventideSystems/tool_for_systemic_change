@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :initiatives
   resources :organisations
   resources :communities
-  resources :wicked_problems
+  resources :wicked_problems, :defaults => { :format => 'json' }
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

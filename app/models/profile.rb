@@ -14,4 +14,20 @@ class Profile
       user.administrating_organisation.name
     end
   end
+
+  def id
+    nil
+  end
+
+  # NOTE fake just enough of the interface expected of
+  # ActiveModel::Serializers. See:
+  # https://github.com/rails-api/active_model_serializers/blob/master/test/fixtures/poro.rb
+
+  def read_attribute_for_serialization(name)
+    send(name)
+  end
+
+  def self.model_name
+    ActiveModel::Name.new(self)
+  end
 end

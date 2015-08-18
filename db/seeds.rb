@@ -11,6 +11,7 @@ User.delete_all
 
 staff_user = User.new(
   email: 'staff@example.com', password: 'password',
+  name: 'John Staff',
   password_confirmation: 'password', role: "staff"
 )
 staff_user.save!
@@ -22,6 +23,7 @@ admin_org = AdministratingOrganisation.create!(name: 'Example Admin Organisation
 
 admin_user = User.new(
   email: 'admin@example.com', password: 'password',
+  name: 'John Admin',
   password_confirmation: 'password', role: "admin",
   administrating_organisation_id: admin_org.id
 )
@@ -29,6 +31,7 @@ admin_user.save!
 
 user = User.new(
   email: 'user@example.com', password: 'password',
+  name: 'John User',
   password_confirmation: 'password', role: "user",
   administrating_organisation_id: admin_org.id
 )

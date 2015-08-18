@@ -1,14 +1,17 @@
-<h1>Organisation's Dashboard</h1>
+<h1>
+  {{ WKD.currentUser.administratingOrganisationName || 'Global' }} dashboard
+</h1>
+
+
 
 <div class="widgets clearfix">
-
   <div class="col-sm-4 widget">
     <div class="inner">
       <header>
         <strong>Welcome</strong>
       </header>
       <div class="content">
-        <p>Hi YOUR NAME</p>
+        <p><strong>Hi {{ WKD.currentUser.userName || 'there' }},</strong></p>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati quisquam, dicta recusandae pariatur reprehenderit, possimus rem ipsam mollitia qui ipsum at atque provident facilis odio architecto quae quas perspiciatis ratione.</p>
 
         <button class="btn btn-default">Manage profile</button>

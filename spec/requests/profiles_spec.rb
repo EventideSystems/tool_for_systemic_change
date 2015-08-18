@@ -16,7 +16,7 @@ RSpec.describe "Profiles", type: :request do
     specify "user profile" do
       sign_in(user)
       get profile_path
-      profile = JSON.parse(response.body)
+      profile = JSON.parse(response.body)['data']['attributes']
 
       expect(response).to have_http_status(200)
 
@@ -29,7 +29,7 @@ RSpec.describe "Profiles", type: :request do
     specify "admin profile" do
       sign_in(admin)
       get profile_path
-      profile = JSON.parse(response.body)
+      profile = JSON.parse(response.body)['data']['attributes']
 
       expect(response).to have_http_status(200)
 
@@ -42,7 +42,7 @@ RSpec.describe "Profiles", type: :request do
     specify "staff profile" do
       sign_in(staff)
       get profile_path
-      profile = JSON.parse(response.body)
+      profile = JSON.parse(response.body)['data']['attributes']
 
       expect(response).to have_http_status(200)
 

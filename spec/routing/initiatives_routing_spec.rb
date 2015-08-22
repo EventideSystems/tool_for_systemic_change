@@ -4,35 +4,35 @@ RSpec.describe InitiativesController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do
-      expect(:get => "/initiatives").to route_to("initiatives#index")
+      expect(:get => "/initiatives").to route_to("initiatives#index", :format => 'json')
     end
 
     it "routes to #new" do
-      expect(:get => "/initiatives/new").to route_to("initiatives#new")
+      expect(:get => "/initiatives/new").to route_to("initiatives#new", :format => 'json')
     end
 
     it "routes to #show" do
-      expect(:get => "/initiatives/1").to route_to("initiatives#show", :id => "1")
+      expect(:get => "/initiatives/1").to route_to("initiatives#show", :id => "1", :format => 'json')
     end
 
     it "routes to #edit" do
-      expect(:get => "/initiatives/1/edit").to route_to("initiatives#edit", :id => "1")
+      expect(:get => "/initiatives/1/edit").to route_to("initiatives#edit", :id => "1", :format => 'json')
     end
 
     it "routes to #create" do
-      expect(:post => "/initiatives").to route_to("initiatives#create")
+      expect(:post => "/initiatives").to route_to("initiatives#create", :format => 'json')
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/initiatives/1").to route_to("initiatives#update", :id => "1")
+      expect(:put => "/initiatives/1").to route_to("initiatives#update", :id => "1", :format => 'json')
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/initiatives/1").to route_to("initiatives#update", :id => "1")
+      expect(:patch => "/initiatives/1").to route_to("initiatives#update", :id => "1", :format => 'json')
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/initiatives/1").to route_to("initiatives#destroy", :id => "1")
+      expect(:delete => "/initiatives/1").to route_to("initiatives#destroy", :id => "1", :format => 'json')
     end
 
   end

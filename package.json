@@ -31,7 +31,9 @@
     "toastr": "~2.1.2",
     "jquery": "~2.1.4",
     "angular-wizard": "~0.5.3",
-    "angular-messages": "~1.4.4"
+    "angular-messages": "~1.4.4",
+    "bootstrap": "~3.3.5",
+    "angular-ui-bootstrap": "~0.13.3"
   },
   "devDependencies": {
     "gulp": "^3.8.7",
@@ -67,6 +69,7 @@
     "karma-browserify": "~4.3.0",
     "phantomjs": "~1.9.18",
     "karma-phantomjs-launcher": "~0.2.1",
-    "angular-mocks": "~1.4.4"
+    "angular-mocks": "~1.4.4",
+    "del": "~1.2.1"
   }
 }

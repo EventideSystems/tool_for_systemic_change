@@ -15,15 +15,6 @@ class CommunitiesController < AuthenticatedController
     render json: @community
   end
 
-  # GET /communities/new
-  def new
-    @community = Community.new
-  end
-
-  # GET /communities/1/edit
-  def edit
-  end
-
   # POST /communities
   # POST /communities.json
   def create
@@ -56,7 +47,7 @@ class CommunitiesController < AuthenticatedController
 
     respond_to do |format|
       if @community.update(attributes)
-        format.html { redirect_to @community, notice: 'WickedProblem was successfully updated.' }
+        format.html { redirect_to @community, notice: 'Community was successfully updated.' }
         format.json { render json: { status: :ok, location: @community } }
       else
         format.html { render :edit }
@@ -87,10 +78,6 @@ class CommunitiesController < AuthenticatedController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def community_params
-      params[:community]
-    end
-
     def community_params
       params.require(:data).permit(
         attributes: [:name, :description],

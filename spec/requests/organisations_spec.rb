@@ -7,12 +7,6 @@ RSpec.describe "Organisations", type: :request do
   include_context "api request global before and after hooks"
   include_context "setup common data"
 
-  let!(:organisation) { create(:organisation,
-    administrating_organisation: administrating_organisation)}
-
-  let!(:other_organisation) { create(:organisation,
-    administrating_organisation: other_administrating_organisation)}
-
   describe "GET /organisations" do
 
     specify 'all fields returned' do

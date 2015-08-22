@@ -5,22 +5,7 @@ RSpec.describe "Wicked Problems", type: :request do
 
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
-
-  let!(:administrating_organisation) { create(:administrating_organisation) }
-  let!(:user) { create(:user, administrating_organisation: administrating_organisation) }
-  let!(:admin) { create(:admin_user, administrating_organisation: administrating_organisation) }
-  let!(:staff) { create(:staff_user) }
-
-  let!(:community) { create(:community, administrating_organisation: administrating_organisation) }
-  let!(:wicked_problem) { create(:wicked_problem,
-      administrating_organisation: administrating_organisation,
-      community: community) }
-
-  let!(:other_administrating_organisation) { create(:administrating_organisation) }
-  let!(:other_community) { create(:community, administrating_organisation: other_administrating_organisation) }
-  let!(:other_wicked_problem) { create(:wicked_problem,
-      administrating_organisation: other_administrating_organisation,
-      community: other_community) }
+  include_context "setup common data"
 
   describe "GET /wicked_problems" do
 
@@ -138,16 +123,44 @@ RSpec.describe "Wicked Problems", type: :request do
     specify "posting as admin" do
       sign_in(admin)
       post '/wicked_problems', data: data_attributes
+      new_wicked_problem = WickedProblem.last
 
       expect(response).to have_http_status(201)
-
-      new_wicked_problem = WickedProblem.last
-      expect(new_wicked_problem.name).to eq(wicked_problem_name)
       expect(new_wicked_problem.name).to eq(wicked_problem_name)
       expect(new_wicked_problem.description).to eq(wicked_problem_description)
       expect(new_wicked_problem.community).to eq(community)
       expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
+    end
 
+    specify "posting as admin - without administrating organisation id" # TODO
+  end
+
+  describe "PUT /wicked_problems" do
+    let(:wicked_problem_new_name) { FFaker::Lorem.words(4).join(' ') }
+    let(:wicked_problem_new_description) { FFaker::Lorem.words(10).join(' ') }
+
+    let(:data_attributes) {
+      {
+        type: 'wicked_problems',
+        attributes: {
+          name: wicked_problem_new_name,
+          description: wicked_problem_new_description,
+        },
+        relationships: {
+          community: { data: { id: community.id } },
+          administrating_organisation: { data: { id: administrating_organisation.id } }
+        }
+      }
+    }
+
+    specify "updating as admin" do
+      sign_in(admin)
+      put "/wicked_problems/#{wicked_problem.id}", data: data_attributes
+      wicked_problem.reload
+
+      expect(response).to have_http_status(200)
+      expect(wicked_problem.name).to eq(wicked_problem_new_name)
+      expect(wicked_problem.description).to eq(wicked_problem_new_description)
     end
   end
 end

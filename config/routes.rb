@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  resources :initiatives
-  resources :organisations
+  resources :initiatives, :defaults => { :format => 'json' }
+  resources :organisations, :defaults => { :format => 'json' }
   resources :communities, :defaults => { :format => 'json' }
   resources :wicked_problems, :defaults => { :format => 'json' }
 

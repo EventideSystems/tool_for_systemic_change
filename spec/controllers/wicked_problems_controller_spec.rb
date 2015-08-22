@@ -53,10 +53,13 @@ RSpec.describe WickedProblemsController, type: :controller do
   end
 
   describe "GET #new" do
-    it "assigns a new problem as @problem" do
-      get :new, {}, valid_session
-      expect(assigns(:wicked_problem)).to be_a_new(WickedProblem)
-    end
+
+    # SMELL not really relevant, when accessing as an API
+
+    # it "assigns a new problem as @problem" do
+    #   get :new, {}, valid_session
+    #   expect(assigns(:wicked_problem)).to be_a_new(WickedProblem)
+    # end
   end
 
   describe "GET #edit" do

@@ -10,6 +10,8 @@ require('angular-ui-router');
 require('angular-ui-bootstrap');
 require('restangular');
 require('../../../node_modules/angular.flashr/angular-flashr.js');
+require('angular-wizard');
+require('angular-messages');
 
 // App Features
 require('./common');
@@ -26,7 +28,9 @@ angular.module('WKD', [
   'ui.router',
   'ui.bootstrap',
   'restangular',
+  'ngMessages',
   'flashr',
+  'mgo-angular-wizard',
 
   // Features
   'WKD.Common',
@@ -61,7 +65,21 @@ angular.module('WKD', [
     fadeIn: 200,
     fadeOut: 200
   };
+}])
 
+.config(['RestangularProvider', function (RestangularProvider) {
+  // add a response interceptor to unwrap { data: [.. data i want ..]}
+  RestangularProvider.addResponseInterceptor(function (resp, operation) {
+    var extractedData;
+    if (operation === 'getList') {
+      // .. and handle the data and meta data
+      extractedData = resp.data.data;
+    } else {
+      extractedData = resp.data;
+    }
+
+    return extractedData;
+  });
 }])
 
 // @todo extract to own file
@@ -76,7 +94,7 @@ angular.module('WKD', [
 
     app.currentUser = CurrentUser.get();
 
-    setContextClass();
+    setContextClass(null, $state.current);
 
     function setContextClass(e, cur) {
       try {

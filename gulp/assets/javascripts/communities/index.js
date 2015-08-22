@@ -7,13 +7,17 @@ angular.module('WKD.Communities', [])
   $stateProvider
     .state('wkd.communities', {
       url: '/communities',
-      template: '<ui-view>'
+      template: '<ui-view>',
+      controller: ['WKD.Common.SidebarService', function (sidebar) {
+        sidebar.loadCommunities();
+      }]
     })
 
     .state('wkd.communities.new', {
       url: '/new',
-      template: 'Nothing here yet',
-      controller: 'WKD.Communities.Controller'
+      templateUrl: '/templates/communities/new.html',
+      controller: 'WKD.Communities.Controller',
+      controllerAs: 'vm'
     })
 
     ;

@@ -1,0 +1,39 @@
+<form ng-submit="vm.submitForm()" name="orgForm" class="form-horizontal" novalidate>
+  <div class="form-group">
+    <label for="org-name" class="required col-sm-4 control-label">Organisation Name</label>
+
+    <div class="col-sm-8">
+      <input type="text" name="orgName" ng-model="vm.organisation.name" class="form-control" id="org-name" placeholder="enter organisation name" required>
+    </div>
+
+    <div class="field-errors" ng-messages="orgForm.orgName.$error" ng-show="orgForm.orgName.$dirty">
+      <p ng-message="required">Name is required.</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="org-website" class="col-sm-4 control-label">Website</label>
+
+    <div class="col-sm-8">
+      <input type="text" ng-model="vm.organisation.weblink" class="form-control" id="org-website" placeholder="enter website">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="org-desc" class="required col-sm-4 control-label">Description</label>
+
+    <div class="col-sm-8">
+      <textarea id="org-desc" class="form-control" name="orgDesc" required ng-model="vm.organisation.description" placeholder="enter description"></textarea>
+    </div>
+
+    <div class="field-errors" ng-messages="orgForm.orgDesc.$error" ng-show="orgForm.orgDesc.$dirty">
+      <p ng-message="required">Description is required.</p>
+    </div>
+  </div>
+  <div class="col-sm-offset-4">
+    <input type="submit" value="Create organisation" class="btn btn-primary" ng-disabled="orgForm.$invalid">
+  </div>
+
+
+
+</form>

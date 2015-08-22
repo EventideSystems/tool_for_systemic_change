@@ -4,8 +4,7 @@
 angular.module('WKD.Initiatives')
 
 .controller('WKD.Initiatives.Controller', [
-  'WKD.Common.SidebarService',
-  function (sidebarService) {
-    sidebarService.loadInitiatives();
+  function () {
+    var vm = this;
   }
 ]);

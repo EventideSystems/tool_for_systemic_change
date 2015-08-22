@@ -5,7 +5,16 @@ angular.module('WKD.Problems')
 
 .controller('WKD.Problems.Controller', [
   'WKD.Common.SidebarService',
-  function (sidebarService) {
-    sidebarService.loadWickedProblems();
+  '$modal',
+  function (sidebarService, $modal) {
+    var vm = this;
+
+    vm.openModal = function (resource) {
+      $modal.open({
+        templateUrl: '/templates/problems/' + resource + '-modal.html',
+        controller: 'WKD.Communities.Controller',
+        size: 'lg'
+      });
+    };
   }
 ]);

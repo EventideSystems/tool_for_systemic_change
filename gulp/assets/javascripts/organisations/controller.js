@@ -5,19 +5,21 @@ angular.module('WKD.Organisations')
 
 .controller('WKD.Organisations.Controller', [
   'WKD.Common.SidebarService',
+  'WKD.Common.ResourceFactory',
   'flashr',
-  function (sidebarService, flashr) {
+  function (sidebarService, resourceFactory, flashr) {
     var vm = this;
-    var baseOrgs = sidebarService.baseOrganisations;
+    var baseOrgs = resourceFactory.cache.Organisations;
 
     sidebarService.loadOrganisations();
 
     vm.organisation = {};
 
     vm.submitForm = function () {
-      return baseOrgs.post(vm.organisation).then(function () {
+      return baseOrgs.post(resourceFactory.pack(vm.factory)).then(function () {
         flashr.now.success('Yay!');
-      }, function () {
+      }, function (resp) {
+        vm.errors = resp.errors;
         flashr.now.error('Failed to create organisation');
       });
     };

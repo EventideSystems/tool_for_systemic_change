@@ -1,13 +1,8 @@
 class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
 
-  class User::NotAuthorized < Exception; end;
 
-  rescue_from User::NotAuthorized do |exception|
-    render json: exception, status: 403
-  end
 
-  # GET /wicked_problems
   # GET /wicked_problems.json
   def index
     @wicked_problems = WickedProblem.for_user(current_user)
@@ -56,10 +51,18 @@ class WickedProblemsController < AuthenticatedController
   # PATCH/PUT /wicked_problems/1
   # PATCH/PUT /wicked_problems/1.json
   def update
+    administrating_organisation_id = administrating_organisation_id_from_params(wicked_problem_params)
+    community_id = community_id_from_params(wicked_problem_params)
+
+    attributes = wicked_problem_params[:attributes].merge(
+      administrating_organisation_id: administrating_organisation_id,
+      community_id: community_id
+    )
+
     respond_to do |format|
-      if @wicked_problem.update(wicked_problem_params)
+      if @wicked_problem.update(attributes)
         format.html { redirect_to @wicked_problem, notice: 'WickedProblem was successfully updated.' }
-        format.json { render :show, status: :ok, location: @wicked_problem }
+        format.json { render json: { status: :ok, location: @wicked_problem } }
       else
         format.html { render :edit }
         format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }

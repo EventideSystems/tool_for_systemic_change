@@ -1,15 +1,18 @@
-class CommunitiesController < ApplicationController
+class CommunitiesController < AuthenticatedController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
 
   # GET /communities
   # GET /communities.json
   def index
-    @communities = Community.all
+    @communities = Community.for_user(current_user)
+
+    render json: @communities
   end
 
   # GET /communities/1
   # GET /communities/1.json
   def show
+    render json: @community
   end
 
   # GET /communities/new
@@ -24,12 +27,17 @@ class CommunitiesController < ApplicationController
   # POST /communities
   # POST /communities.json
   def create
-    @community = Community.new(community_params)
+    administrating_organisation_id = administrating_organisation_id_from_params(community_params)
+
+    attributes = community_params[:attributes].merge(
+      administrating_organisation_id: administrating_organisation_id
+    )
+    @community = Community.new(attributes)
 
     respond_to do |format|
       if @community.save
         format.html { redirect_to @community, notice: 'Community was successfully created.' }
-        format.json { render :show, status: :created, location: @community }
+        format.json { render json: @community, status: :created, location: @community }
       else
         format.html { render :new }
         format.json { render json: @community.errors, status: :unprocessable_entity }
@@ -40,10 +48,16 @@ class CommunitiesController < ApplicationController
   # PATCH/PUT /communities/1
   # PATCH/PUT /communities/1.json
   def update
+    administrating_organisation_id = administrating_organisation_id_from_params(community_params)
+
+    attributes = community_params[:attributes].merge(
+      administrating_organisation_id: administrating_organisation_id
+    )
+
     respond_to do |format|
-      if @community.update(community_params)
-        format.html { redirect_to @community, notice: 'Community was successfully updated.' }
-        format.json { render :show, status: :ok, location: @community }
+      if @community.update(attributes)
+        format.html { redirect_to @community, notice: 'WickedProblem was successfully updated.' }
+        format.json { render json: { status: :ok, location: @community } }
       else
         format.html { render :edit }
         format.json { render json: @community.errors, status: :unprocessable_entity }
@@ -64,11 +78,28 @@ class CommunitiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_community
-      @community = Community.find(params[:id])
+      @community = Community.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
+    end
+
+    # SMELL Dupe of code in wicked_problems_controller. Refactor into concern
+    def administrating_organisation_id_from_params(params)
+      params[:relationships][:administrating_organisation][:data][:id].to_i
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def community_params
       params[:community]
+    end
+
+    def community_params
+      params.require(:data).permit(
+        attributes: [:name, :description],
+        relationships: [
+          # SMELL Not required, and we'd have to ensure it can take multiple
+          # problems
+          # wicked_problems: [data: [:id]],
+          administrating_organisation: [data: [:id]]
+        ]
+      )
     end
 end

@@ -54,7 +54,10 @@
     "restangular": "~1.5.1",
     "napa": "~1.2.0",
     "toastr": "~2.1.2",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "angular-wizard": "~0.5.3",
+    "gulp-cssimport": "~2.1.1",
+    "angular-messages": "~1.4.4"
   },
   "devDependencies": {
     "gulp-watch": "^4.1.1"

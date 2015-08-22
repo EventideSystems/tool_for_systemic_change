@@ -7,13 +7,17 @@ angular.module('WKD.Problems', [])
   $stateProvider
     .state('wkd.wicked_problems', {
       url: '/wicked-problems',
-      template: '<ui-view>'
+      template: '<ui-view>',
+      controller: ['WKD.Common.SidebarService', function (sidebar) {
+        sidebar.loadWickedProblems();
+      }]
     })
 
     .state('wkd.wicked_problems.new', {
       url: '/new',
-      template: '<h1>Nothing here yet</h1>',
-      controller: 'WKD.Problems.Controller'
+      templateUrl: '/templates/problems/new.html',
+      controller: 'WKD.Problems.Controller',
+      controllerAs: 'vm'
     })
 
     ;

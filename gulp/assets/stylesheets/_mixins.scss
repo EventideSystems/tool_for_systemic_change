@@ -17,3 +17,9 @@
     @media (max-width: #{$point}) { @content; }
   }
 }
+
+@mixin fa($icon) {
+  content: "\#{$icon}";
+  font-family: FontAwesome;
+}
+

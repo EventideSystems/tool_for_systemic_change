@@ -5,7 +5,7 @@ class WickedProblem < ActiveRecord::Base
 
   scope :for_user, ->(user) {
     unless user.staff?
-      where(administrating_organisation_id: user.administrating_organisation.id)
+      where(administrating_organisation_id: user.administrating_organisation_id)
     end
   }
 end

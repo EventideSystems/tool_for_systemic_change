@@ -12,12 +12,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def verified_request?
-    true
- #   super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
-  end
-
-  def decamelize_params(params)
-
+    super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
   end
 
 end

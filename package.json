@@ -9,8 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "gulp test",
-    "install": "napa TylerGarlick/angular.flashr"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -60,7 +59,6 @@
     "pretty-hrtime": "~0.2.1",
     "require-dir": "^0.1.0",
     "merge-stream": "^0.1.7",
-    "napa": "~1.2.0",
     "karma": "~0.13.9",
     "jasmine": "~2.3.2",
     "jasmine-core": "~2.3.4",

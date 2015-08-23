@@ -9,7 +9,6 @@ window.toastr = require('toastr');
 require('angular-ui-router');
 require('angular-ui-bootstrap');
 require('restangular');
-require('../../../node_modules/angular.flashr/angular-flashr.js');
 require('angular-wizard');
 require('angular-messages');
 
@@ -70,15 +69,49 @@ angular.module('WKD', [
 .config(['RestangularProvider', function (RestangularProvider) {
   // add a response interceptor to unwrap { data: [.. data i want ..]}
   RestangularProvider.addResponseInterceptor(function (resp, operation) {
-    var extractedData;
-    if (operation === 'getList') {
-      // .. and handle the data and meta data
-      extractedData = resp.data.data;
-    } else {
-      extractedData = resp.data;
+    var unpacked = resp.data;
+
+    if (operation === 'get') {
+      unpacked = _.extend(unpacked, unpacked.attributes);
+      delete unpacked.attributes;
     }
 
-    return extractedData;
+    return unpacked;
+  });
+
+  // Repacks resource to match server expectation
+  RestangularProvider.setRequestInterceptor(function (res, operation) {
+    var packed = { data: {} };
+
+    if (operation === 'put') {
+      packed.data.attributes = res;
+      packed.data.id = res.id;
+      packed.data.relationships = res.relationships;
+      packed.data.type = res.type;
+
+      delete packed.data.attributes.relationships;
+      delete packed.data.attributes.id;
+      delete packed.data.attributes.type;
+
+      return packed;
+    }
+
+    if (operation === 'post') {
+      packed.data.attributes = res;
+      return packed;
+    }
+
+    return res;
+  });
+}])
+
+// Monkey patch redirectTo into ui router.
+.run(['$rootScope', '$state', function ($rootScope, $state) {
+  $rootScope.$on('$stateChangeStart', function (evt, to, params) {
+    if (to.redirectTo) {
+      evt.preventDefault();
+      $state.go(to.redirectTo, params);
+    }
   });
 }])
 

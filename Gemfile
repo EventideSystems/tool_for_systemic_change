@@ -17,6 +17,12 @@ gem 'coffee-rails', '~> 4.1.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
+# SMELL Using non-official fork of active_model_serializers, until support for
+# lower camel case is incorporated in the current main repo
+# gem 'active_model_serializers',
+#   git: "git://github.com/jfelchner/active_model_serializers.git",
+#   branch: "feature/default-json-api-to-dasherized-keys"
+
 gem 'active_model_serializers',
   git: "git://github.com/rails-api/active_model_serializers.git",
   :branch => "0-10-stable"

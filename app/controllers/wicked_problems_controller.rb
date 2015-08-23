@@ -29,6 +29,8 @@ class WickedProblemsController < AuthenticatedController
   # POST /wicked_problems.json
   def create
     administrating_organisation_id = administrating_organisation_id_from_params(wicked_problem_params)
+    administrating_organisation_id = current_user.administrating_organisation.id unless administrating_organisation_id
+
     community_id = community_id_from_params(wicked_problem_params)
 
     attributes = wicked_problem_params[:attributes].merge(
@@ -98,6 +100,8 @@ class WickedProblemsController < AuthenticatedController
 
     def administrating_organisation_id_from_params(params)
       params[:relationships][:administrating_organisation][:data][:id].to_i
+    rescue
+      nil
     end
 
     def community_id_from_params(params)

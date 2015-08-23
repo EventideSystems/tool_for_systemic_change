@@ -132,6 +132,20 @@ RSpec.describe "Communities", type: :request do
       expect(new_community.description).to eq(community_description)
       expect(new_community.administrating_organisation).to eq(administrating_organisation)
     end
+
+    specify "posting as admin - without administrating organisation id" do
+      data_attributes.delete(:relationships)
+
+      sign_in(admin)
+      post '/communities', data: data_attributes
+
+      expect(response).to have_http_status(201)
+
+      new_community = Community.last
+      expect(new_community.name).to eq(community_name)
+      expect(new_community.description).to eq(community_description)
+      expect(new_community.administrating_organisation).to eq(administrating_organisation)
+    end
   end
 
   describe "PUT /communities/:id" do

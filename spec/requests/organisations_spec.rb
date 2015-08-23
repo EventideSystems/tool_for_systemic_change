@@ -15,8 +15,6 @@ RSpec.describe "Organisations", type: :request do
 
       organisation_data = JSON.parse(response.body)['data'].first
 
-      puts organisation_data.inspect
-
       expect(organisation_data['id']).to eq(organisation.id.to_s)
       expect(organisation_data['attributes']['name']).to eq(organisation.name)
       expect(organisation_data['attributes']['description']).to eq(organisation.description)
@@ -113,7 +111,6 @@ RSpec.describe "Organisations", type: :request do
           description: organisation_description,
         },
         relationships: {
-          community: { data: { id: community.id } },
           administrating_organisation: { data: { id: administrating_organisation.id } }
         }
       }
@@ -130,7 +127,18 @@ RSpec.describe "Organisations", type: :request do
       expect(new_organisation.administrating_organisation).to eq(administrating_organisation)
     end
 
-    specify "posting as admin - without administrating organisation id" # TODO
+    specify "posting as admin - without administrating organisation id" do
+      data_attributes.delete(:relationships)
+
+      sign_in(admin)
+      post '/organisations', data: data_attributes
+      new_organisation = Organisation.last
+
+      expect(response).to have_http_status(201)
+      expect(new_organisation.name).to eq(organisation_name)
+      expect(new_organisation.description).to eq(organisation_description)
+      expect(new_organisation.administrating_organisation).to eq(administrating_organisation)
+    end
   end
 
   describe "PUT /organisations" do

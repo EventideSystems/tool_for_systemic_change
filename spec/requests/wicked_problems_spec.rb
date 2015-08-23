@@ -132,7 +132,19 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
     end
 
-    specify "posting as admin - without administrating organisation id" # TODO
+    specify "posting as admin - without administrating organisation id" do
+      data_attributes[:relationships].delete(:administrating_organisation)
+
+      sign_in(admin)
+      post '/wicked_problems', data: data_attributes
+      new_wicked_problem = WickedProblem.last
+
+      expect(response).to have_http_status(201)
+      expect(new_wicked_problem.name).to eq(wicked_problem_name)
+      expect(new_wicked_problem.description).to eq(wicked_problem_description)
+      expect(new_wicked_problem.community).to eq(community)
+      expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
+    end
   end
 
   describe "PUT /wicked_problems" do

@@ -19,6 +19,7 @@ class CommunitiesController < AuthenticatedController
   # POST /communities.json
   def create
     administrating_organisation_id = administrating_organisation_id_from_params(community_params)
+    administrating_organisation_id = current_user.administrating_organisation.id unless administrating_organisation_id
 
     attributes = community_params[:attributes].merge(
       administrating_organisation_id: administrating_organisation_id
@@ -75,6 +76,8 @@ class CommunitiesController < AuthenticatedController
     # SMELL Dupe of code in wicked_problems_controller. Refactor into concern
     def administrating_organisation_id_from_params(params)
       params[:relationships][:administrating_organisation][:data][:id].to_i
+    rescue
+      nil
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

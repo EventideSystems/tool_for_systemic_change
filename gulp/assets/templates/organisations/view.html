@@ -1,0 +1,24 @@
+<h1>Organisation: {{ vm.organisation.name }}</h1>
+
+<nav class="main-tabs">
+  <ul class="nav nav-tabs" role="tablist">
+    <li>
+      <a ui-sref-active="active" href ui-sref="^.edit">
+        Edit Details
+      </a>
+    </li>
+    <li>
+      <a ui-sref-active="active" ui-sref="^.initiatives" href>
+        Initiatives
+      </a>
+    </li>
+    <li>
+      <a ui-sref-active="active" ui-sref="^.users" href>
+        Users
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<ui-view></ui-view>
+

@@ -8,6 +8,9 @@
 
   .scroller {
     padding: 0 30px 30px 30px;
+    overflow-y: auto;
+    height: 100%;
+    background: white;
   }
 
   .scroller h1:first-of-type {

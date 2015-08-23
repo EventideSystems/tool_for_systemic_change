@@ -23,4 +23,20 @@ a {
   }
 }
 
+.main-tabs {
+  margin: -25px -30px 30px -30px;
+  background: $gray-lightest;
 
+  a {
+    border-top: none;
+  }
+
+  .active, .active:hover, .active:focus {
+    border-radius: 0;
+    color: #555555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
+  }
+}

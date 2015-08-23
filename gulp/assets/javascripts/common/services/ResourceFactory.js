@@ -13,11 +13,6 @@ angular.module('WKD.Common')
       service.cache[name] = Restangular.all(url);
     };
 
-    // Packs json before sending to server
-    service.pack = function (data) {
-      return { data: data };
-    };
-
     return service;
   }
 ]);

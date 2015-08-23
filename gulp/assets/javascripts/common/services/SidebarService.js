@@ -31,6 +31,16 @@ angular.module('WKD.Common')
       }
     };
 
+    service.addLink = function (link) {
+      service.currentSet.links.push(link);
+    };
+
+    service.updateLink = function (updated) {
+      var link = _.find(service.currentSet.links, { id: updated.id });
+      if (link) link.attributes.name = updated.name;
+
+    };
+
     _.each(service.CONTEXT_MENU, function (ops, resource) {
       var lowerCase = resource.toLowerCase(),
           camelCase = resource.replace('_', '');
@@ -39,12 +49,13 @@ angular.module('WKD.Common')
 
       service['load' + camelCase] = function () {
         if (service.isActive(camelCase)) return;
-        return resourceFactory.cache[camelCase].getList().then(function (resp) {
-          service.setLinks(resp, _.extend({
+        return resourceFactory.cache[camelCase].getList().then(function (resources) {
+
+          service.setLinks(resources, _.extend({
             newState: 'wkd.' + lowerCase + '.new'
           }, ops));
 
-          return resp;
+          return resources;
         });
       };
     });

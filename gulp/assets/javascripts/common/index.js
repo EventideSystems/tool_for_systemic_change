@@ -15,3 +15,7 @@ require('./directives/wkdHeader.js');
 
 
 // Controllers
+
+
+// Libs
+require('./lib/flashr.js');

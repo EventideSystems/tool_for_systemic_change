@@ -6,6 +6,10 @@ describe('CurrentUserService', function () {
     provider = $injector.get('WKD.Common.CurrentUserProvider');
   }));
 
+  beforeEach(module(function ($urlRouterProvider) {
+    $urlRouterProvider.deferIntercept();
+  }));
+
   beforeEach(inject(function ($injector, _$httpBackend_) {
     service = $injector.get('WKD.Common.CurrentUser');
     $injector.invoke(provider.resolveCurrentUser);

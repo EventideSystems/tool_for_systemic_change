@@ -21,10 +21,10 @@ RSpec.describe "Communities", type: :request do
 
       relationships_data = community_data['relationships']
 
-      expect(relationships_data['administrating_organisation']['data']['id'])
+      expect(relationships_data['administratingOrganisation']['data']['id'])
         .to eq(administrating_organisation.id.to_s)
 
-      expect(relationships_data['wicked_problems']['data'].first['id'])
+      expect(relationships_data['wickedProblems']['data'].first['id'])
         .to eq(wicked_problem.id.to_s)
     end
 

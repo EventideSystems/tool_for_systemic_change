@@ -90,6 +90,9 @@ class OrganisationsController < AuthenticatedController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
+
+
+
     def organisation_params
       params.require(:data).permit(
         attributes: [:name, :description],

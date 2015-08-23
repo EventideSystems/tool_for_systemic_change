@@ -1,4 +1,4 @@
-class CommunitySerializer < ActiveModel::Serializer
+class CommunitySerializer < BaseSerializer
   attributes :id, :name, :description
 
   belongs_to :administrating_organisation

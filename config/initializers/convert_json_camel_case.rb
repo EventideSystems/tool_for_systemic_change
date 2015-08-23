@@ -1,3 +1,5 @@
+# Sourced from https://github.com/rails/rails/pull/20389
+# This middleware will probably become less useful after Rails 5
 Rails.application.config.middleware.swap(
   ::ActionDispatch::ParamsParser, ::ActionDispatch::ParamsParser,
   ::Mime::JSON => Proc.new { |raw_post|

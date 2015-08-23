@@ -5,7 +5,7 @@ class Community < ActiveRecord::Base
   # SMELL Dupe of scope in WickedProblem - move to a concern
   scope :for_user, ->(user) {
     unless user.staff?
-      where(administrating_organisation_id: user.administrating_organisation.id)
+      where(administrating_organisation_id: user.administrating_organisation_id)
     end
   }
 end

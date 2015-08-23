@@ -21,6 +21,9 @@ Organisation.delete_all
 
 admin_org = AdministratingOrganisation.create!(name: 'Example Admin Organisation')
 
+Organisation.create!(name: "First Example Organisation", administrating_organisation: admin_org)
+Organisation.create!(name: "Second Example Organisation", administrating_organisation: admin_org)
+
 admin_user = User.new(
   email: 'admin@example.com', password: 'password',
   name: 'John Admin',

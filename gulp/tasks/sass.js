@@ -5,8 +5,16 @@ var sourcemaps   = require('gulp-sourcemaps');
 var handleErrors = require('../util/handleErrors');
 var config       = require('../config').sass;
 var autoprefixer = require('gulp-autoprefixer');
+var cssimport    = require("gulp-cssimport");
 
-gulp.task('sass', function () {
+gulp.task('sass', ['sass:compile'], function () {
+  return gulp.src(config.dest + '/*.css')
+    .pipe(cssimport())
+    .pipe(gulp.dest(config.dest));
+});
+
+
+gulp.task('sass:compile', function () {
   return gulp.src(config.src)
     .pipe(sourcemaps.init())
     .pipe(sass(config.settings))

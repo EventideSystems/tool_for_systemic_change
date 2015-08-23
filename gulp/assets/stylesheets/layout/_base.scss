@@ -6,10 +6,13 @@ body {
   background: $dark-10;
 }
 
-.scroller {
-  overflow-y: auto;
-  height: 100%;
-  background: white;
+h2 {
+  font-size: 16px;
+  font-weight: 400;
+  border-bottom: 1px solid $brand-secondary;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: $brand-primary;
 }
 
 a {
@@ -20,26 +23,20 @@ a {
   }
 }
 
-.form-horizontal {
-  .control-label {
-    text-align: left;
-    font-weight: 300;
+.main-tabs {
+  margin: -25px -30px 30px -30px;
+  background: $gray-lightest;
+
+  a {
+    border-top: none;
   }
 
-  .form-group {
-    border-bottom: 1px solid $dark-10;
-    padding-bottom: 15px;
-
-    .col-sm-8 {
-      padding-left: 5px;
-    }
-  }
-
-  .form-control{
-    transition: background .2s;
-
-    &:hover {
-      background: $gray-lighter;
-    }
+  .active, .active:hover, .active:focus {
+    border-radius: 0;
+    color: #555555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    cursor: default;
   }
 }

@@ -68,4 +68,39 @@
       }
     }
   }
+
+  .links {
+    padding: 15px;
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    a {
+      display: block;
+      border-bottom: 1px solid $dark-10;
+      padding: 12px 15px;
+      transition: background .2s, padding .2s, color .2s;
+
+      &:hover {
+        padding-left: 20px;
+        text-decoration: none;
+        background: $dark-10;
+      }
+
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    .active {
+      background: $dark-30 !important;
+      color: white;
+    }
+  }
 }

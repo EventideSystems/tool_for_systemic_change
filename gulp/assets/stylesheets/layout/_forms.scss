@@ -1,0 +1,62 @@
+.form-horizontal {
+  .ng-invalid.ng-touched {
+    border-color: red;
+  }
+
+  .field-errors {
+    color: red;
+    padding-left: 8px;
+    font-size: 12px;
+    transform: translateY(8px);
+    @extend .col-sm-offset-4;
+
+    p {
+      margin: 0;
+      line-height: 18px;
+    }
+
+    p:before {
+      display: inline-block;
+      margin-right: 5px;
+      @include fa('f06a');
+    }
+  }
+
+  label.required:after {
+    @include fa('f111');
+    color: orange;
+    opacity: .6;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    font-size: 8px;
+    vertical-align: middle
+  }
+
+  .control-label {
+    text-align: left;
+    font-weight: 300;
+  }
+
+  .form-group {
+    border-bottom: 1px solid $dark-10;
+    padding-bottom: 15px;
+
+    &.border-top {
+      border-top: 1px solid $dark-10;
+      padding-top: 15px;
+    }
+
+    .col-sm-8 {
+      padding-left: 5px;
+    }
+  }
+
+  .form-control{
+    transition: background .2s;
+
+    &:hover {
+      background: $gray-lighter;
+    }
+  }
+}

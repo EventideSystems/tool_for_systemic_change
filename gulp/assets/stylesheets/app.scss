@@ -2,7 +2,8 @@
 
 $fa-font-path: '/assets/fonts';
 @import '../../../node_modules/font-awesome/scss/font-awesome';
-@import '../../../node_modules/toastr/toastr.scss';
+@import '../../../node_modules/toastr/toastr';
+@import '../../../node_modules/angular-wizard/dist/angular-wizard.css';
 
 @import './_variables';
 @import './_mixins';
@@ -13,5 +14,7 @@ $fa-font-path: '/assets/fonts';
 @import './layout/_sidebar';
 @import './layout/_main-nav';
 @import './layout/_login';
+@import './layout/_forms';
 
 @import './pages/_dashboard';
+@import './pages/_problems';

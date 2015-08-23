@@ -11,6 +11,7 @@ RSpec.describe "Wicked Problems", type: :request do
 
     specify 'all fields returned' do
       sign_in(staff)
+
       get wicked_problems_path
 
       wicked_problem_data = JSON.parse(response.body)['data'].first
@@ -21,7 +22,7 @@ RSpec.describe "Wicked Problems", type: :request do
 
       relationships_data = wicked_problem_data['relationships']
 
-      expect(relationships_data['administrating_organisation']['data']['id'])
+      expect(relationships_data['administratingOrganisation']['data']['id'])
         .to eq(administrating_organisation.id.to_s)
 
       expect(relationships_data['community']['data']['id'])

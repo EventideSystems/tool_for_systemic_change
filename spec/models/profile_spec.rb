@@ -16,9 +16,7 @@ RSpec.describe Profile, type: :model do
   end
 
   specify "admin profile" do
-    puts admin.inspect
     profile = Profile.new(admin)
-    puts profile.inspect
 
     expect(profile.user_email).to eq(admin.email)
     expect(profile.user_role).to eq('admin')

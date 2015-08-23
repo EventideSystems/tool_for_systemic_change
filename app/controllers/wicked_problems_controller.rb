@@ -1,8 +1,6 @@
 class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
 
-
-
   # GET /wicked_problems.json
   def index
     @wicked_problems = WickedProblem.for_user(current_user)
@@ -14,15 +12,6 @@ class WickedProblemsController < AuthenticatedController
   # GET /wicked_problems/1.json
   def show
     render json: @wicked_problem
-  end
-
-  # GET /wicked_problems/new
-  def new
-    @wicked_problem = WickedProblem.new
-  end
-
-  # GET /wicked_problems/1/edit
-  def edit
   end
 
   # POST /wicked_problems

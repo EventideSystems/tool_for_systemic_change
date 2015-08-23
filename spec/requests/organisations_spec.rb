@@ -21,7 +21,7 @@ RSpec.describe "Organisations", type: :request do
 
       relationships_data = organisation_data['relationships']
 
-      expect(relationships_data['administrating_organisation']['data']['id'])
+      expect(relationships_data['administratingOrganisation']['data']['id'])
         .to eq(administrating_organisation.id.to_s)
     end
 
@@ -111,7 +111,7 @@ RSpec.describe "Organisations", type: :request do
           description: organisation_description,
         },
         relationships: {
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          :'administratingOrganisation' => { data: { id: administrating_organisation.id } }
         }
       }
     }
@@ -154,7 +154,7 @@ RSpec.describe "Organisations", type: :request do
         },
         relationships: {
           community: { data: { id: community.id } },
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          :'administratingOrganisation' => { data: { id: administrating_organisation.id } }
         }
       }
     }

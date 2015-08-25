@@ -4,8 +4,7 @@ angular.module('WKD.Common')
 
 .factory('WKD.Common.SidebarService', [
   'Restangular',
-  'WKD.Common.ResourceFactory',
-  function (Restangular, resourceFactory) {
+  function (Restangular) {
     var service = {};
 
     // @todo derive title form resource
@@ -17,6 +16,7 @@ angular.module('WKD.Common')
     };
 
     service.currentSet = {};
+    service.bases = {};
 
     service.setLinks = function (links, ops) {
       service.currentSet.options = ops || null;
@@ -45,14 +45,14 @@ angular.module('WKD.Common')
       var lowerCase = resource.toLowerCase(),
           camelCase = resource.replace('_', '');
 
-      resourceFactory.createBase(camelCase, lowerCase);
+      service.bases[camelCase] = Restangular.all(lowerCase);
 
       service['load' + camelCase] = function () {
         if (service.isActive(camelCase)) return;
-        return resourceFactory.cache[camelCase].getList().then(function (resources) {
-
+        return service.bases[camelCase].getList().then(function (resources) {
           service.setLinks(resources, _.extend({
-            newState: 'wkd.' + lowerCase + '.new'
+            newState: 'wkd.' + lowerCase + '.new',
+            sref: 'wkd.' + lowerCase + '.view'
           }, ops));
 
           return resources;

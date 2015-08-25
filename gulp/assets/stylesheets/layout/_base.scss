@@ -23,6 +23,15 @@ a {
   }
 }
 
+.modal-body > h1 {
+  font-size: 22px;
+  font-weight: 300;
+  margin: 0;
+  border-bottom: 1px solid $dark-20;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
 .main-tabs {
   margin: -25px -30px 30px -30px;
   background: $gray-lightest;

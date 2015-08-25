@@ -24,7 +24,7 @@
   <section class="links">
     <ul>
       <li ng-repeat="link in sidebar.links | filter:{attributes: {name: search.text}}">
-        <a ui-sref-active="active" href ui-sref="wkd.organisations.view({ id: link.id })">{{ link.attributes.name }}</a>
+        <a ui-sref-active="active" href ui-sref="{{sidebar.options.sref}}({ id: link.id })">{{ link.attributes.name }}</a>
       </li>
     </ul>
   </section>

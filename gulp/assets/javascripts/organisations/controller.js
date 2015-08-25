@@ -5,30 +5,31 @@ angular.module('WKD.Organisations')
 
 .controller('WKD.Organisations.Controller', [
   'WKD.Common.SidebarService',
-  'WKD.Common.ResourceFactory',
-  'flashr',
   '$state',
   'Restangular',
-  function (sidebarService, resourceFactory, flashr, $state, Restangular) {
+  'flashr',
+  '$controller',
+  function (sidebarService, $state, Restangular, flashr, $controller) {
     var vm = this;
-    var baseOrgs = resourceFactory.cache.Organisations;
+    var baseRef = Restangular.all('communities');
 
-    vm.action = $state.current.action;
-
-    if (vm.action === 'view') {
-      vm.submitForm = update;
-      vm.deleteOrg = destroy;
-      Restangular.one('organisations', $state.params.id).get()
-        .then(function (org) {
-          vm.organisation = org;
-        });
-    } else {
-      vm.organisation = {};
+    vm._new = function () {
+      vm.community = {};
       vm.submitForm = create;
-    }
+    };
+
+    vm._view = function (params) {
+      vm.submitForm = update;
+      vm.deleteResource = destroy;
+      Restangular.one('organisations', params.id).get().then(function (resp) {
+        vm.organisation = resp;
+      });
+    };
+
+    $controller('WKD.Common.RESTController', { $scope: vm });
 
     function create() {
-      return baseOrgs.post(vm.organisation).then(function (organisation) {
+      return baseRef.post(vm.organisation).then(function (organisation) {
         sidebarService.addLink(organisation);
         $state.go('^.view', { id: organisation.id });
         flashr.later.success('Organisation successfully created!');
@@ -39,7 +40,7 @@ angular.module('WKD.Organisations')
     }
 
     function update() {
-      return vm.organisation.put().then(function (resp) {
+      return vm.organisation.put().then(function () {
         sidebarService.updateLink(vm.organisation);
         flashr.now.success('Organisation updated!');
       });

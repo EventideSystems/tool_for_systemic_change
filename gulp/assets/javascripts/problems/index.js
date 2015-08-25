@@ -15,6 +15,7 @@ angular.module('WKD.Problems', [])
 
     .state('wkd.wicked_problems.new', {
       url: '/new',
+      action: 'new',
       templateUrl: '/templates/problems/new.html',
       controller: 'WKD.Problems.Controller',
       controllerAs: 'vm'

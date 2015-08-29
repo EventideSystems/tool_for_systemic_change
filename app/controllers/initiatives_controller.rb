@@ -1,35 +1,43 @@
-class InitiativesController < ApplicationController
+class InitiativesController < AuthenticatedController
   before_action :set_initiative, only: [:show, :edit, :update, :destroy]
 
   # GET /initiatives
   # GET /initiatives.json
   def index
-    @initiatives = Initiative.all
+    @initiatives = Initiative.for_user(current_user)
+
+    render json: @initiatives
   end
 
   # GET /initiatives/1
   # GET /initiatives/1.json
   def show
+    render json: @initiative
   end
-
-  # GET /initiatives/new
-  def new
-    @initiative = Initiative.new
-  end
-
-  # GET /initiatives/1/edit
-  def edit
-  end
+  #
+  # # GET /initiatives/new
+  # def new
+  #   @initiative = Initiative.new
+  # end
+  #
+  # # GET /initiatives/1/edit
+  # def edit
+  # end
 
   # POST /initiatives
   # POST /initiatives.json
   def create
-    @initiative = Initiative.new(initiative_params)
+    wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+
+    attributes = initiative_params[:attributes].merge(
+      wicked_problem_id: wicked_problem_id
+    )
+    @initiative = Initiative.new(attributes)
 
     respond_to do |format|
       if @initiative.save
         format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
-        format.json { render :show, status: :created, location: @initiative }
+        format.json { render json: @initiative, status: :created, location: @initiative }
       else
         format.html { render :new }
         format.json { render json: @initiative.errors, status: :unprocessable_entity }
@@ -40,10 +48,16 @@ class InitiativesController < ApplicationController
   # PATCH/PUT /initiatives/1
   # PATCH/PUT /initiatives/1.json
   def update
+    wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+
+    attributes = initiative_params[:attributes].merge(
+      wicked_problem_id: wicked_problem_id
+    )
+
     respond_to do |format|
-      if @initiative.update(initiative_params)
+      if @initiative.update(attributes)
         format.html { redirect_to @initiative, notice: 'Initiative was successfully updated.' }
-        format.json { render :show, status: :ok, location: @initiative }
+        format.json { render json: { status: :ok, location: @initiative } }
       else
         format.html { render :edit }
         format.json { render json: @initiative.errors, status: :unprocessable_entity }
@@ -64,11 +78,27 @@ class InitiativesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_initiative
-      @initiative = Initiative.find(params[:id])
+      @initiative = Initiative.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def initiative_params
       params[:initiative]
+    end
+
+    def wicked_problem_id_from_params(params)
+      params[:relationships][:wicked_problem][:data][:id].to_i
+    rescue
+      nil
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def initiative_params
+      params.require(:data).permit(
+        attributes: [:name, :description],
+        relationships: [
+          wicked_problem: [data: [:id]]
+        ]
+      )
     end
 end

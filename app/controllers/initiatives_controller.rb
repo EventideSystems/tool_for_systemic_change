@@ -1,5 +1,5 @@
 class InitiativesController < AuthenticatedController
-  before_action :set_initiative, only: [:show, :edit, :update, :destroy]
+  before_action :set_initiative, only: [:show, :update, :destroy]
 
   # GET /initiatives
   # GET /initiatives.json
@@ -14,24 +14,18 @@ class InitiativesController < AuthenticatedController
   def show
     render json: @initiative
   end
-  #
-  # # GET /initiatives/new
-  # def new
-  #   @initiative = Initiative.new
-  # end
-  #
-  # # GET /initiatives/1/edit
-  # def edit
-  # end
 
   # POST /initiatives
   # POST /initiatives.json
   def create
     wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+    organisation_ids = organisation_ids_from_params(initiative_params)
 
     attributes = initiative_params[:attributes].merge(
-      wicked_problem_id: wicked_problem_id
+      wicked_problem_id: wicked_problem_id,
+      organisation_ids: organisation_ids
     )
+
     @initiative = Initiative.new(attributes)
 
     respond_to do |format|
@@ -49,9 +43,11 @@ class InitiativesController < AuthenticatedController
   # PATCH/PUT /initiatives/1.json
   def update
     wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+    organisation_ids = organisation_ids_from_params(initiative_params)
 
-    attributes = initiative_params[:attributes].merge(
-      wicked_problem_id: wicked_problem_id
+    attributes = (initiative_params[:attributes] || {}).merge(
+      wicked_problem_id: wicked_problem_id,
+      organisation_ids: organisation_ids
     )
 
     respond_to do |format|
@@ -86,6 +82,12 @@ class InitiativesController < AuthenticatedController
       params[:initiative]
     end
 
+    def organisation_ids_from_params(params)
+      params[:relationships][:organisations][:data].map { |data| data['id'].to_i }
+    rescue
+      nil
+    end
+
     def wicked_problem_id_from_params(params)
       params[:relationships][:wicked_problem][:data][:id].to_i
     rescue
@@ -97,7 +99,8 @@ class InitiativesController < AuthenticatedController
       params.require(:data).permit(
         attributes: [:name, :description],
         relationships: [
-          wicked_problem: [data: [:id]]
+          wicked_problem: [data: [:id]],
+          organisations: [data: [:id]]
         ]
       )
     end

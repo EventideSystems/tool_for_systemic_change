@@ -11,6 +11,9 @@ RSpec.describe "Initiatives", type: :request do
   let!(:other_initiative) {
     create(:initiative, wicked_problem: other_wicked_problem, organisations: [other_organisation]) }
 
+  let!(:second_organisation) { create(:organisation,
+    administrating_organisation: administrating_organisation)}
+
   describe "GET /initiatives" do
 
     specify 'all fields returned' do
@@ -119,7 +122,11 @@ RSpec.describe "Initiatives", type: :request do
         # SMELL Not supporting wicked_problems relationship at this point, if
         # we do at all.
         relationships: {
-          wicked_problem: { data: { id: wicked_problem.id } }
+          wicked_problem: { data: { id: wicked_problem.id } },
+          organisations: { data: [
+            {id: organisation.id },
+            {id: second_organisation.id }
+          ] }
         }
       }
     }
@@ -134,6 +141,9 @@ RSpec.describe "Initiatives", type: :request do
       expect(new_initiative.name).to eq(initiative_name)
       expect(new_initiative.description).to eq(initiative_description)
       expect(new_initiative.wicked_problem).to eq(wicked_problem)
+      expect(new_initiative.organisations.count).to be(2)
+      expect(new_initiative.organisations.first).to eq(organisation)
+      expect(new_initiative.organisations.second).to eq(second_organisation)
     end
   end
 
@@ -150,6 +160,7 @@ RSpec.describe "Initiatives", type: :request do
         },
         relationships: {
           wicked_problem: { data: { id: wicked_problem.id } }
+
         }
       }
     }
@@ -162,6 +173,42 @@ RSpec.describe "Initiatives", type: :request do
       expect(response).to have_http_status(200)
       expect(initiative.name).to eq(initiative_new_name)
       expect(initiative.description).to eq(initiative_new_description)
+    end
+
+    specify "updating as admin - only change name" do
+      sign_in(admin)
+      data_attributes[:attributes].delete(:description)
+
+      initiative_old_description = initiative.description
+
+      put "/initiatives/#{initiative.id}", data: data_attributes
+      initiative.reload
+
+      expect(response).to have_http_status(200)
+      expect(initiative.name).to eq(initiative_new_name)
+      expect(initiative.description).to eq(initiative_old_description)
+    end
+
+    specify "updating as admin - adding organisations" do
+      sign_in(admin)
+
+      data_attributes = {
+        type: 'initiatives',
+        relationships: {
+          organisations: { data: [
+            {id: organisation.id },
+            {id: second_organisation.id }
+          ] }
+        }
+      }
+
+      put "/initiatives/#{initiative.id}", data: data_attributes
+      initiative.reload
+
+      expect(response).to have_http_status(200)
+      expect(initiative.organisations.count).to be(2)
+      expect(initiative.organisations.first).to eq(organisation)
+      expect(initiative.organisations.second).to eq(second_organisation)
     end
   end
 end

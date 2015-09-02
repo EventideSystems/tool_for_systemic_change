@@ -1,5 +1,6 @@
 class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
+  before_action :set_administrating_organisation, only: [:create, :update]
 
   # GET /wicked_problems.json
   def index
@@ -17,15 +18,14 @@ class WickedProblemsController < AuthenticatedController
   # POST /wicked_problems
   # POST /wicked_problems.json
   def create
-    administrating_organisation_id = administrating_organisation_id_from_params(wicked_problem_params)
-    administrating_organisation_id = current_user.administrating_organisation.id unless administrating_organisation_id
+    # TODO Need to check each relationship and determine if current user
+    # has access
+    attributes = flatten_params(wicked_problem_params)
 
-    community_id = community_id_from_params(wicked_problem_params)
+    if attributes[:administrating_organisation_id].nil?
+      attributes[:administrating_organisation_id] = @administrating_organisation.id
+    end
 
-    attributes = wicked_problem_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id,
-      community_id: community_id
-    )
     @wicked_problem = WickedProblem.new(attributes)
 
     respond_to do |format|
@@ -42,13 +42,10 @@ class WickedProblemsController < AuthenticatedController
   # PATCH/PUT /wicked_problems/1
   # PATCH/PUT /wicked_problems/1.json
   def update
-    administrating_organisation_id = administrating_organisation_id_from_params(wicked_problem_params)
-    community_id = community_id_from_params(wicked_problem_params)
+    # TODO Need to check each relationship and determine if current user
+    # has access
 
-    attributes = wicked_problem_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id,
-      community_id: community_id
-    )
+    attributes = flatten_params(wicked_problem_params)
 
     respond_to do |format|
       if @wicked_problem.update(attributes)
@@ -72,6 +69,10 @@ class WickedProblemsController < AuthenticatedController
   end
 
   private
+
+    def set_administrating_organisation
+      @administrating_organisation = current_user.administrating_organisation
+    end
 
     def set_wicked_problem
       @wicked_problem = WickedProblem.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )

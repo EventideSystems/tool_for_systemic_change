@@ -15,15 +15,6 @@ class OrganisationsController < AuthenticatedController
     render json: @organisation
   end
 
-  # GET /organisations/new
-  def new
-    @organisation = Organisation.new
-  end
-
-  # GET /organisations/1/edit
-  def edit
-  end
-
   # POST /organisations
   # POST /organisations.json
   def create
@@ -90,9 +81,6 @@ class OrganisationsController < AuthenticatedController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-
-
-
     def organisation_params
       params.require(:data).permit(
         attributes: [:name, :description],

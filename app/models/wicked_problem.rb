@@ -8,4 +8,7 @@ class WickedProblem < ActiveRecord::Base
       where(administrating_organisation_id: user.administrating_organisation_id)
     end
   }
+
+  validates :administrating_organisation, presence: true
+  validates :community, presence: true
 end

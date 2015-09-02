@@ -1,4 +1,6 @@
 class AuthenticatedController < ApplicationController
+  include FlattenParams
+
   before_filter :authenticate_user!
 
   class User::NotAuthorized < Exception; end;

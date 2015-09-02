@@ -45,10 +45,10 @@ class InitiativesController < AuthenticatedController
     wicked_problem_id = wicked_problem_id_from_params(initiative_params)
     organisation_ids = organisation_ids_from_params(initiative_params)
 
-    attributes = (initiative_params[:attributes] || {}).merge(
-      wicked_problem_id: wicked_problem_id,
-      organisation_ids: organisation_ids
-    )
+    attributes = (initiative_params[:attributes] || {})
+
+    attributes.merge!(wicked_problem_id: wicked_problem_id) if wicked_problem_id
+    attributes.merge!(organisation_ids: organisation_ids) if organisation_ids
 
     respond_to do |format|
       if @initiative.update(attributes)

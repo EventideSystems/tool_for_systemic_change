@@ -7,6 +7,8 @@ class Initiative < ActiveRecord::Base
   # for converting the join table into a proper model and adding validations to
   # it
 
+  validates :wicked_problem, presence: true
+
   scope :for_user, ->(user) {
     unless user.staff?
       joins(:wicked_problem).where(

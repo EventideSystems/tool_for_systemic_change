@@ -175,5 +175,30 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(wicked_problem.name).to eq(wicked_problem_new_name)
       expect(wicked_problem.description).to eq(wicked_problem_new_description)
     end
+
+    specify "updating as admin - change community" do
+      wicked_problem_old_name = wicked_problem.name
+      wicked_problem_old_description = wicked_problem.description
+      wicked_problem_old_administrating_organisation_id = wicked_problem.administrating_organisation_id
+
+      new_community = create(:community, administrating_organisation: administrating_organisation)
+
+      sign_in(admin)
+      data_attributes = {
+        type: 'wicked_problems',
+        relationships: {
+          community: { data: { id: new_community.id } }
+        }
+      }
+
+      put "/wicked_problems/#{wicked_problem.id}", data: data_attributes
+      wicked_problem.reload
+
+      expect(response).to have_http_status(200)
+      expect(wicked_problem.name).to eq(wicked_problem_old_name)
+      expect(wicked_problem.description).to eq(wicked_problem_old_description)
+      expect(wicked_problem.administrating_organisation.id).to eq(wicked_problem_old_administrating_organisation_id)
+      expect(wicked_problem.community.id).to eq(new_community.id)
+    end
   end
 end

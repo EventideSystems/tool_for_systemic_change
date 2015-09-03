@@ -32,6 +32,7 @@ RSpec.describe "Initiative Checklist Items", type: :request do
       checklist_data = JSON.parse(response.body)['data']
       expect(checklist_data.count).to eq(Model::InitiativeCharacteristic.count)
     end
+
   end
 
   describe "PUT /initiatives/:id/checklist_items/:id" do

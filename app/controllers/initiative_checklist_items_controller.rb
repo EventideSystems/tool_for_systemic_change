@@ -13,7 +13,7 @@ class InitiativeChecklistItemsController < AuthenticatedController
   end
 
   def update
-    attributes = flatten_params(initiative_checklist_item_params)
+    attributes = normalize(initiative_checklist_item_params)
     respond_to do |format|
       if @intiative_checklist_item.update(attributes)
         format.html { redirect_to @intiative_checklist_item, notice: 'Checklist Item was successfully updated.' }
@@ -32,7 +32,7 @@ class InitiativeChecklistItemsController < AuthenticatedController
       intiative_checklist_item = @intiative.checklist_items.find(checklist_item_params[:id])
 
       attributes = bulk_initiative_checklist_item_params(
-        flatten_params(checklist_item_params)
+        normalize(checklist_item_params)
       )
 
       success = intiative_checklist_item.update(attributes)

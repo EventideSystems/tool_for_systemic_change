@@ -5,6 +5,13 @@
   top: $header-height;
   bottom: 0;
   right: 0;
+  overflow: hidden;
+
+  .scroller {
+    overflow-y: auto;
+    height: 100%;
+    border-bottom: 110px solid transparent;
+  }
 
   .title {
     height: 60px;

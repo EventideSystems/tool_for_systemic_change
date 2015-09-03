@@ -7,7 +7,7 @@ angular.module('WKD.Problems', [])
   $stateProvider
     .state('wkd.wicked_problems', {
       url: '/wicked-problems',
-      template: '<ui-view>',
+      template: '<ui-view class="transition-view">',
       controller: ['WKD.Common.SidebarService', function (sidebar) {
         sidebar.loadWickedProblems();
       }]
@@ -17,7 +17,36 @@ angular.module('WKD.Problems', [])
       url: '/new',
       action: 'new',
       templateUrl: '/templates/problems/new.html',
-      controller: 'WKD.Problems.Controller',
+      controller: 'WKD.Problems.NewController',
+      controllerAs: 'vm'
+    })
+
+    .state('wkd.wicked_problems.view', {
+      url: '/:id',
+      action: 'view',
+      redirectTo: 'wkd.wicked_problems.view.edit',
+      templateUrl: '/templates/problems/view.html',
+      resolve: {
+        currentProblem: ['Restangular', '$stateParams', function (Restangular, $stateParams) {
+          return Restangular.one('wicked_problems', $stateParams.id).get();
+        }]
+      },
+      controller: ['$scope', 'currentProblem', function ($scope, problem) {
+        $scope.problem = problem;
+      }]
+    })
+
+    .state('wkd.wicked_problems.view.edit', {
+      url: '/edit',
+      controller: 'WKD.Problems.EditController',
+      controllerAs: 'vm',
+      templateUrl: '/templates/problems/edit.html'
+    })
+
+    .state('wkd.wicked_problems.view.initiatives', {
+      url: '/initiatives',
+      templateUrl: '/templates/problems/initiatives.html',
+      controller: 'WKD.Problems.InitiativeController',
       controllerAs: 'vm'
     })
 
@@ -26,4 +55,7 @@ angular.module('WKD.Problems', [])
 
 ;
 
-require('./controller.js');
+require('./new-controller.js');
+require('./edit-controller.js');
+require('./initiative-controller.js');
+

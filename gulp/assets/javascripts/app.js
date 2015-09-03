@@ -11,6 +11,8 @@ require('angular-ui-bootstrap');
 require('restangular');
 require('angular-wizard');
 require('angular-messages');
+require('angular-animate');
+require('angular-aria');
 
 // App Features
 require('./common');
@@ -30,6 +32,8 @@ angular.module('WKD', [
   'ngMessages',
   'flashr',
   'mgo-angular-wizard',
+  'ngAnimate',
+  'ngAria',
 
   // Features
   'WKD.Common',
@@ -66,41 +70,19 @@ angular.module('WKD', [
   };
 }])
 
-.config(['RestangularProvider', function (RestangularProvider) {
+.config(['RestangularProvider', 'WKD.Common.DefaultPackerProvider', function (RestangularProvider, defaultPacker) {
   // add a response interceptor to unwrap { data: [.. data i want ..]}
   RestangularProvider.addResponseInterceptor(function (resp, operation) {
     var unpacked = resp.data;
 
-    if (operation === 'get') {
-      unpacked = _.extend(unpacked, unpacked.attributes);
-      delete unpacked.attributes;
-    }
-
+    if (operation === 'get') unpacked = defaultPacker.unpackResource(unpacked);
+    if (resp.included) unpacked.included = resp.included;
     return unpacked;
   });
 
   // Repacks resource to match server expectation
-  RestangularProvider.setRequestInterceptor(function (res, operation) {
-    var packed = { data: {} };
-
-    if (operation === 'put') {
-      packed.data.attributes = res;
-      packed.data.id = res.id;
-      packed.data.relationships = res.relationships;
-      packed.data.type = res.type;
-
-      delete packed.data.attributes.relationships;
-      delete packed.data.attributes.id;
-      delete packed.data.attributes.type;
-
-      return packed;
-    }
-
-    if (operation === 'post') {
-      packed.data.attributes = res;
-      return packed;
-    }
-
+  RestangularProvider.addRequestInterceptor(function (res, op) {
+    if (op === 'post' || op === 'put') return defaultPacker.packResource(res);
     return res;
   });
 }])

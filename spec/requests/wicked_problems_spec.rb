@@ -202,14 +202,14 @@ RSpec.describe "Wicked Problems", type: :request do
             type: 'initiatives',
             attributes: {
               name: FFaker::Lorem.words(4).join(' '),
-              description: FFaker::Lorem.words(10).join(' '),
+              description: FFaker::Lorem.words(10).join(' ')
             }
           },
           {
             type: 'initiatives',
             attributes: {
               name: FFaker::Lorem.words(4).join(' '),
-              description: FFaker::Lorem.words(10).join(' '),
+              description: FFaker::Lorem.words(10).join(' ')
             }
           }
         ]

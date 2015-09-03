@@ -2,6 +2,13 @@ Model::FocusAreaGroup.delete_all
 Model::FocusArea.delete_all
 Model::InitiativeCharacteristic.delete_all
 
+def create_focus_area_group(name)
+  group = Model::FocusAreaGroup.find_or_create!(name: name)
+
+  yield group
+
+end
+
 Model::FocusAreaGroup.create!(name: "Unlock Complex Adaptive System Dynamics") do |group|
   group.save!
   group.focus_areas.create!(name: "create! a disequilibrium state") do |area|

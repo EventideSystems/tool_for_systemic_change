@@ -1,5 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Initiative, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "building checklist" do
+    specify "creating initiative triggers creating checklist items" do
+      initiative = build(:initiative)
+      initiative.save!
+
+      initiative.reload
+
+      expect(initiative.checklist_items.count).to eq(Model::InitiativeCharacteristic.count)
+    end
+  end
 end

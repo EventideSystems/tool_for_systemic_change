@@ -4,16 +4,18 @@ module FlattenParams
   def flatten_params(params)
     attributes = params[:attributes] ||= {}
 
-    params[:relationships].each do |relationship|
-      base_name = relationship.first
-      base_data = relationship.second[:data]
+    if params[:relationships]
+      params[:relationships].each do |relationship|
+        base_name = relationship.first
+        base_data = relationship.second[:data]
 
-      if base_data.is_a?(Hash)
-        attributes.merge!("#{base_name}_id".to_sym => base_data[:id].to_i)
-      elsif base_data.is_a?(Array)
-        attributes.merge!("#{base_name}_ids".to_sym => base_data.map{ |data| data[:id].to_i } )
-      else
-        raise "Unprocessable data type '#{data.class}'"
+        if base_data.is_a?(Hash)
+          attributes.merge!("#{base_name}_id".to_sym => base_data[:id].to_i)
+        elsif base_data.is_a?(Array)
+          attributes.merge!("#{base_name}_ids".to_sym => base_data.map{ |data| data[:id].to_i } )
+        else
+          raise "Unprocessable data type '#{data.class}'"
+        end
       end
     end
     attributes

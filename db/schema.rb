@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150823123933) do
+ActiveRecord::Schema.define(version: 20150902003131) do
 
   create_table "communities", force: :cascade do |t|
     t.string   "name"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20150823123933) do
     t.integer  "administrating_organisation_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+  end
+
+  create_table "initiative_checklist_items", force: :cascade do |t|
+    t.boolean  "checked"
+    t.text     "comment"
+    t.integer  "initiative_characteristic_id"
+    t.integer  "initiative_id"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "initiatives", force: :cascade do |t|

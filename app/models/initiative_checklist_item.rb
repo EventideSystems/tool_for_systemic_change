@@ -4,4 +4,5 @@ class InitiativeChecklistItem < ActiveRecord::Base
 
   validates :initiative, presence: true
   validates :initiative_characteristic, presence: true, uniqueness: { scope: :initiative }
+
 end

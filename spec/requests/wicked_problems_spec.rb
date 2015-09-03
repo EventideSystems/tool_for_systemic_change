@@ -137,27 +137,115 @@ RSpec.describe "Wicked Problems", type: :request do
       data_attributes[:relationships].delete(:administrating_organisation)
 
       sign_in(admin)
-      post '/wicked_problems', data: data_attributes
-      new_wicked_problem = WickedProblem.last
+      expect do
+        post '/wicked_problems', data: data_attributes
+      end.to  change{WickedProblem.count}.by(1)
 
       expect(response).to have_http_status(201)
+
+      new_wicked_problem = WickedProblem.last
       expect(new_wicked_problem.name).to eq(wicked_problem_name)
       expect(new_wicked_problem.description).to eq(wicked_problem_description)
       expect(new_wicked_problem.community).to eq(community)
       expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
     end
+
+    describe "creating compound records" do
+
+      let(:data_attributes) {
+        {
+          type: 'wicked_problems',
+          attributes: {
+            name: FFaker::Lorem.words(4).join(' '),
+            description: FFaker::Lorem.words(10).join(' '),
+          },
+          relationships: {
+            administrating_organisation: { data: { id: administrating_organisation.id } }
+          }
+        }
+      }
+
+      specify "posting as admin - creating new community" do
+
+        included_attributes = [{
+          type: 'communities',
+          attributes: {
+            name: FFaker::Lorem.words(4).join(' '),
+            description: FFaker::Lorem.words(10).join(' '),
+          },
+          relationships: {
+            administrating_organisation: { data: { id: administrating_organisation.id } }
+          }
+        }]
+
+        sign_in(admin)
+
+        expect do
+          post '/wicked_problems', data: data_attributes, included: included_attributes
+        end.to change{ Community.count }.by(1)
+
+        expect(response).to have_http_status(201)
+
+        new_community = Community.last
+        expect(new_community.name).to eq(included_attributes.first[:attributes][:name])
+        expect(new_community.description).to eq(included_attributes.first[:attributes][:description])
+        expect(new_community.administrating_organisation).to eq(administrating_organisation)
+
+        wicked_problem = WickedProblem.last
+        expect(wicked_problem.community).to eq(new_community)
+      end
+
+      specify "posting as admin - creating new initiatives" do
+
+        included_attributes = [
+          {
+            type: 'initiatives',
+            attributes: {
+              name: FFaker::Lorem.words(4).join(' '),
+              description: FFaker::Lorem.words(10).join(' ')
+            }
+          },
+          {
+            type: 'initiatives',
+            attributes: {
+              name: FFaker::Lorem.words(4).join(' '),
+              description: FFaker::Lorem.words(10).join(' ')
+            }
+          }
+        ]
+
+        data_attributes[:relationships][:community] = { data: { id: community.id } }
+
+        sign_in(admin)
+
+
+        expect do
+          post '/wicked_problems', data: data_attributes, included: included_attributes
+        end.to change{ Initiative.count }.by(2)
+
+        expect(response).to have_http_status(201)
+
+        wicked_problem = WickedProblem.last
+
+        new_initiative = wicked_problem.initiatives.first
+        expect(new_initiative.name).to eq(included_attributes.first[:attributes][:name])
+        expect(new_initiative.description).to eq(included_attributes.first[:attributes][:description])
+
+        new_initiative = wicked_problem.initiatives.second
+        expect(new_initiative.name).to eq(included_attributes.second[:attributes][:name])
+        expect(new_initiative.description).to eq(included_attributes.second[:attributes][:description])
+      end
+
+    end
   end
 
   describe "PUT /wicked_problems" do
-    let(:wicked_problem_new_name) { FFaker::Lorem.words(4).join(' ') }
-    let(:wicked_problem_new_description) { FFaker::Lorem.words(10).join(' ') }
-
     let(:data_attributes) {
       {
         type: 'wicked_problems',
         attributes: {
-          name: wicked_problem_new_name,
-          description: wicked_problem_new_description,
+          name: FFaker::Lorem.words(4).join(' '),
+          description: FFaker::Lorem.words(10).join(' '),
         },
         relationships: {
           community: { data: { id: community.id } },
@@ -172,8 +260,8 @@ RSpec.describe "Wicked Problems", type: :request do
       wicked_problem.reload
 
       expect(response).to have_http_status(200)
-      expect(wicked_problem.name).to eq(wicked_problem_new_name)
-      expect(wicked_problem.description).to eq(wicked_problem_new_description)
+      expect(wicked_problem.name).to eq(data_attributes[:attributes][:name])
+      expect(wicked_problem.description).to eq(data_attributes[:attributes][:description])
     end
 
     specify "updating as admin - change community" do

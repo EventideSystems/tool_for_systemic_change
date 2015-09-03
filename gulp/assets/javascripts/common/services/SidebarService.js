@@ -35,6 +35,13 @@ angular.module('WKD.Common')
       service.currentSet.links.push(link);
     };
 
+    service.removeLink = function (link) {
+      _.remove(
+        service.currentSet.links,
+        _.find(service.currentSet.links, { id: link.id })
+      );
+    };
+
     service.updateLink = function (updated) {
       var link = _.find(service.currentSet.links, { id: updated.id });
       if (link) link.attributes.name = updated.name;

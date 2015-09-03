@@ -21,11 +21,13 @@
     <input type="text" ng-model="search.text" ng-attr-placeholder="Filter {{ sidebar.options.title }}">
   </div>
 
-  <section class="links">
-    <ul>
-      <li ng-repeat="link in sidebar.links | filter:{attributes: {name: search.text}}">
-        <a ui-sref-active="active" href ui-sref="{{sidebar.options.sref}}({ id: link.id })">{{ link.attributes.name }}</a>
-      </li>
-    </ul>
-  </section>
+  <div class="scroller">
+    <section class="links">
+      <ul>
+        <li ng-repeat="link in sidebar.links | filter:{attributes: {name: search.text}}">
+          <a ui-sref-active="active" href ui-sref="{{sidebar.options.sref}}({ id: link.id })">{{ link.attributes.name }}</a>
+        </li>
+      </ul>
+    </section>
+  </div>
 </aside>

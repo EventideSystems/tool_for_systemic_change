@@ -1,5 +1,5 @@
 class AuthenticatedController < ApplicationController
-  include FlattenParams
+  include DeserializeJsonApi
 
   before_filter :authenticate_user!
 

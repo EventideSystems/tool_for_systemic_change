@@ -112,7 +112,7 @@ class WickedProblemsController < AuthenticatedController
     end
 
     def permitted_initiative_params(params)
-      params.permit(:name, :description, :wicked_problem_id)
+      params.permit(:name, :description, :wicked_problem_id, organisation_ids: [])
     end
 
     def permitted_wicked_problem_params(params)

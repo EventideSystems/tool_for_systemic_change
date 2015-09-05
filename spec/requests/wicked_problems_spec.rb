@@ -197,12 +197,20 @@ RSpec.describe "Wicked Problems", type: :request do
 
       specify "posting as admin - creating new initiatives" do
 
+        second_organisation =  create(:organisation,
+          administrating_organisation: administrating_organisation)
+
         included_attributes = [
           {
             type: 'initiatives',
             attributes: {
               name: FFaker::Lorem.words(4).join(' '),
               description: FFaker::Lorem.words(10).join(' ')
+            },
+            relationships: {
+              organisations: { data: [
+                {id: organisation.id }
+              ] }
             }
           },
           {
@@ -210,14 +218,20 @@ RSpec.describe "Wicked Problems", type: :request do
             attributes: {
               name: FFaker::Lorem.words(4).join(' '),
               description: FFaker::Lorem.words(10).join(' ')
+            },
+            relationships: {
+              organisations: { data: [
+                {id: organisation.id },
+                {id: second_organisation.id }
+              ] }
             }
+
           }
         ]
 
         data_attributes[:relationships][:community] = { data: { id: community.id } }
 
         sign_in(admin)
-
 
         expect do
           post '/wicked_problems', data: data_attributes, included: included_attributes
@@ -230,10 +244,12 @@ RSpec.describe "Wicked Problems", type: :request do
         new_initiative = wicked_problem.initiatives.first
         expect(new_initiative.name).to eq(included_attributes.first[:attributes][:name])
         expect(new_initiative.description).to eq(included_attributes.first[:attributes][:description])
+        expect(new_initiative.organisations.count).to eq(1)
 
         new_initiative = wicked_problem.initiatives.second
         expect(new_initiative.name).to eq(included_attributes.second[:attributes][:name])
         expect(new_initiative.description).to eq(included_attributes.second[:attributes][:description])
+        expect(new_initiative.organisations.count).to eq(2)
       end
 
     end

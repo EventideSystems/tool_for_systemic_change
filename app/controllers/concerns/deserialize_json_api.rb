@@ -6,11 +6,11 @@ module DeserializeJsonApi
 
     relationships = params['relationships'].reduce({}) do |memo, assoc|
       if assoc.last['data'].is_a? Array
-        memo["#{assoc.first}_ids"] = assoc.last['data'].map do |record|
-          record['id']
+        memo["#{assoc.first.singularize}_ids"] = assoc.last['data'].map do |record|
+          record['id'].to_i
         end
       elsif assoc.last['data'].is_a? Hash
-        memo["#{assoc.first}_id"] = assoc.last['data']['id']
+        memo["#{assoc.first}_id"] = assoc.last['data']['id'].to_i
       end
 
       memo

@@ -18,8 +18,7 @@ RSpec.describe "Invitations", type: :request do
       invited_email = FFaker::Internet.email
 
       post user_invitation_path, user: {
-        email: invited_email,
-        administrating_organisation_id: administrating_organisation.id
+        email: invited_email
       }, format: :json
       expect(response).to have_http_status(201)
 

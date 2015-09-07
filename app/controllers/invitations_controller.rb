@@ -3,10 +3,17 @@ class InvitationsController < Devise::InvitationsController
   before_filter :configure_permitted_parameters
 
   def create
+    binding.pry
+
+    # SMELL Hack!
+    if self.params[:user][:administrating_organisation_id].nil?
+      self.params[:user].merge!(
+        administrating_organisation_id: current_user.administrating_organisation_id
+      )
+    end
+
     self.resource = invite_resource
     resource_invited = resource.errors.empty?
-
-    yield resource if block_given?
 
     respond_to do |format|
       if resource_invited
@@ -29,6 +36,12 @@ class InvitationsController < Devise::InvitationsController
   end
 
   private
+
+    def administrating_organisation_id_from_params(params)
+      self.params[:user][:administrating_organisation_id].to_i
+    rescue
+      nil
+    end
 
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:invite) do |u|

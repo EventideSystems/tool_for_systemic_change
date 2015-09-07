@@ -6,13 +6,13 @@ class WickedProblemsController < AuthenticatedController
   def index
     @wicked_problems = WickedProblem.for_user(current_user)
 
-    render json: @wicked_problems
+    render json: @wicked_problems, include: ['initiatives']
   end
 
   # GET /wicked_problems/1
   # GET /wicked_problems/1.json
   def show
-    render json: @wicked_problem
+    render json: @wicked_problem, include: ['initiatives']
   end
 
   # POST /wicked_problems

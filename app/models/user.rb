@@ -11,4 +11,12 @@ class User < ActiveRecord::Base
   validates :administrating_organisation_id, presence: true,
     unless: Proc.new { |u| u.staff? }
 
+  scope :for_user, ->(user) {
+    if user.user?
+      where(id: user.id)
+    elsif user.admin?
+      where(administrating_organisation_id: user.administrating_organisation_id)
+    end
+  }
+
 end

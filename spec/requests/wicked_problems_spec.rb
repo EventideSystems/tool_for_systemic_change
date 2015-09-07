@@ -10,11 +10,16 @@ RSpec.describe "Wicked Problems", type: :request do
   describe "GET /wicked_problems" do
 
     specify 'all fields returned' do
+      wicked_problem.initiatives << create(:initiative)
+      wicked_problem.initiatives.first.organisations << organisation
+
       sign_in(staff)
 
       get wicked_problems_path
 
       wicked_problem_data = JSON.parse(response.body)['data'].first
+      relationships_data = wicked_problem_data['relationships']
+      include_data = JSON.parse(response.body)['included'].first
 
       expect(wicked_problem_data['id']).to eq(wicked_problem.id.to_s)
       expect(wicked_problem_data['attributes']['name']).to eq(wicked_problem.name)
@@ -27,6 +32,10 @@ RSpec.describe "Wicked Problems", type: :request do
 
       expect(relationships_data['community']['data']['id'])
         .to eq(community.id.to_s)
+
+      expect(relationships_data['initiatives']['data'].count).to eq(1)
+
+      expect(include_data['relationships']['organisations']['data'].first['id'].to_i).to eq(organisation.id)
     end
 
     describe "restrict access by role" do

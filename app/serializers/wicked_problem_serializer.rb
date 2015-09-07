@@ -3,4 +3,5 @@ class WickedProblemSerializer < BaseSerializer
 
   belongs_to :administrating_organisation
   belongs_to :community
+  belongs_to :initiatives
 end

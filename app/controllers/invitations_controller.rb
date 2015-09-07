@@ -3,8 +3,6 @@ class InvitationsController < Devise::InvitationsController
   before_filter :configure_permitted_parameters
 
   def create
-    binding.pry
-
     # SMELL Hack!
     if self.params[:user][:administrating_organisation_id].nil?
       self.params[:user].merge!(

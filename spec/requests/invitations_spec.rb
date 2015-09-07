@@ -22,8 +22,6 @@ RSpec.describe "Invitations", type: :request do
       }, format: :json
       expect(response).to have_http_status(201)
 
-      puts response.body.inspect
-
       expect(User.last.email).to eq(invited_email)
       expect(User.last.invited_by_id).to eq(admin.id)
       expect(User.last.administrating_organisation_id).to eq(administrating_organisation.id)

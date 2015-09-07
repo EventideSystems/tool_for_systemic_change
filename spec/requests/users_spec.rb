@@ -16,8 +16,6 @@ RSpec.describe "Users", type: :request do
 
       organisation_data = JSON.parse(response.body)['data'].first
 
-      puts organisation_data.inspect
-
       expect(organisation_data['id']).to eq(user.id.to_s)
       expect(organisation_data['attributes']['name']).to eq(user.name)
       expect(organisation_data['attributes']['role']).to eq(user.role)

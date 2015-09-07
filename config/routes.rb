@@ -8,9 +8,11 @@ Rails.application.routes.draw do
   match 'initiatives/:initiative_id/checklist_items', to: 'initiative_checklist_items#bulk_update', via: [:put, :patch], :defaults => { :format => 'json' }
   resources :organisations, :defaults => { :format => 'json' }
   resources :communities, :defaults => { :format => 'json' }
+  resources :invitations, :defaults => { :format => 'json' }
   resources :wicked_problems, :defaults => { :format => 'json' }
+  resources :users, only: [:show, :index], :defaults => { :format => 'json' }
 
-  devise_for :users
+  devise_for :users, :controllers => { :invitations => 'invitations', :defaults => { :format => 'json' } }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

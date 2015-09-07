@@ -18,7 +18,8 @@ RSpec.describe "Initiatives", type: :request do
 
     specify 'all fields returned' do
       sign_in(staff)
-      get user_invitation_path
+      get initiatives_path
+      expect(response).to have_http_status(200)
 
       initiative_data = JSON.parse(response.body)['data'].first
 

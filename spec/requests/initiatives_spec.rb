@@ -18,7 +18,7 @@ RSpec.describe "Initiatives", type: :request do
 
     specify 'all fields returned' do
       sign_in(staff)
-      get initiatives_path
+      get user_invitation_path
 
       initiative_data = JSON.parse(response.body)['data'].first
 

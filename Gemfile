@@ -41,6 +41,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Authentication & authorization
 gem 'devise'
+gem 'devise_invitable'
 
 # Asset management
 gem 'bower-rails'

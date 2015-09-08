@@ -11,21 +11,21 @@
       </div>
     </div>
 
-    <em class="col-sm-offset-4 or-tag">or <a ng-click="vm.openModal('community')"href>create a new community</a></em>
+    <em class="col-sm-offset-4 or-tag">or <a ng-click="vm.openModal('communities')"href>create a new community</a></em>
   </div>
 
   <div ng-hide="vm.communities.length">
-    <em class="or-tag">You have no communities setup, <a ng-click="vm.openModal('community')"href>create one now?</a></em>
+    <em class="or-tag">You have no communities setup, <a ng-click="vm.openModal('communities')"href>create one now?</a></em>
   </div>
 
-  <div class="col-sm-offset-4">
+  <div class="col-sm-offset-4" ng-show="vm.newProblem.community">
     <button class="btn btn-default" wz-next>
       Assign Initiatives <i class="fa fa-angle-double-right"></i>
     </button>
   </div>
 </div>
 
-<script type="text/ng-template" id="/templates/problems/community-modal.html">
+<script type="text/ng-template" id="/templates/problems/communities-modal.html">
   <div class="modal-body" ng-include="'/templates/communities/new.html'">
   </div>
 </script>

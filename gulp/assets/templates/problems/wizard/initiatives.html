@@ -1,5 +1,40 @@
-<h2>Create and assign initiatives</h2>
+<h2>
+  Create and assign initiatives
+  <div class="actions">
+    <a ng-click="vm.openModal('initiatives')"href><i class="fa fa-plus"></i> add new initiative</a>
+  </div>
 
+</h2>
 
+<div class="form-horizontal">
+  <em class="or-tag" ng-hide="vm.newProblem.initiatives.length">No initiatives added</em>
 
-<button class="btn btn-default" wz-next >Preview</button>
+  <div class="form-group" ng-show="vm.newProblem.initiatives.length">
+    <label class="col-sm-4 control-label">Added initiatives</label>
+
+    <div class="col-sm-8">
+      <ul class="block-list">
+        <li ng-repeat="initiative in vm.newProblem.initiatives">
+          <i class="ico fa-lightbulb-o fa"></i>
+          {{ initiative.name }}
+          <div class="actions">
+            <a href ng-click="vm.removeInitiative(initiative)">
+              <i class="fa fa-times"></i>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-sm-offset-4" ng-show="vm.newProblem.initiatives.length">
+    <button class="btn btn-default" wz-next>
+      Preview <i class="fa fa-angle-double-right"></i>
+    </button>
+  </div>
+</div>
+
+<script type="text/ng-template" id="/templates/problems/initiatives-modal.html">
+  <div class="modal-body" ng-include="'/templates/initiatives/new.html'">
+  </div>
+</script>

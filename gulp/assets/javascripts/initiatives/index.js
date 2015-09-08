@@ -13,10 +13,27 @@ angular.module('WKD.Initiatives', [])
       }]
     })
 
-    .state('wkd.initiatives.new', {
+   .state('wkd.initiatives.new', {
       url: '/new',
-      template: '/templates/initiatives/new.html',
-      controller: 'WKD.Initiatives.Controller'
+      action: 'new',
+      templateUrl: '/templates/initiatives/new.html',
+      controller: 'WKD.Initiatives.Controller',
+      controllerAs: 'vm'
+    })
+
+    .state('wkd.initiatives.view', {
+      url: '/:id',
+      action: 'view',
+      controller: 'WKD.Initiatives.Controller',
+      redirectTo: 'wkd.initiatives.view.edit',
+      controllerAs: 'vm',
+      templateUrl: '/templates/initiatives/view.html'
+    })
+
+    .state('wkd.initiatives.view.edit', {
+      url: '/edit',
+      action: 'view',
+      templateUrl: '/templates/initiatives/edit.html'
     })
 
     ;

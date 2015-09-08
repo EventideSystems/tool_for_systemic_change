@@ -1,0 +1,24 @@
+<h2>Initiatives</h2>
+
+<popout-accordion>
+  <popout-accordion-group ng-repeat="initiative in vm.initiatives">
+    <popout-accordion-title>
+      <popout-accordion-toggle>
+        {{ initiative.attributes.name }}
+      </popout-accordion-toggle>
+
+      <div class="actions">
+        <a href ui-sref="wkd.initiatives.view({ id: initiative.id })" title="edit">
+          <i class="fa fa-pencil"></i>
+        </a>
+      </div>
+    </popout-accordion-title>
+
+    <popout-accordion-panel>
+      <p>{{ initiative.attributes.description }}</p>
+      <hr>
+
+      <strong>Focus areas/ checklist items go here</strong>
+    </popout-accordion-panel>
+  </popout-accordion-group>
+</popout-accordion>

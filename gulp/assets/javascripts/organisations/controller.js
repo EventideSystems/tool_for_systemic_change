@@ -11,10 +11,10 @@ angular.module('WKD.Organisations')
   '$controller',
   function (sidebarService, $state, Restangular, flashr, $controller) {
     var vm = this;
-    var baseRef = Restangular.all('communities');
+    var baseRef = Restangular.all('organisations');
 
     vm._new = function () {
-      vm.community = {};
+      vm.organisation = {};
       vm.submitForm = create;
     };
 

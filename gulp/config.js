@@ -8,7 +8,7 @@ module.exports = {
     files: ['./app/views/**']
   },
   sass: {
-    src: sourceFiles + "/stylesheets/**/*.{sass,scss}",
+    src: sourceFiles + "/stylesheets/app.scss",
     dest: publicAssets + "/stylesheets",
     settings: {
       imagePath: '/assets/images' // Used by the image-url helper

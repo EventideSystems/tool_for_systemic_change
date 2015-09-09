@@ -14,19 +14,19 @@ RSpec.describe "Users", type: :request do
       sign_in(staff)
       get users_path
 
-      organisation_data = JSON.parse(response.body)['data'].first
+      users_data = JSON.parse(response.body)['data'].find{ |u| u['id'].to_i == user.id }
 
-      expect(organisation_data['id']).to eq(user.id.to_s)
-      expect(organisation_data['attributes']['name']).to eq(user.name)
-      expect(organisation_data['attributes']['role']).to eq(user.role)
-      expect(DateTime.parse(organisation_data['attributes']['createdAt']).to_s(:db))
+      expect(users_data['id']).to eq(user.id.to_s)
+      expect(users_data['attributes']['name']).to eq(user.name)
+      expect(users_data['attributes']['role']).to eq(user.role)
+      expect(DateTime.parse(users_data['attributes']['createdAt']).to_s(:db))
         .to eq(user.created_at.to_s(:db))
-      expect(DateTime.parse(organisation_data['attributes']['updatedAt']).to_s(:db))
+      expect(DateTime.parse(users_data['attributes']['updatedAt']).to_s(:db))
         .to eq(user.updated_at.to_s(:db))
-      expect(DateTime.parse(organisation_data['attributes']['createdAt']).to_s(:db))
+      expect(DateTime.parse(users_data['attributes']['createdAt']).to_s(:db))
         .to eq(user.created_at.to_s(:db))
 
-      relationships_data = organisation_data['relationships']
+      relationships_data = users_data['relationships']
 
       expect(relationships_data['administratingOrganisation']['data']['id'])
         .to eq(user.administrating_organisation.id.to_s)

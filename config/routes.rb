@@ -10,9 +10,10 @@ Rails.application.routes.draw do
   resources :communities, :defaults => { :format => 'json' }
   resources :invitations, :defaults => { :format => 'json' }
   resources :wicked_problems, :defaults => { :format => 'json' }
-  resources :users, only: [:show, :index], :defaults => { :format => 'json' }
 
   devise_for :users, :controllers => { :invitations => 'invitations', :defaults => { :format => 'json' } }
+
+  resources :users, only: [:show, :index], :defaults => { :format => 'json' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -19,11 +19,11 @@ packages:
   - imagemagick
   - qt5-default
   - libqt5webkit5-dev
-manual_ruby_version: 
+manual_ruby_version:
 server_name: localhost
 rails_version: 4
 ruby_install: rbenv
-ruby_version: 2.2.1
+ruby_version: 2.2.2
 environment_file: /wicked_software/.envrc
 databases:
   - postgresql
@@ -35,10 +35,10 @@ redis_orm: none
 mongodb_db_name: myapp
 mysql_db_name: myapp
 mysql_db_user: vagrant
-mysql_db_password: 
+mysql_db_password:
 postgresql_db_name: wicked_software
 postgresql_db_user: vagrant
-postgresql_db_password: 
+postgresql_db_password:
 postgresql_extensions:
   - hstore
 delayed_job_command: script/delayed_job run

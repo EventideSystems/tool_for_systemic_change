@@ -1,0 +1,11 @@
+---
+rails_env: staging
+target: server
+vm_memory: 
+vm_swap: 
+vm_cores: ?
+vm_share_type: ?
+vm_ip: 
+host: 111
+port: 22
+username: ubuntu

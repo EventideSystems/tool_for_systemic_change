@@ -1,0 +1,17 @@
+111 ansible_ssh_port=22
+
+[all]
+111
+
+[application]
+111
+
+[vm]
+111
+
+[development]
+111
+
+[postgresql]
+111
+

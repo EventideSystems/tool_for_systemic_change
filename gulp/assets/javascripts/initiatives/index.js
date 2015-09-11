@@ -36,6 +36,12 @@ angular.module('WKD.Initiatives', [])
       templateUrl: '/templates/initiatives/edit.html'
     })
 
+    .state('wkd.initiatives.view.checklist', {
+      url: '/checklist',
+      action: 'view',
+      templateUrl: '/templates/initiatives/checklist.html'
+    })
+
     ;
 }])
 

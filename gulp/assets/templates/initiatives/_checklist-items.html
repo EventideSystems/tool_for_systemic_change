@@ -1,0 +1,45 @@
+<div ng-class="{ open: focusGroup.showFocusAreas }" class="focus-group" ng-repeat="focusGroup in (initiative.$focusGroups || vm.initiative.$focusGroups)">
+  <h3>
+    <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas">
+      {{ focusGroup.title }}
+    </a>
+
+    <div class="actions">
+      <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas"><i class="fa" ng-class="{ 'fa-caret-down': !focusGroup.showFocusAreas, 'fa-caret-up': focusGroup.showFocusAreas}"></i></a>
+    </div>
+  </h3>
+
+  <div class="focus-areas slide-toggle" ng-show="focusGroup.showFocusAreas">
+    <div class="focus-area">
+      <h2>Test focus area</h2>
+
+      <ul>
+        <li class="checklist-item">
+          <label>
+            <input type="checkbox">
+            <strong class="title">Encourage something</strong>
+          </label>
+
+          <div class="actions">
+            <a href title="show video tutoral">
+              <i class="fa fa-youtube-play"></i>
+            </a>
+            <a href title="enter comments" ng-click="vm.showCommentSection  = true">
+              <i class="fa fa-comments-o"></i>
+            </a>
+          </div>
+
+          <div class="comments" ng-show="vm.showCommentSection">
+            <textarea placeholder="enter comments (optional)"></textarea>
+            <button type="button" ng-click="vm.showCommentSection = false" class="btn btn-primary">
+              Save Comments
+            </button>
+            <button type="button" ng-click="vm.showCommentSection = false" class="btn btn-default">
+              Cancel
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

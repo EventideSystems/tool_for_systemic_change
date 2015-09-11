@@ -8,6 +8,7 @@ require('./overrides.js');
 require('./services/SidebarService.js');
 require('./services/CurrentUserProvider.js');
 require('./services/DefaultPacker.js');
+require('./services/DataModel.js');
 
 // Directives
 require('./directives/wkdSidebar.js');

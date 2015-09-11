@@ -11,7 +11,8 @@ angular.module('WKD.Initiatives')
   '$controller',
   '$scope',
   '$q',
-  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q) {
+  'WKD.Common.DataModel',
+  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q, dataModel) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
     var promise = $q.all([
@@ -35,6 +36,7 @@ angular.module('WKD.Initiatives')
       promise.then(function () {
         Restangular.one('initiatives', params.id).get().then(function (resp) {
           vm.initiative = unpack(resp);
+          vm.initiative.$focusGroups = angular.copy(dataModel.focusGroups);
         });
       });
     };

@@ -1,0 +1,60 @@
+.checklist {
+  .actions {
+    float: right;
+  }
+
+  .focus-group {
+    background: white;
+    border: 1px solid $dark-10;
+
+    h3 {
+      transition: all .3s;
+      font-size: 14px;
+      padding: 15px;
+      margin: 0;
+    }
+
+    margin-bottom: 15px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .focus-group.open h3 {
+    background: $dark-30;
+
+    a {
+      color: white;
+    }
+  }
+
+  .focus-areas {
+    margin: 0 15px 15px 15px;
+  }
+
+  .focus-area {
+    h4 {
+      border-bottom: 1px solid #333;
+    }
+
+    ul {
+      padding: 0;
+      margin:0;
+    }
+
+    .checklist-item {
+      display: block;
+      list-style: none;
+    }
+
+    .comments {
+      textarea {
+        padding: 12px;
+        display: block;
+        width: 100%;
+        margin: 15px 0;
+      }
+    }
+  }
+}

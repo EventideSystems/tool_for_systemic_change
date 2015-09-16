@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'shared_contexts'
 
-RSpec.describe "Communities", type: :request do
+RSpec.describe "FocusAreaGroup", type: :request do
 
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
@@ -25,13 +25,6 @@ RSpec.describe "Communities", type: :request do
 
       expect(relationships_data['focusAreas']['data'].count)
         .to be(focus_area_group.focus_areas.count)
-
-      binding.pry
-      # expect(relationships_data['client']['data']['id'])
-      #   .to eq(client.id.to_s)
-      #
-      # expect(relationships_data['wickedProblems']['data'].first['id'])
-      #   .to eq(wicked_problem.id.to_s)
     end
   end
 end

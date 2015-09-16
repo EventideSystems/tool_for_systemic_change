@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916071354) do
+ActiveRecord::Schema.define(version: 20150916091733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "characteristics", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "focus_area_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "checklist_items", force: :cascade do |t|
+    t.boolean  "checked"
+    t.text     "comment"
+    t.integer  "characteristic_id"
+    t.integer  "initiative_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "clients", force: :cascade do |t|
     t.string   "name"
@@ -33,13 +50,19 @@ ActiveRecord::Schema.define(version: 20150916071354) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "initiative_checklist_items", force: :cascade do |t|
-    t.boolean  "checked"
-    t.text     "comment"
-    t.integer  "initiative_characteristic_id"
-    t.integer  "initiative_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+  create_table "focus_area_groups", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "focus_areas", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "focus_area_group_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "initiatives", force: :cascade do |t|
@@ -53,29 +76,6 @@ ActiveRecord::Schema.define(version: 20150916071354) do
   create_table "initiatives_organisations", id: false, force: :cascade do |t|
     t.integer "initiative_id",   null: false
     t.integer "organisation_id", null: false
-  end
-
-  create_table "model_focus_area_groups", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  create_table "model_focus_areas", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "focus_area_group_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
-
-  create_table "model_initiative_characteristics", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "focus_area_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
   end
 
   create_table "organisations", force: :cascade do |t|

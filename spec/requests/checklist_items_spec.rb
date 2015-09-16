@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'shared_contexts'
 
-RSpec.describe "Initiative Checklist Items", type: :request do
+RSpec.describe "Checklist Items", type: :request do
 
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
@@ -16,10 +16,11 @@ RSpec.describe "Initiative Checklist Items", type: :request do
       get initiative_checklist_items_path(initiative)
 
       checklist_data = JSON.parse(response.body)['data'].first
+
       relationships_data = checklist_data['relationships']
 
-      expect(relationships_data['initiativeCharacteristic']['data']['id'].to_i)
-        .to eq(Model::InitiativeCharacteristic.first.id)
+      expect(relationships_data['characteristic']['data']['id'].to_i)
+        .to eq(Characteristic.first.id)
       expect(relationships_data['initiative']['data']['id'].to_i)
         .to eq(initiative.id)
 
@@ -30,7 +31,7 @@ RSpec.describe "Initiative Checklist Items", type: :request do
       get initiative_checklist_items_path(initiative)
 
       checklist_data = JSON.parse(response.body)['data']
-      expect(checklist_data.count).to eq(Model::InitiativeCharacteristic.count)
+      expect(checklist_data.count).to eq(Characteristic.count)
     end
 
   end
@@ -39,7 +40,7 @@ RSpec.describe "Initiative Checklist Items", type: :request do
 
     specify "update single checklist item" do
       data_attributes = {
-        type: 'initiative_checklist_items',
+        type: 'checklist_items',
         attributes: {
           checked: true,
           comment: FFaker::Lorem.words.join(' ')
@@ -66,14 +67,14 @@ RSpec.describe "Initiative Checklist Items", type: :request do
 
       data_attributes = [
         { id: checklist_item_1.id,
-          type: 'initiative_checklist_items',
+          type: 'checklist_items',
           attributes: {
             checked: true,
             comment: FFaker::Lorem.words.join(' ')
           }
         },
         { id: checklist_item_2.id,
-          type: 'initiative_checklist_items',
+          type: 'checklist_items',
           attributes: {
             checked: true,
             comment: FFaker::Lorem.words.join(' ')
@@ -84,7 +85,7 @@ RSpec.describe "Initiative Checklist Items", type: :request do
       sign_in(staff)
       put "/initiatives/#{initiative.id}/checklist_items", data: data_attributes
 
-     # put bulk_initiative_checklist_item_path(initiative), data: data_attributes
+     # put bulk_checklist_item_path(initiative), data: data_attributes
 
       checklist_item_1.reload
       checklist_item_2.reload

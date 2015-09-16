@@ -5,7 +5,7 @@ class ChecklistItemsController < AuthenticatedController
   def index
     @intiative_checklist_items = @intiative.checklist_items
 
-    render json: @intiative_checklist_items
+    render json: @intiative_checklist_items, include: ['characteristic']
   end
 
   def show

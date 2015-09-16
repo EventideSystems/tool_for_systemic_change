@@ -43,3 +43,7 @@ RSpec.shared_context "setup common data" do
     client: other_client)}
   # let!(:other_initiative) { create(:initiative, wicked_problem: other_wicked_problem, organisation: other_organisation )}
 end
+
+RSpec.shared_context "setup model data" do
+  load "#{Rails.root}/db/model_seeds.rb"
+end

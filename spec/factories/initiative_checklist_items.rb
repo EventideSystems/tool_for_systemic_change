@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :initiative_checklist_item do
+  factory :checklist_item do
 
   end
 

@@ -5,7 +5,7 @@ class Initiative < ActiveRecord::Base
   # for converting the join table into a proper model and adding validations to
   # it
   has_and_belongs_to_many :organisations, join_table: :initiatives_organisations
-  has_many :checklist_items, class_name: 'InitiativeChecklistItem'
+  has_many :checklist_items
 
   validates :wicked_problem, presence: true
 
@@ -22,9 +22,9 @@ class Initiative < ActiveRecord::Base
   private
 
     def create_checklist_items
-      Model::InitiativeCharacteristic.all.each do |characteristic|
-        InitiativeChecklistItem.create!(
-          initiative: self, initiative_characteristic: characteristic
+      Characteristic.all.each do |characteristic|
+        ChecklistItem.create!(
+          initiative: self, characteristic: characteristic
         )
       end
     end

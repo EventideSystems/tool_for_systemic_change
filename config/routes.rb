@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :invitations, :defaults => { :format => 'json' }
   resources :wicked_problems, :defaults => { :format => 'json' }
 
+  resources :focus_area_groups, defaults: { :format => 'json' }, only: [:show, :index]
+
   devise_for :users, :controllers => { :invitations => 'invitations', :defaults => { :format => 'json' } }
 
   resources :users, only: [:show, :index], :defaults => { :format => 'json' }

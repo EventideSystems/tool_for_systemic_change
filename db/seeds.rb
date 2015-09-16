@@ -16,19 +16,19 @@ staff_user = User.new(
 )
 staff_user.save!
 
-AdministratingOrganisation.delete_all
+Client.delete_all
 Organisation.delete_all
 
-admin_org = AdministratingOrganisation.create!(name: 'Example Admin Organisation')
+client = Client.create!(name: 'Example Admin Organisation')
 
-Organisation.create!(name: "First Example Organisation", administrating_organisation: admin_org)
-Organisation.create!(name: "Second Example Organisation", administrating_organisation: admin_org)
+Organisation.create!(name: "First Example Organisation", administrating_organisation: client)
+Organisation.create!(name: "Second Example Organisation", administrating_organisation: client)
 
 admin_user = User.new(
   email: 'admin@example.com', password: 'password',
   name: 'John Admin',
   password_confirmation: 'password', role: "admin",
-  administrating_organisation_id: admin_org.id
+  client_id: client.id
 )
 admin_user.save!
 
@@ -36,7 +36,7 @@ user = User.new(
   email: 'user@example.com', password: 'password',
   name: 'John User',
   password_confirmation: 'password', role: "user",
-  administrating_organisation_id: admin_org.id
+  client_id: client.id
 )
 user.save!
 

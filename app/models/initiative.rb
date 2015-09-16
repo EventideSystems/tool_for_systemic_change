@@ -12,7 +12,7 @@ class Initiative < ActiveRecord::Base
   scope :for_user, ->(user) {
     unless user.staff?
       joins(:wicked_problem).where(
-        'wicked_problems.administrating_organisation_id' => user.administrating_organisation_id
+        'wicked_problems.client_id' => user.client_id
       )
     end
   }

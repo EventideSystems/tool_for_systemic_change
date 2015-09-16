@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Profile, type: :model do
 
-  let(:administrating_organisation) { create(:administrating_organisation) }
-  let(:user) { create(:user, administrating_organisation: administrating_organisation) }
-  let(:admin) { create(:admin_user, administrating_organisation: administrating_organisation) }
+  let(:client) { create(:client) }
+  let(:user) { create(:user, client: client) }
+  let(:admin) { create(:admin_user, client: client) }
   let(:staff) { create(:staff_user) }
 
   specify "user profile" do
@@ -12,7 +12,7 @@ RSpec.describe Profile, type: :model do
 
     expect(profile.user_email).to eq(user.email)
     expect(profile.user_role).to eq('user')
-    expect(profile.administrating_organisation_name).to eq(administrating_organisation.name)
+    expect(profile.client_name).to eq(client.name)
   end
 
   specify "admin profile" do
@@ -20,7 +20,7 @@ RSpec.describe Profile, type: :model do
 
     expect(profile.user_email).to eq(admin.email)
     expect(profile.user_role).to eq('admin')
-    expect(profile.administrating_organisation_name).to eq(administrating_organisation.name)
+    expect(profile.client_name).to eq(client.name)
   end
 
   specify "staff profile" do
@@ -28,7 +28,7 @@ RSpec.describe Profile, type: :model do
 
     expect(profile.user_email).to eq(staff.email)
     expect(profile.user_role).to eq('staff')
-    expect(profile.administrating_organisation_name).to eq('')
+    expect(profile.client_name).to eq('')
   end
 
 end

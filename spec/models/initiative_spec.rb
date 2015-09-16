@@ -8,7 +8,7 @@ RSpec.describe Initiative, type: :model do
 
       initiative.reload
 
-      expect(initiative.checklist_items.count).to eq(Model::InitiativeCharacteristic.count)
+      expect(initiative.checklist_items.count).to eq(Characteristic.count)
     end
   end
 end

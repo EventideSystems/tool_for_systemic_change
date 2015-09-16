@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   resources :initiatives, :defaults => { :format => 'json' } do
-    resources :checklist_items, :defaults => { :format => 'json' }, controller: 'initiative_checklist_items' do
+    resources :checklist_items, :defaults => { :format => 'json' }, controller: 'checklist_items' do
       put 'bulk', on: :collection
     end
   end
 
-  match 'initiatives/:initiative_id/checklist_items', to: 'initiative_checklist_items#bulk_update', via: [:put, :patch], :defaults => { :format => 'json' }
+  match 'initiatives/:initiative_id/checklist_items', to: 'checklist_items#bulk_update', via: [:put, :patch], :defaults => { :format => 'json' }
   resources :organisations, :defaults => { :format => 'json' }
   resources :communities, :defaults => { :format => 'json' }
   resources :invitations, :defaults => { :format => 'json' }

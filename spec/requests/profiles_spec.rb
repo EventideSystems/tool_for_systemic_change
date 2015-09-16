@@ -6,9 +6,9 @@ RSpec.describe "Profiles", type: :request do
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
 
-  let(:administrating_organisation) { create(:administrating_organisation) }
-  let(:user) { create(:user, administrating_organisation: administrating_organisation) }
-  let(:admin) { create(:admin_user, administrating_organisation: administrating_organisation) }
+  let(:client) { create(:client) }
+  let(:user) { create(:user, client: client) }
+  let(:admin) { create(:admin_user, client: client) }
   let(:staff) { create(:staff_user) }
 
   describe "GET /profile" do
@@ -23,7 +23,7 @@ RSpec.describe "Profiles", type: :request do
       expect(profile["userEmail"]).to eq(user.email)
       expect(profile["userRole"]).to eq(user.role)
       expect(profile["userName"]).to eq(user.name)
-      expect(profile["administratingOrganisationName"]).to eq(administrating_organisation.name)
+      expect(profile["clientName"]).to eq(client.name)
     end
 
     specify "admin profile" do
@@ -36,7 +36,7 @@ RSpec.describe "Profiles", type: :request do
       expect(profile["userEmail"]).to eq(admin.email)
       expect(profile["userRole"]).to eq(admin.role)
       expect(profile["userName"]).to eq(admin.name)
-      expect(profile["administratingOrganisationName"]).to eq(administrating_organisation.name)
+      expect(profile["clientName"]).to eq(client.name)
     end
 
     specify "staff profile" do
@@ -49,7 +49,7 @@ RSpec.describe "Profiles", type: :request do
       expect(profile["userEmail"]).to eq(staff.email)
       expect(profile["userRole"]).to eq(staff.role)
       expect(profile["userName"]).to eq(staff.name)
-      expect(profile["administratingOrganisationName"]).to eq('')
+      expect(profile["clientName"]).to eq('')
     end
   end
 end

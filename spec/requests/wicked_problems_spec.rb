@@ -27,8 +27,8 @@ RSpec.describe "Wicked Problems", type: :request do
 
       relationships_data = wicked_problem_data['relationships']
 
-      expect(relationships_data['administratingOrganisation']['data']['id'])
-        .to eq(administrating_organisation.id.to_s)
+      expect(relationships_data['client']['data']['id'])
+        .to eq(client.id.to_s)
 
       expect(relationships_data['community']['data']['id'])
         .to eq(community.id.to_s)
@@ -125,7 +125,7 @@ RSpec.describe "Wicked Problems", type: :request do
         },
         relationships: {
           community: { data: { id: community.id } },
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          client: { data: { id: client.id } }
         }
       }
     }
@@ -139,11 +139,11 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(new_wicked_problem.name).to eq(wicked_problem_name)
       expect(new_wicked_problem.description).to eq(wicked_problem_description)
       expect(new_wicked_problem.community).to eq(community)
-      expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
+      expect(new_wicked_problem.client).to eq(client)
     end
 
     specify "posting as admin - without administrating organisation id" do
-      data_attributes[:relationships].delete(:administrating_organisation)
+      data_attributes[:relationships].delete(:client)
 
       sign_in(admin)
       expect do
@@ -156,7 +156,7 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(new_wicked_problem.name).to eq(wicked_problem_name)
       expect(new_wicked_problem.description).to eq(wicked_problem_description)
       expect(new_wicked_problem.community).to eq(community)
-      expect(new_wicked_problem.administrating_organisation).to eq(administrating_organisation)
+      expect(new_wicked_problem.client).to eq(client)
     end
 
     describe "creating compound records" do
@@ -169,7 +169,7 @@ RSpec.describe "Wicked Problems", type: :request do
             description: FFaker::Lorem.words(10).join(' '),
           },
           relationships: {
-            administrating_organisation: { data: { id: administrating_organisation.id } }
+            client: { data: { id: client.id } }
           }
         }
       }
@@ -183,7 +183,7 @@ RSpec.describe "Wicked Problems", type: :request do
             description: FFaker::Lorem.words(10).join(' '),
           },
           relationships: {
-            administrating_organisation: { data: { id: administrating_organisation.id } }
+            client: { data: { id: client.id } }
           }
         }]
 
@@ -198,7 +198,7 @@ RSpec.describe "Wicked Problems", type: :request do
         new_community = Community.last
         expect(new_community.name).to eq(included_attributes.first[:attributes][:name])
         expect(new_community.description).to eq(included_attributes.first[:attributes][:description])
-        expect(new_community.administrating_organisation).to eq(administrating_organisation)
+        expect(new_community.client).to eq(client)
 
         wicked_problem = WickedProblem.last
         expect(wicked_problem.community).to eq(new_community)
@@ -207,7 +207,7 @@ RSpec.describe "Wicked Problems", type: :request do
       specify "posting as admin - creating new initiatives" do
 
         second_organisation =  create(:organisation,
-          administrating_organisation: administrating_organisation)
+          client: client)
 
         included_attributes = [
           {
@@ -274,7 +274,7 @@ RSpec.describe "Wicked Problems", type: :request do
         },
         relationships: {
           community: { data: { id: community.id } },
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          client: { data: { id: client.id } }
         }
       }
     }
@@ -292,9 +292,9 @@ RSpec.describe "Wicked Problems", type: :request do
     specify "updating as admin - change community" do
       wicked_problem_old_name = wicked_problem.name
       wicked_problem_old_description = wicked_problem.description
-      wicked_problem_old_administrating_organisation_id = wicked_problem.administrating_organisation_id
+      wicked_problem_old_client_id = wicked_problem.client_id
 
-      new_community = create(:community, administrating_organisation: administrating_organisation)
+      new_community = create(:community, client: client)
 
       sign_in(admin)
       data_attributes = {
@@ -310,7 +310,7 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(response).to have_http_status(200)
       expect(wicked_problem.name).to eq(wicked_problem_old_name)
       expect(wicked_problem.description).to eq(wicked_problem_old_description)
-      expect(wicked_problem.administrating_organisation.id).to eq(wicked_problem_old_administrating_organisation_id)
+      expect(wicked_problem.client.id).to eq(wicked_problem_old_client_id)
       expect(wicked_problem.community.id).to eq(new_community.id)
     end
   end

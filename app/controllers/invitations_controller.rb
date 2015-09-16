@@ -4,9 +4,9 @@ class InvitationsController < Devise::InvitationsController
 
   def create
     # SMELL Hack!
-    if self.params[:user][:administrating_organisation_id].nil?
+    if self.params[:user][:client_id].nil?
       self.params[:user].merge!(
-        administrating_organisation_id: current_user.administrating_organisation_id
+        client_id: current_user.client_id
       )
     end
 
@@ -35,15 +35,15 @@ class InvitationsController < Devise::InvitationsController
 
   private
 
-    def administrating_organisation_id_from_params(params)
-      self.params[:user][:administrating_organisation_id].to_i
+    def client_id_from_params(params)
+      self.params[:user][:client_id].to_i
     rescue
       nil
     end
 
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:invite) do |u|
-        u.permit(:email, :administrating_organisation_id, :role)
+        u.permit(:email, :client_id, :role)
       end
     end
 end

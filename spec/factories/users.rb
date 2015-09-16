@@ -14,7 +14,7 @@ FactoryGirl.define do
     end
 
     trait :with_admin_organisation do
-      association :administrating_organisation, factory: :administrating_organisation
+      association :client, factory: :client
     end
   end
 end

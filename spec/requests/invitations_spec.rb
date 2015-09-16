@@ -24,7 +24,7 @@ RSpec.describe "Invitations", type: :request do
 
       expect(User.last.email).to eq(invited_email)
       expect(User.last.invited_by_id).to eq(admin.id)
-      expect(User.last.administrating_organisation_id).to eq(administrating_organisation.id)
+      expect(User.last.client_id).to eq(client.id)
     end
 
   end

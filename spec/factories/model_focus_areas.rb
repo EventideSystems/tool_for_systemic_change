@@ -1,6 +1,6 @@
 FactoryGirl.define do
-  factory :model_focus_area, :class => 'Model::FocusArea' do
-    
+  factory :focus_area, :class => 'FocusArea' do
+
   end
 
 end

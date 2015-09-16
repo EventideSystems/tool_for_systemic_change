@@ -17,6 +17,7 @@ RSpec.describe "Checklist Items", type: :request do
 
       checklist_data = JSON.parse(response.body)['data'].first
 
+      binding.pry
       relationships_data = checklist_data['relationships']
 
       expect(relationships_data['characteristic']['data']['id'].to_i)

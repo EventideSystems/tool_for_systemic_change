@@ -28,8 +28,8 @@ RSpec.describe "Users", type: :request do
 
       relationships_data = users_data['relationships']
 
-      expect(relationships_data['administratingOrganisation']['data']['id'])
-        .to eq(user.administrating_organisation.id.to_s)
+      expect(relationships_data['client']['data']['id'])
+        .to eq(user.client.id.to_s)
     end
 
     describe "restrict access by role" do

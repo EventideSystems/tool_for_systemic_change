@@ -1,6 +1,6 @@
 class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
-  before_action :set_administrating_organisation, only: [:create, :update]
+  before_action :set_client, only: [:create, :update]
 
   # GET /wicked_problems.json
   def index
@@ -24,8 +24,8 @@ class WickedProblemsController < AuthenticatedController
     data_attributes = normalize(params[:data])
     included_attributes = normalize_included(params[:included])
 
-    if data_attributes[:administrating_organisation_id].nil?
-      data_attributes[:administrating_organisation_id] = @administrating_organisation.id
+    if data_attributes[:client_id].nil?
+      data_attributes[:client_id] = @client.id
     end
     # Need to collect errors as we go
 
@@ -35,8 +35,8 @@ class WickedProblemsController < AuthenticatedController
       included_attributes.each do |included|
         if included.type == :community
 
-          if included.attributes[:administrating_organisation_id].nil?
-            included.attributes[:administrating_organisation_id] = @administrating_organisation.id
+          if included.attributes[:client_id].nil?
+            included.attributes[:client_id] = @client.id
           end
           community = Community.create!(permitted_community_params(included.attributes))
           data_attributes[:community_id] = community.id
@@ -99,8 +99,8 @@ class WickedProblemsController < AuthenticatedController
 
   private
 
-    def set_administrating_organisation
-      @administrating_organisation = current_user.administrating_organisation
+    def set_client
+      @client = current_user.client
     end
 
     def set_wicked_problem
@@ -108,7 +108,7 @@ class WickedProblemsController < AuthenticatedController
     end
 
     def permitted_community_params(params)
-      params.permit(:name, :description, :administrating_organisation_id)
+      params.permit(:name, :description, :client_id)
     end
 
     def permitted_initiative_params(params)
@@ -116,7 +116,7 @@ class WickedProblemsController < AuthenticatedController
     end
 
     def permitted_wicked_problem_params(params)
-      params.permit(:name, :description, :administrating_organisation_id, :community_id, :organisations_ids)
+      params.permit(:name, :description, :client_id, :community_id, :organisations_ids)
     end
 
     def wicked_problem_params
@@ -124,13 +124,13 @@ class WickedProblemsController < AuthenticatedController
         attributes: [:name, :description],
         relationships: [
           community: [data: [:id]],
-          administrating_organisation: [data: [:id]]
+          client: [data: [:id]]
         ]
       )
     end
 
-    def administrating_organisation_id_from_params(params)
-      params[:relationships][:administrating_organisation][:data][:id].to_i
+    def client_id_from_params(params)
+      params[:relationships][:client][:data][:id].to_i
     rescue
       nil
     end

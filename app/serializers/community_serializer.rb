@@ -1,6 +1,6 @@
 class CommunitySerializer < BaseSerializer
   attributes :id, :name, :description
 
-  belongs_to :administrating_organisation
+  belongs_to :client
   has_many :wicked_problems
 end

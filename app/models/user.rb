@@ -4,18 +4,18 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  belongs_to :administrating_organisation, class_name: 'AdministratingOrganisation'
+  belongs_to :client, class_name: 'Client'
 
   enum role: [ :user, :admin, :staff ]
 
-  validates :administrating_organisation_id, presence: true,
+  validates :client_id, presence: true,
     unless: Proc.new { |u| u.staff? }
 
   scope :for_user, ->(user) {
     if user.user?
       where(id: user.id)
     elsif user.admin?
-      where(administrating_organisation_id: user.administrating_organisation_id)
+      where(client_id: user.client_id)
     end
   }
 

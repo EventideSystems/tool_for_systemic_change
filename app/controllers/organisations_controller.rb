@@ -4,7 +4,7 @@ class OrganisationsController < AuthenticatedController
   # GET /organisations
   # GET /organisations.json
   def index
-    @organisations = Organisation.no_subclasses.for_user(current_user)
+    @organisations = Organisation.for_user(current_user)
 
     render json: @organisations
   end
@@ -18,11 +18,11 @@ class OrganisationsController < AuthenticatedController
   # POST /organisations
   # POST /organisations.json
   def create
-    administrating_organisation_id = administrating_organisation_id_from_params(organisation_params)
-    administrating_organisation_id = current_user.administrating_organisation.id unless administrating_organisation_id
+    client_id = client_id_from_params(organisation_params)
+    client_id = current_user.client.id unless client_id
 
     attributes = organisation_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id
+      client_id: client_id
     )
     @organisation = Organisation.new(attributes)
 
@@ -40,10 +40,10 @@ class OrganisationsController < AuthenticatedController
   # PATCH/PUT /organisations/1
   # PATCH/PUT /organisations/1.json
   def update
-    administrating_organisation_id = administrating_organisation_id_from_params(organisation_params)
+    client_id = client_id_from_params(organisation_params)
 
     attributes = organisation_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id
+      client_id: client_id
     )
 
     respond_to do |format|
@@ -70,12 +70,12 @@ class OrganisationsController < AuthenticatedController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organisation
-      @organisation = Organisation.no_subclasses.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
+      @organisation = Organisation.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
     end
 
     # SMELL Dupe of code in wicked_problems_controller. Refactor into concern
-    def administrating_organisation_id_from_params(params)
-      params[:relationships][:administrating_organisation][:data][:id].to_i
+    def client_id_from_params(params)
+      params[:relationships][:client][:data][:id].to_i
     rescue
       nil
     end
@@ -88,7 +88,7 @@ class OrganisationsController < AuthenticatedController
           # SMELL Not required, and we'd have to ensure it can take multiple
           # problems
           # wicked_problems: [data: [:id]],
-          administrating_organisation: [data: [:id]]
+          client: [data: [:id]]
         ]
       )
     end

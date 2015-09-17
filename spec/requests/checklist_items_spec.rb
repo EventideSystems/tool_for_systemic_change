@@ -6,6 +6,7 @@ RSpec.describe "Checklist Items", type: :request do
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
   include_context "setup common data"
+  include_context "setup model data"
 
   let!(:initiative) { create(:initiative, wicked_problem: wicked_problem, organisations: [organisation]) }
 
@@ -24,6 +25,25 @@ RSpec.describe "Checklist Items", type: :request do
       expect(relationships_data['initiative']['data']['id'].to_i)
         .to eq(initiative.id)
 
+      included_data = JSON.parse(response.body)['included']
+
+      focus_areas = included_data.select do |included|
+        included['type'] == 'focus_areas'
+      end
+
+      expect(focus_areas.count).to eq(FocusArea.count)
+
+      focus_area_groups = included_data.select do |included|
+        included['type'] == 'focus_area_groups'
+      end
+
+      expect(focus_area_groups.count).to eq(FocusAreaGroup.count)
+
+      characteristics = included_data.select do |included|
+        included['type'] == 'characteristics'
+      end
+
+      expect(characteristics.count).to eq(Characteristic.count)
     end
 
     specify 'record count matches number of initiative characteristics' do

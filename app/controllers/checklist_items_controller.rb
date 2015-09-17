@@ -5,11 +5,11 @@ class ChecklistItemsController < AuthenticatedController
   def index
     @intiative_checklist_items = @intiative.checklist_items
 
-    render json: @intiative_checklist_items, include: ['characteristic']
+    render json: @intiative_checklist_items, include: ['characteristic', 'characteristic.focusArea', 'characteristic.focusArea.focusAreaGroup']
   end
 
   def show
-    render json: @intiative_checklist_item
+    render json: @intiative_checklist_item, include: ['characteristic', 'characteristic.focusArea', 'characteristic.focusArea.focusAreaGroup']
   end
 
   def update

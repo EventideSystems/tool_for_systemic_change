@@ -1,5 +1,5 @@
 class AuthenticatedController < ApplicationController
-  include DeserializeJsonApi
+  include Concerns::DeserializeJsonApi
 
   before_filter :authenticate_user!
 

@@ -21,8 +21,8 @@ RSpec.describe "Communities", type: :request do
 
       relationships_data = community_data['relationships']
 
-      expect(relationships_data['administratingOrganisation']['data']['id'])
-        .to eq(administrating_organisation.id.to_s)
+      expect(relationships_data['client']['data']['id'])
+        .to eq(client.id.to_s)
 
       expect(relationships_data['wickedProblems']['data'].first['id'])
         .to eq(wicked_problem.id.to_s)
@@ -116,7 +116,7 @@ RSpec.describe "Communities", type: :request do
         # SMELL Not supporting wicked_problems relationship at this point, if
         # we do at all.
         relationships: {
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          client: { data: { id: client.id } }
         }
       }
     }
@@ -130,7 +130,7 @@ RSpec.describe "Communities", type: :request do
       new_community = Community.last
       expect(new_community.name).to eq(community_name)
       expect(new_community.description).to eq(community_description)
-      expect(new_community.administrating_organisation).to eq(administrating_organisation)
+      expect(new_community.client).to eq(client)
     end
 
     specify "posting as admin - without administrating organisation id" do
@@ -144,7 +144,7 @@ RSpec.describe "Communities", type: :request do
       new_community = Community.last
       expect(new_community.name).to eq(community_name)
       expect(new_community.description).to eq(community_description)
-      expect(new_community.administrating_organisation).to eq(administrating_organisation)
+      expect(new_community.client).to eq(client)
     end
   end
 
@@ -160,7 +160,7 @@ RSpec.describe "Communities", type: :request do
           description: community_new_description,
         },
         relationships: {
-          administrating_organisation: { data: { id: administrating_organisation.id } }
+          client: { data: { id: client.id } }
         }
       }
     }

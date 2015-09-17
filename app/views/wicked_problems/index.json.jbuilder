@@ -5,8 +5,8 @@ json.array!(@wicked_problems) do |wicked_problem|
     json.extract! wicked_problem, :name, :description, :created_at, :updated_at
   end
   json.links do
-    json.administrating_organisation do
-      json.id wicked_problem.administrating_organisation.id
+    json.client do
+      json.id wicked_problem.client.id
     end
   end
 end

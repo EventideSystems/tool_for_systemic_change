@@ -12,7 +12,7 @@ RSpec.describe "Initiatives", type: :request do
     create(:initiative, wicked_problem: other_wicked_problem, organisations: [other_organisation]) }
 
   let!(:second_organisation) { create(:organisation,
-    administrating_organisation: administrating_organisation)}
+    client: client)}
 
   describe "GET /initiatives" do
 

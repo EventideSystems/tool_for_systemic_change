@@ -1,6 +1,6 @@
 class CreateInitiativeChecklistItems < ActiveRecord::Migration
   def change
-    create_table :initiative_checklist_items do |t|
+    create_table :checklist_items do |t|
       t.boolean :checked
       t.text :comment
       t.references :initiative_characteristic

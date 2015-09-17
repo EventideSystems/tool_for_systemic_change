@@ -1,4 +1,4 @@
-module DeserializeJsonApi
+module Concerns::DeserializeJsonApi
   extend ActiveSupport::Concern
 
   def normalize(params)

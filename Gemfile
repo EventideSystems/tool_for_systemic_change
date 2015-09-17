@@ -45,12 +45,12 @@ gem 'devise_invitable'
 
 # Asset management
 gem 'bower-rails'
+gem 'apipie-rails', :github => 'Apipie/apipie-rails'
 
 group :developent do
   # Documentation support
   gem 'railroady'
   gem 'rubocop'
-  gem 'apipie-rails'
 end
 
 group :development, :test do

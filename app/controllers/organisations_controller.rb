@@ -1,16 +1,19 @@
 class OrganisationsController < AuthenticatedController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
 
-  # GET /organisations
-  # GET /organisations.json
+  resource_description do
+    formats ['json']
+  end
+
+  api :GET, '/organisations'
   def index
     @organisations = Organisation.for_user(current_user)
 
     render json: @organisations
   end
 
-  # GET /organisations/1
-  # GET /organisations/1.json
+  api :GET, '/organisations/:id'
+  param :id, :number, required: true
   def show
     render json: @organisation
   end

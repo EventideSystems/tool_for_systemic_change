@@ -42,4 +42,20 @@ RSpec.describe "Characteristic", type: :request do
       expect(focus_area_groups.count).to eq(FocusAreaGroup.count)
     end
   end
+
+  describe "GET /characteristics/:id" do
+
+    specify 'all fields returned' do
+      characteristic = Characteristic.first
+
+      sign_in(staff)
+      get characteristic_path(characteristic)
+
+      characteristic_data = JSON.parse(response.body)['data']
+
+      expect(characteristic_data['id']).to eq(characteristic.id.to_s)
+      expect(characteristic_data['attributes']['name']).to eq(characteristic.name)
+      expect(characteristic_data['attributes']['description']).to eq(characteristic.description)
+    end
+  end
 end

@@ -50,7 +50,7 @@ group :developent do
   # Documentation support
   gem 'railroady'
   gem 'rubocop'
-  # gem 'apipie-rails' # TODO Not yet!
+  gem 'apipie-rails'
 end
 
 group :development, :test do

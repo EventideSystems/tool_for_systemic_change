@@ -25,6 +25,21 @@ RSpec.describe "FocusAreaGroup", type: :request do
 
       expect(relationships_data['focusAreas']['data'].count)
         .to be(focus_area_group.focus_areas.count)
+
+      # SMELL Partial dupe from checklist_items_spec
+      included_data = JSON.parse(response.body)['included']
+
+      focus_areas = included_data.select do |included|
+        included['type'] == 'focus_areas'
+      end
+
+      expect(focus_areas.count).to eq(FocusArea.count)
+
+      characteristics = included_data.select do |included|
+        included['type'] == 'characteristics'
+      end
+
+      expect(characteristics.count).to eq(Characteristic.count)
     end
   end
 end

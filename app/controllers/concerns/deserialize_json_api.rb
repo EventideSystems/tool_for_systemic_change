@@ -42,6 +42,6 @@ end
 #   },
 #   relationships: {
 #     community: { data: { id: community.id } },
-#     administrating_organisation: { data: { id: administrating_organisation.id } }
+#     client: { data: { id: client.id } }
 #   }
 # }

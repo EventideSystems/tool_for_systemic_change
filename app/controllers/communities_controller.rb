@@ -18,11 +18,11 @@ class CommunitiesController < AuthenticatedController
   # POST /communities
   # POST /communities.json
   def create
-    administrating_organisation_id = administrating_organisation_id_from_params(community_params)
-    administrating_organisation_id = current_user.administrating_organisation.id unless administrating_organisation_id
+    client_id = client_id_from_params(community_params)
+    client_id = current_user.client.id unless client_id
 
     attributes = community_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id
+      client_id: client_id
     )
     @community = Community.new(attributes)
 
@@ -40,10 +40,10 @@ class CommunitiesController < AuthenticatedController
   # PATCH/PUT /communities/1
   # PATCH/PUT /communities/1.json
   def update
-    administrating_organisation_id = administrating_organisation_id_from_params(community_params)
+    client_id = client_id_from_params(community_params)
 
     attributes = community_params[:attributes].merge(
-      administrating_organisation_id: administrating_organisation_id
+      client_id: client_id
     )
 
     respond_to do |format|
@@ -74,8 +74,8 @@ class CommunitiesController < AuthenticatedController
     end
 
     # SMELL Dupe of code in wicked_problems_controller. Refactor into concern
-    def administrating_organisation_id_from_params(params)
-      params[:relationships][:administrating_organisation][:data][:id].to_i
+    def client_id_from_params(params)
+      params[:relationships][:client][:data][:id].to_i
     rescue
       nil
     end
@@ -88,7 +88,7 @@ class CommunitiesController < AuthenticatedController
           # SMELL Not required, and we'd have to ensure it can take multiple
           # problems
           # wicked_problems: [data: [:id]],
-          administrating_organisation: [data: [:id]]
+          client: [data: [:id]]
         ]
       )
     end

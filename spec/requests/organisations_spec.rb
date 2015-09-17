@@ -21,8 +21,8 @@ RSpec.describe "Organisations", type: :request do
 
       relationships_data = organisation_data['relationships']
 
-      expect(relationships_data['administratingOrganisation']['data']['id'])
-        .to eq(administrating_organisation.id.to_s)
+      expect(relationships_data['client']['data']['id'])
+        .to eq(client.id.to_s)
     end
 
     describe "restrict access by role" do
@@ -111,7 +111,7 @@ RSpec.describe "Organisations", type: :request do
           description: organisation_description,
         },
         relationships: {
-          :'administratingOrganisation' => { data: { id: administrating_organisation.id } }
+          :'client' => { data: { id: client.id } }
         }
       }
     }
@@ -124,7 +124,7 @@ RSpec.describe "Organisations", type: :request do
       expect(response).to have_http_status(201)
       expect(new_organisation.name).to eq(organisation_name)
       expect(new_organisation.description).to eq(organisation_description)
-      expect(new_organisation.administrating_organisation).to eq(administrating_organisation)
+      expect(new_organisation.client).to eq(client)
     end
 
     specify "posting as admin - without administrating organisation id" do
@@ -137,7 +137,7 @@ RSpec.describe "Organisations", type: :request do
       expect(response).to have_http_status(201)
       expect(new_organisation.name).to eq(organisation_name)
       expect(new_organisation.description).to eq(organisation_description)
-      expect(new_organisation.administrating_organisation).to eq(administrating_organisation)
+      expect(new_organisation.client).to eq(client)
     end
   end
 
@@ -154,7 +154,7 @@ RSpec.describe "Organisations", type: :request do
         },
         relationships: {
           community: { data: { id: community.id } },
-          :'administratingOrganisation' => { data: { id: administrating_organisation.id } }
+          :'client' => { data: { id: client.id } }
         }
       }
     }

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   resources :initiatives, :defaults => { :format => 'json' } do
     resources :checklist_items, :defaults => { :format => 'json' }, controller: 'checklist_items' do
       put 'bulk', on: :collection
@@ -28,6 +29,8 @@ Rails.application.routes.draw do
   root to: "dashboard#index"
 
   get 'profile' => 'profile#show', :defaults => { :format => 'json' }
+
+  apipie
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

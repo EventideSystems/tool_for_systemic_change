@@ -1,18 +1,21 @@
 class FocusAreasController < AuthenticatedController
   before_action :set_focus_area, only: [:show]
 
-  # GET /focus_areas
-  # GET /focus_areas.json
+  resource_description do
+    formats ['json']
+  end
+
+  api :GET, '/focus_areas'
   def index
     @focus_areas = FocusArea.all
 
     render json: @focus_areas, include: ['characteristics', 'focusAreaGroup']
   end
 
-  # GET /focus_areas/1
-  # GET /focus_areas/1.json
+  api :GET, '/focus_areas/:id'
+  param :id, :number, required: true
   def show
-    render json: @focus_area, include: ['characteristics', 'focus_area_group']
+    render json: @focus_area, include: ['characteristics', 'focusAreaGroup']
   end
 
   private

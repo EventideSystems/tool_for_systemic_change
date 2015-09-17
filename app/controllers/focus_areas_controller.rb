@@ -6,7 +6,7 @@ class FocusAreasController < AuthenticatedController
   def index
     @focus_areas = FocusArea.all
 
-    render json: @focus_areas, include: ['characteristics', 'focus_area_group']
+    render json: @focus_areas, include: ['characteristics', 'focusAreaGroup']
   end
 
   # GET /focus_areas/1

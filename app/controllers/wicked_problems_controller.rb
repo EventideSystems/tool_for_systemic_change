@@ -2,15 +2,19 @@ class WickedProblemsController < AuthenticatedController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
   before_action :set_client, only: [:create, :update]
 
-  # GET /wicked_problems.json
+  resource_description do
+    formats ['json']
+  end
+
+  api :GET, '/wicked_problems'
   def index
     @wicked_problems = WickedProblem.for_user(current_user)
 
     render json: @wicked_problems, include: ['initiatives']
   end
 
-  # GET /wicked_problems/1
-  # GET /wicked_problems/1.json
+  api :GET, '/wicked_problems/:id'
+  param :id, :number, required: true
   def show
     render json: @wicked_problem, include: ['initiatives']
   end

@@ -2,6 +2,10 @@ class InvitationsController < Devise::InvitationsController
 
   before_filter :configure_permitted_parameters
 
+  resource_description do
+    formats ['json']
+  end
+
   def create
     # SMELL Hack!
     if self.params[:user][:client_id].nil?

@@ -26,11 +26,20 @@ RSpec.describe "Characteristic", type: :request do
       expect(relationships_data['focusArea']['data']['id'])
         .to eq(characteristic.focus_area.id.to_s)
 
-      # expect(relationships_data['client']['data']['id'])
-      #   .to eq(client.id.to_s)
-      #
-      # expect(relationships_data['wickedProblems']['data'].first['id'])
-      #   .to eq(wicked_problem.id.to_s)
+      included_data = JSON.parse(response.body)['included']
+
+      # SMELL Partial dupe from checklist_items_spec
+      focus_areas = included_data.select do |included|
+        included['type'] == 'focus_areas'
+      end
+
+      expect(focus_areas.count).to eq(FocusArea.count)
+
+      focus_area_groups = included_data.select do |included|
+        included['type'] == 'focus_area_groups'
+      end
+
+      expect(focus_area_groups.count).to eq(FocusAreaGroup.count)
     end
   end
 end

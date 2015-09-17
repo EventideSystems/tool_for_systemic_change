@@ -6,13 +6,13 @@ class CharacteristicsController < AuthenticatedController
   def index
     @characteristics = Characteristic.all
 
-    render json: @characteristics, include: ['focus_area', 'focus_area.focus_area_group']
+    render json: @characteristics, include: ['focusArea', 'focusArea.focusAreaGroup']
   end
 
   # GET /characteristics/1
   # GET /characteristics/1.json
   def show
-    render json: @characteristic, include: ['focus_area', 'focus_area.focus_area_group']
+    render json: @characteristic, include: ['focusArea', 'focusArea.focusAreaGroup']
   end
 
   private

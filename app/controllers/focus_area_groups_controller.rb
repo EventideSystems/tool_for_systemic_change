@@ -1,25 +1,24 @@
 class FocusAreaGroupsController < AuthenticatedController
   before_action :set_focus_area_group, only: [:show]
 
-  # GET /communities
-  # GET /communities.json
+  # GET /focus_area_groups
+  # GET /focus_area_groups.json
   def index
     @focus_area_groups = FocusAreaGroup.all
 
-    render json: @focus_area_groups, include: ['focus_areas']
+    render json: @focus_area_groups, include: ['focusAreas', 'focusAreas.characteristics']
   end
 
-  # GET /communities/1
-  # GET /communities/1.json
+  # GET /focus_area_groups/1
+  # GET /focus_area_groups/1.json
   def show
-    render json: @focus_area_group, include: ['focus_areas']
+    render json: @focus_area_group, include: ['focusAreas', 'focusAreas.characteristics']
   end
 
   private
 
   def set_focus_area_group
-    # SMELL
-    @focus_area_group = FocusAreaGroup.find(params[:id]) rescue (raise User::NotAuthorized )
+    @focus_area_group = FocusAreaGroup.find(params[:id])
   end
 
 end

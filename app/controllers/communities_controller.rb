@@ -1,22 +1,31 @@
 class CommunitiesController < AuthenticatedController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
 
-  # GET /communities
-  # GET /communities.json
+  resource_description do
+    formats ['json']
+
+  end
+
+  def_param_group :community do
+    param :name, String, required: true
+    param :description, String
+  end
+
+  api :GET, '/communities'
   def index
     @communities = Community.for_user(current_user)
 
     render json: @communities
   end
 
-  # GET /communities/1
-  # GET /communities/1.json
+  api :GET, '/communities/:id'
+  param :id, :number, required: true
   def show
     render json: @community
   end
 
-  # POST /communities
-  # POST /communities.json
+  api :POST, '/communities'
+  param_group :community
   def create
     client_id = client_id_from_params(community_params)
     client_id = current_user.client.id unless client_id
@@ -37,8 +46,9 @@ class CommunitiesController < AuthenticatedController
     end
   end
 
-  # PATCH/PUT /communities/1
-  # PATCH/PUT /communities/1.json
+  api :PUT, '/communities/:id'
+  api :PATCH, '/communities/:id'
+  param_group :community
   def update
     client_id = client_id_from_params(community_params)
 
@@ -57,8 +67,7 @@ class CommunitiesController < AuthenticatedController
     end
   end
 
-  # DELETE /communities/1
-  # DELETE /communities/1.json
+  api!
   def destroy
     @community.destroy
     respond_to do |format|

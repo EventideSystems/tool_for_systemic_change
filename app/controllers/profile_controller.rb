@@ -1,5 +1,9 @@
 class ProfileController < ApplicationController
 
+  resource_description do
+    formats ['json']
+  end
+
   # GET /profile
   # GET /profile.json
   def show

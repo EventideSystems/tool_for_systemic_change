@@ -1,16 +1,19 @@
 class InitiativesController < AuthenticatedController
   before_action :set_initiative, only: [:show, :update, :destroy]
 
-  # GET /initiatives
-  # GET /initiatives.json
+  resource_description do
+    formats ['json']
+  end
+
+  api :GET, '/initiatives'
   def index
     @initiatives = Initiative.for_user(current_user)
 
     render json: @initiatives
   end
 
-  # GET /initiatives/1
-  # GET /initiatives/1.json
+  api :GET, '/initiatives/:id'
+  param :id, :number, required: true
   def show
     render json: @initiative
   end

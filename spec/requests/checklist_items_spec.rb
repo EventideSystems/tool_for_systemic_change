@@ -105,8 +105,6 @@ RSpec.describe "Checklist Items", type: :request do
       sign_in(staff)
       put "/initiatives/#{initiative.id}/checklist_items", data: data_attributes
 
-     # put bulk_checklist_item_path(initiative), data: data_attributes
-
       checklist_item_1.reload
       checklist_item_2.reload
 

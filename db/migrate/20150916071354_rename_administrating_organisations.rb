@@ -1,4 +1,4 @@
-class RenameClients < ActiveRecord::Migration
+class RenameAdministratingOrganisations < ActiveRecord::Migration
 
   class Client < ActiveRecord::Base; end
 
@@ -25,7 +25,7 @@ class RenameClients < ActiveRecord::Migration
     end
 
     # Create new clients and map existing client_ids over
-    old_admin_organisations = Organisation.where(type: 'Client').all
+    old_admin_organisations = Organisation.where(type: 'AdministratingOrganisation').all
     old_admin_organisations.each do |admin_org|
 
       new_client = Client.create!(
@@ -36,14 +36,16 @@ class RenameClients < ActiveRecord::Migration
       )
 
       CLASSES_TO_MODIFY.each do |klass|
-        klass.where(client_id: admin_org.id)
-          .update_all(client_id: new_client.id)
-
-        rename_column klass.table_name.to_sym, :client_id, :client_id
+        klass.where(administrating_organisation_id: admin_org.id)
+          .update_all(administrating_organisation_id: new_client.id)
       end
     end
 
-    Organisation.delete_all(type: 'Client')
+    CLASSES_TO_MODIFY.each do |klass|
+      rename_column klass.table_name.to_sym, :administrating_organisation_id, :client_id
+    end
+
+    Organisation.delete_all(type: 'AdministratingOrganisation')
 
     # Remove old type field
     remove_column :organisations, :type
@@ -60,15 +62,17 @@ class RenameClients < ActiveRecord::Migration
         description:  client.description,
         sector_id:    client.sector_id,
         weblink:      client.weblink,
-        type:         'Client'
+        type:         'AdministratingOrganisation'
       )
 
       CLASSES_TO_MODIFY.each do |klass|
         klass.where(client_id: client.id)
           .update_all(client_id: new_admin_org.id)
-
-        rename_column klass.table_name.to_sym, :client_id, :client_id
       end
+    end
+
+    CLASSES_TO_MODIFY.each do |klass|
+      rename_column klass.table_name.to_sym, :client_id, :administrating_organisation_id
     end
 
     drop_table :clients

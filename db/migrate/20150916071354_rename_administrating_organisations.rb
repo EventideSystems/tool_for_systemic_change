@@ -1,4 +1,4 @@
-class RenameClients < ActiveRecord::Migration
+class RenameAdministratingOrganisations < ActiveRecord::Migration
 
   class Client < ActiveRecord::Base; end
 

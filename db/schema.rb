@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(version: 20150916091733) do
   create_table "communities", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "administrating_organisation_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "focus_area_groups", force: :cascade do |t|
@@ -81,9 +81,9 @@ ActiveRecord::Schema.define(version: 20150916091733) do
   create_table "organisations", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "administrating_organisation_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "sector_id"
     t.string   "weblink"
   end
@@ -98,20 +98,20 @@ ActiveRecord::Schema.define(version: 20150916091733) do
   add_index "sectors", ["name"], name: "index_sectors_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                          default: "", null: false
+    t.string   "encrypted_password",             default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                  default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "client_id"
-    t.integer  "role",                   default: 0
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "administrating_organisation_id"
+    t.integer  "role",                           default: 0
     t.string   "name"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 20150916091733) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.integer  "invitations_count",      default: 0
+    t.integer  "invitations_count",              default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -133,9 +133,9 @@ ActiveRecord::Schema.define(version: 20150916091733) do
     t.string   "name"
     t.string   "description"
     t.integer  "community_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "client_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "administrating_organisation_id"
   end
 
 end

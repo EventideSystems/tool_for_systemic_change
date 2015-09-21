@@ -21,7 +21,7 @@ angular.module('WKD.Problems')
 
       _.each(vm.initiatives, function (ini) { ini.$showChecklist = false; });
 
-      if (initiative.$checklistItems) {
+      if (initiative.$focusGroups) {
         initiative.$showChecklist = true;
       } else {
         initiative.$loading = true;
@@ -30,8 +30,8 @@ angular.module('WKD.Problems')
           .getList('checklist_items').then(function (resp) {
             initiative.$loading = false;
             initiative.$showChecklist = true;
-            initiative.$checklistItems = resp;
-            initiative.$focusGroups = angular.copy(dataModel.focusGroups);
+            initiative.$focusGroups = dataModel.dataModelFrom(resp.included);
+            dataModel.assignChecklistItems(initiative.$focusGroups, resp);
           });
       }
     };

@@ -13,7 +13,7 @@ angular.module('WKD.Common')
       var packed = ops.wrap ? provider.wrap({}) : {};
       var data = packed.data || packed;
 
-      data.attributes = res;
+      data.attributes = res.attributes ? res.attributes : res;
 
       _.each(DATA_ELS, function (element) {
         if (element in res) {

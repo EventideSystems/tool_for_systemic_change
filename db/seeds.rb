@@ -19,10 +19,10 @@ staff_user.save!
 Client.delete_all
 Organisation.delete_all
 
-client = Client.create!(name: 'Example Admin Organisation')
+client = Client.create!(name: 'Example Client')
 
-Organisation.create!(name: "First Example Organisation", administrating_organisation: client)
-Organisation.create!(name: "Second Example Organisation", administrating_organisation: client)
+Organisation.create!(name: "First Example Organisation", client: client)
+Organisation.create!(name: "Second Example Organisation", client: client)
 
 admin_user = User.new(
   email: 'admin@example.com', password: 'password',

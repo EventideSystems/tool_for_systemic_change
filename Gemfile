@@ -58,6 +58,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails'
   gem 'ffaker'
+  gem 'database_cleaner'
   # Debugging
   gem 'byebug'
   gem 'pry'

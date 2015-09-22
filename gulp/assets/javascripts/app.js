@@ -13,6 +13,7 @@ require('angular-wizard');
 require('angular-messages');
 require('angular-animate');
 require('angular-aria');
+require('angular-filter');
 
 // App Features
 require('./common');
@@ -34,6 +35,7 @@ angular.module('WKD', [
   'mgo-angular-wizard',
   'ngAnimate',
   'ngAria',
+  'angular.filter',
 
   // Features
   'WKD.Common',

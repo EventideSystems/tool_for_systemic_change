@@ -45,7 +45,6 @@ angular.module('WKD.Common')
     service.updateLink = function (updated) {
       var link = _.find(service.currentSet.links, { id: updated.id });
       if (link) link.attributes.name = updated.name;
-
     };
 
     _.each(service.CONTEXT_MENU, function (ops, resource) {

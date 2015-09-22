@@ -1,13 +1,11 @@
 'use strict';
 
-// @todo - this needs some decent tests
-
 angular.module('WKD.Common')
 
 .provider('WKD.Common.DefaultPacker', [
   function () {
     var provider = this;
-    var ROOT_ELS = ['id', 'relationships', 'type'];
+    var DATA_ELS = ['id', 'relationships', 'type'];
 
     // Wraps up a resource, ensures all props are where they belong
     provider.packResource = function (res, options) {
@@ -15,9 +13,9 @@ angular.module('WKD.Common')
       var packed = ops.wrap ? provider.wrap({}) : {};
       var data = packed.data || packed;
 
-      data.attributes = res;
+      data.attributes = res.attributes ? res.attributes : res;
 
-      _.each(ROOT_ELS, function (element) {
+      _.each(DATA_ELS, function (element) {
         if (element in res) {
           data[element] = res[element];
           delete data.attributes[element];

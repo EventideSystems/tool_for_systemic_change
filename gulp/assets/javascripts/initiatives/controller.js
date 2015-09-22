@@ -11,18 +11,14 @@ angular.module('WKD.Initiatives')
   '$controller',
   '$scope',
   '$q',
-  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q) {
+  'WKD.Common.DataModel',
+  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q, dataModel) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
-    var promise = $q.all([
-      Restangular.all('organisations').getList(),
-      Restangular.all('wicked_problems').getList()
-    ]).then(function (resp) {
-      vm.organisations = resp[0];
-      vm.problems = resp[1];
-    });
 
     vm._new = function () {
+      loadSharedResources();
+
       vm.initiative = { organisations: [] };
       vm.submitForm = create;
       vm.insideModal = !$state.current.name.match('initiatives');
@@ -32,11 +28,19 @@ angular.module('WKD.Initiatives')
       vm.submitForm = update;
       vm.deleteResource = destroy;
 
-      promise.then(function () {
+      loadSharedResources().then(function () {
         Restangular.one('initiatives', params.id).get().then(function (resp) {
           vm.initiative = unpack(resp);
         });
       });
+    };
+
+    vm._checklist = function (params) {
+      Restangular.one('initiatives', params.id)
+        .getList('checklist_items').then(function (resp) {
+          vm.focusGroups = dataModel.dataModelFrom(resp.included);
+          dataModel.assignChecklistItems(vm.focusGroups, resp);
+        });
     };
 
     vm.addOrganisation = function () {
@@ -56,6 +60,16 @@ angular.module('WKD.Initiatives')
     $controller('WKD.Common.RESTController', { $scope: vm });
 
     ///////////////////////////////////////////////////////////////////////////
+
+    function loadSharedResources() {
+      return $q.all([
+        Restangular.all('organisations').getList(),
+        Restangular.all('wicked_problems').getList()
+      ]).then(function (resp) {
+        vm.organisations = resp[0];
+        vm.problems = resp[1];
+      });
+    }
 
     function create() {
       if (vm.insideModal) return $scope.$close(pack(vm.initiative));

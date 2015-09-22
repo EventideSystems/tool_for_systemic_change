@@ -24,16 +24,24 @@ angular.module('WKD.Initiatives', [])
     .state('wkd.initiatives.view', {
       url: '/:id',
       action: 'view',
-      controller: 'WKD.Initiatives.Controller',
       redirectTo: 'wkd.initiatives.view.edit',
-      controllerAs: 'vm',
       templateUrl: '/templates/initiatives/view.html'
     })
 
     .state('wkd.initiatives.view.edit', {
       url: '/edit',
       action: 'view',
+      controller: 'WKD.Initiatives.Controller',
+      controllerAs: 'vm',
       templateUrl: '/templates/initiatives/edit.html'
+    })
+
+    .state('wkd.initiatives.view.checklist', {
+      url: '/checklist',
+      action: 'checklist',
+      controller: 'WKD.Initiatives.Controller',
+      controllerAs: 'vm',
+      templateUrl: '/templates/initiatives/checklist.html'
     })
 
     ;

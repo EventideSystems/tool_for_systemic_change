@@ -1,17 +1,17 @@
-111 ansible_ssh_port=22
+159.203.84.154 ansible_ssh_port=22
 
 [all]
-111
+159.203.84.154
 
 [application]
-111
+159.203.84.154
 
 [vm]
-111
+159.203.84.154
 
-[development]
-111
+[staging]
+159.203.84.154
 
 [postgresql]
-111
+159.203.84.154
 

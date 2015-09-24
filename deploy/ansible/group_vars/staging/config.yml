@@ -1,11 +1,11 @@
 ---
 rails_env: staging
 target: server
-vm_memory: 
-vm_swap: 
-vm_cores: ?
-vm_share_type: ?
-vm_ip: 
-host: 111
+vm_memory:
+vm_swap: 2048
+vm_cores:
+vm_share_type:
+vm_ip:
+host: 159.203.84.154
 port: 22
-username: ubuntu
+username: root

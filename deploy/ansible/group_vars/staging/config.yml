@@ -1,4 +1,5 @@
 ---
+server_name: wickedlab-staging.eventidesystems.com
 rails_env: staging
 target: server
 vm_memory:

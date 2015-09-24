@@ -1,16 +1,29 @@
 ---
 - include_vars: ../../unicorn/defaults/main.yml
 
+- name: Create directories
+  file: path={{ item }} state=directory owner={{ user_name }} group={{ group_name }}
+  with_items:
+    - '{{ path }}'
+    - '{{ releases_path }}'
+    - '{{ shared_path }}'
+    - '{{ shared_path }}/tmp'
+    - '{{ shared_path }}/log'
+    - '{{ shared_path }}/config'
+    - '{{ shared_path }}/vendor'
+    - '{{ shared_path }}/vendor/bundle'
+
 - set_fact: this_release_path={{ releases_path }}/{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}
 
-- debug: msg='New release path {{ this_release_path }}'
-
 - name: Create new release dir
-  file: path={{ this_release_path }} state=directory
+  file: path={{ this_release_path }} state=directory owner={{ user_name }}
 
 - name: Update code
   git: repo={{ git_url }} dest={{ this_release_path }} version={{ git_branch }} accept_hostkey=yes
   register: git
+
+- name: Chown code
+  file: path={{ this_release_path }} owner={{ user_name }} group={{ group_name }} recurse=yes
 
 - debug: msg='Updated repo from {{ git.before }} to {{ git.after }}'
 
@@ -18,7 +31,7 @@
   file: path={{ this_release_path }}/log state=absent
 
 - name: Symlink shared files
-  file: src={{ shared_path }}/{{ item }} dest={{ this_release_path }}/{{ item }} state=link force=yes
+  file: src={{ shared_path }}/{{ item }} dest={{ this_release_path }}/{{ item }} state=link force=yes owner={{ user_name }} group={{ group_name }}
   with_items:
     - config/database.yml
     - config/secrets.yml
@@ -27,26 +40,34 @@
     - tmp
     - vendor/bundle
 
+- debug: msg='this_release_path = {{ this_release_path }}'
+
 - name: Install bundle
-  command: 'bundle install --deployment --without="development test"'
-  args:
-    chdir: '{{ this_release_path }}'
+  sudo_user: '{{ user_name }}'
+  command: bash -lc "cd {{ this_release_path }}  && bundle install --deployment --without='development test'"
+  # command: 'bundle install --deployment --without="development test"'
+  # args:
+  #   chdir: '{{ this_release_path }}'
 
 - name: Precompile assets
-  command: bundle exec rake assets:precompile chdir={{ this_release_path }}
+  sudo_user: '{{ user_name }}'
+  command: bash -lc "cd {{ this_release_path }}  && bundle exec rake assets:precompile"
+#  command: bundle exec rake assets:precompile chdir={{ this_release_path }}
   environment:
     RAILS_ENV: '{{ rails_env }}'
 
 - name: Migrate database
-  command: bundle exec rake db:migrate chdir={{ this_release_path }}
+  sudo_user: '{{ user_name }}'
+  command: bash -lc "cd {{ this_release_path }}  && bundle exec rake db:migrate"
+ # command: bundle exec rake db:migrate chdir={{ this_release_path }}
   environment:
     RAILS_ENV: '{{ rails_env }}'
 
 - name: Symlink new release
   file: src={{ this_release_path }} dest={{ app_path }} state=link force=yes
 
-- name: Restart unicorn
-  command: sudo {{ server_restart_command }}
+# - name: Restart unicorn
+#   command: sudo {{ server_restart_command }}
 
 - name: Cleanup
   shell: "ls -1t {{ releases_path }}|tail -n +{{ keep_releases + 1 }}|xargs rm -rf"

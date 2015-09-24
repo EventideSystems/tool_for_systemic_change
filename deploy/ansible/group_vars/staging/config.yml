@@ -2,7 +2,7 @@
 rails_env: staging
 target: server
 vm_memory:
-vm_swap:
+vm_swap: 2048
 vm_cores:
 vm_share_type:
 vm_ip:

@@ -33,8 +33,8 @@
 
 - name: Setup script to read application environment
   template: src=read_environment.sh.j2 dest=/etc/profile.d/read_environment.sh
-  notify:
-    - restart application
+  # notify:
+  #   - restart application
 
 - name: Create profile.d directory
   file: path={{ profile_d_path }} state=directory owner={{ user_name }} group={{ group_name }}

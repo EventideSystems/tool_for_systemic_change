@@ -19,5 +19,5 @@
   roles:
     - base
     - { role: ruby, tags: ruby }
+    - deploy
     - webserver
-

@@ -29,15 +29,8 @@ databases:
   - postgresql
 background_jobs:
 postgresql_orm: none
-mysql_orm: none
-mongodb_orm: none
-redis_orm: none
-mongodb_db_name: myapp
-mysql_db_name: myapp
-mysql_db_user: vagrant
-mysql_db_password:
 postgresql_db_name: wicked_software
-postgresql_db_user: vagrant
+postgresql_db_user: '{{ "vagrant" if target == "virtualbox" else app_name }}'
 postgresql_db_password:
 postgresql_extensions:
   - hstore
@@ -56,7 +49,8 @@ user_home_path: '/home/{{ user_name }}'
 ssl_certificate_path: /etc/nginx/ssl/{{ server_name }}.crt
 ssl_certificate_key_path: /etc/nginx/ssl/{{ server_name }}.key
 
-app_path: '{{ path if target == "virtualbox" else "{{ path }}/current" }}'
+server_current_path: '{{ path}}/current'
+app_path: '{{ path if target == "virtualbox" else server_current_path }}'
 app_public_path: "{{ app_path }}/public"
 app_config_path: "{{ app_path }}/config"
 app_temp_path: "{{ app_path }}/tmp"

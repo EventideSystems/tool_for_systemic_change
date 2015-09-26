@@ -35,7 +35,8 @@
     "angular-ui-bootstrap": "~0.13.3",
     "angular-aria": "~1.4.5",
     "angular-animate": "~1.4.5",
-    "angular-filter": "~0.5.5"
+    "angular-filter": "~0.5.5",
+    "angular-tablesort": "~1.0.8"
   },
   "devDependencies": {
     "gulp": "^3.8.7",

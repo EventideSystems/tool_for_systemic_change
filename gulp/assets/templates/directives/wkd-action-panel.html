@@ -1,0 +1,9 @@
+<div class="action-panel">
+  <a href class="toggle" ng-click="toggled = !toggled">
+    <i class="fa" ng-class="'fa-' + (toggled ? 'minus' : 'plus')"></i>
+    {{ toggleTitle }}
+  </a>
+  <div ng-show="toggled" class="content slide-toggle">
+    <ng-transclude></ng-transclude>
+  </div>
+</div>

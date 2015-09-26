@@ -87,3 +87,19 @@ a {
     padding: 0;
   }
 }
+
+
+table {
+  .td-sm {
+    width: 1%;
+  }
+
+  thead {
+    font-weight: bold;
+  }
+}
+
+
+table .tablesort-asc, table .tablesort-desc{
+    background: none;
+}

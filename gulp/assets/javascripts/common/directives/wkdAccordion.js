@@ -5,11 +5,11 @@ angular.module('WKD.Common.Accordion', [])
 .animation('.slide-toggle', function () {
   return {
     beforeAddClass: function (el, cssClass, cb) {
-      if (cssClass === 'ng-hide') el.slideUp(300, cb);
+      if (cssClass === 'ng-hide') el.slideUp(200, cb);
     },
     removeClass: function (el, cssClass, cb) {
       if (cssClass === 'ng-hide') {
-        el.hide().slideDown(300, function () {
+        el.hide().slideDown(200, function () {
           el.css('overflow', 'initial');
           cb();
         });

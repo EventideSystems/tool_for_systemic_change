@@ -47,6 +47,9 @@ gem 'devise_invitable'
 gem 'bower-rails'
 gem 'apipie-rails', :github => 'Apipie/apipie-rails'
 
+# System administration
+gem 'rails_admin'
+
 group :developent do
   # Documentation support
   gem 'railroady'

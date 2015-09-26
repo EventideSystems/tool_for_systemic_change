@@ -13,6 +13,7 @@ require('angular-wizard');
 require('angular-messages');
 require('angular-animate');
 require('angular-aria');
+require('../../../node_modules/angular-tablesort/js/angular-tablesort.js');
 
 // App Features
 require('./common');
@@ -21,6 +22,7 @@ require('./organisations');
 require('./problems');
 require('./initiatives');
 require('./communities');
+require('./users');
 
 
 // Application module
@@ -34,6 +36,7 @@ angular.module('WKD', [
   'mgo-angular-wizard',
   'ngAnimate',
   'ngAria',
+  'tableSort',
 
   // Features
   'WKD.Common',
@@ -41,7 +44,8 @@ angular.module('WKD', [
   'WKD.Organisations',
   'WKD.Problems',
   'WKD.Initiatives',
-  'WKD.Communities'
+  'WKD.Communities',
+  'WKD.Users'
 ])
 
 

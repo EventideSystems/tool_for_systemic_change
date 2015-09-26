@@ -13,6 +13,7 @@ require('./services/DefaultPacker.js');
 require('./directives/wkdSidebar.js');
 require('./directives/wkdHeader.js');
 require('./directives/wkdAccordion.js');
+require('./directives/wkdActionPanel.js');
 
 // Mixins
 require('./mixins/RESTController.js');

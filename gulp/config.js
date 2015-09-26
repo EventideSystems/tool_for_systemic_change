@@ -1,14 +1,14 @@
-var publicAssets = "./public/assets";
+var publicAssets = "public/assets";
 var sourceFiles  = "./gulp/assets";
 
 module.exports = {
   publicAssets: publicAssets,
   browserSync: {
-    proxy: 'localhost:3000',
+    proxy: 'http://192.168.20.50',
     files: ['./app/views/**']
   },
   sass: {
-    src: sourceFiles + "/stylesheets/app.scss",
+    src: sourceFiles + "/stylesheets/**/*.scss",
     dest: publicAssets + "/stylesheets",
     settings: {
       imagePath: '/assets/images' // Used by the image-url helper

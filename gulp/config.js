@@ -1,10 +1,11 @@
-var publicAssets = "./public/assets";
+var publicAssets = "public/assets";
 var sourceFiles  = "./gulp/assets";
 
 module.exports = {
   publicAssets: publicAssets,
   browserSync: {
     proxy: 'http://192.168.20.50/',
+    proxy: 'http://192.168.20.50',
     files: ['./app/views/**']
   },
   sass: {

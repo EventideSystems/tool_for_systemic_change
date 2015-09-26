@@ -7,10 +7,16 @@ var config       = require('../config').sass;
 var autoprefixer = require('gulp-autoprefixer');
 var cssimport    = require("gulp-cssimport");
 
+var del = require('del');
+
+
+
 gulp.task('sass', ['sass:compile'], function () {
-  return gulp.src(config.dest + '/*.css')
-    .pipe(cssimport())
+
+  gulp.src('./public/gulp/assets/stylesheets/*.css')
     .pipe(gulp.dest(config.dest));
+
+  del('./public/gulp/');
 });
 
 
@@ -18,6 +24,8 @@ gulp.task('sass:compile', function () {
   return gulp.src(config.src)
     .pipe(sourcemaps.init())
     .pipe(sass(config.settings))
+    .on('error', handleErrors)
+    .pipe(cssimport())
     .on('error', handleErrors)
     .pipe(autoprefixer({ browsers: ['last 2 version'] }))
     .pipe(sourcemaps.write())

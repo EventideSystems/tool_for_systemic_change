@@ -8,10 +8,15 @@ RailsAdmin.config do |config|
   # end
   # config.current_user_method(&:current_user)
 
-  config.authorize_with do
+  # config.authorize_with do
+  #   redirect_to main_app.root_path unless current_user.staff?
+  # end
+
+  config.authorize_with :pundit do
     redirect_to main_app.root_path unless current_user.staff?
   end
 
+  config.current_user_method(&:current_user)
   ## == Cancan ==
   # config.authorize_with :cancan
 
@@ -34,5 +39,13 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+  end
+
+  config.model 'FocusArea' do
+    parent FocusAreaGroup
+  end
+
+  config.model 'Characteristic' do
+    parent FocusArea
   end
 end

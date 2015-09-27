@@ -8,4 +8,5 @@ class AuthenticatedController < ApplicationController
   rescue_from User::NotAuthorized do |exception|
     render json: exception, status: 403
   end
+
 end

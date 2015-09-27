@@ -34,7 +34,7 @@ RSpec.describe "Invitations", type: :request do
         sign_in(admin)
       end
 
-      specify "sends email to invited admin user - no role specified" do
+      specify "sends email to invited user - no role specified" do
         invited_email = FFaker::Internet.email
 
         post user_invitation_path, user: {
@@ -47,6 +47,20 @@ RSpec.describe "Invitations", type: :request do
         expect(invited_user.invited_by_id).to eq(admin.id)
         expect(invited_user.client_id).to eq(client.id)
         expect(invited_user.role).to eq('user')
+      end
+
+      specify "sends email to invited user with optional name parameter" do
+        invited_email = FFaker::Internet.email
+        invited_name = FFaker::Name.name
+
+        post user_invitation_path, user: {
+          email: invited_email,
+          name: invited_name
+        }, format: :json
+        expect(response).to have_http_status(201)
+
+        invited_user = User.last
+        expect(invited_user.name).to eq(invited_name)
       end
 
       specify "sends email to invited admin user - admin role specified" do

@@ -7,7 +7,6 @@ class InvitationsController < Devise::InvitationsController
   end
 
   def create
-    # SMELL Hack!
     if self.params[:user][:client_id].nil?
       self.params[:user].merge!(
         client_id: current_user.client_id
@@ -27,14 +26,6 @@ class InvitationsController < Devise::InvitationsController
       end
     end
 
-    # if resource_invited
-    #   if is_flashing_format? && self.resource.invitation_sent_at
-    #     set_flash_message :notice, :send_instructions, :email => self.resource.email
-    #   end
-    #   respond_with resource, :location => after_invite_path_for(current_inviter)
-    # else
-    #   respond_with_navigational(resource) { render :new }
-    # end
   end
 
   private

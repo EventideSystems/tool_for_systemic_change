@@ -1,17 +1,24 @@
 class InvitationsController < Devise::InvitationsController
 
   before_filter :configure_permitted_parameters
+  before_filter :set_default_role_param, only: :create
+  before_filter :set_default_client_id, only: :create
 
   resource_description do
     formats ['json']
   end
 
   def create
-    if self.params[:user][:client_id].nil?
-      self.params[:user].merge!(
-        client_id: current_user.client_id
-      )
-    end
+    # SMELL move to filter
+
+
+    invitation = Invitation.new(
+      params[:user][:client_id],
+      params[:user][:email],
+      params[:user][:role]
+    )
+
+    authorize invitation, :create?
 
     self.resource = invite_resource
     resource_invited = resource.errors.empty?
@@ -41,4 +48,13 @@ class InvitationsController < Devise::InvitationsController
         u.permit(:email, :client_id, :role)
       end
     end
+
+    def set_default_role_param
+      params[:user][:role] = 'user' unless params[:user][:role]
+    end
+
+    def set_default_client_id
+      params[:user][:client_id] = current_user.client_id unless params[:user][:client_id] || params[:user][:role] == 'staff'
+    end
+
 end

@@ -11,10 +11,29 @@ RSpec.describe "Invitations", type: :request do
 
     before(:each) do
       allow_any_instance_of(InvitationsController).to receive(:resource_name).and_return(:user)
-      sign_in(admin)
+    end
+
+    describe "as a normal user" do
+
+      specify "prevents any invitation" do
+        sign_in(user)
+
+        invited_email = FFaker::Internet.email
+
+        post user_invitation_path, user: {
+          email: invited_email
+        }, format: :json
+        expect(response).to have_http_status(403)
+
+      end
     end
 
     describe "as an admin user" do
+
+      before(:each) do
+        sign_in(admin)
+      end
+
       specify "sends email to invited admin user - no role specified" do
         invited_email = FFaker::Internet.email
 
@@ -45,6 +64,92 @@ RSpec.describe "Invitations", type: :request do
         expect(invited_user.client_id).to eq(client.id)
         expect(invited_user.role).to eq('admin')
       end
+
+      specify "prevents invite for staff user" do
+        invited_email = FFaker::Internet.email
+
+        post user_invitation_path, user: {
+          email: invited_email,
+          role: 'staff'
+        }, format: :json
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    describe "as a staff user" do
+
+      before(:each) do
+        sign_in(staff)
+      end
+
+      specify "sends email to invited admin user - no role specified" do
+        invited_email = FFaker::Internet.email
+
+        post user_invitation_path, user: {
+          email: invited_email,
+          client_id: client.id
+        }, format: :json
+        expect(response).to have_http_status(201)
+
+        invited_user = User.last
+        expect(invited_user.email).to eq(invited_email)
+        expect(invited_user.invited_by_id).to eq(staff.id)
+        expect(invited_user.client_id).to eq(client.id)
+        expect(invited_user.role).to eq('user')
+      end
+
+      specify "sends email to invited admin user - admin role specified" do
+        invited_email = FFaker::Internet.email
+
+        post user_invitation_path, user: {
+          email: invited_email,
+          role: 'admin',
+          client_id: client.id
+        }, format: :json
+        expect(response).to have_http_status(201)
+
+        invited_user = User.last
+        expect(invited_user.email).to eq(invited_email)
+        expect(invited_user.invited_by_id).to eq(staff.id)
+        expect(invited_user.client_id).to eq(client.id)
+        expect(invited_user.role).to eq('admin')
+      end
+
+      specify "sends email to invited admin user - staff role specified" do
+        invited_email = FFaker::Internet.email
+
+        post user_invitation_path, user: {
+          email: invited_email,
+          role: 'staff'
+        }, format: :json
+        expect(response).to have_http_status(201)
+
+        invited_user = User.last
+        expect(invited_user.email).to eq(invited_email)
+        expect(invited_user.invited_by_id).to eq(staff.id)
+        expect(invited_user.client_id).to eq(nil)
+        expect(invited_user.role).to eq('staff')
+      end
+    end
+  end
+
+  describe "Listing invited users" do
+
+    specify 'invited users have status of invitation-pending' do
+      sign_in(staff)
+      allow_any_instance_of(InvitationsController).to receive(:resource_name).and_return(:user)
+      invited_email = FFaker::Internet.email
+
+      post user_invitation_path, user: {
+        email: invited_email,
+        client_id: client.id
+      }, format: :json
+
+      get users_path
+
+      users_data = JSON.parse(response.body)['data'].find{ |u| u['attributes']['email'] == invited_email }
+
+      expect(users_data['attributes']['status']).to eq('invitation-pending')
     end
   end
 end

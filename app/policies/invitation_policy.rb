@@ -7,6 +7,6 @@ class InvitationPolicy < ApplicationPolicy
   end
 
   def create?
-    user.staff? or (user.admin? && ()
+    user.staff? or (user.admin? && %w(user admin).include?(invitation.role))
   end
 end

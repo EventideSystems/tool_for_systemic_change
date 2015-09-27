@@ -13,6 +13,14 @@ GIT
     active_model_serializers (0.10.0.rc2)
       activemodel (>= 4.0)
 
+GIT
+  remote: git://github.com/sudosu/rails_admin_pundit.git
+  revision: 285e3e79a37242cf7a527053e9b438782801557a
+  specs:
+    rails_admin_pundit (0.0.1)
+      pundit (>= 0.2.3)
+      rails_admin (>= 0.6.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -140,6 +148,8 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
+    pundit (1.0.1)
+      activesupport (>= 3.0.0)
     rack (1.6.4)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -276,9 +286,11 @@ DEPENDENCIES
   pry-byebug
   pry-coolline
   pry-stack_explorer
+  pundit
   railroady
   rails (= 4.2.3)
   rails_admin
+  rails_admin_pundit!
   rspec-rails (~> 3.0)
   rubocop
   sass-rails (~> 5.0)

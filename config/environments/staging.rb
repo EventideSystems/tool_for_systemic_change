@@ -79,6 +79,7 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
+    openssl_verify_mode:  'none',
     address:              'mail.eventidesystems.com',
     port:                 587,
     domain:               'eventidesystems.com',

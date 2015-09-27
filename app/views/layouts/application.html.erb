@@ -10,15 +10,7 @@
 
   <% if user_signed_in? %>
     <div ng-app="WKD" ng-class="contextClass">
-      <wkd-header></wkd-header>
-
-      <nav id="main-nav" ng-include="'/templates/layout/main-nav.html'"></nav>
-
-      <main id="main-content">
-        <div class="scroller" ui-view></div>
-      </main>
-
-      <wkd-sidebar></wkd-sidebar>
+      <div ui-view></div>
     </div>
   <% else %>
     <% # SMELL Required by Devise - I want these to show in the login box, just under the login button. %>

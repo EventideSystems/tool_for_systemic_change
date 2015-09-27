@@ -15,6 +15,8 @@ require('./directives/wkdSidebar.js');
 require('./directives/wkdHeader.js');
 require('./directives/wkdAccordion.js');
 require('./directives/wkdActionPanel.js');
+require('./directives/wkdHasRole.js');
+
 
 // Mixins
 require('./mixins/RESTController.js');

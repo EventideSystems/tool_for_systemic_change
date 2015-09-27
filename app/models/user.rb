@@ -19,4 +19,9 @@ class User < ActiveRecord::Base
     end
   }
 
+  def status
+    return 'invitation-pending' unless invitation_token.blank?
+    return 'active'
+  end
+
 end

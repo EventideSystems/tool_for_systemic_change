@@ -1,3 +1,1 @@
-class Invitation
-  # WIP
-end
+Invitation = Struct.new(:client_id, :email, :role)

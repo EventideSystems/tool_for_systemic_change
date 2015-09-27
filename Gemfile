@@ -42,6 +42,8 @@ gem 'unicorn'
 # Authentication & authorization
 gem 'devise'
 gem 'devise_invitable'
+gem 'pundit'
+gem "rails_admin_pundit", :github => "sudosu/rails_admin_pundit"
 
 # Asset management
 gem 'bower-rails'

@@ -58,7 +58,7 @@ angular.module('WKD', [
       abstract: true,
       controller: 'WKD.MainController',
       controllerAs: 'WKD',
-      template: '<ui-view>',
+      templateUrl: '/templates/layout/index.html',
       resolve: { currentUser: CurrentUserProvider.resolveCurrentUser }
     })
 

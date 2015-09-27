@@ -45,7 +45,7 @@ class InvitationsController < Devise::InvitationsController
 
     def configure_permitted_parameters
       devise_parameter_sanitizer.for(:invite) do |u|
-        u.permit(:email, :client_id, :role)
+        u.permit(:email, :client_id, :role, :name)
       end
     end
 

@@ -1,4 +1,4 @@
-class WickedProblem < ActiveRecord::Base
+class Scorecard < ActiveRecord::Base
   belongs_to :community
   belongs_to :client, class_name: 'Client'
   has_many :initiatives

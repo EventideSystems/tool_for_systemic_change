@@ -1,6 +1,6 @@
 class Community < ActiveRecord::Base
   belongs_to :client
-  has_many :wicked_problems
+  has_many :scorecards
 
   # SMELL Dupe of scope in WickedProblem - move to a concern
   scope :for_user, ->(user) {

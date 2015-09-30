@@ -7,9 +7,9 @@ RSpec.describe "Initiatives", type: :request do
   include_context "api request global before and after hooks"
   include_context "setup common data"
 
-  let!(:initiative) { create(:initiative, wicked_problem: wicked_problem, organisations: [organisation]) }
+  let!(:initiative) { create(:initiative, scorecard: scorecard, organisations: [organisation]) }
   let!(:other_initiative) {
-    create(:initiative, wicked_problem: other_wicked_problem, organisations: [other_organisation]) }
+    create(:initiative, scorecard: other_scorecard, organisations: [other_organisation]) }
 
   let!(:second_organisation) { create(:organisation,
     client: client)}
@@ -30,7 +30,7 @@ RSpec.describe "Initiatives", type: :request do
       relationships_data = initiative_data['relationships']
 
       expect(relationships_data['wickedProblem']['data']['id'])
-        .to eq(wicked_problem.id.to_s)
+        .to eq(scorecard.id.to_s)
       expect(relationships_data['organisations']['data'].first['id'])
         .to eq(organisation.id.to_s)
     end
@@ -120,10 +120,10 @@ RSpec.describe "Initiatives", type: :request do
           name: initiative_name,
           description: initiative_description,
         },
-        # SMELL Not supporting wicked_problems relationship at this point, if
+        # SMELL Not supporting scorecards relationship at this point, if
         # we do at all.
         relationships: {
-          wicked_problem: { data: { id: wicked_problem.id } },
+          scorecard: { data: { id: scorecard.id } },
           organisations: { data: [
             {id: organisation.id },
             {id: second_organisation.id }
@@ -141,7 +141,7 @@ RSpec.describe "Initiatives", type: :request do
       new_initiative = Initiative.last
       expect(new_initiative.name).to eq(initiative_name)
       expect(new_initiative.description).to eq(initiative_description)
-      expect(new_initiative.wicked_problem).to eq(wicked_problem)
+      expect(new_initiative.scorecard).to eq(scorecard)
       expect(new_initiative.organisations.count).to be(2)
       expect(new_initiative.organisations.first).to eq(organisation)
       expect(new_initiative.organisations.second).to eq(second_organisation)
@@ -160,7 +160,7 @@ RSpec.describe "Initiatives", type: :request do
           description: initiative_new_description,
         },
         relationships: {
-          wicked_problem: { data: { id: wicked_problem.id } }
+          scorecard: { data: { id: scorecard.id } }
 
         }
       }

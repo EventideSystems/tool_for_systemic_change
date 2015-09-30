@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916091733) do
+ActiveRecord::Schema.define(version: 20150930122838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,9 +68,9 @@ ActiveRecord::Schema.define(version: 20150916091733) do
   create_table "initiatives", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "wicked_problem_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.integer  "scorecard_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "initiatives_organisations", id: false, force: :cascade do |t|
@@ -86,6 +86,15 @@ ActiveRecord::Schema.define(version: 20150916091733) do
     t.datetime "updated_at",  null: false
     t.integer  "sector_id"
     t.string   "weblink"
+  end
+
+  create_table "scorecards", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "community_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "client_id"
   end
 
   create_table "sectors", force: :cascade do |t|
@@ -128,14 +137,5 @@ ActiveRecord::Schema.define(version: 20150916091733) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "wicked_problems", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "community_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.integer  "client_id"
-  end
 
 end

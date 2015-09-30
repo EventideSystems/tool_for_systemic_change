@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe WickedProblemsController, type: :routing do
+RSpec.describe ScorecardsController, type: :routing do
   describe "routing" do
 
   # SMELL Commenting out. This seems to be an issue with new RSpec route specs

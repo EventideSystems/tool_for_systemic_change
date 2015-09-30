@@ -8,7 +8,7 @@ RSpec.describe "Checklist Items", type: :request do
   include_context "setup common data"
   include_context "setup model data"
 
-  let!(:initiative) { create(:initiative, wicked_problem: wicked_problem, organisations: [organisation]) }
+  let!(:initiative) { create(:initiative, scorecard: scorecard, organisations: [organisation]) }
 
   describe "GET /initiatives/:initiative_id/checklist_items" do
 

@@ -1,26 +1,26 @@
-class WickedProblemsController < AuthenticatedController
-  before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
+class ScorecardsController < AuthenticatedController
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy]
   before_action :set_client, only: [:create, :update]
 
   resource_description do
     formats ['json']
   end
 
-  api :GET, '/wicked_problems'
+  api :GET, '/scorecards'
   def index
-    @wicked_problems = WickedProblem.for_user(current_user)
+    @scorecards = Scorecard.for_user(current_user)
 
-    render json: @wicked_problems, include: ['initiatives']
+    render json: @scorecards, include: ['initiatives']
   end
 
-  api :GET, '/wicked_problems/:id'
+  api :GET, '/scorecards/:id'
   param :id, :number, required: true
   def show
-    render json: @wicked_problem, include: ['initiatives']
+    render json: @scorecard, include: ['initiatives']
   end
 
-  # POST /wicked_problems
-  # POST /wicked_problems.json
+  # POST /scorecards
+  # POST /scorecards.json
   def create
     # TODO Need to check each relationship and determine if current user
     # has access
@@ -47,13 +47,13 @@ class WickedProblemsController < AuthenticatedController
         end
       end
 
-      @wicked_problem = WickedProblem.create!(permitted_wicked_problem_params(data_attributes))
+      @scorecard = Scorecard.create!(permitted_scorecard_params(data_attributes))
       success = true
 
       # SMELL Similar code to above - also inefficient
       included_attributes.each do |included|
         if included.type == :initiative
-          included.attributes.merge!(wicked_problem_id: @wicked_problem.id)
+          included.attributes.merge!(scorecard_id: @scorecard.id)
           Initiative.create!(permitted_initiative_params(included.attributes))
         else
           #
@@ -63,40 +63,40 @@ class WickedProblemsController < AuthenticatedController
 
     respond_to do |format|
       if success
-        format.html { redirect_to @wicked_problem, notice: 'WickedProblem was successfully created.' }
-        format.json { render json: @wicked_problem, status: :created, location: @wicked_problem }
+        format.html { redirect_to @scorecard, notice: 'Scorecard was successfully created.' }
+        format.json { render json: @scorecard, status: :created, location: @scorecard }
       else
         format.html { render :new }
-        format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
+        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /wicked_problems/1
-  # PATCH/PUT /wicked_problems/1.json
+  # PATCH/PUT /scorecards/1
+  # PATCH/PUT /scorecards/1.json
   def update
     # TODO Need to check each relationship and determine if current user
     # has access
 
-    attributes = permitted_wicked_problem_params(normalize(params[:data]))
+    attributes = permitted_scorecard_params(normalize(params[:data]))
 
     respond_to do |format|
-      if @wicked_problem.update(attributes)
-        format.html { redirect_to @wicked_problem, notice: 'WickedProblem was successfully updated.' }
-        format.json { render json: { status: :ok, location: @wicked_problem } }
+      if @scorecard.update(attributes)
+        format.html { redirect_to @scorecard, notice: 'Scorecard was successfully updated.' }
+        format.json { render json: { status: :ok, location: @scorecard } }
       else
         format.html { render :edit }
-        format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
+        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /wicked_problems/1
-  # DELETE /wicked_problems/1.json
+  # DELETE /scorecards/1
+  # DELETE /scorecards/1.json
   def destroy
-    @wicked_problem.destroy
+    @scorecard.destroy
     respond_to do |format|
-      format.html { redirect_to wicked_problems_url, notice: 'WickedProblem was successfully destroyed.' }
+      format.html { redirect_to scorecards_url, notice: 'Scorecard was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -107,8 +107,8 @@ class WickedProblemsController < AuthenticatedController
       @client = current_user.client
     end
 
-    def set_wicked_problem
-      @wicked_problem = WickedProblem.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
+    def set_scorecard
+      @scorecard = Scorecard.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
     end
 
     def permitted_community_params(params)
@@ -116,14 +116,14 @@ class WickedProblemsController < AuthenticatedController
     end
 
     def permitted_initiative_params(params)
-      params.permit(:name, :description, :wicked_problem_id, organisation_ids: [])
+      params.permit(:name, :description, :scorecard_id, organisation_ids: [])
     end
 
-    def permitted_wicked_problem_params(params)
+    def permitted_scorecard_params(params)
       params.permit(:name, :description, :client_id, :community_id, :organisations_ids)
     end
 
-    def wicked_problem_params
+    def scorecard_params
       params.require(:data).permit(
         attributes: [:name, :description],
         relationships: [

@@ -29,7 +29,7 @@ RSpec.describe "Initiatives", type: :request do
 
       relationships_data = initiative_data['relationships']
 
-      expect(relationships_data['wickedProblem']['data']['id'])
+      expect(relationships_data['scorecard']['data']['id'])
         .to eq(scorecard.id.to_s)
       expect(relationships_data['organisations']['data'].first['id'])
         .to eq(organisation.id.to_s)

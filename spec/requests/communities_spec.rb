@@ -25,7 +25,7 @@ RSpec.describe "Communities", type: :request do
         .to eq(client.id.to_s)
 
       expect(relationships_data['wickedProblems']['data'].first['id'])
-        .to eq(wicked_problem.id.to_s)
+        .to eq(scorecard.id.to_s)
     end
 
     describe "restrict access by role" do
@@ -113,7 +113,7 @@ RSpec.describe "Communities", type: :request do
           name: community_name,
           description: community_description,
         },
-        # SMELL Not supporting wicked_problems relationship at this point, if
+        # SMELL Not supporting scorecards relationship at this point, if
         # we do at all.
         relationships: {
           client: { data: { id: client.id } }

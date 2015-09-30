@@ -24,7 +24,7 @@ RSpec.describe "Communities", type: :request do
       expect(relationships_data['client']['data']['id'])
         .to eq(client.id.to_s)
 
-      expect(relationships_data['wickedProblems']['data'].first['id'])
+      expect(relationships_data['scorecards']['data'].first['id'])
         .to eq(scorecard.id.to_s)
     end
 

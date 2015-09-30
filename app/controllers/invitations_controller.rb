@@ -9,9 +9,6 @@ class InvitationsController < Devise::InvitationsController
   end
 
   def create
-    # SMELL move to filter
-
-
     invitation = Invitation.new(
       params[:user][:client_id],
       params[:user][:email],
@@ -34,6 +31,11 @@ class InvitationsController < Devise::InvitationsController
     end
 
   end
+
+  def update
+
+  end
+
 
   private
 

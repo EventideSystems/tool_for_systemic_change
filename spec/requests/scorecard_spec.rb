@@ -1,31 +1,31 @@
 require 'rails_helper'
 require 'shared_contexts'
 
-RSpec.describe "Wicked Problems", type: :request do
+RSpec.describe "Scorecards", type: :request do
 
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
   include_context "setup common data"
 
-  describe "GET /wicked_problems" do
+  describe "GET /scorecards" do
 
     specify 'all fields returned' do
-      wicked_problem.initiatives << create(:initiative)
-      wicked_problem.initiatives.first.organisations << organisation
+      scorecard.initiatives << create(:initiative)
+      scorecard.initiatives.first.organisations << organisation
 
       sign_in(staff)
 
-      get wicked_problems_path
+      get scorecards_path
 
-      wicked_problem_data = JSON.parse(response.body)['data'].first
-      relationships_data = wicked_problem_data['relationships']
+      scorecard_data = JSON.parse(response.body)['data'].first
+      relationships_data = scorecard_data['relationships']
       include_data = JSON.parse(response.body)['included'].first
 
-      expect(wicked_problem_data['id']).to eq(wicked_problem.id.to_s)
-      expect(wicked_problem_data['attributes']['name']).to eq(wicked_problem.name)
-      expect(wicked_problem_data['attributes']['description']).to eq(wicked_problem.description)
+      expect(scorecard_data['id']).to eq(scorecard.id.to_s)
+      expect(scorecard_data['attributes']['name']).to eq(scorecard.name)
+      expect(scorecard_data['attributes']['description']).to eq(scorecard.description)
 
-      relationships_data = wicked_problem_data['relationships']
+      relationships_data = scorecard_data['relationships']
 
       expect(relationships_data['client']['data']['id'])
         .to eq(client.id.to_s)
@@ -41,7 +41,7 @@ RSpec.describe "Wicked Problems", type: :request do
     describe "restrict access by role" do
       specify "user profile" do
         sign_in(user)
-        get wicked_problems_path
+        get scorecards_path
 
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['data'].count).to be(1)
@@ -49,7 +49,7 @@ RSpec.describe "Wicked Problems", type: :request do
 
       specify "admin profile" do
         sign_in(admin)
-        get wicked_problems_path
+        get scorecards_path
 
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['data'].count).to be(1)
@@ -57,7 +57,7 @@ RSpec.describe "Wicked Problems", type: :request do
 
       specify "staff profile" do
         sign_in(staff)
-        get wicked_problems_path
+        get scorecards_path
 
         expect(response).to have_http_status(200)
         expect(JSON.parse(response.body)['data'].count).to be(2)
@@ -65,46 +65,46 @@ RSpec.describe "Wicked Problems", type: :request do
     end
   end
 
-  describe "GET /wicked_problems/:id" do
+  describe "GET /scorecards/:id" do
 
     describe "restrict access by role" do
       specify "user - accessible record" do
         sign_in(user)
-        get wicked_problem_path(wicked_problem)
+        get scorecard_path(scorecard)
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data']['id']).to eq(wicked_problem.id.to_s)
+        expect(JSON.parse(response.body)['data']['id']).to eq(scorecard.id.to_s)
       end
 
       specify "user - inaccessible record" do
         sign_in(user)
-        get wicked_problem_path(other_wicked_problem)
+        get scorecard_path(other_scorecard)
 
         expect(response).to have_http_status(403)
       end
 
       specify "admin - accessible record" do
         sign_in(admin)
-        get wicked_problem_path(wicked_problem)
+        get scorecard_path(scorecard)
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data']['id']).to eq(wicked_problem.id.to_s)
+        expect(JSON.parse(response.body)['data']['id']).to eq(scorecard.id.to_s)
       end
 
       specify "admin - inaccessible record" do
         sign_in(user)
-        get wicked_problem_path(other_wicked_problem)
+        get scorecard_path(other_scorecard)
 
         expect(response).to have_http_status(403)
       end
 
       specify "staff - all records" do
         sign_in(staff)
-        get wicked_problem_path(wicked_problem)
+        get scorecard_path(scorecard)
 
         expect(response).to have_http_status(200)
 
-        get wicked_problem_path(wicked_problem)
+        get scorecard_path(scorecard)
 
         expect(response).to have_http_status(200)
       end
@@ -112,16 +112,16 @@ RSpec.describe "Wicked Problems", type: :request do
 
   end
 
-  describe "POST /wicked_problems" do
-    let(:wicked_problem_name) { FFaker::Lorem.words(4).join(' ') }
-    let(:wicked_problem_description) { FFaker::Lorem.words(10).join(' ') }
+  describe "POST /scorecards" do
+    let(:scorecard_name) { FFaker::Lorem.words(4).join(' ') }
+    let(:scorecard_description) { FFaker::Lorem.words(10).join(' ') }
 
     let(:data_attributes) {
       {
-        type: 'wicked_problems',
+        type: 'scorecards',
         attributes: {
-          name: wicked_problem_name,
-          description: wicked_problem_description,
+          name: scorecard_name,
+          description: scorecard_description,
         },
         relationships: {
           community: { data: { id: community.id } },
@@ -132,14 +132,14 @@ RSpec.describe "Wicked Problems", type: :request do
 
     specify "posting as admin" do
       sign_in(admin)
-      post '/wicked_problems', data: data_attributes
-      new_wicked_problem = WickedProblem.last
+      post '/scorecards', data: data_attributes
+      new_scorecard = Scorecard.last
 
       expect(response).to have_http_status(201)
-      expect(new_wicked_problem.name).to eq(wicked_problem_name)
-      expect(new_wicked_problem.description).to eq(wicked_problem_description)
-      expect(new_wicked_problem.community).to eq(community)
-      expect(new_wicked_problem.client).to eq(client)
+      expect(new_scorecard.name).to eq(scorecard_name)
+      expect(new_scorecard.description).to eq(scorecard_description)
+      expect(new_scorecard.community).to eq(community)
+      expect(new_scorecard.client).to eq(client)
     end
 
     specify "posting as admin - without administrating organisation id" do
@@ -147,23 +147,23 @@ RSpec.describe "Wicked Problems", type: :request do
 
       sign_in(admin)
       expect do
-        post '/wicked_problems', data: data_attributes
-      end.to  change{WickedProblem.count}.by(1)
+        post '/scorecards', data: data_attributes
+      end.to  change{Scorecard.count}.by(1)
 
       expect(response).to have_http_status(201)
 
-      new_wicked_problem = WickedProblem.last
-      expect(new_wicked_problem.name).to eq(wicked_problem_name)
-      expect(new_wicked_problem.description).to eq(wicked_problem_description)
-      expect(new_wicked_problem.community).to eq(community)
-      expect(new_wicked_problem.client).to eq(client)
+      new_scorecard = Scorecard.last
+      expect(new_scorecard.name).to eq(scorecard_name)
+      expect(new_scorecard.description).to eq(scorecard_description)
+      expect(new_scorecard.community).to eq(community)
+      expect(new_scorecard.client).to eq(client)
     end
 
     describe "creating compound records" do
 
       let(:data_attributes) {
         {
-          type: 'wicked_problems',
+          type: 'scorecards',
           attributes: {
             name: FFaker::Lorem.words(4).join(' '),
             description: FFaker::Lorem.words(10).join(' '),
@@ -190,7 +190,7 @@ RSpec.describe "Wicked Problems", type: :request do
         sign_in(admin)
 
         expect do
-          post '/wicked_problems', data: data_attributes, included: included_attributes
+          post '/scorecards', data: data_attributes, included: included_attributes
         end.to change{ Community.count }.by(1)
 
         expect(response).to have_http_status(201)
@@ -200,8 +200,8 @@ RSpec.describe "Wicked Problems", type: :request do
         expect(new_community.description).to eq(included_attributes.first[:attributes][:description])
         expect(new_community.client).to eq(client)
 
-        wicked_problem = WickedProblem.last
-        expect(wicked_problem.community).to eq(new_community)
+        scorecard = Scorecard.last
+        expect(scorecard.community).to eq(new_community)
       end
 
       specify "posting as admin - creating new initiatives" do
@@ -243,19 +243,19 @@ RSpec.describe "Wicked Problems", type: :request do
         sign_in(admin)
 
         expect do
-          post '/wicked_problems', data: data_attributes, included: included_attributes
+          post '/scorecards', data: data_attributes, included: included_attributes
         end.to change{ Initiative.count }.by(2)
 
         expect(response).to have_http_status(201)
 
-        wicked_problem = WickedProblem.last
+        scorecard = Scorecard.last
 
-        new_initiative = wicked_problem.initiatives.first
+        new_initiative = scorecard.initiatives.first
         expect(new_initiative.name).to eq(included_attributes.first[:attributes][:name])
         expect(new_initiative.description).to eq(included_attributes.first[:attributes][:description])
         expect(new_initiative.organisations.count).to eq(1)
 
-        new_initiative = wicked_problem.initiatives.second
+        new_initiative = scorecard.initiatives.second
         expect(new_initiative.name).to eq(included_attributes.second[:attributes][:name])
         expect(new_initiative.description).to eq(included_attributes.second[:attributes][:description])
         expect(new_initiative.organisations.count).to eq(2)
@@ -264,10 +264,10 @@ RSpec.describe "Wicked Problems", type: :request do
     end
   end
 
-  describe "PUT /wicked_problems" do
+  describe "PUT /scorecards" do
     let(:data_attributes) {
       {
-        type: 'wicked_problems',
+        type: 'scorecards',
         attributes: {
           name: FFaker::Lorem.words(4).join(' '),
           description: FFaker::Lorem.words(10).join(' '),
@@ -281,37 +281,37 @@ RSpec.describe "Wicked Problems", type: :request do
 
     specify "updating as admin" do
       sign_in(admin)
-      put "/wicked_problems/#{wicked_problem.id}", data: data_attributes
-      wicked_problem.reload
+      put "/scorecards/#{scorecard.id}", data: data_attributes
+      scorecard.reload
 
       expect(response).to have_http_status(200)
-      expect(wicked_problem.name).to eq(data_attributes[:attributes][:name])
-      expect(wicked_problem.description).to eq(data_attributes[:attributes][:description])
+      expect(scorecard.name).to eq(data_attributes[:attributes][:name])
+      expect(scorecard.description).to eq(data_attributes[:attributes][:description])
     end
 
     specify "updating as admin - change community" do
-      wicked_problem_old_name = wicked_problem.name
-      wicked_problem_old_description = wicked_problem.description
-      wicked_problem_old_client_id = wicked_problem.client_id
+      scorecard_old_name = scorecard.name
+      scorecard_old_description = scorecard.description
+      scorecard_old_client_id = scorecard.client_id
 
       new_community = create(:community, client: client)
 
       sign_in(admin)
       data_attributes = {
-        type: 'wicked_problems',
+        type: 'scorecards',
         relationships: {
           community: { data: { id: new_community.id } }
         }
       }
 
-      put "/wicked_problems/#{wicked_problem.id}", data: data_attributes
-      wicked_problem.reload
+      put "/scorecards/#{scorecard.id}", data: data_attributes
+      scorecard.reload
 
       expect(response).to have_http_status(200)
-      expect(wicked_problem.name).to eq(wicked_problem_old_name)
-      expect(wicked_problem.description).to eq(wicked_problem_old_description)
-      expect(wicked_problem.client.id).to eq(wicked_problem_old_client_id)
-      expect(wicked_problem.community.id).to eq(new_community.id)
+      expect(scorecard.name).to eq(scorecard_old_name)
+      expect(scorecard.description).to eq(scorecard_old_description)
+      expect(scorecard.client.id).to eq(scorecard_old_client_id)
+      expect(scorecard.community.id).to eq(new_community.id)
     end
   end
 end

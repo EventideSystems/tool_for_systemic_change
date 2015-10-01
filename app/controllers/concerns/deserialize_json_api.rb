@@ -33,15 +33,3 @@ module Concerns::DeserializeJsonApi
   end
 
 end
-
-# {
-#   type: 'wicked_problems',
-#   attributes: {
-#     name: wicked_problem_name,
-#     description: wicked_problem_description,
-#   },
-#   relationships: {
-#     community: { data: { id: community.id } },
-#     client: { data: { id: client.id } }
-#   }
-# }

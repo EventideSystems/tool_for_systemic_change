@@ -21,11 +21,11 @@ class InitiativesController < AuthenticatedController
   # POST /initiatives
   # POST /initiatives.json
   def create
-    wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+    scorecard_id = scorecard_id_from_params(initiative_params)
     organisation_ids = organisation_ids_from_params(initiative_params)
 
     attributes = initiative_params[:attributes].merge(
-      wicked_problem_id: wicked_problem_id,
+      scorecard_id: scorecard_id,
       organisation_ids: organisation_ids
     )
 
@@ -45,12 +45,12 @@ class InitiativesController < AuthenticatedController
   # PATCH/PUT /initiatives/1
   # PATCH/PUT /initiatives/1.json
   def update
-    wicked_problem_id = wicked_problem_id_from_params(initiative_params)
+    scorecard_id = scorecard_id_from_params(initiative_params)
     organisation_ids = organisation_ids_from_params(initiative_params)
 
     attributes = (initiative_params[:attributes] || {})
 
-    attributes.merge!(wicked_problem_id: wicked_problem_id) if wicked_problem_id
+    attributes.merge!(scorecard_id: scorecard_id) if scorecard_id
     attributes.merge!(organisation_ids: organisation_ids) if organisation_ids
 
     respond_to do |format|
@@ -91,8 +91,8 @@ class InitiativesController < AuthenticatedController
       nil
     end
 
-    def wicked_problem_id_from_params(params)
-      params[:relationships][:wicked_problem][:data][:id].to_i
+    def scorecard_id_from_params(params)
+      params[:relationships][:scorecard][:data][:id].to_i
     rescue
       nil
     end
@@ -102,7 +102,7 @@ class InitiativesController < AuthenticatedController
       params.require(:data).permit(
         attributes: [:name, :description],
         relationships: [
-          wicked_problem: [data: [:id]],
+          scorecard: [data: [:id]],
           organisations: [data: [:id]]
         ]
       )

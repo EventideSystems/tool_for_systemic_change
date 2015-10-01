@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :wicked_problem do
+  factory :scorecard do
     name { FFaker::Lorem.words(4).join(' ') }
     description { FFaker::Lorem.words.join(' ') }
     client { create(:client) }

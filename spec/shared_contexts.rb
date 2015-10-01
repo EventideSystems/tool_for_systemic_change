@@ -26,22 +26,22 @@ RSpec.shared_context "setup common data" do
 
   # Resources avaible to user and admin and staff
   let!(:community) { create(:community, client: client) }
-  let!(:wicked_problem) { create(:wicked_problem,
+  let!(:scorecard) { create(:scorecard,
       client: client,
       community: community) }
   let!(:organisation) { create(:organisation,
     client: client)}
-  # let!(:initiative) { create(:initiative, wicked_problem: wicked_problem, organisation: organisation )}
+  # let!(:initiative) { create(:initiative, scorecard: scorecard, organisation: organisation )}
 
   # Resources only avaible to staff
   let!(:other_client) { create(:client) }
   let!(:other_community) { create(:community, client: other_client) }
-  let!(:other_wicked_problem) { create(:wicked_problem,
+  let!(:other_scorecard) { create(:scorecard,
       client: other_client,
       community: other_community) }
   let!(:other_organisation) { create(:organisation,
     client: other_client)}
-  # let!(:other_initiative) { create(:initiative, wicked_problem: other_wicked_problem, organisation: other_organisation )}
+  # let!(:other_initiative) { create(:initiative, scorecard: other_scorecard, organisation: other_organisation )}
 end
 
 RSpec.shared_context "setup model data" do

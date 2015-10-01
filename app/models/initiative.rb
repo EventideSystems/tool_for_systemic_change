@@ -1,5 +1,5 @@
 class Initiative < ActiveRecord::Base
-  belongs_to :wicked_problem
+  belongs_to :scorecard
   # TODO Add a validation to ensure that organistions belong to same
   # administrating organisation as the initiative. NB this might be an argument
   # for converting the join table into a proper model and adding validations to
@@ -7,12 +7,12 @@ class Initiative < ActiveRecord::Base
   has_and_belongs_to_many :organisations, join_table: :initiatives_organisations
   has_many :checklist_items
 
-  validates :wicked_problem, presence: true
+  validates :scorecard, presence: true
 
   scope :for_user, ->(user) {
     unless user.staff?
-      joins(:wicked_problem).where(
-        'wicked_problems.client_id' => user.client_id
+      joins(:scorecard).where(
+        'scorecards.client_id' => user.client_id
       )
     end
   }

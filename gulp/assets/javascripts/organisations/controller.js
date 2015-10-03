@@ -12,9 +12,12 @@ angular.module('WKD.Organisations')
     var vm = this;
     var baseRef = Restangular.all('organisations');
 
-    vm._new = function () {
+    vm._list = function () {
       vm.organisation = {};
       vm.submitForm = create;
+      baseRef.getList().then(function (resp) {
+        vm.organisations = resp;
+      });
     };
 
     vm._view = function (params) {

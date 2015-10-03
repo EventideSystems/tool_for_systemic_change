@@ -31,8 +31,8 @@
     </div>
   </div>
   <div class="col-sm-offset-4">
-    <input type="submit" ng-attr-value="{{ vm.action === 'new' ? 'Create' : 'Update' }} organisation" class="btn btn-primary" ng-disabled="orgForm.$invalid">
+    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} organisation" class="btn btn-primary" ng-disabled="orgForm.$invalid">
 
-    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'new'" class="btn btn-danger">Delete organisation</button>
+    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete organisation</button>
   </div>
 </form>

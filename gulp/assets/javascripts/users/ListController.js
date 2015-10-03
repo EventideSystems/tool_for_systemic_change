@@ -20,7 +20,7 @@ angular.module('WKD.Users')
       var data = angular.copy(vm.newUser);
       data.role = data.isAdmin ? 'admin' : 'user';
       delete data.isAdmin;
-      // delete data.name; // temporary delete until api supports
+      delete data.name;
 
       $http.post('/users/invitation', { user: data }).then(function (resp) {
         vm.pending.push(resp.data.data);

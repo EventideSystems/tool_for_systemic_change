@@ -5,46 +5,38 @@ angular.module('WKD.Problems', [])
 
 .config(['$stateProvider', function ($stateProvider) {
   $stateProvider
-    .state('wkd.wicked_problems', {
+    .state('wkd.problems', {
       url: '/wicked-problems',
-      template: '<ui-view class="transition-view">'
+      template: '<ui-view>',
+      redirectTo: 'wkd.problems.list'
     })
 
-    .state('wkd.wicked_problems.new', {
-      url: '/new',
-      action: 'new',
-      templateUrl: '/templates/problems/new.html',
-      controller: 'WKD.Problems.NewController',
+    .state('wkd.problems.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/problems/list.html',
+      controller: 'WKD.Problems.Controller',
       controllerAs: 'vm'
     })
 
-    .state('wkd.wicked_problems.view', {
+    .state('wkd.problems.new', {
+      url: '/new',
+      redirectTo: 'wkd.problems.list'
+    })
+
+    .state('wkd.problems.view', {
       url: '/:id',
       action: 'view',
-      redirectTo: 'wkd.wicked_problems.view.edit',
-      templateUrl: '/templates/problems/view.html',
-      resolve: {
-        currentProblem: ['Restangular', '$stateParams', function (Restangular, $stateParams) {
-          return Restangular.one('wicked_problems', $stateParams.id).get();
-        }]
-      },
-      controller: ['$scope', 'currentProblem', function ($scope, problem) {
-        $scope.problem = problem;
-      }]
-    })
-
-    .state('wkd.wicked_problems.view.edit', {
-      url: '/edit',
-      controller: 'WKD.Problems.EditController',
+      controller: 'WKD.Problems.Controller',
+      redirectTo: 'wkd.problems.view.edit',
       controllerAs: 'vm',
-      templateUrl: '/templates/problems/edit.html'
+      templateUrl: '/templates/problems/view.html'
     })
 
-    .state('wkd.wicked_problems.view.initiatives', {
-      url: '/initiatives',
-      templateUrl: '/templates/problems/initiatives.html',
-      controller: 'WKD.Problems.InitiativeController',
-      controllerAs: 'vm'
+    .state('wkd.problems.view.edit', {
+      url: '/edit',
+      action: 'view',
+      templateUrl: '/templates/problems/edit.html'
     })
 
     ;
@@ -52,7 +44,4 @@ angular.module('WKD.Problems', [])
 
 ;
 
-require('./new-controller.js');
-require('./edit-controller.js');
-require('./initiative-controller.js');
-
+require('./controller.js');

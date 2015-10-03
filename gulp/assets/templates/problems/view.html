@@ -1,15 +1,15 @@
-<h1>Wicked Problem: {{ vm.problem.name }}</h1>
+<h1>Community: {{ vm.community.name }}</h1>
 
 <nav class="main-tabs">
   <ul class="nav nav-tabs" role="tablist">
     <li>
-      <a ui-sref-active="active" href ui-sref=".edit">
+      <a ui-sref-active="active" href ui-sref="^.edit">
         Edit Details
       </a>
     </li>
     <li>
-      <a ui-sref-active="active" ui-sref=".initiatives" href>
-        Initiatives
+      <a ui-sref-active="active" ui-sref="^.users" href>
+        Wicked Problems
       </a>
     </li>
   </ul>

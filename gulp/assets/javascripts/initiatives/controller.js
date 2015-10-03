@@ -4,7 +4,6 @@
 angular.module('WKD.Initiatives')
 
 .controller('WKD.Initiatives.Controller', [
-  'WKD.Common.SidebarService',
   '$state',
   'Restangular',
   'flashr',
@@ -12,7 +11,7 @@ angular.module('WKD.Initiatives')
   '$scope',
   '$q',
   'WKD.Common.DataModel',
-  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q, dataModel) {
+  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
 
@@ -75,7 +74,6 @@ angular.module('WKD.Initiatives')
       if (vm.insideModal) return $scope.$close(pack(vm.initiative));
 
       return baseRef.post(pack(vm.initiative)).then(function (initiative) {
-        sidebarService.addLink(initiative);
         $state.go('^.view', { id: initiative.id });
         flashr.later.success('Initiative successfully created!');
       }, function (resp) {
@@ -86,7 +84,6 @@ angular.module('WKD.Initiatives')
 
     function update() {
       return pack(vm.initiative).put().then(function () {
-        sidebarService.updateLink(vm.initiative);
         flashr.now.success('Initiative updated!');
       });
     }

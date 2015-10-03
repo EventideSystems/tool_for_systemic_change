@@ -4,14 +4,13 @@
 angular.module('WKD.Problems')
 
 .controller('WKD.Problems.NewController', [
-  'WKD.Common.SidebarService',
   '$modal',
   'Restangular',
   'flashr',
   'WKD.Common.DefaultPacker',
   '$state',
   'WizardHandler',
-  function (sidebarService, $modal, Restangular, flashr, packer, $state, WizardHandler) {
+  function ($modal, Restangular, flashr, packer, $state, WizardHandler) {
     var vm = this;
     var baseRef = Restangular.all('wicked_problems');
 
@@ -62,7 +61,6 @@ angular.module('WKD.Problems')
 
     vm.createProblem = function () {
       return baseRef.post(pack(vm.newProblem)).then(function (resp) {
-        sidebarService.addLink(resp);
         $state.go('^.view', { id: resp.id });
         flashr.later.success('New wicked problem created!');
       }, function () {

@@ -7,10 +7,9 @@ angular.module('WKD.Problems')
   'Restangular',
   'flashr',
   '$stateParams',
-  'WKD.Common.SidebarService',
   '$state',
   'currentProblem', //injected by resolve
-  function (Restangular, flashr, $stateParams, sidebarService, $state, currentProblem) {
+  function (Restangular, flashr, $stateParams, $state, currentProblem) {
     var vm = this;
 
     Restangular.all('communities').getList().then(function (resp) {
@@ -21,7 +20,6 @@ angular.module('WKD.Problems')
 
     vm.update = function () {
       return vm.problem.put().then(function () {
-        sidebarService.updateLink(vm.problem);
         flashr.now.success('Wicked problem updated!');
       });
     };
@@ -30,7 +28,6 @@ angular.module('WKD.Problems')
       if (!window.confirm('Are you sure you want to delete this?')) return;
 
       vm.problem.remove().then(function () {
-        sidebarService.removeLink(vm.problem);
         flashr.later.success('Wicked problem deleted');
         $state.go('wkd.dashboard');
       });

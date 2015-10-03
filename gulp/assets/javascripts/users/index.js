@@ -8,12 +8,7 @@ angular.module('WKD.Users', [])
     .state('wkd.users', {
       url: '/users',
       template: '<ui-view class="transition-view">',
-      redirectTo: 'wkd.users.list',
-      controller: ['WKD.Common.SidebarService', function (sidebar) {
-        if (!sidebar.currentSet.links) {
-          sidebar.loadWickedProblems();
-        }
-      }]
+      redirectTo: 'wkd.users.list'
     })
 
     .state('wkd.users.list', {

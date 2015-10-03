@@ -15,12 +15,16 @@ angular.module('WKD.Initiatives')
     var vm = this;
     var baseRef = Restangular.all('initiatives');
 
-    vm._new = function () {
+    vm._list = function () {
       loadSharedResources();
 
       vm.initiative = { organisations: [] };
       vm.submitForm = create;
       vm.insideModal = !$state.current.name.match('initiatives');
+
+      baseRef.getList().then(function (resp) {
+        vm.initiatives = resp;
+      });
     };
 
     vm._view = function (params) {
@@ -63,10 +67,10 @@ angular.module('WKD.Initiatives')
     function loadSharedResources() {
       return $q.all([
         Restangular.all('organisations').getList(),
-        Restangular.all('wicked_problems').getList()
+        Restangular.all('scorecards').getList()
       ]).then(function (resp) {
         vm.organisations = resp[0];
-        vm.problems = resp[1];
+        vm.scorecards = resp[1];
       });
     }
 
@@ -101,11 +105,11 @@ angular.module('WKD.Initiatives')
       var packed = Restangular.copy(initiative);
 
       delete packed.organisations;
-      delete packed.problem;
+      delete packed.scorecard;
 
       packed.relationships = {
         organisations: { data: initiative.organisations },
-        wickedProblem: { data: initiative.problem }
+        scorecard: { data: initiative.scorecard }
       };
 
       return packed;
@@ -114,8 +118,8 @@ angular.module('WKD.Initiatives')
     function unpack(initiative) {
       var unpacked = Restangular.copy(initiative);
 
-      unpacked.problem = _.find(vm.problems, {
-        id: initiative.relationships.wickedProblem.data.id
+      unpacked.scorecard = _.find(vm.scorecards, {
+        id: initiative.relationships.scorecard.data.id
       });
 
       unpacked.organisations = _.map(

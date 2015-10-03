@@ -6,7 +6,7 @@
       <input type="text" name="initiativeName" ng-model="vm.initiative.name" class="form-control" id="initiative-name" placeholder="enter initiative name" required>
     </div>
 
-    <div class="field-errors" ng-messages="initiativeForm.initiativeName.$error" ng-show="initiativeForm.initiativeName.$dirty">
+    <div class="field-errors" ng-messages="initiativeForm.initiativeName.$error" ng-show="initiativeForm.initiativeName.$touched">
       <p ng-message="required">Name is required.</p>
     </div>
   </div>
@@ -18,22 +18,22 @@
       <textarea id="initiative-desc" class="form-control" name="initiativeDesc" required ng-model="vm.initiative.description" placeholder="enter description"></textarea>
     </div>
 
-    <div class="field-errors" ng-messages="initiativeForm.initiativeDesc.$error" ng-show="initiativeForm.initiativeDesc.$dirty">
+    <div class="field-errors" ng-messages="initiativeForm.initiativeDesc.$error" ng-show="initiativeForm.initiativeDesc.$touched">
       <p ng-message="required">Description is required.</p>
     </div>
   </div>
 
   <div class="form-group" ng-if="!vm.insideModal">
-    <label for="initiative-problem" class="required col-sm-4 control-label">
-      <a href ng-show="vm.initiative.problem.id" ui-sref="wkd.wicked_problems.view({ id: vm.initiative.problem.id })" title="goto problem">
+    <label for="initiative-scorecard" class="required col-sm-4 control-label">
+      <a href ng-show="vm.action !== 'list' && vm.initiative.scorecard.id" ui-sref="wkd.scorecard.view({ id: vm.initiative.scorecard.id })" title="goto scorecard">
         <i class="fa fa-external-link"></i>
       </a>
-      Select a problem
+      Select a scorecard
     </label>
 
     <div class="col-sm-8">
-      <select class="form-control" ng-model="vm.initiative.problem" name="initiativeProblem" id="initiative-problem" ng-options="problem.attributes.name for problem in vm.problems">
-        <option value="">-- Assign problem --</option>
+      <select class="form-control" ng-model="vm.initiative.scorecard" name="initiativescorecard" id="initiative-scorecard" ng-options="scorecard.attributes.name for scorecard in vm.scorecards">
+        <option value="">-- Assign scorecard --</option>
       </select>
     </div>
   </div>
@@ -63,9 +63,9 @@
   </div>
 
   <div class="col-sm-offset-4">
-    <input type="submit" ng-attr-value="{{ vm.action === 'new' ? 'Create' : 'Update' }} initiative" class="btn btn-primary" ng-disabled="initiativeForm.$invalid">
+    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} initiative" class="btn btn-primary" ng-disabled="initiativeForm.$invalid">
 
-    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'new'" class="btn btn-danger">Delete initiative</button>
+    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete initiative</button>
 
     <button type="button" ng-click="$dismiss()" ng-if="vm.insideModal" class="btn btn-danger">Cancel</button>
   </div>

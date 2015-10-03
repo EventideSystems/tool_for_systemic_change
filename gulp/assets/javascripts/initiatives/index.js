@@ -7,15 +7,21 @@ angular.module('WKD.Initiatives', [])
   $stateProvider
     .state('wkd.initiatives', {
       url: '/initiatives',
-      template: '<ui-view>'
+      template: '<ui-view>',
+      redirectTo: 'wkd.initiatives.list'
     })
 
-   .state('wkd.initiatives.new', {
-      url: '/new',
-      action: 'new',
-      templateUrl: '/templates/initiatives/new.html',
+    .state('wkd.initiatives.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/initiatives/list.html',
       controller: 'WKD.Initiatives.Controller',
       controllerAs: 'vm'
+    })
+
+    .state('wkd.initiatives.new', {
+      url: '/new',
+      redirectTo: 'wkd.initiatives.list'
     })
 
     .state('wkd.initiatives.view', {

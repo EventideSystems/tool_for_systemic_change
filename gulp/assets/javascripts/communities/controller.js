@@ -4,13 +4,12 @@
 angular.module('WKD.Communities')
 
 .controller('WKD.Communities.Controller', [
-  'WKD.Common.SidebarService',
   '$state',
   'Restangular',
   'flashr',
   '$controller',
   '$scope',
-  function (sidebarService, $state, Restangular, flashr, $controller, $scope) {
+  function ($state, Restangular, flashr, $controller, $scope) {
     var vm = this;
     var baseRef = Restangular.all('communities');
 
@@ -36,7 +35,6 @@ angular.module('WKD.Communities')
           flashr.now.success('Community successfully created!');
           $scope.$close(community);
         } else {
-          sidebarService.addLink(community);
           $state.go('^.view', { id: community.id });
           flashr.later.success('Community successfully created!');
         }
@@ -48,7 +46,6 @@ angular.module('WKD.Communities')
 
     function update() {
       return vm.community.put().then(function () {
-        sidebarService.updateLink(vm.community);
         flashr.now.success('Community updated!');
       });
     }

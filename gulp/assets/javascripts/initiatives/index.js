@@ -7,10 +7,7 @@ angular.module('WKD.Initiatives', [])
   $stateProvider
     .state('wkd.initiatives', {
       url: '/initiatives',
-      template: '<ui-view>',
-      controller: ['WKD.Common.SidebarService', function (sidebar) {
-        sidebar.loadInitiatives();
-      }]
+      template: '<ui-view>'
     })
 
    .state('wkd.initiatives.new', {

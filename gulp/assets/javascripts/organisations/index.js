@@ -7,9 +7,6 @@ angular.module('WKD.Organisations', [])
   $stateProvider
     .state('wkd.organisations', {
       url: '/organisations',
-      controller: ['WKD.Common.SidebarService', function (sidebarService) {
-        sidebarService.loadOrganisations();
-      }],
       template: '<ui-view>'
     })
 

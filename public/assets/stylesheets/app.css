@@ -7349,8 +7349,8 @@ table .tablesort-asc, table .tablesort-desc {
 #main-content {
   position: absolute;
   top: 60px;
-  left: 75px;
-  right: 320px;
+  left: 80px;
+  right: 0;
   bottom: 0;
   overflow: hidden; }
   #main-content .scroller {
@@ -7367,91 +7367,11 @@ table .tablesort-asc, table .tablesort-desc {
     font-weight: 200;
     line-height: 60px; }
 
-#sidebar {
-  position: absolute;
-  width: 320px;
-  background: #eeeeee;
-  top: 60px;
-  bottom: 0;
-  right: 0;
-  overflow: hidden; }
-  #sidebar .scroller {
-    overflow-y: auto;
-    height: 100%;
-    border-bottom: 110px solid transparent; }
-  #sidebar .title {
-    height: 60px;
-    background: rgba(0, 0, 0, 0.1);
-    margin: 0; }
-  #sidebar .context-switcher {
-    position: absolute;
-    top: 15px;
-    left: 50px; }
-    #sidebar .context-switcher button {
-      background: none;
-      border: none;
-      font-size: 14px;
-      font-weight: 200; }
-  #sidebar .new-resource {
-    background: white;
-    text-align: center;
-    width: 30px;
-    height: 30px;
-    display: block;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    line-height: 30px;
-    transition: color .2s, background .2s; }
-    #sidebar .new-resource:hover {
-      background: #00a562;
-      color: white; }
-  #sidebar .context-filter {
-    position: relative; }
-    #sidebar .context-filter i {
-      position: absolute;
-      top: 50%;
-      color: rgba(0, 0, 0, 0.2);
-      left: 15px;
-      -webkit-transform: translateY(-50%);
-              transform: translateY(-50%);
-      margin-top: -2px; }
-    #sidebar .context-filter input {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      padding-left: 35px;
-      border: none;
-      background: rgba(255, 255, 255, 0.3); }
-      #sidebar .context-filter input:focus {
-        outline: none; }
-  #sidebar .links {
-    padding: 15px; }
-    #sidebar .links ul {
-      margin: 0;
-      padding: 0; }
-    #sidebar .links li {
-      list-style: none; }
-    #sidebar .links a {
-      display: block;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 12px 15px;
-      transition: background .2s, padding .2s, color .2s; }
-      #sidebar .links a:hover {
-        padding-left: 20px;
-        text-decoration: none;
-        background: rgba(0, 0, 0, 0.1); }
-      #sidebar .links a:focus {
-        text-decoration: none; }
-    #sidebar .links .active {
-      background: rgba(0, 0, 0, 0.3) !important;
-      color: white; }
-
 #main-nav {
   position: absolute;
   top: 60px;
   bottom: 0;
-  width: 75px;
+  width: 80px;
   background: rgba(0, 0, 0, 0.5); }
   #main-nav .menu-items {
     padding: 0;
@@ -7466,7 +7386,7 @@ table .tablesort-asc, table .tablesort-desc {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-weight: 200;
     height: 60px;
-    transition: background .2s;
+    transition: all .2s;
     font-size: 12px; }
     #main-nav .menu-items a:hover {
       background: #504f4f;
@@ -7475,6 +7395,9 @@ table .tablesort-asc, table .tablesort-desc {
         font-size: 18px; }
       #main-nav .menu-items a:hover .text {
         opacity: 1; }
+    #main-nav .menu-items a.lg:hover {
+      height: 80px;
+      padding: 18px 0; }
   #main-nav .menu-items a .text {
     opacity: 0;
     transition: opacity .2s; }
@@ -7601,21 +7524,21 @@ input[type="checkbox"].form-control {
     font-size: 16px;
     margin: 0; }
 
-.wicked-problems-page .or-tag {
+.scorecards-page .or-tag {
   color: #777777;
   display: block;
   margin-bottom: 15px;
   font-size: 12px; }
-.wicked-problems-page .steps-indicator {
+.scorecards-page .steps-indicator {
   margin-bottom: 45px; }
-  .wicked-problems-page .steps-indicator li a {
+  .scorecards-page .steps-indicator li a {
     transition: color .2s; }
-  .wicked-problems-page .steps-indicator li a:before {
+  .scorecards-page .steps-indicator li a:before {
     transition: background .2s;
     background: #a7cd45; }
-  .wicked-problems-page .steps-indicator .current a:before {
+  .scorecards-page .steps-indicator .current a:before {
     background: #504f4f; }
-  .wicked-problems-page .steps-indicator li a {
+  .scorecards-page .steps-indicator li a {
     font-weight: 300; }
 
 .popout-accordion {

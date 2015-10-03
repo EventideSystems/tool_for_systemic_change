@@ -13,10 +13,13 @@ angular.module('WKD.Communities')
     var vm = this;
     var baseRef = Restangular.all('communities');
 
-    vm._new = function () {
+    vm._list = function () {
       vm.community = {};
       vm.submitForm = create;
       vm.insideModal = !$state.current.name.match('communities');
+      baseRef.getList().then(function (resp) {
+        vm.communities = resp;
+      });
     };
 
     vm._view = function (params) {

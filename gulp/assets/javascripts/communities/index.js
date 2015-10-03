@@ -7,15 +7,21 @@ angular.module('WKD.Communities', [])
   $stateProvider
     .state('wkd.communities', {
       url: '/communities',
-      template: '<ui-view>'
+      template: '<ui-view>',
+      redirectTo: 'wkd.communities.list'
+    })
+
+    .state('wkd.communities.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/communities/list.html',
+      controller: 'WKD.Communities.Controller',
+      controllerAs: 'vm'
     })
 
     .state('wkd.communities.new', {
       url: '/new',
-      action: 'new',
-      templateUrl: '/templates/communities/new.html',
-      controller: 'WKD.Communities.Controller',
-      controllerAs: 'vm'
+      redirectTo: 'wkd.communities.list'
     })
 
     .state('wkd.communities.view', {

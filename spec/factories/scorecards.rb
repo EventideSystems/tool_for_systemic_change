@@ -4,6 +4,7 @@ FactoryGirl.define do
     description { FFaker::Lorem.words.join(' ') }
     client { create(:client) }
     community { create(:community, client: client )}
+    wicked_problem { create(:wicked_problem, client: client )}
   end
 
 end

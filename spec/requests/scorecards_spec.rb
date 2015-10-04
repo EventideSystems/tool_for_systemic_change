@@ -128,7 +128,8 @@ RSpec.describe "Scorecards", type: :request do
         },
         relationships: {
           community: { data: { id: community.id } },
-          client: { data: { id: client.id } }
+          client: { data: { id: client.id } },
+          wicked_problem: { data: { id: wicked_problem.id } }
         }
       }
     }
@@ -143,6 +144,7 @@ RSpec.describe "Scorecards", type: :request do
       expect(new_scorecard.description).to eq(scorecard_description)
       expect(new_scorecard.community).to eq(community)
       expect(new_scorecard.client).to eq(client)
+      expect(new_scorecard.wicked_problem).to eq(wicked_problem)
     end
 
     specify "posting as admin - without administrating organisation id" do
@@ -160,6 +162,7 @@ RSpec.describe "Scorecards", type: :request do
       expect(new_scorecard.description).to eq(scorecard_description)
       expect(new_scorecard.community).to eq(community)
       expect(new_scorecard.client).to eq(client)
+      expect(new_scorecard.wicked_problem).to eq(wicked_problem)
     end
 
     describe "creating compound records" do
@@ -172,7 +175,8 @@ RSpec.describe "Scorecards", type: :request do
             description: FFaker::Lorem.words(10).join(' '),
           },
           relationships: {
-            client: { data: { id: client.id } }
+            client: { data: { id: client.id } },
+            wicked_problem: { data: { id: wicked_problem.id } }
           }
         }
       }
@@ -264,6 +268,48 @@ RSpec.describe "Scorecards", type: :request do
         expect(new_initiative.organisations.count).to eq(2)
       end
 
+      specify "posting as admin - creating new wicked problem" do
+
+        data_attributes = {
+          type: 'scorecards',
+          attributes: {
+            name: FFaker::Lorem.words(4).join(' '),
+            description: FFaker::Lorem.words(10).join(' '),
+          },
+          relationships: {
+            client: { data: { id: client.id } },
+            community: { data: { id: community.id } }
+          }
+        }
+
+
+        included_attributes = [{
+          type: 'wicked_problems',
+          attributes: {
+            name: FFaker::Lorem.words(4).join(' '),
+            description: FFaker::Lorem.words(10).join(' '),
+          },
+          relationships: {
+            client: { data: { id: client.id } }
+          }
+        }]
+
+        sign_in(admin)
+
+        expect do
+          post '/scorecards', data: data_attributes, included: included_attributes
+        end.to change{ WickedProblem.count }.by(1)
+
+        expect(response).to have_http_status(201)
+
+        new_wicked_problem = WickedProblem.last
+        expect(new_wicked_problem.name).to eq(included_attributes.first[:attributes][:name])
+        expect(new_wicked_problem.description).to eq(included_attributes.first[:attributes][:description])
+        expect(new_wicked_problem.client).to eq(client)
+
+        scorecard = Scorecard.last
+        expect(scorecard.wicked_problem).to eq(new_wicked_problem)
+      end
     end
   end
 

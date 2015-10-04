@@ -40,5 +40,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Required by Devise
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: '192.168.20.50', port: 80 }
+
+  config.web_console.whitelisted_ips = '192.168.20.50'
 end

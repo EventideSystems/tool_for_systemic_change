@@ -12,13 +12,12 @@ $fa-font-path: '/assets/fonts';
 @import './layout/_base';
 @import './layout/_header';
 @import './layout/_main-content';
-@import './layout/_sidebar';
 @import './layout/_main-nav';
 @import './layout/_login';
 @import './layout/_forms';
 
 @import './pages/_dashboard';
-@import './pages/_problems';
+@import './pages/_scorecards';
 
 @import './components/_popout-accordion';
 @import './components/_checklist';

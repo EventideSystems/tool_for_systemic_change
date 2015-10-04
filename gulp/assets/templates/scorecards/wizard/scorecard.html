@@ -1,0 +1,25 @@
+<h2>Name scorecard</h2>
+
+<div class="form-horizontal">
+  <div class="form-group">
+    <label for="problem-name" class="required col-sm-4 control-label">Scorecard Name</label>
+
+    <div class="col-sm-8">
+      <input type="text" ng-model="vm.newScorecard.name" class="form-control" id="problem-name" placeholder="enter scorecard name">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="problem-desc" class="required col-sm-4 control-label">Description</label>
+
+    <div class="col-sm-8">
+      <textarea class="form-control" id="problem-desc" ng-model="vm.newScorecard.description" placeholder="enter description"></textarea>
+    </div>
+  </div>
+
+  <div class="col-sm-offset-4">
+    <button class="btn btn-default" wz-next>
+      Assign wicked problem <i class="fa fa-angle-double-right"></i>
+    </button>
+  </div>
+</div>

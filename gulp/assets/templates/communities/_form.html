@@ -6,7 +6,7 @@
       <input type="text" name="communityName" ng-model="vm.community.name" class="form-control" id="community-name" placeholder="enter community name" required>
     </div>
 
-    <div class="field-errors" ng-messages="communityForm.communityName.$error" ng-show="communityForm.communityName.$dirty">
+    <div class="field-errors" ng-messages="communityForm.communityName.$error" ng-show="communityForm.communityName.$touched">
       <p ng-message="required">Name is required.</p>
     </div>
   </div>
@@ -18,14 +18,14 @@
       <textarea id="community-desc" class="form-control" name="communityDesc" required ng-model="vm.community.description" placeholder="enter description"></textarea>
     </div>
 
-    <div class="field-errors" ng-messages="communityForm.communityDesc.$error" ng-show="communityForm.communityDesc.$dirty">
+    <div class="field-errors" ng-messages="communityForm.communityDesc.$error" ng-show="communityForm.communityDesc.$touched">
       <p ng-message="required">Description is required.</p>
     </div>
   </div>
   <div class="col-sm-offset-4">
-    <input type="submit" ng-attr-value="{{ vm.action === 'new' ? 'Create' : 'Update' }} community" class="btn btn-primary" ng-disabled="communityForm.$invalid">
+    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} community" class="btn btn-primary" ng-disabled="communityForm.$invalid">
 
-    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'new'" class="btn btn-danger">Delete community</button>
+    <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete community</button>
 
     <button type="button" ng-click="$dismiss()" ng-if="vm.insideModal" class="btn btn-danger">Cancel</button>
   </div>

@@ -3,5 +3,6 @@ class ScorecardSerializer < BaseSerializer
 
   belongs_to :client
   belongs_to :community
-  belongs_to :initiatives
+  belongs_to :initiatives # SMELL belongs_to? the relationship is actually has_many
+  belongs_to :wicked_problem
 end

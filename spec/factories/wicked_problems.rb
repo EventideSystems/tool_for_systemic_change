@@ -1,9 +1,7 @@
 FactoryGirl.define do
-  factory :scorecard do
-    name { FFaker::Lorem.words(4).join(' ') }
+  factory :wicked_problem do
+    name { FFaker::Lorem.words.join(' ') }
     description { FFaker::Lorem.words.join(' ') }
     client { create(:client) }
-    community { create(:community, client: client )}
   end
-
 end

@@ -8,17 +8,20 @@ angular.module('WKD.Communities', [])
     .state('wkd.communities', {
       url: '/communities',
       template: '<ui-view>',
-      controller: ['WKD.Common.SidebarService', function (sidebar) {
-        sidebar.loadCommunities();
-      }]
+      redirectTo: 'wkd.communities.list'
+    })
+
+    .state('wkd.communities.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/communities/list.html',
+      controller: 'WKD.Communities.Controller',
+      controllerAs: 'vm'
     })
 
     .state('wkd.communities.new', {
       url: '/new',
-      action: 'new',
-      templateUrl: '/templates/communities/new.html',
-      controller: 'WKD.Communities.Controller',
-      controllerAs: 'vm'
+      redirectTo: 'wkd.communities.list'
     })
 
     .state('wkd.communities.view', {

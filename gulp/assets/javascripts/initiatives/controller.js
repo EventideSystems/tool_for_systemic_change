@@ -4,7 +4,6 @@
 angular.module('WKD.Initiatives')
 
 .controller('WKD.Initiatives.Controller', [
-  'WKD.Common.SidebarService',
   '$state',
   'Restangular',
   'flashr',
@@ -12,16 +11,20 @@ angular.module('WKD.Initiatives')
   '$scope',
   '$q',
   'WKD.Common.DataModel',
-  function (sidebarService, $state, Restangular, flashr, $controller, $scope, $q, dataModel) {
+  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
 
-    vm._new = function () {
+    vm._list = function () {
       loadSharedResources();
 
       vm.initiative = { organisations: [] };
       vm.submitForm = create;
       vm.insideModal = !$state.current.name.match('initiatives');
+
+      baseRef.getList().then(function (resp) {
+        vm.initiatives = resp;
+      });
     };
 
     vm._view = function (params) {
@@ -64,10 +67,10 @@ angular.module('WKD.Initiatives')
     function loadSharedResources() {
       return $q.all([
         Restangular.all('organisations').getList(),
-        Restangular.all('wicked_problems').getList()
+        Restangular.all('scorecards').getList()
       ]).then(function (resp) {
         vm.organisations = resp[0];
-        vm.problems = resp[1];
+        vm.scorecards = resp[1];
       });
     }
 
@@ -75,7 +78,6 @@ angular.module('WKD.Initiatives')
       if (vm.insideModal) return $scope.$close(pack(vm.initiative));
 
       return baseRef.post(pack(vm.initiative)).then(function (initiative) {
-        sidebarService.addLink(initiative);
         $state.go('^.view', { id: initiative.id });
         flashr.later.success('Initiative successfully created!');
       }, function (resp) {
@@ -86,7 +88,6 @@ angular.module('WKD.Initiatives')
 
     function update() {
       return pack(vm.initiative).put().then(function () {
-        sidebarService.updateLink(vm.initiative);
         flashr.now.success('Initiative updated!');
       });
     }
@@ -104,11 +105,11 @@ angular.module('WKD.Initiatives')
       var packed = Restangular.copy(initiative);
 
       delete packed.organisations;
-      delete packed.problem;
+      delete packed.scorecard;
 
       packed.relationships = {
         organisations: { data: initiative.organisations },
-        wickedProblem: { data: initiative.problem }
+        scorecard: { data: initiative.scorecard }
       };
 
       return packed;
@@ -117,8 +118,8 @@ angular.module('WKD.Initiatives')
     function unpack(initiative) {
       var unpacked = Restangular.copy(initiative);
 
-      unpacked.problem = _.find(vm.problems, {
-        id: initiative.relationships.wickedProblem.data.id
+      unpacked.scorecard = _.find(vm.scorecards, {
+        id: initiative.relationships.scorecard.data.id
       });
 
       unpacked.organisations = _.map(

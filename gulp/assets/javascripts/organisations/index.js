@@ -7,18 +7,21 @@ angular.module('WKD.Organisations', [])
   $stateProvider
     .state('wkd.organisations', {
       url: '/organisations',
-      controller: ['WKD.Common.SidebarService', function (sidebarService) {
-        sidebarService.loadOrganisations();
-      }],
-      template: '<ui-view>'
+      template: '<ui-view>',
+      redirectTo: 'wkd.organisations.list',
+    })
+
+    .state('wkd.organisations.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/organisations/list.html',
+      controller: 'WKD.Organisations.Controller',
+      controllerAs: 'vm'
     })
 
     .state('wkd.organisations.new', {
       url: '/new',
-      action: 'new',
-      templateUrl: '/templates/organisations/new.html',
-      controller: 'WKD.Organisations.Controller',
-      controllerAs: 'vm'
+      redirectTo: 'wkd.organisations.list'
     })
 
     .state('wkd.organisations.view', {

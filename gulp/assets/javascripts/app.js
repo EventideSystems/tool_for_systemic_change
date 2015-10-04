@@ -20,10 +20,11 @@ require('../../../node_modules/angular-tablesort/js/angular-tablesort.js');
 require('./common');
 require('./dashboard');
 require('./organisations');
-require('./problems');
+require('./scorecards');
 require('./initiatives');
 require('./communities');
 require('./users');
+require('./problems');
 
 
 // Application module
@@ -44,10 +45,11 @@ angular.module('WKD', [
   'WKD.Common',
   'WKD.Dashboard',
   'WKD.Organisations',
-  'WKD.Problems',
+  'WKD.Scorecards',
   'WKD.Initiatives',
   'WKD.Communities',
-  'WKD.Users'
+  'WKD.Users',
+  'WKD.Problems'
 ])
 
 

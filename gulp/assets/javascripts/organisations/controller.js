@@ -4,18 +4,20 @@
 angular.module('WKD.Organisations')
 
 .controller('WKD.Organisations.Controller', [
-  'WKD.Common.SidebarService',
   '$state',
   'Restangular',
   'flashr',
   '$controller',
-  function (sidebarService, $state, Restangular, flashr, $controller) {
+  function ($state, Restangular, flashr, $controller) {
     var vm = this;
     var baseRef = Restangular.all('organisations');
 
-    vm._new = function () {
+    vm._list = function () {
       vm.organisation = {};
       vm.submitForm = create;
+      baseRef.getList().then(function (resp) {
+        vm.organisations = resp;
+      });
     };
 
     vm._view = function (params) {
@@ -30,7 +32,6 @@ angular.module('WKD.Organisations')
 
     function create() {
       return baseRef.post(vm.organisation).then(function (organisation) {
-        sidebarService.addLink(organisation);
         $state.go('^.view', { id: organisation.id });
         flashr.later.success('Organisation successfully created!');
       }, function (resp) {
@@ -41,7 +42,6 @@ angular.module('WKD.Organisations')
 
     function update() {
       return vm.organisation.put().then(function () {
-        sidebarService.updateLink(vm.organisation);
         flashr.now.success('Organisation updated!');
       });
     }

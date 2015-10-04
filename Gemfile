@@ -52,10 +52,11 @@ gem 'apipie-rails', :github => 'Apipie/apipie-rails'
 # System administration
 gem 'rails_admin'
 
-group :developent do
+group :development do
   # Documentation support
   gem 'railroady'
   gem 'rubocop'
+  gem 'web-console', '~> 2.0'
 end
 
 group :development, :test do

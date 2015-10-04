@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   match 'initiatives/:initiative_id/checklist_items', to: 'checklist_items#bulk_update', via: [:put, :patch], :defaults => { :format => 'json' }
   resources :organisations, :defaults => { :format => 'json' }
   resources :communities, :defaults => { :format => 'json' }
-  resources :invitations, :defaults => { :format => 'json' }
+  resources :invitations, :controller => 'custom_invitations', only: [:create], :defaults => { :format => 'json' }
   resources :scorecards, :defaults => { :format => 'json' }
   resources :wicked_problems, :defaults => { :format => 'json' }
 
@@ -18,7 +18,13 @@ Rails.application.routes.draw do
   resources :focus_areas, defaults: { :format => 'json' }, only: [:show, :index]
   resources :characteristics, defaults: { :format => 'json' }, only: [:show, :index]
 
-  devise_for :users, :controllers => { :invitations => 'invitations', :defaults => { :format => 'json' } }
+  devise_for :users, :controllers => { :invitations => 'custom_invitations' }
+
+  # devise_for :users , :skip => 'invitation'
+  # devise_scope :user do
+  #   get "/users/invitation/accept", :to => "custom_invitations#edit",   :as => 'accept_user_invitation'
+  #   put "/invitations/user",    :to => "custom_invitations#update", :as => nil
+  # end
 
   resources :users, only: [:show, :index], :defaults => { :format => 'json' }
   # The priority is based upon order of creation: first created -> highest priority.

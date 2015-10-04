@@ -134,6 +134,7 @@ Devise.setup do |config|
   # the #invited_by association is declared to be polymorphic.
   # Default: nil
   config.invited_by_class_name = 'User'
+  config.scoped_views = true
 
   # The foreign key to the inviting model (if invited_by_class_name is set)
   # Default: :invited_by_id

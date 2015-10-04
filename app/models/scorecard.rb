@@ -12,4 +12,5 @@ class Scorecard < ActiveRecord::Base
 
   validates :client, presence: true
   validates :community, presence: true
+  validates :wicked_problem, presence: true
 end

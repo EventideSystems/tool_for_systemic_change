@@ -37,13 +37,17 @@ class ScorecardsController < AuthenticatedController
     ActiveRecord::Base.transaction do
 
       included_attributes.each do |included|
-        if included.type == :community
+        if included.attributes[:client_id].nil?
+          included.attributes[:client_id] = @client.id
+        end
 
-          if included.attributes[:client_id].nil?
-            included.attributes[:client_id] = @client.id
-          end
+        case included.type
+        when :community then
           community = Community.create!(permitted_community_params(included.attributes))
           data_attributes[:community_id] = community.id
+        when :wicked_problem then
+          wicked_problem = WickedProblem.create!(permitted_wicked_problem_params(included.attributes))
+          data_attributes[:wicked_problem_id] = wicked_problem.id
         end
       end
 
@@ -115,12 +119,16 @@ class ScorecardsController < AuthenticatedController
       params.permit(:name, :description, :client_id)
     end
 
+    def permitted_wicked_problem_params(params)
+      params.permit(:name, :description, :client_id)
+    end
+
     def permitted_initiative_params(params)
       params.permit(:name, :description, :scorecard_id, organisation_ids: [])
     end
 
     def permitted_scorecard_params(params)
-      params.permit(:name, :description, :client_id, :community_id, :organisations_ids)
+      params.permit(:name, :description, :client_id, :community_id, :wicked_problem_id, :organisations_ids)
     end
 
     def scorecard_params
@@ -128,17 +136,20 @@ class ScorecardsController < AuthenticatedController
         attributes: [:name, :description],
         relationships: [
           community: [data: [:id]],
-          client: [data: [:id]]
+          client: [data: [:id]],
+          wicked_problem: [data: [:id]]
         ]
       )
     end
 
+    # TODO No longer in use - DELETE
     def client_id_from_params(params)
       params[:relationships][:client][:data][:id].to_i
     rescue
       nil
     end
 
+    # TODO No longer in use - DELETE
     def community_id_from_params(params)
       params[:relationships][:community][:data][:id].to_i
     end

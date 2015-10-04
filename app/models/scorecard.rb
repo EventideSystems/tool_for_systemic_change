@@ -1,6 +1,7 @@
 class Scorecard < ActiveRecord::Base
   belongs_to :community
   belongs_to :client, class_name: 'Client'
+  belongs_to :wicked_problem
   has_many :initiatives
 
   scope :for_user, ->(user) {
@@ -11,4 +12,5 @@ class Scorecard < ActiveRecord::Base
 
   validates :client, presence: true
   validates :community, presence: true
+  validates :wicked_problem, presence: true
 end

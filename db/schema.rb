@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150930122838) do
+ActiveRecord::Schema.define(version: 20151004070525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,9 +92,10 @@ ActiveRecord::Schema.define(version: 20150930122838) do
     t.string   "name"
     t.string   "description"
     t.integer  "community_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "client_id"
+    t.integer  "wicked_problem_id"
   end
 
   create_table "sectors", force: :cascade do |t|
@@ -137,5 +138,13 @@ ActiveRecord::Schema.define(version: 20150930122838) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "wicked_problems", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "client_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
 end

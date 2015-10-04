@@ -127,7 +127,7 @@ RSpec.describe "Organisations", type: :request do
       expect(new_organisation.client).to eq(client)
     end
 
-    specify "posting as admin - without administrating organisation id" do
+    specify "posting as admin - without client id" do
       data_attributes.delete(:relationships)
 
       sign_in(admin)

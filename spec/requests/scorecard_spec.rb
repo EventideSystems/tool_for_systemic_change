@@ -33,6 +33,9 @@ RSpec.describe "Scorecards", type: :request do
       expect(relationships_data['community']['data']['id'])
         .to eq(community.id.to_s)
 
+      expect(relationships_data['wickedProblem']['data']['id'])
+        .to eq(wicked_problem.id.to_s)
+
       expect(relationships_data['initiatives']['data'].count).to eq(1)
 
       expect(include_data['relationships']['organisations']['data'].first['id'].to_i).to eq(organisation.id)

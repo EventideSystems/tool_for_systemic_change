@@ -1,4 +1,4 @@
-class CustomInvitationsController < Devise::InvitationsController
+class InvitationsController < Devise::InvitationsController
 
   before_filter :configure_permitted_parameters
   before_filter :set_default_role_param, only: :create

@@ -8,7 +8,15 @@ angular.module('WKD.Scorecards', [])
     .state('wkd.scorecards', {
       url: '/scorecards',
       template: '<ui-view class="transition-view">',
-      redirectTo: 'wkd.scorecards.new'
+      redirectTo: 'wkd.scorecards.list'
+    })
+
+    .state('wkd.scorecards.list', {
+      url: '/',
+      action: 'list',
+      templateUrl: '/templates/scorecards/list.html',
+      controller: 'WKD.Scorecards.ListController',
+      controllerAs: 'vm'
     })
 
     .state('wkd.scorecards.new', {
@@ -55,5 +63,6 @@ angular.module('WKD.Scorecards', [])
 
 require('./new-controller.js');
 require('./edit-controller.js');
+require('./list-controller.js');
 require('./initiative-controller.js');
 

@@ -7,11 +7,11 @@ angular.module('WKD.Scorecards')
   'flashr',
   'Restangular',
   'WKD.Common.DataModel',
-  'currentProblem', //injected by resolve
-  function (flashr, Restangular, dataModel, currentProblem) {
+  'currentCard', //injected by resolve
+  function (flashr, Restangular, dataModel, currentCard) {
     var vm = this;
 
-    vm.initiatives = _.where(currentProblem.included, { type: 'initiatives' });
+    vm.initiatives = _.where(currentCard.included, { type: 'initiatives' });
 
     vm.showChecklist = function (initiative) {
       if (initiative.$showChecklist) {

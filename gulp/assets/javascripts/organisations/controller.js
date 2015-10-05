@@ -51,7 +51,7 @@ angular.module('WKD.Organisations')
 
       vm.organisation.remove().then(function () {
         flashr.later.success('Organisation deleted');
-        $state.go('wkd.dashboard');
+        $state.go('wkd.organisations');
       });
     }
   }

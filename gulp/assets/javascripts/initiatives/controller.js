@@ -27,6 +27,14 @@ angular.module('WKD.Initiatives')
       });
     };
 
+    vm._new = function () {
+      loadSharedResources();
+      vm.insideModal = true;
+      vm.initiative = { organisations: [] };
+      vm.submitForm = create;
+      vm.action = 'list';
+    };
+
     vm._view = function (params) {
       vm.submitForm = update;
       vm.deleteResource = destroy;
@@ -97,7 +105,7 @@ angular.module('WKD.Initiatives')
 
       vm.initiative.remove().then(function () {
         flashr.later.success('Initiative deleted');
-        $state.go('wkd.dashboard');
+        $state.go('wkd.initiatives');
       });
     }
 

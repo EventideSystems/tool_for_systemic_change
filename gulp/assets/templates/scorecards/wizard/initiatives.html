@@ -7,14 +7,14 @@
 </h2>
 
 <div class="form-horizontal">
-  <em class="or-tag" ng-hide="vm.newProblem.initiatives.length">No initiatives added</em>
+  <em class="or-tag" ng-hide="vm.newScorecard.initiatives.length">No initiatives added</em>
 
-  <div class="form-group" ng-show="vm.newProblem.initiatives.length">
+  <div class="form-group" ng-show="vm.newScorecard.initiatives.length">
     <label class="col-sm-4 control-label">Added initiatives</label>
 
     <div class="col-sm-8">
       <ul class="block-list">
-        <li ng-repeat="initiative in vm.newProblem.initiatives">
+        <li ng-repeat="initiative in vm.newScorecard.initiatives">
           <i class="ico fa-lightbulb-o fa"></i>
           {{ initiative.name }}
           <div class="actions">
@@ -27,14 +27,17 @@
     </div>
   </div>
 
-  <div class="col-sm-offset-4" ng-show="vm.newProblem.initiatives.length">
+  <div class="col-sm-offset-4" ng-show="vm.newScorecard.initiatives.length">
     <button class="btn btn-default" wz-next>
       Preview <i class="fa fa-angle-double-right"></i>
     </button>
   </div>
 </div>
 
-<script type="text/ng-template" id="/templates/problems/initiatives-modal.html">
-  <div class="modal-body" ng-include="'/templates/initiatives/new.html'">
+<script type="text/ng-template" id="/templates/scorecards/initiatives-modal.html">
+  <div class="modal-body">
+    <h1>New Initiative</h1>
+    <div ng-include="'/templates/initiatives/_form.html'">></div>
   </div>
 </script>
+

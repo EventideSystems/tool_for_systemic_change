@@ -7258,7 +7258,7 @@ body {
 h2 {
   font-size: 16px;
   font-weight: 400;
-  border-bottom: 1px solid #00a562;
+  border-bottom: 1px solid #00b9f2;
   padding-bottom: 10px;
   margin-bottom: 20px;
   color: #504f4f; }
@@ -7387,7 +7387,8 @@ table .tablesort-asc, table .tablesort-desc {
     font-weight: 200;
     height: 60px;
     transition: all .2s;
-    font-size: 12px; }
+    font-size: 12px;
+    overflow: hidden; }
     #main-nav .menu-items a:hover {
       background: #504f4f;
       text-decoration: none; }
@@ -7505,7 +7506,7 @@ input[type="checkbox"].form-control {
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1); }
 .dashboard-page .widget header {
-  background: #a7cd45;
+  background: #00b9f2;
   color: white;
   padding: 10px 15px; }
 .dashboard-page .widget .content {
@@ -7535,7 +7536,7 @@ input[type="checkbox"].form-control {
     transition: color .2s; }
   .scorecards-page .steps-indicator li a:before {
     transition: background .2s;
-    background: #a7cd45; }
+    background: #00b9f2; }
   .scorecards-page .steps-indicator .current a:before {
     background: #504f4f; }
   .scorecards-page .steps-indicator li a {
@@ -7572,6 +7573,8 @@ input[type="checkbox"].form-control {
 
 .checklist .actions {
   float: right; }
+  .checklist .actions .actioned {
+    color: rgba(0, 0, 0, 0.8); }
 .checklist .focus-group {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -7621,7 +7624,7 @@ input[type="checkbox"].form-control {
   margin-bottom: 30px; }
   .action-panel .toggle {
     display: block;
-    background: #a7cd45;
+    background: #00b9f2;
     padding: 10px 15px;
     color: white;
     transition: background .2s; }
@@ -7629,7 +7632,7 @@ input[type="checkbox"].form-control {
       margin-right: 8px; }
     .action-panel .toggle:hover {
       text-decoration: none;
-      background: #b1d259; }
+      background: #0cc6ff; }
   .action-panel .content {
     padding: 15px;
     background: #eeeeee; }

@@ -12,31 +12,36 @@ angular.module('WKD.Scorecards')
   'WizardHandler',
   function ($modal, Restangular, flashr, packer, $state, WizardHandler) {
     var vm = this;
-    var baseRef = Restangular.all('wicked_problems');
+    var baseRef = Restangular.all('scorecards');
 
-    vm.newProblem = { type: 'wicked_problems', initiatives: [], included: [] };
+    vm.newScorecard = { type: 'scorecards', initiatives: [], included: [] };
 
     Restangular.all('communities').getList().then(function (resp) {
       vm.communities = resp;
-      vm.newProblem.community = _.first(vm.communities);
+      vm.newScorecard.community = _.first(vm.communities);
     });
 
     Restangular.all('initiatives').getList().then(function (resp) {
       vm.initiatives = resp;
     });
 
+    Restangular.all('wicked_problems').getList().then(function (resp) {
+      vm.problems = resp;
+      vm.newScorecard.problem = _.first(vm.problems);
+    });
+
     vm.addSelectedInitiative = function () {
-      if (_.find(vm.newProblem.initiatives, { id: vm.selectInitiative.id })) {
-        flashr.now.error('Initiative already exists on this wicked problem');
+      if (_.find(vm.newScorecard.initiatives, {id: vm.selectInitiative.id})) {
+        flashr.now.error('Initiative already exists on this scorecard');
       } else {
-        vm.newProblem.initiatives.push(vm.selectInitiative);
+        vm.newScorecard.initiatives.push(vm.selectInitiative);
       }
 
       vm.selectInitiative = null;
     };
 
     vm.removeInitiative = function (initiative) {
-      _.remove(vm.newProblem.initiatives, initiative);
+      _.remove(vm.newScorecard.initiatives, initiative);
     };
 
     // Opens a modal for creating a new resource (community or initiative), reuses controller/template from /:resource/new to avoid duplication
@@ -44,32 +49,35 @@ angular.module('WKD.Scorecards')
       var ctrl = 'WKD.' + _.capitalize(resource) + '.Controller';
 
       $modal.open({
-        templateUrl: '/templates/problems/' + resource + '-modal.html',
+        templateUrl: '/templates/scorecards/' + resource + '-modal.html',
         controller: ctrl,
         controllerAs: 'vm',
         size: 'lg'
       }).result.then(function (resp) {
         if (resource === 'communities') {
           vm.communities.push(resp);
-          vm.newProblem.community = resp;
+          vm.newScorecard.community = resp;
+        } else if (resource === 'problems') {
+          vm.problems.push(resp);
+          vm.newScorecard.problem = resp;
         } else {
-          vm.newProblem.initiatives.push(resp);
+          vm.newScorecard.initiatives.push(resp);
           vm.initiatives.push(resp);
         }
       });
     };
 
-    vm.createProblem = function () {
-      return baseRef.post(pack(vm.newProblem)).then(function (resp) {
+    vm.createScorecard = function () {
+      return baseRef.post(pack(vm.newScorecard)).then(function (resp) {
         $state.go('^.view', { id: resp.id });
-        flashr.later.success('New wicked problem created!');
+        flashr.later.success('New scorecard created!');
       }, function () {
         // @todo: no error handling, add a global error interceptor
       });
     };
 
     vm.gotoStep = function (step) {
-      WizardHandler.wizard('problem-wizard').goTo(step);
+      WizardHandler.wizard('scorecard-wizard').goTo(step);
     };
 
     /////////////////////////////////////////////////////////////////////////
@@ -92,9 +100,11 @@ angular.module('WKD.Scorecards')
       });
 
       packed.relationships.community = packer.wrap({id: packed.community.id});
+      packed.relationships.wickedProblem = packer.wrap({id:packed.problem.id});
 
       delete packed.community;
       delete packed.initiatives;
+      delete packed.problem;
 
       return packed;
     }

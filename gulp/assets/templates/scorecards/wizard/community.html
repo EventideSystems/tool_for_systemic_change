@@ -6,26 +6,29 @@
       <label for="problem-community" class="col-sm-4 control-label">Select a community</label>
 
       <div class="col-sm-8">
-        <select class="form-control" id="problem-community" ng-model="vm.newProblem.community" ng-options="community.attributes.name for community in vm.communities">
+        <select class="form-control" id="problem-community" ng-model="vm.newScorecard.community" ng-options="community.attributes.name for community in vm.communities">
         </select>
       </div>
     </div>
 
-    <em class="col-sm-offset-4 or-tag">or <a ng-click="vm.openModal('communities')"href>create a new community</a></em>
+    <em class="col-sm-offset-4 or-tag">or <a ng-click="vm.openModal('communities')" href>create a new community</a></em>
   </div>
 
   <div ng-hide="vm.communities.length">
-    <em class="or-tag">You have no communities setup, <a ng-click="vm.openModal('communities')"href>create one now?</a></em>
+    <em class="or-tag">You have no communities setup, <a ng-click="vm.openModal('communities')" href>create one now?</a></em>
   </div>
 
-  <div class="col-sm-offset-4" ng-show="vm.newProblem.community">
+  <div class="col-sm-offset-4" ng-show="vm.newScorecard.community">
     <button class="btn btn-default" wz-next>
       Assign Initiatives <i class="fa fa-angle-double-right"></i>
     </button>
   </div>
 </div>
 
-<script type="text/ng-template" id="/templates/problems/communities-modal.html">
-  <div class="modal-body" ng-include="'/templates/communities/new.html'">
+
+<script type="text/ng-template" id="/templates/scorecards/communities-modal.html">
+  <div class="modal-body">
+    <h1>New Community</h1>
+    <div ng-include="'/templates/communities/_form.html'">></div>
   </div>
 </script>

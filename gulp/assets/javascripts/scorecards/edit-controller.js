@@ -8,28 +8,32 @@ angular.module('WKD.Scorecards')
   'flashr',
   '$stateParams',
   '$state',
-  'currentProblem', //injected by resolve
-  function (Restangular, flashr, $stateParams, $state, currentProblem) {
+  'currentCard', //injected by resolve
+  function (Restangular, flashr, $stateParams, $state, currentCard) {
     var vm = this;
 
     Restangular.all('communities').getList().then(function (resp) {
       vm.communities = resp;
     });
 
-    vm.problem = currentProblem;
+    Restangular.all('wicked_problems').getList().then(function (resp) {
+      vm.problems = resp;
+    });
+
+    vm.scorecard = currentCard;
 
     vm.update = function () {
-      return vm.problem.put().then(function () {
-        flashr.now.success('Wicked problem updated!');
+      return vm.scorecard.put().then(function () {
+        flashr.now.success('Scorecard updated!');
       });
     };
 
     vm.destroy = function () {
       if (!window.confirm('Are you sure you want to delete this?')) return;
 
-      vm.problem.remove().then(function () {
-        flashr.later.success('Wicked problem deleted');
-        $state.go('wkd.dashboard');
+      vm.scorecard.remove().then(function () {
+        flashr.later.success('Scorecard deleted');
+        $state.go('wkd.scorecards');
       });
     };
 

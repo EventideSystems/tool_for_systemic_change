@@ -1,9 +1,7 @@
-
-
 <div ng-class="{ open: focusGroup.showFocusAreas }" class="focus-group" ng-repeat="focusGroup in (initiative.$focusGroups || vm.focusGroups)">
   <h3>
     <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas">
-      {{ ::focusGroup.attributes.name }}
+      Focus Area {{::$index+1}}: {{ ::focusGroup.attributes.name }}
     </a>
 
     <div class="actions">
@@ -28,7 +26,7 @@
             <a href title="show video tutoral">
               <i class="fa fa-youtube-play"></i>
             </a>
-            <a href title="enter comments" ng-click="characteristic.$showCommentSection = true">
+            <a href title="enter comments" ng-click="characteristic.$showCommentSection = true" ng-class="{ actioned: characteristic.checklistItem.attributes.comment }">
               <i class="fa fa-comments-o"></i>
             </a>
           </div>

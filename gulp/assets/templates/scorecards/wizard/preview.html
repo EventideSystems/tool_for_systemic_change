@@ -1,33 +1,45 @@
 <h2>
-  Wicked Problem <strong>{{ vm.newProblem.name }}</strong>
+  Scorecard <strong>{{ vm.newScorecard.name }}</strong>
 
   <div class="actions">
     <a href title="edit details" ng-click="vm.gotoStep(0)"><i class="fa fa-pencil-square-o"></i> edit</a>
   </div>
 </h2>
 
-<p>{{ vm.newProblem.description }}</p>
+<p>{{ vm.newScorecard.description }}</p>
+
 
 <h2>
-  Community <strong>{{ vm.newProblem.community.attributes.name }}</strong>
+  Wicked Problem <strong>{{ vm.newScorecard.problem.attributes.name }}</strong>
   <div class="actions">
-    <a href title="edit community" ng-click="vm.gotoStep(1)"><i class="fa fa-pencil-square-o"></i> edit</a>
+    <a href title="edit wicked problem" ng-click="vm.gotoStep(1)"><i class="fa fa-pencil-square-o"></i> edit</a>
   </div>
 </h2>
 
 <p>
-  {{ vm.newProblem.community.attributes.description }}
+  {{ vm.newScorecard.problem.attributes.description }}
+</p>
+
+<h2>
+  Community <strong>{{ vm.newScorecard.community.attributes.name }}</strong>
+  <div class="actions">
+    <a href title="edit community" ng-click="vm.gotoStep(2)"><i class="fa fa-pencil-square-o"></i> edit</a>
+  </div>
+</h2>
+
+<p>
+  {{ vm.newScorecard.community.attributes.description }}
 </p>
 
 <h2>
   Initiatives
   <div class="actions">
-    <a href title="edit initiatives" ng-click="vm.gotoStep(2) "><i class="fa fa-pencil-square-o"></i> edit</a>
+    <a href title="edit initiatives" ng-click="vm.gotoStep(3) "><i class="fa fa-pencil-square-o"></i> edit</a>
   </div>
 </h2>
 
 <ul class="block-list">
-  <li ng-repeat="initiative in vm.newProblem.initiatives">
+  <li ng-repeat="initiative in vm.newScorecard.initiatives">
     <i class="ico fa-lightbulb-o fa"></i>
     {{ initiative.name }}
 
@@ -44,4 +56,6 @@
   </li>
 </ul>
 
-<button class="btn btn-primary" ng-click="vm.createProblem();">Create Wicked Problem</button>
+<button class="btn btn-primary" ng-click="vm.createScorecard();">
+  Create Scorecard
+</button>

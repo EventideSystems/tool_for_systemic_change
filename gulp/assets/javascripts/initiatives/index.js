@@ -40,7 +40,7 @@ angular.module('WKD.Initiatives', [])
     })
 
     .state('wkd.initiatives.view.checklist', {
-      url: '/checklist',
+      url: '/characteristics',
       action: 'checklist',
       controller: 'WKD.Initiatives.Controller',
       controllerAs: 'vm',

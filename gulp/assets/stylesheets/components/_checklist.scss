@@ -1,6 +1,10 @@
 .checklist {
   .actions {
     float: right;
+
+    .actioned {
+      color: $dark-80;
+    }
   }
 
   .focus-group {

@@ -16,10 +16,16 @@ angular.module('WKD.Communities')
     vm._list = function () {
       vm.community = {};
       vm.submitForm = create;
-      vm.insideModal = !$state.current.name.match('communities');
       baseRef.getList().then(function (resp) {
         vm.communities = resp;
       });
+    };
+
+    vm._new = function () {
+      vm.insideModal = true;
+      vm.community = {};
+      vm.submitForm = create;
+      vm.action = 'list';
     };
 
     vm._view = function (params) {
@@ -58,7 +64,7 @@ angular.module('WKD.Communities')
 
       vm.community.remove().then(function () {
         flashr.later.success('Community deleted');
-        $state.go('wkd.dashboard');
+        $state.go('wkd.communities');
       });
     }
   }

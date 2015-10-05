@@ -1,38 +1,50 @@
-<h2>Wicked Problem Details</h2>
+<h2>Scorecard Details</h2>
 
 <form class="form-horizontal" ng-submit="vm.update()">
   <div class="form-group">
-    <label for="problem-name" class="col-sm-4 control-label">Wicked Problem Name</label>
+    <label for="scorecard-name" class="col-sm-4 control-label">Scorecard Name</label>
 
     <div class="col-sm-8">
-      <input type="text" ng-model="vm.problem.name" class="form-control" id="problem-name" placeholder="enter wicked problem name">
+      <input type="text" ng-model="vm.scorecard.name" class="form-control" id="scorecard-name" placeholder="enter scorecard name">
     </div>
   </div>
 
   <div class="form-group">
-    <label for="problem-desc" class="col-sm-4 control-label">Description</label>
+    <label for="scorecard-desc" class="col-sm-4 control-label">Description</label>
 
     <div class="col-sm-8">
-      <textarea class="form-control" id="problem-desc" ng-model="vm.problem.description" placeholder="enter description"></textarea>
+      <textarea class="form-control" id="scorecard-desc" ng-model="vm.scorecard.description" placeholder="enter description"></textarea>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="problem-community" class="col-sm-4 control-label">
-      <a href ui-sref="wkd.communities.view({ id: vm.problem.relationships.community.data.id })" title="goto community"><i class="fa fa-external-link"></i></a> Community
+    <label for="scorecard-problem" class="col-sm-4 control-label">
+      <a href ui-sref="wkd.problems.view({ id: vm.scorecard.relationships.wickedProblem.data.id })" title="goto wicked problem"><i class="fa fa-external-link"></i></a> Wicked Problem
     </label>
 
     <div class="col-sm-8">
-      <select class="form-control" id="problem-community" ng-model="vm.problem.relationships.community.data" ng-options="community.attributes.name for community in vm.communities track by community.id">
+      <select class="form-control" id="scorecard-problem" ng-model="vm.scorecard.relationships.wickedProblem.data" ng-options="wickedProblem.attributes.name for wickedProblem in vm.problems track by wickedProblem.id">
+      </select>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="scorecard-community" class="col-sm-4 control-label">
+      <a href ui-sref="wkd.communities.view({ id: vm.scorecard.relationships.community.data.id })" title="goto community"><i class="fa fa-external-link"></i></a> Community
+    </label>
+
+    <div class="col-sm-8">
+      <select class="form-control" id="scorecard-community" ng-model="vm.scorecard.relationships.community.data" ng-options="community.attributes.name for community in vm.communities track by community.id">
       </select>
     </div>
   </div>
 
   <div class="col-sm-offset-4">
-    <input type="submit" class="btn btn-primary" value="Update problem">
+    <input type="submit" class="btn btn-primary" value="Update scorecard">
 
     <button class="btn btn-danger" type="button" ng-click="vm.destroy()">
-      Delete problem
+      Delete scorecard
     </button>
   </div>
 </form>

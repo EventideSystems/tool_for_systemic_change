@@ -6,7 +6,7 @@
       <label for="scorecard-problem" class="col-sm-4 control-label">Select a problem</label>
 
       <div class="col-sm-8">
-        <select class="form-control" id="scorecard-problem" ng-model="vm.newProblem.problem" ng-options="problem.attributes.name for problem in vm.problems">
+        <select class="form-control" id="scorecard-problem" ng-model="vm.newScorecard.problem" ng-options="problem.attributes.name for problem in vm.problems">
         </select>
       </div>
     </div>
@@ -18,14 +18,16 @@
     <em class="or-tag">You have no problems setup, <a ng-click="vm.openModal('problems')"href>create one now?</a></em>
   </div>
 
-  <div class="col-sm-offset-4" ng-show="vm.newProblem.problem">
+  <div class="col-sm-offset-4" ng-show="vm.newScorecard.problem">
     <button class="btn btn-default" wz-next>
-      Assign Initiatives <i class="fa fa-angle-double-right"></i>
+      Assign Community <i class="fa fa-angle-double-right"></i>
     </button>
   </div>
 </div>
 
-<script type="text/ng-template" id="/templates/problems/problems-modal.html">
-  <div class="modal-body" ng-include="'/templates/problems/new.html'">
+<script type="text/ng-template" id="/templates/scorecards/problems-modal.html">
+  <div class="modal-body">
+    <h1>New Wicked Problem</h1>
+    <div ng-include="'/templates/problems/_form.html'">></div>
   </div>
 </script>

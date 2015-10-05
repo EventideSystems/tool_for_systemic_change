@@ -22,6 +22,14 @@ angular.module('WKD.Problems')
       });
     };
 
+    // This only gets called when inside modal
+    vm._new = function () {
+      vm.problem = {};
+      vm.submitForm = create;
+      vm.insideModal = true;
+      vm.action = 'list'; // shows corret buttons inside modal
+    };
+
     vm._view = function (params) {
       vm.submitForm = update;
       vm.deleteResource = destroy;
@@ -58,7 +66,7 @@ angular.module('WKD.Problems')
 
       vm.problem.remove().then(function () {
         flashr.later.success('Wicked problem deleted');
-        $state.go('wkd.dashboard');
+        $state.go('wkd.problems');
       });
     }
   }

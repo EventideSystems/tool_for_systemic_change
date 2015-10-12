@@ -158,9 +158,6 @@ RSpec.describe "Communities", type: :request do
         attributes: {
           name: community_new_name,
           description: community_new_description,
-        },
-        relationships: {
-          client: { data: { id: client.id } }
         }
       }
     }

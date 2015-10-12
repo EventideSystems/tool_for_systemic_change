@@ -9,4 +9,7 @@ class AuthenticatedController < ApplicationController
     render json: exception, status: 403
   end
 
+  def authenticate_staff_user!
+    raise User::NotAuthorized unless current_user.staff?
+  end
 end

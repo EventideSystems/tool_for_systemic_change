@@ -5,7 +5,6 @@ class Client < ActiveRecord::Base
   has_many :users
   belongs_to :sector
 
-  # SMELL
   scope :for_user, ->(user) {
     unless user.staff?
       where(id: user.client.id)

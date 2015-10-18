@@ -9,13 +9,17 @@ class FocusAreasController < AuthenticatedController
   def index
     @focus_areas = FocusArea.all
 
-    render json: @focus_areas, include: ['characteristics', 'focusAreaGroup']
+    render json: @focus_areas,
+      include: ['characteristics', 'focusAreaGroup'],
+      each_serializer: FocusAreaWithCharacteristicsSerializer
   end
 
   api :GET, '/focus_areas/:id'
   param :id, :number, required: true
   def show
-    render json: @focus_area, include: ['characteristics', 'focusAreaGroup']
+    render json: @focus_area,
+      include: ['characteristics', 'focusAreaGroup'],
+      serializer: FocusAreaWithCharacteristicsSerializer
   end
 
   private

@@ -111,3 +111,20 @@ There are many benefits but the main one is giving us the full ecosystem of mode
 And many other cool things that make life easier.
 
 While there are gems that try and make these things more confortable for a rails dev, they don't offer any real value over the real thing.
+
+
+## Styleguides
+
+Refer to the [Rails Style Guide](https://github.com/bbatsov/rails-style-guide) for details on our preferred Ruby / Rails coding style.
+
+NB: We use Rubocop to enforce consistent styling. Please ensure you run Rubocop in Rails mode to check for violations:
+
+```
+bundle exec rubocop -R
+```
+or
+
+```
+bundle exec rubocop -Ra # autofix errors
+```
+

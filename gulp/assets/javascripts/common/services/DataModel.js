@@ -38,6 +38,10 @@ angular.module('WKD.Common')
         }).value();
     };
 
+    factory.get = function () {
+      return cachedModel;
+    };
+
     function makeFindByFn(type, parentType) {
       return function (data, id) {
         var findBy = { type: type };

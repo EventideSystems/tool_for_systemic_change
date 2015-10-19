@@ -1,7 +1,7 @@
 <div ng-class="{ open: focusGroup.showFocusAreas }" class="focus-group" ng-repeat="focusGroup in (initiative.$focusGroups || vm.focusGroups)">
   <h3>
     <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas">
-      Focus Area {{::$index+1}}: {{ ::focusGroup.attributes.name }}
+      {{ ::focusGroup.attributes.name }}
     </a>
 
     <div class="actions">
@@ -18,7 +18,7 @@
           <label class="checklist-title">
             <input type="checkbox" ng-model="characteristic.checklistItem.attributes.checked" ng-change="characteristic.checklistItem.put()">
             <strong class="title">
-              {{ ::characteristic.attributes.name | ucfirst }}
+              {{ ::characteristic.attributes.name }}
             </strong>
           </label>
 

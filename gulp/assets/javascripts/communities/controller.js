@@ -49,6 +49,7 @@ angular.module('WKD.Communities')
         }
       }, function (resp) {
         vm.errors = resp.errors;
+        console.log(vm.errors);
         flashr.now.error('Failed to create community');
       });
     }

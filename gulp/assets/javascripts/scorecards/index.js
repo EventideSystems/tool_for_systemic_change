@@ -30,7 +30,7 @@ angular.module('WKD.Scorecards', [])
     .state('wkd.scorecards.view', {
       url: '/:id',
       action: 'view',
-      redirectTo: 'wkd.scorecards.view.edit',
+      redirectTo: 'wkd.scorecards.view.scorecard',
       templateUrl: '/templates/scorecards/view.html',
       resolve: {
         currentCard: ['Restangular', '$stateParams', function (Restangular, $stateParams) {
@@ -49,6 +49,13 @@ angular.module('WKD.Scorecards', [])
       templateUrl: '/templates/scorecards/edit.html'
     })
 
+    .state('wkd.scorecards.view.scorecard', {
+      url: '/view',
+      controller: 'WKD.Scorecards.ScorecardController',
+      controllerAs: 'vm',
+      templateUrl: '/templates/scorecards/scorecard.html'
+    })
+
     .state('wkd.scorecards.view.initiatives', {
       url: '/initiatives',
       templateUrl: '/templates/scorecards/initiatives.html',
@@ -65,4 +72,5 @@ require('./new-controller.js');
 require('./edit-controller.js');
 require('./list-controller.js');
 require('./initiative-controller.js');
+require('./scorecard-controller.js');
 

@@ -3,11 +3,17 @@
 <div class="form-horizontal">
   <div ng-show="vm.problems.length">
     <div class="form-group border-top">
-      <label for="scorecard-problem" class="col-sm-4 control-label">Select a problem</label>
+      <label for="scorecard-problem" class="col-sm-4 control-label">Select a Wicked Problem</label>
 
       <div class="col-sm-8">
-        <select class="form-control" id="scorecard-problem" ng-model="vm.newScorecard.problem" ng-options="problem.attributes.name for problem in vm.problems">
-        </select>
+        <ui-select ng-model="vm.newScorecard.problem" theme="bootstrap">
+          <ui-select-match placeholder="-- Select a Wicked Problem --">
+            {{ $select.selected.attributes.name }}
+          </ui-select-match>
+          <ui-select-choices repeat="problem in vm.problems | filter:{ attributes: { name: $select.search } } track by problem.id">
+            <div ng-bind-html="problem.attributes.name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 

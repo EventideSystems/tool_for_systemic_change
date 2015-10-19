@@ -4,7 +4,7 @@
 
 .scorecard-matrix {
   $colors:
-    (1 #FF9600) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
+    (1 red) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
     (5 #2E74BA) (6 #009BCC) (7 #008C8C) (8 #00CCAA)
     (9 #1CB85D);
 
@@ -21,6 +21,7 @@
   padding-bottom: 150px; // padding for charateristic titles
 
   table {
+    margin-top: 30px;
     width: 1700px;
     overflow-y: auto;
     border-collapse: separate;
@@ -88,7 +89,7 @@
   }
 
   .gap.inverse {
-    background: red !important;
+    background: #333333 !important;
   }
 
   .legend {
@@ -107,4 +108,11 @@
       font-size: 11px;
     }
   }
+}
+
+
+.scorecard-matrix-controls {
+  background: $dark-10;
+  margin-bottom: 60px;
+  padding: 10px;
 }

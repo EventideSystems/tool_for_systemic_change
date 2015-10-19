@@ -50,9 +50,11 @@ angular.module('WKD.Common')
           findBy.relationships = {};
           findBy.relationships[parentType] = { data: { id: id } };
         }
-        return _.where(data, findBy);
+        return _.sortBy(_.where(data, findBy), function (val) {
+          return val.attributes.position;
+        });
       };
-    };
+    }
 
     return factory;
   }

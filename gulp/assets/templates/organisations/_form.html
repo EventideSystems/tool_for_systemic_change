@@ -1,4 +1,4 @@
-<form ng-submit="vm.submitForm()" name="orgForm" class="form-horizontal" novalidate>
+<form ng-submit="vm.submitForm()" name="vm.orgForm" class="form-horizontal" novalidate>
   <div class="form-group">
     <label for="org-name" class="required col-sm-4 control-label">Organisation Name</label>
 
@@ -6,7 +6,7 @@
       <input type="text" name="orgName" ng-model="vm.organisation.name" class="form-control" id="org-name" placeholder="enter organisation name" required>
     </div>
 
-    <div class="field-errors" ng-messages="orgForm.orgName.$error" ng-show="orgForm.orgName.$dirty">
+    <div class="field-errors" ng-messages="vm.orgForm.orgName.$error" ng-show="vm.orgForm.orgName.$touched">
       <p ng-message="required">Name is required.</p>
     </div>
   </div>
@@ -26,12 +26,12 @@
       <textarea id="org-desc" class="form-control" name="orgDesc" required ng-model="vm.organisation.description" placeholder="enter description"></textarea>
     </div>
 
-    <div class="field-errors" ng-messages="orgForm.orgDesc.$error" ng-show="orgForm.orgDesc.$dirty">
+    <div class="field-errors" ng-messages="vm.orgForm.orgDesc.$error" ng-show="vm.orgForm.orgDesc.$touched">
       <p ng-message="required">Description is required.</p>
     </div>
   </div>
   <div class="col-sm-offset-4">
-    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} organisation" class="btn btn-primary" ng-disabled="orgForm.$invalid">
+    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} organisation" class="btn btn-primary" ng-disabled="vm.orgForm.$invalid">
 
     <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete organisation</button>
   </div>

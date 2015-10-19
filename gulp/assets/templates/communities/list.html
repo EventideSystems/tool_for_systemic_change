@@ -11,12 +11,14 @@
     <tr>
       <td ts-criteria="attributes.name" ts-default>Name</td>
       <td ts-criteria="attributes.description" ts-default>Description</td>
+      <td ts-criteria="createdAt">Created at</td>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="community in vm.communities" ts-repeat>
       <td><a href ui-sref="^.view({ id: community.id })">{{ community.attributes.name }}</a></td>
       <td>{{ community.attributes.description }}</td>
+      <td>{{ community.createdAt | date }} </td>
     </tr>
   </tbody>
 </table>

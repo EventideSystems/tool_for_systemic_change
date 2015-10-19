@@ -1,6 +1,6 @@
 <ng-include src="'/templates/layout/errors.html'"></ng-include>
 
-<form ng-submit="vm.submitForm()" name="initiativeForm" class="form-horizontal" novalidate>
+<form ng-submit="vm.submitForm()" name="vm.initiativeForm" class="form-horizontal" novalidate>
   <div class="form-group">
     <label for="initiative-name" class="required col-sm-4 control-label">initiative Name</label>
 
@@ -8,7 +8,7 @@
       <input type="text" name="initiativeName" ng-model="vm.initiative.name" class="form-control" id="initiative-name" placeholder="enter initiative name" required>
     </div>
 
-    <div class="field-errors" ng-messages="initiativeForm.initiativeName.$error" ng-show="initiativeForm.initiativeName.$touched">
+    <div class="field-errors" ng-messages="vm.initiativeForm.initiativeName.$error" ng-show="vm.initiativeForm.initiativeName.$touched">
       <p ng-message="required">Name is required.</p>
     </div>
   </div>
@@ -20,23 +20,28 @@
       <textarea id="initiative-desc" class="form-control" name="initiativeDesc" required ng-model="vm.initiative.description" placeholder="enter description"></textarea>
     </div>
 
-    <div class="field-errors" ng-messages="initiativeForm.initiativeDesc.$error" ng-show="initiativeForm.initiativeDesc.$touched">
+    <div class="field-errors" ng-messages="vm.initiativeForm.initiativeDesc.$error" ng-show="vm.initiativeForm.initiativeDesc.$touched">
       <p ng-message="required">Description is required.</p>
     </div>
   </div>
 
   <div class="form-group" ng-if="!vm.insideModal">
     <label for="initiative-scorecard" class="required col-sm-4 control-label">
-      <a href ng-show="vm.action !== 'list' && vm.initiative.scorecard.id" ui-sref="wkd.scorecard.view({ id: vm.initiative.scorecard.id })" title="goto scorecard">
+      <a href ng-show="vm.action !== 'list' && vm.initiative.scorecard.id" ui-sref="wkd.scorecards.view({ id: vm.initiative.scorecard.id })" title="goto scorecard">
         <i class="fa fa-external-link"></i>
       </a>
       Select a scorecard
     </label>
 
     <div class="col-sm-8">
-      <select class="form-control" ng-model="vm.initiative.scorecard" name="initiativescorecard" id="initiative-scorecard" ng-options="scorecard.attributes.name for scorecard in vm.scorecards">
-        <option value="">-- Assign scorecard --</option>
-      </select>
+      <ui-select ng-model="vm.initiative.scorecard" theme="bootstrap">
+        <ui-select-match placeholder="-- Assign scorecard --">
+          {{ $select.selected.attributes.name }}
+        </ui-select-match>
+        <ui-select-choices repeat="scorecard in vm.scorecards | filter:{ attributes: { name: $select.search } } track by scorecard.id">
+          <div ng-bind-html="scorecard.attributes.name | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
     </div>
   </div>
 
@@ -44,9 +49,14 @@
     <label for="initiative-organisation" class="required col-sm-4 control-label">Assign organisations</label>
 
     <div class="col-sm-8">
-      <select class="form-control" ng-model="vm.selectOrganisation" ng-change="vm.addOrganisation()" name="initiativeOrganisation" id="initiative-organisation" ng-options="organisation.attributes.name for organisation in vm.organisations">
-        <option value="">-- Select to add --</option>
-      </select>
+      <ui-select ng-model="vm.selectOrganisation" theme="bootstrap" on-select="vm.addOrganisation()">
+        <ui-select-match placeholder="-- Select to add --">
+          {{ $select.selected.attributes.name }}
+        </ui-select-match>
+        <ui-select-choices repeat="org in vm.organisations | orderBy:'attributes.name' | filter:{ attributes: { name: $select.search } } track by org.id">
+          <div ng-bind-html="org.attributes.name | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
     </div>
   </div>
 
@@ -65,7 +75,7 @@
   </div>
 
   <div class="col-sm-offset-4">
-    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} initiative" class="btn btn-primary" ng-disabled="initiativeForm.$invalid">
+    <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} initiative" class="btn btn-primary" ng-disabled="vm.initiativeForm.$invalid">
 
     <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete initiative</button>
 

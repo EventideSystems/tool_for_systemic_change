@@ -7,11 +7,14 @@ angular.module('WKD.Scorecards')
   'flashr',
   'Restangular',
   'WKD.Common.DataModel',
-  'currentCard', //injected by resolve
-  function (flashr, Restangular, dataModel, currentCard) {
+  '$stateParams',
+  function (flashr, Restangular, dataModel, $stateParams) {
     var vm = this;
+    var baseRef = Restangular.one('scorecards', $stateParams.id).all('initiatives');
 
-    vm.initiatives = _.where(currentCard.included, { type: 'initiatives' });
+    baseRef.getList().then(function (initiatives) {
+      vm.initiatives = initiatives;
+    });
 
     /////////////////////////////////////////////////////////////////////////
   }

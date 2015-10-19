@@ -73,6 +73,7 @@
     "phantomjs": "~1.9.18",
     "karma-phantomjs-launcher": "~0.2.1",
     "angular-mocks": "~1.4.4",
-    "del": "~1.2.1"
+    "del": "~1.2.1",
+    "angular-sanitize": "~1.4.7"
   }
 }

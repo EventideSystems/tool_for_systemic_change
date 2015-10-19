@@ -1,8 +1,14 @@
 <ul class="menu-items">
   <li>
-    <a ui-sref="wkd.dashboard" ui-sref-active="active">
+    <a ui-sref="wkd.dashboard" class="alt" ui-sref-active="active">
       <i class="fa fa-dashboard"></i>
       <span class="text">Dashboard</span>
+    </a>
+  </li>
+  <li>
+    <a ui-sref="wkd.scorecards" class="alt" ui-sref-active="active">
+      <i class="fa fa-check-square-o"></i>
+      <span class="text">Scorecards</span>
     </a>
   </li>
   <li>
@@ -29,13 +35,7 @@
       <span class="text">Organisations</span>
     </a>
   </li>
-  <li>
-    <a ui-sref="wkd.scorecards" ui-sref-active="active">
-      <i class="fa fa-check-square-o"></i>
-      <span class="text">Scorecards</span>
-    </a>
-  </li>
-  <li>
+  <li wkd-has-role="admin">
     <a ui-sref="wkd.users" ui-sref-active="active">
       <i class="fa fa-user"></i>
       <span class="text">Users</span>

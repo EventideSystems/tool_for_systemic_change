@@ -9,8 +9,9 @@ angular.module('WKD.Scorecards')
   'flashr',
   'WKD.Common.DefaultPacker',
   '$state',
+  '$scope',
   'WizardHandler',
-  function ($modal, Restangular, flashr, packer, $state, WizardHandler) {
+  function ($modal, Restangular, flashr, packer, $state, $scope, WizardHandler) {
     var vm = this;
     var baseRef = Restangular.all('scorecards');
 
@@ -28,6 +29,20 @@ angular.module('WKD.Scorecards')
     Restangular.all('wicked_problems').getList().then(function (resp) {
       vm.problems = resp;
       vm.newScorecard.problem = _.first(vm.problems);
+    });
+
+    // @smell Hack - for some reason $statechange is firing twice, i dont have time to figure out why.
+    var preventDoubleTrigger = false;
+
+    $scope.$on('$stateChangeStart', function (event) {
+      if (preventDoubleTrigger) return preventDoubleTrigger = false;
+
+      if (!vm.scorecardSaved && !!vm.newScorecard.name) {
+        var answer = window.confirm('Your scorecard has not been created! Are you sure you want to navigate away? Your data will not be saved.');
+        if (!answer) event.preventDefault();
+      }
+
+      preventDoubleTrigger = true;
     });
 
     vm.addSelectedInitiative = function () {
@@ -70,6 +85,7 @@ angular.module('WKD.Scorecards')
     vm.createScorecard = function () {
       return baseRef.post(pack(vm.newScorecard)).then(function (resp) {
         $state.go('^.view', { id: resp.id });
+        vm.scorecardSaved = true;
         flashr.later.success('New scorecard created!');
       }, function () {
         // @todo: no error handling, add a global error interceptor

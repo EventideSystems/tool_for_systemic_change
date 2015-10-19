@@ -1,2 +1,6 @@
-<wkd-scorecard-matrix initiatives="vm.initiatives"></wkd-scorecard-matrix>
+<p class="loading" ng-hide="vm.initiatives">
+  <i class="fa fa-spin fa-spinner"></i> Loading scorecard..
+</p>
+
+<wkd-scorecard-matrix ng-if="vm.initiatives" initiatives="vm.initiatives"></wkd-scorecard-matrix>
 

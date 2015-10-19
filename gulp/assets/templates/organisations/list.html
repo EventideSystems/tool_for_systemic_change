@@ -11,12 +11,14 @@
     <tr>
       <td ts-criteria="attributes.name" ts-default>Name</td>
       <td ts-criteria="attributes.description" ts-default>Description</td>
+      <td ts-criteria="createdAt">Created at</td>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="organisation in vm.organisations" ts-repeat>
       <td><a href ui-sref="^.view({ id: organisation.id })">{{ organisation.attributes.name }}</a></td>
       <td>{{ organisation.attributes.description }}</td>
+      <td>{{ organisation.createdAt | date }}</td>
     </tr>
   </tbody>
 </table>

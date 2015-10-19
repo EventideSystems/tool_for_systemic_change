@@ -89,7 +89,7 @@ angular.module('WKD.Initiatives')
         $state.go('^.view', { id: initiative.id });
         flashr.later.success('Initiative successfully created!');
       }, function (resp) {
-        vm.errors = resp.errors;
+        vm.errors = resp.data;
         flashr.now.error('Failed to create initiative');
       });
     }
@@ -97,6 +97,9 @@ angular.module('WKD.Initiatives')
     function update() {
       return pack(vm.initiative).put().then(function () {
         flashr.now.success('Initiative updated!');
+      }, function (resp) {
+        vm.errors = resp.data;
+        flashr.now.error('Failed to update initiative');
       });
     }
 

@@ -32,8 +32,10 @@ angular.module('WKD.Organisations')
 
     function create() {
       return baseRef.post(vm.organisation).then(function (organisation) {
-        $state.go('^.view', { id: organisation.id });
-        flashr.later.success('Organisation successfully created!');
+        vm.organisations.push(organisation);
+        vm.organisation = {};
+        vm.orgForm.$setUntouched();
+        flashr.now.success('Organisation successfully created!');
       }, function (resp) {
         vm.errors = resp.errors;
         flashr.now.error('Failed to create organisation');

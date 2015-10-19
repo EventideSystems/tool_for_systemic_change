@@ -7,9 +7,13 @@ angular.module('WKD.Users')
   'Restangular',
   '$http',
   'flashr',
-  function (Restangular, $http, flashr) {
+  'WKD.Common.CurrentUser',
+  '$state',
+  function (Restangular, $http, flashr, currentUser, $state) {
     var vm = this;
     var baseRef = Restangular.all('users');
+
+    if (!currentUser.hasRole('admin')) $state.go('wkd.dashboard');
 
     baseRef.getList().then(function (users) {
       vm.users = _.where(users, { attributes: { status: 'active' } });

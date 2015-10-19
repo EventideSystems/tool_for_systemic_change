@@ -86,8 +86,10 @@ angular.module('WKD.Initiatives')
       if (vm.insideModal) return $scope.$close(pack(vm.initiative));
 
       return baseRef.post(pack(vm.initiative)).then(function (initiative) {
-        $state.go('^.view', { id: initiative.id });
-        flashr.later.success('Initiative successfully created!');
+        vm.initiative = {};
+        vm.initiativeForm.$setUntouched();
+        vm.initiatives.push(initiative);
+        flashr.now.success('Initiative successfully created!');
       }, function (resp) {
         vm.errors = resp.data;
         flashr.now.error('Failed to create initiative');

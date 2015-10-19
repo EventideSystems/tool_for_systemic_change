@@ -1,15 +1,9 @@
 <h2>
   Initiatives
-
-  <div class="actions">
-    <a ui-sref="wkd.initiatives.new">
-      <i class="fa fa-plus"></i> add new initiative
-    </a>
-  </div>
 </h2>
 
 <popout-accordion>
-  <popout-accordion-group ng-repeat="initiative in vm.initiatives" group-open="initiative.$showChecklist">
+  <popout-accordion-group ng-repeat="initiative in vm.initiatives | orderBy:'attributes.name'" group-open="initiative.$showChecklist">
     <popout-accordion-title>
       <a href ng-click="vm.showChecklist(initiative)">
         {{ initiative.attributes.name }}

@@ -43,12 +43,14 @@ angular.module('WKD.Problems')
     function create() {
       return baseRef.post(vm.problem).then(function (problem) {
         if (vm.insideModal) {
-          flashr.now.success('Wicked problem successfully created!');
           $scope.$close(problem);
         } else {
-          $state.go('^.view', { id: problem.id });
-          flashr.later.success('Wicked problem successfully created!');
+          vm.problems.push(problem);
         }
+
+        vm.problem = {};
+        vm.problemForm.$setUntouched();
+        flashr.now.success('Wicked problem successfully created!');
       }, function (resp) {
         vm.errors = resp.errors;
         flashr.now.error('Failed to create wicked problem');

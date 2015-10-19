@@ -41,18 +41,21 @@ angular.module('WKD.Communities')
     function create() {
       return baseRef.post(vm.community).then(function (community) {
         if (vm.insideModal) {
-          flashr.now.success('Community successfully created!');
           $scope.$close(community);
         } else {
-          $state.go('^.view', { id: community.id });
-          flashr.later.success('Community successfully created!');
+          vm.communities.push(community);
         }
+
+        vm.community = {};
+        vm.communityForm.$setUntouched();
+
+        flashr.now.success('Community successfully created!');
       }, function (resp) {
         vm.errors = resp.errors;
-        console.log(vm.errors);
         flashr.now.error('Failed to create community');
       });
     }
+
 
     function update() {
       return vm.community.put().then(function () {

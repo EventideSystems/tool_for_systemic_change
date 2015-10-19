@@ -1,6 +1,5 @@
 class FocusAreaSerializer < BaseSerializer
-  attributes :id, :name, :description
+  attributes :id, :name, :description, :position
 
   belongs_to :focus_area_group
-  has_many :characteristics
 end

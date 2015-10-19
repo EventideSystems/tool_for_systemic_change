@@ -6,6 +6,7 @@ class Initiative < ActiveRecord::Base
   # it
   has_and_belongs_to_many :organisations, join_table: :initiatives_organisations
   has_many :checklist_items
+  has_many :characteristics, through: :checklist_items
 
   validates :scorecard, presence: true
 

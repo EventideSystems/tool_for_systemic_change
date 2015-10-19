@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   resources :clients, :defaults => { :format => 'json' }
   resources :communities, :defaults => { :format => 'json' }
   resources :invitations, :controller => 'invitations', only: [:create], :defaults => { :format => 'json' }
-  resources :scorecards, :defaults => { :format => 'json' }
+  resources :scorecards, :defaults => { :format => 'json' } do
+    resources :initiatives, controller: 'scorecard_initiatives', :defaults => { :format => 'json' }, only: [:index, :show]
+  end
   resources :wicked_problems, :defaults => { :format => 'json' }
 
   resources :focus_area_groups, defaults: { :format => 'json' }, only: [:show, :index]

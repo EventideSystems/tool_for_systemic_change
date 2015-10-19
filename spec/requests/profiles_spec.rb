@@ -5,11 +5,7 @@ RSpec.describe "Profiles", type: :request do
 
   include_context "api request authentication helper methods"
   include_context "api request global before and after hooks"
-
-  let(:client) { create(:client) }
-  let(:user) { create(:user, client: client) }
-  let(:admin) { create(:admin_user, client: client) }
-  let(:staff) { create(:staff_user) }
+  include_context "setup common data"
 
   describe "GET /profile" do
 

@@ -1,0 +1,7 @@
+<div class="backend-errors" ng-show="vm.errors">
+  <ul ng-repeat="(field, errors) in vm.errors">
+    <li ng-repeat="error in errors">
+      {{ field | ucfirst }} {{ error }}
+    </li>
+  </ul>
+</div>

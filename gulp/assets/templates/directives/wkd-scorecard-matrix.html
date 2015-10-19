@@ -1,0 +1,42 @@
+<div class="scorecard-matrix">
+  <div class="controls">
+    <button class="btn btn-default" ng-click="inversed = !inversed">
+      Inverse scorecard
+    </button>
+  </div>
+
+  <table>
+    <tbody>
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th class="legend color1" colspan="6"><div tooltip-append-to-body="true" uib-tooltip="Amplify Action">Focus group 1</div></th>
+          <th class="legend color2" colspan="8"><div tooltip-append-to-body="true" uib-tooltip="Create! A Disequilibrium State">Focus group 2</div></th>
+          <th class="legend color3" colspan="4"><div tooltip-append-to-body="true" uib-tooltip="Encourage Self-organisation">Focus group 3</div></th>
+          <th class="legend color4" colspan="4"><div tooltip-append-to-body="true" uib-tooltip="Stabilise Feedback">Focus group 4</div></th>
+          <th class="legend color5" colspan="4"><div tooltip-append-to-body="true" uib-tooltip="Enable Information Flows">Focus group 5</div></th>
+          <th class="legend color6" colspan="3"><div tooltip-append-to-body="true" uib-tooltip="Public Administration – Adaptive Community Interface">Focus group 6</div></th>
+          <th class="legend color7" colspan="2"><div tooltip-append-to-body="true" uib-tooltip="Elected Government – Adaptive Community Interface">Focus group 7</div></th>
+          <th class="legend color8" colspan="3"><div tooltip-append-to-body="true" uib-tooltip="Community Innovation – Public Administration Interface">Focus group 8</div></th>
+          <th class="legend color9" colspan="2"><div tooltip-append-to-body="true" uib-tooltip="Community Innovation – Elected Government Interface">Focus group 9</div></th>
+        </tr>
+      </thead>
+      <tr ng-repeat="init in initiatives" class="initiative">
+        <td class="init-title">
+          <a href ng-click="" ng-attr-title="{{ ::init.attributes.name }}">
+            {{ ::init.attributes.name }}
+          </a>
+        </td>
+        <td class="cell" tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" uib-tooltip="{{::char}}" ng-class="inversed ? 'inverse' : ''" ng-repeat="char in characteristics"><span></span></td>
+      </tr>
+      <tr class="chars">
+        <td>&nbsp;</td>
+        <td tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" tooltip-class="matrix-char-tooltip" uib-tooltip="{{::char}}" class="char-header" ng-repeat="char in characteristics">
+          <div>{{ ::char }}</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+

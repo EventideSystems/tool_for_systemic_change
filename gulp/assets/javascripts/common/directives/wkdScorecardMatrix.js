@@ -70,7 +70,7 @@ angular.module('WKD.Common')
         // Returns true if characteristic has not been checked for initiative
         scope.isGap = function (initiative, characteristic) {
           var item = findChecklistItemFor(initiative.id, characteristic.id);
-          return item.attributes.checked;
+          return !item.attributes.checked;
         };
 
         // using jquery here as ngClass would create too many watchers

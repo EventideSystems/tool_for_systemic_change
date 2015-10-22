@@ -6,6 +6,11 @@
 
 <h2>Current organisations</h2>
 
+<div class="top-filter">
+  <i class="fa fa-search"></i>
+  <input type="text" placeholder="search organisations" class="top-filter" ng-model="vm.filterText">
+</div>
+
 <table class="table table-striped table-hover" ts-wrapper>
   <thead>
     <tr>
@@ -15,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="organisation in vm.organisations" ts-repeat>
+    <tr ng-repeat="organisation in vm.organisations | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: organisation.id })">{{ organisation.attributes.name }}</a></td>
       <td>{{ organisation.attributes.description }}</td>
       <td>{{ organisation.createdAt | date }}</td>

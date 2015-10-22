@@ -7541,6 +7541,25 @@ a {
     margin: 10px 0 0;
     padding: 0; }
 
+.top-filter {
+  position: relative;
+  margin-bottom: 10px; }
+  .top-filter input {
+    display: block;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 8px 10px;
+    outline: none;
+    border: none;
+    padding-left: 30px; }
+  .top-filter .fa-search {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    left: 10px;
+    color: rgba(0, 0, 0, 0.2); }
+
 table {
   margin-bottom: 30px !important; }
   table .td-sm {
@@ -7862,7 +7881,10 @@ input[type="checkbox"].form-control {
     margin: 15px 0; }
 
 .action-panel {
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+  transition: box-shadow .3s; }
+  .action-panel.active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.45); }
   .action-panel .toggle {
     display: block;
     background: #00b9f2;

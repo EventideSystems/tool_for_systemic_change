@@ -60,7 +60,8 @@ angular.module('WKD.Scorecards', [])
       url: '/initiatives',
       templateUrl: '/templates/scorecards/initiatives.html',
       controller: 'WKD.Scorecards.InitiativeController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      action: 'scorecard'
     })
 
     ;

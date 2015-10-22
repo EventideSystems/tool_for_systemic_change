@@ -1,6 +1,6 @@
 <ng-include src="'/templates/layout/errors.html'"></ng-include>
 
-<form ng-submit="vm.submitForm()" name="vm.initiativeForm" class="form-horizontal" novalidate>
+<form ng-submit="vm.submitForm()" ng-hide="vm.showNewOrgForm" name="vm.initiativeForm" class="form-horizontal" novalidate>
   <div class="form-group">
     <label for="initiative-name" class="required col-sm-4 control-label">initiative Name</label>
 
@@ -57,6 +57,10 @@
           <div ng-bind-html="org.attributes.name | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
+
+      <small ng-if="vm.insideModal"><br>
+        <a href ng-click="vm.newOrganisation()"><i class="fa fa-plus"></i> Add new organisation</a>
+      </small>
     </div>
   </div>
 
@@ -82,3 +86,8 @@
     <button type="button" ng-click="$dismiss()" ng-if="vm.insideModal" class="btn btn-danger">Cancel</button>
   </div>
 </form>
+
+<div ng-if="vm.showNewOrgForm">
+  <h3>Create new organisation</h3>
+  <ng-include ng-controller="WKD.Organisations.Controller as vm" src="'/templates/organisations/_form.html'"></ng-include>
+</div>

@@ -2,6 +2,12 @@
   Initiatives
 </h2>
 
+<div ng-controller="WKD.Initiatives.Controller as vm">
+  <wkd-action-panel toggle-title="Add new initiative">
+    <ng-include src="'/templates/initiatives/_form.html'"></ng-include>
+  </wkd-action-panel>
+</div>
+
 <popout-accordion>
   <popout-accordion-group ng-repeat="initiative in vm.initiatives | orderBy:'attributes.name'" group-open="initiative.$showChecklist">
     <popout-accordion-title>

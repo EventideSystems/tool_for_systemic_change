@@ -34,5 +34,7 @@
     <input type="submit" ng-attr-value="{{ vm.action === 'list' ? 'Create' : 'Update' }} organisation" class="btn btn-primary" ng-disabled="vm.orgForm.$invalid">
 
     <button type="button" ng-click="vm.deleteResource()" ng-if="vm.action !== 'list'" class="btn btn-danger">Delete organisation</button>
+
+    <button type="button" ng-click="vm.backToInitiative()" ng-if="vm.insideModel" class="btn btn-danger">Cancel</button>
   </div>
 </form>

@@ -27,7 +27,7 @@ angular.module('WKD.Initiatives', [])
     .state('wkd.initiatives.view', {
       url: '/:id',
       action: 'view',
-      redirectTo: 'wkd.initiatives.view.edit',
+      redirectTo: 'wkd.initiatives.view.checklist',
       controller: 'WKD.Initiatives.Controller',
       controllerAs: 'vm',
       templateUrl: '/templates/initiatives/view.html'

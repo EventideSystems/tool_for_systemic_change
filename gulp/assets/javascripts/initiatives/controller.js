@@ -47,11 +47,27 @@ angular.module('WKD.Initiatives')
     };
 
     vm._checklist = function (params) {
+      loadSharedResources().then(function () {
+        Restangular.one('initiatives', params.id).get().then(function (resp) {
+          vm.initiative = unpack(resp);
+        });
+      });
+
       Restangular.one('initiatives', params.id)
         .getList('checklist_items').then(function (resp) {
           vm.focusGroups = dataModel.dataModelFrom(resp.included);
           dataModel.assignChecklistItems(vm.focusGroups, resp);
         });
+    };
+
+    vm._scorecard = function () {
+      vm._new();
+      vm.insideModal = true;
+      vm.addToScorecard = true;
+    };
+
+    vm.newOrganisation = function () {
+      vm.showNewOrgForm = true;
     };
 
     vm.addOrganisation = function () {
@@ -68,6 +84,30 @@ angular.module('WKD.Initiatives')
       _.remove(vm.initiative.organisations, org);
     };
 
+    $scope.$on('organisation:create', function (e, data) {
+      data.ref.post(data.organisation).then(function (organisation) {
+        vm.initiative.organisations.push(organisation);
+        vm.showNewOrgForm = false;
+        flashr.now.success('Organisation created');
+      }, function (resp) {
+        $scope.$broadcast('organisation:error', resp);
+      });
+    });
+
+    $scope.$on('organisation:hideForm', function () {
+      vm.showNewOrgForm = false;
+    });
+
+    $scope.$on('initiative:reset', function () {
+      vm.initiative = {};
+      vm.initiativeForm.$setUntouched();
+    });
+
+    $scope.$on('initiative:error', function (e, resp) {
+      vm.errors = resp.data;
+      flashr.now.error('Failed to create initiative');
+    });
+
     $controller('WKD.Common.RESTController', { $scope: vm });
 
     ///////////////////////////////////////////////////////////////////////////
@@ -83,6 +123,15 @@ angular.module('WKD.Initiatives')
     }
 
     function create() {
+      if (vm.addToScorecard) {
+        $scope.$emit('new:initiative', {
+          ref: baseRef,
+          initiative: pack(vm.initiative)
+        });
+
+        return;
+      }
+
       if (vm.insideModal) return $scope.$close(pack(vm.initiative));
 
       return baseRef.post(pack(vm.initiative)).then(function (initiative) {

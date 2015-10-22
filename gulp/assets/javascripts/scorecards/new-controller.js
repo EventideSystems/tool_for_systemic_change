@@ -45,6 +45,8 @@ angular.module('WKD.Scorecards')
       preventDoubleTrigger = true;
     });
 
+
+
     vm.addSelectedInitiative = function () {
       if (_.find(vm.newScorecard.initiatives, {id: vm.selectInitiative.id})) {
         flashr.now.error('Initiative already exists on this scorecard');
@@ -84,8 +86,8 @@ angular.module('WKD.Scorecards')
 
     vm.createScorecard = function () {
       return baseRef.post(pack(vm.newScorecard)).then(function (resp) {
-        $state.go('^.view', { id: resp.id });
         vm.scorecardSaved = true;
+        $state.go('^.view', { id: resp.id });
         flashr.later.success('New scorecard created!');
       }, function () {
         // @todo: no error handling, add a global error interceptor

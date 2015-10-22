@@ -1,5 +1,10 @@
 .action-panel {
   margin-bottom: 30px;
+  transition: box-shadow .3s;
+
+  &.active {
+    box-shadow: 0 0 5px rgba(0,0,0,.45);
+  }
 
   .toggle {
     display: block;

@@ -10,6 +10,11 @@
 
 <h2>Current scorecards</h2>
 
+<div class="top-filter">
+  <i class="fa fa-search"></i>
+  <input type="text" placeholder="search scorecards" class="top-filter" ng-model="vm.filterText">
+</div>
+
 <table class="table table-striped table-hover" ts-wrapper>
   <thead>
     <tr>
@@ -19,7 +24,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="scorecard in vm.scorecards" ts-repeat>
+    <tr ng-repeat="scorecard in vm.scorecards | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: scorecard.id })">{{ scorecard.attributes.name }}</a></td>
       <td>{{ scorecard.attributes.description }}</td>
       <td>{{ scorecard.createdAt | date }} </td>

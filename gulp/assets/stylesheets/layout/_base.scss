@@ -95,6 +95,29 @@ a {
   }
 }
 
+.top-filter {
+  position: relative;
+  margin-bottom: 10px;
+
+  input {
+    display: block;
+    background: $dark-10;
+    width: 100%;
+    padding: 8px 10px;
+    outline: none;
+    border: none;
+    padding-left: 30px;
+  }
+
+  .fa-search {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    color: $dark-20;
+  }
+}
+
 
 table {
   .td-sm {

@@ -6,9 +6,8 @@ angular.module('WKD.Scorecards')
 .controller('WKD.Scorecards.ScorecardController', [
   'flashr',
   'Restangular',
-  'WKD.Common.DataModel',
   '$stateParams',
-  function (flashr, Restangular, dataModel, $stateParams) {
+  function (flashr, Restangular, $stateParams) {
     var vm = this;
     var baseRef = Restangular.one('scorecards', $stateParams.id).all('initiatives');
 

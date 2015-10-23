@@ -1,17 +1,16 @@
-
 <div class="scorecard-matrix">
   <table>
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th class="legend" ng-attr-colspan="{{::area.characteristics.length}}" ng-class="'color' + ($index+1)" ng-repeat="area in focusAreas">
+          <div tooltip-append-to-body="true" uib-tooltip="{{::area.attributes.name }}">
+            Focus area {{ $index+1 }}
+          </div>
+        </th>
+      </tr>
+    </thead>
     <tbody>
-      <thead>
-        <tr>
-          <th>&nbsp;</th>
-          <th class="legend" ng-attr-colspan="{{::area.characteristics.length}}" ng-class="'color' + ($index+1)" ng-repeat="area in focusAreas">
-            <div tooltip-append-to-body="true" uib-tooltip="{{::area.attributes.name }}">
-              Focus area {{ $index+1 }}
-            </div>
-          </th>
-        </tr>
-      </thead>
       <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'" class="initiative">
         <td class="init-title">
           <a ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
@@ -31,10 +30,10 @@
 </div>
 
 
- <div class="scorecard-matrix-controls">
-    <button class="btn btn-default" ng-click="toggleGaps()">
-      Show gaps in effort
-    </button>
-  </div>
+<div class="scorecard-matrix-controls">
+  <button class="btn btn-default" ng-click="toggleGaps()">
+    Show gaps in effort
+  </button>
+</div>
 
 

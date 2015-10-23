@@ -24,6 +24,7 @@ angular.module('WKD.Organisations')
     };
 
     vm._new = vm._list;
+    vm._scorecard = vm._list;
 
     vm._view = function (params) {
       vm.submitForm = update;

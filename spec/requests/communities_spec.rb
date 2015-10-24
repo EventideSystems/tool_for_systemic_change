@@ -18,6 +18,8 @@ RSpec.describe "Communities", type: :request do
       expect(community_data['id']).to eq(community.id.to_s)
       expect(community_data['attributes']['name']).to eq(community.name)
       expect(community_data['attributes']['description']).to eq(community.description)
+      expect(Time.parse(community_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(community.created_at.utc)
 
       relationships_data = community_data['relationships']
 

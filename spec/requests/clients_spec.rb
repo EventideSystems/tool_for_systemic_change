@@ -19,6 +19,8 @@ RSpec.describe "Clients", type: :request do
       expect(client_data['id']).to eq(client.id.to_s)
       expect(client_data['attributes']['name']).to eq(client.name)
       expect(client_data['attributes']['description']).to eq(client.description)
+      expect(Time.parse(client_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(client.created_at.utc)
     end
 
     describe "restrict access by role" do

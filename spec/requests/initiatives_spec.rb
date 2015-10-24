@@ -26,6 +26,8 @@ RSpec.describe "Initiatives", type: :request do
       expect(initiative_data['id']).to eq(initiative.id.to_s)
       expect(initiative_data['attributes']['name']).to eq(initiative.name)
       expect(initiative_data['attributes']['description']).to eq(initiative.description)
+      expect(Time.parse(initiative_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(initiative.created_at.utc)
 
       relationships_data = initiative_data['relationships']
 

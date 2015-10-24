@@ -18,6 +18,8 @@ RSpec.describe "Organisations", type: :request do
       expect(organisation_data['id']).to eq(organisation.id.to_s)
       expect(organisation_data['attributes']['name']).to eq(organisation.name)
       expect(organisation_data['attributes']['description']).to eq(organisation.description)
+      expect(Time.parse(organisation_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(organisation.created_at.utc)
 
       relationships_data = organisation_data['relationships']
 

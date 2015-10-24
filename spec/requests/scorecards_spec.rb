@@ -24,6 +24,8 @@ RSpec.describe "Scorecards", type: :request do
       expect(scorecard_data['id']).to eq(scorecard.id.to_s)
       expect(scorecard_data['attributes']['name']).to eq(scorecard.name)
       expect(scorecard_data['attributes']['description']).to eq(scorecard.description)
+      expect(Time.parse(scorecard_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(scorecard.created_at.utc)
 
       relationships_data = scorecard_data['relationships']
 

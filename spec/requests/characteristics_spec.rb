@@ -20,6 +20,8 @@ RSpec.describe "Characteristic", type: :request do
       expect(characteristic_data['id']).to eq(characteristic.id.to_s)
       expect(characteristic_data['attributes']['name']).to eq(characteristic.name)
       expect(characteristic_data['attributes']['description']).to eq(characteristic.description)
+      expect(Time.parse(characteristic_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(characteristic.created_at.utc)
 
       relationships_data = characteristic_data['relationships']
 
@@ -56,6 +58,8 @@ RSpec.describe "Characteristic", type: :request do
       expect(characteristic_data['id']).to eq(characteristic.id.to_s)
       expect(characteristic_data['attributes']['name']).to eq(characteristic.name)
       expect(characteristic_data['attributes']['description']).to eq(characteristic.description)
+      expect(Time.parse(characteristic_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(characteristic.created_at.utc)
     end
   end
 end

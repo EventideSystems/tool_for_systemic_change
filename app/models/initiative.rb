@@ -1,6 +1,6 @@
 class Initiative < ActiveRecord::Base
   belongs_to :scorecard
-  # TODO Add a validation to ensure that organistions belong to same
+  # TODO: Add a validation to ensure that organistions belong to same
   # administrating organisation as the initiative. NB this might be an argument
   # for converting the join table into a proper model and adding validations to
   # it
@@ -9,11 +9,12 @@ class Initiative < ActiveRecord::Base
   has_many :characteristics, through: :checklist_items
 
   validates :scorecard, presence: true
+  validate :finished_at_later_than_started_at
 
-  scope :for_user, ->(user) {
+  scope :for_user, lambda { |user|
     unless user.staff?
       joins(:scorecard).where(
-        'scorecards.client_id' => user.client_id
+        "scorecards.client_id" => user.client_id
       )
     end
   }
@@ -22,11 +23,17 @@ class Initiative < ActiveRecord::Base
 
   private
 
-    def create_checklist_items
-      Characteristic.all.each do |characteristic|
-        ChecklistItem.create!(
-          initiative: self, characteristic: characteristic
-        )
-      end
+  def create_checklist_items
+    Characteristic.all.find_each do |characteristic|
+      ChecklistItem.create!(
+        initiative: self, characteristic: characteristic
+      )
     end
+  end
+
+  def finished_at_later_than_started_at
+    if started_at.present? && finished_at.present? && finished_at < started_at
+      errors.add(:finished_at, "can't be earlier than started at date")
+    end
+  end
 end

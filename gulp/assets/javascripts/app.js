@@ -8,11 +8,13 @@ window.toastr = require('toastr');
 // Vendor
 require('angular-ui-router');
 require('angular-ui-bootstrap');
+require('ui-select');
 require('restangular');
 require('angular-wizard');
 require('angular-messages');
 require('angular-animate');
 require('angular-aria');
+require('angular-sanitize');
 require('angular-filter');
 require('../../../node_modules/angular-tablesort/js/angular-tablesort.js');
 
@@ -32,6 +34,7 @@ angular.module('WKD', [
   // Vendor
   'ui.router',
   'ui.bootstrap',
+  'ui.select',
   'restangular',
   'ngMessages',
   'flashr',
@@ -40,6 +43,7 @@ angular.module('WKD', [
   'ngAria',
   'angular.filter',
   'tableSort',
+  'ngSanitize',
 
   // Features
   'WKD.Common',

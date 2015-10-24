@@ -65,3 +65,21 @@ input[type="checkbox"].form-control {
 .form-control:not(select) {
   height: auto;
 }
+
+
+.backend-errors {
+  background: white;
+  padding: 15px;
+  color: red;
+  margin-bottom: 15px;
+
+  &:before {
+    content: 'Form could not be saved because of errors:';
+    margin-bottom: 10px;
+    display: block
+  }
+
+  ul {
+    margin: 0;
+  }
+}

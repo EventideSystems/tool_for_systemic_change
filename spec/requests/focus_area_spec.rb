@@ -20,6 +20,9 @@ RSpec.describe "FocusArea", type: :request do
       expect(focus_area_data['id']).to eq(focus_area.id.to_s)
       expect(focus_area_data['attributes']['name']).to eq(focus_area.name)
       expect(focus_area_data['attributes']['description']).to eq(focus_area.description)
+      expect(Time.parse(focus_area_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(focus_area.created_at.utc)
+
 
       relationships_data = focus_area_data['relationships']
 

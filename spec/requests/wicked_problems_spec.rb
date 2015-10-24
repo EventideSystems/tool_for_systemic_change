@@ -18,6 +18,8 @@ RSpec.describe "Wicked Problems", type: :request do
       expect(wicked_problem_data['id']).to eq(wicked_problem.id.to_s)
       expect(wicked_problem_data['attributes']['name']).to eq(wicked_problem.name)
       expect(wicked_problem_data['attributes']['description']).to eq(wicked_problem.description)
+      expect(Time.parse(wicked_problem_data['attributes']['createdAt']).utc).
+        to be_within(0.01).of(wicked_problem.created_at.utc)
 
       relationships_data = wicked_problem_data['relationships']
 

@@ -257,6 +257,7 @@ RSpec.describe "Initiatives", type: :request do
       attributes = data_attributes[:attributes]
 
       expect(initiative.contact_name).to eq(attributes[:contact_name])
+      expect(initiative.contact_phone).to eq(attributes[:contact_phone])
       expect(initiative.contact_email).to eq(attributes[:contact_email])
       expect(initiative.contact_website).to eq(attributes[:contact_website])
       expect(initiative.contact_position).to eq(attributes[:contact_position])

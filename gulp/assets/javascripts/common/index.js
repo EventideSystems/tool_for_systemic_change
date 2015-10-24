@@ -14,6 +14,7 @@ require('./directives/wkdHeader.js');
 require('./directives/wkdAccordion.js');
 require('./directives/wkdActionPanel.js');
 require('./directives/wkdHasRole.js');
+require('./directives/wkdScorecardMatrix');
 
 
 // Mixins
@@ -22,6 +23,7 @@ require('./mixins/RESTController.js');
 
 // Libs
 require('./lib/flashr.js');
+require('./lib/plugins.js');
 
 
 

@@ -12,11 +12,9 @@ var del = require('del');
 
 
 gulp.task('sass', ['sass:compile'], function () {
-
-  gulp.src('./public/gulp/assets/stylesheets/*.css')
-    .pipe(gulp.dest(config.dest));
-
-  del('./public/gulp/');
+  // Not sure whats going on with cssimport and dest
+  gulp.src('./gulp/assets/stylesheets/*.css').pipe(gulp.dest(config.dest));
+  del('./gulp/assets/stylesheets/*.css');
 });
 
 

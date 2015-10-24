@@ -13,6 +13,12 @@ angular.module('WKD.Common')
       });
     }];
 
+    provider.hasRole = function (role) {
+      // staff see all for now
+      if (role !== 'staff' && provider.hasRole('staff')) return true;
+      return _currentUser.userRole === role;
+    };
+
     // Factory
     provider.$get = function () {
       var factory = {};
@@ -21,9 +27,7 @@ angular.module('WKD.Common')
         return angular.copy(_currentUser); // dont allow caller to modify user
       };
 
-      factory.hasRole = function (role) {
-        return _currentUser.userRole === role;
-      };
+      factory.hasRole = provider.hasRole;
 
       return factory;
     };

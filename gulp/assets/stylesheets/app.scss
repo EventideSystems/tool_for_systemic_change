@@ -5,6 +5,8 @@ $fa-font-path: '/assets/fonts';
 @import '../../../node_modules/toastr/toastr';
 @import '../../../node_modules/angular-wizard/dist/angular-wizard.css';
 @import '../../../node_modules/angular-tablesort/tablesort.css';
+@import '../../../node_modules/ui-select/dist/select.css';
+
 
 @import './_variables';
 @import './_mixins';
@@ -22,5 +24,6 @@ $fa-font-path: '/assets/fonts';
 @import './components/_popout-accordion';
 @import './components/_checklist';
 @import './components/_action-panel';
+@import './components/_scorecard-matrix';
 
 

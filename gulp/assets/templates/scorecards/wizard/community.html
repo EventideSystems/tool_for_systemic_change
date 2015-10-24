@@ -6,8 +6,14 @@
       <label for="problem-community" class="col-sm-4 control-label">Select a community</label>
 
       <div class="col-sm-8">
-        <select class="form-control" id="problem-community" ng-model="vm.newScorecard.community" ng-options="community.attributes.name for community in vm.communities">
-        </select>
+        <ui-select ng-model="vm.newScorecard.community" theme="bootstrap">
+          <ui-select-match placeholder="-- Select a Community --">
+            {{ $select.selected.attributes.name }}
+          </ui-select-match>
+          <ui-select-choices repeat="community in vm.communities | filter:{ attributes: { name: $select.search } } track by community.id">
+            <div ng-bind-html="community.attributes.name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 

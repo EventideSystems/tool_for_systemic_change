@@ -2,17 +2,17 @@ class InitiativesController < AuthenticatedController
   before_action :set_initiative, only: [:show, :update, :destroy]
 
   resource_description do
-    formats ['json']
+    formats ["json"]
   end
 
-  api :GET, '/initiatives'
+  api :GET, "/initiatives"
   def index
     @initiatives = Initiative.for_user(current_user)
 
     render json: @initiatives
   end
 
-  api :GET, '/initiatives/:id'
+  api :GET, "/initiatives/:id"
   param :id, :number, required: true
   def show
     render json: @initiative
@@ -33,11 +33,20 @@ class InitiativesController < AuthenticatedController
 
     respond_to do |format|
       if @initiative.save
-        format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
-        format.json { render json: @initiative, status: :created, location: @initiative }
+        format.html do
+          redirect_to @initiative,
+                      notice: "Initiative was successfully created."
+        end
+        format.json do
+          render json: @initiative,
+                 status: :created, location: @initiative
+        end
       else
         format.html { render :new }
-        format.json { render json: @initiative.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @initiative.errors,
+                 status: :unprocessable_entity
+        end
       end
     end
   end
@@ -55,11 +64,17 @@ class InitiativesController < AuthenticatedController
 
     respond_to do |format|
       if @initiative.update(attributes)
-        format.html { redirect_to @initiative, notice: 'Initiative was successfully updated.' }
+        format.html do
+          redirect_to @initiative,
+                      notice: "Initiative was successfully updated."
+        end
         format.json { render json: { status: :ok, location: @initiative } }
       else
         format.html { render :edit }
-        format.json { render json: @initiative.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @initiative.errors,
+                 status: :unprocessable_entity
+        end
       end
     end
   end
@@ -69,42 +84,53 @@ class InitiativesController < AuthenticatedController
   def destroy
     @initiative.destroy
     respond_to do |format|
-      format.html { redirect_to initiatives_url, notice: 'Initiative was successfully destroyed.' }
+      format.html do
+        redirect_to initiatives_url,
+                    notice: "Initiative was successfully destroyed."
+      end
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_initiative
-      @initiative = Initiative.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def initiative_params
-      params[:initiative]
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_initiative
+    @initiative = Initiative.for_user(current_user).find(params[:id])
+  rescue
+    raise User::NotAuthorized
+  end
 
-    def organisation_ids_from_params(params)
-      params[:relationships][:organisations][:data].map { |data| data['id'].to_i }
-    rescue
-      nil
-    end
+  def organisation_ids_from_params(params)
+    params[:relationships][:organisations][:data].map { |data| data["id"].to_i }
+  rescue
+    nil
+  end
 
-    def scorecard_id_from_params(params)
-      params[:relationships][:scorecard][:data][:id].to_i
-    rescue
-      nil
-    end
+  def scorecard_id_from_params(params)
+    params[:relationships][:scorecard][:data][:id].to_i
+  rescue
+    nil
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def initiative_params
-      params.require(:data).permit(
-        attributes: [:name, :description],
-        relationships: [
-          scorecard: [data: [:id]],
-          organisations: [data: [:id]]
-        ]
-      )
-    end
+  def initiative_params
+    params.require(:data).permit(
+      attributes: [
+        :name,
+        :description,
+        :started_at,
+        :finished_at,
+        :dates_confirmed,
+        :contact_name,
+        :contact_email,
+        :contact_phone,
+        :contact_website,
+        :contact_position
+      ],
+      relationships: [
+        scorecard: [data: [:id]],
+        organisations: [data: [:id]]
+      ]
+    )
+  end
 end

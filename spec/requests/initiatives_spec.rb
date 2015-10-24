@@ -6,9 +6,16 @@ RSpec.describe "Initiatives", type: :request do
   include_context "api request global before and after hooks"
   include_context "setup common data"
 
-  let!(:initiative) { create(:initiative, scorecard: scorecard, organisations: [organisation]) }
+  let!(:initiative) do
+    create(:initiative,
+           scorecard: scorecard,
+           organisations: [organisation])
+  end
+
   let!(:other_initiative) do
-    create(:initiative, scorecard: other_scorecard, organisations: [other_organisation])
+    create(:initiative,
+           scorecard: other_scorecard,
+           organisations: [other_organisation])
   end
 
   let!(:second_organisation) do
@@ -26,7 +33,8 @@ RSpec.describe "Initiatives", type: :request do
 
       expect(initiative_data["id"]).to eq(initiative.id.to_s)
       expect(initiative_data["attributes"]["name"]).to eq(initiative.name)
-      expect(initiative_data["attributes"]["description"]).to eq(initiative.description)
+      expect(initiative_data["attributes"]["description"]).
+        to eq(initiative.description)
       expect(Time.parse(initiative_data["attributes"]["createdAt"]).utc).
         to be_within(0.01).of(initiative.created_at.utc)
 
@@ -72,7 +80,8 @@ RSpec.describe "Initiatives", type: :request do
         get initiative_path(initiative)
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)["data"]["id"]).to eq(initiative.id.to_s)
+        expect(JSON.parse(response.body)["data"]["id"]).
+          to eq(initiative.id.to_s)
       end
 
       specify "user - inaccessible record" do
@@ -87,7 +96,8 @@ RSpec.describe "Initiatives", type: :request do
         get initiative_path(initiative)
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)["data"]["id"]).to eq(initiative.id.to_s)
+        expect(JSON.parse(response.body)["data"]["id"]).
+          to eq(initiative.id.to_s)
       end
 
       specify "admin - inaccessible record" do
@@ -226,6 +236,32 @@ RSpec.describe "Initiatives", type: :request do
       expect(initiative.organisations.second).to eq(second_organisation)
     end
 
+    specify "updating as admin - adding contact details" do
+      sign_in(admin)
+
+      data_attributes = {
+        type: "initiatives",
+        attributes: {
+          contact_name: FFaker::Lorem.words(4).join(" "),
+          contact_email: FFaker::Internet.email,
+          contact_phone: FFaker::PhoneNumberAU.phone_number,
+          contact_website: FFaker::Internet.http_url,
+          contact_position: FFaker::Lorem.words(4).join(" ")
+        }
+      }
+
+      put "/initiatives/#{initiative.id}", data: data_attributes
+      initiative.reload
+
+      expect(response).to have_http_status(200)
+      attributes = data_attributes[:attributes]
+
+      expect(initiative.contact_name).to eq(attributes[:contact_name])
+      expect(initiative.contact_email).to eq(attributes[:contact_email])
+      expect(initiative.contact_website).to eq(attributes[:contact_website])
+      expect(initiative.contact_position).to eq(attributes[:contact_position])
+    end
+
     specify "updating as admin - invalid finish date" do
       sign_in(admin)
 
@@ -241,7 +277,8 @@ RSpec.describe "Initiatives", type: :request do
 
       expect(response).to have_http_status(422)
       error = JSON.parse(response.body)
-      expect(error["finished_at"]).to include("can't be earlier than started at date")
+      expect(error["finished_at"]).
+        to include("can't be earlier than started at date")
     end
   end
 end

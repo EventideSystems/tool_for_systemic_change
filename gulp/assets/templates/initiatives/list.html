@@ -6,17 +6,24 @@
 
 <h2>Current initiatives</h2>
 
+<div class="top-filter">
+  <i class="fa fa-search"></i>
+  <input type="text" placeholder="search initiatives" class="top-filter" ng-model="vm.filterText">
+</div>
+
 <table class="table table-striped table-hover" ts-wrapper>
   <thead>
     <tr>
       <td ts-criteria="attributes.name" ts-default>Name</td>
-      <td ts-criteria="attributes.description" ts-default>Description</td>
+      <td ts-criteria="attributes.description">Description</td>
+      <td ts-criteria="createdAt">Created at</td>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="initiative in vm.initiatives" ts-repeat>
+    <tr ng-repeat="initiative in vm.initiatives | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: initiative.id })">{{ initiative.attributes.name }}</a></td>
       <td>{{ initiative.attributes.description }}</td>
+      <td>{{ initiative.createdAt | date }} </td>
     </tr>
   </tbody>
 </table>

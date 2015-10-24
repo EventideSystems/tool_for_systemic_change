@@ -1,47 +1,51 @@
-<div ng-class="{ open: focusGroup.showFocusAreas }" class="focus-group" ng-repeat="focusGroup in (initiative.$focusGroups || vm.focusGroups)">
-  <h3>
-    <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas">
-      Focus Area {{::$index+1}}: {{ ::focusGroup.attributes.name }}
-    </a>
+<p class="loading" ng-hide="initiative.$focusGroups || vm.focusGroups"><i class="fa fa-spinner fa-spin"></i> Loading...</p>
 
-    <div class="actions">
-      <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas"><i class="fa" ng-class="{ 'fa-caret-down': !focusGroup.showFocusAreas, 'fa-caret-up': focusGroup.showFocusAreas}"></i></a>
-    </div>
-  </h3>
+<div ng-show="initiative.$focusGroups || vm.focusGroups">
+  <div ng-class="{ open: focusGroup.showFocusAreas }" class="focus-group" ng-repeat="focusGroup in (initiative.$focusGroups || vm.focusGroups)">
+    <h3>
+      <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas">
+        {{ ::focusGroup.attributes.name }}
+      </a>
 
-  <div class="focus-areas slide-toggle" ng-show="focusGroup.showFocusAreas">
-    <div class="focus-area" ng-repeat="focusArea in focusGroup.focusAreas">
-      <h2>{{ ::focusArea.attributes.name | ucfirst }}</h2>
+      <div class="actions">
+        <a href ng-click="focusGroup.showFocusAreas = !focusGroup.showFocusAreas" title="toggle focus areas"><i class="fa" ng-class="{ 'fa-caret-down': !focusGroup.showFocusAreas, 'fa-caret-up': focusGroup.showFocusAreas}"></i></a>
+      </div>
+    </h3>
 
-      <ul>
-        <li class="checklist-item" ng-repeat="characteristic in focusArea.characteristics">
-          <label class="checklist-title">
-            <input type="checkbox" ng-model="characteristic.checklistItem.attributes.checked" ng-change="characteristic.checklistItem.put()">
-            <strong class="title">
-              {{ ::characteristic.attributes.name | ucfirst }}
-            </strong>
-          </label>
+    <div class="focus-areas slide-toggle" ng-show="focusGroup.showFocusAreas">
+      <div class="focus-area" ng-repeat="focusArea in focusGroup.focusAreas">
+        <h2>{{ ::focusArea.attributes.name | ucfirst }}</h2>
 
-          <div class="actions">
-            <a href title="show video tutoral">
-              <i class="fa fa-youtube-play"></i>
-            </a>
-            <a href title="enter comments" ng-click="characteristic.$showCommentSection = true" ng-class="{ actioned: characteristic.checklistItem.attributes.comment }">
-              <i class="fa fa-comments-o"></i>
-            </a>
-          </div>
+        <ul>
+          <li class="checklist-item" ng-repeat="characteristic in focusArea.characteristics">
+            <label class="checklist-title">
+              <input type="checkbox" ng-model="characteristic.checklistItem.attributes.checked" ng-change="characteristic.checklistItem.put()">
+              <strong class="title">
+                {{ ::characteristic.attributes.name }}
+              </strong>
+            </label>
 
-          <div class="comments" ng-show="characteristic.$showCommentSection">
-            <textarea placeholder="enter comments" ng-model="characteristic.checklistItem.attributes.comment"></textarea>
-            <button type="button" ng-click="characteristic.checklistItem.put(); characteristic.$showCommentSection = false" class="btn btn-primary">
-              Save Comments
-            </button>
-            <button type="button" ng-click="characteristic.$showCommentSection = false" class="btn btn-default">
-              Cancel
-            </button>
-          </div>
-        </li>
-      </ul>
+            <div class="actions">
+              <a href title="show video tutoral">
+                <i class="fa fa-youtube-play"></i>
+              </a>
+              <a href title="enter comments" ng-click="characteristic.$showCommentSection = true" ng-class="{ actioned: characteristic.checklistItem.attributes.comment }">
+                <i class="fa fa-comments-o"></i>
+              </a>
+            </div>
+
+            <div class="comments" ng-show="characteristic.$showCommentSection">
+              <textarea placeholder="enter comments" ng-model="characteristic.checklistItem.attributes.comment"></textarea>
+              <button type="button" ng-click="characteristic.checklistItem.put(); characteristic.$showCommentSection = false" class="btn btn-primary">
+                Save Comments
+              </button>
+              <button type="button" ng-click="characteristic.$showCommentSection = false" class="btn btn-default">
+                Cancel
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

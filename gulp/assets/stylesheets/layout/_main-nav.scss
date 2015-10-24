@@ -45,8 +45,8 @@
     }
   }
 
-  .menu-items a.lg > i {
-
+  .menu-items .alt {
+    color: lighten($brand-primary, 35%);
   }
 
   .menu-items a .text {

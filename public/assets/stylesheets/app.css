@@ -194,6 +194,227 @@ table .tablesort-sortable:hover:after, table .tablesort-asc:after, table .tables
 }
 
 /*!
+ * ui-select
+ * http://github.com/angular-ui/ui-select
+ * Version: 0.11.2 - 2015-03-17T04:08:46.478Z
+ * License: MIT
+ */
+
+
+/* Style when highlighting a search. */
+.ui-select-highlight {
+  font-weight: bold;
+}
+
+.ui-select-offscreen {
+  clip: rect(0 0 0 0) !important;
+  width: 1px !important;
+  height: 1px !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  outline: 0 !important;
+  left: 0px !important;
+  top: 0px !important;
+}
+
+/* Select2 theme */
+
+/* Mark invalid Select2 */
+.ng-dirty.ng-invalid > a.select2-choice {
+    border-color: #D44950;
+}
+
+.select2-result-single {
+  padding-left: 0;
+}
+
+.select2-locked > .select2-search-choice-close{
+  display:none;
+}
+
+.select-locked > .ui-select-match-close{
+    display:none;
+}
+
+body > .select2-container.open {
+  z-index: 9999; /* The z-index Select2 applies to the select2-drop */
+}
+
+/* Selectize theme */
+
+/* Helper class to show styles when focus */
+.selectize-input.selectize-focus{
+  border-color: #007FBB !important;
+}
+
+/* Fix input width for Selectize theme */
+.selectize-control > .selectize-input > input {
+  width: 100%;
+}
+
+/* Fix dropdown width for Selectize theme */
+.selectize-control > .selectize-dropdown {
+  width: 100%;
+}
+
+/* Mark invalid Selectize */
+.ng-dirty.ng-invalid > div.selectize-input {
+    border-color: #D44950;
+}
+
+
+/* Bootstrap theme */
+
+/* Helper class to show styles when focus */
+.btn-default-focus {
+  color: #333;
+  background-color: #EBEBEB;
+  border-color: #ADADAD;
+  text-decoration: none;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.ui-select-bootstrap .ui-select-toggle {
+  position: relative;
+}
+
+.ui-select-bootstrap .ui-select-toggle > .caret {
+  position: absolute;
+  height: 10px;
+  top: 50%;
+  right: 10px;
+  margin-top: -2px;
+}
+
+/* Fix Bootstrap dropdown position when inside a input-group */
+.input-group > .ui-select-bootstrap.dropdown {
+  /* Instead of relative */
+  position: static;
+}
+
+.input-group > .ui-select-bootstrap > input.ui-select-search.form-control {
+  border-radius: 4px; /* FIXME hardcoded value :-/ */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ui-select-bootstrap > .ui-select-match > .btn{
+  /* Instead of center because of .btn */
+  text-align: left !important;
+}
+
+.ui-select-bootstrap > .ui-select-match > .caret {
+  position: absolute;
+  top: 45%;
+  right: 15px;
+}
+
+/* See Scrollable Menu with Bootstrap 3 http://stackoverflow.com/questions/19227496 */
+.ui-select-bootstrap > .ui-select-choices {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+  margin-top: -1px;
+}
+
+body > .ui-select-bootstrap.open {
+  z-index: 1000; /* Standard Bootstrap dropdown z-index */
+}
+
+.ui-select-multiple.ui-select-bootstrap {
+  height: auto;
+  padding: 3px 3px 0 3px;
+}
+
+.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+  background-color: transparent !important; /* To prevent double background when disabled */
+  border: none;
+  outline: none;
+  height: 1.666666em;
+  margin-bottom: 3px;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+  font-size: 1.6em;
+  line-height: 0.75;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match-item {
+  outline: 0;
+  margin: 0 3px 3px 0;
+}
+
+.ui-select-multiple .ui-select-match-item {
+  position: relative;
+}
+
+.ui-select-multiple .ui-select-match-item.dropping-before:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 100%;
+  height: 100%;
+  margin-right: 2px;
+  border-left: 1px solid #428bca;
+}
+
+.ui-select-multiple .ui-select-match-item.dropping-after:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  height: 100%;
+  margin-left: 2px;
+  border-right: 1px solid #428bca;
+}
+
+.ui-select-bootstrap .ui-select-choices-row>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+.ui-select-bootstrap .ui-select-choices-row>a:hover, .ui-select-bootstrap .ui-select-choices-row>a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5;
+}
+
+.ui-select-bootstrap .ui-select-choices-row.active>a {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #428bca;
+}
+
+.ui-select-bootstrap .ui-select-choices-row.disabled>a,
+.ui-select-bootstrap .ui-select-choices-row.active.disabled>a {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+}
+
+/* fix hide/show angular animation */
+.ui-select-match.ng-hide-add,
+.ui-select-search.ng-hide-add {
+    display: none !important;
+}
+
+/* Mark invalid Bootstrap */
+.ui-select-bootstrap.ng-dirty.ng-invalid > button.btn.ui-select-match {
+    border-color: #D44950;
+}
+/*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -7267,6 +7488,12 @@ h2 {
     font-size: 12px;
     line-height: 30px; }
 
+h3 {
+  font-size: 14px;
+  font-weight: 300;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px; }
+
 a {
   color: #00baef; }
   a:hover {
@@ -7313,6 +7540,25 @@ a {
   .block-list ul {
     margin: 10px 0 0;
     padding: 0; }
+
+.top-filter {
+  position: relative;
+  margin-bottom: 10px; }
+  .top-filter input {
+    display: block;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 8px 10px;
+    outline: none;
+    border: none;
+    padding-left: 30px; }
+  .top-filter .fa-search {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    left: 10px;
+    color: rgba(0, 0, 0, 0.2); }
 
 table {
   margin-bottom: 30px !important; }
@@ -7399,6 +7645,8 @@ table .tablesort-asc, table .tablesort-desc {
     #main-nav .menu-items a.lg:hover {
       height: 80px;
       padding: 18px 0; }
+  #main-nav .menu-items .alt {
+    color: #a9a8a8; }
   #main-nav .menu-items a .text {
     opacity: 0;
     transition: opacity .2s; }
@@ -7491,6 +7739,18 @@ input[type="checkbox"].form-control {
 
 .form-control:not(select) {
   height: auto; }
+
+.backend-errors {
+  background: white;
+  padding: 15px;
+  color: red;
+  margin-bottom: 15px; }
+  .backend-errors:before {
+    content: 'Form could not be saved because of errors:';
+    margin-bottom: 10px;
+    display: block; }
+  .backend-errors ul {
+    margin: 0; }
 
 .dashboard-page #main-content .scroller {
   background: transparent; }
@@ -7621,7 +7881,10 @@ input[type="checkbox"].form-control {
     margin: 15px 0; }
 
 .action-panel {
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+  transition: box-shadow .3s; }
+  .action-panel.active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.45); }
   .action-panel .toggle {
     display: block;
     background: #00b9f2;
@@ -7638,4 +7901,107 @@ input[type="checkbox"].form-control {
     background: #eeeeee; }
   .action-panel .col-sm-offset-4, .action-panel .form-horizontal .field-errors, .form-horizontal .action-panel .field-errors {
     padding-left: 15px; }
+
+.matrix-char-tooltip {
+  -webkit-transform: translateX(15px);
+          transform: translateX(15px); }
+
+.scorecard-matrix {
+  margin: 30px 0;
+  overflow-y: hidden;
+  overflow-x: visible;
+  padding-bottom: 150px; }
+  .scorecard-matrix .color1 {
+    background: red;
+    color: red; }
+  .scorecard-matrix .color2 {
+    background: #F7C80B;
+    color: #F7C80B; }
+  .scorecard-matrix .color3 {
+    background: #FF6D24;
+    color: #FF6D24; }
+  .scorecard-matrix .color4 {
+    background: #7993F2;
+    color: #7993F2; }
+  .scorecard-matrix .color5 {
+    background: #2E74BA;
+    color: #2E74BA; }
+  .scorecard-matrix .color6 {
+    background: #009BCC;
+    color: #009BCC; }
+  .scorecard-matrix .color7 {
+    background: #008C8C;
+    color: #008C8C; }
+  .scorecard-matrix .color8 {
+    background: #00CCAA;
+    color: #00CCAA; }
+  .scorecard-matrix .color9 {
+    background: #1CB85D;
+    color: #1CB85D; }
+  .scorecard-matrix table {
+    margin-top: 30px;
+    width: 1700px;
+    overflow-y: auto;
+    border-collapse: separate;
+    border-spacing: 1px; }
+  .scorecard-matrix .chars td {
+    font-size: 11px;
+    font-weight: 300;
+    white-space: nowrap;
+    position: relative;
+    text-align: left;
+    background: none; }
+  .scorecard-matrix .chars div {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    -webkit-transform-origin: top left;
+            transform-origin: top left;
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    left: 50%;
+    top: 0; }
+  .scorecard-matrix tbody td {
+    border: 1px solid white; }
+  .scorecard-matrix .init-title {
+    text-align: right;
+    white-space: nowrap;
+    padding-right: 5px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  .scorecard-matrix td {
+    width: 1%; }
+  .scorecard-matrix .cell {
+    transition: background .3s, opacity .3s;
+    border-width: 1px;
+    max-width: 18px;
+    opacity: .6; }
+    .scorecard-matrix .cell.active {
+      opacity: 1; }
+  .scorecard-matrix .gap {
+    background: #f8f8f8; }
+  .scorecard-matrix .cell.inverse {
+    background: #f8f8f8 !important; }
+  .scorecard-matrix .gap.inverse {
+    background: #333333 !important; }
+  .scorecard-matrix .legend {
+    border: 2px solid #E6E6E6;
+    border-bottom: 5px solid white;
+    position: relative;
+    background: none; }
+    .scorecard-matrix .legend div {
+      font-weight: 200;
+      text-align: center;
+      position: absolute;
+      bottom: 100%;
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 11px; }
+
+.scorecard-matrix-controls {
+  background: rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+  padding: 10px; }
 

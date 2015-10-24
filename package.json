@@ -32,11 +32,12 @@
     "angular-wizard": "~0.5.3",
     "angular-messages": "~1.4.4",
     "bootstrap": "~3.3.5",
-    "angular-ui-bootstrap": "~0.13.3",
+    "angular-ui-bootstrap": "~0.14.1",
     "angular-aria": "~1.4.5",
     "angular-animate": "~1.4.5",
     "angular-filter": "~0.5.5",
-    "angular-tablesort": "~1.0.8"
+    "angular-tablesort": "~1.0.8",
+    "ui-select": "~0.11.2"
   },
   "devDependencies": {
     "gulp": "^3.8.7",
@@ -72,6 +73,7 @@
     "phantomjs": "~1.9.18",
     "karma-phantomjs-launcher": "~0.2.1",
     "angular-mocks": "~1.4.4",
-    "del": "~1.2.1"
+    "del": "~1.2.1",
+    "angular-sanitize": "~1.4.7"
   }
 }

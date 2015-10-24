@@ -120,7 +120,12 @@ class InitiativesController < AuthenticatedController
         :description,
         :started_at,
         :finished_at,
-        :dates_confirmed
+        :dates_confirmed,
+        :contact_name,
+        :contact_email,
+        :contact_phone,
+        :contact_website,
+        :contact_position
       ],
       relationships: [
         scorecard: [data: [:id]],

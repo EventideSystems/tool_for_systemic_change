@@ -62,4 +62,22 @@ RSpec.describe "Characteristic", type: :request do
         to be_within(0.01).of(characteristic.created_at.utc)
     end
   end
+
+  describe "GET /characteristics/:id/video_tutorial_embedded_iframe" do
+
+    it "returns embedded video link for focus area" do
+      characteristic = Characteristic.first
+      characteristic.video_tutorial_embedded_iframe = <<-IFRAME
+  <iframe src="https://player.vimeo.com/video/26179832?color=ffffff" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/26179832">Heli Test #1</a> from <a href="https://vimeo.com/mutinybikes">Mutiny Bikes</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+      IFRAME
+
+      characteristic.save!
+
+      sign_in(admin)
+      get video_tutorial_embedded_iframe_characteristic_path(characteristic)
+      attribute_data = JSON.parse(response.body)['data']['attributes']
+      expect(attribute_data['videoTutorialEmbeddedIframe']).
+        to eq(characteristic.video_tutorial_embedded_iframe)
+    end
+  end
 end

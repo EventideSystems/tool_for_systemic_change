@@ -1,5 +1,5 @@
 class FocusAreasController < AuthenticatedController
-  before_action :set_focus_area, only: [:show]
+  before_action :set_focus_area, only: [:show, :video_tutorial_embedded_iframe]
 
   resource_description do
     formats ['json']
@@ -20,6 +20,10 @@ class FocusAreasController < AuthenticatedController
     render json: @focus_area,
       include: ['characteristics', 'focusAreaGroup'],
       serializer: FocusAreaWithCharacteristicsSerializer
+  end
+
+  def video_tutorial_embedded_iframe
+    render json: @focus_area, serializer: VideoTutorialEmbeddedIframeSerializer
   end
 
   private

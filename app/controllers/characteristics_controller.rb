@@ -1,5 +1,5 @@
 class CharacteristicsController < AuthenticatedController
-  before_action :set_characteristic, only: [:show]
+  before_action :set_characteristic, only: [:show, :video_tutorial_embedded_iframe]
 
   resource_description do
     formats ['json']
@@ -47,6 +47,10 @@ class CharacteristicsController < AuthenticatedController
   EOS
   def show
     render json: @characteristic, include: ['focusArea', 'focusArea.focusAreaGroup']
+  end
+
+  def video_tutorial_embedded_iframe
+    render json: @characteristic, serializer: VideoTutorialEmbeddedIframeSerializer
   end
 
   private

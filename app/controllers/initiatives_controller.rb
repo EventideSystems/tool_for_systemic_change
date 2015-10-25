@@ -1,5 +1,5 @@
 class InitiativesController < AuthenticatedController
-  before_action :set_initiative, only: [:show, :update, :destroy]
+  before_action :set_initiative, except: [:index, :create]
 
   resource_description do
     formats ["json"]

@@ -18,8 +18,16 @@ Rails.application.routes.draw do
   resources :wicked_problems, :defaults => { :format => 'json' }
 
   resources :focus_area_groups, defaults: { :format => 'json' }, only: [:show, :index]
-  resources :focus_areas, defaults: { :format => 'json' }, only: [:show, :index]
-  resources :characteristics, defaults: { :format => 'json' }, only: [:show, :index]
+  resources :focus_areas, defaults: { :format => 'json' }, only: [:show, :index] do
+    member do
+      get 'video_tutorial_embedded_iframe'
+    end
+  end
+  resources :characteristics, defaults: { :format => 'json' }, only: [:show, :index] do
+    member do
+      get 'video_tutorial_embedded_iframe'
+    end
+  end
 
   devise_for :users, :controllers => { :invitations => 'invitations' }
 

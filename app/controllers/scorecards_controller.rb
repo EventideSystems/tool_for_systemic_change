@@ -1,6 +1,5 @@
 class ScorecardsController < AuthenticatedController
   before_action :set_scorecard, only: [:show, :edit, :update, :destroy]
-  before_action :set_client, only: [:create, :update]
 
   resource_description do
     formats ['json']
@@ -8,7 +7,7 @@ class ScorecardsController < AuthenticatedController
 
   api :GET, '/scorecards'
   def index
-    @scorecards = Scorecard.for_user(current_user)
+    @scorecards = current_client.scorecards
 
     render json: @scorecards, include: ['initiatives']
   end
@@ -29,7 +28,7 @@ class ScorecardsController < AuthenticatedController
     included_attributes = normalize_included(params[:included])
 
     if data_attributes[:client_id].nil?
-      data_attributes[:client_id] = @client.id
+      data_attributes[:client_id] = current_client.id
     end
     # Need to collect errors as we go
 
@@ -38,7 +37,7 @@ class ScorecardsController < AuthenticatedController
 
       included_attributes.each do |included|
         if included.attributes[:client_id].nil?
-          included.attributes[:client_id] = @client.id
+          included.attributes[:client_id] = current_client.id
         end
 
         case included.type
@@ -107,12 +106,10 @@ class ScorecardsController < AuthenticatedController
 
   private
 
-    def set_client
-      @client = current_user.client
-    end
-
     def set_scorecard
-      @scorecard = Scorecard.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
+      @scorecard = current_client.scorecards.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      raise User::NotAuthorized
     end
 
     def permitted_community_params(params)
@@ -142,15 +139,4 @@ class ScorecardsController < AuthenticatedController
       )
     end
 
-    # TODO No longer in use - DELETE
-    def client_id_from_params(params)
-      params[:relationships][:client][:data][:id].to_i
-    rescue
-      nil
-    end
-
-    # TODO No longer in use - DELETE
-    def community_id_from_params(params)
-      params[:relationships][:community][:data][:id].to_i
-    end
 end

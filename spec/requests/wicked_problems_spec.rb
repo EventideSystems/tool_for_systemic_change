@@ -49,7 +49,7 @@ RSpec.describe "Wicked Problems", type: :request do
         get wicked_problems_path
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data'].count).to be(2)
+        expect(JSON.parse(response.body)['data'].count).to be(1)
       end
     end
   end
@@ -87,13 +87,19 @@ RSpec.describe "Wicked Problems", type: :request do
         expect(response).to have_http_status(403)
       end
 
-      specify "staff - all records" do
+      specify "staff - inaccessible record before client context switch" do
         sign_in(staff)
-        get wicked_problem_path(wicked_problem)
+        put current_client_path, id: community.client.id
+        get wicked_problem_path(other_wicked_problem)
 
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(403)
+      end
 
-        get wicked_problem_path(wicked_problem)
+      specify "staff - accessible record after client context switch" do
+        sign_in(staff)
+        put current_client_path, id: other_community.client.id
+
+        get wicked_problem_path(other_wicked_problem)
 
         expect(response).to have_http_status(200)
       end

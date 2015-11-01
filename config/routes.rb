@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   match 'initiatives/:initiative_id/checklist_items', to: 'checklist_items#bulk_update', via: [:put, :patch], :defaults => { :format => 'json' }
   resources :organisations, :defaults => { :format => 'json' }
   resources :clients, :defaults => { :format => 'json' }
+  resource :current_client, :controller => 'current_client', :defaults => { :format => 'json' }, only: [:show, :update]
   resources :communities, :defaults => { :format => 'json' }
   resources :invitations, :controller => 'invitations', only: [:create], :defaults => { :format => 'json' }
   resources :scorecards, :defaults => { :format => 'json' } do
@@ -19,14 +20,10 @@ Rails.application.routes.draw do
 
   resources :focus_area_groups, defaults: { :format => 'json' }, only: [:show, :index]
   resources :focus_areas, defaults: { :format => 'json' }, only: [:show, :index] do
-    member do
-      get 'video_tutorial_embedded_iframe'
-    end
+    get 'video_tutorial_embedded_iframe', on: :member
   end
   resources :characteristics, defaults: { :format => 'json' }, only: [:show, :index] do
-    member do
-      get 'video_tutorial_embedded_iframe'
-    end
+    get 'video_tutorial_embedded_iframe', on: :member
   end
 
   devise_for :users, :controllers => { :invitations => 'invitations' }

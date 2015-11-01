@@ -52,7 +52,7 @@ RSpec.describe "Communities", type: :request do
         get communities_path
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data'].count).to be(2)
+        expect(JSON.parse(response.body)['data'].count).to be(1)
       end
     end
   end
@@ -90,13 +90,25 @@ RSpec.describe "Communities", type: :request do
         expect(response).to have_http_status(403)
       end
 
-      specify "staff - all records" do
+      specify "staff - accessible record" do
         sign_in(staff)
         get community_path(community)
 
         expect(response).to have_http_status(200)
+      end
 
-        get community_path(community)
+      specify "staff - inaccessible record before client context switch" do
+        sign_in(staff)
+        put current_client_path, id: community.client.id
+        get community_path(other_community)
+
+        expect(response).to have_http_status(403)
+      end
+
+      specify "staff - accessible record after client context switch" do
+        sign_in(staff)
+        put current_client_path, id: other_community.client.id
+        get community_path(other_community)
 
         expect(response).to have_http_status(200)
       end

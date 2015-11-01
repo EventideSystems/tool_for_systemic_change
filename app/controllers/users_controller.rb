@@ -6,7 +6,7 @@ class UsersController < AuthenticatedController
 
   api :GET, '/users'
   def index
-    @users = User.for_user(current_user)
+    @users = current_user.user? ? User.where(id: current_user.id).all : current_client.users
 
     render json: @users
   end
@@ -14,7 +14,7 @@ class UsersController < AuthenticatedController
   api :GET, '/users/:id'
   param :id, :number, required: true
   def show
-    @user = User.for_user(current_user).find(params[:id]) rescue (raise User::NotAuthorized )
+    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
     render json: @user
   end
 end

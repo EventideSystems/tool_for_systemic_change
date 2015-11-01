@@ -65,7 +65,7 @@ RSpec.describe "Scorecards", type: :request do
         get scorecards_path
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data'].count).to be(2)
+        expect(JSON.parse(response.body)['data'].count).to be(1)
       end
     end
   end
@@ -103,13 +103,19 @@ RSpec.describe "Scorecards", type: :request do
         expect(response).to have_http_status(403)
       end
 
-      specify "staff - all records" do
+      specify "staff - inaccessible record before client context switch" do
         sign_in(staff)
-        get scorecard_path(scorecard)
+        put current_client_path, id: community.client.id
+        get scorecard_path(other_scorecard)
 
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(403)
+      end
 
-        get scorecard_path(scorecard)
+      specify "staff - accessible record after client context switch" do
+        sign_in(staff)
+        put current_client_path, id: other_community.client.id
+
+        get scorecard_path(other_scorecard)
 
         expect(response).to have_http_status(200)
       end

@@ -49,12 +49,22 @@ RSpec.describe "Users", type: :request do
         expect(JSON.parse(response.body)['data'].count).to be(2)
       end
 
-      specify "staff profile" do
+      specify "staff profile - before client context swtitch " do
         sign_in(staff)
+        put current_client_path, id: admin.client.id
         get users_path
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)['data'].count).to be(3)
+        expect(JSON.parse(response.body)['data'].count).to be(2)
+      end
+
+      specify "staff profile - after client context swtitch " do
+        sign_in(staff)
+        put current_client_path, id: other_community.client.id
+        get users_path
+
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)['data'].count).to be(0)
       end
     end
   end

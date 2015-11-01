@@ -81,10 +81,8 @@ class ChecklistItemsController < AuthenticatedController
     attributes = normalize(checklist_item_params)
     respond_to do |format|
       if @intiative_checklist_item.update(attributes)
-        format.html { redirect_to @intiative_checklist_item, notice: 'Checklist Item was successfully updated.' }
         format.json { render json: { status: :ok, location: @intiative_checklist_item } }
       else
-        format.html { render :edit }
         format.json { render json: @intiative_checklist_item.errors, status: :unprocessable_entity }
       end
     end
@@ -128,10 +126,8 @@ class ChecklistItemsController < AuthenticatedController
 
     respond_to do |format|
       if success
-        format.html { redirect_to @initiative, notice: 'Checklist Item was successfully updated.' }
         format.json { render json: { status: :ok, location: @intiative } } # SMELL route to initiative/:initiative_id/checklist_items
       else
-        format.html { render :edit }
         format.json { render json: @intiative.errors, status: :unprocessable_entity } # SMELL errors for initiative/:initiative_id/checklist_items
       end
     end
@@ -140,7 +136,9 @@ class ChecklistItemsController < AuthenticatedController
   private
 
     def set_initiative
-      @intiative = Initiative.for_user(current_user).find(params[:initiative_id]) rescue (raise User::NotAuthorized )
+      @intiative = current_client.initiatives.find(params[:initiative_id])
+    rescue ActiveRecord::RecordNotFound
+      raise User::NotAuthorized
     end
 
     def set_checklist_item

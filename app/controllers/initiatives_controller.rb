@@ -7,7 +7,7 @@ class InitiativesController < AuthenticatedController
 
   api :GET, "/initiatives"
   def index
-    @initiatives = Initiative.for_user(current_user)
+    @initiatives = current_client.initiatives
 
     render json: @initiatives
   end
@@ -96,8 +96,8 @@ class InitiativesController < AuthenticatedController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_initiative
-    @initiative = Initiative.for_user(current_user).find(params[:id])
-  rescue
+    @initiative = current_client.initiatives.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
     raise User::NotAuthorized
   end
 

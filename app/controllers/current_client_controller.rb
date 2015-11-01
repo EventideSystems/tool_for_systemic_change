@@ -1,6 +1,10 @@
 class CurrentClientController < AuthenticatedController
   before_action :authenticate_staff_user!, only: [:update]
 
+  resource_description do
+    formats ['json']
+  end
+
   def show
     render json: current_client
   end

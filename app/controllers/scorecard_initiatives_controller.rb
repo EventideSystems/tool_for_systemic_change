@@ -27,7 +27,9 @@ class ScorecardInitiativesController < AuthenticatedController
   private
 
     def set_scorecard
-      @scorecard = Scorecard.for_user(current_user).find(params[:scorecard_id]) rescue (raise 'Scorecard not found')
+      @scorecard = current_client.scorecards.find(params[:scorecard_id])
+    rescue ActiveRecord::RecordNotFound
+      raise User::NotAuthorized
     end
 
 end

@@ -68,7 +68,7 @@ RSpec.describe "Initiatives", type: :request do
         get initiatives_path
 
         expect(response).to have_http_status(200)
-        expect(JSON.parse(response.body)["data"].count).to be(2)
+        expect(JSON.parse(response.body)["data"].count).to be(1)
       end
     end
   end
@@ -107,13 +107,19 @@ RSpec.describe "Initiatives", type: :request do
         expect(response).to have_http_status(403)
       end
 
-      specify "staff - all records" do
+      specify "staff - inaccessible record before client context switch" do
         sign_in(staff)
-        get initiative_path(initiative)
+        put current_client_path, id: community.client.id
 
-        expect(response).to have_http_status(200)
+        get initiative_path(other_initiative)
 
-        get initiative_path(initiative)
+        expect(response).to have_http_status(403)
+      end
+      specify "staff - accessible record after client context switch" do
+        sign_in(staff)
+        put current_client_path, id: other_community.client.id
+
+        get initiative_path(other_initiative)
 
         expect(response).to have_http_status(200)
       end

@@ -7627,7 +7627,7 @@ table .tablesort-asc, table .tablesort-desc {
     text-align: center; }
   #main-nav .menu-items a {
     display: block;
-    color: white;
+    color: #a9a8a8;
     padding: 15px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-weight: 200;
@@ -7646,7 +7646,7 @@ table .tablesort-asc, table .tablesort-desc {
       height: 80px;
       padding: 18px 0; }
   #main-nav .menu-items .alt {
-    color: #a9a8a8; }
+    color: white; }
   #main-nav .menu-items a .text {
     opacity: 0;
     transition: opacity .2s; }
@@ -7801,6 +7801,24 @@ input[type="checkbox"].form-control {
     background: #504f4f; }
   .scorecards-page .steps-indicator li a {
     font-weight: 300; }
+
+.initiatives-page .picker {
+  display: inline-block; }
+.initiatives-page .picker table {
+  margin-bottom: 0 !important;
+  margin-right: 20px; }
+.initiatives-page .picker .title {
+  display: block;
+  text-align: center;
+  margin-bottom: 5px; }
+.initiatives-page .glyphicon-chevron-left:before {
+  content: "\f0a8";
+  font-family: FontAwesome; }
+.initiatives-page .glyphicon-chevron-right:before {
+  content: "\f0a9";
+  font-family: FontAwesome; }
+.initiatives-page .text-muted {
+  color: lightgray; }
 
 .popout-accordion {
   position: relative; }

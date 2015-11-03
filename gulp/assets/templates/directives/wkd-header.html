@@ -7,6 +7,9 @@
   <nav class="sub-nav">
     <ul>
       <li wkd-has-role="staff">
+        <select ng-model="newContext" ng-change="changeContext()" ng-options="client.id as client.attributes.name for client in clients"></select>
+      </li>
+      <li wkd-has-role="staff">
         <a href="/admin">Admin</a>
       </li>
       <li>

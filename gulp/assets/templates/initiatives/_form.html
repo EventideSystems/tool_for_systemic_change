@@ -67,7 +67,7 @@
   <div class="col-sm-offset-4">
     <ul class="block-list">
       <li ng-repeat="org in vm.initiative.organisations">
-        <i class="ico fa fa-briefcase"></i>
+        <i class="ico fa fa-sitemap"></i>
         <a href ui-sref="wkd.organisations.view({ id: org.id })">{{ org.attributes.name }}</a>
         <div class="actions">
           <a href ng-click="vm.removeOrganisation(org)">
@@ -76,6 +76,57 @@
         </div>
       </li>
     </ul>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-name" class="col-sm-4 control-label">Start/ end dates</label>
+
+    <div class="col-sm-8 inline-datepickers">
+      <div class="picker">
+        <strong class="title">Start date</strong>
+        <uib-datepicker show-weeks="false" ng-model="vm.initiative.startedAt">
+        </uib-datepicker>
+      </div>
+
+      <div class="picker">
+        <strong class="title">Finish date</strong>
+        <uib-datepicker show-weeks="false" ng-model="vm.initiative.finishedAt">
+        </uib-datepicker>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-name" class="col-sm-4 control-label">Contact Name</label>
+
+    <div class="col-sm-8">
+      <input type="text" ng-model="vm.initiative.contactName" class="form-control" id="contact-name" placeholder="enter contact name">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-email" class="col-sm-4 control-label">Contact Email</label>
+
+    <div class="col-sm-8">
+      <input type="email" ng-model="vm.initiative.contactEmail" class="form-control" id="contact-email" placeholder="enter contact email">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-phone" class="col-sm-4 control-label">Contact Phone</label>
+
+    <div class="col-sm-8">
+      <input type="tel" ng-model="vm.initiative.contactPhone" class="form-control" id="contact-phone" placeholder="enter contact phone">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="contact-position" class="col-sm-4 control-label">Contact Position</label>
+
+    <div class="col-sm-8">
+      <input type="text" ng-model="vm.initiative.contactPosition" class="form-control" id="contact-position" placeholder="enter contact position">
+    </div>
   </div>
 
   <div class="col-sm-offset-4">

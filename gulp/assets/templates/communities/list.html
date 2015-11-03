@@ -23,7 +23,7 @@
     <tr ng-repeat="community in vm.communities | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: community.id })">{{ community.attributes.name }}</a></td>
       <td>{{ community.attributes.description }}</td>
-      <td>{{ community.createdAt | date }} </td>
+      <td>{{ community.attributes.createdAt | date }} </td>
     </tr>
   </tbody>
 </table>

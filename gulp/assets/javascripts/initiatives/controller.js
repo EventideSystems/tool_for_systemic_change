@@ -36,6 +36,7 @@ angular.module('WKD.Initiatives')
     };
 
     vm._view = function (params) {
+      console.log("FUCK")
       vm.submitForm = update;
       vm.deleteResource = destroy;
 

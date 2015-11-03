@@ -23,7 +23,7 @@
     <tr ng-repeat="organisation in vm.organisations | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: organisation.id })">{{ organisation.attributes.name }}</a></td>
       <td>{{ organisation.attributes.description }}</td>
-      <td>{{ organisation.createdAt | date }}</td>
+      <td>{{ organisation.attributes.createdAt | date }}</td>
     </tr>
   </tbody>
 </table>

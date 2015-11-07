@@ -27,7 +27,7 @@
     <tr ng-repeat="scorecard in vm.scorecards | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: scorecard.id })">{{ scorecard.attributes.name }}</a></td>
       <td>{{ scorecard.attributes.description }}</td>
-      <td>{{ scorecard.createdAt | date }} </td>
+      <td>{{ scorecard.attributes.createdAt | date }} </td>
     </tr>
   </tbody>
 </table>

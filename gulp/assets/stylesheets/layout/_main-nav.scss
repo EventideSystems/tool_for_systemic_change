@@ -17,7 +17,7 @@
 
   .menu-items a {
     display: block;
-    color: white;
+    color: lighten($brand-primary, 35%);
     padding: 15px 0;
     border-bottom: 1px solid $dark-10;
     font-weight: 200;
@@ -46,7 +46,7 @@
   }
 
   .menu-items .alt {
-    color: lighten($brand-primary, 35%);
+    color: white;
   }
 
   .menu-items a .text {

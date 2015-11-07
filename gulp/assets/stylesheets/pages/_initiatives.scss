@@ -1,0 +1,28 @@
+.initiatives-page {
+  .picker {
+    display: inline-block;
+  }
+
+  .picker table {
+    margin-bottom: 0 !important;
+    margin-right: 20px;
+  }
+
+  .picker .title {
+    display: block;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .glyphicon-chevron-left:before {
+    @include fa('f0a8');
+  }
+
+  .glyphicon-chevron-right:before {
+    @include fa('f0a9');
+  }
+
+  .text-muted {
+    color: lightgray;
+  }
+}

@@ -4,7 +4,9 @@ angular.module('WKD.Common')
 
 .directive('wkdHeader', [
   '$http',
-  function ($http) {
+  'WKD.Common.CurrentUser',
+  'Restangular',
+  function ($http, currentUser, Restangular) {
     return {
       restrict: 'E',
       link: function (scope) {
@@ -13,6 +15,30 @@ angular.module('WKD.Common')
             window.location = '/';
           });
         };
+
+        if (currentUser.hasRole('staff')) {
+          $http.get('/current_client').then(function (resp) {
+            scope.currentContext = resp.data.data.id;
+            scope.newContext = scope.currentContext;
+          });
+
+          Restangular.all('clients').getList().then(function (clients) {
+            scope.clients = clients;
+          });
+
+          scope.changeContext = changeContext;
+        }
+
+        function changeContext() {
+          if (scope.currentContext !== scope.newContext) {
+            $http.put('/current_client', _.find(scope.clients, {
+              id: scope.newContext
+            })).then(function () {
+              // reload rather then trying to figure out what resources to refetch
+              window.location.reload();
+            })
+          }
+        }
       },
       templateUrl: '/templates/directives/wkd-header.html'
     };

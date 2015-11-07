@@ -23,7 +23,7 @@
     <tr ng-repeat="initiative in vm.initiatives | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: initiative.id })">{{ initiative.attributes.name }}</a></td>
       <td>{{ initiative.attributes.description }}</td>
-      <td>{{ initiative.createdAt | date }} </td>
+      <td>{{ initiative.attributes.createdAt | date }} </td>
     </tr>
   </tbody>
 </table>

@@ -6,7 +6,7 @@ class CurrentClientController < AuthenticatedController
   end
 
   def show
-    render json: current_client
+    render json: Client.where(id: current_client.id).includes(:organisations).first
   end
 
   def update

@@ -7,7 +7,7 @@ class CharacteristicsController < AuthenticatedController
 
   api :GET, '/characteristics'
   def index
-    @characteristics = Characteristic.all
+    @characteristics = Characteristic.includes(focus_area: [:focus_area_group]).all
 
     render json: @characteristics, include: ['focusArea', 'focusArea.focusAreaGroup']
   end

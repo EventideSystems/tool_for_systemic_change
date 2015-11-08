@@ -7,7 +7,8 @@ class InitiativesController < AuthenticatedController
 
   api :GET, "/initiatives"
   def index
-    @initiatives = current_client.initiatives
+   # @initiatives = current_client.initiatives
+   @initiatives = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
 
     render json: @initiatives
   end

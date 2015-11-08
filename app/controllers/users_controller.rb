@@ -6,7 +6,8 @@ class UsersController < AuthenticatedController
 
   api :GET, '/users'
   def index
-    @users = current_user.user? ? User.where(id: current_user.id).all : current_client.users
+    # TODO Remove redundancies
+    @users = current_user.user? ? User.where(id: current_user.id).includes(:client).all : User.where(client_id: current_client.id).includes(:client).all
 
     render json: @users
   end

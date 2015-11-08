@@ -12,7 +12,7 @@ class CommunitiesController < AuthenticatedController
 
   api :GET, '/communities'
   def index
-    @communities = current_client.communities
+    @communities = Community.where(client_id: current_client.id)
 
     render json: @communities
   end

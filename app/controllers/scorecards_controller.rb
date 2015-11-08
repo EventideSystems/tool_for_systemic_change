@@ -7,7 +7,7 @@ class ScorecardsController < AuthenticatedController
 
   api :GET, '/scorecards'
   def index
-    @scorecards = current_client.scorecards
+    @scorecards = Scorecard.where(client_id: current_client.id).includes(:initiatives)
 
     render json: @scorecards, include: ['initiatives']
   end
@@ -30,6 +30,7 @@ class ScorecardsController < AuthenticatedController
     if data_attributes[:client_id].nil?
       data_attributes[:client_id] = current_client.id
     end
+
     # Need to collect errors as we go
 
     success = false
@@ -66,10 +67,8 @@ class ScorecardsController < AuthenticatedController
 
     respond_to do |format|
       if success
-        format.html { redirect_to @scorecard, notice: 'Scorecard was successfully created.' }
         format.json { render json: @scorecard, status: :created, location: @scorecard }
       else
-        format.html { render :new }
         format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end
     end
@@ -85,10 +84,8 @@ class ScorecardsController < AuthenticatedController
 
     respond_to do |format|
       if @scorecard.update(attributes)
-        format.html { redirect_to @scorecard, notice: 'Scorecard was successfully updated.' }
         format.json { render json: { status: :ok, location: @scorecard } }
       else
-        format.html { render :edit }
         format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end
     end

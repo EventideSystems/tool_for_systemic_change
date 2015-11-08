@@ -97,8 +97,16 @@ RSpec.describe "Scorecard Initiatives", type: :request do
         end
 
         specify "checklist items - checked" do
-          expect(@checklist_items.first['attributes']['checked']).to be(true)
-          expect(@checklist_items.last['attributes']['checked']).to_not be(true)
+          initiative_1_checklist_items = @checklist_items.select do |item|
+             item["relationships"]["initiative"]["data"]["id"].to_i == initiative_1.id
+          end
+
+          initiative_2_checklist_items = @checklist_items.select do |item|
+             item["relationships"]["initiative"]["data"]["id"].to_i == initiative_2.id
+          end
+
+          expect(initiative_1_checklist_items.first['attributes']['checked']).to be(true)
+          expect(initiative_2_checklist_items.first['attributes']['checked']).to_not be(true)
         end
       end
     end

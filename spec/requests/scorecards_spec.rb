@@ -257,9 +257,14 @@ RSpec.describe "Scorecards", type: :request do
 
         sign_in(admin)
 
+        # NOTE Ignore bullet errors here, as the "include client" optimization
+        # has an insignificant performance gain (vs complicating the POST
+        # method)
+        Bullet.enable = false
         expect do
           post '/scorecards', data: data_attributes, included: included_attributes
         end.to change{ Initiative.count }.by(2)
+        Bullet.enable = true
 
         expect(response).to have_http_status(201)
 

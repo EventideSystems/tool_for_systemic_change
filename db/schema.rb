@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151025004240) do
+ActiveRecord::Schema.define(version: 20151108025055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "trackable_id"
+    t.string   "trackable_type"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "key"
+    t.text     "parameters"
+    t.integer  "recipient_id"
+    t.string   "recipient_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
 
   create_table "characteristics", force: :cascade do |t|
     t.string   "name"
@@ -26,6 +43,9 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.text     "video_tutorial_embedded_iframe"
   end
 
+  add_index "characteristics", ["focus_area_id"], name: "index_characteristics_on_focus_area_id", using: :btree
+  add_index "characteristics", ["position"], name: "index_characteristics_on_position", using: :btree
+
   create_table "checklist_items", force: :cascade do |t|
     t.boolean  "checked"
     t.text     "comment"
@@ -34,6 +54,9 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
+
+  add_index "checklist_items", ["characteristic_id"], name: "index_checklist_items_on_characteristic_id", using: :btree
+  add_index "checklist_items", ["initiative_id"], name: "index_checklist_items_on_initiative_id", using: :btree
 
   create_table "clients", force: :cascade do |t|
     t.string   "name"
@@ -52,6 +75,8 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.datetime "updated_at",  null: false
   end
 
+  add_index "communities", ["client_id"], name: "index_communities_on_client_id", using: :btree
+
   create_table "focus_area_groups", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -59,6 +84,8 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.datetime "updated_at",  null: false
     t.integer  "position"
   end
+
+  add_index "focus_area_groups", ["position"], name: "index_focus_area_groups_on_position", using: :btree
 
   create_table "focus_areas", force: :cascade do |t|
     t.string   "name"
@@ -69,6 +96,9 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.integer  "position"
     t.text     "video_tutorial_embedded_iframe"
   end
+
+  add_index "focus_areas", ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id", using: :btree
+  add_index "focus_areas", ["position"], name: "index_focus_areas_on_position", using: :btree
 
   create_table "initiatives", force: :cascade do |t|
     t.string   "name"
@@ -86,10 +116,14 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.string   "contact_position"
   end
 
+  add_index "initiatives", ["scorecard_id"], name: "index_initiatives_on_scorecard_id", using: :btree
+
   create_table "initiatives_organisations", id: false, force: :cascade do |t|
     t.integer "initiative_id",   null: false
     t.integer "organisation_id", null: false
   end
+
+  add_index "initiatives_organisations", ["initiative_id", "organisation_id"], name: "initiatives_organisations_index", unique: true, using: :btree
 
   create_table "organisations", force: :cascade do |t|
     t.string   "name"
@@ -101,6 +135,8 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.string   "weblink"
   end
 
+  add_index "organisations", ["client_id"], name: "index_organisations_on_client_id", using: :btree
+
   create_table "scorecards", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -110,6 +146,8 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.integer  "client_id"
     t.integer  "wicked_problem_id"
   end
+
+  add_index "scorecards", ["client_id"], name: "index_scorecards_on_client_id", using: :btree
 
   create_table "sectors", force: :cascade do |t|
     t.string   "name"
@@ -146,6 +184,7 @@ ActiveRecord::Schema.define(version: 20151025004240) do
     t.integer  "invitations_count",      default: 0
   end
 
+  add_index "users", ["client_id"], name: "index_users_on_client_id", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree

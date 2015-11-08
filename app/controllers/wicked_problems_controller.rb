@@ -7,7 +7,7 @@ class WickedProblemsController < AuthenticatedController
 
   api :GET, '/wicked_problems'
   def index
-    @wicked_problems = current_client.wicked_problems
+    @wicked_problems = WickedProblem.where(client_id: current_client.id).all
 
     render json: @wicked_problems
   end

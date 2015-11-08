@@ -13,7 +13,7 @@ class ClientsController < AuthenticatedController
 
   api :GET, "/clients"
   def index
-    @clients = Client.for_user(current_user)
+    @clients = Client.for_user(current_user).includes(:organisations)
 
     render json: @clients
   end

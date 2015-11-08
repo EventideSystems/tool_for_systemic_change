@@ -8,7 +8,11 @@ class ScorecardInitiativesController < AuthenticatedController
 
   api :GET, '/scorecards/:scorecord_id/initiatives'
   def index
-    @initiatives = @scorecard.initiatives.includes([:checklist_items, :characteristics])
+    @initiatives = @scorecard.initiatives.includes(
+      :organisations,
+      :checklist_items,
+      characteristics: { focus_area: :focus_area_group }
+    ).all
 
     render json: @initiatives, include: [
       'checklistItems',

@@ -60,7 +60,7 @@ class ChecklistItemsController < AuthenticatedController
   }
   EOS
   def index
-    @intiative_checklist_items = @intiative.checklist_items
+    @intiative_checklist_items = @intiative.checklist_items.includes(characteristic: { focus_area: :focus_area_group })
 
     render json: @intiative_checklist_items, include: ['characteristic', 'characteristic.focusArea', 'characteristic.focusArea.focusAreaGroup']
   end

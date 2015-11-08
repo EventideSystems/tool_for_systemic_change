@@ -128,3 +128,40 @@ or
 bundle exec rubocop -Ra # autofix errors
 ```
 
+## Deploying
+
+Each environment (production, development, staging) has its own provisioning and deployment scripts under the `deploy` folder. Each script makes use of Ansbile for the provisioning cycle.
+
+### Deploying to Staging
+
+To to deploy the current `master` branch from origin, execute the following:
+
+```
+cd deploy/staging
+sh ./deploy.sh
+```
+
+This will go through the process of ensuring everything on the server is up to date, that the code is deployed and that the `current` folder on the server is swapped to point ot the new relase. A copy of last known release prior (plus recent releases) can be found in the `/wicked_software/releases` folder on the server. These can be used to rollback (currently a manual process) in the case of a failed build.
+
+The complete deployment cycle isn't fully automated at present. To finalise the deployment process the following manual steps are required:
+
+```
+ssh root@wickedlab-staging.eventidesystems.com
+sudo su - wicked_software
+cd /wicked_software/current
+```
+
+You will need to kill the existing `unicorn` master process. Run `ps aux | grep "unicorn master"` to get the PID of the existing process.
+
+```
+wicked_+ 20184  0.0  1.9  96976 20144 ?        Sl   Nov06   0:01 unicorn master -c /wicked_software/current/config/unicorn.staging.rb -D
+wicked_+ 26462  0.0  0.0  11740   936 pts/0    S+   18:34   0:00 grep --color=auto unicorn master
+```
+
+In this case the PID is **20184**. Use `kill -9 [PID]` to remove the master. In the example above the call would be `kill -9 20184`.
+
+Once the master has gone you will need to restart unicorn, like so:
+
+```
+RAILS_ENV=staging bundle exec unicorn -c /wicked_software/current/config/unicorn.staging.rb -D
+```

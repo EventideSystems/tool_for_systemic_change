@@ -7,7 +7,7 @@ class OrganisationsController < AuthenticatedController
 
   api :GET, '/organisations'
   def index
-    @organisations = current_client.organisations
+    @organisations = Organisation.where(client_id: current_client.id)
 
     render json: @organisations
   end

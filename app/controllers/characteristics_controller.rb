@@ -1,5 +1,5 @@
 class CharacteristicsController < AuthenticatedController
-  before_action :set_characteristic, only: [:show, :video_tutorial_embedded_iframe]
+  before_action :set_characteristic, only: [:show, :video_tutorial]
 
   resource_description do
     formats ['json']
@@ -7,9 +7,9 @@ class CharacteristicsController < AuthenticatedController
 
   api :GET, '/characteristics'
   def index
-    @characteristics = Characteristic.includes(focus_area: [:focus_area_group]).all
+    @characteristics = Characteristic.includes(:video_tutorials, focus_area: [:video_tutorials, :focus_area_group]).all
 
-    render json: @characteristics, include: ['focusArea', 'focusArea.focusAreaGroup']
+    render json: @characteristics, include: ['videoTutorials', 'focusArea', 'focusArea.focusAreaGroup']
   end
 
   api :GET, '/characteristics/:id'
@@ -49,8 +49,9 @@ class CharacteristicsController < AuthenticatedController
     render json: @characteristic, include: ['focusArea', 'focusArea.focusAreaGroup']
   end
 
-  def video_tutorial_embedded_iframe
-    render json: @characteristic, serializer: VideoTutorialEmbeddedIframeSerializer
+  def video_tutorial
+    @video_tutorial = @characteristic.video_tutorials.order(updated_at: :desc).first
+    render json: @video_tutorial
   end
 
   private

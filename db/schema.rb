@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151109093127) do
+ActiveRecord::Schema.define(version: 20151109150107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,10 +39,9 @@ ActiveRecord::Schema.define(version: 20151109093127) do
     t.string   "name"
     t.string   "description"
     t.integer  "focus_area_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "position"
-    t.text     "video_tutorial_embedded_iframe"
   end
 
   add_index "characteristics", ["focus_area_id"], name: "index_characteristics_on_focus_area_id", using: :btree
@@ -94,10 +93,9 @@ ActiveRecord::Schema.define(version: 20151109093127) do
     t.string   "name"
     t.string   "description"
     t.integer  "focus_area_group_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "position"
-    t.text     "video_tutorial_embedded_iframe"
   end
 
   add_index "focus_areas", ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id", using: :btree
@@ -193,6 +191,19 @@ ActiveRecord::Schema.define(version: 20151109093127) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "video_tutorials", force: :cascade do |t|
+    t.integer  "linked_id"
+    t.string   "linked_type"
+    t.string   "link_url"
+    t.string   "name"
+    t.text     "description"
+    t.boolean  "promote_to_dashboard"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "video_tutorials", ["linked_type", "linked_id"], name: "index_video_tutorials_on_linked_type_and_linked_id", using: :btree
 
   create_table "wicked_problems", force: :cascade do |t|
     t.string   "name"

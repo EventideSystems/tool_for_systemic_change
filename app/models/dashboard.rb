@@ -7,6 +7,7 @@ class Dashboard
   attr_reader :welcome_message
   attr_reader :client_name
   attr_reader :activities
+  attr_reader :video_tutorials
 
   def initialize(client)
     @client_name = client.name
@@ -15,6 +16,10 @@ class Dashboard
     @activities = PublicActivity::Activity.
       where(client_id: client.id).
       order(created_at: :desc).limit(10).all
+
+    @video_tutorials = VideoTutorial.
+      where(promote_to_dashboard: true).
+      order(updated_at: :desc).all
   end
 
   def id

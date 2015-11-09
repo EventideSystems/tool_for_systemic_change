@@ -58,6 +58,8 @@ gem 'kaminari'
 # Activity logging
 gem 'public_activity'
 
+gem 'redcarpet'
+
 gem "bullet", group: "test"
 
 group :development do

@@ -43,9 +43,9 @@ RSpec.describe "Activities", type: :request do
 
         data = JSON.parse(response.body)["data"]
         expect(data.count).to satisfy { |c| c > 0 }
-        expect(data.last["attributes"]["trackableId"]).to eq(@new_scorecard.id)
-        expect(data.last["attributes"]["trackableType"]).to eq("Scorecard")
-        expect(data.last["attributes"]["action"]).to eq("create")
+        expect(data.first["attributes"]["trackableId"]).to eq(@new_scorecard.id)
+        expect(data.first["attributes"]["trackableType"]).to eq("Scorecard")
+        expect(data.first["attributes"]["action"]).to eq("create")
       end
 
       specify "retrieve scorecard updated activity" do
@@ -57,9 +57,9 @@ RSpec.describe "Activities", type: :request do
 
         data = JSON.parse(response.body)["data"]
         expect(data.count).to satisfy { |c| c > 0 }
-        expect(data.last["attributes"]["trackableId"]).to eq(@new_scorecard.id)
-        expect(data.last["attributes"]["trackableType"]).to eq("Scorecard")
-        expect(data.last["attributes"]["action"]).to eq("update")
+        expect(data.first["attributes"]["trackableId"]).to eq(@new_scorecard.id)
+        expect(data.first["attributes"]["trackableType"]).to eq("Scorecard")
+        expect(data.first["attributes"]["action"]).to eq("update")
       end
 
       specify "retrieve scorecard activity with filter" do
@@ -68,8 +68,8 @@ RSpec.describe "Activities", type: :request do
 
         data = JSON.parse(response.body)["data"]
         expect(data.count).to satisfy { |c| c > 0 }
-        expect(data.last["attributes"]["trackableId"]).to eq(@new_scorecard.id)
-        expect(data.last["attributes"]["trackableType"]).to eq("Scorecard")
+        expect(data.first["attributes"]["trackableId"]).to eq(@new_scorecard.id)
+        expect(data.first["attributes"]["trackableType"]).to eq("Scorecard")
       end
     end
 
@@ -105,7 +105,7 @@ RSpec.describe "Activities", type: :request do
         data = JSON.parse(response.body)["data"]
 
         expect(data.last["attributes"]["trackableId"]).
-         to be(initiative.checklist_items.last.id)
+         to be(initiative.checklist_items.first.id)
       end
 
       specify "retrieve scorecard created activity with filter" do
@@ -115,7 +115,7 @@ RSpec.describe "Activities", type: :request do
         data = JSON.parse(response.body)["data"]
 
         expect(data.last["attributes"]["trackableId"]).
-         to be(initiative.checklist_items.last.id)
+         to be(initiative.checklist_items.first.id)
       end
 
       specify "retrieve scorecard created activity with limit" do

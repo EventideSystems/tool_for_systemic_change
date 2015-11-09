@@ -7,8 +7,9 @@ class InitiativesController < AuthenticatedController
 
   api :GET, "/initiatives"
   def index
-    # @initiatives = current_client.initiatives
-    @initiatives = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
+    query = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
+
+    @initiatives = finder_for_pagination(query).all
 
     render json: @initiatives
   end

@@ -14,6 +14,7 @@ RSpec.describe "Dashboard", type: :request do
     end
 
     specify "includes client name" do
+      Bullet.enable = false
       client.welcome_message = <<-MESSAGE
 Bacon ipsum dolor amet kielbasa fatback beef ribs.
 
@@ -29,10 +30,12 @@ MESSAGE
         "<p>Bacon ipsum dolor amet kielbasa fatback beef ribs.</p>\n\n" +
         "<p>Biltong sirloin beef ribs swine tri-tip turducken shankle.</p>\n")
 
+      Bullet.enable = true
     end
 
     specify "includes recent activity" do
 
+      Bullet.enable = false
       data_attributes = {
         type: 'communities',
         attributes: {
@@ -54,9 +57,11 @@ MESSAGE
       end
 
       get dashboard_path
+
       activities = JSON.parse(response.body)['data']['attributes']['activities']
 
       expect(activities.count).to be(10)
+      Bullet.enable = true
     end
   end
 end

@@ -8,6 +8,7 @@ RSpec.describe "Activities", type: :request do
   include_context "setup common data"
   include_context "setup model data"
 
+
   describe "GET /activities" do
 
     describe "scorecard activity" do
@@ -46,6 +47,17 @@ RSpec.describe "Activities", type: :request do
         expect(data.first["attributes"]["trackableId"]).to eq(@new_scorecard.id)
         expect(data.first["attributes"]["trackableType"]).to eq("Scorecard")
         expect(data.first["attributes"]["action"]).to eq("create")
+      end
+
+      specify "retrieve scorecard activity message" do
+        get activities_path
+        expect(response).to have_http_status(200)
+
+        data = JSON.parse(response.body)["data"]
+        expect(data.first["attributes"]["shortMessage"])
+          .to eq("Scorecard created")
+        expect(data.first["attributes"]["longMessage"])
+          .to eq("Scorecard '#{scorecard_name}' created by #{admin.name}")
       end
 
       specify "retrieve scorecard updated activity" do

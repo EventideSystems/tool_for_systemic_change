@@ -1,4 +1,6 @@
 class ChecklistItem < ActiveRecord::Base
+  include Trackable
+
   belongs_to :initiative
   belongs_to :characteristic
 

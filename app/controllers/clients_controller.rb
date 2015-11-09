@@ -13,7 +13,8 @@ class ClientsController < AuthenticatedController
 
   api :GET, "/clients"
   def index
-    @clients = Client.for_user(current_user).includes(:organisations)
+    query = Client.for_user(current_user).includes(:organisations)
+    @clients = finder_for_pagination(query).all
 
     render json: @clients
   end

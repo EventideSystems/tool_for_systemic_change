@@ -7,7 +7,9 @@ class ScorecardsController < AuthenticatedController
 
   api :GET, '/scorecards'
   def index
-    @scorecards = Scorecard.where(client_id: current_client.id).includes(:initiatives)
+    query = Scorecard.where(client_id: current_client.id).includes(:initiatives)
+
+    @scorecards = finder_for_pagination(query).all
 
     render json: @scorecards, include: ['initiatives']
   end

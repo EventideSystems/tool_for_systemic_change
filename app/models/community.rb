@@ -1,4 +1,6 @@
 class Community < ActiveRecord::Base
+  include Trackable
+
   belongs_to :client
   has_many :scorecards
 

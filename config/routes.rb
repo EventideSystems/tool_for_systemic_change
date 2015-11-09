@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  resources :activities, :defaults => { :format => 'json' },  only: [:index]
   resources :initiatives, :defaults => { :format => 'json' } do
     resources :checklist_items, :defaults => { :format => 'json' }, controller: 'checklist_items' do
       put 'bulk', on: :collection

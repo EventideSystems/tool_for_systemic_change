@@ -7,4 +7,8 @@ class ChecklistItem < ActiveRecord::Base
   validates :initiative, presence: true
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
+  def name
+   characteristic.name
+  end
+
 end

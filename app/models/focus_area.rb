@@ -6,4 +6,6 @@ class FocusArea < ActiveRecord::Base
   has_many :video_tutorials, as: :linked
 
   validates :position, presence: true, uniqueness: { scope: :focus_area_group }
+
+  accepts_nested_attributes_for :video_tutorials
 end

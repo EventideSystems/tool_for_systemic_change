@@ -7,4 +7,5 @@ class VideoTutorial < ActiveRecord::Base
     matches = /https:\/\/vimeo\.com\/(.*)$/.match(link_url)
     matches[1]
   end
+
 end

@@ -12,7 +12,9 @@ class CommunitiesController < AuthenticatedController
 
   api :GET, '/communities'
   def index
-    @communities = Community.where(client_id: current_client.id)
+    query = Community.where(client_id: current_client.id)
+
+    @communities = finder_for_pagination(query).all
 
     render json: @communities
   end

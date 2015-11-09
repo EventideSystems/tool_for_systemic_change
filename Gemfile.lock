@@ -151,6 +151,11 @@ GEM
     pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
+    public_activity (1.4.2)
+      actionpack (>= 3.0.0)
+      activerecord (>= 3.0)
+      i18n (>= 0.5.0)
+      railties (>= 3.0.0)
     pundit (1.0.1)
       activesupport (>= 3.0.0)
     rack (1.6.4)
@@ -286,11 +291,13 @@ DEPENDENCIES
   factory_girl_rails
   ffaker
   jquery-rails
+  kaminari
   pg
   pry
   pry-byebug
   pry-coolline
   pry-stack_explorer
+  public_activity
   pundit
   railroady
   rails (= 4.2.3)

@@ -7,7 +7,9 @@ class WickedProblemsController < AuthenticatedController
 
   api :GET, '/wicked_problems'
   def index
-    @wicked_problems = WickedProblem.where(client_id: current_client.id).all
+    query = WickedProblem.where(client_id: current_client.id)
+
+    @wicked_problems = finder_for_pagination(query).all
 
     render json: @wicked_problems
   end

@@ -1,5 +1,6 @@
 class AuthenticatedController < ApplicationController
   include Concerns::DeserializeJsonApi
+  include PublicActivity::StoreController
 
   before_filter :authenticate_user!
 
@@ -21,11 +22,35 @@ class AuthenticatedController < ApplicationController
     end
   end
 
+  def current_client_id
+    current_client ? current_client.id : nil
+  end
+
+  protected
+
+  def finder_for_pagination(query)
+    if params[:limit]
+      query = query.limit(params[:limit])
+    end
+
+    if params[:page]
+      query = query.page(params[:page])
+    end
+
+    if params[:per]
+      query = query.per(params[:per])
+    end
+
+    query
+  end
+
   private
 
   def get_staff_client_id_from_session
-    current_client_id = session[:staff_current_client_id]
-    session[:staff_current_client_id] = Client.first.id unless current_client_id
+    client_id = session[:staff_current_client_id]
+    client_id = nil unless Client.exists?(client_id)
+
+    session[:staff_current_client_id] = Client.first.id unless client_id
 
     session[:staff_current_client_id]
   end

@@ -1,6 +1,9 @@
 require 'redcarpet'
 
 class Dashboard
+  include ActiveModel::Model
+  include ActiveModel::Serialization
+
   attr_reader :welcome_message
   attr_reader :client_name
   attr_reader :activities

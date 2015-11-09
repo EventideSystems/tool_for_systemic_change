@@ -1,4 +1,6 @@
 class Organisation < ActiveRecord::Base
+  include Trackable
+
   belongs_to :client
   belongs_to :sector
   has_and_belongs_to_many :intiatives, join_table: :initiatives_organisations, class_name: 'Initiative'

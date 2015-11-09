@@ -7,7 +7,8 @@ class OrganisationsController < AuthenticatedController
 
   api :GET, '/organisations'
   def index
-    @organisations = Organisation.where(client_id: current_client.id)
+    query = Organisation.where(client_id: current_client.id)
+    @organisations = finder_for_pagination(query).all
 
     render json: @organisations
   end

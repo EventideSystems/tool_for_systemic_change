@@ -7,8 +7,9 @@ class InitiativesController < AuthenticatedController
 
   api :GET, "/initiatives"
   def index
-   # @initiatives = current_client.initiatives
-   @initiatives = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
+    query = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
+
+    @initiatives = finder_for_pagination(query).all
 
     render json: @initiatives
   end
@@ -65,13 +66,8 @@ class InitiativesController < AuthenticatedController
 
     respond_to do |format|
       if @initiative.update(attributes)
-        format.html do
-          redirect_to @initiative,
-                      notice: "Initiative was successfully updated."
-        end
         format.json { render json: { status: :ok, location: @initiative } }
       else
-        format.html { render :edit }
         format.json do
           render json: @initiative.errors,
                  status: :unprocessable_entity
@@ -85,10 +81,6 @@ class InitiativesController < AuthenticatedController
   def destroy
     @initiative.destroy
     respond_to do |format|
-      format.html do
-        redirect_to initiatives_url,
-                    notice: "Initiative was successfully destroyed."
-      end
       format.json { head :no_content }
     end
   end

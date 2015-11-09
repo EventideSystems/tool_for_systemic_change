@@ -46,21 +46,17 @@ RSpec.describe "FocusArea", type: :request do
     end
   end
 
-  describe "GET /focus_areas/:id/video_tutorial_embedded_iframe" do
+  describe "GET /focus_areas/:id/video_tutorial" do
 
     it "returns embedded video link for focus area" do
       focus_area = FocusArea.first
-      focus_area.video_tutorial_embedded_iframe = <<-IFRAME
-  <iframe src="https://player.vimeo.com/video/26179832?color=ffffff" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/26179832">Heli Test #1</a> from <a href="https://vimeo.com/mutinybikes">Mutiny Bikes</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-      IFRAME
-
-      focus_area.save!
+      video_tutorial = create(:video_tutorial, link_url: "https://vimeo.com/11111", linked: focus_area)
 
       sign_in(admin)
-      get video_tutorial_embedded_iframe_focus_area_path(focus_area)
+      get video_tutorial_focus_area_path(focus_area)
+
       attribute_data = JSON.parse(response.body)['data']['attributes']
-      expect(attribute_data['videoTutorialEmbeddedIframe']).
-        to eq(focus_area.video_tutorial_embedded_iframe)
+      expect(attribute_data['vimeoId']).to eq("11111")
     end
   end
 end

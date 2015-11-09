@@ -48,4 +48,9 @@ RailsAdmin.config do |config|
   config.model 'Characteristic' do
     parent FocusArea
   end
+
+  config.model 'VideoTutorial' do
+    exclude_fields :linked
+  end
+
 end

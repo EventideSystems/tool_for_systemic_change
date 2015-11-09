@@ -10,7 +10,7 @@ class ActivitiesController < AuthenticatedController
   def index
     query = PublicActivity::Activity.
             where(client_id: current_client_id).
-            order(:created_at)
+            order(created_at: :desc)
 
     if params[:user_id]
       query = query.where(owner_type: "User", owner_id: params[:user_id])

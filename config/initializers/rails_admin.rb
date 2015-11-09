@@ -1,5 +1,6 @@
 RailsAdmin.config do |config|
 
+  config.main_app_name = ["Wicked Lab", "Back Office"]
   ### Popular gems integration
 
   # == Devise ==
@@ -8,9 +9,6 @@ RailsAdmin.config do |config|
   # end
   # config.current_user_method(&:current_user)
 
-  # config.authorize_with do
-  #   redirect_to main_app.root_path unless current_user.staff?
-  # end
 
   config.authorize_with :pundit do
     redirect_to main_app.root_path unless current_user.staff?
@@ -34,7 +32,6 @@ RailsAdmin.config do |config|
     show
     edit
     delete
-    show_in_app
 
     ## With an audit adapter, you can add:
     # history_index
@@ -48,4 +45,9 @@ RailsAdmin.config do |config|
   config.model 'Characteristic' do
     parent FocusArea
   end
+
+  config.model 'VideoTutorial' do
+    exclude_fields :linked
+  end
+
 end

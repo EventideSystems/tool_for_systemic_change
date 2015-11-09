@@ -3,5 +3,7 @@ class CharacteristicSerializer < BaseSerializer
 
   belongs_to :focus_area
 
+  has_many :video_tutorials
+
 end
 

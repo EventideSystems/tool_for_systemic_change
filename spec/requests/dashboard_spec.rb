@@ -63,5 +63,18 @@ MESSAGE
       expect(activities.count).to be(10)
       Bullet.enable = true
     end
+
+    specify "includes video tutorials" do
+      create(:video_tutorial, link_url: "https://vimeo.com/11111", promote_to_dashboard: true)
+      create(:video_tutorial, link_url: "https://vimeo.com/22222", promote_to_dashboard: true)
+      create(:video_tutorial, link_url: "https://vimeo.com/33333", promote_to_dashboard: true)
+
+      get dashboard_path
+      expect(response).to have_http_status(200)
+
+      tutorials = JSON.parse(response.body)['data']['attributes']['videoTutorials']
+
+      expect(tutorials.count).to be(3)
+    end
   end
 end

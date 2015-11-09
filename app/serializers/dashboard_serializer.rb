@@ -1,5 +1,5 @@
 class DashboardSerializer < BaseSerializer
-  attributes :welcome_message_html, :client_name, :activities
+  attributes :welcome_message_html, :client_name, :activities, :video_tutorials
 
   def activities
     object.activities.map do |activity|
@@ -15,6 +15,20 @@ class DashboardSerializer < BaseSerializer
         long_message:   activity.long_message,
         created_at:     activity.created_at
 
+      }
+    end
+  end
+
+  def video_tutorials
+    object.video_tutorials.map do |video_tutorial|
+      {
+        id:             video_tutorial.id,
+        name:           video_tutorial.name,
+        description:    video_tutorial.description,
+        link_url:       video_tutorial.link_url,
+        vimeo_id:       video_tutorial.vimeo_id,
+        created_at:     video_tutorial.created_at,
+        updated_at:     video_tutorial.updated_at
       }
     end
   end

@@ -11,7 +11,7 @@ class ScorecardInitiativesController < AuthenticatedController
     @initiatives = @scorecard.initiatives.includes(
       :organisations,
       :checklist_items,
-      characteristics: { focus_area: :focus_area_group }
+      characteristics: [ :video_tutorials, focus_area: [:video_tutorials, :focus_area_group] ]
     ).all
 
     render json: @initiatives, include: [

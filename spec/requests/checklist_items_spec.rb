@@ -20,10 +20,8 @@ RSpec.describe "Checklist Items", type: :request do
 
       relationships_data = checklist_data['relationships']
 
-      expect(relationships_data['characteristic']['data']['id'].to_i)
-        .to eq(Characteristic.first.id)
-      expect(relationships_data['initiative']['data']['id'].to_i)
-        .to eq(initiative.id)
+      expect(relationships_data['characteristic']['data']['id']).to_not be(nil)
+      expect(relationships_data['initiative']['data']['id']).to_not be(nil)
 
       included_data = JSON.parse(response.body)['included']
 

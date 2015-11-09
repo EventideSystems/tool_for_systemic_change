@@ -1,4 +1,6 @@
 class Scorecard < ActiveRecord::Base
+  include Trackable
+
   belongs_to :community
   belongs_to :client
   belongs_to :wicked_problem

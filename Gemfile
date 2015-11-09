@@ -52,6 +52,12 @@ gem "apipie-rails", :github => "Apipie/apipie-rails"
 # System administration
 gem "rails_admin"
 
+# Pagination
+gem 'kaminari'
+
+# Activity logging
+gem 'public_activity'
+
 gem "bullet", group: "test"
 
 group :development do

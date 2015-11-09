@@ -1,5 +1,5 @@
 class FocusAreasController < AuthenticatedController
-  before_action :set_focus_area, only: [:show, :video_tutorial_embedded_iframe]
+  before_action :set_focus_area, only: [:show, :video_tutorial]
 
   resource_description do
     formats ['json']
@@ -7,10 +7,10 @@ class FocusAreasController < AuthenticatedController
 
   api :GET, '/focus_areas'
   def index
-    @focus_areas = FocusArea.includes(:focus_area_group, :characteristics).all
+    @focus_areas = FocusArea.includes(:video_tutorials, :focus_area_group, { characteristics: :video_tutorials }).all
 
     render json: @focus_areas,
-      include: ['characteristics', 'focusAreaGroup'],
+      include: ['videoTutorials', 'characteristics', 'focusAreaGroup'],
       each_serializer: FocusAreaWithCharacteristicsSerializer
   end
 
@@ -22,8 +22,9 @@ class FocusAreasController < AuthenticatedController
       serializer: FocusAreaWithCharacteristicsSerializer
   end
 
-  def video_tutorial_embedded_iframe
-    render json: @focus_area, serializer: VideoTutorialEmbeddedIframeSerializer
+  def video_tutorial
+    @video_tutorial = @focus_area.video_tutorials.order(updated_at: :desc).first
+    render json: @video_tutorial
   end
 
   private

@@ -23,11 +23,13 @@ Rails.application.routes.draw do
 
   resources :focus_area_groups, defaults: { :format => 'json' }, only: [:show, :index]
   resources :focus_areas, defaults: { :format => 'json' }, only: [:show, :index] do
-    get 'video_tutorial_embedded_iframe', on: :member
+    get 'video_tutorial', on: :member
   end
   resources :characteristics, defaults: { :format => 'json' }, only: [:show, :index] do
-    get 'video_tutorial_embedded_iframe', on: :member
+    get 'video_tutorial', on: :member
   end
+
+  resources :video_tutorials, defaults: { :format => 'json' }, only: [:show, :index]
 
   devise_for :users, :controllers => { :invitations => 'invitations' }
 

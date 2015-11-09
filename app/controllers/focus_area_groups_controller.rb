@@ -7,7 +7,7 @@ class FocusAreaGroupsController < AuthenticatedController
 
   api :GET, '/focus_area_groups'
   def index
-    @focus_area_groups = FocusAreaGroup.includes(focus_areas: :characteristics).all
+    @focus_area_groups = FocusAreaGroup.includes(focus_areas: [:video_tutorials, characteristics: :video_tutorials]).all
 
     render json: @focus_area_groups,
       include: ['focusAreas', 'focusAreas.characteristics'],

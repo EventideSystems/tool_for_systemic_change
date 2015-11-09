@@ -12,9 +12,14 @@ RSpec.describe "Characteristic", type: :request do
 
     specify 'all fields returned' do
       sign_in(staff)
-      get characteristics_path
 
       characteristic = Characteristic.first
+      create(:video_tutorial, linked: characteristic)
+
+      get characteristics_path
+
+
+
       characteristic_data = JSON.parse(response.body)['data'].first
 
       expect(characteristic_data['id']).to eq(characteristic.id.to_s)
@@ -42,6 +47,12 @@ RSpec.describe "Characteristic", type: :request do
       end
 
       expect(focus_area_groups.count).to eq(FocusAreaGroup.count)
+
+      video_tutortials = included_data.select do |included|
+        included['type'] == 'video_tutorials'
+      end
+
+      expect(video_tutortials.count).to eq(1)
     end
   end
 
@@ -63,21 +74,17 @@ RSpec.describe "Characteristic", type: :request do
     end
   end
 
-  describe "GET /characteristics/:id/video_tutorial_embedded_iframe" do
+  describe "GET /characteristics/:id/video_tutorial" do
 
-    it "returns embedded video link for focus area" do
+    it "returns video link for focus area" do
       characteristic = Characteristic.first
-      characteristic.video_tutorial_embedded_iframe = <<-IFRAME
-  <iframe src="https://player.vimeo.com/video/26179832?color=ffffff" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/26179832">Heli Test #1</a> from <a href="https://vimeo.com/mutinybikes">Mutiny Bikes</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-      IFRAME
-
-      characteristic.save!
+      video_tutorial = create(:video_tutorial, link_url: "https://vimeo.com/2222", linked: characteristic)
 
       sign_in(admin)
-      get video_tutorial_embedded_iframe_characteristic_path(characteristic)
+      get video_tutorial_characteristic_path(characteristic)
+
       attribute_data = JSON.parse(response.body)['data']['attributes']
-      expect(attribute_data['videoTutorialEmbeddedIframe']).
-        to eq(characteristic.video_tutorial_embedded_iframe)
+      expect(attribute_data['vimeoId']).to eq("2222")
     end
   end
 end

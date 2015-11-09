@@ -7,7 +7,7 @@ class DashboardController < AuthenticatedController
   def show
     @dashboard = Dashboard.new(current_client)
 
-    render json: @dashboard, serializer: DashboardSerializer
+    render json: @dashboard, include: ['activities'], serializer: DashboardSerializer
   end
 
 end

@@ -1,12 +1,20 @@
 require 'redcarpet'
 
 class Dashboard
+  include ActiveModel::Model
+  include ActiveModel::Serialization
+
   attr_reader :welcome_message
   attr_reader :client_name
+  attr_reader :activities
 
   def initialize(client)
     @client_name = client.name
     @welcome_message = client.welcome_message
+
+    @activities = PublicActivity::Activity.
+      where(client_id: client.id).
+      order(created_at: :desc).limit(10).all
   end
 
   def id

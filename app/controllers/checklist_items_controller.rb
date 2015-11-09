@@ -60,7 +60,9 @@ class ChecklistItemsController < AuthenticatedController
   }
   EOS
   def index
-    @intiative_checklist_items = @intiative.checklist_items.includes(characteristic: { focus_area: :focus_area_group })
+    query = @intiative.checklist_items.includes(characteristic: { focus_area: :focus_area_group })
+
+    @intiative_checklist_items = finder_for_pagination(query).all
 
     render json: @intiative_checklist_items, include: ['characteristic', 'characteristic.focusArea', 'characteristic.focusArea.focusAreaGroup']
   end

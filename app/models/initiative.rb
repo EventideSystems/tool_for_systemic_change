@@ -1,4 +1,6 @@
 class Initiative < ActiveRecord::Base
+  include Trackable
+
   belongs_to :scorecard
   # TODO: Add a validation to ensure that organistions belong to same
   # administrating organisation as the initiative. NB this might be an argument

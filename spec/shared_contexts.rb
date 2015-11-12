@@ -19,6 +19,7 @@ RSpec.shared_context "api request authentication helper methods" do
 end
 
 RSpec.shared_context "setup common data" do
+  let!(:sector) { create(:sector) }
   let!(:client) { create(:client) }
   let!(:user) { create(:user, client: client) }
   let!(:admin) { create(:admin_user, client: client) }
@@ -31,7 +32,7 @@ RSpec.shared_context "setup common data" do
       client: client,
       community: community,
       wicked_problem: wicked_problem) }
-  let!(:organisation) { create(:organisation,
+  let!(:organisation) { create(:organisation, sector: sector,
     client: client)}
   # let!(:initiative) { create(:initiative, scorecard: scorecard, organisation: organisation )}
 

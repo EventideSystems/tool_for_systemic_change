@@ -24,7 +24,11 @@ angular.module('WKD.Common')
       var factory = {};
 
       factory.get = function () {
-        return angular.copy(_currentUser); // dont allow caller to modify user
+        return _currentUser;
+      };
+
+      factory.setClientName = function (name) {
+        _currentUser.clientName = name;
       };
 
       factory.hasRole = provider.hasRole;

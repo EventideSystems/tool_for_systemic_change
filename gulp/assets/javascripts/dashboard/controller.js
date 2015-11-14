@@ -4,7 +4,10 @@
 angular.module('WKD.Dashboard')
 
 .controller('WKD.Dashboard.Controller', [
-  function () {
+  'Restangular',
+  function (Restangular) {
+    var vm = this;
+
 
   }
 ]);

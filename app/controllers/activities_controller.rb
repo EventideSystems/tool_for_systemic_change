@@ -1,3 +1,5 @@
+require 'bullet'
+
 class ActivitiesController < AuthenticatedController
   before_action :check_trackable_type
   around_action :skip_bullet

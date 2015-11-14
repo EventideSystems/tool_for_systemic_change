@@ -1,5 +1,5 @@
 <h1>
-  {{ WKD.currentUser.clientName }}
+  {{ vm.dashboard.clientName || '&nbsp;' }}
 </h1>
 
 <div class="widgets clearfix">
@@ -11,6 +11,7 @@
       <div class="content">
         <p><strong>Hi {{ WKD.currentUser.userName || 'there' }},</strong></p>
 
+        <div ng-bind-html="vm.dashboard.welcomeMessageHtml"></div>
       </div>
     </div>
   </div>
@@ -19,10 +20,17 @@
     <div class="inner">
       <header>
         <strong>Scorecards</strong>
+
+        <a ui-sref="wkd.scorecards" class="action">
+          View all <i class="fa fa-caret-right"></i>
+        </a>
       </header>
       <div class="content">
-
-        <button class="btn btn-default">View all</button>
+        <ul class="logs">
+          <li ng-repeat="sc in vm.scorecards">
+            <i class="fa fa-check-square-o"></i> <a href ui-sref="wkd.scorecards.view({ id: sc.id })">{{:: sc.attributes.name }}</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -31,11 +39,17 @@
     <div class="inner">
       <header>
         <strong>Recent Activity</strong>
+
+        <a ui-sref="wkd.activities" class="action">
+          View all <i class="fa fa-caret-right"></i>
+        </a>
       </header>
       <div class="content">
-
-
-        <button class="btn btn-default">View all</button>
+        <ul class="logs">
+          <li ng-repeat="log in vm.dashboard.activities">
+            <i class="fa fa-history"></i> {{:: log.long_message }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>

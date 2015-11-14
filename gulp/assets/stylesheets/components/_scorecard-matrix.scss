@@ -16,9 +16,17 @@
   }
 
   margin: 30px 0;
-  overflow-y: hidden;
-  overflow-x: visible;
+  position: relative;
+  overflow-x:scroll;
+  overflow-y:visible;
   padding-bottom: 150px; // padding for charateristic titles
+
+  .mask {
+    background: white;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+  }
 
   table {
     margin-top: 30px;
@@ -50,6 +58,11 @@
     }
   }
 
+  .spacer {
+    width: 180px;
+    display: block;
+  }
+
   tbody {
     td {
       border: 1px solid white;
@@ -60,9 +73,12 @@
     text-align: right;
     white-space: nowrap;
     padding-right: 5px;
-    max-width: 200px;
+    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: fixed;
+    z-index: 10;
+    background: white;
   }
 
   td {
@@ -74,6 +90,7 @@
     border-width: 1px;
     max-width: 18px;
     opacity: .6;
+    height: 20px;
 
     &.active {
       opacity: 1;

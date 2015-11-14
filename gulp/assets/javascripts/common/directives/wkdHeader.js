@@ -20,6 +20,7 @@ angular.module('WKD.Common')
           $http.get('/current_client').then(function (resp) {
             scope.currentContext = resp.data.data.id;
             scope.newContext = scope.currentContext;
+            currentUser.setClientName(resp.data.data.attributes.name);
           });
 
           Restangular.all('clients').getList().then(function (clients) {
@@ -34,9 +35,8 @@ angular.module('WKD.Common')
             $http.put('/current_client', _.find(scope.clients, {
               id: scope.newContext
             })).then(function () {
-              // reload rather then trying to figure out what resources to refetch
-              window.location.reload();
-            })
+              window.location.href = '/';
+            });
           }
         }
       },

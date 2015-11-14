@@ -16,13 +16,13 @@
     <tr>
       <td ts-criteria="attributes.name" ts-default>Name</td>
       <td ts-criteria="attributes.description">Description</td>
-      <td ts-criteria="createdAt">Created at</td>
+      <td ts-criteria="attributes.createdAt">Created at</td>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="organisation in vm.organisations | filter:{attributes: { name: vm.filterText }}" ts-repeat>
       <td><a href ui-sref="^.view({ id: organisation.id })">{{ organisation.attributes.name }}</a></td>
-      <td>{{ organisation.attributes.description }}</td>
+      <td>{{ organisation.attributes.description | limitTo:75 }}<span ng-if="problem.attributes.description.length > 75">...</span></td>
       <td>{{ organisation.attributes.createdAt | date }}</td>
     </tr>
   </tbody>

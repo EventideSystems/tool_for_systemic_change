@@ -27,10 +27,17 @@
       background: $brand-tertiary;
       color: white;
       padding: 10px 15px;
+
+      .action {
+        float: right;
+        color: white;
+      }
     }
 
     .content {
       padding: 15px;
+      height: 220px;
+      overflow-y: auto;
     }
 
     @include bp(md) {
@@ -42,6 +49,27 @@
       &:last-child {
         margin-bottom: 0;
       }
+    }
+  }
+
+  .logs {
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0;
+      padding: 0;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid $dark-10;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    i {
+      color: #ccc;
     }
   }
 

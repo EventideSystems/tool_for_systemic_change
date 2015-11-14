@@ -1,8 +1,9 @@
 <div class="scorecard-matrix">
+  <div class="mask"></div>
   <table>
     <thead>
       <tr>
-        <th>&nbsp;</th>
+        <th class="spacer">&nbsp;</th>
         <th class="legend" ng-attr-colspan="{{::area.characteristics.length}}" ng-class="'color' + ($index+1)" ng-repeat="area in focusAreas">
           <div tooltip-append-to-body="true" uib-tooltip="{{::area.attributes.name }}">
             Focus area {{ $index+1 }}
@@ -34,6 +35,33 @@
   <button class="btn btn-default" ng-click="toggleGaps()">
     Show gaps in effort
   </button>
+
+  <button class="btn btn-default" ng-click="printScorecard()">
+    Print scorecard
+  </button>
+
+  <button class="btn btn-default" ng-click="openEmbedModal()">
+    Embed scorecard
+  </button>
 </div>
 
 
+<script type="text/ng-template" id="/templates/scorecards/embed-modal.html">
+  <div class="modal-body">
+    <h1>Embed scorecard</h1>
+
+    <p><strong>Direct link</strong><br>
+
+    <a href="http://WICKED_URL/scorecards/GUID">http://WICKED_URL/scorecards/GUID</a>
+
+    <p>
+      <strong>Embed image</strong>
+
+      <pre>
+&lt;a href="http://WICKED_URL/scorecards/GUID" target="_blank"&gt;
+  &lt;img src="sourcetoimage" alt="link to scorecard"&gt;&lt;/img&gt;
+&lt;/a&gt;</pre>
+
+    </p>
+  </div>
+</script>

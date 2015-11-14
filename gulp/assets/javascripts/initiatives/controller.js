@@ -36,7 +36,6 @@ angular.module('WKD.Initiatives')
     };
 
     vm._view = function (params) {
-      console.log("FUCK")
       vm.submitForm = update;
       vm.deleteResource = destroy;
 
@@ -48,11 +47,7 @@ angular.module('WKD.Initiatives')
     };
 
     vm._checklist = function (params) {
-      loadSharedResources().then(function () {
-        Restangular.one('initiatives', params.id).get().then(function (resp) {
-          vm.initiative = unpack(resp);
-        });
-      });
+      vm._view(params);
 
       Restangular.one('initiatives', params.id)
         .getList('checklist_items').then(function (resp) {

@@ -5,9 +5,8 @@ angular.module('WKD.Common')
 .directive('wkdScorecardMatrix', [
   '$timeout',
   'WKD.Common.DataModel',
-  function ($timeout, dataModel) {
-
-    // Where to splice each td
+  '$modal',
+  function ($timeout, dataModel, $modal) {
     return {
       restrict: 'E',
       transclude: true,
@@ -65,6 +64,8 @@ angular.module('WKD.Common')
           }, function () {
             $(this).parent().find('.cell').removeClass('active');
           });
+
+          el.find('.mask').height(el.find('table').height() + 190)
         });
 
         // Returns true if characteristic has not been checked for initiative
@@ -77,6 +78,16 @@ angular.module('WKD.Common')
         // using jquery here as ngClass would create too many watchers
         scope.toggleGaps = function () {
           el.find('.cell').toggleClass('inverse');
+        };
+
+        scope.printScorecard = function () {
+          window.alert('Coming soon');
+        };
+
+        scope.openEmbedModal = function () {
+          $modal.open({
+            templateUrl: '/templates/scorecards/embed-modal.html'
+          });
         };
 
         function findChecklistItemFor(initId, charId) {

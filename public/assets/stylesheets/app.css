@@ -7769,8 +7769,13 @@ input[type="checkbox"].form-control {
   background: #00b9f2;
   color: white;
   padding: 10px 15px; }
+  .dashboard-page .widget header .action {
+    float: right;
+    color: white; }
 .dashboard-page .widget .content {
-  padding: 15px; }
+  padding: 15px;
+  height: 220px;
+  overflow-y: auto; }
 @media (max-width: 992px) {
   .dashboard-page .widget {
     float: none;
@@ -7779,6 +7784,19 @@ input[type="checkbox"].form-control {
     margin-bottom: 30px; }
     .dashboard-page .widget:last-child {
       margin-bottom: 0; } }
+.dashboard-page .logs {
+  padding: 0;
+  list-style: none; }
+  .dashboard-page .logs li {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+    .dashboard-page .logs li:last-child {
+      border-bottom: none; }
+  .dashboard-page .logs i {
+    color: #ccc; }
 .dashboard-page .tutorials {
   padding-top: 15px; }
   .dashboard-page .tutorials h2 {
@@ -7802,22 +7820,27 @@ input[type="checkbox"].form-control {
   .scorecards-page .steps-indicator li a {
     font-weight: 300; }
 
-.initiatives-page .picker {
+.picker {
   display: inline-block; }
-.initiatives-page .picker table {
+
+.picker table {
   margin-bottom: 0 !important;
-  margin-right: 20px; }
-.initiatives-page .picker .title {
+  margin-right: 10px; }
+
+.picker .title {
   display: block;
   text-align: center;
   margin-bottom: 5px; }
-.initiatives-page .glyphicon-chevron-left:before {
+
+.glyphicon-chevron-left:before {
   content: "\f0a8";
   font-family: FontAwesome; }
-.initiatives-page .glyphicon-chevron-right:before {
+
+.glyphicon-chevron-right:before {
   content: "\f0a9";
   font-family: FontAwesome; }
-.initiatives-page .text-muted {
+
+.text-muted {
   color: lightgray; }
 
 .popout-accordion {
@@ -7926,8 +7949,9 @@ input[type="checkbox"].form-control {
 
 .scorecard-matrix {
   margin: 30px 0;
-  overflow-y: hidden;
-  overflow-x: visible;
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: visible;
   padding-bottom: 150px; }
   .scorecard-matrix .color1 {
     background: red;
@@ -7956,6 +7980,12 @@ input[type="checkbox"].form-control {
   .scorecard-matrix .color9 {
     background: #1CB85D;
     color: #1CB85D; }
+  .scorecard-matrix .mask {
+    background: white;
+    width: 200px;
+    height: 375px;
+    position: fixed;
+    z-index: 1; }
   .scorecard-matrix table {
     margin-top: 30px;
     width: 1700px;
@@ -7980,22 +8010,29 @@ input[type="checkbox"].form-control {
     position: absolute;
     left: 50%;
     top: 0; }
+  .scorecard-matrix .spacer {
+    width: 180px;
+    display: block; }
   .scorecard-matrix tbody td {
     border: 1px solid white; }
   .scorecard-matrix .init-title {
     text-align: right;
     white-space: nowrap;
     padding-right: 5px;
-    max-width: 200px;
+    width: 200px;
     overflow: hidden;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    position: fixed;
+    z-index: 10;
+    background: white; }
   .scorecard-matrix td {
     width: 1%; }
   .scorecard-matrix .cell {
     transition: background .3s, opacity .3s;
     border-width: 1px;
     max-width: 18px;
-    opacity: .6; }
+    opacity: .6;
+    height: 20px; }
     .scorecard-matrix .cell.active {
       opacity: 1; }
   .scorecard-matrix .gap {

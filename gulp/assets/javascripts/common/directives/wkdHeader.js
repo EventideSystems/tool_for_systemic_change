@@ -20,7 +20,6 @@ angular.module('WKD.Common')
           $http.get('/current_client').then(function (resp) {
             scope.currentContext = resp.data.data.id;
             scope.newContext = scope.currentContext;
-            currentUser.setClientName(resp.data.data.attributes.name);
           });
 
           Restangular.all('clients').getList().then(function (clients) {

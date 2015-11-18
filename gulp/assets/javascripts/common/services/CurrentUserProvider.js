@@ -24,11 +24,7 @@ angular.module('WKD.Common')
       var factory = {};
 
       factory.get = function () {
-        return _currentUser;
-      };
-
-      factory.setClientName = function (name) {
-        _currentUser.clientName = name;
+        return angular.copy(_currentUser);
       };
 
       factory.hasRole = provider.hasRole;

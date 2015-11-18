@@ -7843,6 +7843,9 @@ input[type="checkbox"].form-control {
 .text-muted {
   color: lightgray; }
 
+body [uib-datepicker-popup-wrap] table {
+  margin-bottom: 0 !important; }
+
 .popout-accordion {
   position: relative; }
   .popout-accordion .accordion-group {
@@ -7948,7 +7951,7 @@ input[type="checkbox"].form-control {
           transform: translateX(15px); }
 
 .scorecard-matrix {
-  margin: 30px 0;
+  margin: 0;
   position: relative;
   overflow-x: scroll;
   overflow-y: visible;
@@ -7983,7 +7986,6 @@ input[type="checkbox"].form-control {
   .scorecard-matrix .mask {
     background: white;
     width: 200px;
-    height: 375px;
     position: fixed;
     z-index: 1; }
   .scorecard-matrix table {
@@ -8057,6 +8059,6 @@ input[type="checkbox"].form-control {
 
 .scorecard-matrix-controls {
   background: rgba(0, 0, 0, 0.1);
-  margin-bottom: 60px;
+  margin-bottom: 25px;
   padding: 10px; }
 

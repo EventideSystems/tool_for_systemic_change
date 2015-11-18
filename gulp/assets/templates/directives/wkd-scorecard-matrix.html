@@ -1,3 +1,31 @@
+
+<div class="scorecard-matrix-controls">
+  <button class="btn btn-default" ng-click="fromOpen = true" uib-datepicker-popup ng-model="from" show-weeks="false" datepicker-append-to-body="true" is-open="fromOpen" close-text="Close">
+    <i class="fa fa-calendar"></i> From {{(from | date) || 'the beginning of time'}}
+  </button>
+  <button class="btn btn-default" ng-click="toOpen = true" uib-datepicker-popup ng-model="to" show-weeks="false" datepicker-append-to-body="true" is-open="toOpen" close-text="Close">
+    <i class="fa fa-calendar"></i> To {{(to | date) || 'now'}}
+  </button>
+  <button class="btn btn-primary" ng-click="printScorecard()">
+    <i class="fa fa-history"></i> View snapshot
+  </button>
+
+
+  <div class="pull-right">
+    <button class="btn btn-default" ng-click="toggleGaps()">
+      <i class="fa fa-adjust"></i> Show gaps in effort
+    </button>
+
+    <button class="btn btn-default" ng-click="printScorecard()">
+      <i class="fa fa-print"></i> Print
+    </button>
+
+    <button class="btn btn-default" ng-click="openEmbedModal()">
+      <i class="fa fa-share-alt"></i> Share
+    </button>
+  </div>
+</div>
+
 <div class="scorecard-matrix">
   <div class="mask"></div>
   <table>
@@ -31,31 +59,23 @@
 </div>
 
 
-<div class="scorecard-matrix-controls">
-  <button class="btn btn-default" ng-click="toggleGaps()">
-    Show gaps in effort
-  </button>
-
-  <button class="btn btn-default" ng-click="printScorecard()">
-    Print scorecard
-  </button>
-
-  <button class="btn btn-default" ng-click="openEmbedModal()">
-    Embed scorecard
-  </button>
-</div>
-
 
 <script type="text/ng-template" id="/templates/scorecards/embed-modal.html">
   <div class="modal-body">
-    <h1>Embed scorecard</h1>
+    <h1>Share scorecard</h1>
 
     <p><strong>Direct link</strong><br>
 
     <a href="http://WICKED_URL/scorecards/GUID">http://WICKED_URL/scorecards/GUID</a>
 
     <p>
-      <strong>Embed image</strong>
+      <strong>Embed on your website</strong><br>
+
+      <a href="javascript:void(0)">
+        <img src="/assets/images/scorecard-embed.png">
+      </a><br><br>
+
+      <strong>Copy this code onto your website</strong>
 
       <pre>
 &lt;a href="http://WICKED_URL/scorecards/GUID" target="_blank"&gt;

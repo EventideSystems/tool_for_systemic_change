@@ -27,3 +27,9 @@
 .text-muted {
   color: lightgray;
 }
+
+body [uib-datepicker-popup-wrap] {
+  table {
+    margin-bottom: 0 !important;
+  }
+}

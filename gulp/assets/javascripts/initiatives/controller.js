@@ -11,9 +11,14 @@ angular.module('WKD.Initiatives')
   '$scope',
   '$q',
   'WKD.Common.DataModel',
-  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel) {
+  'WKD.Common.TutorialService',
+  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel, tutorialService) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
+
+    $scope.showTutorial = function (char) {
+      tutorialService.play(char.attributes.name, 'http://www.screencast.com/users/i1117863/folders/Default/media/9ca80a2e-f463-473b-aa09-858e910d5435/embed');
+    };
 
     vm._list = function () {
       loadSharedResources();

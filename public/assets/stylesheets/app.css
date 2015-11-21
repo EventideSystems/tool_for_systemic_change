@@ -7506,6 +7506,13 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 15px;
   margin-bottom: 15px; }
+  .modal-body > h1 .inner {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 540px;
+    float: left; }
 
 .main-tabs {
   margin: -25px -30px 30px -30px;
@@ -7569,6 +7576,34 @@ table {
 
 table .tablesort-asc, table .tablesort-desc {
   background: none; }
+
+.video-tutorals {
+  padding: 0;
+  font-size: 16px; }
+  .video-tutorals i {
+    font-size: 32px;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: -3px; }
+  .video-tutorals span {
+    line-height: 32px; }
+  .video-tutorals li {
+    display: inline-block;
+    width: 33%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: top; }
+  .video-tutorals a {
+    display: block; }
+  .video-tutorals a:hover {
+    text-decoration: none; }
+  @media (max-width: 1030px) {
+    .video-tutorals li {
+      width: 48%; } }
+  @media (max-width: 768px) {
+    .video-tutorals li {
+      width: 100%; } }
 
 #header {
   background: white;
@@ -7802,6 +7837,8 @@ input[type="checkbox"].form-control {
   .dashboard-page .tutorials h2 {
     font-size: 16px;
     margin: 0; }
+  .dashboard-page .tutorials h6 {
+    margin-top: 16px; }
 
 .scorecards-page .or-tag {
   color: #777777;

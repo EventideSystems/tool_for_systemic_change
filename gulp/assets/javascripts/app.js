@@ -28,6 +28,8 @@ require('./communities');
 require('./users');
 require('./problems');
 require('./activities');
+require('./tutorials');
+require('./reports');
 
 
 // Application module
@@ -55,7 +57,9 @@ angular.module('WKD', [
   'WKD.Communities',
   'WKD.Users',
   'WKD.Problems',
-  'WKD.Activities'
+  'WKD.Activities',
+  'WKD.Tutorials',
+  'WKD.Reports'
 ])
 
 

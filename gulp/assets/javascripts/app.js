@@ -105,8 +105,15 @@ angular.module('WKD', [
   });
 }])
 
-// Monkey patch redirectTo into ui router.
-.run(['$rootScope', '$state', function ($rootScope, $state) {
+.run(['$rootScope', '$state', 'WKD.Common.CurrentUser', function ($rootScope, $state, currentUser) {
+  $rootScope.$on('$stateChangeSuccess', function (evt, to) {
+    var root = currentUser.get().clientName || 'Wicked Lab';
+    var context = to.title ? (' - ' + to.title) : '';
+
+    window.document.title =  root + context;
+  });
+
+  // Monkey patch redirectTo into ui router.
   $rootScope.$on('$stateChangeStart', function (evt, to, params) {
     if (to.redirectTo) {
       evt.preventDefault();

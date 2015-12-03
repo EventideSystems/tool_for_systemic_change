@@ -16,7 +16,8 @@ angular.module('WKD.Communities', [])
       action: 'list',
       templateUrl: '/templates/communities/list.html',
       controller: 'WKD.Communities.Controller',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Communities'
     })
 
     .state('wkd.communities.new', {
@@ -36,7 +37,8 @@ angular.module('WKD.Communities', [])
     .state('wkd.communities.view.edit', {
       url: '/edit',
       action: 'view',
-      templateUrl: '/templates/communities/edit.html'
+      templateUrl: '/templates/communities/edit.html',
+      title: 'Edit community'
     })
 
     ;

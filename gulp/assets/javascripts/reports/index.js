@@ -8,6 +8,7 @@ angular.module('WKD.Reports', [])
     .state('wkd.reports', {
       url: '/reports',
       templateUrl: '/templates/reports/index.html',
+      title: 'Reports'
     })
 
     ;

@@ -27,35 +27,42 @@
 </div>
 
 <div class="scorecard-matrix">
-  <div class="mask"></div>
-  <table>
-    <thead>
-      <tr>
-        <th class="spacer">&nbsp;</th>
-        <th class="legend" ng-attr-colspan="{{::area.characteristics.length}}" ng-class="'color' + ($index+1)" ng-repeat="area in focusAreas">
-          <div tooltip-append-to-body="true" uib-tooltip="{{::area.attributes.name }}">
-            Focus area {{ $index+1 }}
-          </div>
-        </th>
-      </tr>
-    </thead>
+  <!-- <div class="mask"></div> -->
+  <table class="init-table">
     <tbody>
-      <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'" class="initiative">
-        <td class="init-title">
+      <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'">
+        <td class="init-title" ng-attr-data-id="{{initiative.id}}">
           <a ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
             {{ ::initiative.attributes.name }}
           </a>
         </td>
-        <td class="cell" ng-class="::{ gap: isGap(initiative, characteristic) }" tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" uib-tooltip="{{::characteristic.attributes.name}}" ng-class="inversed ? 'inverse' : ''" ng-repeat="characteristic in characteristics"><span></span></td>
-      </tr>
-      <tr class="chars">
-        <td>&nbsp;</td>
-        <td tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" tooltip-class="matrix-char-tooltip" uib-tooltip="{{::characteristic.attributes.name}}" class="char-header" ng-repeat="characteristic in characteristics">
-          <div>{{ ::characteristic.attributes.name }}</div>
-        </td>
       </tr>
     </tbody>
   </table>
+
+  <div class="wrapper">
+    <table class="grid-table">
+      <thead>
+        <tr>
+          <th class="legend" ng-attr-colspan="{{::area.characteristics.length}}" ng-class="'color' + ($index+1)" ng-repeat="area in focusAreas">
+            <div tooltip-append-to-body="true" uib-tooltip="{{::area.attributes.name }}">
+              Focus area {{ $index+1 }}
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'" class="initiative">
+          <td class="cell" ng-class="::{ gap: isGap(initiative, characteristic) }" tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" uib-tooltip="{{::characteristic.attributes.name}}" ng-class="inversed ? 'inverse' : ''" ng-repeat="characteristic in characteristics" ng-attr-data-id="{{initiative.id}}"><span>&nbsp;</span></td>
+        </tr>
+        <tr class="chars">
+          <td tooltip-animation="false" tooltip-placement="left" tooltip-append-to-body="true" tooltip-class="matrix-char-tooltip" uib-tooltip="{{::characteristic.attributes.name}}" class="char-header" ng-repeat="characteristic in characteristics">
+            <div>{{ ::characteristic.attributes.name }}</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 

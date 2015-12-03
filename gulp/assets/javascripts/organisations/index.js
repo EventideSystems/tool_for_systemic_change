@@ -9,6 +9,7 @@ angular.module('WKD.Organisations', [])
       url: '/organisations',
       template: '<ui-view>',
       redirectTo: 'wkd.organisations.list',
+      title: 'Organisations'
     })
 
     .state('wkd.organisations.list', {
@@ -16,7 +17,8 @@ angular.module('WKD.Organisations', [])
       action: 'list',
       templateUrl: '/templates/organisations/list.html',
       controller: 'WKD.Organisations.Controller',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Organisations'
     })
 
     .state('wkd.organisations.new', {
@@ -30,7 +32,8 @@ angular.module('WKD.Organisations', [])
       controller: 'WKD.Organisations.Controller',
       redirectTo: 'wkd.organisations.view.edit',
       controllerAs: 'vm',
-      templateUrl: '/templates/organisations/view.html'
+      templateUrl: '/templates/organisations/view.html',
+      title: 'New organisation'
     })
 
     .state('wkd.organisations.view.edit', {

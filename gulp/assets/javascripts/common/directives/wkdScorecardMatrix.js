@@ -60,12 +60,14 @@ angular.module('WKD.Common')
           });
 
           el.find('.init-title').hover(function () {
-            $(this).parent().find('.cell').addClass('active');
+            el.find('.grid-table')
+              .find('[data-id=' + $(this).data('id') + ']')
+              .addClass('active');
           }, function () {
-            $(this).parent().find('.cell').removeClass('active');
+            el.find('.grid-table')
+              .find('[data-id=' + $(this).data('id') + ']')
+              .removeClass('active');
           });
-
-          el.find('.mask').height(el.find('table').height() + 190)
         });
 
         // Returns true if characteristic has not been checked for initiative

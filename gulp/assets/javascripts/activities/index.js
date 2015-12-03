@@ -14,7 +14,8 @@ angular.module('WKD.Activities', [])
     .state('wkd.activities.list', {
       templateUrl: '/templates/activities/list.html',
       controller: 'WKD.Activities.ListController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Activity'
     })
 
     ;

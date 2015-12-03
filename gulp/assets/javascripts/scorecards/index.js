@@ -16,7 +16,8 @@ angular.module('WKD.Scorecards', [])
       action: 'list',
       templateUrl: '/templates/scorecards/list.html',
       controller: 'WKD.Scorecards.ListController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Scorecards'
     })
 
     .state('wkd.scorecards.new', {
@@ -24,7 +25,8 @@ angular.module('WKD.Scorecards', [])
       action: 'new',
       templateUrl: '/templates/scorecards/new.html',
       controller: 'WKD.Scorecards.NewController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'New scorecard'
     })
 
     .state('wkd.scorecards.view', {
@@ -46,14 +48,16 @@ angular.module('WKD.Scorecards', [])
       url: '/edit',
       controller: 'WKD.Scorecards.EditController',
       controllerAs: 'vm',
-      templateUrl: '/templates/scorecards/edit.html'
+      templateUrl: '/templates/scorecards/edit.html',
+      title: 'Edit scorecard'
     })
 
     .state('wkd.scorecards.view.scorecard', {
       url: '/view',
       controller: 'WKD.Scorecards.ScorecardController',
       controllerAs: 'vm',
-      templateUrl: '/templates/scorecards/scorecard.html'
+      templateUrl: '/templates/scorecards/scorecard.html',
+      title: 'Scorecard'
     })
 
     .state('wkd.scorecards.view.initiatives', {
@@ -61,7 +65,8 @@ angular.module('WKD.Scorecards', [])
       templateUrl: '/templates/scorecards/initiatives.html',
       controller: 'WKD.Scorecards.InitiativeController',
       controllerAs: 'vm',
-      action: 'scorecard'
+      action: 'scorecard',
+      title: 'Scorecard initiatives'
     })
 
     ;

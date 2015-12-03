@@ -17,9 +17,6 @@
 
   margin: 0;
   position: relative;
-  overflow-x:scroll;
-  overflow-y:visible;
-  padding-bottom: 150px; // padding for charateristic titles
 
   .mask {
     background: white;
@@ -32,8 +29,8 @@
     margin-top: 30px;
     width: 1700px;
     overflow-y: auto;
+    border-spacing: 2px;
     border-collapse: separate;
-    border-spacing: 1px;
   }
 
   .chars {
@@ -47,6 +44,8 @@
     }
 
     div {
+      -ms-transform: rotate(45deg);
+      -ms-transform-origin: top left;
       transform: rotate(45deg);
       transform-origin: top left;
       width: 250px;
@@ -69,16 +68,33 @@
     }
   }
 
+  .init-table {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 200px;
+  }
+
+  .wrapper {
+    position: absolute;
+    left: 210px;
+    right: 0;
+    padding-bottom: 180px;
+    top: 0;
+    overflow-x: auto;
+  }
+
   .init-title {
     text-align: right;
     white-space: nowrap;
     padding-right: 5px;
-    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
-    position: fixed;
-    z-index: 10;
+    width: 200px;
     background: white;
+    display: block;
+    float: left;
+    height: 21px;
   }
 
   td {
@@ -87,10 +103,10 @@
 
   .cell {
     transition: background .3s, opacity .3s;
-    border-width: 1px;
+    border-width: 0;
     max-width: 18px;
     opacity: .6;
-    height: 20px;
+    height: 21px;
 
     &.active {
       opacity: 1;
@@ -119,7 +135,7 @@
       font-weight: 200;
       text-align: center;
       position: absolute;
-      bottom: 100%;
+      top: -20px;
       width: 100%;
       padding-bottom: 5px;
       font-size: 11px;

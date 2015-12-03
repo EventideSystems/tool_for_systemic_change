@@ -7712,7 +7712,8 @@ table .tablesort-asc, table .tablesort-desc {
   #login-box .form-group {
     position: relative; }
   #login-box .form-control {
-    padding: 10px 0 10px 30px; }
+    padding: 0 0 0 30px;
+    height: 40px; }
   #login-box .login-icon {
     position: absolute;
     top: 13px;
@@ -7989,10 +7990,7 @@ body [uib-datepicker-popup-wrap] table {
 
 .scorecard-matrix {
   margin: 0;
-  position: relative;
-  overflow-x: scroll;
-  overflow-y: visible;
-  padding-bottom: 150px; }
+  position: relative; }
   .scorecard-matrix .color1 {
     background: red;
     color: red; }
@@ -8029,8 +8027,8 @@ body [uib-datepicker-popup-wrap] table {
     margin-top: 30px;
     width: 1700px;
     overflow-y: auto;
-    border-collapse: separate;
-    border-spacing: 1px; }
+    border-spacing: 2px;
+    border-collapse: separate; }
   .scorecard-matrix .chars td {
     font-size: 11px;
     font-weight: 300;
@@ -8039,6 +8037,8 @@ body [uib-datepicker-popup-wrap] table {
     text-align: left;
     background: none; }
   .scorecard-matrix .chars div {
+    -ms-transform: rotate(45deg);
+    -ms-transform-origin: top left;
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
     -webkit-transform-origin: top left;
@@ -8054,24 +8054,37 @@ body [uib-datepicker-popup-wrap] table {
     display: block; }
   .scorecard-matrix tbody td {
     border: 1px solid white; }
+  .scorecard-matrix .init-table {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 200px; }
+  .scorecard-matrix .wrapper {
+    position: absolute;
+    left: 210px;
+    right: 0;
+    padding-bottom: 180px;
+    top: 0;
+    overflow-x: auto; }
   .scorecard-matrix .init-title {
     text-align: right;
     white-space: nowrap;
     padding-right: 5px;
-    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
-    position: fixed;
-    z-index: 10;
-    background: white; }
+    width: 200px;
+    background: white;
+    display: block;
+    float: left;
+    height: 21px; }
   .scorecard-matrix td {
     width: 1%; }
   .scorecard-matrix .cell {
     transition: background .3s, opacity .3s;
-    border-width: 1px;
+    border-width: 0;
     max-width: 18px;
     opacity: .6;
-    height: 20px; }
+    height: 21px; }
     .scorecard-matrix .cell.active {
       opacity: 1; }
   .scorecard-matrix .gap {
@@ -8089,7 +8102,7 @@ body [uib-datepicker-popup-wrap] table {
       font-weight: 200;
       text-align: center;
       position: absolute;
-      bottom: 100%;
+      top: -20px;
       width: 100%;
       padding-bottom: 5px;
       font-size: 11px; }

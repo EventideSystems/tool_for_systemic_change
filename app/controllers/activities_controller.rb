@@ -1,8 +1,5 @@
-require 'bullet'
-
 class ActivitiesController < AuthenticatedController
   before_action :check_trackable_type
-  around_action :skip_bullet
 
   class UnpermittedTrackableType < Exception; end
 
@@ -54,10 +51,4 @@ class ActivitiesController < AuthenticatedController
     end
   end
 
-  def skip_bullet
-    Bullet.enable = false
-    yield
-  ensure
-    Bullet.enable = true
-  end
 end

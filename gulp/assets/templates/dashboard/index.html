@@ -1,5 +1,5 @@
 <h1>
-  {{ WKD.currentUser.clientName }} dashboard
+  {{ vm.dashboard.clientName || '&nbsp;' }}
 </h1>
 
 <div class="widgets clearfix">
@@ -10,9 +10,8 @@
       </header>
       <div class="content">
         <p><strong>Hi {{ WKD.currentUser.userName || 'there' }},</strong></p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati quisquam, dicta recusandae pariatur reprehenderit, possimus rem ipsam mollitia qui ipsum at atque provident facilis odio architecto quae quas perspiciatis ratione.</p>
 
-        <button class="btn btn-default">Manage profile</button>
+        <div ng-bind-html="vm.dashboard.welcomeMessageHtml"></div>
       </div>
     </div>
   </div>
@@ -20,10 +19,22 @@
   <div class="col-sm-4 widget">
     <div class="inner">
       <header>
-        <strong>Statistics</strong>
+        <strong>Scorecards</strong>
+
+        <a ui-sref="wkd.scorecards" class="action" ng-if="vm.dashboard.activities.length">
+          View all <i class="fa fa-caret-right"></i>
+        </a>
       </header>
       <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati quisquam, dicta recusandae pariatur reprehenderit, possimus rem ipsam mollitia qui ipsum at atque provident facilis odio architecto quae quas perspiciatis ratione.</p>
+        <p ng-if="!vm.dashboard.activities.length">
+          You currently have no scorecards. <a href ui-sref="wkd.scorecards.new">Go create one!</a>
+        </p>
+
+        <ul class="logs">
+          <li ng-repeat="sc in vm.scorecards">
+            <i class="fa fa-check-square-o"></i> <a href ui-sref="wkd.scorecards.view({ id: sc.id })">{{:: sc.attributes.name }}</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -32,16 +43,76 @@
     <div class="inner">
       <header>
         <strong>Recent Activity</strong>
+
+        <a ui-sref="wkd.activities" class="action" ng-if="vm.dashboard.activities.length">
+          View all <i class="fa fa-caret-right"></i>
+        </a>
       </header>
       <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati quisquam, dicta recusandae pariatur reprehenderit, possimus rem ipsam mollitia qui ipsum at atque provident facilis odio architecto quae quas perspiciatis ratione.</p>
+        <p ng-if="!vm.dashboard.activities.length">
+          Nothing interesting has happend yet :(
+        </p>
 
-        <button class="btn btn-default">View all activity</button>
+        <ul class="logs">
+          <li ng-repeat="log in vm.dashboard.activities">
+            <i class="fa fa-history"></i> {{:: log.long_message }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </div>
 
 <div class="tutorials">
-  <h2>Tutorials</h2>
+  <h2>
+    Tutorials
+
+    <a class="pull-right" ui-sref="wkd.tutorials">View all <i class="fa fa-caret-right"></i></a>
+  </h2>
+
+  <h6>
+    How to use WickedLab
+  </h6>
+
+  <ul class="video-tutorals">
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Creating a scorecard</span>
+      </a>
+    </li>
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Inviting a user</span>
+      </a>
+    </li>
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Marking off characteristics</span>
+      </a>
+    </li>
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Using the scorecard</span>
+      </a>
+    </li>
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Doing something</span>
+      </a>
+    </li>
+    <li>
+      <a href ng-click="vm.playVideo()">
+        <i class="fa fa-youtube-play"></i>
+        <span>Doing something else</span>
+      </a>
+    </li>
+  </ul>
+
+
+  <h6>Characteristics</h6>
 </div>

@@ -16,7 +16,8 @@ angular.module('WKD.Problems', [])
       action: 'list',
       templateUrl: '/templates/problems/list.html',
       controller: 'WKD.Problems.Controller',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Wicked problems'
     })
 
     .state('wkd.problems.new', {
@@ -36,7 +37,8 @@ angular.module('WKD.Problems', [])
     .state('wkd.problems.view.edit', {
       url: '/edit',
       action: 'view',
-      templateUrl: '/templates/problems/edit.html'
+      templateUrl: '/templates/problems/edit.html',
+      title: 'Edit wicked problem'
     })
 
     ;

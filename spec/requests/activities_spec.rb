@@ -9,6 +9,14 @@ RSpec.describe "Activities", type: :request do
   include_context "setup model data"
 
 
+  before(:each) do
+    Bullet.enable = false
+  end
+
+  after(:each) do
+    Bullet.enable = true
+  end
+
   describe "GET /activities" do
 
     describe "scorecard activity" do

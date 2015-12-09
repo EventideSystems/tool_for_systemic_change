@@ -24,7 +24,7 @@ angular.module('WKD.Common')
       var factory = {};
 
       factory.get = function () {
-        return angular.copy(_currentUser); // dont allow caller to modify user
+        return angular.copy(_currentUser);
       };
 
       factory.hasRole = provider.hasRole;

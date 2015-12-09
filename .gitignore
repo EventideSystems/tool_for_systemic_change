@@ -22,6 +22,7 @@
 # Ignore frontend dependencies
 /node_modules
 /gulp/assets/stylesheets/app.css
+/public/gulp
 
 # OS files
 .DS_Store

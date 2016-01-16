@@ -16,7 +16,8 @@ angular.module('WKD.Initiatives', [])
       action: 'list',
       templateUrl: '/templates/initiatives/list.html',
       controller: 'WKD.Initiatives.Controller',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Initiatives'
     })
 
     .state('wkd.initiatives.new', {
@@ -36,7 +37,8 @@ angular.module('WKD.Initiatives', [])
     .state('wkd.initiatives.view.edit', {
       url: '/edit',
       action: 'view',
-      templateUrl: '/templates/initiatives/edit.html'
+      templateUrl: '/templates/initiatives/edit.html',
+      title: 'Edit initiative'
     })
 
     .state('wkd.initiatives.view.checklist', {
@@ -44,7 +46,8 @@ angular.module('WKD.Initiatives', [])
       action: 'checklist',
       templateUrl: '/templates/initiatives/checklist.html',
       controller: 'WKD.Initiatives.Controller',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Initiative characteristics'
     })
 
     ;

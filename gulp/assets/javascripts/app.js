@@ -27,6 +27,9 @@ require('./initiatives');
 require('./communities');
 require('./users');
 require('./problems');
+require('./activities');
+require('./tutorials');
+require('./reports');
 
 
 // Application module
@@ -53,7 +56,10 @@ angular.module('WKD', [
   'WKD.Initiatives',
   'WKD.Communities',
   'WKD.Users',
-  'WKD.Problems'
+  'WKD.Problems',
+  'WKD.Activities',
+  'WKD.Tutorials',
+  'WKD.Reports'
 ])
 
 
@@ -99,8 +105,15 @@ angular.module('WKD', [
   });
 }])
 
-// Monkey patch redirectTo into ui router.
-.run(['$rootScope', '$state', function ($rootScope, $state) {
+.run(['$rootScope', '$state', 'WKD.Common.CurrentUser', function ($rootScope, $state, currentUser) {
+  $rootScope.$on('$stateChangeSuccess', function (evt, to) {
+    var root = currentUser.get().clientName || 'Wicked Lab';
+    var context = to.title ? (' - ' + to.title) : '';
+
+    window.document.title =  root + context;
+  });
+
+  // Monkey patch redirectTo into ui router.
   $rootScope.$on('$stateChangeStart', function (evt, to, params) {
     if (to.redirectTo) {
       evt.preventDefault();

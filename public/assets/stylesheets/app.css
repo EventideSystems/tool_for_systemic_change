@@ -7506,6 +7506,13 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding-bottom: 15px;
   margin-bottom: 15px; }
+  .modal-body > h1 .inner {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 540px;
+    float: left; }
 
 .main-tabs {
   margin: -25px -30px 30px -30px;
@@ -7569,6 +7576,34 @@ table {
 
 table .tablesort-asc, table .tablesort-desc {
   background: none; }
+
+.video-tutorals {
+  padding: 0;
+  font-size: 16px; }
+  .video-tutorals i {
+    font-size: 32px;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: -3px; }
+  .video-tutorals span {
+    line-height: 32px; }
+  .video-tutorals li {
+    display: inline-block;
+    width: 33%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: top; }
+  .video-tutorals a {
+    display: block; }
+  .video-tutorals a:hover {
+    text-decoration: none; }
+  @media (max-width: 1030px) {
+    .video-tutorals li {
+      width: 48%; } }
+  @media (max-width: 768px) {
+    .video-tutorals li {
+      width: 100%; } }
 
 #header {
   background: white;
@@ -7677,7 +7712,8 @@ table .tablesort-asc, table .tablesort-desc {
   #login-box .form-group {
     position: relative; }
   #login-box .form-control {
-    padding: 10px 0 10px 30px; }
+    padding: 0 0 0 30px;
+    height: 40px; }
   #login-box .login-icon {
     position: absolute;
     top: 13px;
@@ -7769,8 +7805,13 @@ input[type="checkbox"].form-control {
   background: #00b9f2;
   color: white;
   padding: 10px 15px; }
+  .dashboard-page .widget header .action {
+    float: right;
+    color: white; }
 .dashboard-page .widget .content {
-  padding: 15px; }
+  padding: 15px;
+  height: 220px;
+  overflow-y: auto; }
 @media (max-width: 992px) {
   .dashboard-page .widget {
     float: none;
@@ -7779,11 +7820,26 @@ input[type="checkbox"].form-control {
     margin-bottom: 30px; }
     .dashboard-page .widget:last-child {
       margin-bottom: 0; } }
+.dashboard-page .logs {
+  padding: 0;
+  list-style: none; }
+  .dashboard-page .logs li {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+    .dashboard-page .logs li:last-child {
+      border-bottom: none; }
+  .dashboard-page .logs i {
+    color: #ccc; }
 .dashboard-page .tutorials {
   padding-top: 15px; }
   .dashboard-page .tutorials h2 {
     font-size: 16px;
     margin: 0; }
+  .dashboard-page .tutorials h6 {
+    margin-top: 16px; }
 
 .scorecards-page .or-tag {
   color: #777777;
@@ -7802,23 +7858,31 @@ input[type="checkbox"].form-control {
   .scorecards-page .steps-indicator li a {
     font-weight: 300; }
 
-.initiatives-page .picker {
+.picker {
   display: inline-block; }
-.initiatives-page .picker table {
+
+.picker table {
   margin-bottom: 0 !important;
-  margin-right: 20px; }
-.initiatives-page .picker .title {
+  margin-right: 10px; }
+
+.picker .title {
   display: block;
   text-align: center;
   margin-bottom: 5px; }
-.initiatives-page .glyphicon-chevron-left:before {
+
+.glyphicon-chevron-left:before {
   content: "\f0a8";
   font-family: FontAwesome; }
-.initiatives-page .glyphicon-chevron-right:before {
+
+.glyphicon-chevron-right:before {
   content: "\f0a9";
   font-family: FontAwesome; }
-.initiatives-page .text-muted {
+
+.text-muted {
   color: lightgray; }
+
+body [uib-datepicker-popup-wrap] table {
+  margin-bottom: 0 !important; }
 
 .popout-accordion {
   position: relative; }
@@ -7925,10 +7989,8 @@ input[type="checkbox"].form-control {
           transform: translateX(15px); }
 
 .scorecard-matrix {
-  margin: 30px 0;
-  overflow-y: hidden;
-  overflow-x: visible;
-  padding-bottom: 150px; }
+  margin: 0;
+  position: relative; }
   .scorecard-matrix .color1 {
     background: red;
     color: red; }
@@ -7956,12 +8018,17 @@ input[type="checkbox"].form-control {
   .scorecard-matrix .color9 {
     background: #1CB85D;
     color: #1CB85D; }
+  .scorecard-matrix .mask {
+    background: white;
+    width: 200px;
+    position: fixed;
+    z-index: 1; }
   .scorecard-matrix table {
     margin-top: 30px;
     width: 1700px;
     overflow-y: auto;
-    border-collapse: separate;
-    border-spacing: 1px; }
+    border-spacing: 2px;
+    border-collapse: separate; }
   .scorecard-matrix .chars td {
     font-size: 11px;
     font-weight: 300;
@@ -7970,6 +8037,8 @@ input[type="checkbox"].form-control {
     text-align: left;
     background: none; }
   .scorecard-matrix .chars div {
+    -ms-transform: rotate(45deg);
+    -ms-transform-origin: top left;
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
     -webkit-transform-origin: top left;
@@ -7980,22 +8049,42 @@ input[type="checkbox"].form-control {
     position: absolute;
     left: 50%;
     top: 0; }
+  .scorecard-matrix .spacer {
+    width: 180px;
+    display: block; }
   .scorecard-matrix tbody td {
     border: 1px solid white; }
+  .scorecard-matrix .init-table {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 200px; }
+  .scorecard-matrix .wrapper {
+    position: absolute;
+    left: 210px;
+    right: 0;
+    padding-bottom: 180px;
+    top: 0;
+    overflow-x: auto; }
   .scorecard-matrix .init-title {
     text-align: right;
     white-space: nowrap;
     padding-right: 5px;
-    max-width: 200px;
     overflow: hidden;
-    text-overflow: ellipsis; }
+    text-overflow: ellipsis;
+    width: 200px;
+    background: white;
+    display: block;
+    float: left;
+    height: 21px; }
   .scorecard-matrix td {
     width: 1%; }
   .scorecard-matrix .cell {
     transition: background .3s, opacity .3s;
-    border-width: 1px;
+    border-width: 0;
     max-width: 18px;
-    opacity: .6; }
+    opacity: .6;
+    height: 21px; }
     .scorecard-matrix .cell.active {
       opacity: 1; }
   .scorecard-matrix .gap {
@@ -8013,13 +8102,13 @@ input[type="checkbox"].form-control {
       font-weight: 200;
       text-align: center;
       position: absolute;
-      bottom: 100%;
+      top: -20px;
       width: 100%;
       padding-bottom: 5px;
       font-size: 11px; }
 
 .scorecard-matrix-controls {
   background: rgba(0, 0, 0, 0.1);
-  margin-bottom: 60px;
+  margin-bottom: 25px;
   padding: 10px; }
 

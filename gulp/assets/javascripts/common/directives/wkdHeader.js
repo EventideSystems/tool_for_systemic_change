@@ -34,9 +34,8 @@ angular.module('WKD.Common')
             $http.put('/current_client', _.find(scope.clients, {
               id: scope.newContext
             })).then(function () {
-              // reload rather then trying to figure out what resources to refetch
-              window.location.reload();
-            })
+              window.location.href = '/';
+            });
           }
         }
       },

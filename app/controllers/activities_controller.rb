@@ -1,10 +1,13 @@
 class ActivitiesController < AuthenticatedController
   before_action :check_trackable_type
-  around_action :skip_bullet
 
   class UnpermittedTrackableType < Exception; end
 
   rescue_from UnpermittedTrackableType do |exception|
+    render json: { errors: exception.message }, status: 400
+  end
+
+  rescue_from InvalidPaginationRequest do |exception|
     render json: { errors: exception.message }, status: 400
   end
 
@@ -52,10 +55,4 @@ class ActivitiesController < AuthenticatedController
     end
   end
 
-  def skip_bullet
-    Bullet.enable = false
-    yield
-  ensure
-    Bullet.enable = true
-  end
 end

@@ -9,6 +9,14 @@ RSpec.describe "Activities", type: :request do
   include_context "setup model data"
 
 
+  before(:each) do
+    Bullet.enable = false
+  end
+
+  after(:each) do
+    Bullet.enable = true
+  end
+
   describe "GET /activities" do
 
     describe "scorecard activity" do
@@ -152,13 +160,53 @@ RSpec.describe "Activities", type: :request do
         data = JSON.parse(response.body)["data"]
         expect(data.count).to be(16)
       end
+
+      specify "retrieve scorecard with pagination out of range" do
+        expect(initiative.checklist_items.count).to be(36)
+
+        get activities_path, page: 5, per: 10
+        expect(response).to have_http_status(200)
+        data = JSON.parse(response.body)["data"]
+        expect(data.count).to be(0)
+      end
     end
 
     describe "invalid request" do
+      before(:each) do
+        sign_in(user)
+      end
+
       specify "request invalid trackable type" do
         get activities_path, trackable_type: "Characteristic"
 
-        expect(response).to have_http_status(401)
+        expect(response).to have_http_status(400)
+        errors = JSON.parse(response.body)["errors"]
+
+        expect(errors).to eq("Unpermitted trackable type 'Characteristic'")
+      end
+
+      specify "mixing :limit and :per/:page pagination" do
+        get activities_path, page: 5, per: 10, limit: 100
+        expect(response).to have_http_status(400)
+
+        errors = JSON.parse(response.body)["errors"]
+        expect(errors).to eq("Cannot mix :limit and :per/:page params")
+      end
+
+      specify "missing :par parameter in pagination" do
+        get activities_path, page: 5
+        expect(response).to have_http_status(400)
+
+        errors = JSON.parse(response.body)["errors"]
+        expect(errors).to eq("Missing :per pagination param")
+      end
+
+      specify "missing ::page parameter in pagination" do
+        get activities_path, per: 5
+        expect(response).to have_http_status(400)
+
+        errors = JSON.parse(response.body)["errors"]
+        expect(errors).to eq("Missing :page pagination param")
       end
     end
   end

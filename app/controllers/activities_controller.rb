@@ -7,6 +7,10 @@ class ActivitiesController < AuthenticatedController
     render json: { errors: exception.message }, status: 400
   end
 
+  rescue_from InvalidPaginationRequest do |exception|
+    render json: { errors: exception.message }, status: 400
+  end
+
   def index
     query = PublicActivity::Activity.
             where(client_id: current_client_id).

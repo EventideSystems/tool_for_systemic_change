@@ -6,6 +6,8 @@ class AuthenticatedController < ApplicationController
 
   class User::NotAuthorized < Exception; end
 
+  class InvalidPaginationRequest < Exception; end
+
   rescue_from User::NotAuthorized do |exception|
     render json: exception, status: 403
   end
@@ -29,6 +31,8 @@ class AuthenticatedController < ApplicationController
   protected
 
   def finder_for_pagination(query)
+    check_pagination_params
+
     if params[:limit]
       query = query.limit(params[:limit])
     end
@@ -45,6 +49,20 @@ class AuthenticatedController < ApplicationController
   end
 
   private
+
+  def check_pagination_params
+    if params[:limit] && (params[:page] || params[:per])
+      raise InvalidPaginationRequest, "Cannot mix :limit and :per/:page params"
+    end
+
+    if params[:page] && !params[:per]
+      raise InvalidPaginationRequest, "Missing :per pagination param"
+    end
+
+    if params[:per] && !params[:page]
+      raise InvalidPaginationRequest, "Missing :page pagination param"
+    end
+  end
 
   def get_staff_client_id_from_session
     client_id = session[:staff_current_client_id]

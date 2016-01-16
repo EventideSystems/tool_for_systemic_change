@@ -38,6 +38,10 @@ Rails.application.routes.draw do
   #   get "/users/invitation/accept", :to => "custom_invitations#edit",   :as => 'accept_user_invitation'
   #   put "/invitations/user",    :to => "custom_invitations#update", :as => nil
   # end
+  namespace :reports do
+    get 'initiatives', defaults: { :format => 'json' }
+    get 'stakeholders', defaults: { :format => 'json' }
+  end
 
   resources :users, only: [:show, :index], :defaults => { :format => 'json' }
   # The priority is based upon order of creation: first created -> highest priority.

@@ -8,7 +8,8 @@ angular.module('WKD.Dashboard', [])
     .state('wkd.dashboard', {
       url: '/',
       templateUrl: '/templates/dashboard/index.html',
-      controller: 'WKD.Dashboard.Controller'
+      controller: 'WKD.Dashboard.Controller',
+      controllerAs: 'vm'
     })
 
     ;

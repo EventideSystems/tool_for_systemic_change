@@ -14,7 +14,8 @@ angular.module('WKD.Users', [])
     .state('wkd.users.list', {
       templateUrl: '/templates/users/list.html',
       controller: 'WKD.Users.ListController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      title: 'Users'
     })
 
     ;

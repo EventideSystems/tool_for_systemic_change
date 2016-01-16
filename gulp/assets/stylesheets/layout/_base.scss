@@ -43,6 +43,15 @@ a {
   border-bottom: 1px solid $dark-20;
   padding-bottom: 15px;
   margin-bottom: 15px;
+
+  .inner {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 540px;
+    float: left;
+  }
 }
 
 .main-tabs {
@@ -133,5 +142,51 @@ table {
 
 
 table .tablesort-asc, table .tablesort-desc{
-    background: none;
+  background: none;
+}
+
+
+.video-tutorals {
+  padding: 0;
+  font-size: 16px;
+
+  i {
+    font-size: 32px;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: -3px;
+  }
+
+  span {
+    line-height: 32px;
+  }
+
+  li {
+    display: inline-block;
+    width: 33%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: top;
+  }
+
+  a {
+    display: block;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  @include bp(1030px) {
+    li {
+      width: 48%;
+    }
+  }
+
+  @include bp(sm) {
+    li {
+      width: 100%;
+    }
+  }
 }

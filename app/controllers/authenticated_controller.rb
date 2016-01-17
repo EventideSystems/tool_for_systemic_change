@@ -9,7 +9,7 @@ class AuthenticatedController < ApplicationController
   class InvalidPaginationRequest < Exception; end
 
   rescue_from User::NotAuthorized do |exception|
-    render json: exception, status: 403
+    render json: { errors: exception.message }, status: 403
   end
 
   def authenticate_staff_user!

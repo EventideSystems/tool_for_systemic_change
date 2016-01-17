@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   resources :activities, :defaults => { :format => 'json' },  only: [:index]
   resources :initiatives, :defaults => { :format => 'json' } do
@@ -16,7 +18,7 @@ Rails.application.routes.draw do
   resource :current_client, :controller => 'current_client', :defaults => { :format => 'json' }, only: [:show, :update]
   resources :communities, :defaults => { :format => 'json' }
   resources :invitations, :controller => 'invitations', only: [:create], :defaults => { :format => 'json' }
-  resources :scorecards, :defaults => { :format => 'json' } do
+  resources :scorecards, :defaults => { :format => 'json' }, :constraints => { :id => UUID_OR_NUMERIC_REGEX } do
     resources :initiatives, controller: 'scorecard_initiatives', :defaults => { :format => 'json' }, only: [:index, :show]
   end
   resources :wicked_problems, :defaults => { :format => 'json' }

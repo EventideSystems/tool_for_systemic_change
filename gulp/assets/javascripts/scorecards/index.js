@@ -5,6 +5,11 @@ angular.module('WKD.Scorecards', [])
 
 .config(['$stateProvider', function ($stateProvider) {
   $stateProvider
+    .state('scorecard-embed', {
+      url: '/scorecard/:guid',
+      templateUrl: '/templates/scorecards/embed.html'
+    })
+
     .state('wkd.scorecards', {
       url: '/scorecards',
       template: '<ui-view class="transition-view">',

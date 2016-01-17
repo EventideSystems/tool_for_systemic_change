@@ -1,0 +1,96 @@
+<h1>
+  Iniatives Report
+</h1>
+
+<wkd-action-panel toggle-title="Report options" toggled="vm.openOptions">
+  <form ng-submit="vm.generate()" class="form-horizontal">
+    <div class="form-group clearfix">
+      <label class="col-sm-4 control-label">
+        Select wicked problem(s)
+      </label>
+
+      <div class="col-sm-8">
+        <ui-select on-select="vm.addProblem()" ng-model="vm.newProblem" theme="bootstrap">
+          <ui-select-match placeholder="-- Select a Wicked Problem --">
+            {{ $select.selected.attributes.name }}
+          </ui-select-match>
+          <ui-select-choices repeat="problem in vm.problems | filter:{ attributes: { name: $select.search } } track by problem.id">
+            <div ng-bind-html="problem.attributes.name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <div class="col-sm-8 col-sm-offset-4" ng-show="vm.report.problems.length">
+        <br>
+        <ul class="block-list">
+          <li ng-repeat="problem in vm.report.problems">
+            <i class="ico fa fa-cubes"></i>
+            {{ problem.attributes.name }}
+            <div class="actions">
+              <a href ng-click="vm.remove('problems', problem)">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-group clearfix">
+      <label class="col-sm-4 control-label">
+        Select community
+      </label>
+
+      <div class="col-sm-8">
+        <ui-select on-select="vm.addCommunity()" ng-model="vm.newCommunity" theme="bootstrap">
+          <ui-select-match placeholder="-- Select a Community --">
+            {{ $select.selected.attributes.name }}
+          </ui-select-match>
+          <ui-select-choices repeat="community in vm.communities | filter:{ attributes: { name: $select.search } } track by community.id">
+            <div ng-bind-html="community.attributes.name | highlight: $select.search"></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <div class="col-sm-8 col-sm-offset-4" ng-show="vm.report.communities.length">
+        <br>
+        <ul class="block-list">
+          <li ng-repeat="community in vm.report.communities">
+            <i class="ico fa-users fa"></i>
+            {{ community.attributes.name }}
+            <div class="actions">
+              <a href ng-click="vm.remove('communities', community)">
+                <i class="fa fa-times"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-sm-offset-4">
+      <input type="submit" value="Generate" class="btn btn-primary">
+      <input type="button" ng-click="vm.clear()" value="Clear" class="btn btn-default">
+    </div>
+  </form>
+</wkd-action-panel>
+
+
+<p ng-show="vm.loading"><i class="fa fa-spin fa-spinner"></i> Loading report..</p>
+
+<table ng-show="vm.report.data" class="table table-striped table-hover" ts-wrapper>
+  <thead>
+    <tr>
+      <td ts-criteria="attributes.name" ts-default>Name</td>
+      <td ts-criteria="attributes.description">Description</td>
+      <td ts-criteria="attributes.createdAt">Created at</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="initiative in vm.report.data | filter:{attributes: { name: vm.filterText }}" ts-repeat>
+      <td><a href ui-sref="wkd.initiatives.view({ id: initiative.id })">{{ initiative.attributes.name }}</a></td>
+      <td>{{ initiative.attributes.description | limitTo:75 }}<span ng-if="problem.attributes.description.length > 75">...</span></td>
+      <td>{{ initiative.attributes.createdAt | date }} </td>
+    </tr>
+  </tbody>
+</table>

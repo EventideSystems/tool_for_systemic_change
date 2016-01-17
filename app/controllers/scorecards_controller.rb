@@ -1,8 +1,17 @@
 class ScorecardsController < AuthenticatedController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy]
+  before_action :set_scorecard, only: [:edit, :update, :destroy]
+  before_action :set_scorecard_from_shared, only: [:show]
+
+  skip_before_filter :authenticate_user!, only: :show
 
   resource_description do
     formats ['json']
+  end
+
+  class InvalidSharedLinkId < Exception; end
+
+  rescue_from InvalidSharedLinkId do |exception|
+    render json: { errors: exception.message }, status: 400
   end
 
   api :GET, '/scorecards'
@@ -14,8 +23,9 @@ class ScorecardsController < AuthenticatedController
     render json: @scorecards, include: ['initiatives']
   end
 
+  # SMELL regex is duplicated in routes
   api :GET, '/scorecards/:id'
-  param :id, :number, required: true
+  param :id, /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/, desc: 'id or uuid', required: true
   def show
     render json: @scorecard, include: ['initiatives']
   end
@@ -109,6 +119,15 @@ class ScorecardsController < AuthenticatedController
       @scorecard = current_client.scorecards.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       raise User::NotAuthorized
+    end
+
+    def set_scorecard_from_shared
+      if /\A\d+\z/ =~ params[:id] # param[:id] is an integer
+        set_scorecard
+      else
+        @scorecard = Scorecard.find_by(shared_link_id: params[:id])
+        raise InvalidSharedLinkId, 'Unknown shared link id' unless @scorecard
+      end
     end
 
     def permitted_community_params(params)

@@ -110,7 +110,7 @@ angular.module('WKD', [
     var root = currentUser.get().clientName || 'Wicked Lab';
     var context = to.title ? (' - ' + to.title) : '';
 
-    window.document.title =  root + context;
+    window.document.title = root + context;
   });
 
   // Monkey patch redirectTo into ui router.

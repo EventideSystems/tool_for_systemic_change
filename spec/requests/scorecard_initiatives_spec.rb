@@ -110,6 +110,17 @@ RSpec.describe "Scorecard Initiatives", type: :request do
         end
       end
     end
+
+    describe "GET /scorecards/:shared_link_id/initiatives" do
+
+      specify "when logged out" do
+        sign_out
+
+        get scorecard_initiatives_path(scorecard_id: scorecard.shared_link_id)
+
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
 end

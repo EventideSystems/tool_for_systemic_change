@@ -24,4 +24,4 @@ angular.module('WKD.Activities', [])
 ;
 
 
-require('./ListController.js');
+require('./list-controller.js');

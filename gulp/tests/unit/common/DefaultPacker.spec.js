@@ -1,6 +1,6 @@
 var service, obj;
 
-describe('CurrentUserService', function () {
+describe('DefaultPacker', function () {
 
   beforeEach(module('WKD'));
 

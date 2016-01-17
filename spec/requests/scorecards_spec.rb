@@ -24,6 +24,8 @@ RSpec.describe "Scorecards", type: :request do
       expect(scorecard_data['id']).to eq(scorecard.id.to_s)
       expect(scorecard_data['attributes']['name']).to eq(scorecard.name)
       expect(scorecard_data['attributes']['description']).to eq(scorecard.description)
+      expect(scorecard_data['attributes']['sharedLinkId']).to eq(scorecard.shared_link_id)
+
       expect(Time.parse(scorecard_data['attributes']['createdAt']).utc).
         to be_within(0.01).of(scorecard.created_at.utc)
 
@@ -121,6 +123,33 @@ RSpec.describe "Scorecards", type: :request do
       end
     end
 
+  end
+
+  describe "GET /scorecards/:shared_link_id" do
+
+    specify "when logged out" do
+      sign_out
+
+      get scorecard_path(id: scorecard.shared_link_id)
+
+      expect(response).to have_http_status(200)
+    end
+
+    specify "when logged in" do
+      sign_in(user)
+
+      get scorecard_path(id: scorecard.shared_link_id)
+
+      expect(response).to have_http_status(200)
+    end
+
+    specify "reports error for invalid shared_link_id" do
+      sign_out
+
+      get scorecard_path(id: SecureRandom.uuid)
+
+      expect(response).to have_http_status(400)
+    end
   end
 
   describe "POST /scorecards" do

@@ -10,9 +10,6 @@ angular.module('WKD.Common')
       scope: {
         toggleTitle: '@'
       },
-      link: function (scope) {
-
-      },
       templateUrl: '/templates/directives/wkd-action-panel.html'
     };
   }

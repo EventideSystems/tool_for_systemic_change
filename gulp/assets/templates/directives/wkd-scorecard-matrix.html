@@ -1,4 +1,3 @@
-
 <div class="scorecard-matrix-controls">
   <button class="btn btn-default" ng-click="fromOpen = true" uib-datepicker-popup ng-model="from" show-weeks="false" datepicker-append-to-body="true" is-open="fromOpen" close-text="Close">
     <i class="fa fa-calendar"></i> From {{(from | date) || ''}}
@@ -10,7 +9,6 @@
     <i class="fa fa-history"></i> View snapshot
   </button>
 
-
   <div class="pull-right">
     <button class="btn btn-default" ng-click="toggleGaps()">
       <i class="fa fa-adjust"></i> Show gaps in effort
@@ -20,7 +18,7 @@
       <i class="fa fa-print"></i> Print
     </button>
 
-    <button class="btn btn-default" ng-click="openEmbedModal()">
+    <button ng-if="!embedded" class="btn btn-default" ng-click="openEmbedModal()">
       <i class="fa fa-share-alt"></i> Share
     </button>
   </div>
@@ -31,9 +29,10 @@
     <tbody>
       <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'">
         <td class="init-title" ng-attr-data-id="{{initiative.id}}">
-          <a ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
+          <a ng-if="!embedded" ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
             {{ ::initiative.attributes.name }}
           </a>
+          <span>{{ ::initiative.attributes.name }}</span>
         </td>
       </tr>
     </tbody>

@@ -93,7 +93,7 @@ angular.module('WKD.Common')
             templateUrl: '/templates/scorecards/embed-modal.html',
             controller: ['scorecard', function (scorecard) {
               this.getEmbedUrl = function () {
-                return '//' + window.location.host + '/embed/#/scorecard/' + scorecard.sharedLinkId;
+                return '//' + window.location.host + '/embed/#/scorecard/' + (scorecard ? scorecard.sharedLinkId : '');
               };
             }],
             controllerAs: 'modal',

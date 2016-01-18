@@ -1,3 +1,15 @@
-<div class="container">
-  <h1>Scorecard embed page</h1>
+<div class="container scorecard-embed">
+  <h1>{{ vm.scorecard.name }} scorecard</h1>
+
+  <p class="loading" ng-hide="vm.initiatives">
+    <i class="fa fa-spin fa-spinner"></i> Loading scorecard..
+  </p>
+
+  <wkd-scorecard-matrix ng-if="vm.initiatives" embedded="true" initiatives="vm.initiatives"></wkd-scorecard-matrix>
+
+  <footer>
+    <small>powered by
+      <a href="https://google.com.au" target="_blank"><img src="/assets/images/logo.png" alt="wicked logo"></a>
+    </small>
+  </footer>
 </div>

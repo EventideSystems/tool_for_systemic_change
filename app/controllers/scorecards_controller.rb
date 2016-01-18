@@ -2,7 +2,7 @@ class ScorecardsController < AuthenticatedController
   before_action :set_scorecard, only: [:edit, :update, :destroy]
   before_action :set_scorecard_from_shared, only: [:show]
 
-  skip_before_filter :authenticate_user!, only: :show
+  skip_before_filter :authenticate_user!, only: [:show, :embed]
 
   resource_description do
     formats ['json']
@@ -111,6 +111,9 @@ class ScorecardsController < AuthenticatedController
       format.html { redirect_to scorecards_url, notice: 'Scorecard was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def embed
   end
 
   private

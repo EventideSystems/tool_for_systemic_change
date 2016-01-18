@@ -33,6 +33,8 @@ Rails.application.routes.draw do
 
   resources :video_tutorials, defaults: { :format => 'json' }, only: [:show, :index]
 
+  get 'embed', to: 'scorecards#embed'
+
   devise_for :users, :controllers => { :invitations => 'invitations' }
 
   # devise_for :users , :skip => 'invitation'

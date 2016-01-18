@@ -7,7 +7,9 @@ angular.module('WKD.Scorecards', [])
   $stateProvider
     .state('scorecard-embed', {
       url: '/scorecard/:guid',
-      templateUrl: '/templates/scorecards/embed.html'
+      templateUrl: '/templates/scorecards/embed.html',
+      controller: 'WKD.Scorecards.EmbedController',
+      controllerAs: 'vm'
     })
 
     .state('wkd.scorecards', {
@@ -84,4 +86,6 @@ require('./edit-controller.js');
 require('./list-controller.js');
 require('./initiative-controller.js');
 require('./scorecard-controller.js');
+require('./embed-controller.js');
+
 

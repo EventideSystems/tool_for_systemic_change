@@ -24,4 +24,4 @@ angular.module('WKD.Users', [])
 ;
 
 
-require('./ListController.js');
+require('./list-controller.js');

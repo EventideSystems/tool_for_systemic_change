@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ansible-playbook $@ -i inventory ../ansible/server-deploy.yml
+ansible-playbook -v $@ -i inventory ../ansible/server-deploy.yml

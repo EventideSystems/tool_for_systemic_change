@@ -3,55 +3,6 @@
     background: transparent;
   }
 
-  .widgets {
-    background: white;
-    margin: -25px -30px 15px -30px;
-    padding: 30px;
-  }
-
-  .widget {
-    &:first-of-type {
-      padding-left: 0;
-    }
-
-    &:last-of-type {
-      padding-right: 0;
-    }
-
-    .inner {
-      border: 1px solid $dark-20;
-      box-shadow: 0 0 1px 1px $dark-10;
-    }
-
-    header {
-      background: $brand-tertiary;
-      color: white;
-      padding: 10px 15px;
-
-      .action {
-        float: right;
-        color: white;
-      }
-    }
-
-    .content {
-      padding: 15px;
-      height: 220px;
-      overflow-y: auto;
-    }
-
-    @include bp(md) {
-      float: none;
-      width: 100%;
-      padding: 0;
-      margin-bottom: 30px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
-
   .logs {
     padding: 0;
     list-style: none;

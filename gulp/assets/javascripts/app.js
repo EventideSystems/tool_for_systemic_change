@@ -59,9 +59,9 @@ angular.module('WKD', [
   'WKD.Problems',
   'WKD.Activities',
   'WKD.Tutorials',
-  'WKD.Reports'
+  'WKD.Reports',
+  'WKD.Templates'
 ])
-
 
 .config(['$stateProvider', 'WKD.Common.CurrentUserProvider', function ($stateProvider, CurrentUserProvider) {
   $stateProvider
@@ -88,29 +88,17 @@ angular.module('WKD', [
   };
 }])
 
-.config(['RestangularProvider', 'WKD.Common.DefaultPackerProvider', function (RestangularProvider, defaultPacker) {
-  // add a response interceptor to unwrap { data: [.. data i want ..]}
-  RestangularProvider.addResponseInterceptor(function (resp, operation) {
-    var unpacked = resp.data;
-
-    if (operation === 'get') unpacked = defaultPacker.unpackResource(unpacked);
-    if (resp.included) unpacked.included = resp.included;
-    return unpacked;
-  });
-
-  // Repacks resource to match server expectation
-  RestangularProvider.addRequestInterceptor(function (res, op) {
-    if (op === 'post' || op === 'put') return defaultPacker.packResource(res);
-    return res;
-  });
-}])
+.config(restAngularConf())
 
 .run(['$rootScope', '$state', 'WKD.Common.CurrentUser', function ($rootScope, $state, currentUser) {
   $rootScope.$on('$stateChangeSuccess', function (evt, to) {
-    var root = currentUser.get().clientName || 'Wicked Lab';
-    var context = to.title ? (' - ' + to.title) : '';
-
-    window.document.title =  root + context;
+    try {
+      var root = currentUser.get().clientName || 'Wicked Lab';
+      var context = to.title ? (' - ' + to.title) : '';
+      window.document.title = root + context;
+    } catch (e) {
+      window.document.title = 'Wicked Lab';
+    }
   });
 
   // Monkey patch redirectTo into ui router.
@@ -148,3 +136,48 @@ angular.module('WKD', [
 ])
 
 ;
+
+// Mini module for scorecard embed page.
+angular.module('WKD.ScorecardEmbed', [
+  'ui.router',
+  'ui.bootstrap',
+  'restangular',
+  'flashr',
+
+  'WKD.Common',
+  'WKD.Scorecards',
+  'WKD.Initiatives',
+  'WKD.Communities',
+  'WKD.Problems',
+  'WKD.Templates'
+])
+
+.config(restAngularConf())
+
+.config([function () {
+  // If no scorecard given just redirect to app
+  if (!window.location.hash.match('scorecard')) window.location = '/';
+  window.document.title = 'Wicked Lab scorecard';
+}])
+
+;
+
+// Extracted here as its needed in both places. Bit messy but time is an enemy
+function restAngularConf() {
+  return ['RestangularProvider', 'WKD.Common.DefaultPackerProvider', function (RestangularProvider, defaultPacker) {
+    // add a response interceptor to unwrap { data: [.. data i want ..]}
+    RestangularProvider.addResponseInterceptor(function (resp, operation) {
+      var unpacked = resp.data;
+
+      if (operation === 'get') unpacked = defaultPacker.unpackResource(unpacked);
+      if (resp.included) unpacked.included = resp.included;
+      return unpacked;
+    });
+
+    // Repacks resource to match server expectation
+    RestangularProvider.addRequestInterceptor(function (re, op) {
+      if (op === 'post' || op === 'put') return defaultPacker.packResource(re);
+      return re;
+    });
+  }];
+}

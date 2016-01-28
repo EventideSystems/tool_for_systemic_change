@@ -5,6 +5,13 @@ angular.module('WKD.Scorecards', [])
 
 .config(['$stateProvider', function ($stateProvider) {
   $stateProvider
+    .state('scorecard-embed', {
+      url: '/scorecard/:guid',
+      templateUrl: '/templates/scorecards/embed.html',
+      controller: 'WKD.Scorecards.EmbedController',
+      controllerAs: 'vm'
+    })
+
     .state('wkd.scorecards', {
       url: '/scorecards',
       template: '<ui-view class="transition-view">',
@@ -79,4 +86,6 @@ require('./edit-controller.js');
 require('./list-controller.js');
 require('./initiative-controller.js');
 require('./scorecard-controller.js');
+require('./embed-controller.js');
+
 

@@ -1,15 +1,13 @@
-
 <div class="scorecard-matrix-controls">
   <button class="btn btn-default" ng-click="fromOpen = true" uib-datepicker-popup ng-model="from" show-weeks="false" datepicker-append-to-body="true" is-open="fromOpen" close-text="Close">
-    <i class="fa fa-calendar"></i> From {{(from | date) || 'the beginning of time'}}
+    <i class="fa fa-calendar"></i> From {{(from | date) || ''}}
   </button>
   <button class="btn btn-default" ng-click="toOpen = true" uib-datepicker-popup ng-model="to" show-weeks="false" datepicker-append-to-body="true" is-open="toOpen" close-text="Close">
-    <i class="fa fa-calendar"></i> To {{(to | date) || 'now'}}
+    <i class="fa fa-calendar"></i> To {{(to | date) || ''}}
   </button>
   <button class="btn btn-primary" ng-click="printScorecard()">
     <i class="fa fa-history"></i> View snapshot
   </button>
-
 
   <div class="pull-right">
     <button class="btn btn-default" ng-click="toggleGaps()">
@@ -20,21 +18,21 @@
       <i class="fa fa-print"></i> Print
     </button>
 
-    <button class="btn btn-default" ng-click="openEmbedModal()">
+    <button ng-if="!embedded" class="btn btn-default" ng-click="openEmbedModal()">
       <i class="fa fa-share-alt"></i> Share
     </button>
   </div>
 </div>
 
 <div class="scorecard-matrix">
-  <!-- <div class="mask"></div> -->
   <table class="init-table">
     <tbody>
       <tr ng-repeat="initiative in initiatives | orderBy:'attributes.name'">
         <td class="init-title" ng-attr-data-id="{{initiative.id}}">
-          <a ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
+          <a ng-if="!embedded" ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
             {{ ::initiative.attributes.name }}
           </a>
+          <span>{{ ::initiative.attributes.name }}</span>
         </td>
       </tr>
     </tbody>
@@ -73,19 +71,18 @@
 
     <p><strong>Direct link</strong><br>
 
-    <a href="http://WICKED_URL/scorecards/GUID">http://WICKED_URL/scorecards/GUID</a>
+    <a target="_blank" ng-href="{{modal.getEmbedUrl()}}">{{modal.getEmbedUrl()}}</a>
 
     <p>
       <strong>Embed on your website</strong><br>
 
-      <a href="javascript:void(0)">
-        <img src="/assets/images/scorecard-embed.png">
-      </a><br><br>
+      <img src="/assets/images/scorecard-embed.png">
+      <br><br>
 
       <strong>Copy this code onto your website</strong>
 
       <pre>
-&lt;a href="http://WICKED_URL/scorecards/GUID" target="_blank"&gt;
+&lt;a href="{{modal.getEmbedUrl()}}" target="_blank"&gt;
   &lt;img src="sourcetoimage" alt="link to scorecard"&gt;&lt;/img&gt;
 &lt;/a&gt;</pre>
 

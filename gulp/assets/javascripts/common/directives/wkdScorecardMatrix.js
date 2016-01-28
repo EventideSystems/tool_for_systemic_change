@@ -11,7 +11,9 @@ angular.module('WKD.Common')
       restrict: 'E',
       transclude: true,
       scope: {
-        initiatives: '='
+        initiatives: '=',
+        scorecard: '=',
+        embedded: '='
       },
       link: function (scope, el) {
         var data = scope.initiatives.included;
@@ -88,7 +90,14 @@ angular.module('WKD.Common')
 
         scope.openEmbedModal = function () {
           $modal.open({
-            templateUrl: '/templates/scorecards/embed-modal.html'
+            templateUrl: '/templates/scorecards/embed-modal.html',
+            controller: ['scorecard', function (scorecard) {
+              this.getEmbedUrl = function () {
+                return '//' + window.location.host + '/embed/#/scorecard/' + (scorecard ? scorecard.sharedLinkId : '');
+              };
+            }],
+            controllerAs: 'modal',
+            resolve: { scorecard: scope.scorecard }
           });
         };
 

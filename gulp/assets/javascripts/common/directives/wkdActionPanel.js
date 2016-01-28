@@ -8,10 +8,8 @@ angular.module('WKD.Common')
       restrict: 'E',
       transclude: true,
       scope: {
-        toggleTitle: '@'
-      },
-      link: function (scope) {
-
+        toggleTitle: '@',
+        toggled: '='
       },
       templateUrl: '/templates/directives/wkd-action-panel.html'
     };

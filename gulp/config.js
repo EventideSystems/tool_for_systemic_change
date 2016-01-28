@@ -31,7 +31,8 @@ module.exports = {
     src: sourceFiles + '/templates/**/*.html',
     dest: publicAssets + '/javascripts',
     cacheConfig: {
-      module: 'WKD',
+      standalone: true,
+      module: 'WKD.Templates',
       root: '/templates'
     }
   },

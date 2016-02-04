@@ -14,7 +14,12 @@
         cache_valid_time: 3600
 
 - hosts: postgresql
+  handlers:
+    - include: roles/passenger/handlers/main.yml
+    - include: roles/passenger/handlers/main.yml
   roles:
+    # SMELL base required here to build app user (needed by postgresql)
+    - base
     - postgresql
 
 

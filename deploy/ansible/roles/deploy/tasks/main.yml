@@ -7,7 +7,7 @@
 - debug: msg='New release path {{ this_release_path }}'
 
 - name: Create new release dir
-  file: path={{ this_release_path }} state=directory
+  file: path={{ this_release_path }} state=directory owner={{ user_name }} group={{ group_name }}
 
 - name: Update code
   git: repo={{ git_url }} dest={{ this_release_path }} version={{ git_branch }} accept_hostkey=yes

@@ -51,8 +51,6 @@
 - name: Create ~/.bash_profile which loads all from ~/profile.d
   template: src=bash_profile.j2 dest={{ user_home_path }}/.bash_profile owner={{ user_name }} group={{ group_name }}
 
-- debug: msg='GOT HERE!!'
-
 - name: Add ssh agent line to sudoers
   lineinfile:
     dest: /etc/sudoers

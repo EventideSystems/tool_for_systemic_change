@@ -1,7 +1,7 @@
 ---
 vm_name: wicked_software
 path: /wicked_software
-git_branch: master
+git_branch: rails_box_passenger
 vm_os: ubuntu/trusty64
 environments:
   - development
@@ -19,26 +19,35 @@ packages:
   - imagemagick
   - qt5-default
   - libqt5webkit5-dev
-manual_ruby_version:
+manual_ruby_version: 2.3.0
 server_name: localhost
 rails_version: 4
 ruby_install: rbenv
-ruby_version: 2.2.2
+ruby_version: 2.2.1
 environment_file: /wicked_software/.envrc
 databases:
   - postgresql
 background_jobs:
-postgresql_orm: none
+  - delayed_job
+postgresql_orm: activerecord
+mysql_orm: none
+mongodb_orm: none
+redis_orm: none
+mongodb_db_name: myapp
+mysql_db_name: myapp
+mysql_db_user: vagrant
+mysql_db_password:
 postgresql_db_name: wicked_software
-postgresql_db_user: '{{ "vagrant" if target == "virtualbox" else app_name }}'
-postgresql_db_password:
+postgresql_db_user: wicked_software
+postgresql_db_password: feeblelarf12_
 postgresql_extensions:
   - hstore
-delayed_job_command: script/delayed_job run
+delayed_job_command: bin/delayed_job run
 sidekiq_command: sidekiq
 resque_command: rake resque:work
-server_type: nginx_unicorn
+server_type: nginx_passenger
 git_url: git@github.com:ferrisoxide/wicked_software.git
+delayed_job_app_name: wicked_software-delayed_job
 
 app_name: '{{ vm_name }}'
 user_name: '{{ "vagrant" if target == "virtualbox" else app_name }}'
@@ -49,15 +58,15 @@ user_home_path: '/home/{{ user_name }}'
 ssl_certificate_path: /etc/nginx/ssl/{{ server_name }}.crt
 ssl_certificate_key_path: /etc/nginx/ssl/{{ server_name }}.key
 
-server_current_path: '{{ path}}/current'
-app_path: '{{ path if target == "virtualbox" else server_current_path }}'
-app_public_path: "{{ app_path }}/public"
-app_config_path: "{{ app_path }}/config"
-app_temp_path: "{{ app_path }}/tmp"
-app_logs_path: "{{ app_path }}/log"
-
 releases_path: '{{ path }}/releases'
 shared_path: '{{ path }}/shared'
+
+app_path: '{{ path }}{{ "/current" if target != "virtualbox" else "" }}'
+app_public_path: "{{ app_path }}/public"
+app_config_path: '{{ app_path }}/config'
+shared_config_path: '{{ app_path if target == "virtualbox" else shared_path }}/config'
+app_temp_path: "/tmp{{ app_path }}"
+app_logs_path: "{{ app_path }}/log"
 
 unicorn_sock_path: "/tmp/unicorn.{{ rails_env }}.sock"
 unicorn_config_path: "{{ app_config_path }}/unicorn.{{ rails_env }}.rb"

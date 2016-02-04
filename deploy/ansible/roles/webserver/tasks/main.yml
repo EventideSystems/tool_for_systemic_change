@@ -9,5 +9,3 @@
   tags:
     - rails
     - db
-  environment:
-    RAILS_ENV: '{{ rails_env }}'

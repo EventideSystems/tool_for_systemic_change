@@ -20,7 +20,7 @@ packages:
   - qt5-default
   - libqt5webkit5-dev
 manual_ruby_version: 2.3.0
-server_name: localhost
+# server_name: localhost
 rails_version: 4
 ruby_install: rbenv
 ruby_version: 2.2.1

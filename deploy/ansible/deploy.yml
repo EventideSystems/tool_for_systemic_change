@@ -1,8 +1,8 @@
 ---
 - hosts: application
-  sudo: true
+  #sudo: true
   user: root
-  #remote_user: '{{ user_name }}'
-  sudo_user: '{{ user_name }}'
+  remote_user: '{{ user_name }}'
+  #sudo_user: '{{ user_name }}'
   roles:
     - deploy

@@ -1,43 +1,17 @@
-# PostgreSQL. Versions 7.4, 8.x and 9.x are supported.
-#
-# Install the pg driver:
-#   gem install pg
-# On Mac OS X with macports:
-#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
-# On Windows:
-#   gem install pg
-#       Choose the win32 build.
-#       Install PostgreSQL and put its /bin directory on your path.
+# Ansible managed: /Users/tom/Projects/Eventide/wicked_software/deploy/ansible/roles/postgresql/templates/database.yml.j2 modified on 2016-02-03 17:24:02 by tom on Toms-MacBook-Pro.local
 
 default: &default
   adapter: postgresql
+  host: localhost
   pool: 5
-  encoding: unicode
-
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-  #port: 5432
 
 development:
   <<: *default
-  database: wicked_software_development
-  username: vagrant
-  password:
+  database: wicked_software
 
+  username: wicked_software
+  password: feeblelarf12_
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
   database: wicked_software_test
-  username: vagrant
-  password:
-
-production:
-  <<: *default
-  database: wicked_software_production
-  username: vagrant
-  password:

@@ -6,6 +6,6 @@ vm_swap:
 vm_cores: ?
 vm_share_type: ?
 vm_ip: 
-host: 222
+host: 128.199.96.19
 port: 22
-username: ubuntu
+username: root

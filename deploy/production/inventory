@@ -1,17 +1,20 @@
-222 ansible_ssh_port=22
+128.199.96.19 ansible_ssh_port=22
 
 [all]
-222
+128.199.96.19
 
 [application]
-222
+128.199.96.19
 
 [vm]
-222
+128.199.96.19
 
-[development]
-222
+[production]
+128.199.96.19
 
 [postgresql]
-222
+128.199.96.19
+
+[delayed_job]
+128.199.96.19
 

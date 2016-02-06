@@ -1,7 +1,7 @@
 ---
 vm_name: wicked_software
 path: /wicked_software
-git_branch: rails_box_passenger
+git_branch: master
 vm_os: ubuntu/trusty64
 environments:
   - development

@@ -1,11 +1,12 @@
 ---
 rails_env: production
 target: server
-vm_memory: 
-vm_swap: 
-vm_cores: ?
-vm_share_type: ?
-vm_ip: 
-host: 222
+# vm_memory:
+vm_swap: 2048
+# vm_cores: ?
+# vm_share_type: ?
+# vm_ip:
+host: 128.199.96.19
 port: 22
-username: ubuntu
+username: root
+server_name: wickedlab-production.eventidesystems.com

@@ -1,25 +1,17 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
+# Ansible managed: /Users/tom/Projects/Eventide/wicked_software/deploy/ansible/roles/postgresql/templates/database.yml.j2 modified on 2016-02-04 12:43:25 by tom on Toms-MacBook-Pro.local
+
 default: &default
-  adapter: sqlite3
+  host: localhost
+  adapter: postgresql
   pool: 5
-  timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: wicked_software
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
+  username: wicked_software
+  password: feeblelarf12_
+
 test:
   <<: *default
-  database: db/test.sqlite3
-
-production:
-  <<: *default
-  database: db/production.sqlite3
+  database: wicked_software_test

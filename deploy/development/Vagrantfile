@@ -74,7 +74,8 @@ Vagrant.configure('2') do |config|
         'application' => %w(wicked_software),
         'vm' => %w(wicked_software),
         'postgresql' => %w(wicked_software),
-        'development:children' => %w(application vm postgresql),
+        'delayed_job' => %w(wicked_software),
+        'development:children' => %w(application vm postgresql delayed_job),
       }
       ansible.tags = ENV['TAGS']
       ansible.raw_arguments = ENV['ANSIBLE_ARGS']

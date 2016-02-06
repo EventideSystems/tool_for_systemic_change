@@ -1,10 +1,11 @@
 # {{ ansible_managed }}
 
 default: &default
+  host: localhost
   adapter: postgresql
   pool: 5
 
-development:
+{{ rails_env }}:
   <<: *default
   database: {{ postgresql_db_name }}
 

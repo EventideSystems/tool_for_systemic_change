@@ -18,6 +18,9 @@ cat > /tmp/hosts << "EOF"
 [postgresql]
 127.0.0.1
 
+[delayed_job]
+127.0.0.1
+
 EOF
 
 sudo mv -f /tmp/hosts /etc/ansible/hosts

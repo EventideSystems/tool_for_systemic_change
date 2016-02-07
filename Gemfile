@@ -58,14 +58,20 @@ gem 'kaminari'
 # Activity logging
 gem 'public_activity'
 
+# NOTE Why is this here?
 gem 'redcarpet'
 
-gem "bullet", group: "test"
+gem 'delayed_job_active_record'
 
 group :development do
   # Documentation support
   gem "railroady"
   gem "rubocop"
+end
+
+group :test do
+  gem "email_spec"
+  gem "bullet"
 end
 
 group :development, :test do

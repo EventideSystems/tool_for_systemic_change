@@ -16,7 +16,7 @@
 - hosts: postgresql
   handlers:
     - include: roles/passenger/handlers/main.yml
-    - include: roles/passenger/handlers/main.yml
+    - include: roles/delayed_job/handlers/main.yml
   roles:
     # SMELL base required here to build app user (needed by postgresql)
     - base

@@ -62,6 +62,7 @@ gem 'public_activity'
 gem 'redcarpet'
 
 gem 'delayed_job_active_record'
+gem 'daemons', '~> 1.1.9'
 
 group :development do
   # Documentation support

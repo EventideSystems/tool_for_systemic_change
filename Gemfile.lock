@@ -84,6 +84,7 @@ GEM
     concurrent-ruby (1.0.0)
     coolline (0.5.0)
       unicode_utils (~> 1.4)
+    daemons (1.1.9)
     database_cleaner (1.5.1)
     debug_inspector (0.0.2)
     delayed_job (4.1.1)
@@ -301,6 +302,7 @@ DEPENDENCIES
   bullet
   byebug
   coffee-rails (~> 4.1.0)
+  daemons (~> 1.1.9)
   database_cleaner
   delayed_job_active_record
   devise

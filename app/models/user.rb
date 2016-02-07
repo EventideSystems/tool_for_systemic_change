@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  handle_asynchronously :send_devise_notification, :queue => 'devise'
+
   belongs_to :client, class_name: 'Client'
 
   enum role: [ :user, :admin, :staff ]

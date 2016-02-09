@@ -67,5 +67,61 @@ RSpec.describe "Users", type: :request do
         expect(JSON.parse(response.body)['data'].count).to be(0)
       end
     end
+
+    describe "delete user" do
+      let!(:user_to_delete) { create(:user, client: admin.client) }
+
+      specify "admin can delete user in same client" do
+        sign_in(admin)
+
+        expect do
+          delete user_path(user_to_delete)
+        end.to change{User.count}.by(-1)
+
+        expect(response).to have_http_status(200)
+      end
+
+      specify "admin cannot delete user in different client" do
+        sign_in(admin)
+
+        other_user = create(:user, client: other_client)
+
+        expect do
+          delete user_path(other_user)
+        end.to change{User.count}.by(0)
+
+        expect(response).to have_http_status(403)
+      end
+
+      specify "admin cannot delete themselves" do
+        sign_in(admin)
+
+        expect do
+          delete user_path(admin)
+        end.to change{User.count}.by(0)
+
+        expect(response).to have_http_status(403)
+      end
+
+      specify "staff can delete users" do
+        sign_in(staff)
+
+        expect do
+          delete user_path(user_to_delete)
+        end.to change{User.count}.by(-1)
+
+        expect(response).to have_http_status(200)
+      end
+
+      specify "users cannot delete users" do
+        sign_in(user)
+
+        expect do
+          delete user_path(user_to_delete)
+        end.to change{User.count}.by(0)
+
+        expect(response).to have_http_status(403)
+      end
+    end
   end
 end

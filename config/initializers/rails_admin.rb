@@ -70,9 +70,11 @@ RailsAdmin.config do |config|
         required true
       end
       field :name
-      field :client
       field :role do
         required true
+      end
+      field :client do
+        help "Required unless role is 'Staff'"
       end
     end
   end

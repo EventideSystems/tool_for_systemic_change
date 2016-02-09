@@ -67,6 +67,9 @@ RSpec.describe "Users", type: :request do
         expect(JSON.parse(response.body)['data'].count).to be(0)
       end
     end
+  end
+
+  describe "DELETE /users/:id" do
 
     describe "delete user" do
       let!(:user_to_delete) { create(:user, client: admin.client) }
@@ -122,6 +125,54 @@ RSpec.describe "Users", type: :request do
 
         expect(response).to have_http_status(403)
       end
+    end
+  end
+
+  describe "GET /users/:id/resend_invitation" do
+
+    let!(:invited_user) do
+      user = create(:user, client: admin.client)
+      user.invite!
+      user
+    end
+
+    specify "staff can resend invitations" do
+      sign_in(staff)
+
+      expect do
+        post resend_invitation_user_path(invited_user)
+      end.to change{ Delayed::Job.count}.by(1)
+      expect(response).to have_http_status(200)
+    end
+
+    specify "admin can resend invitations" do
+      sign_in(admin)
+
+      expect do
+        post resend_invitation_user_path(invited_user)
+      end.to change{ Delayed::Job.count}.by(1)
+      expect(response).to have_http_status(200)
+    end
+
+    specify "admin cannot resend invitation to user in different client" do
+      sign_in(admin)
+
+      other_user = create(:user, client: other_client)
+      other_user.invite!
+
+      expect do
+        post resend_invitation_user_path(other_user)
+      end.to change{ Delayed::Job.count}.by(0)
+      expect(response).to have_http_status(403)
+    end
+
+    specify "users cannot resend invitations" do
+      sign_in(user)
+
+      expect do
+        post resend_invitation_user_path(invited_user)
+      end.to change{ Delayed::Job.count}.by(0)
+      expect(response).to have_http_status(403)
     end
   end
 end

@@ -1,5 +1,7 @@
 require Rails.root.join('lib', 'rails_admin', 'invite_user.rb')
+require Rails.root.join('lib', 'rails_admin', 'resend_invitation.rb')
 RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::InviteUser)
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::ResendInvitation)
 
 RailsAdmin.config do |config|
 
@@ -35,6 +37,9 @@ RailsAdmin.config do |config|
     invite_user do
       only ['User']
     end
+    resend_invitation do
+      only ['User']
+    end
     export
     bulk_delete
     show
@@ -63,6 +68,28 @@ RailsAdmin.config do |config|
 
     object_label_method do
       :displayed_name
+    end
+
+    list do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+    end
+
+    show do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+      field :created_at
+      field :updated_at
+      field :invited_by
+      field :sign_in_count
+      field :current_sign_in_at
+      field :last_sign_in_at
     end
 
     edit do

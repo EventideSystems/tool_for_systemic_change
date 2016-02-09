@@ -21,6 +21,26 @@ class UsersController < AuthenticatedController
     render json: @user
   end
 
+  api :POST, '/users/:id/resend_invitation'
+  param :id, :number, required: true
+  def resend_invitation
+    # NOTE Replace with Pundit check
+    unless current_user.staff? || current_user.admin?
+      raise User::NotAuthorized.new('Access denied')
+    end
+
+    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
+
+    unless @user.status == 'invitation-pending'
+      # NOTE Need a better error here
+      raise User::NotAuthorized.new('Cannot resend invitations to an active user')
+    end
+
+    @user.invite!(current_user)
+
+    render json: { status: :ok}
+  end
+
   api :DELETE, '/users/:id'
   param :id, :number, required: true
   def destroy

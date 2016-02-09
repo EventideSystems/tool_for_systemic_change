@@ -49,17 +49,24 @@ module RailsAdmin
                 @object.send("#{name}=", value)
               end
 
-              @object.invite!(current_user)
-              invitation_accepted = @object.errors.empty?
+              @object.valid?
+              #remove password from errors
+              @object.errors.messages.except!(:password)
 
-              if invitation_accepted
-                @auditing_adapter && @auditing_adapter.create_object(@object, @abstract_model, _current_user)
-                respond_to do |format|
-                  format.html { redirect_to invite_user_path }
-                  format.js   { render json: {id: @object.id.to_s, label: @model_config.with(object: @object).object_label} }
+              if @object.errors.empty?
+                @object.invite!(current_user)
+
+                if @object.invite!(current_user)
+                  @auditing_adapter && @auditing_adapter.create_object(@object, @abstract_model, _current_user)
+                  respond_to do |format|
+                    format.html { redirect_to invite_user_path, notice: "Invitation sent to '#{@object.email}'" }
+                    format.js   { render json: {id: @object.id.to_s, label: @model_config.with(object: @object).object_label} }
+                  end
+                else
+                  handle_save_error :invite_user
                 end
               else
-                handle_save_error
+                handle_save_error :invite_user
               end
             end
           end

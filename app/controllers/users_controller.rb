@@ -20,4 +20,23 @@ class UsersController < AuthenticatedController
     @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
     render json: @user
   end
+
+  api :DELETE, '/users/:id'
+  param :id, :number, required: true
+  def destroy
+    # NOTE Replace with Pundit check
+    unless current_user.staff? || current_user.admin?
+      raise User::NotAuthorized.new('Access denied')
+    end
+
+    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
+
+    if @user == current_user
+      raise User::NotAuthorized.new('Cannot delete own account')
+    end
+
+    @user.destroy
+
+    render json: { status: :ok}
+  end
 end

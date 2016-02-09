@@ -1,3 +1,6 @@
+require Rails.root.join('lib', 'rails_admin', 'invite_user.rb')
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::InviteUser)
+
 RailsAdmin.config do |config|
 
   config.main_app_name = ["Wicked Lab", "Back Office"]
@@ -26,7 +29,12 @@ RailsAdmin.config do |config|
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    new
+    new do
+      except ['User']
+    end
+    invite_user do
+      only ['User']
+    end
     export
     bulk_delete
     show
@@ -36,6 +44,7 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+
   end
 
   config.model 'FocusArea' do
@@ -49,5 +58,24 @@ RailsAdmin.config do |config|
   config.model 'VideoTutorial' do
     exclude_fields :linked
   end
+
+  config.model 'User' do
+
+    object_label_method do
+      :displayed_name
+    end
+
+    edit do
+      field :email do
+        required true
+      end
+      field :name
+      field :client
+      field :role do
+        required true
+      end
+    end
+  end
+
 
 end

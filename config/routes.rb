@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     get 'stakeholders', defaults: { :format => 'json' }
   end
 
-  resources :users, only: [:show, :index], :defaults => { :format => 'json' }
+  resources :users, only: [:show, :index, :destroy], :defaults => { :format => 'json' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

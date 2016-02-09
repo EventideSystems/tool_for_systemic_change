@@ -1,3 +1,8 @@
+require Rails.root.join('lib', 'rails_admin', 'invite_user.rb')
+require Rails.root.join('lib', 'rails_admin', 'resend_invitation.rb')
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::InviteUser)
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::ResendInvitation)
+
 RailsAdmin.config do |config|
 
   config.main_app_name = ["Wicked Lab", "Back Office"]
@@ -26,7 +31,15 @@ RailsAdmin.config do |config|
   config.actions do
     dashboard                     # mandatory
     index                         # mandatory
-    new
+    new do
+      except ['User']
+    end
+    invite_user do
+      only ['User']
+    end
+    resend_invitation do
+      only ['User']
+    end
     export
     bulk_delete
     show
@@ -36,6 +49,7 @@ RailsAdmin.config do |config|
     ## With an audit adapter, you can add:
     # history_index
     # history_show
+
   end
 
   config.model 'FocusArea' do
@@ -49,5 +63,48 @@ RailsAdmin.config do |config|
   config.model 'VideoTutorial' do
     exclude_fields :linked
   end
+
+  config.model 'User' do
+
+    object_label_method do
+      :displayed_name
+    end
+
+    list do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+    end
+
+    show do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+      field :created_at
+      field :updated_at
+      field :invited_by
+      field :sign_in_count
+      field :current_sign_in_at
+      field :last_sign_in_at
+    end
+
+    edit do
+      field :email do
+        required true
+      end
+      field :name
+      field :role do
+        required true
+      end
+      field :client do
+        help "Required unless role is 'Staff'"
+      end
+    end
+  end
+
 
 end

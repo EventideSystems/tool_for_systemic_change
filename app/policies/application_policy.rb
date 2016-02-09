@@ -58,6 +58,10 @@ class ApplicationPolicy
         user.staff?
       when :show_in_app
         user.staff?
+      when :invite_user
+        user.staff?
+      when :resend_invitation
+        user.staff?
       else
         raise ::Pundit::NotDefinedError, "unable to find policy #{action} for #{record}."
     end

@@ -21,3 +21,10 @@
 
 en:
   hello: "Hello world"
+  admin:
+    actions:
+      invite_user:
+        menu: 'Invite user'
+        title: 'Invite User'
+        breadcrumb: 'Invite'
+        done: ''

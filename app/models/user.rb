@@ -28,4 +28,8 @@ class User < ActiveRecord::Base
     return 'active'
   end
 
+  def displayed_name
+    name.present? ? name : email
+  end
+
 end

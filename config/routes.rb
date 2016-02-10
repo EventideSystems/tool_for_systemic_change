@@ -31,7 +31,9 @@ Rails.application.routes.draw do
     get 'video_tutorial', on: :member
   end
 
-  resources :video_tutorials, defaults: { :format => 'json' }, only: [:show, :index]
+  resources :video_tutorials, defaults: { :format => 'json' }, only: [:show, :index] do
+    get 'dashboard', on: :collection
+  end
 
   get 'embed', to: 'scorecards#embed'
 

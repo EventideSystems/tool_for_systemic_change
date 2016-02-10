@@ -61,7 +61,52 @@ RailsAdmin.config do |config|
   end
 
   config.model 'VideoTutorial' do
-    exclude_fields :linked
+
+    list do
+      field :name
+      field :description
+      field :promote_to_dashboard do
+        label "Promoted"
+      end
+      field :position
+      field :link_url do
+        label "Vimeo Link URL"
+      end
+      field :linked do
+        label "Focus Area / Characteristic"
+      end
+    end
+
+    show do
+      field :name
+      field :description
+      field :promote_to_dashboard do
+        label "Promoted"
+      end
+      field :position
+      field :link_url do
+        label "Vimeo Link URL"
+      end
+      field :linked do
+        label "Focus Area / Characteristic"
+      end
+      field :created_at
+      field :updated_at
+    end
+
+    edit do
+      field :name
+      field :description
+      field :promote_to_dashboard
+      field :position do
+        help "Only applies to promoted videos"
+      end
+      field :link_url do
+        required true
+        label "Vimeo Link URL"
+      end
+      exclude_fields :linked
+    end
   end
 
   config.model 'User' do
@@ -105,6 +150,4 @@ RailsAdmin.config do |config|
       end
     end
   end
-
-
 end

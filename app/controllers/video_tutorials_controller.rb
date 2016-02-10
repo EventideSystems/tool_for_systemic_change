@@ -21,6 +21,17 @@ class VideoTutorialsController < AuthenticatedController
     render json: @video_tutorial
   end
 
+  api :GET, '/video_tutorials/dashboard'
+  def dashboard
+    @video_tutorials = VideoTutorial.
+      where(promote_to_dashboard: true).
+      order(:position)
+
+    render json: @video_tutorials
+  end
+
+
+
   private
 
   def set_video_tutorial

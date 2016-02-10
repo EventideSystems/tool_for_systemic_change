@@ -8,4 +8,10 @@ class VideoTutorial < ActiveRecord::Base
     matches[1]
   end
 
+  def linked_name
+    return '' unless linked.present?
+
+    linked.name
+  end
+
 end

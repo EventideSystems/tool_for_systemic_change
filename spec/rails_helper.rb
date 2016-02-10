@@ -66,4 +66,11 @@ RSpec.configure do |config|
   end
 end
 
+def skip_bullet
+  Bullet.enable = false
+  yield
+ensure
+  Bullet.enable = true
+end
+
 load "#{Rails.root}/db/model_seeds.rb"

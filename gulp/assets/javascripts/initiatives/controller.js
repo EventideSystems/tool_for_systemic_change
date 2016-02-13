@@ -12,12 +12,18 @@ angular.module('WKD.Initiatives')
   '$q',
   'WKD.Common.DataModel',
   'WKD.Common.TutorialService',
-  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel, tutorialService) {
+  '$http',
+  function ($state, Restangular, flashr, $controller, $scope, $q, dataModel, tutorialService, $http) {
     var vm = this;
     var baseRef = Restangular.all('initiatives');
 
     $scope.showTutorial = function (char) {
-      tutorialService.play(char.attributes.name, 'http://www.screencast.com/users/i1117863/folders/Default/media/9ca80a2e-f463-473b-aa09-858e910d5435/embed');
+      $http.get('/characteristics/' + char.id + '/video_tutorial').then(function (resp) {
+        var data = resp.data;
+        if (data) {
+          tutorialService.play(data.data.attributes.name, data.data.attributes.linkUrl);
+        }
+      });
     };
 
     vm._list = function () {

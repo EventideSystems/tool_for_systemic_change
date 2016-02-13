@@ -32,7 +32,7 @@
           <a ng-if="!embedded" ui-sref="wkd.initiatives.view.checklist({ id: initiative.id })" ng-attr-title="{{::initiative.attributes.name}}">
             {{ ::initiative.attributes.name }}
           </a>
-          <span>{{ ::initiative.attributes.name }}</span>
+          <span ng-if="embedded">{{ ::initiative.attributes.name }}</span>
         </td>
       </tr>
     </tbody>

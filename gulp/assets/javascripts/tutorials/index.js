@@ -8,10 +8,14 @@ angular.module('WKD.Tutorials', [])
     .state('wkd.tutorials', {
       url: '/tutorials',
       templateUrl: '/templates/tutorials/index.html',
-      title: 'Tutorials'
+      title: 'Tutorials',
+      controller: 'WKD.Tutorials.Controller',
+      controllerAs: 'vm'
     })
 
     ;
 }])
 
 ;
+
+require('./controller.js');

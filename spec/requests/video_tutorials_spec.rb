@@ -60,8 +60,6 @@ RSpec.describe "Video Tutorials", type: :request do
       video_links_data = JSON.parse(response.body)["data"]
 
       expect(video_links_data.count).to be(2)
-      expect(video_links_data[0]["attributes"]["vimeoId"]).to eq("8901234")
-      expect(video_links_data[1]["attributes"]["vimeoId"]).to eq("123567")
     end
   end
 end

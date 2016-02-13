@@ -6,7 +6,9 @@ angular.module('WKD.Dashboard')
 .controller('WKD.Dashboard.Controller', [
   'Restangular',
   'WKD.Common.TutorialService',
-  function (Restangular, tutorialService) {
+  '$http',
+  'orderByFilter',
+  function (Restangular, tutorialService, $http, orderBy) {
     var vm = this;
 
     Restangular.one('dashboard').get().then(function (dashboard) {
@@ -17,8 +19,12 @@ angular.module('WKD.Dashboard')
       vm.scorecards = sc;
     });
 
-    vm.playVideo = function (title, url) {
-      tutorialService.play('Example Video', 'http://www.screencast.com/users/i1117863/folders/Default/media/9ca80a2e-f463-473b-aa09-858e910d5435/embed');
+    $http.get('/video_tutorials/dashboard').then(function (resp) {
+      vm.videos = orderBy(resp.data.data, 'attributes.position');
+    });
+
+    vm.playVideo = function (video) {
+      tutorialService.play(video.attributes.name, video.attributes.linkUrl);
     };
   }
 ]);

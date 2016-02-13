@@ -24,7 +24,6 @@ angular.module('WKD.Users')
       var data = angular.copy(vm.newUser);
       data.role = data.isAdmin ? 'admin' : 'user';
       delete data.isAdmin;
-      delete data.name;
 
       $http.post('/users/invitation', { user: data }).then(function (resp) {
         vm.pending.push(resp.data.data);
@@ -39,6 +38,22 @@ angular.module('WKD.Users')
       });
     };
 
+    vm.resendInvite = function (user) {
+      return $http.post('/users/' + user.id + '/resend_invitation').then(function () {
+        flashr.now.success(
+          'Invitation email has been sent to ' + user.attributes.email
+        );
+      });
+    };
+
+    vm.deleteUser = function (user) {
+      if (window.confirm('Are you sure?')) {
+        return $http.delete('/users/' + user.id).then(function () {
+          _.remove(vm.pending, user);
+          flashr.now.success('User deleted');
+        });
+      }
+    };
   }
 ])
 

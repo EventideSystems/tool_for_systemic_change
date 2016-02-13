@@ -54,7 +54,10 @@
   </thead>
   <tbody>
     <tr ng-repeat="user in vm.users" ts-repeat>
-      <td><i ng-if="user.attributes.role === 'admin'" class="fa fa-star"></i> {{ user.attributes.name }}</td>
+      <td>
+        <i ng-if="user.attributes.role === 'admin'" class="fa fa-star"></i>
+        <a href ui-sref="wkd.users.view({ id: user.id })">{{ user.attributes.name }}</a>
+      </td>
       <td>{{ user.attributes.email }}</td>
       <td>{{ user.attributes.lastSignInAt | date }}</td>
     </tr>
@@ -67,12 +70,17 @@
     <tr>
       <td ts-criteria="attributes.name" ts-default>Name</td>
       <td ts-criteria="attributes.email" >Email</td>
+      <td width="50px">&nbsp;</td>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="user in vm.pending" ts-repeat>
       <td><i ng-if="user.attributes.role === 'admin'" class="fa fa-star"></i> {{ user.attributes.name }}</td>
       <td>{{ user.attributes.email }}</td>
+      <td>
+        <a href title="resend invitation email" ng-click="vm.resendInvite(user)"><i class="fa fa-refresh"></i></a>
+        <a href title="revoke invitation" ng-click="vm.deleteUser(user)"><i class="fa fa-times"></i></a>
+      </td>
     </tr>
   </tbody>
 </table>

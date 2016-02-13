@@ -26,7 +26,6 @@ class DashboardSerializer < BaseSerializer
         name:           video_tutorial.name,
         description:    video_tutorial.description,
         link_url:       video_tutorial.link_url,
-        vimeo_id:       video_tutorial.vimeo_id,
         created_at:     video_tutorial.created_at,
         updated_at:     video_tutorial.updated_at
       }

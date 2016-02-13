@@ -18,6 +18,14 @@ angular.module('WKD.Users', [])
       title: 'Users'
     })
 
+    .state('wkd.users.view', {
+      templateUrl: '/templates/users/edit.html',
+      controller: 'WKD.Users.EditController',
+      controllerAs: 'vm',
+      title: 'Edit user',
+      url: '/:id'
+    })
+
     ;
 }])
 
@@ -25,3 +33,4 @@ angular.module('WKD.Users', [])
 
 
 require('./list-controller.js');
+require('./edit-controller.js');

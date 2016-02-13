@@ -74,17 +74,4 @@ RSpec.describe "Characteristic", type: :request do
     end
   end
 
-  describe "GET /characteristics/:id/video_tutorial" do
-
-    it "returns video link for focus area" do
-      characteristic = Characteristic.first
-      video_tutorial = create(:video_tutorial, link_url: "https://vimeo.com/2222", linked: characteristic)
-
-      sign_in(admin)
-      get video_tutorial_characteristic_path(characteristic)
-
-      attribute_data = JSON.parse(response.body)['data']['attributes']
-      expect(attribute_data['vimeoId']).to eq("2222")
-    end
-  end
 end

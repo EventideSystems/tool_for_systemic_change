@@ -13,15 +13,6 @@ RSpec.describe "Video Tutorials", type: :request do
       sign_in(user)
     end
 
-    specify "returns vimeo link" do
-      create(:video_tutorial, link_url: "https://vimeo.com/49487948")
-
-      get video_tutorials_path
-
-      attributes = JSON.parse(response.body)["data"].first["attributes"]
-      expect(attributes["vimeoId"]).to eq("49487948")
-    end
-
     specify "returns linked object attributes" do
 
       focus_area = FocusArea.first
@@ -69,8 +60,6 @@ RSpec.describe "Video Tutorials", type: :request do
       video_links_data = JSON.parse(response.body)["data"]
 
       expect(video_links_data.count).to be(2)
-      expect(video_links_data[0]["attributes"]["vimeoId"]).to eq("8901234")
-      expect(video_links_data[1]["attributes"]["vimeoId"]).to eq("123567")
     end
   end
 end

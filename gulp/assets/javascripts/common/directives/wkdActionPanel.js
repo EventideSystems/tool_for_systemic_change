@@ -9,7 +9,7 @@ angular.module('WKD.Common')
       transclude: true,
       scope: {
         toggleTitle: '@',
-        toggled: '='
+        toggled: '=?'
       },
       templateUrl: '/templates/directives/wkd-action-panel.html'
     };

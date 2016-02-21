@@ -46,17 +46,4 @@ RSpec.describe "FocusArea", type: :request do
     end
   end
 
-  describe "GET /focus_areas/:id/video_tutorial" do
-
-    it "returns embedded video link for focus area" do
-      focus_area = FocusArea.first
-      video_tutorial = create(:video_tutorial, link_url: "https://vimeo.com/11111", linked: focus_area)
-
-      sign_in(admin)
-      get video_tutorial_focus_area_path(focus_area)
-
-      attribute_data = JSON.parse(response.body)['data']['attributes']
-      expect(attribute_data['vimeoId']).to eq("11111")
-    end
-  end
 end

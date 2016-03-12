@@ -12,15 +12,32 @@ class PublicActivity::Activity
   end
 
   def short_message
-    "#{self.trackable_type} #{action}d"
+    "#{self.trackable_type} #{past_tense(action)}"
   end
 
   def long_message
     user = self.owner
-    user_name = user ? user.name : 'Unknown user'
-    aaa = trackable.name
+    user_name = user ? user.name : 'System user'
 
-    "#{self.trackable_type} '#{self.trackable.name}' #{action}d by #{user_name}"
+    user_name = 'Unknown' if user_name.blank?
+
+    trackable_name = if self.trackable.respond_to?(:name)
+      self.trackable.name
+    else
+      if self.trackable
+        self.trackable.id.to_s
+      else
+        'Deleted object'
+      end
+    end
+
+    "#{self.trackable_type} '#{trackable_name}' #{past_tense(action)} by #{user_name}"
+  end
+
+  private
+
+  def past_tense(action)
+    action.last == "e" ? "#{action}d" : "#{action}ed"
   end
 
 end

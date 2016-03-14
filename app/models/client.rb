@@ -1,4 +1,8 @@
 class Client < ActiveRecord::Base
+  # SMELL Hack to allow these parameters to be used in RailsAdmin
+  attr_accessor :initial_admin_user_name
+  attr_accessor :initial_admin_user_email
+
   has_many :organisations
   has_many :communities
   has_many :scorecards

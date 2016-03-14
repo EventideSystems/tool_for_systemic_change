@@ -33,3 +33,8 @@ en:
         title: 'Resend Invitation'
         breadcrumb: 'Resend'
         done: ''
+      new_client:
+        menu: 'Add new'
+        title: 'New Client'
+        breadcrumb: 'New'
+        done: 'created'

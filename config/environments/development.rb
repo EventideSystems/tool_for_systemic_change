@@ -42,5 +42,5 @@ Rails.application.configure do
   # Required by Devise
   config.action_mailer.default_url_options = { host: '192.168.20.50', port: 80 }
 
-  config.web_console.whitelisted_ips = '192.168.20.50'
+  config.web_console.whitelisted_ips = ['192.168.20.50', '192.168.20.1']
 end

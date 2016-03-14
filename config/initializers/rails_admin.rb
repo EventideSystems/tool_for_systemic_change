@@ -1,7 +1,9 @@
 require Rails.root.join('lib', 'rails_admin', 'invite_user.rb')
 require Rails.root.join('lib', 'rails_admin', 'resend_invitation.rb')
+require Rails.root.join('lib', 'rails_admin', 'new_client.rb')
 RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::InviteUser)
 RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::ResendInvitation)
+RailsAdmin::Config::Actions.register(RailsAdmin::Config::Actions::NewClient)
 
 RailsAdmin.config do |config|
 
@@ -32,13 +34,16 @@ RailsAdmin.config do |config|
     dashboard                     # mandatory
     index                         # mandatory
     new do
-      except ['User']
+      except ['User', 'Client']
     end
     invite_user do
       only ['User']
     end
     resend_invitation do
       only ['User']
+    end
+    new_client do
+      only ["Client"]
     end
     export
     bulk_delete
@@ -148,6 +153,37 @@ RailsAdmin.config do |config|
       field :client do
         help "Required unless role is 'Staff'"
       end
+    end
+  end
+
+  config.model 'Client' do
+    list do
+      field :name
+      field :description
+      field :weblink
+      field :sector
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :weblink
+      field :sector
+      field :welcome_message
+    end
+
+    create do
+      field :name do
+        required true
+      end
+      field :description
+      field :weblink
+      field :sector
+      field :welcome_message
+      field :initial_admin_user_email
+      field :initial_admin_user_name
     end
   end
 end

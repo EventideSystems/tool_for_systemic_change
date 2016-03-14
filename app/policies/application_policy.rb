@@ -62,6 +62,8 @@ class ApplicationPolicy
         user.staff?
       when :resend_invitation
         user.staff?
+      when :new_client
+        user.staff?
       else
         raise ::Pundit::NotDefinedError, "unable to find policy #{action} for #{record}."
     end

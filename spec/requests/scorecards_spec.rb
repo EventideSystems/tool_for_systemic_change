@@ -150,6 +150,17 @@ RSpec.describe "Scorecards", type: :request do
 
       expect(response).to have_http_status(400)
     end
+
+    specify "reports error for deactivated client" do
+      sign_out
+
+     client.deactivated = true
+     client.save!
+
+      get scorecard_path(id: scorecard.shared_link_id)
+
+      expect(response).to have_http_status(400)
+    end
   end
 
   describe "POST /scorecards" do

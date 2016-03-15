@@ -157,4 +157,5 @@ RSpec.describe "Clients", type: :request do
       expect(client.description).to eq(client_new_description)
     end
   end
+
 end

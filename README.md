@@ -28,6 +28,19 @@ brew install ansible
 brew install vagrant
 ```
 
+NB We are using Ansible v. 1.8.4, as it is the last version known to work with
+the provisioning scripts as they are now - and later versions of Ansible
+introduce bugs.
+
+If you have issues with the version of Ansible installed by `brew`, you can
+install the 1.8.x version and switch to it
+
+```
+brew install homebrew/versions/ansible18
+brew info ansible
+brew switch ansble [version returned from info]
+```
+
 ### Database setup
 
 You will need to ensure you have a valid `database.yml` file available. Copy the `database.vagrant.yml` template and modify as necessary (you probably won't have to change it at all).
@@ -61,6 +74,13 @@ sudo start wicked_software
 or
 ```
 sudo stop wicked_software
+```
+
+To restart the application during development, execute the following:
+
+```
+cd /wicked_software_
+touch tmp/restart.txt
 ```
 
 The application uses PostgreSQL, running under its own `postgres` account. If you need to access the database shell directly, from within the VM, you will need to assume the `postgres` role:
@@ -112,6 +132,15 @@ And many other cool things that make life easier.
 
 While there are gems that try and make these things more confortable for a rails dev, they don't offer any real value over the real thing.
 
+### Front-end commands
+
+To recap from above, the following commands
+
+```
+gulp             # rebuild all assets and watch for changes
+gulp templates   # rebuild templates
+gulp browserify  # rebuild javascript assets
+```
 
 ## Styleguides
 
@@ -147,21 +176,8 @@ The complete deployment cycle isn't fully automated at present. To finalise the 
 
 ```
 ssh root@wickedlab-staging.eventidesystems.com
-sudo su - wicked_software
-cd /wicked_software/current
+service wicked_software-delayed_job restart
 ```
 
-You will need to kill the existing `unicorn` master process. Run `ps aux | grep "unicorn master"` to get the PID of the existing process.
+The reason for executing this by hand is the Ansible
 
-```
-wicked_+ 20184  0.0  1.9  96976 20144 ?        Sl   Nov06   0:01 unicorn master -c /wicked_software/current/config/unicorn.staging.rb -D
-wicked_+ 26462  0.0  0.0  11740   936 pts/0    S+   18:34   0:00 grep --color=auto unicorn master
-```
-
-In this case the PID is **20184**. Use `kill -9 [PID]` to remove the master. In the example above the call would be `kill -9 20184`.
-
-Once the master has gone you will need to restart unicorn, like so:
-
-```
-RAILS_ENV=staging bundle exec unicorn -c /wicked_software/current/config/unicorn.staging.rb -D
-```

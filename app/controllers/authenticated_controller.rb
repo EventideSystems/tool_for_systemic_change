@@ -3,6 +3,7 @@ class AuthenticatedController < ApplicationController
   include PublicActivity::StoreController
 
   before_filter :authenticate_user!
+  before_filter :authorize_client!
 
   class User::NotAuthorized < Exception; end
 
@@ -10,6 +11,18 @@ class AuthenticatedController < ApplicationController
 
   rescue_from User::NotAuthorized do |exception|
     render json: { errors: exception.message }, status: 403
+  end
+
+  rescue_from Client::NotAuthorized do |exception|
+    warden.logout
+    flash.keep
+    redirect_to '/users/sign_in', flash: { notice: exception.message }
+  end
+
+  def authorize_client!
+    unless current_user.staff? || current_client.active?
+      raise Client::NotAuthorized.new("Client account has been deactivated")
+    end
   end
 
   def authenticate_staff_user!

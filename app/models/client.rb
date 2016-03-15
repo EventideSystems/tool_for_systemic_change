@@ -1,4 +1,7 @@
 class Client < ActiveRecord::Base
+
+  class NotAuthorized < Exception; end
+
   # SMELL Hack to allow these parameters to be used in RailsAdmin
   attr_accessor :initial_admin_user_name
   attr_accessor :initial_admin_user_email
@@ -16,4 +19,8 @@ class Client < ActiveRecord::Base
       where(id: user.client.id)
     end
   }
+
+  def active?
+    !deactivated
+  end
 end

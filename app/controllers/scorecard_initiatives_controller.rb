@@ -4,6 +4,7 @@ class ScorecardInitiativesController < AuthenticatedController
   before_action :set_scorecard_from_shared, only: [:index]
 
   skip_before_filter :authenticate_user!, only: :index
+  skip_before_filter :authorize_client!, only: :index
 
   class InvalidSharedLinkId < Exception; end
 
@@ -47,6 +48,7 @@ class ScorecardInitiativesController < AuthenticatedController
       else
         @scorecard = Scorecard.find_by(shared_link_id: params[:scorecard_id])
         raise InvalidSharedLinkId, 'Unknown shared link id' unless @scorecard
+        raise Client::NotAuthorized.new("Client account has been deactivated") unless @scorecard.client.active?
       end
     end
 

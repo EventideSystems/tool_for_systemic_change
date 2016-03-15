@@ -3,6 +3,7 @@ class ScorecardsController < AuthenticatedController
   before_action :set_scorecard_from_shared, only: [:show]
 
   skip_before_filter :authenticate_user!, only: [:show, :embed]
+  skip_before_filter :authorize_client!, only: [:show, :embed]
 
   resource_description do
     formats ['json']
@@ -11,6 +12,10 @@ class ScorecardsController < AuthenticatedController
   class InvalidSharedLinkId < Exception; end
 
   rescue_from InvalidSharedLinkId do |exception|
+    render json: { errors: exception.message }, status: 400
+  end
+
+  rescue_from Client::NotAuthorized do |exception|
     render json: { errors: exception.message }, status: 400
   end
 
@@ -130,6 +135,7 @@ class ScorecardsController < AuthenticatedController
       else
         @scorecard = Scorecard.find_by(shared_link_id: params[:id])
         raise InvalidSharedLinkId, 'Unknown shared link id' unless @scorecard
+        raise Client::NotAuthorized.new("Client account has been deactivated") unless @scorecard.client.active?
       end
     end
 

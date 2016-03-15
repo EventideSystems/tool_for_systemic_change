@@ -77,4 +77,39 @@ MESSAGE
       expect(tutorials.count).to be(3)
     end
   end
+
+  describe "Disabling client" do
+
+    before(:each) do
+      client.deactivated = true
+      client.save!
+    end
+
+    specify "logging in as staff user" do
+      sign_in(staff)
+
+      Bullet.enable = false
+      get dashboard_path
+      Bullet.enable = true
+      expect(response).to have_http_status(200)
+    end
+
+    specify "logging in as admin user" do
+      sign_in(admin)
+
+      Bullet.enable = false
+      get dashboard_path
+      Bullet.enable = true
+      expect(response).to have_http_status(302)
+    end
+
+    specify "logging in as user" do
+      sign_in(user)
+
+      Bullet.enable = false
+      get dashboard_path
+      Bullet.enable = true
+      expect(response).to have_http_status(302)
+    end
+  end
 end

@@ -162,6 +162,7 @@ RailsAdmin.config do |config|
       field :description
       field :weblink
       field :sector
+      field :deactivated
     end
 
     edit do
@@ -172,6 +173,7 @@ RailsAdmin.config do |config|
       field :weblink
       field :sector
       field :welcome_message
+      field :deactivated
     end
 
     create do

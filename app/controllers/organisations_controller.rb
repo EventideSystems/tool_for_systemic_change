@@ -5,6 +5,14 @@ class OrganisationsController < AuthenticatedController
     formats ['json']
   end
 
+  rescue_from ActiveRecord::DeleteRestrictionError do |exception|
+    message = exception.message.gsub(
+      "initiative_organisations",
+      "Initiatives"
+    )
+    render json: { errors: message }, status: 403
+  end
+
   api :GET, '/organisations'
   def index
     query = Organisation.where(client_id: current_client.id)

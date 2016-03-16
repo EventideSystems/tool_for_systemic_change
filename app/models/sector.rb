@@ -1,4 +1,6 @@
 class Sector < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   has_many :organisations, class_name: "Organisation", foreign_key: "sector_id"

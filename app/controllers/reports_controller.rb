@@ -19,7 +19,7 @@ class ReportsController < AuthenticatedController
   end
 
   def stakeholders
-    query = Organisation.where(client_id: current_client_id).joins(:sector, intiatives: :scorecard)
+    query = Organisation.where(client_id: current_client_id).joins(:sector, initiatives: :scorecard)
 
     if params[:sector_id]
       query = query.where(sector_id: params[:sector_id])

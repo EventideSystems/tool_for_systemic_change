@@ -1,4 +1,6 @@
 class Scorecard < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   before_save :ensure_shared_link_id

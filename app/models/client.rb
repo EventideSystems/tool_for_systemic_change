@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+  acts_as_paranoid
 
   class NotAuthorized < Exception; end
 

@@ -178,4 +178,33 @@ RSpec.describe "Organisations", type: :request do
       expect(organisation.description).to eq(organisation_new_description)
     end
   end
+
+  describe "DELETE /organisations/:id" do
+
+    let!(:initiative) do
+      create(:initiative,
+             scorecard: scorecard,
+             organisations: [organisation])
+    end
+
+    specify "cannot delete an organisation with related initiatives" do
+      sign_in(admin)
+      delete "/organisations/#{organisation.id}"
+
+      expect(response).to have_http_status(403)
+      expect(JSON.parse(response.body)["errors"]).
+        to eq("Cannot delete record because of dependent Initiatives")
+    end
+
+    specify "can delete an organisation once related initiatives are removed" do
+      Bullet.enable = false
+      sign_in(admin)
+      initiative.destroy
+      delete "/organisations/#{organisation.id}"
+      Bullet.enable = true
+
+      puts response.body.inspect
+      expect(response).to have_http_status(204)
+    end
+  end
 end

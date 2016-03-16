@@ -91,6 +91,16 @@ RSpec.describe "Activities", type: :request do
         expect(data.first["attributes"]["trackableId"]).to eq(@new_scorecard.id)
         expect(data.first["attributes"]["trackableType"]).to eq("Scorecard")
       end
+
+      specify "retrieves deleted scorecard activity" do
+        @new_scorecard.delete
+
+        get activities_path, trackable_type: "Scorecard"
+        expect(response).to have_http_status(200)
+
+        data = JSON.parse(response.body)["data"]
+        expect(data.first["attributes"]["longMessage"]).to include('DELETED')
+      end
     end
 
     describe "checklist item activity" do

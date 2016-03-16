@@ -1,4 +1,6 @@
 class Scorecard < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   before_save :ensure_shared_link_id
@@ -6,7 +8,7 @@ class Scorecard < ActiveRecord::Base
   belongs_to :community
   belongs_to :client
   belongs_to :wicked_problem
-  has_many :initiatives
+  has_many :initiatives, dependent: :restrict_with_error
   has_many :checklist_items, through: :initiatives
 
   validates :client, presence: true

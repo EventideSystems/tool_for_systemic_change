@@ -1,12 +1,11 @@
 class Initiative < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   belongs_to :scorecard
-  # TODO: Add a validation to ensure that organistions belong to same
-  # administrating organisation as the initiative. NB this might be an argument
-  # for converting the join table into a proper model and adding validations to
-  # it
-  has_and_belongs_to_many :organisations, join_table: :initiatives_organisations
+  has_many :initiative_organisations, dependent: :destroy
+  has_many :organisations, through: :initiative_organisations
   has_many :checklist_items
   has_many :characteristics, through: :checklist_items
 

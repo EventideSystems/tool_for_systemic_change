@@ -5,6 +5,14 @@ class WickedProblemsController < AuthenticatedController
     formats ['json']
   end
 
+  rescue_from ActiveRecord::DeleteRestrictionError do |exception|
+    message = exception.message.gsub(
+      "scorecard",
+      "Scorecard"
+    )
+    render json: { errors: message }, status: 403
+  end
+
   api :GET, '/wicked_problems'
   def index
     query = WickedProblem.where(client_id: current_client.id)

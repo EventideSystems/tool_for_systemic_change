@@ -53,16 +53,18 @@ gem "apipie-rails", :github => "Apipie/apipie-rails"
 gem "rails_admin"
 
 # Pagination
-gem 'kaminari'
+gem "kaminari"
 
 # Activity logging
-gem 'public_activity'
+gem "public_activity"
+
+gem "paranoia", "~> 2.0"
 
 # NOTE Why is this here?
-gem 'redcarpet'
+gem "redcarpet"
 
-gem 'delayed_job_active_record'
-gem 'daemons', '~> 1.1.9'
+gem "delayed_job_active_record"
+gem "daemons", "~> 1.1.9"
 
 group :development do
   # Documentation support

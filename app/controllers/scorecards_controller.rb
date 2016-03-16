@@ -19,6 +19,14 @@ class ScorecardsController < AuthenticatedController
     render json: { errors: exception.message }, status: 400
   end
 
+  rescue_from ActiveRecord::DeleteRestrictionError do |exception|
+    message = exception.message.gsub(
+      "initiatives",
+      "Initiatives"
+    )
+    render json: { errors: message }, status: 403
+  end
+
   api :GET, '/scorecards'
   def index
     query = Scorecard.where(client_id: current_client.id).includes(:initiatives)

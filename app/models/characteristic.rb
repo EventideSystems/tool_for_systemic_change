@@ -1,4 +1,6 @@
 class Characteristic < ActiveRecord::Base
+  acts_as_paranoid
+
   default_scope { order(:focus_area_id, :position) }
 
   belongs_to :focus_area

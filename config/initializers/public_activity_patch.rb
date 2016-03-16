@@ -21,14 +21,22 @@ class PublicActivity::Activity
 
     user_name = 'Unknown' if user_name.blank?
 
-    trackable_name = if self.trackable.respond_to?(:name)
-      self.trackable.name
+    trackable_object = if self.trackable
+      self.trackable
     else
-      if self.trackable
-        self.trackable.id.to_s
+      # Assume deleted, see if we can retrieve from "paranoia"
+      deleted_object_class = self.trackable_type.constantize
+      if deleted_object_class < ActiveRecord::Base
+        deleted_object_class.with_deleted.where(id: self.trackable_id).first
       else
-        'Deleted object'
+        nil
       end
+    end
+
+    trackable_name = if trackable_object.respond_to?(:name)
+      trackable_object.deleted? ? [trackable_object.name, '[DELETED]'].join(' ') : trackable_object.name
+    else
+      'Deleted object'
     end
 
     "#{self.trackable_type} '#{trackable_name}' #{past_tense(action)} by #{user_name}"

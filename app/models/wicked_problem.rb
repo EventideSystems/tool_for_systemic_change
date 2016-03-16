@@ -1,8 +1,10 @@
 class WickedProblem < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   belongs_to :client
-  has_many :scorecards
+  has_many :scorecards, dependent: :restrict_with_error
 
   # SMELL Dupe of scope in WickedProblem - move to a concern
   scope :for_user, ->(user) {

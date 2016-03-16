@@ -1,4 +1,6 @@
 class ChecklistItem < ActiveRecord::Base
+  acts_as_paranoid
+
   include Trackable
 
   belongs_to :initiative

@@ -57,12 +57,289 @@ RailsAdmin.config do |config|
 
   end
 
-  config.model 'FocusArea' do
-    parent FocusAreaGroup
-  end
-
   config.model 'Characteristic' do
     parent FocusArea
+
+    list do
+      field :name
+      field :description
+      field :focus_area
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :focus_area do
+        required true
+      end
+    end
+  end
+
+  config.model "ChecklistItem" do
+    object_label_method do
+      :name
+    end
+
+    parent Initiative
+    list do
+      field :initiative
+      field :characteristic
+      field :checked
+      field :comment
+    end
+
+    edit do
+      field :initiative
+      field :characteristic
+      field :checked
+      field :comment
+    end
+  end
+
+  config.model 'Client' do
+    list do
+      field :name
+      field :description
+      field :weblink
+      field :sector
+      field :deactivated
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :weblink
+      field :sector
+      field :welcome_message
+      field :deactivated
+    end
+
+    create do
+      field :name do
+        required true
+      end
+      field :description
+      field :weblink
+      field :sector
+      field :welcome_message
+      field :initial_admin_user_email
+      field :initial_admin_user_name
+    end
+  end
+
+  config.model 'Community' do
+    parent Client
+
+    list do
+      field :name
+      field :description
+      field :client
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+    end
+
+    create do
+      field :name do
+        required true
+      end
+      field :description
+      field :client do
+        required true
+      end
+    end
+  end
+
+  config.model 'FocusArea' do
+    parent FocusAreaGroup
+
+    list do
+      field :name
+      field :description
+      field :position
+      field :focus_area_group
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :position
+      field :focus_area_group
+    end
+  end
+
+  config.model 'FocusAreaGroup' do
+    list do
+      field :name
+      field :description
+      field :position
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :position
+    end
+  end
+
+  config.model "Initiative" do
+    parent Scorecard
+
+    list do
+      field :name
+      field :description
+      field :scorecard
+      field :started_at
+      field :finished_at
+      field :dates_confirmed
+      field :contact_name
+      field :contact_email
+      field :contact_phone
+      field :contact_website
+      field :contact_position
+    end
+
+    edit do
+      field :name
+      field :description
+      field :scorecard
+      field :started_at
+      field :finished_at
+      field :dates_confirmed
+      field :contact_name
+      field :contact_email
+      field :contact_phone
+      field :contact_website
+      field :contact_position
+    end
+
+  end
+
+  config.model 'InitiativeOrganisation' do
+    visible false
+  end
+
+  config.model 'Organisation' do
+    parent Client
+
+    list do
+      field :name
+      field :description
+      field :client
+      field :sector
+      field :weblink
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :sector
+      field :weblink
+    end
+
+    create do
+      field :name do
+        required true
+      end
+      field :description
+      field :client do
+        required true
+      end
+      field :sector
+      field :weblink
+    end
+  end
+
+  config.model "Scorecard" do
+    list do
+      field :name
+      field :description
+      field :client
+      field :community
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+      field :client do
+        required true
+      end
+      field :community do
+        required true
+      end
+    end
+  end
+
+  config.model 'Sector' do
+    list do
+      field :name
+      field :description
+    end
+
+    edit do
+      field :name do
+        required true
+      end
+      field :description
+    end
+  end
+
+  config.model 'User' do
+
+    object_label_method do
+      :displayed_name
+    end
+
+    list do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+    end
+
+    show do
+      field :name
+      field :email
+      field :role
+      field :client
+      field :status, :string
+      field :created_at
+      field :updated_at
+      field :invited_by
+      field :sign_in_count
+      field :current_sign_in_at
+      field :last_sign_in_at
+    end
+
+    edit do
+      field :email do
+        required true
+      end
+      field :name
+      field :role do
+        required true
+      end
+      field :client do
+        help "Required unless role is 'Staff'"
+      end
+    end
   end
 
   config.model 'VideoTutorial' do
@@ -114,55 +391,13 @@ RailsAdmin.config do |config|
     end
   end
 
-  config.model 'User' do
+  config.model 'WickedProblem' do
+    parent Client
 
-    object_label_method do
-      :displayed_name
-    end
-
-    list do
-      field :name
-      field :email
-      field :role
-      field :client
-      field :status, :string
-    end
-
-    show do
-      field :name
-      field :email
-      field :role
-      field :client
-      field :status, :string
-      field :created_at
-      field :updated_at
-      field :invited_by
-      field :sign_in_count
-      field :current_sign_in_at
-      field :last_sign_in_at
-    end
-
-    edit do
-      field :email do
-        required true
-      end
-      field :name
-      field :role do
-        required true
-      end
-      field :client do
-        help "Required unless role is 'Staff'"
-      end
-    end
-  end
-
-  config.model 'Client' do
     list do
       field :name
       field :description
-      field :weblink
-      field :sector
-      field :deactivated
+      field :client
     end
 
     edit do
@@ -170,10 +405,6 @@ RailsAdmin.config do |config|
         required true
       end
       field :description
-      field :weblink
-      field :sector
-      field :welcome_message
-      field :deactivated
     end
 
     create do
@@ -181,11 +412,9 @@ RailsAdmin.config do |config|
         required true
       end
       field :description
-      field :weblink
-      field :sector
-      field :welcome_message
-      field :initial_admin_user_email
-      field :initial_admin_user_name
+      field :client do
+        required true
+      end
     end
   end
 end

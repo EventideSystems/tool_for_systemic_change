@@ -10,7 +10,7 @@ class ChecklistItem < ActiveRecord::Base
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
   def name
-   characteristic.name
+   characteristic.nil? ? '' : characteristic.name
   end
 
 end

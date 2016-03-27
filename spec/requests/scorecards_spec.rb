@@ -195,6 +195,15 @@ RSpec.describe "Scorecards", type: :request do
       expect(new_scorecard.wicked_problem).to eq(wicked_problem)
     end
 
+    specify "posting as admin - creates shared_link_id" do
+      sign_in(admin)
+      post '/scorecards', data: data_attributes
+      new_scorecard = Scorecard.last
+
+      expect(response).to have_http_status(201)
+      expect(new_scorecard.shared_link_id).to_not be(nil)
+    end
+
     specify "posting as admin - without administrating organisation id" do
       data_attributes[:relationships].delete(:client)
 

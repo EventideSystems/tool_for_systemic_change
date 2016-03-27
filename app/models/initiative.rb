@@ -6,7 +6,7 @@ class Initiative < ActiveRecord::Base
   belongs_to :scorecard
   has_many :initiative_organisations, dependent: :destroy
   has_many :organisations, through: :initiative_organisations
-  has_many :checklist_items
+  has_many :checklist_items, dependent: :destroy
   has_many :characteristics, through: :checklist_items
 
   validates :scorecard, presence: true

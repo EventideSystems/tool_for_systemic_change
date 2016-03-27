@@ -3,12 +3,12 @@ class Scorecard < ActiveRecord::Base
 
   include Trackable
 
-  before_save :ensure_shared_link_id
+  after_initialize :ensure_shared_link_id, :if => :new_record?
 
   belongs_to :community
   belongs_to :client
   belongs_to :wicked_problem
-  has_many :initiatives, dependent: :restrict_with_error
+  has_many :initiatives, dependent: :destroy
   has_many :checklist_items, through: :initiatives
 
   validates :client, presence: true
@@ -25,6 +25,6 @@ class Scorecard < ActiveRecord::Base
   private
 
     def ensure_shared_link_id
-      self.shared_link_id = shared_link_id.presence || SecureRandom.uuid
+      self.shared_link_id ||= SecureRandom.uuid
     end
 end

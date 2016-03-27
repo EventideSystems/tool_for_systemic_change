@@ -4,7 +4,6 @@ RSpec.describe Scorecard, type: :model do
 
   specify "shared_link_id created on save" do
     scorecard = build(:scorecard)
-    expect(scorecard.shared_link_id).to be(nil)
 
     scorecard.save!
 

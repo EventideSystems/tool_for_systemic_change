@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   }
 
   def status
+    return 'deleted' unless deleted_at.blank?
     return 'invitation-pending' unless invitation_token.blank?
     return 'active'
   end

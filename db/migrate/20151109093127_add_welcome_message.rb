@@ -1,4 +1,7 @@
 class AddWelcomeMessage < ActiveRecord::Migration
+
+  class Client < ActiveRecord::Base; end
+  
   def up
     add_column :clients, :welcome_message, :text
 

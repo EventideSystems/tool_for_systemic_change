@@ -41,6 +41,14 @@ brew info ansible
 brew switch ansble [version returned from info]
 ```
 
+If you have issues installing multiple versions of Ansible, you may have to
+unlink the existing installed version first, and then install Ansble 1.8:
+
+```
+brew unlink ansible
+brew install homebrew/versions/ansible18
+```
+
 ### Database setup
 
 You will need to ensure you have a valid `database.yml` file available. Copy the `database.vagrant.yml` template and modify as necessary (you probably won't have to change it at all).
@@ -115,7 +123,19 @@ This means you will not need to do anything fancy to get the frontend working, w
 
 If you want to do frontend work, you will need to setup gulp. I'd recommend installing gulp globally with `npm install -g gulp`
 
-You will then install all frontend dependencies with `npm install` from the root directory. This will create a `node_modules` folder. Node modules is ignored form git as the dependency structure is pretty recursive which gets big really really fast.
+You will then install all frontend dependencies with `npm install` from the root directory. This will create a `node_modules` folder. Node modules is ignored from git as the dependency structure is pretty recursive which gets big really really fast.
+
+NOTE To successfully run `npm install` on OS X (using a `brew` managed nodejs), I found the following steps were required:
+
+```
+brew update
+brew install node
+npm update npm -g
+npm install bower
+npm uninstall --save-dev gulp-sass
+npm install --save-dev gulp-sass
+```
+
 
 After all the dependencies are installed, simply run `gulp` and it will build all the assets in `gulp/assets/` into the public folder. The manifest files inside `app/assets` are only responsible for loading these generated files from the public folder. Sprokets can still be used to require frontend gem libraries, like jquery_ujs.
 
@@ -180,4 +200,3 @@ service wicked_software-delayed_job restart
 ```
 
 The reason for executing this by hand is the Ansible
-

@@ -104,7 +104,7 @@ RailsAdmin.config do |config|
       field :description
       field :weblink
       field :sector
-      field :deactivated
+      field :active?
     end
 
     edit do
@@ -307,6 +307,7 @@ RailsAdmin.config do |config|
     end
 
     list do
+      scopes [:unscoped]
       field :name
       field :email
       field :role
@@ -339,6 +340,8 @@ RailsAdmin.config do |config|
       field :client do
         help "Required unless role is 'Staff'"
       end
+
+      field :deleted_at
     end
   end
 

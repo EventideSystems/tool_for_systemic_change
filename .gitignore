@@ -29,3 +29,6 @@
 
 # Ingore configuration files
 /config/database.yml
+
+# Ignore Ansible temporary files 
+site.retry

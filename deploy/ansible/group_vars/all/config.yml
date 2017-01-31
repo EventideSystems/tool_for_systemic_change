@@ -23,7 +23,7 @@ manual_ruby_version: 2.3.0
 # server_name: localhost
 rails_version: 4
 ruby_install: rbenv
-ruby_version: 2.2.1
+ruby_version: 2.3.1
 environment_file: /wicked_software/.envrc
 databases:
   - postgresql

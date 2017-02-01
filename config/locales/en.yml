@@ -21,20 +21,3 @@
 
 en:
   hello: "Hello world"
-  admin:
-    actions:
-      invite_user:
-        menu: 'Invite user'
-        title: 'Invite User'
-        breadcrumb: 'Invite'
-        done: ''
-      resend_invitation:
-        menu: 'Resend invitation'
-        title: 'Resend Invitation'
-        breadcrumb: 'Resend'
-        done: ''
-      new_client:
-        menu: 'Add new'
-        title: 'New Client'
-        breadcrumb: 'New'
-        done: 'created'

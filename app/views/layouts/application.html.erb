@@ -1,32 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Wicked Lab</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
-  <%= javascript_include_tag 'application'  %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>WickedSoftware</title>
+    <%= csrf_meta_tags %>
 
-  <% if user_signed_in? %>
-    <div ng-app="WKD" ng-class="contextClass">
-      <div ui-view></div>
-    </div>
-  <% else %>
-    <% # SMELL Required by Devise - I want these to show in the login box, just under the login button. %>
-    <% if notice.present? %>
-      <aside class="alert alert-info">
-        <%= notice %>
-      </aside>
-    <% end %>
-    <% if alert.present? %>
-      <aside class="alert alert-danger">
-        <%= alert %>
-      </aside>
-    <% end %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
 
+  <body>
     <%= yield %>
-  <% end %>
-
-</body>
+  </body>
 </html>

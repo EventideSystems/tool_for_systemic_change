@@ -1,0 +1,2 @@
+module InitiativesOrganisationsHelper
+end

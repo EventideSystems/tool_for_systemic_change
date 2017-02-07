@@ -1,0 +1,20 @@
+<div class="box">
+  <div class="box-header">
+    <%= link_to 'New WickedProblem', new_wicked_problem_path %>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body no-padding">
+    <table class="table table-striped">
+      <tbody><tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      <% @wicked_problems.each do |wicked_problem| %>
+      <tr>
+        <td><%= wicked_problem.name %></td>
+        <td><%= wicked_problem.description %></td>
+      </tr>
+      <% end %>
+    </tbody></table>
+  </div>
+</div>

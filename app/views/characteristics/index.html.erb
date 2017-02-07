@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Characteristics</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @characteristics.each do |characteristic| %>
+      <tr>
+        <td><%= link_to 'Show', characteristic %></td>
+        <td><%= link_to 'Edit', edit_characteristic_path(characteristic) %></td>
+        <td><%= link_to 'Destroy', characteristic, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Characteristic', new_characteristic_path %>

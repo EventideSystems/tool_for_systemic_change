@@ -1,0 +1,22 @@
+<div class="box">
+  <div class="box-header">
+    <%= link_to 'New Scorecard', new_scorecard_path %>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body no-padding">
+    <table class="table table-striped">
+      <tbody><tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      <% @scorecards.each do |scorecard| %>
+      <tr>        
+        <td><%= scorecard.name %></td>
+        <td><%= scorecard.description %></td>
+      </tr>
+      <% end %>
+    </tbody></table>
+  </div>
+</div>
+
+<%= resource_table :scorecards, @scorecards, [:name, :description] %>

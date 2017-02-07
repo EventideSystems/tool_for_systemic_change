@@ -10,7 +10,23 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+  //= require jquery
+  //= require jquery.turbolinks
+  //= require jquery_ujs
+  //= require bootstrap-sprockets
+  //= require adminlte
+  //= require_tree .
+
+  var ready = function () {
+    var o;
+    o = $.AdminLTE.options;
+    if (o.sidebarPushMenu) {
+      $.AdminLTE.pushMenu.activate(o.sidebarToggleSelector);
+    }
+    return $.AdminLTE.layout.activate();
+  };
+
+  document.addEventListener('turbolinks:load', ready);
+
+
+  //= require turbolinks

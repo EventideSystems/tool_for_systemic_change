@@ -35,9 +35,35 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Authentication and authorisation
+gem 'devise'
+gem 'devise_invitable'
+gem 'pundit'
+
+# User interface 
+gem 'bootstrap-sass'
+gem 'font-awesome-sass'
+gem 'jquery-turbolinks'
+gem 'simple_form'
+source 'https://rails-assets.org/' do 
+  gem 'rails-assets-adminlte'
+end
+
+gem 'paranoia', '~> 2.2'
+gem 'public_activity'
+gem 'delayed_job_active_record'
+gem 'daemons'
+
+# Downgrading Thor. See https://github.com/erikhuda/thor/issues/538
+gem 'thor', '0.19.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'pry'
+  gem 'pry-byebug'
+  gem 'pry-coolline'
+  gem 'pry-stack_explorer'
 end
 
 group :development do

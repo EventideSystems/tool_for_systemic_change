@@ -45,8 +45,13 @@ gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 gem 'jquery-turbolinks'
 gem 'simple_form'
+gem 'carrierwave', '~> 1.0'
+gem "mini_magick"
+
+
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'
+  gem 'rails-assets-twitter-bootstrap-wizard'
 end
 
 gem 'paranoia', '~> 2.2'

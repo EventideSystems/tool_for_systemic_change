@@ -6,12 +6,12 @@ class WickedProblem < ApplicationRecord
   belongs_to :client
   has_many :scorecards, dependent: :restrict_with_error
 
-  # SMELL Dupe of scope in WickedProblem - move to a concern
-  scope :for_user, ->(user) {
-    unless user.staff?
-      joins(:client).where('clients.id' => user.client_id)
-    end
-  }
+  # # SMELL Dupe of scope in WickedProblem - move to a concern
+  # scope :for_user, ->(user) {
+  #   unless user.staff?
+  #     joins(:client).where('clients.id' => user.account_id)
+  #   end
+  # }
 
-  validates :name, presence: true, :uniqueness => { :scope => :client_id }
+  validates :name, presence: true, :uniqueness => { :scope => :account_id }
 end

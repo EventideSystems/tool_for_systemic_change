@@ -15,7 +15,7 @@ class Initiative < ApplicationRecord
   scope :for_user, lambda { |user|
     unless user.staff?
       joins(:scorecard).where(
-        "scorecards.client_id" => user.client_id
+        "scorecards.account_id" => user.account_id
       )
     end
   }

@@ -10,9 +10,9 @@ class Organisation < ApplicationRecord
 
   # SMELL Dupe of scope in WickedProblem - move to a concern
   # NOTE No longer in use, use current account instead
-  scope :for_user, ->(user) {
-    unless user.staff?
-      joins(:client).where('clients.id' => user.account_id)
-    end
-  }
+  # scope :for_user, ->(user) {
+  #   unless user.staff?
+  #     joins(:client).where('clients.id' => user.account_id)
+  #   end
+  # }
 end

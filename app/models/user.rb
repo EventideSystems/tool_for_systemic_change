@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   
-  enum system_role: [ :regular, :admin ]
+  enum system_role: [ :member, :admin ]
   
   mount_uploader :profile_picture, ProfilePictureUploader
   acts_as_paranoid

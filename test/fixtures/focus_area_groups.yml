@@ -1,11 +1,21 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+focus_area_group_1:
+  id: 1
+  name: Unlock Complex Adaptive System Dynamics
+  description: 
+  position: 1
+  deleted_at: 
+
+focus_area_group_2:
+  id: 2
+  name: Unplanned Exploration of Solutions with Communities
+  description: 
+  position: 2
+  deleted_at: 
+
+focus_area_group_3:
+  id: 3
+  name: Planned Exploitation of Community Knowledge, Ideas and Innovations
+  description: 
+  position: 3
+  deleted_at: 

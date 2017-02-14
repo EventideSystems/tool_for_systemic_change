@@ -1,11 +1,71 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+focus_area_1:
+  id: 1
+  name: create! a disequilibrium state
+  description: 
+  focus_area_group_id: 1
+  position: 1
+  deleted_at: 
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+focus_area_2:
+  id: 2
+  name: Amplify action
+  description: 
+  focus_area_group_id: 1
+  position: 2
+  deleted_at: 
+
+focus_area_3:
+  id: 3
+  name: Encourage self-organisation
+  description: 
+  focus_area_group_id: 1
+  position: 3
+  deleted_at: 
+
+focus_area_4:
+  id: 4
+  name: Stabilise feedback
+  description: 
+  focus_area_group_id: 1
+  position: 4
+  deleted_at: 
+
+focus_area_5:
+  id: 5
+  name: Enable information flows
+  description: 
+  focus_area_group_id: 1
+  position: 5
+  deleted_at: 
+
+focus_area_6:
+  id: 6
+  name: Public administration – adaptive community interface
+  description: 
+  focus_area_group_id: 2
+  position: 1
+  deleted_at: 
+
+focus_area_7:
+  id: 7
+  name: Elected government – adaptive community interface
+  description: 
+  focus_area_group_id: 2
+  position: 2
+  deleted_at: 
+
+focus_area_8:
+  id: 8
+  name: Community innovation – public administration interface
+  description: 
+  focus_area_group_id: 3
+  position: 1
+  deleted_at: 
+
+focus_area_9:
+  id: 9
+  name: Community innovation – elected government interface
+  description: 
+  focus_area_group_id: 3
+  position: 2
+  deleted_at: 

@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  
+  enum system_role: [ :regular, :admin ]
+  
+  mount_uploader :profile_picture, ProfilePictureUploader
   acts_as_paranoid
 
   include Trackable

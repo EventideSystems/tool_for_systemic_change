@@ -13,6 +13,7 @@
   //= require jquery
   //= require jquery.turbolinks
   //= require jquery_ujs
+  //= require twitter-bootstrap-wizard
   //= require bootstrap-sprockets
   //= require adminlte
   //= require_tree .

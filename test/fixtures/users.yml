@@ -1,11 +1,20 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+system_admin:
+  name: System Admin User
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_accepted_at: <%= DateTime.new(2017, 01, 01) %>
+  system_role: admin
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+account_admin:
+  name: Account Admin User
+  email: admin@account.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_accepted_at: <%= DateTime.new(2017, 01, 01) %>
+  system_role: member
+  
+account_member:
+  name: Account Member User
+  email: member@account.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  invitation_accepted_at: <%= DateTime.new(2017, 01, 01) %>
+  system_role: member

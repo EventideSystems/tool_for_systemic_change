@@ -4,8 +4,14 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+community_1:
+  name: First community
+  description:
+  account: client
+  deleted_at:
+
+community_2:
+  name: Second community
+  description:
+  account: client
+  deleted_at:

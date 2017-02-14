@@ -1,8 +1,17 @@
 require 'test_helper'
 
 class AccountsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  # test 'authenticated users can GET index' do
+  #   sign_in users(:system_admin)
+  #
+  #   get '/'
+  #   assert_response :redirect
+  # end
+  
   setup do
-    @account = accounts(:one)
+    @account = accounts(:default)
   end
 
   test "should get index" do

@@ -3,7 +3,7 @@ class WickedProblem < ApplicationRecord
 
   include Trackable
 
-  belongs_to :client
+  belongs_to :account
   has_many :scorecards, dependent: :restrict_with_error
 
   # # SMELL Dupe of scope in WickedProblem - move to a concern

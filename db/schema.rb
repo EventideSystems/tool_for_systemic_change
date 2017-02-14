@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206101400) do
+ActiveRecord::Schema.define(version: 20170213121243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 20170206101400) do
     t.datetime "updated_at",      null: false
   end
 
+  create_table "accounts_users", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "account_id"
+    t.string   "account_role"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["account_id", "user_id"], name: "index_accounts_users_on_account_id_and_user_id", unique: true, using: :btree
+    t.index ["account_id"], name: "index_accounts_users_on_account_id", using: :btree
+    t.index ["user_id"], name: "index_accounts_users_on_user_id", using: :btree
+  end
+
   create_table "activities", force: :cascade do |t|
     t.string   "trackable_type"
     t.integer  "trackable_id"
@@ -38,6 +49,8 @@ ActiveRecord::Schema.define(version: 20170206101400) do
     t.integer  "recipient_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
+    t.index ["account_id"], name: "index_activities_on_account_id", using: :btree
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
@@ -72,11 +85,11 @@ ActiveRecord::Schema.define(version: 20170206101400) do
   create_table "communities", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
+    t.integer  "account_id"
     t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["client_id"], name: "index_communities_on_client_id", using: :btree
+    t.index ["account_id"], name: "index_communities_on_account_id", using: :btree
     t.index ["deleted_at"], name: "index_communities_on_deleted_at", using: :btree
   end
 
@@ -185,12 +198,12 @@ ActiveRecord::Schema.define(version: 20170206101400) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",        null: false
+    t.string   "encrypted_password",     default: "",        null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -204,12 +217,15 @@ ActiveRecord::Schema.define(version: 20170206101400) do
     t.integer  "invited_by_id"
     t.integer  "invitations_count",      default: 0
     t.datetime "deleted_at"
+    t.string   "profile_picture"
+    t.string   "system_role",            default: "regular"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
     t.index ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
     t.index ["name"], name: "index_users_on_name", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["system_role"], name: "index_users_on_system_role", using: :btree
   end
 
   create_table "video_tutorials", force: :cascade do |t|
@@ -230,11 +246,11 @@ ActiveRecord::Schema.define(version: 20170206101400) do
   create_table "wicked_problems", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
+    t.integer  "account_id"
     t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["client_id"], name: "index_wicked_problems_on_client_id", using: :btree
+    t.index ["account_id"], name: "index_wicked_problems_on_account_id", using: :btree
     t.index ["deleted_at"], name: "index_wicked_problems_on_deleted_at", using: :btree
   end
 

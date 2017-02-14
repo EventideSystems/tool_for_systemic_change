@@ -20,10 +20,24 @@ module DashboardHelper
     end
   end
   
+  def current_user_name
+    return '' unless user_signed_in?
+    return current_user.email unless current_user.name.present?
+    current_user.name
+  end
+  
+  def current_user_membership_summary
+    return '' unless user_signed_in?
+    "Member since #{current_user.created_at}"
+  end
+  
   class ResourceTable
     
-    def initialize(view, resource_type, resources, columns)
-      @view, @resource_type, @resources, @columns = view, resource_type, resources, columns
+    def initialize(view, resources_name, columns)
+      @view = view
+      @resource_type = resources_name
+      @resources = view.assigns[resources_name.to_s]
+      @columns = columns
     end
         
     def html
@@ -72,30 +86,8 @@ module DashboardHelper
     
   end
   
-  def resource_table(resource_type, resources, columns)
-    ResourceTable.new(self, resource_type, resources, columns).html
+  def resource_table(resource_name, columns)
+    ResourceTable.new(self, resource_name, columns).html
   end
 
 end
-
-# <div class="box">
-#   <div class="box-header">
-#     <%= link_to 'New Scorecard', new_scorecard_path %>
-#   </div>
-#   <!-- /.box-header -->
-#   <div class="box-body no-padding">
-#     <table class="table table-striped">
-#       <tbody><tr>
-#         <th>Name</th>
-#         <th>Description</th>
-#       </tr>
-#       <% @scorecards.each do |scorecard| %>
-#       <tr>
-#
-#         <td><%= scorecard.name %></td>
-#         <td><%= scorecard.description %></td>
-#       </tr>
-#       <% end %>
-#     </tbody></table>
-#   </div>
-# </div>

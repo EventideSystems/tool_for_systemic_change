@@ -16,15 +16,9 @@ class Scorecard < ApplicationRecord
   validates :wicked_problem, presence: true
   validates :shared_link_id, uniqueness: true
 
-  scope :for_user, ->(user) {
-    unless user.staff?
-      where(client_id: user.client_id)
-    end
-  }
-
   private
 
-    def ensure_shared_link_id
-      self.shared_link_id ||= SecureRandom.uuid
-    end
+  def ensure_shared_link_id
+    self.shared_link_id ||= SecureRandom.uuid
+  end
 end

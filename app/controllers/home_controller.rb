@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  after_action :skip_authorization
   
   layout 'home'
   

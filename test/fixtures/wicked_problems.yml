@@ -4,13 +4,13 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
+wicked_problem_1:
   name: Wicked Problem 1
   description:
-  account: client
+  account: default
   deleted_at:
 #
-two:
+wicked_problem_2:
   name: Wicked Problem 2
   description:
   account: client

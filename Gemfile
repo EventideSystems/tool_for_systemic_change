@@ -62,6 +62,11 @@ gem 'daemons'
 # Downgrading Thor. See https://github.com/erikhuda/thor/issues/538
 gem 'thor', '0.19.1'
 
+group :test do
+  gem 'minitest-stub_any_instance'
+  gem 'minitest-reporters'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -69,6 +74,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
+  
 end
 
 group :development do

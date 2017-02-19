@@ -1,10 +1,115 @@
-<%= simple_form_for(@scorecard) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
-<% end %>
+<div class='box box-primary'>
+  <%= simple_form_for(@scorecard, role: 'form') do |f| %><%= f.error_notification %>
+    <div class="wizard">
+      <div class='box-header with-border'>
+        <h3 class='box-title'>
+          <%= form_title(@scorecard) %>
+        </h3>
+      </div>
+    
+      <ul>
+        <li>
+          <a href="#scorecard" data-toggle="tab">Scorecard</a>
+        </li>
+        <li>
+          <a href="#wicked-problem" data-toggle="tab">Wicked Problem</a>
+        </li>
+        <li>
+          <a href="#community" data-toggle="tab">Community</a>
+        </li>
+        <li>
+          <a href="#initiatives" data-toggle="tab">Initiatives</a>
+        </li>
+        <li>
+          <a href="#tab5" data-toggle="tab">Preview</a>
+        </li>
+      </ul>
+    
+      <div class='box-body'>
+        <div class='form-group'>
+          <div class="tab-content">
+          
+            <div class="tab-pane" id="scorecard">
+              <div class='box-body'>
+                <div class='form-group'>
+                  <%= f.association :account, collection: policy_scope(Account), label_method: :name, value_method: :id %>
+                </div>
+                <div class='form-group'>
+                  <%= f.input :name %>
+                </div>
+                <div class='form-group'>
+                  <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+                </div>
+              </div>
+            </div>
+          
+            <div class="tab-pane" id="wicked-problem">
+              <h4>
+                Select an existing Wicked Problem
+              </h4>
+              <div class='form-group'>
+                <%= f.association :wicked_problem, collection: policy_scope(WickedProblem), label_method: :name, value_method: :id %>
+              </div>
+              <h4>
+                .. or create a new Wicked Problem
+              </h4>
+              <div class='form-group'>
+                <%= f.input :wicked_problem_name, input_html: { value: nil }  %>
+              </div>
+              <div class='form-group'>
+                <%= f.input :wicked_problem_description, as: :text, input_html: { value: nil }  %>
+              </div>
+            </div>
+          
+            <div class="tab-pane" id="community">
+              <h4>
+                Select an existing Community
+              </h4>
+              <div class='form-group'>
+                <%= f.association :community, collection: policy_scope(Community), label_method: :name, value_method: :id %>
+              </div>
+              <h4>
+                .. or create a new Community
+              </h4>
+              <div class='form-group'>
+                <%= f.input :community_name, input_html: { value: nil }  %>
+              </div>
+              <div class='form-group'>
+                <%= f.input :community_description, as: :text, input_html: { value: nil }  %>
+              </div>
+            </div>
+          
+            <div class="tab-pane" id="initiatives">
+              <%= f.simple_fields_for :initiatives do |i| %>
+                <%= render 'initiatives_fields', form: i %>
+              <% end %>
+            </div>
+          
+            <div class="tab-pane" id="tab5">
+              <div class='box-footer'>
+                <%= f.button :submit, inpuclass: 'btn btn-primary' %>
+              </div>
+            </div>
+          
+          
+            <ul class="pager wizard">
+              <li class="previous first" style="display:none;">
+                <a href="#">First</a>
+              </li>
+              <li class="previous">
+                <a href="#">Previous</a>
+              </li>
+              <li class="next last" style="display:none;">
+                <a href="#">Last</a>
+              </li>
+              <li class="next">
+                <a href="#">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  <% end %>
+</div>

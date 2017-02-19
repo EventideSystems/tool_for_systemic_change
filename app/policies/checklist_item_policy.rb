@@ -1,11 +1,14 @@
-class WickedProblemPolicy < ApplicationPolicy
-  
+class ChecklistItemPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      resolve_to_current_account
+      if system_admin?
+        scope.all
+      else
+        scope.joins(initiative: :scorecard).where(:'scorecards.account_id' => current_account.id)
+      end
     end
   end
-
+  
   def show?
     system_admin? || account_any_role?(record.account)
   end
@@ -15,11 +18,10 @@ class WickedProblemPolicy < ApplicationPolicy
   end
 
   def update?
-    system_admin? || account_admin?(record.account)
+    system_admin? || account_any_role?(record.account)
   end
   
   def destroy?
     system_admin? || account_admin?(record.account)
   end
-  
 end

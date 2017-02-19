@@ -1,13 +1,12 @@
-class WickedProblemPolicy < ApplicationPolicy
-  
+class OrganisationPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       resolve_to_current_account
     end
   end
-
+  
   def show?
-    system_admin? || account_any_role?(record.account)
+    system_admin? || account_admin?(record.account) || account_member?(record.account)
   end
   
   def create?
@@ -21,5 +20,4 @@ class WickedProblemPolicy < ApplicationPolicy
   def destroy?
     system_admin? || account_admin?(record.account)
   end
-  
 end

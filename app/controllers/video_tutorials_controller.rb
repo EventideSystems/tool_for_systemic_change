@@ -4,7 +4,7 @@ class VideoTutorialsController < ApplicationController
   # GET /video_tutorials
   # GET /video_tutorials.json
   def index
-    @video_tutorials = VideoTutorial.all
+    @video_tutorials = policy_scope(VideoTutorial)
   end
 
   # GET /video_tutorials/1
@@ -15,6 +15,7 @@ class VideoTutorialsController < ApplicationController
   # GET /video_tutorials/new
   def new
     @video_tutorial = VideoTutorial.new
+    authorize @video_tutorial
   end
 
   # GET /video_tutorials/1/edit
@@ -25,7 +26,8 @@ class VideoTutorialsController < ApplicationController
   # POST /video_tutorials.json
   def create
     @video_tutorial = VideoTutorial.new(video_tutorial_params)
-
+    authorize @video_tutorial
+    
     respond_to do |format|
       if @video_tutorial.save
         format.html { redirect_to @video_tutorial, notice: 'Video tutorial was successfully created.' }
@@ -65,6 +67,7 @@ class VideoTutorialsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_video_tutorial
       @video_tutorial = VideoTutorial.find(params[:id])
+      authorize @video_tutorial
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

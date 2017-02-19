@@ -3,8 +3,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/stub_any_instance'
 require 'minitest/reporters'
-Minitest::Reporters.use!
-# Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers

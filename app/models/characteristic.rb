@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Characteristic < ApplicationRecord
   acts_as_paranoid
 

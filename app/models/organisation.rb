@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Organisation < ApplicationRecord
   acts_as_paranoid
 

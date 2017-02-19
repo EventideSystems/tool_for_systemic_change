@@ -51,6 +51,7 @@ gem 'mini_magick'
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'
+  gem 'rails-assets-twitter-bootstrap-wizard'
 end
 
 gem 'paranoia', '~> 2.2'

@@ -16,6 +16,7 @@
   //= require jquery_ujs
   //= require bootstrap-sprockets
   //= require adminlte
+  //= require twitter-bootstrap-wizard
   //= require_tree .
 
   var ready = function () {
@@ -28,15 +29,14 @@
   };
 
   document.addEventListener('turbolinks:load', ready);
-  
 
   //= require turbolinks
 
-  // $( document ).ready(function() {
-  //   $('.textarea').markdownEditor();
-  // });
-  
   $( document ).ready(function() {
     var editor = new MediumEditor('.textarea', {buttonLabels: 'bootstrap'});
+  });
+  
+  $(document).ready(function() {
+    $('.wizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
   });
   

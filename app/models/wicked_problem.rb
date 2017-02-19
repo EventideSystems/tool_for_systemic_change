@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class WickedProblem < ApplicationRecord
   acts_as_paranoid
 
@@ -7,7 +8,7 @@ class WickedProblem < ApplicationRecord
   has_many :scorecards, dependent: :restrict_with_error
 
   validates :account, presence: true
-  validates :name, presence: true, :uniqueness => { :scope => :account_id }
+  validates :name, presence: true, uniqueness: { scope: :account_id }
 
   def description_summary
     Nokogiri::HTML(description).text

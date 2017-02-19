@@ -4,7 +4,7 @@ class CommunitiesController < ApplicationController
   # GET /communities
   # GET /communities.json
   def index
-    @communities = Community.all
+    @communities = policy_scope(Community)
   end
 
   # GET /communities/1
@@ -15,6 +15,7 @@ class CommunitiesController < ApplicationController
   # GET /communities/new
   def new
     @community = Community.new
+    authorize @community 
   end
 
   # GET /communities/1/edit
@@ -25,6 +26,7 @@ class CommunitiesController < ApplicationController
   # POST /communities.json
   def create
     @community = Community.new(community_params)
+    authorize @community
 
     respond_to do |format|
       if @community.save
@@ -65,6 +67,7 @@ class CommunitiesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_community
       @community = Community.find(params[:id])
+      authorize @community
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

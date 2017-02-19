@@ -1,15 +1,18 @@
+# frozen_string_literal: true
 class Scorecard < ApplicationRecord
   acts_as_paranoid
 
   include Trackable
 
-  after_initialize :ensure_shared_link_id, :if => :new_record?
+  after_initialize :ensure_shared_link_id, if: :new_record?
 
   belongs_to :community
   belongs_to :account
   belongs_to :wicked_problem
   has_many :initiatives, dependent: :destroy
   has_many :checklist_items, through: :initiatives
+  
+  accepts_nested_attributes_for :initiatives
 
   validates :account, presence: true
   validates :community, presence: true

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ChecklistItem < ApplicationRecord
   acts_as_paranoid
 
@@ -10,6 +11,6 @@ class ChecklistItem < ApplicationRecord
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
   def name
-   characteristic.name.presence
+    characteristic.name.presence
   end
 end

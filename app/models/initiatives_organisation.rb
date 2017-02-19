@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 class InitiativesOrganisation < ApplicationRecord
-  validates_presence_of :initiative, :organisation
+  validates :initiative, :organisation, presence: true
 
   belongs_to :initiative
   belongs_to :organisation

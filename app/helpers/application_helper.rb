@@ -15,4 +15,9 @@ module ApplicationHelper
     end
   end
   
+  def form_title(resource)
+    lead = resource.new_record? ? 'New' : 'Editing'
+    "#{lead} #{resource.class.name.titleize}"
+  end
+
 end

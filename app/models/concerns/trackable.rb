@@ -1,20 +1,18 @@
+# frozen_string_literal: true
 module Trackable
   extend ActiveSupport::Concern
 
   included do
     include PublicActivity::Model
 
-    tracked owner: Proc.new{ |controller, model|
+    tracked owner: proc { |controller, _model|
       controller ? controller.current_user : nil
     }
 
-    tracked account_id: Proc.new{ |controller, model|
+    tracked account_id: proc { |controller, _model|
       if controller
         controller.current_account ? controller.current_account.id : nil
-      else
-        nil
       end
     }
   end
-
 end

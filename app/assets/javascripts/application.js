@@ -10,10 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+  //= require medium-editor
   //= require jquery
   //= require jquery.turbolinks
   //= require jquery_ujs
-  //= require twitter-bootstrap-wizard
   //= require bootstrap-sprockets
   //= require adminlte
   //= require_tree .
@@ -28,6 +28,15 @@
   };
 
   document.addEventListener('turbolinks:load', ready);
-
+  
 
   //= require turbolinks
+
+  // $( document ).ready(function() {
+  //   $('.textarea').markdownEditor();
+  // });
+  
+  $( document ).ready(function() {
+    var editor = new MediumEditor('.textarea', {buttonLabels: 'bootstrap'});
+  });
+  

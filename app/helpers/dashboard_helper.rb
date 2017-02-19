@@ -20,17 +20,11 @@ module DashboardHelper
     end
   end
   
-  def current_user_name
-    return '' unless user_signed_in?
-    return current_user.email unless current_user.name.present?
-    current_user.name
-  end
+
   
-  def current_user_membership_summary
-    return '' unless user_signed_in?
-    "Member since #{current_user.created_at}"
-  end
+
   
+  # TODO Move this to application_helper
   class ResourceTable
     
     def initialize(view, resources_name, columns)
@@ -68,11 +62,7 @@ module DashboardHelper
     end
     
     def header
-      content_tag(
-        :div, 
-        link_to("New #{resource_type.to_s.singularize.titleize}", controller: resource_type.to_s.pluralize, action: 'new'),
-        class: 'box-header' 
-      )
+      content_tag(:div, new_resource_link, class: 'box-header')
     end
     
     def body
@@ -83,9 +73,26 @@ module DashboardHelper
       end
     end
     
+    def new_resource_link
+      new_resource_link = if action_available?(:new)
+        link_to(
+          "New #{resource_type.to_s.singularize.titleize}", 
+          controller: resource_type.to_s.pluralize, 
+          action: 'new'
+        )
+      else
+        ''
+      end  
+    end
     
+    def action_available?(action)
+      view.url_for(:controller => view.controller.controller_name, :action => action.to_s).present?
+    rescue  
+      false
+    end
   end
   
+  # TODO Move this to application_helper
   def resource_table(resource_name, columns)
     ResourceTable.new(self, resource_name, columns).html
   end

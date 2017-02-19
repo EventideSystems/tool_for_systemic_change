@@ -4,7 +4,7 @@ class InitiativesController < ApplicationController
   # GET /initiatives
   # GET /initiatives.json
   def index
-    @initiatives = Initiative.all
+    @initiatives = policy_scope(Initiative)
   end
 
   # GET /initiatives/1
@@ -15,6 +15,7 @@ class InitiativesController < ApplicationController
   # GET /initiatives/new
   def new
     @initiative = Initiative.new
+    authorize @initiative
   end
 
   # GET /initiatives/1/edit
@@ -25,7 +26,8 @@ class InitiativesController < ApplicationController
   # POST /initiatives.json
   def create
     @initiative = Initiative.new(initiative_params)
-
+    authorize @initiative
+    
     respond_to do |format|
       if @initiative.save
         format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
@@ -65,6 +67,7 @@ class InitiativesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_initiative
       @initiative = Initiative.find(params[:id])
+      authorize @initiative
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

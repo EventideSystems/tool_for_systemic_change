@@ -4,3 +4,8 @@
 @import "font-awesome";
 @import 'adminlte';
 @import 'skin-blue';
+@import 'medium-editor';
+
+div.medium-editor-element {
+  height: auto;
+}

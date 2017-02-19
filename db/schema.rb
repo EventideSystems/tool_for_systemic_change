@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20170213121243) do
   create_table "accounts_users", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "account_id"
-    t.string   "account_role"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "account_role", default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.index ["account_id", "user_id"], name: "index_accounts_users_on_account_id_and_user_id", unique: true, using: :btree
     t.index ["account_id"], name: "index_accounts_users_on_account_id", using: :btree
     t.index ["user_id"], name: "index_accounts_users_on_user_id", using: :btree

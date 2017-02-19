@@ -3,7 +3,7 @@ class CreateAccountsUsers < ActiveRecord::Migration[5.0]
     create_table :accounts_users do |t|
       t.references :user
       t.references :account
-      t.string :account_role
+      t.integer :account_role, default: 0
       t.timestamps
     end
 

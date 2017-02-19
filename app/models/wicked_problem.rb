@@ -6,12 +6,10 @@ class WickedProblem < ApplicationRecord
   belongs_to :account
   has_many :scorecards, dependent: :restrict_with_error
 
-  # # SMELL Dupe of scope in WickedProblem - move to a concern
-  # scope :for_user, ->(user) {
-  #   unless user.staff?
-  #     joins(:client).where('clients.id' => user.account_id)
-  #   end
-  # }
-
+  validates :account, presence: true
   validates :name, presence: true, :uniqueness => { :scope => :account_id }
+
+  def description_summary
+    Nokogiri::HTML(description).text
+  end
 end

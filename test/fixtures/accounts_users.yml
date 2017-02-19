@@ -4,10 +4,17 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-admin: 
+account_admin_for_client_account: 
   account: client
   user: account_admin
+  account_role: 1
+  
+account_admin_for_default_account: 
+  account: default
+  user: account_admin
+  account_role: 0
 
-member: 
+member_admin_for_client_account:
   account: client
   user: account_member
+  account_role: 0

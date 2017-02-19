@@ -6,8 +6,19 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Account.with_deleted.each(&:really_destroy!)
 
-User.delete_all
+AccountsUser.delete_all
+
+Account.create!(
+  name: 'Default account'
+)
+
+client_account = Account.create!(
+  name: 'Client account'
+)
+
+User.with_deleted.each(&:really_destroy!)
 
 staff_user = User.new(
   email: 'staff@example.com', password: 'password',
@@ -19,9 +30,16 @@ staff_user.save!
 admin_user = User.new(
   email: 'admin@example.com', password: 'password',
   name: 'John Admin',
-  password_confirmation: 'password'
+  password_confirmation: 'password',
+  system_role: 'admin'
 )
 admin_user.save!
+
+AccountsUser.create!(
+  user: staff_user,
+  account: client_account,
+  account_role: 'admin'
+)
 
 user = User.new(
   email: 'user@example.com', password: 'password',
@@ -29,6 +47,13 @@ user = User.new(
   password_confirmation: 'password'
 )
 user.save!
+
+AccountsUser.create!(
+  user: user,
+  account: client_account,
+  account_role: 'member'
+)
+
 
 # TODO Prevent this from deleting production data. Ideally should be idempotent
 

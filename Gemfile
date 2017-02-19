@@ -46,12 +46,11 @@ gem 'font-awesome-sass'
 gem 'jquery-turbolinks'
 gem 'simple_form'
 gem 'carrierwave', '~> 1.0'
-gem "mini_magick"
-
+gem 'mini_magick'
 
 source 'https://rails-assets.org/' do 
-  gem 'rails-assets-adminlte'
-  gem 'rails-assets-twitter-bootstrap-wizard'
+  gem 'rails-assets-adminlte'  
+  gem 'rails-assets-medium-editor'
 end
 
 gem 'paranoia', '~> 2.2'
@@ -63,6 +62,7 @@ gem 'daemons'
 gem 'thor', '0.19.1'
 
 group :test do
+  gem 'rails-controller-testing'
   gem 'minitest-stub_any_instance'
   gem 'minitest-reporters'
 end
@@ -74,7 +74,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
-  
+  gem 'rubocop', require: false
 end
 
 group :development do

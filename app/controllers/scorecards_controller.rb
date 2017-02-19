@@ -4,7 +4,7 @@ class ScorecardsController < ApplicationController
   # GET /scorecards
   # GET /scorecards.json
   def index
-    @scorecards = Scorecard.all
+    @scorecards = policy_scope(Scorecard)
   end
 
   # GET /scorecards/1
@@ -15,6 +15,7 @@ class ScorecardsController < ApplicationController
   # GET /scorecards/new
   def new
     @scorecard = Scorecard.new
+    authorize @scorecard
   end
 
   # GET /scorecards/1/edit
@@ -25,6 +26,7 @@ class ScorecardsController < ApplicationController
   # POST /scorecards.json
   def create
     @scorecard = Scorecard.new(scorecard_params)
+    authorize @scorecard
 
     respond_to do |format|
       if @scorecard.save
@@ -65,6 +67,7 @@ class ScorecardsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_scorecard
       @scorecard = Scorecard.find(params[:id])
+      authorize @scorecard
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

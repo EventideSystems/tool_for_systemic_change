@@ -2,6 +2,9 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <%= f.association :account, collection: policy_scope(Account), label_method: :name, value_method: :id %>
+    <%= f.input :name %>
+    <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
   </div>
 
   <div class="form-actions">

@@ -12,13 +12,17 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
+  has_many :accounts_users
+  has_many :accounts, through: :accounts_users
+
   def status
    return 'deleted' unless deleted_at.blank?
    return 'invitation-pending' unless invitation_token.blank?
-   return 'active'
+   'active'
   end
   
-  def system_admin?
-    system_role == :admin
+  def default_account
+    accounts_users.order(account_role: :desc).first.try(:account)
   end
+
 end

@@ -10,15 +10,17 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-  //= require medium-editor
+  
   //= require jquery
-  //= require jquery.turbolinks
-  //= require jquery_ujs
   //= require bootstrap-sprockets
-  //= require adminlte
-  //= require twitter-bootstrap-wizard
-  //= require_tree .
+  //= require jquery_ujs
+  //= require nested_form_fields
 
+  //= require adminlte
+  //= require select2
+  //= require medium-editor
+  //= require twitter-bootstrap-wizard
+  
   var ready = function () {
     var o;
     o = $.AdminLTE.options;
@@ -27,11 +29,11 @@
     }
     return $.AdminLTE.layout.activate();
   };
-
-  document.addEventListener('turbolinks:load', ready);
-
-  //= require turbolinks
-
+  
+  $( document ).ready(function() {
+    document.addEventListener('turbolinks:load', ready);
+  });
+  
   $( document ).ready(function() {
     var editor = new MediumEditor('.textarea', {buttonLabels: 'bootstrap'});
   });
@@ -40,3 +42,9 @@
     $('.wizard').bootstrapWizard({'tabClass': 'nav nav-pills'});
   });
   
+  $(document).ready(function() {
+    $(".select2").select2();
+  });
+
+  //= require turbolinks
+  //= require_tree .

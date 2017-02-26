@@ -24,6 +24,15 @@ class ApplicationController < ActionController::Base
   def pundit_user
     UserContext.new(current_user, current_account)
   end
+  
+  def require_account_selected
+    return if current_account.present?
+    
+    redirect_back(
+      fallback_location: dashboard_path, 
+      alert: 'Select an account before using this feature'
+    )
+  end
 
    private
 

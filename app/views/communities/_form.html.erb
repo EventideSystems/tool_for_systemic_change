@@ -1,10 +1,16 @@
-<%= simple_form_for(@community) do |f| %>
+<%= simple_form_for(@community, role: 'form') do |f| %>
   <%= f.error_notification %>
-
-  <div class="form-inputs">
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@community) %></h3>
+    </div>
+    <div class='box-body'>
+      <%= f.input :name %>
+      <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+    </div>
+    <div class='box-footer'>
+      <%= f.button :submit, inpuclass: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>
+

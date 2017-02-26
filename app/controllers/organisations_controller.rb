@@ -1,5 +1,6 @@
 class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   # GET /organisations
   # GET /organisations.json
@@ -14,7 +15,7 @@ class OrganisationsController < ApplicationController
 
   # GET /organisations/new
   def new
-    @organisation = Organisation.new
+    @organisation = current_account.organisations.build
     authorize @organisation
   end
 
@@ -25,7 +26,7 @@ class OrganisationsController < ApplicationController
   # POST /organisations
   # POST /organisations.json
   def create
-    @organisation = Organisation.new(organisation_params)
+    @organisation = current_account.organisations.build(organisation_params)
     authorize @organisation
 
     respond_to do |format|
@@ -66,12 +67,12 @@ class OrganisationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organisation
-      @organisation = Organisation.find(params[:id])
+      @organisation = current_account.organisations.find(params[:id])
       authorize @organisation
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def organisation_params
-      params.fetch(:organisation, {})
+      params.fetch(:organisation, {}).permit(:name, :description, :weblink, :sector_id)
     end
 end

@@ -2,16 +2,17 @@ class WickedProblemsController < ApplicationController
   before_action :authenticate_user!
   
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   def index
-    @wicked_problems = policy_scope(WickedProblem)
+    @wicked_problems = policy_scope(WickedProblem) # SMELL Restrict this to current accouht only
   end
 
   def show
   end
 
   def new
-    @wicked_problem = WickedProblem.new(default_params)
+    @wicked_problem = current_account.wicked_problems.build
     authorize @wicked_problem
   end
 
@@ -19,16 +20,18 @@ class WickedProblemsController < ApplicationController
   end
 
   def create
-    @wicked_problem = WickedProblem.new(default_params.merge(wicked_problem_params))
+    @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
     authorize @wicked_problem
     
     respond_to do |format|
       if @wicked_problem.save
         format.html { redirect_to wicked_problems_path, notice: 'Wicked problem was successfully created.' }
         format.json { render :show, status: :created, location: @wicked_problem }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
@@ -57,21 +60,11 @@ class WickedProblemsController < ApplicationController
   private
 
     def set_wicked_problem
-      @wicked_problem = WickedProblem.find(params[:id])
+      @wicked_problem = current_account.wicked_problems.find(params[:id])
       authorize @wicked_problem
     end
 
-    def default_params
-      default_params_hash = current_account ? { account_id: current_account.id } : {}
-      ActionController::Parameters.new(default_params_hash).permit!
-    end
-    
     def wicked_problem_params
-      default_params.merge(permitted_params)
-    #  params.require(:wicked_problem).permit(:name, :description, :account_id)
-    end
-    
-    def permitted_params
-      params.require(:wicked_problem).permit(:name, :description, :account_id)
+      params.fetch(:wicked_problem, {}).permit(:name, :description)
     end
 end

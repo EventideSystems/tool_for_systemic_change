@@ -4,8 +4,7 @@ module AccountsHelper
     return 'No account selected' unless controller.current_account.present?
     controller.current_account.name
   end
-  
-  #
+
   def account_selector
     accounts = policy_scope(Account)
     
@@ -26,21 +25,11 @@ module AccountsHelper
         selected_path
       )
       
-      default_options.merge!(include_blank: true, prompt: 'No account selected') if selected_path.blank?
+      options.merge!(include_blank: true, prompt: 'No account selected') if selected_path.blank?
       
       content_tag(:form, '', class: 'account-select') do
         select_tag(:account_selector, option_tags, options)
       end
     end
   end
-    
 end
-
-
-# <form name="cityselect">
-#     <select name="menu" onChange="top.location.href=this.options[this.selectedIndex].value;" value="GO">
-#         <option selected="selected">Select One</option>
-#         <option value="http://www.leeds.com">Leeds</option>
-#         <option value="http://www.manchester.com">Manchester</option>
-#     </select>
-# </form>

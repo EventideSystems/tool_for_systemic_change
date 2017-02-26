@@ -1,31 +1,24 @@
 class CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
-  # GET /communities
-  # GET /communities.json
   def index
     @communities = policy_scope(Community)
   end
 
-  # GET /communities/1
-  # GET /communities/1.json
   def show
   end
 
-  # GET /communities/new
   def new
-    @community = Community.new
+    @community = current_account.communities.build
     authorize @community 
   end
 
-  # GET /communities/1/edit
   def edit
   end
 
-  # POST /communities
-  # POST /communities.json
   def create
-    @community = Community.new(community_params)
+    @community = current_account.communities.build(community_params)
     authorize @community
 
     respond_to do |format|
@@ -39,8 +32,6 @@ class CommunitiesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /communities/1
-  # PATCH/PUT /communities/1.json
   def update
     respond_to do |format|
       if @community.update(community_params)
@@ -53,8 +44,6 @@ class CommunitiesController < ApplicationController
     end
   end
 
-  # DELETE /communities/1
-  # DELETE /communities/1.json
   def destroy
     @community.destroy
     respond_to do |format|
@@ -64,14 +53,13 @@ class CommunitiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_community
-      @community = Community.find(params[:id])
+      @community = current_account.communities.find(params[:id])
       authorize @community
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def community_params
-      params.fetch(:community, {})
+      params.fetch(:community, {}).permit(:name, :description)
     end
 end

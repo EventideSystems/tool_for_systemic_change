@@ -43,15 +43,18 @@ gem 'pundit'
 # User interface 
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
-gem 'jquery-turbolinks'
 gem 'simple_form'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
+gem 'nested_form_fields'
+
 
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'
   gem 'rails-assets-twitter-bootstrap-wizard'
+  gem 'rails-assets-select2'
+  gem 'rails-assets-bootstrap-nav-wizard'
 end
 
 gem 'paranoia', '~> 2.2'

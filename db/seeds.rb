@@ -6,6 +6,14 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Sector.with_deleted.each(&:really_destroy!)
+
+Sector.create!(name: 'Local government')
+Sector.create!(name: 'State government')
+Sector.create!(name: 'Federal government')
+Sector.create!(name: 'Education')
+Sector.create!(name: 'NGO')
+
 Account.with_deleted.each(&:really_destroy!)
 
 AccountsUser.delete_all

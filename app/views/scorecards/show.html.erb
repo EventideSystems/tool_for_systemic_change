@@ -1,4 +1,38 @@
-<p id="notice"><%= notice %></p>
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title"><%= @scorecard.name %></h3>
+  </div>
+  <div class="box-body">
+    <table> 
 
-<%= link_to 'Edit', edit_scorecard_path(@scorecard) %> |
-<%= link_to 'Back', scorecards_path %>
+      <thead>
+        <tr>
+          <th>
+            &nbsp;
+          </th>
+          
+          <% FocusArea.all.order(:position).each_with_index do |focus_area, index| %>
+            <th colspan="<%= focus_area.characteristics.count %>">
+              <%= index %>
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @scorecard.initiatives do |initiative| %>
+        <tr>
+          <td>
+            <%= initiative.name %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr> 
+          <td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

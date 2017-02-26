@@ -1,0 +1,40 @@
+<%= form.nested_fields_for :organisations do |o| %>
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Organisation</h3>
+
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+          <i class="fa fa-minus"></i>
+        </button>
+        <%= o.remove_nested_fields_link do %>
+          <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
+        <% end %>
+      </div>
+    </div>   
+    <div class="box-body">
+      
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Select an existing Organisation</h3>
+        </div>
+        <div class="box-body">
+          <%= o.input :id, collection: lookup_organisations %>
+        </div>
+      </div>
+      
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">or Create a new Organisation</h3>
+        </div>
+        <div class="box-body">
+          <%= o.input :name %>
+          <%= o.input :description %>
+        </div>
+      </div>
+    </div>  
+  </div>
+<% end %>
+<%= form.add_nested_fields_link :organisations %>
+
+

@@ -1,5 +1,6 @@
-<div class='box box-primary'>
-  <%= simple_form_for(@scorecard, role: 'form') do |f| %><%= f.error_notification %>
+<%= simple_form_for(@scorecard, role: 'form') do |f| %>
+<%= f.error_notification %>
+  <div class='box box-primary'>
     <div class="wizard">
       <div class='box-header with-border'>
         <h3 class='box-title'>
@@ -7,7 +8,7 @@
         </h3>
       </div>
     
-      <ul>
+      <ul class='nav nav-wizard'>
         <li>
           <a href="#scorecard" data-toggle="tab">Scorecard</a>
         </li>
@@ -28,62 +29,11 @@
       <div class='box-body'>
         <div class='form-group'>
           <div class="tab-content">
-          
-            <div class="tab-pane" id="scorecard">
-              <div class='box-body'>
-                <div class='form-group'>
-                  <%= f.association :account, collection: policy_scope(Account), label_method: :name, value_method: :id %>
-                </div>
-                <div class='form-group'>
-                  <%= f.input :name %>
-                </div>
-                <div class='form-group'>
-                  <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-                </div>
-              </div>
-            </div>
-          
-            <div class="tab-pane" id="wicked-problem">
-              <h4>
-                Select an existing Wicked Problem
-              </h4>
-              <div class='form-group'>
-                <%= f.association :wicked_problem, collection: policy_scope(WickedProblem), label_method: :name, value_method: :id %>
-              </div>
-              <h4>
-                .. or create a new Wicked Problem
-              </h4>
-              <div class='form-group'>
-                <%= f.input :wicked_problem_name, input_html: { value: nil }  %>
-              </div>
-              <div class='form-group'>
-                <%= f.input :wicked_problem_description, as: :text, input_html: { value: nil }  %>
-              </div>
-            </div>
-          
-            <div class="tab-pane" id="community">
-              <h4>
-                Select an existing Community
-              </h4>
-              <div class='form-group'>
-                <%= f.association :community, collection: policy_scope(Community), label_method: :name, value_method: :id %>
-              </div>
-              <h4>
-                .. or create a new Community
-              </h4>
-              <div class='form-group'>
-                <%= f.input :community_name, input_html: { value: nil }  %>
-              </div>
-              <div class='form-group'>
-                <%= f.input :community_description, as: :text, input_html: { value: nil }  %>
-              </div>
-            </div>
-          
-            <div class="tab-pane" id="initiatives">
-              <%= f.simple_fields_for :initiatives do |i| %>
-                <%= render 'initiatives_fields', form: i %>
-              <% end %>
-            </div>
+            <%= render 'scorecards/form_tabs/scorecard', form: f %>
+            <%= render 'scorecards/form_tabs/wicked_problem', form: f %>
+            <%= render 'scorecards/form_tabs/community', form: f %>
+            <%= render 'scorecards/form_tabs/initiatives', form: f %>
+
           
             <div class="tab-pane" id="tab5">
               <div class='box-footer'>
@@ -91,7 +41,7 @@
               </div>
             </div>
           
-          
+              
             <ul class="pager wizard">
               <li class="previous first" style="display:none;">
                 <a href="#">First</a>
@@ -111,5 +61,5 @@
       
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

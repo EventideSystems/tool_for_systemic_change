@@ -1,0 +1,12 @@
+<div class="tab-pane" id="wicked-problem">
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Select an existing Wicked Problem</h3>
+    </div>
+    <div class="box-body">
+      <%= form.association :wicked_problem, collection: lookup_wicked_problems, label_method: :name, value_method: :id %>
+      
+      <%= link_to "New Wicked Problem", new_wicked_problem_path, remote: true, class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>

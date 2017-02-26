@@ -6,4 +6,7 @@ class Community < ApplicationRecord
 
   belongs_to :account
   has_many :scorecards
+  
+  validates :account, presence: true
+  validates :name, presence: true, uniqueness: { scope: :account_id }
 end

@@ -1,0 +1,16 @@
+<% if @community.errors.count > 0 %>
+  $(".notice").remove(); 
+  //display new validation messages
+  <% @community.errors.full_messages.each do |message| %>
+    $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
+  <% end %>
+<% else %>
+  select = $('select#scorecard_community_id');
+  option = document.createElement( 'option' );
+  option.value = '<%= @community.id %>';
+  option.text = '<%= @community.name %>';
+  select.append(option);
+  option.setAttribute('selected', 'selected');
+
+  $('#community-modal').modal('hide');
+<% end %>

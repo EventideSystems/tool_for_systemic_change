@@ -1,0 +1,22 @@
+<div id="community-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">New Community</h4>
+      </div>
+      <%= simple_form_for @community, :remote => true, :format => :js do |f| %>
+      <span id="error-messages"></span>
+      <div class="modal-body">
+        <%= f.input :name %>
+        <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

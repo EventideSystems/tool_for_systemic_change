@@ -25,9 +25,11 @@ class CommunitiesController < ApplicationController
       if @community.save
         format.html { redirect_to @community, notice: 'Community was successfully created.' }
         format.json { render :show, status: :created, location: @community }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @community.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

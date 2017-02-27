@@ -1,20 +1,11 @@
 <div class="tab-pane" id="community">
   <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">Select an existing Community/h3>
+      <h3 class="box-title">Select an existing Community</h3>
     </div>
     <div class="box-body">
       <%= form.association :community, collection: lookup_communities, label_method: :name, value_method: :id %>
-    </div>
-  </div>
-  
-  <div class="box box-default">
-    <div class="box-header with-border">
-      <h3 class="box-title">... or create a new Community</h3>
-    </div>
-    <div class="box-body">
-      <%= form.input :community_name, input_html: { value: nil }  %>
-      <%= form.input :community_description, as: :text, input_html: { value: nil }  %>
+      <%= link_to "New Community", new_community_path, remote: true, class: "btn btn-primary" %>
     </div>
   </div>
 </div>

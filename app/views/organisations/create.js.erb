@@ -1,0 +1,19 @@
+<% if @organisation.errors.count > 0 %>
+  $(".notice").remove(); 
+  //display new validation messages
+  <% @organisation.errors.full_messages.each do |message| %>
+    $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
+  <% end %>
+<% else %>
+  current_select = $('[current=true]');
+  // all_select = $('select[name*=organisations_attributes]');
+  option = document.createElement( 'option' );
+  option.value = '<%= @organisation.id %>';
+  option.text = '<%= @organisation.name %>';
+  current_select.append(option);
+  option.setAttribute('selected', 'selected');
+  current_select.attr('current', null);
+  $('#organisation-modal').modal('hide');
+<% end %>
+
+

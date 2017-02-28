@@ -1,8 +1,5 @@
 <div class="tab-pane" id="community">
   <div class="box box-default">
-    <div class="box-header with-border">
-      <h3 class="box-title">Select an existing Community</h3>
-    </div>
     <div class="box-body">
       <%= form.association :community, collection: lookup_communities, label_method: :name, value_method: :id %>
       <%= link_to "New Community", new_community_path, remote: true, class: "btn btn-primary" %>

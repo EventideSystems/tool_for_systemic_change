@@ -2,35 +2,45 @@
   <div class="box-header with-border">
     <h3 class="box-title"><%= @scorecard.name %></h3>
   </div>
-  <div class="box-body">
-    <table> 
+  <div class="box-body scorecard-matrix">
+    <table class="grid-table pre-scrollable"> 
 
       <thead>
         <tr>
-          <th>
-            &nbsp;
-          </th>
+          <th>&nbsp;</th>
           
           <% FocusArea.all.order(:position).each_with_index do |focus_area, index| %>
             <th colspan="<%= focus_area.characteristics.count %>">
-              <%= index %>
+              Focus Area <%= index %>
             </th>
           <% end %>
         </tr>
       </thead>
 
       <tbody>
-        <% @scorecard.initiatives do |initiative| %>
+        <% @scorecard.initiatives.each do |initiative| %>
         <tr>
-          <td>
+          <td class="cell ng-scope gap color1">
             <%= initiative.name %>
           </td>
+          <% initiative.checklist_items.joins(characteristic: {focus_area: :focus_area_group}) .each do |checklist_item| %>
+            <td>
+              <%= checklist_item.id %>
+            </td>
+          <% end %>
         </tr>
         <% end %>
       </tbody>
       <tfoot>
         <tr> 
           <td>
+            &nbsp;
+          </td>
+          <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+            <td>
+              <span><%= characteristic.name %></span>
+            </td>
+          <% end %>
         </tr>
       </tfoot>
     </table>

@@ -10,18 +10,10 @@ class Initiative < ApplicationRecord
   has_many :checklist_items, dependent: :destroy
   has_many :characteristics, through: :checklist_items
   
-  accepts_nested_attributes_for :organisations
+  accepts_nested_attributes_for :initiatives_organisations
 
-  validates :scorecard, presence: true
+  validates :name, presence: true
   validate :validate_finished_at_later_than_started_at
-
-  scope :for_user, lambda { |user|
-    unless user.staff?
-      joins(:scorecard).where(
-        'scorecards.account_id' => user.account_id
-      )
-    end
-  }
 
   after_create :create_checklist_items
 

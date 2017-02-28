@@ -1,0 +1,151 @@
+.matrix-char-tooltip {
+  transform: translateX(15px);
+}
+
+.scorecard-matrix {
+  $colors:
+    (1 red) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
+    (5 #2E74BA) (6 #009BCC) (7 #008C8C) (8 #00CCAA)
+    (9 #1CB85D);
+
+  @each $color in $colors {
+    .color#{nth($color, 1)} {
+      background: #{nth($color, 2)};
+      color: #{nth($color, 2)};
+    }
+  }
+
+  margin: 0;
+  position: relative;
+
+  .mask {
+    background: white;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+  }
+
+  table {
+    margin-top: 30px;
+    width: 1700px;
+    overflow-y: auto;
+    border-spacing: 2px;
+    border-collapse: separate;
+  }
+
+  .chars {
+    td {
+      font-size: 11px;
+      font-weight: 300;
+      white-space: nowrap;
+      position: relative;
+      text-align: left;
+      background: none;
+    }
+
+    span {
+      -ms-transform: rotate(45deg);
+      -ms-transform-origin: top left;
+      transform: rotate(45deg);
+      transform-origin: top left;
+      width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      left: 50%;
+      top: 0;
+    }
+  }
+
+  .spacer {
+    width: 180px;
+    display: block;
+  }
+
+  tbody {
+    td {
+      border: 1px solid white;
+    }
+  }
+
+  .init-table {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 200px;
+  }
+
+  .wrapper {
+    position: absolute;
+    left: 210px;
+    right: 0;
+    padding-bottom: 180px;
+    top: 0;
+    overflow-x: auto;
+  }
+
+  .init-title {
+    text-align: right;
+    white-space: nowrap;
+    padding-right: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
+    background: white;
+    display: block;
+    float: left;
+    height: 21px;
+  }
+
+  td {
+    width: 1%;
+  }
+
+  .cell {
+    transition: background .3s, opacity .3s;
+    border-width: 0;
+    max-width: 18px;
+    opacity: .6;
+    height: 21px;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .gap {
+    background: #f8f8f8;
+  }
+
+  .cell.inverse {
+    background: #f8f8f8 !important;;
+  }
+
+  .gap.inverse {
+    background: #333333 !important;
+  }
+
+  .legend {
+    border: 2px solid #E6E6E6;
+    border-bottom: 5px solid white;
+    position: relative;
+    background: none;
+
+    div {
+      font-weight: 200;
+      text-align: center;
+      position: absolute;
+      top: -20px;
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 11px;
+    }
+  }
+}
+
+
+.scorecard-matrix-controls {
+// background: $dark-10;
+  margin-bottom: 25px;
+  padding: 10px;
+}

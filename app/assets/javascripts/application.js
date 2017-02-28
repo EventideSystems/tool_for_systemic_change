@@ -46,5 +46,10 @@
     $(".select2").select2();
   });
 
+  $(document).ready(function() {
+    $(document).on('click', '.organisation-link', function() {
+      $(this).siblings('.select').children('select').attr('current', true);
+    });
+  });
   //= require turbolinks
   //= require_tree .

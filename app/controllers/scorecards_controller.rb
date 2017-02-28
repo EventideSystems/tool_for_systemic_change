@@ -18,35 +18,33 @@ class ScorecardsController < ApplicationController
   end
 
   def create
+    binding.pry
     @scorecard = current_account.scorecards.build(scorecard_params)
-    @scorecard.build_wicked_problem(wicked_problem_params) unless @scorecard.wicked_problem
-    @scorecard.build_community(community_params) unless @scorecard.community
-    
-    if initiatives_params[:initiatives_attributes]
-      initiatives_params[:initiatives_attributes].each do |index, initiative_params|
-        organisations_attributes = initiative_params.delete(:organisations_attributes)
-      
-        initiative = @scorecard.initiatives.build(initiative_params)
-      
-        organisations_attributes.each do |index, organisation_params|
-          organisation = if organisation_params[:id].present?
-            current_account.organisations.find(organisation_params[:id])
-          else
-            current_account.organisations.build(organisation_params)
-          end
-        
-          initiative.organisations << organisation
-        end
-      end
-    end
+    # @scorecard.build_wicked_problem(wicked_problem_params) unless @scorecard.wicked_problem
+    # @scorecard.build_community(community_params) unless @scorecard.community
+    #
+    # if initiatives_params[:initiatives_attributes]
+    #   initiatives_params[:initiatives_attributes].each do |index, initiative_params|
+    #     organisations_attributes = initiative_params.delete(:organisations_attributes)
+    #
+    #     initiative = @scorecard.initiatives.build(initiative_params)
+    #
+    #     organisations_attributes.each do |index, organisation_params|
+    #       organisation = current_account.organisations.find(organisation_params[:id])
+    #       initiative.organisations << organisation
+    #     end
+    #   end
+    # end
     
     authorize @scorecard
 
     respond_to do |format|
       if @scorecard.save
+        binding.pry
         format.html { redirect_to scorecards_path, notice: 'Scorecard was successfully created.' }
         format.json { render :show, status: :created, location: @scorecard }
       else
+        binding.pry
         format.html { render :new }
         format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end
@@ -75,36 +73,62 @@ class ScorecardsController < ApplicationController
 
   private
 
-    def default_params
-      default_params_hash = current_account ? { account_id: current_account.id } : {}
-      ActionController::Parameters.new(default_params_hash).permit!
-    end
-  
+    # def default_params
+    #   default_params_hash = current_account ? { account_id: current_account.id } : {}
+    #   ActionController::Parameters.new(default_params_hash).permit!
+    # end
+    #
     def set_scorecard
-      @scorecard = Scorecard.find(params[:id])
+      @scorecard = current_account.scorecards.find(params[:id])
       authorize @scorecard
     end
     
-    def wicked_problem_params
-      selected_params = params.require(:scorecard).permit(:wicked_problem_name, :wicked_problem_description)
-      {
-        name: selected_params[:wicked_problem_name],
-        description: selected_params[:wicked_problem_description],
-        account_id: current_account.id
-      }
-    end
+    # def wicked_problem_params
+    #   selected_params = params.require(:scorecard).permit(:wicked_problem_name, :wicked_problem_description)
+    #   {
+    #     name: selected_params[:wicked_problem_name],
+    #     description: selected_params[:wicked_problem_description],
+    #     account_id: current_account.id
+    #   }
+    # end
     
-    def community_params
-      selected_params = params.require(:scorecard).permit(:community_name, :community_description)
-      {
-        name: selected_params[:community_name],
-        description: selected_params[:community_description],
-        account_id: current_account.id
-      }
-    end
+    # def community_params
+    #   selected_params = params.require(:scorecard).permit(:community_name, :community_description)
+    #   {
+    #     name: selected_params[:community_name],
+    #     description: selected_params[:community_description],
+    #     account_id: current_account.id
+    #   }
+    # end
     
-    def initiatives_params
+    # def initiatives_params
+    #   params.require(:scorecard).permit(
+    #     initiatives_attributes: [
+    #       :name,
+    #       :description,
+    #       :scorecard_id,
+    #       :started_at,
+    #       :finished_at,
+    #       :dates_confirmed,
+    #       :contact_name,
+    #       :contact_email,
+    #       :contact_phone,
+    #       :contact_website,
+    #       :contact_position,
+    #       organisations_attributes: [
+    #         :id
+    #       ]
+    #     ]
+    #   )
+    # end
+    
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def scorecard_params
       params.require(:scorecard).permit(
+        :name, 
+        :description, 
+        :wicked_problem_id,
+        :community_id,
         initiatives_attributes: [
           :name,
           :description,
@@ -117,22 +141,10 @@ class ScorecardsController < ApplicationController
           :contact_phone,
           :contact_website,
           :contact_position,
-          organisations_attributes: [
-            :id, 
-            # :name,
-            # :description
-          ] 
+          initiatives_organisations_attributes: [
+            :organisation_id
+          ]
         ]
-      )
-    end
-    
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def scorecard_params
-      params.require(:scorecard).permit(
-        :name, 
-        :description, 
-        :wicked_problem_id,
-        :community_id
       )
     end
 end

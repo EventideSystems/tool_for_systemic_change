@@ -16,15 +16,15 @@
       <div class="box-body">
         <%= i.input :name %>
         <%= i.input :description %>
-        <%= render 'scorecards/form_tabs/organisations', form: i %>
         <%= i.input :started_at %>
         <%= i.input :finished_at %>
         <%= i.input :contact_name %>
         <%= i.input :contact_email %>
         <%= i.input :contact_website %>
         <%= i.input :contact_position %>
+        <%= render 'scorecards/form_tabs/organisations', form: i %>
       </div>
     </div>
   <% end %>
-  <%= form.add_nested_fields_link :initiatives %>
+  <%= form.add_nested_fields_link :initiatives, 'Add Initiative', class: 'btn btn-primary' %>
 </div>

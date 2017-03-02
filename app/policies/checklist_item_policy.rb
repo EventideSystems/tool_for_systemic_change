@@ -1,11 +1,7 @@
 class ChecklistItemPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if system_admin?
-        scope.all
-      else
-        scope.joins(initiative: :scorecard).where(:'scorecards.account_id' => current_account.id)
-      end
+      scope.joins(initiative: :scorecard).where(:'scorecards.account_id' => current_account.id)
     end
   end
   

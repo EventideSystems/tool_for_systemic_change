@@ -1,4 +1,10 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_initiative_path(@initiative) %> |
-<%= link_to 'Back', initiatives_path %>
+<div class="nav-tabs-custom">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#checklist-items-tab" data-toggle="tab">Initative Characteristics</a></li>
+    <li><a href="#details-tab" data-toggle="tab">Details</a></li>
+  </ul>
+  <div class="tab-content">
+    <%= render 'checklist_items' %>
+    <%= render 'details' %>
+  </div>
+</div>

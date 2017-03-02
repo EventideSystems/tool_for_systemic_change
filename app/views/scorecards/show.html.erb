@@ -21,7 +21,7 @@
         <% @scorecard.initiatives.each do |initiative| %>
         <tr>
           <td class="cell ng-scope gap color1">
-            <%= initiative.name %>
+            <%= link_to initiative.name, initiative_path(initiative) %>
           </td>
           <% initiative.checklist_items.joins(characteristic: {focus_area: :focus_area_group}) .each do |checklist_item| %>
             <td>

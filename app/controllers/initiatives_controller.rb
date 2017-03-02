@@ -1,29 +1,22 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: [:show, :edit, :update, :destroy]
 
-  # GET /initiatives
-  # GET /initiatives.json
   def index
     @initiatives = policy_scope(Initiative)
   end
 
-  # GET /initiatives/1
-  # GET /initiatives/1.json
   def show
+    @grouped_checklist_items = grouped_checklist_items(@initiative)
   end
 
-  # GET /initiatives/new
   def new
     @initiative = Initiative.new
     authorize @initiative
   end
 
-  # GET /initiatives/1/edit
   def edit
   end
 
-  # POST /initiatives
-  # POST /initiatives.json
   def create
     @initiative = Initiative.new(initiative_params)
     authorize @initiative
@@ -39,8 +32,6 @@ class InitiativesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /initiatives/1
-  # PATCH/PUT /initiatives/1.json
   def update
     respond_to do |format|
       if @initiative.update(initiative_params)
@@ -53,8 +44,6 @@ class InitiativesController < ApplicationController
     end
   end
 
-  # DELETE /initiatives/1
-  # DELETE /initiatives/1.json
   def destroy
     @initiative.destroy
     respond_to do |format|
@@ -64,14 +53,38 @@ class InitiativesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def grouped_checklist_items(initiative)
+      checklist_items = initiative.checklist_items.includes(characteristic: [focus_area: :focus_area_group] )
+      checklist_items_by_focus_area = checklist_items.group_by { |ci| ci.characteristic.focus_area }
+      checklist_items_by_focus_area_group = checklist_items_by_focus_area.group_by do |fa| 
+        fa.first.focus_area_group 
+      end
+      
+      checklist_items_by_focus_area_group
+    end
+    
     def set_initiative
       @initiative = Initiative.find(params[:id])
       authorize @initiative
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def initiative_params
-      params.fetch(:initiative, {})
+      params.fetch(:initiative, {}).permit(
+        :name,
+        :description,
+        :scorecard_id,
+        :started_at,
+        :finished_at,
+        :dates_confirmed,
+        :contact_name,
+        :contact_email,
+        :contact_phone,
+        :contact_website,
+        :contact_position,
+        initiatives_organisations_attributes: [
+          :organisation_id, :id
+        ]
+      )
     end
 end

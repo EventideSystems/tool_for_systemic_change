@@ -1,10 +1,12 @@
 class ChecklistItemsController < ApplicationController
+  before_action :set_initiative
   before_action :set_checklist_item, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_account_selected
+  
   # GET /checklist_items
   # GET /checklist_items.json
   def index
-    @checklist_items = ChecklistItem.all
+    @checklist_items = policy_scope(ChecklistItem).where(initiative_id: @initiative.id).all
   end
 
   # GET /checklist_items/1
@@ -14,7 +16,8 @@ class ChecklistItemsController < ApplicationController
 
   # GET /checklist_items/new
   def new
-    @checklist_item = ChecklistItem.new
+    @checklist_item = @initiative.checklist_items.build
+    authorize @intiative
   end
 
   # GET /checklist_items/1/edit
@@ -24,8 +27,9 @@ class ChecklistItemsController < ApplicationController
   # POST /checklist_items
   # POST /checklist_items.json
   def create
-    @checklist_item = ChecklistItem.new(checklist_item_params)
-
+    @checklist_item = @initiative.checklist_items.build(checklist_item_params)
+    authorize @intiative
+    
     respond_to do |format|
       if @checklist_item.save
         format.html { redirect_to @checklist_item, notice: 'Checklist item was successfully created.' }
@@ -43,7 +47,8 @@ class ChecklistItemsController < ApplicationController
     respond_to do |format|
       if @checklist_item.update(checklist_item_params)
         format.html { redirect_to @checklist_item, notice: 'Checklist item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @checklist_item }
+        # format.json { render :show, status: :ok, location: @checklist_item }
+        format.json { render :show, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @checklist_item.errors, status: :unprocessable_entity }
@@ -62,13 +67,21 @@ class ChecklistItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_checklist_item
-      @checklist_item = ChecklistItem.find(params[:id])
+    def set_initiative
+      @initiative = current_account.initiatives.find(params[:initiative_id])
+      #authorize @intiative
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def set_checklist_item
+      @checklist_item = @initiative.checklist_items.find(params[:id])
+      authorize @checklist_item
+    end
+
+    def bulk_checklist_item_params(checklist_item_params)
+      checklist_item_params.permit(:checked, :comment)
+    end
+  
     def checklist_item_params
-      params.fetch(:checklist_item, {})
+      params.require(:checklist_item).permit(:checked, :comment)
     end
 end

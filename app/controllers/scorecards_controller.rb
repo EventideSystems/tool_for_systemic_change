@@ -18,7 +18,6 @@ class ScorecardsController < ApplicationController
   end
 
   def create
-    binding.pry
     @scorecard = current_account.scorecards.build(scorecard_params)
     # @scorecard.build_wicked_problem(wicked_problem_params) unless @scorecard.wicked_problem
     # @scorecard.build_community(community_params) unless @scorecard.community
@@ -40,11 +39,9 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        binding.pry
         format.html { redirect_to scorecards_path, notice: 'Scorecard was successfully created.' }
         format.json { render :show, status: :created, location: @scorecard }
       else
-        binding.pry
         format.html { render :new }
         format.json { render json: @scorecard.errors, status: :unprocessable_entity }
       end

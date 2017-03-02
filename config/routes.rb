@@ -9,11 +9,13 @@ Rails.application.routes.draw do
   end
   
   resources :characteristics
-  resources :checklist_items
+  
   resources :communities
   resources :focus_area_groups
   resources :focus_areas
-  resources :initiatives
+  resources :initiatives, except: [:new, :create] do
+    resources :checklist_items
+  end
   resources :initiatives_organisations
   resources :organisations
   resources :scorecards

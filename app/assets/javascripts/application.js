@@ -51,5 +51,17 @@
       $(this).siblings('.select').children('select').attr('current', true);
     });
   });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.characteristic-checkbox', function() {
+      $.ajax({
+        url: '/initiatives/' +  $(this).data("initiative-id") + '/checklist_items/' + $(this).data("id"),
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ checklist_item: { checked: $(this).is(':checked') }}),
+        dataType: 'json'
+      });
+    });
+  });
   //= require turbolinks
   //= require_tree .

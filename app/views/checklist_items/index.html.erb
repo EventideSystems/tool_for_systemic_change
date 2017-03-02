@@ -5,16 +5,17 @@
 <table>
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @checklist_items.each do |checklist_item| %>
       <tr>
-        <td><%= link_to 'Show', checklist_item %></td>
-        <td><%= link_to 'Edit', edit_checklist_item_path(checklist_item) %></td>
-        <td><%= link_to 'Destroy', checklist_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= checklist_item.inspect %>
+        <!-- <td><%#= link_to 'Show', initiative_checklist_item_path(checklist_item.initiative, checklist_item)  %></td>
+        <td><%#= link_to 'Edit', edit_initiative_checklist_item_path(checklist_item.initiative, checklist_item) %></td>
+        <td><%#= link_to 'Destroy', checklist_item, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
       </tr>
     <% end %>
   </tbody>
@@ -22,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Checklist Item', new_checklist_item_path %>
+<%= link_to 'New Checklist Item', new_initiative_checklist_item_path(@initiative) %>

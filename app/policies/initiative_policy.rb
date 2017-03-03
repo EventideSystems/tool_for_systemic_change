@@ -1,10 +1,10 @@
 class InitiativePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if system_admin?
-        scope.all
-      else
+      if current_account
         scope.joins(:scorecard).where(:'scorecards.account_id' => current_account.id)
+      else 
+        scope.joins(:scorecard).none
       end
     end
   end

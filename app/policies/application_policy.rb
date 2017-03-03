@@ -15,11 +15,7 @@ class ApplicationPolicy
     end
     
     def resolve_to_current_account
-      if current_user.admin?
-        scope.all
-      else
-        scope.where(account: current_account)
-      end
+      scope.where(account: current_account)
     end  
     
     # SMELL Move all these to a concern

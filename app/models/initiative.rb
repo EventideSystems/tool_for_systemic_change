@@ -16,6 +16,15 @@ class Initiative < ApplicationRecord
   validate :validate_finished_at_later_than_started_at
 
   after_create :create_checklist_items
+  
+  def checklist_items_ordered_by_ordered_focus_area
+    ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
+     .where('checklist_items.initiative_id' => self.id)
+     .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
+     .all
+  end
+  
+  
 
   private
 

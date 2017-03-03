@@ -20,10 +20,6 @@ module DashboardHelper
     end
   end
   
-
-  
-
-  
   # TODO Move this to application_helper
   class ResourceTable
     

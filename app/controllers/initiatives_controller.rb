@@ -6,7 +6,7 @@ class InitiativesController < ApplicationController
   end
 
   def show
-    @grouped_checklist_items = grouped_checklist_items(@initiative)
+    @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
   end
 
   def new
@@ -54,15 +54,17 @@ class InitiativesController < ApplicationController
 
   private
 
-    def grouped_checklist_items(initiative)
-      checklist_items = initiative.checklist_items.includes(characteristic: [focus_area: :focus_area_group] )
-      checklist_items_by_focus_area = checklist_items.group_by { |ci| ci.characteristic.focus_area }
-      checklist_items_by_focus_area_group = checklist_items_by_focus_area.group_by do |fa| 
-        fa.first.focus_area_group 
-      end
-      
-      checklist_items_by_focus_area_group
-    end
+    # def grouped_checklist_items(initiative)
+    #   checklist_items = initiative.checklist_items.includes(characteristic: [focus_area: :focus_area_group])
+    #     .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
+    #
+    #   checklist_items_by_focus_area = checklist_items.group_by { |ci| ci.characteristic.focus_area }
+    #   checklist_items_by_focus_area_group = checklist_items_by_focus_area.group_by do |fa|
+    #     fa.first.focus_area_group
+    #   end
+    #
+    #   checklist_items_by_focus_area_group
+    # end
     
     def set_initiative
       @initiative = Initiative.find(params[:id])

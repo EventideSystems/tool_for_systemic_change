@@ -63,5 +63,11 @@
       });
     });
   });
+  
+  $(document).ready(function(){
+    $(document).on('click', '.show-gaps-button', function() {
+      $('.cell').toggleClass('inverse');
+    });
+  });
   //= require turbolinks
   //= require_tree .

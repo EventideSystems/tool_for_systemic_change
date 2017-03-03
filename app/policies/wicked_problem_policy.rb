@@ -5,6 +5,10 @@ class WickedProblemPolicy < ApplicationPolicy
       resolve_to_current_account
     end
   end
+  
+  def index?
+    current_account.present?
+  end
 
   def show?
     system_admin? || account_any_role?(record.account)

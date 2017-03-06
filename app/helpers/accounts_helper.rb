@@ -4,7 +4,19 @@ module AccountsHelper
     return 'No account selected' unless controller.current_account.present?
     controller.current_account.name
   end
+  
+  def lookup_accounts
+    policy_scope(Account).all
+  end
+  
+  def lookup_account_roles
+    AccountsUser.account_roles.keys
+  end
 
+  def lookup_system_roles
+    User.system_roles.keys
+  end
+  
   def account_selector
     accounts = policy_scope(Account)
     

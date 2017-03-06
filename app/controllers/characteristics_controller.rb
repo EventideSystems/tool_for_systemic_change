@@ -2,14 +2,14 @@ class CharacteristicsController < ApplicationController
   before_action :set_characteristic, only: [:show, :edit, :update, :destroy]
 
   def index
-    @characteristics = Characteristic.all
+    @characteristics = Characteristic.all # SMELL Too open
   end
 
   def show
   end
 
   def new
-    @characteristic = Characteristic.new
+    @characteristic = Characteristic.new # SMELL Too open
   end
 
   def edit

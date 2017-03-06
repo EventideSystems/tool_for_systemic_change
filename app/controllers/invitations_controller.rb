@@ -1,25 +1,20 @@
 class InvitationsController < Devise::InvitationsController
   
-  layout 'application'
+  layout 'application', only: [:new] # NOTE Defaults to 'devise' layout for other actions
   
   def update
     super
   end
   
   def create
-
+    binding.pry
     super
   end
   
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: [
-      :email, 
-      :name, 
-      :system_role, 
-      accounts_users_attributes: [
-        :account_id,
-        :account_role
-      ]
-    ])
+  def new
+    
+    super
   end
+
+
 end

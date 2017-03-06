@@ -1,0 +1,2 @@
+module FocusAreaGroupsHelper
+end

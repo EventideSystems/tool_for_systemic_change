@@ -1,0 +1,13 @@
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title"><%= @wicked_problem.name %></h3>
+  </div>
+  <div class="box-body">
+    <strong>Description</strong>
+    <p class="text-muted">
+      <%= sanitize @wicked_problem.description, tags: %w(p h1 h2 h3 strong b u em i a blockquote br) %>
+    </p> 
+    <%= link_to 'Edit', edit_wicked_problem_path(@wicked_problem), class: 'btn btn-primary btn-block' %> 
+  </div>
+</div>
+

@@ -1,116 +1,81 @@
-class InitiativesController < AuthenticatedController
-  before_action :set_initiative, except: [:index, :create]
+class InitiativesController < ApplicationController
+  before_action :set_initiative, only: [:show, :edit, :update, :destroy]
 
-  resource_description do
-    formats ["json"]
-  end
-
-  api :GET, "/initiatives"
   def index
-    query = Initiative.joins(:scorecard).where(:'scorecards.client_id' => current_client.id)
-
-    @initiatives = finder_for_pagination(query).all
-
-    render json: @initiatives
+    @initiatives = policy_scope(Initiative)
   end
 
-  api :GET, "/initiatives/:id"
-  param :id, :number, required: true
   def show
-    render json: @initiative
+    @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
   end
 
-  # POST /initiatives
-  # POST /initiatives.json
+  def new
+    @initiative = Initiative.new
+    authorize @initiative
+  end
+
+  def edit
+  end
+
   def create
-    scorecard_id = scorecard_id_from_params(initiative_params)
-    organisation_ids = organisation_ids_from_params(initiative_params)
-
-    attributes = initiative_params[:attributes].merge(
-      scorecard_id: scorecard_id,
-      organisation_ids: organisation_ids
-    )
-
-    @initiative = Initiative.new(attributes)
-
+    @initiative = Initiative.new(initiative_params)
+    authorize @initiative
+    
     respond_to do |format|
       if @initiative.save
-        format.html do
-          redirect_to @initiative,
-                      notice: "Initiative was successfully created."
-        end
-        format.json do
-          render json: @initiative,
-                 status: :created, location: @initiative
-        end
+        format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
+        format.json { render :show, status: :created, location: @initiative }
       else
         format.html { render :new }
-        format.json do
-          render json: @initiative.errors,
-                 status: :unprocessable_entity
-        end
+        format.json { render json: @initiative.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /initiatives/1
-  # PATCH/PUT /initiatives/1.json
   def update
-    scorecard_id = scorecard_id_from_params(initiative_params)
-    organisation_ids = organisation_ids_from_params(initiative_params)
-
-    attributes = (initiative_params[:attributes] || {})
-
-    attributes.merge!(scorecard_id: scorecard_id) if scorecard_id
-    attributes.merge!(organisation_ids: organisation_ids) if organisation_ids
-
     respond_to do |format|
-      if @initiative.update(attributes)
-        format.json { render json: { status: :ok, location: @initiative } }
+      if @initiative.update(initiative_params)
+        format.html { redirect_to @initiative, notice: 'Initiative was successfully updated.' }
+        format.json { render :show, status: :ok, location: @initiative }
       else
-        format.json do
-          render json: @initiative.errors,
-                 status: :unprocessable_entity
-        end
+        format.html { render :edit }
+        format.json { render json: @initiative.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /initiatives/1
-  # DELETE /initiatives/1.json
   def destroy
     @initiative.destroy
     respond_to do |format|
+      format.html { redirect_to initiatives_url, notice: 'Initiative was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_initiative
-    @initiative = current_client.initiatives.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    raise User::NotAuthorized
-  end
+    # def grouped_checklist_items(initiative)
+    #   checklist_items = initiative.checklist_items.includes(characteristic: [focus_area: :focus_area_group])
+    #     .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
+    #
+    #   checklist_items_by_focus_area = checklist_items.group_by { |ci| ci.characteristic.focus_area }
+    #   checklist_items_by_focus_area_group = checklist_items_by_focus_area.group_by do |fa|
+    #     fa.first.focus_area_group
+    #   end
+    #
+    #   checklist_items_by_focus_area_group
+    # end
+    
+    def set_initiative
+      @initiative = Initiative.find(params[:id])
+      authorize @initiative
+    end
 
-  def organisation_ids_from_params(params)
-    params[:relationships][:organisations][:data].map { |data| data["id"].to_i }
-  rescue
-    nil
-  end
-
-  def scorecard_id_from_params(params)
-    params[:relationships][:scorecard][:data][:id].to_i
-  rescue
-    nil
-  end
-
-  def initiative_params
-    params.require(:data).permit(
-      attributes: [
+    def initiative_params
+      params.fetch(:initiative, {}).permit(
         :name,
         :description,
+        :scorecard_id,
         :started_at,
         :finished_at,
         :dates_confirmed,
@@ -118,12 +83,10 @@ class InitiativesController < AuthenticatedController
         :contact_email,
         :contact_phone,
         :contact_website,
-        :contact_position
-      ],
-      relationships: [
-        scorecard: [data: [:id]],
-        organisations: [data: [:id]]
-      ]
-    )
-  end
+        :contact_position,
+        initiatives_organisations_attributes: [
+          :organisation_id, :id
+        ]
+      )
+    end
 end

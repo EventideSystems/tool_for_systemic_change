@@ -1,0 +1,49 @@
+<%= simple_form_for resource, url: invitation_path(resource_name), role: 'form', html: { method: :post, class: 'form-horizontal' } do |f| %>
+  <%= devise_error_messages! %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= t "devise.invitations.new.header" %></h3>
+    </div>
+    <div class='box-body'>
+      <%= f.input :email %>
+      <%= f.input :name %>
+      <%= f.input :system_role, collection: lookup_system_roles %>
+      <!-- <% resource.class.invite_key_fields.each do |field| -%>
+        <%#= f.input field %>
+      <% end -%> -->
+      
+      
+      <%= f.nested_fields_for :accounts_users do |au| %>
+        <div class="box box-warning">
+          <div class="box-header with-border">
+            <h3 class="box-title">Account Role</h3>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+              </button>
+              <%= au.remove_nested_fields_link do %>
+                <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
+              <% end %>
+            </div>
+          </div>   
+          <div class="box-body">  
+            <div class="row">
+              <div class="col-md-6">
+                <%= au.input :account_id, collection: lookup_accounts, label: false %>
+                <%= au.input :account_role, collection: lookup_account_roles, label: false %>
+              </div>  
+              <div class="col-md-1">
+                <%= link_to "New Account", new_account_path, remote: true, class: "btn btn-warning account-link" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= f.add_nested_fields_link :accounts_users %>
+      
+    </div>
+    <div class='box-footer'>
+      <%= f.button :submit, t("devise.invitations.new.submit_button"), class: "pull-right" %>
+    </div>
+  </div>  
+<% end %>

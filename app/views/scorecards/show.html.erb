@@ -1,0 +1,50 @@
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title"><%= @scorecard.name %></h3>
+    <div class="pull-right"><button class="btn btn-block btn-primary show-gaps-button" type="button">Show gap in effort</button></div>
+  </div>
+  <div class="box-body scorecard-matrix">
+    <div class="outer">
+      <div class="inner">
+        <table class="pre-scrollable"> 
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <% FocusArea.ordered_by_group_position.each_with_index do |focus_area, index| %>
+                <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                  <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">Focus Area <%= index + 1 %></div>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @scorecard.initiatives.each do |initiative| %>
+            <tr>
+              <th>
+                <%= link_to initiative.name, initiative_path(initiative) %>
+              </th>
+              <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
+                <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{checklist_item.characteristic.focus_area.position}" %>"> <%# SMELL Needs to be 'relative' position %>
+                  <span>&nbsp;</span>
+                </td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr class="chars"> 
+              <td>
+                &nbsp;
+              </td>
+              <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+                <td>
+                  <span><%= characteristic.name %></span>
+                </td>
+              <% end %>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

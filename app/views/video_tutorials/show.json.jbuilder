@@ -1,0 +1,1 @@
+json.partial! "video_tutorials/video_tutorial", video_tutorial: @video_tutorial

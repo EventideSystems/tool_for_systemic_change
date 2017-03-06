@@ -1,17 +1,16 @@
-class WickedProblem < ActiveRecord::Base
+# frozen_string_literal: true
+class WickedProblem < ApplicationRecord
   acts_as_paranoid
 
   include Trackable
 
-  belongs_to :client
+  belongs_to :account
   has_many :scorecards, dependent: :restrict_with_error
 
-  # SMELL Dupe of scope in WickedProblem - move to a concern
-  scope :for_user, ->(user) {
-    unless user.staff?
-      joins(:client).where('clients.id' => user.client_id)
-    end
-  }
+  validates :account, presence: true
+  validates :name, presence: true, uniqueness: { scope: :account_id }
 
-  validates :name, presence: true, :uniqueness => { :scope => :client_id }
+  def description_summary
+    Nokogiri::HTML(description).text
+  end
 end

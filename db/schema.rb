@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,83 +10,91 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316141816) do
+ActiveRecord::Schema.define(version: 20170306085556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "activities", force: :cascade do |t|
-    t.integer  "trackable_id"
-    t.string   "trackable_type"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.string   "key"
-    t.text     "parameters"
-    t.integer  "recipient_id"
-    t.string   "recipient_type"
-    t.integer  "client_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "accounts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "weblink"
+    t.integer  "sector_id"
+    t.text     "welcome_message"
+    t.boolean  "deactivated"
+    t.datetime "deleted_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.date     "expires_on"
+    t.integer  "max_users",       default: 1
+    t.integer  "max_scorecards",  default: 1
   end
 
-  add_index "activities", ["client_id"], name: "index_activities_on_client_id", using: :btree
-  add_index "activities", ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
-  add_index "activities", ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
-  add_index "activities", ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+  create_table "accounts_users", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "account_id"
+    t.integer  "account_role", default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["account_id", "user_id"], name: "index_accounts_users_on_account_id_and_user_id", unique: true, using: :btree
+    t.index ["account_id"], name: "index_accounts_users_on_account_id", using: :btree
+    t.index ["user_id"], name: "index_accounts_users_on_user_id", using: :btree
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.string   "trackable_type"
+    t.integer  "trackable_id"
+    t.string   "owner_type"
+    t.integer  "owner_id"
+    t.string   "key"
+    t.text     "parameters"
+    t.string   "recipient_type"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id"
+    t.index ["account_id"], name: "index_activities_on_account_id", using: :btree
+    t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+    t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+    t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+  end
 
   create_table "characteristics", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.integer  "focus_area_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
     t.integer  "position"
     t.datetime "deleted_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["deleted_at"], name: "index_characteristics_on_deleted_at", using: :btree
+    t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id", using: :btree
+    t.index ["position"], name: "index_characteristics_on_position", using: :btree
   end
-
-  add_index "characteristics", ["deleted_at"], name: "index_characteristics_on_deleted_at", using: :btree
-  add_index "characteristics", ["focus_area_id"], name: "index_characteristics_on_focus_area_id", using: :btree
-  add_index "characteristics", ["position"], name: "index_characteristics_on_position", using: :btree
 
   create_table "checklist_items", force: :cascade do |t|
     t.boolean  "checked"
     t.text     "comment"
     t.integer  "characteristic_id"
     t.integer  "initiative_id"
+    t.datetime "deleted_at"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.datetime "deleted_at"
+    t.index ["characteristic_id"], name: "index_checklist_items_on_characteristic_id", using: :btree
+    t.index ["deleted_at"], name: "index_checklist_items_on_deleted_at", using: :btree
+    t.index ["initiative_id"], name: "index_checklist_items_on_initiative_id", using: :btree
   end
-
-  add_index "checklist_items", ["characteristic_id"], name: "index_checklist_items_on_characteristic_id", using: :btree
-  add_index "checklist_items", ["deleted_at"], name: "index_checklist_items_on_deleted_at", using: :btree
-  add_index "checklist_items", ["initiative_id"], name: "index_checklist_items_on_initiative_id", using: :btree
-
-  create_table "clients", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "weblink"
-    t.integer  "sector_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.text     "welcome_message"
-    t.boolean  "deactivated"
-    t.datetime "deleted_at"
-  end
-
-  add_index "clients", ["deleted_at"], name: "index_clients_on_deleted_at", using: :btree
 
   create_table "communities", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
+    t.integer  "account_id"
+    t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.datetime "deleted_at"
+    t.index ["account_id"], name: "index_communities_on_account_id", using: :btree
+    t.index ["deleted_at"], name: "index_communities_on_deleted_at", using: :btree
   end
-
-  add_index "communities", ["client_id"], name: "index_communities_on_client_id", using: :btree
-  add_index "communities", ["deleted_at"], name: "index_communities_on_deleted_at", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -101,21 +108,19 @@ ActiveRecord::Schema.define(version: 20160316141816) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "focus_area_groups", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
     t.integer  "position"
     t.datetime "deleted_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at", using: :btree
+    t.index ["position"], name: "index_focus_area_groups_on_position", using: :btree
   end
-
-  add_index "focus_area_groups", ["deleted_at"], name: "index_focus_area_groups_on_deleted_at", using: :btree
-  add_index "focus_area_groups", ["position"], name: "index_focus_area_groups_on_position", using: :btree
 
   create_table "focus_areas", force: :cascade do |t|
     t.string   "name"
@@ -125,18 +130,15 @@ ActiveRecord::Schema.define(version: 20160316141816) do
     t.datetime "updated_at",          null: false
     t.integer  "position"
     t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at", using: :btree
+    t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id", using: :btree
+    t.index ["position"], name: "index_focus_areas_on_position", using: :btree
   end
-
-  add_index "focus_areas", ["deleted_at"], name: "index_focus_areas_on_deleted_at", using: :btree
-  add_index "focus_areas", ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id", using: :btree
-  add_index "focus_areas", ["position"], name: "index_focus_areas_on_position", using: :btree
 
   create_table "initiatives", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.integer  "scorecard_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
     t.date     "started_at"
     t.date     "finished_at"
     t.boolean  "dates_confirmed"
@@ -146,61 +148,59 @@ ActiveRecord::Schema.define(version: 20160316141816) do
     t.string   "contact_website"
     t.string   "contact_position"
     t.datetime "deleted_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["deleted_at"], name: "index_initiatives_on_deleted_at", using: :btree
+    t.index ["scorecard_id"], name: "index_initiatives_on_scorecard_id", using: :btree
   end
-
-  add_index "initiatives", ["deleted_at"], name: "index_initiatives_on_deleted_at", using: :btree
-  add_index "initiatives", ["scorecard_id"], name: "index_initiatives_on_scorecard_id", using: :btree
 
   create_table "initiatives_organisations", force: :cascade do |t|
     t.integer  "initiative_id",   null: false
     t.integer  "organisation_id", null: false
     t.datetime "deleted_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["deleted_at"], name: "index_initiatives_organisations_on_deleted_at", using: :btree
+    t.index ["initiative_id", "organisation_id"], name: "index_initiatives_organisations_on_initiative_organisation_id", unique: true, using: :btree
   end
-
-  add_index "initiatives_organisations", ["deleted_at"], name: "index_initiatives_organisations_on_deleted_at", using: :btree
-  add_index "initiatives_organisations", ["initiative_id", "organisation_id"], name: "initiatives_organisations_index", unique: true, using: :btree
 
   create_table "organisations", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "account_id"
     t.integer  "sector_id"
     t.string   "weblink"
     t.datetime "deleted_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["account_id"], name: "index_organisations_on_account_id", using: :btree
+    t.index ["deleted_at"], name: "index_organisations_on_deleted_at", using: :btree
   end
-
-  add_index "organisations", ["client_id"], name: "index_organisations_on_client_id", using: :btree
-  add_index "organisations", ["deleted_at"], name: "index_organisations_on_deleted_at", using: :btree
 
   create_table "scorecards", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
     t.integer  "community_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.integer  "client_id"
+    t.integer  "account_id"
     t.integer  "wicked_problem_id"
     t.string   "shared_link_id"
     t.datetime "deleted_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["account_id"], name: "index_scorecards_on_account_id", using: :btree
+    t.index ["deleted_at"], name: "index_scorecards_on_deleted_at", using: :btree
   end
-
-  add_index "scorecards", ["client_id"], name: "index_scorecards_on_client_id", using: :btree
-  add_index "scorecards", ["deleted_at"], name: "index_scorecards_on_deleted_at", using: :btree
 
   create_table "sectors", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
+    t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.datetime "deleted_at"
   end
 
-  add_index "sectors", ["deleted_at"], name: "index_sectors_on_deleted_at", using: :btree
-  add_index "sectors", ["name"], name: "index_sectors_on_name", unique: true, using: :btree
-
   create_table "users", force: :cascade do |t|
+    t.string   "name"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -209,31 +209,27 @@ ActiveRecord::Schema.define(version: 20160316141816) do
     t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "client_id"
-    t.integer  "role",                   default: 0
-    t.string   "name"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
-    t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.integer  "invited_by_id"
     t.integer  "invitations_count",      default: 0
     t.datetime "deleted_at"
+    t.string   "profile_picture"
+    t.integer  "system_role",            default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
+    t.index ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
+    t.index ["name"], name: "index_users_on_name", using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["system_role"], name: "index_users_on_system_role", using: :btree
   end
-
-  add_index "users", ["client_id"], name: "index_users_on_client_id", using: :btree
-  add_index "users", ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
-  add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
-  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "video_tutorials", force: :cascade do |t|
     t.integer  "linked_id"
@@ -242,25 +238,23 @@ ActiveRecord::Schema.define(version: 20160316141816) do
     t.string   "name"
     t.text     "description"
     t.boolean  "promote_to_dashboard"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
     t.integer  "position"
     t.datetime "deleted_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.index ["deleted_at"], name: "index_video_tutorials_on_deleted_at", using: :btree
+    t.index ["linked_type", "linked_id"], name: "index_video_tutorials_on_linked_type_and_linked_id", using: :btree
   end
-
-  add_index "video_tutorials", ["deleted_at"], name: "index_video_tutorials_on_deleted_at", using: :btree
-  add_index "video_tutorials", ["linked_type", "linked_id"], name: "index_video_tutorials_on_linked_type_and_linked_id", using: :btree
 
   create_table "wicked_problems", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.integer  "client_id"
+    t.integer  "account_id"
+    t.datetime "deleted_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.datetime "deleted_at"
+    t.index ["account_id"], name: "index_wicked_problems_on_account_id", using: :btree
+    t.index ["deleted_at"], name: "index_wicked_problems_on_deleted_at", using: :btree
   end
-
-  add_index "wicked_problems", ["client_id"], name: "index_wicked_problems_on_client_id", using: :btree
-  add_index "wicked_problems", ["deleted_at"], name: "index_wicked_problems_on_deleted_at", using: :btree
 
 end

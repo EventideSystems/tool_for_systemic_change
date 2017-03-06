@@ -1,4 +1,5 @@
-class ChecklistItem < ActiveRecord::Base
+# frozen_string_literal: true
+class ChecklistItem < ApplicationRecord
   acts_as_paranoid
 
   include Trackable
@@ -10,7 +11,6 @@ class ChecklistItem < ActiveRecord::Base
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
   def name
-   characteristic.nil? ? '' : characteristic.name
+    characteristic.name.presence
   end
-
 end

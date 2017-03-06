@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   has_many :accounts_users
   has_many :accounts, through: :accounts_users
+  
+  accepts_nested_attributes_for :accounts_users
 
   def status
     return 'deleted' unless deleted_at.blank?

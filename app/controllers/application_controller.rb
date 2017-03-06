@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  before_filter :configure_permitted_parameters, if: :devise_controller?
+  
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
   
@@ -31,6 +33,17 @@ class ApplicationController < ActionController::Base
     redirect_back(
       fallback_location: dashboard_path, 
       alert: 'Select an account before using this feature'
+    )
+  end
+  
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:invite, 
+      keys:[
+        :email, 
+        :name, 
+        :system_role, 
+        accounts_users_attributes: [:account_id, :account_role]
+      ]
     )
   end
 

@@ -1,0 +1,20 @@
+<%= simple_form_for(@initiative, role: 'form') do |f| %>
+  <%= f.error_notification %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@initiative) %></h3>
+    </div>
+    <div class='box-body'>
+      <div class='form-group'>
+        <%= f.input :name %>
+      </div>  
+      <div class='form-group'>
+        <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+      </div>
+    </div>
+
+    <div class='box-footer'>
+      <%= f.button :submit, inpuclass: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

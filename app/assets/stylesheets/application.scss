@@ -1,0 +1,23 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import 'adminlte';
+@import 'skin-blue';
+@import 'medium-editor';
+@import 'select2';
+@import 'bootstrap-nav-wizard';
+@import 'scorecard_matrix';
+
+div.medium-editor-element {
+  height: auto;
+}
+
+.nav.nav-wizard.nav-pills {
+  margin-left: 22px;
+  margin-top: 7px;
+}
+
+.nav.nav-wizard.nav-pills > li > a{
+  border-top: 0px solid transparent;
+}

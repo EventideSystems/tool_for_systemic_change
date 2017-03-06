@@ -1,64 +1,60 @@
-class CharacteristicsController < AuthenticatedController
-  before_action :set_characteristic, only: [:show, :video_tutorial]
+class CharacteristicsController < ApplicationController
+  before_action :set_characteristic, only: [:show, :edit, :update, :destroy]
 
-  resource_description do
-    formats ['json']
-  end
-
-  api :GET, '/characteristics'
   def index
-    @characteristics = Characteristic.includes(:video_tutorials, focus_area: [:video_tutorials, :focus_area_group]).all
-
-    render json: @characteristics, include: ['videoTutorials', 'focusArea', 'focusArea.focusAreaGroup']
+    @characteristics = Characteristic.all # SMELL Too open
   end
 
-  api :GET, '/characteristics/:id'
-  param :id, :number, required: true
-  example <<-EOS
-  {
-    "data" =>
-    {
-      "id" => "5365",
-       "type" => "characteristics",
-       "attributes" => {
-         "name" => "highlight the need to organise communities differently"
-       },
-       "relationships" => {"focusArea" => {"data" => {"type" => "focus_areas", "id" => "1342"}}
-     }
-    },
-   "included" =>
-    [{"id" => "1342",
-      "type" => "focus_areas",
-      "attributes" => {"name" => "create! a disequilibrium state", "description" => nil},
-      "relationships" =>
-       {"focusAreaGroup" => {"data" => {"type" => "focus_area_groups", "id" => "448"}},
-        "characteristics" =>
-         {"data" =>
-           [ .. list of related characteristics .. ]}}},
-     {"id" => "448",
-      "type" => "focus_area_groups",
-      "attributes" => {"name" => "Unlock Complex Adaptive System Dynamics", "description" => nil},
-      "relationships" =>
-       {"focusAreas" =>
-         {"data" =>
-           [ .. list of related focus areas .. ]}}}
-    ]
-  }
-  EOS
   def show
-    render json: @characteristic, include: ['focusArea', 'focusArea.focusAreaGroup']
   end
 
-  def video_tutorial
-    @video_tutorial = @characteristic.video_tutorials.order(updated_at: :desc).first
-    render json: @video_tutorial
+  def new
+    @characteristic = Characteristic.new # SMELL Too open
+  end
+
+  def edit
+  end
+
+  def create
+    @characteristic = Characteristic.new(characteristic_params)
+
+    respond_to do |format|
+      if @characteristic.save
+        format.html { redirect_to @characteristic, notice: 'Characteristic was successfully created.' }
+        format.json { render :show, status: :created, location: @characteristic }
+      else
+        format.html { render :new }
+        format.json { render json: @characteristic.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @characteristic.update(characteristic_params)
+        format.html { redirect_to @characteristic, notice: 'Characteristic was successfully updated.' }
+        format.json { render :show, status: :ok, location: @characteristic }
+      else
+        format.html { render :edit }
+        format.json { render json: @characteristic.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @characteristic.destroy
+    respond_to do |format|
+      format.html { redirect_to characteristics_url, notice: 'Characteristic was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private
+    def set_characteristic
+      @characteristic = Characteristic.find(params[:id])
+    end
 
-  def set_characteristic
-    # SMELL
-    @characteristic = Characteristic.find(params[:id]) rescue (raise User::NotAuthorized )
-  end
-
+    def characteristic_params
+      params.fetch(:characteristic, {})
+    end
 end

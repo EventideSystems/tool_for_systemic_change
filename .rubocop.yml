@@ -1,1 +1,2 @@
-inherit_from: vendor/hound.yml
+Documentation:
+  Enabled: false

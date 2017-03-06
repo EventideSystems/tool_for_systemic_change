@@ -1,0 +1,17 @@
+default: 
+  name: System Account
+  description: Default Account
+  weblink:
+  sector_id: 1
+  welcome_message:
+  deactivated: 
+  deleted_at: 
+
+client: 
+  name: Client Account
+  description: First account owned by a client
+  weblink:
+  sector_id: 1
+  welcome_message:
+  deactivated: 
+  deleted_at: 

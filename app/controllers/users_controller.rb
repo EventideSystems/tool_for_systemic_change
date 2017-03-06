@@ -1,62 +1,65 @@
-class UsersController < AuthenticatedController
+class UsersController < ApplicationController
+  before_action :authenticate_user!
 
-  resource_description do
-    formats ['json']
-  end
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  api :GET, '/users'
   def index
-    # TODO Remove redundancies
-    query = current_user.user? ? User.where(id: current_user.id).includes(:client).all : User.where(client_id: current_client.id).includes(:client).all
-
-    @users = finder_for_pagination(query).all
-
-    render json: @users
+    @users = policy_scope(User)
   end
 
-  api :GET, '/users/:id'
-  param :id, :number, required: true
   def show
-    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
-    render json: @user
   end
 
-  api :POST, '/users/:id/resend_invitation'
-  param :id, :number, required: true
-  def resend_invitation
-    # NOTE Replace with Pundit check
-    unless current_user.staff? || current_user.admin?
-      raise User::NotAuthorized.new('Access denied')
-    end
-
-    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
-
-    unless @user.status == 'invitation-pending'
-      # NOTE Need a better error here
-      raise User::NotAuthorized.new('Cannot resend invitations to an active user')
-    end
-
-    @user.invite!(current_user)
-
-    render json: { status: :ok}
+  def new
+    @user = User.new
+    authorize @user
   end
 
-  api :DELETE, '/users/:id'
-  param :id, :number, required: true
+  def edit
+  end
+
+  def create
+    @user = User.new(user_params)
+    authorize @user
+        
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def destroy
-    # NOTE Replace with Pundit check
-    unless current_user.staff? || current_user.admin?
-      raise User::NotAuthorized.new('Access denied')
-    end
-
-    @user = current_client.users.find(params[:id]) rescue (raise User::NotAuthorized )
-
-    if @user == current_user
-      raise User::NotAuthorized.new('Cannot delete own account')
-    end
-
     @user.destroy
-
-    render json: { status: :ok}
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
+
+  private
+    def set_user
+      @user = User.find(params[:id])
+      authorize @user
+    end
+
+    def user_params
+      params.fetch(:user, {})
+    end
 end

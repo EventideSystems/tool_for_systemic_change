@@ -1,4 +1,5 @@
-class FocusAreaGroup < ActiveRecord::Base
+# frozen_string_literal: true
+class FocusAreaGroup < ApplicationRecord
   acts_as_paranoid
 
   default_scope { order(:position) }

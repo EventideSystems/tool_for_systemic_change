@@ -1,15 +1,12 @@
-class Community < ActiveRecord::Base
+# frozen_string_literal: true
+class Community < ApplicationRecord
   acts_as_paranoid
 
   include Trackable
 
-  belongs_to :client
+  belongs_to :account
   has_many :scorecards
-
-  # SMELL Dupe of scope in WickedProblem - move to a concern
-  scope :for_user, ->(user) {
-    unless user.staff?
-      where(client_id: user.client_id)
-    end
-  }
+  
+  validates :account, presence: true
+  validates :name, presence: true, uniqueness: { scope: :account_id }
 end

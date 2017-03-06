@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+community_1:
+  name: First community
+  description:
+  account: client
+  deleted_at:
+
+community_2:
+  name: Second community
+  description:
+  account: client
+  deleted_at:

@@ -1,89 +1,66 @@
-class OrganisationsController < AuthenticatedController
+class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
-  resource_description do
-    formats ['json']
-  end
-
-  rescue_from ActiveRecord::DeleteRestrictionError do |exception|
-    message = exception.message.gsub(
-      "initiative_organisations",
-      "Initiatives"
-    )
-    render json: { errors: message }, status: 403
-  end
-
-  api :GET, '/organisations'
   def index
-    query = Organisation.where(client_id: current_client.id)
-    @organisations = finder_for_pagination(query).all
-
-    render json: @organisations
+    @organisations = policy_scope(Organisation)
   end
 
-  api :GET, '/organisations/:id'
-  param :id, :number, required: true
   def show
-    render json: @organisation
   end
 
-  api :POST, '/organisations'
+  def new
+    @organisation = current_account.organisations.build
+    authorize @organisation
+  end
+
+  def edit
+  end
+
   def create
-    attributes = organisation_params[:attributes].merge(
-      client_id: current_client.id
-    )
-    @organisation = Organisation.new(attributes)
+    @organisation = current_account.organisations.build(organisation_params)
+    authorize @organisation
 
     respond_to do |format|
       if @organisation.save
-        format.json { render json: @organisation, status: :created, location: @community }
+        format.html { redirect_to @organisation, notice: 'Organisation was successfully created.' }
+        format.json { render :show, status: :created, location: @organisation }
+        format.js
       else
+        format.html { render :new }
         format.json { render json: @organisation.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
 
-  api :PUT, '/organisations'
   def update
-    attributes = organisation_params[:attributes].merge(
-      client_id: current_client.id
-    )
-
     respond_to do |format|
-      if @organisation.update(attributes)
-        format.json { render json: { status: :ok, location: @organisation } }
+      if @organisation.update(organisation_params)
+        format.html { redirect_to @organisation, notice: 'Organisation was successfully updated.' }
+        format.json { render :show, status: :ok, location: @organisation }
       else
+        format.html { render :edit }
         format.json { render json: @organisation.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /organisations/1
-  # DELETE /organisations/1.json
   def destroy
     @organisation.destroy
     respond_to do |format|
+      format.html { redirect_to organisations_url, notice: 'Organisation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-
     def set_organisation
-      @organisation = current_client.organisations.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      raise User::NotAuthorized
+      @organisation = current_account.organisations.find(params[:id])
+      authorize @organisation
     end
 
     def organisation_params
-      params.require(:data).permit(
-        attributes: [:name, :description],
-        relationships: [
-          # SMELL Not required, and we'd have to ensure it can take multiple
-          # problems
-          # wicked_problems: [data: [:id]],
-          client: [data: [:id]]
-        ]
-      )
+      params.fetch(:organisation, {}).permit(:name, :description, :weblink, :sector_id)
     end
 end

@@ -1,9 +1,0 @@
----
-rails_env: staging
-target: server
-vm_swap: 2048
-vm_ip:
-host: 188.166.241.130
-port: 22
-username: root
-server_name: 'wickedlab-staging.eventidesystems.com'

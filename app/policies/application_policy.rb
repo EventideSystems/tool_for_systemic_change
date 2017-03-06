@@ -1,9 +1,46 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  
+  class Scope
+    attr_reader :user_context, :scope
+    
+    delegate :user, :account, to: :user_context, prefix: :current
 
-  def initialize(user, record)
-    @user = user
-    @record = record
+    def initialize(user_context, scope)
+      @user_context = user_context
+      @scope = scope
+    end
+
+    def resolve
+      scope
+    end
+    
+    def resolve_to_current_account
+      scope.where(account: current_account)
+    end  
+    
+    # SMELL Move all these to a concern
+    def system_admin?
+      user_context.user.admin?
+    end
+    
+    def account_admin?(account)
+      return false unless account
+      AccountsUser.where(user: current_user, account: account).first.try(:admin?)
+    end
+  
+    def account_member?(account)
+      return false unless account
+      AccountsUser.where(user: current_user, account: account).first.try(:member?)
+    end
+  end
+  
+  attr_reader :user_context, :record
+  
+  delegate :user, :account, to: :user_context, prefix: :current
+
+  def initialize(user_context, record)
+    @user_context = user_context
+    @record       = record
   end
 
   def index?
@@ -35,50 +72,24 @@ class ApplicationPolicy
   end
 
   def scope
-    Pundit.policy_scope!(user, record.class)
+    Pundit.policy_scope!(user_context, record.class)
+  end
+  
+  def system_admin?
+    current_user.admin?
+  end
+  
+  def account_admin?(account)
+    return false unless account
+    AccountsUser.where(user: current_user, account: account).first.try(:admin?)
+  end
+  
+  def account_member?(account)
+    return false unless account
+    AccountsUser.where(user: current_user, account: account).first.try(:member?)
   end
 
-  def rails_admin?(action)
-    case action
-      when :dashboard
-        user.staff?
-      when :index
-        user.staff?
-      when :show
-        user.staff?
-      when :new
-        user.staff?
-      when :edit
-        user.staff?
-      when :destroy
-        user.staff?
-      when :export
-        user.staff?
-      when :history
-        user.staff?
-      when :show_in_app
-        user.staff?
-      when :invite_user
-        user.staff?
-      when :resend_invitation
-        user.staff?
-      when :new_client
-        user.staff?
-      else
-        raise ::Pundit::NotDefinedError, "unable to find policy #{action} for #{record}."
-    end
-  end
-
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
-    def resolve
-      scope
-    end
+  def account_any_role?(account)
+    account_admin?(account) || account_member?(account)
   end
 end

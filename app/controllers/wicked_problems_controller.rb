@@ -1,88 +1,70 @@
-class WickedProblemsController < AuthenticatedController
+class WickedProblemsController < ApplicationController
+  before_action :authenticate_user!
+  
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
-  resource_description do
-    formats ['json']
-  end
-
-  rescue_from ActiveRecord::DeleteRestrictionError do |exception|
-    message = exception.message.gsub(
-      "scorecard",
-      "Scorecard"
-    )
-    render json: { errors: message }, status: 403
-  end
-
-  api :GET, '/wicked_problems'
   def index
-    query = WickedProblem.where(client_id: current_client.id)
-
-    @wicked_problems = finder_for_pagination(query).all
-
-    render json: @wicked_problems
+    @wicked_problems = policy_scope(WickedProblem) # SMELL Restrict this to current accouht only
   end
 
-  api :GET, '/wicked_problems/:id'
-  param :id, :number, required: true
   def show
-    render json: @wicked_problem
   end
 
-  # POST /wicked_problems
-  # POST /wicked_problems.json
-  def create
-    attributes = wicked_problem_params[:attributes].merge(
-      client_id: current_client.id
-    )
-    @wicked_problem = WickedProblem.new(attributes)
+  def new
+    @wicked_problem = current_account.wicked_problems.build
+    authorize @wicked_problem
+  end
 
+  def edit
+  end
+
+  def create
+    @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
+    authorize @wicked_problem
+    
     respond_to do |format|
       if @wicked_problem.save
-        format.json { render json: @wicked_problem, status: :created, location: @community }
+        format.html { redirect_to wicked_problems_path, notice: 'Wicked problem was successfully created.' }
+        format.json { render :show, status: :created, location: @wicked_problem }
+        format.js
       else
+        format.html { render :new }
         format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
 
-  # PATCH/PUT /wicked_problems/1
-  # PATCH/PUT /wicked_problems/1.json
   def update
-    attributes = wicked_problem_params[:attributes].merge(
-      client_id: current_client.id
-    )
-
     respond_to do |format|
-      if @wicked_problem.update(attributes)
-        format.json { render json: { status: :ok, location: @wicked_problem } }
+      if @wicked_problem.update(wicked_problem_params)
+        format.html { redirect_to wicked_problems_path, notice: 'Wicked problem was successfully updated.' }
+        format.json { render :show, status: :ok, location: @wicked_problem }
       else
+        format.html { render :edit }
         format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /wicked_problems/1
-  # DELETE /wicked_problems/1.json
   def destroy
-    @wicked_problem.destroy
+    @wicked_problem.delete
+    
     respond_to do |format|
+      format.html { redirect_to wicked_problems_url, notice: 'Wicked problem was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
+
     def set_wicked_problem
-      @wicked_problem = current_client.wicked_problems.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      raise User::NotAuthorized
+      @wicked_problem = current_account.wicked_problems.find(params[:id])
+      authorize @wicked_problem
     end
 
     def wicked_problem_params
-      params.require(:data).permit(
-        attributes: [:name, :description],
-        relationships: [
-          client: [data: [:id]]
-        ]
-      )
+      params.fetch(:wicked_problem, {}).permit(:name, :description)
     end
 end

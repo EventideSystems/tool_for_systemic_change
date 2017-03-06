@@ -1,0 +1,27 @@
+<%= form.nested_fields_for :initiatives_organisations do |io| %>
+  <div class="box box-warning">
+    <div class="box-header with-border">
+      <h3 class="box-title">Organisation</h3>
+      <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+          <i class="fa fa-minus"></i>
+        </button>
+        <%= io.remove_nested_fields_link do %>
+          <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
+        <% end %>
+      </div>
+    </div>   
+    <div class="box-body">  
+      <div class="row">
+        <div class="col-md-6">
+          <%= io.input :organisation_id, collection: lookup_organisations, label: false %>
+        </div>  
+        <div class="col-md-1">
+          <%= link_to "New Organisation", new_organisation_path, remote: true, class: "btn btn-warning organisation-link" %>
+        </div>
+    </div>
+  </div>
+<% end %>
+<%= form.add_nested_fields_link :initiatives_organisations %>
+
+

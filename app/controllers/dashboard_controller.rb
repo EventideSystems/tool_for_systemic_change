@@ -1,13 +1,7 @@
-class DashboardController < AuthenticatedController
-
+class DashboardController < ApplicationController
+  
+  skip_after_action :verify_policy_scoped
+  
   def index
-
   end
-
-  def show
-    @dashboard = Dashboard.new(current_client)
-
-    render json: @dashboard, serializer: DashboardSerializer
-  end
-
 end

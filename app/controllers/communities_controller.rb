@@ -1,68 +1,55 @@
-class CommunitiesController < AuthenticatedController
+class CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
+  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
-  resource_description do
-    formats ['json']
-  end
-
-  def_param_group :community do
-    param :name, String, required: true
-    param :description, String
-  end
-
-  api :GET, '/communities'
   def index
-    query = Community.where(client_id: current_client.id)
-
-    @communities = finder_for_pagination(query).all
-
-    render json: @communities
+    @communities = policy_scope(Community)
   end
 
-  api :GET, '/communities/:id'
-  param :id, :number, required: true
   def show
-    render json: @community
   end
 
-  api :POST, '/communities'
-  param_group :community
+  def new
+    @community = current_account.communities.build
+    authorize @community 
+  end
+
+  def edit
+  end
+
   def create
-    attributes = community_params[:attributes].merge(
-      client_id: current_client.id
-    )
-    @community = Community.new(attributes)
+    @community = current_account.communities.build(community_params)
+    authorize @community
 
     respond_to do |format|
       if @community.save
-        format.json { render json: @community, status: :created, location: @community }
+        format.html { redirect_to @community, notice: 'Community was successfully created.' }
+        format.json { render :show, status: :created, location: @community }
+        format.js
       else
+        format.html { render :new }
         format.json { render json: @community.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end
 
-  api :PUT, '/communities/:id'
-  api :PATCH, '/communities/:id'
-  param_group :community
   def update
-    attributes = community_params[:attributes].merge(
-      client_id: current_client.id
-    )
-
     respond_to do |format|
-      if @community.update(attributes)
-        format.json { render json: { status: :ok, location: @community } }
+      if @community.update(community_params)
+        format.html { redirect_to @community, notice: 'Community was successfully updated.' }
+        format.json { render :show, status: :ok, location: @community }
       else
+        format.html { render :edit }
         format.json { render json: @community.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  api!
   def destroy
     @community.destroy
     respond_to do |format|
+      format.html { redirect_to communities_url, notice: 'Community was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -70,20 +57,11 @@ class CommunitiesController < AuthenticatedController
   private
 
     def set_community
-      @community = current_client.communities.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      raise User::NotAuthorized
+      @community = current_account.communities.find(params[:id])
+      authorize @community
     end
 
     def community_params
-      params.require(:data).permit(
-        attributes: [:name, :description],
-        relationships: [
-          # SMELL Not required, and we'd have to ensure it can take multiple
-          # problems
-          # wicked_problems: [data: [:id]],
-          client: [data: [:id]]
-        ]
-      )
+      params.fetch(:community, {}).permit(:name, :description)
     end
 end

@@ -6,7 +6,7 @@ class UserPolicy < ApplicationPolicy
         scope.all
       else
         # SMELL Should we be checking here to see if the user has access to this account? Probably
-        scope.where(account: user_context.account)
+        scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
       end
     end
   end

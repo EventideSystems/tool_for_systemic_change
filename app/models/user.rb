@@ -21,6 +21,7 @@ class User < ApplicationRecord
     'active'
   end
 
+  # SMELL in use?
   def default_account
     accounts_users.order(account_role: :desc).first.try(:account)
   end

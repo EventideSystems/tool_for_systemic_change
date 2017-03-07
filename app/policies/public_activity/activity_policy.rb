@@ -1,7 +1,7 @@
 class PublicActivity::ActivityPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      resolve_to_current_account
+      scope.where(account_id: current_account.id)
     end
   end
 

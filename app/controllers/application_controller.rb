@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
-  add_breadcrumb " Home", :root_path
+  add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account

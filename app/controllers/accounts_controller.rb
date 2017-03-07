@@ -1,19 +1,24 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy, :switch]
 
+  add_breadcrumb "Accounts", :accounts_path
+  
   def index
     @accounts = policy_scope(Account).page params[:page]
   end
 
   def show
+    add_breadcrumb @account.name
   end
 
   def new
     @account = Account.new(expires_on: Date.today+1.year)
     authorize @account
+    add_breadcrumb "New Account"
   end
 
   def edit
+    add_breadcrumb @account.name
   end
 
   def create

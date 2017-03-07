@@ -4,19 +4,24 @@ class WickedProblemsController < ApplicationController
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
+  add_breadcrumb "Wicked Problems", :wicked_problems_path
+  
   def index
     @wicked_problems = policy_scope(WickedProblem).page params[:page]
   end
 
   def show
+    add_breadcrumb @wicked_problem.name
   end
 
   def new
     @wicked_problem = current_account.wicked_problems.build
     authorize @wicked_problem
+    add_breadcrumb "New Wicked Problem"
   end
 
   def edit
+     add_breadcrumb @wicked_problem.name
   end
 
   def create

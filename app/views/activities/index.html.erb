@@ -1,1 +1,18 @@
-<%= resource_table :activities, [:trackable_type] %>
+<div class="box">
+  <div class='box-body no-padding'>
+  <%= table_for @activities, :table_html => { :class => "table table-striped" },
+                        :sortable => false,
+                        :data_row_html => {
+                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
+                          :id => lambda { |activity| "activity-#{activity.id}" }
+                        } do |table| %>
+    <% table.column :name %>
+    <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
+    <% table.footer do %>
+      <div class="pull-right">
+        <%= paginate @activities %>
+      </div>
+    <% end %>
+  <% end %>
+  </div>
+</div>

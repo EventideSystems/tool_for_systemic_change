@@ -69,5 +69,11 @@
       $('.cell').toggleClass('inverse');
     });
   });
+  
+  $(document).ready(function() {
+    $('a.link-disabled').click(function(event){
+      event.preventDefault(); // Prevent link from following its href
+    });
+  });
   //= require turbolinks
   //= require_tree .

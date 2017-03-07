@@ -3,7 +3,7 @@ class ScorecardsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   def index
-    @scorecards = policy_scope(Scorecard)
+    @scorecards = policy_scope(Scorecard).page params[:page]
   end
 
   def show

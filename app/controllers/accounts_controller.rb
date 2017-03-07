@@ -3,7 +3,7 @@ class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy, :switch]
 
   def index
-    @accounts = policy_scope(Account)
+    @accounts = policy_scope(Account).page params[:page]
   end
 
   def show

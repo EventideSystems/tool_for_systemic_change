@@ -49,6 +49,8 @@ gem 'simple_form'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'nested_form_fields'
+gem 'table-for'
+gem 'kaminari'
 
 
 source 'https://rails-assets.org/' do 

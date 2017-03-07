@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-
   before_action :set_account, only: [:show, :edit, :update, :destroy, :switch]
 
   def index
@@ -10,7 +9,8 @@ class AccountsController < ApplicationController
   end
 
   def new
-    @account = Account.new
+    @account = Account.new(expires_on: Date.today+1.year)
+    authorize @account
   end
 
   def edit
@@ -18,6 +18,7 @@ class AccountsController < ApplicationController
 
   def create
     @account = Account.new(account_params)
+    authorize @account
 
     respond_to do |format|
       if @account.save
@@ -54,18 +55,31 @@ class AccountsController < ApplicationController
     self.current_account = @account
     respond_to do |format|
       format.html { redirect_back(fallback_location: dashboard_path, notice: 'Account successfully switched.') }
-      format.json { render :show, status: :ok, location: @wicked_problem }
+      format.json { render :show, status: :ok, location: @account }
     end    
   end
 
   private
 
     def set_account
-      @account = policy_scope(Account).find(params[:id])
+      @account = Account.find(params[:id])
       authorize @account
     end
 
     def account_params
-      params.fetch(:account, {})
+      params.fetch(:account, {}).permit(
+        :name,
+        :description,
+        :weblink,
+        :sector_id,
+        :welcome_message,
+        :deactivated,
+        :expires_on,
+        :max_users,
+        :max_scorecards
+      )
     end
 end
+
+
+

@@ -8,6 +8,8 @@
         <%= f.input :name %>
         <%= f.input :email %>
     </div>
+    
+    <%= render 'accounts_users', form: f %>
 
     <div class='box-footer'>
       <%= f.button :submit, class: 'btn btn-primary' %>

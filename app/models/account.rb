@@ -14,5 +14,7 @@ class Account < ApplicationRecord
   has_many :scorecards
   has_many :initiatives, through: :scorecards
   has_many :wicked_problems
+  
+  validates :name, presence: true
 end
 

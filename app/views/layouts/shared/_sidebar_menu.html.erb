@@ -24,7 +24,9 @@
       <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
       <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
       <%= menu_item_tag(:users, 'user-plus', { controller: :users }) %>
-      <%= menu_item_tag(:accounts, 'user-plus', { controller: :accounts }) %>
+      <%- if policy_scope(Account).any? %>
+        <%= menu_item_tag(:accounts, 'user-plus', { controller: :accounts }) %>
+      <%- end %>  
       <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
     </ul>
   </section>

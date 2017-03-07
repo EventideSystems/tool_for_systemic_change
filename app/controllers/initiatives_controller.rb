@@ -2,7 +2,7 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: [:show, :edit, :update, :destroy]
 
   def index
-    @initiatives = policy_scope(Initiative)
+    @initiatives = policy_scope(Initiative).page params[:page]
   end
 
   def show

@@ -4,7 +4,7 @@ class VideoTutorialsController < ApplicationController
   # GET /video_tutorials
   # GET /video_tutorials.json
   def index
-    @video_tutorials = policy_scope(VideoTutorial)
+    @video_tutorials = policy_scope(VideoTutorial).page params[:page]
   end
 
   # GET /video_tutorials/1

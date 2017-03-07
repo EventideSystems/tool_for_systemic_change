@@ -75,7 +75,10 @@
     <section class="content-header">
       <%= content_title %>
         
-      <%= breadcrumb %>  
+      <%#= breadcrumb %>  
+      <ol class="breadcrumb">
+        <%= render_breadcrumbs tag: :li, separator: '' %>
+      </ol>
     </section>
 
     <section class="content">

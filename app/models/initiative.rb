@@ -17,6 +17,8 @@ class Initiative < ApplicationRecord
 
   after_create :create_checklist_items
   
+  delegate :name, to: :scorecard, prefix: true
+  
   def checklist_items_ordered_by_ordered_focus_area
     ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
      .where('checklist_items.initiative_id' => self.id)

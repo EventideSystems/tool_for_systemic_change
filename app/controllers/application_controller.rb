@@ -11,6 +11,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  
+  add_breadcrumb " Home", :root_path
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account

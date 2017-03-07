@@ -3,7 +3,7 @@ class CommunitiesController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   def index
-    @communities = policy_scope(Community)
+    @communities = policy_scope(Community).page params[:page]
   end
 
   def show

@@ -3,7 +3,7 @@ class OrganisationsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   def index
-    @organisations = policy_scope(Organisation)
+    @organisations = policy_scope(Organisation).page params[:page]
   end
 
   def show

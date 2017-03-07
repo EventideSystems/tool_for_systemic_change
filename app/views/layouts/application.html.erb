@@ -67,40 +67,14 @@
       </div>
     </nav>
   </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel" style='height:70px'>
-        <div class="xpull-left ixnfo">
-          <%= account_selector %>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">MENU</li>
-        <%= menu_item_tag(:dashboard, 'dashboard') %>
-        <%= menu_item_tag(:scorecards, 'check-square-o') %>
-        <%= menu_item_tag(:wicked_problems, 'cubes') %>
-        <%= menu_item_tag(:communities, 'group') %>
-        <%= menu_item_tag(:initiatives, 'lightbulb-o') %>
-        <%= menu_item_tag(:organisations, 'sitemap') %>
-        <%= menu_item_tag(:users, 'user-plus') %>
-        <%= menu_item_tag(:reports, 'pie-chart') %>
-        <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
-        <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
-      </ul>
-    </section>
-  </aside>
+  
+  <%= render 'layouts/shared/sidebar_menu' %>
 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <%= content_title %>
+      <%= content_for :custom_content_header %>
         
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>

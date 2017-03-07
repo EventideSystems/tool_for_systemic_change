@@ -1,20 +1,25 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: [:show, :edit, :update, :destroy]
 
+  add_breadcrumb "Initiatives", :initiatives_path
+  
   def index
     @initiatives = policy_scope(Initiative).page params[:page]
   end
 
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
+    add_breadcrumb @initiative.name
   end
 
   def new
     @initiative = Initiative.new
     authorize @initiative
+    add_breadcrumb 'New Initiative'
   end
 
   def edit
+    add_breadcrumb @initiative.name
   end
 
   def create

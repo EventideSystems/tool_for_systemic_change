@@ -2,19 +2,24 @@ class ScorecardsController < ApplicationController
   before_action :set_scorecard, only: [:show, :edit, :update, :destroy]  
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
+  add_breadcrumb "Scorecards", :scorecards_path
+  
   def index
     @scorecards = policy_scope(Scorecard).page params[:page]
   end
 
   def show
+    add_breadcrumb @scorecard.name
   end
 
   def new
     @scorecard = current_account.scorecards.build
     authorize @scorecard
+    add_breadcrumb "New Scorecard"
   end
 
   def edit
+    add_breadcrumb @scorecard.name
   end
 
   def create

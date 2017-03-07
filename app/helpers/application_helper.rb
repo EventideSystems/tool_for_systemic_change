@@ -19,5 +19,12 @@ module ApplicationHelper
     lead = resource.new_record? ? 'New' : 'Editing'
     "#{lead} #{resource.class.name.titleize}"
   end
+  
+  def action_icon(action)
+    case action.to_sym
+    when :show
+      "fa-eye"
+    end
+  end
 
 end

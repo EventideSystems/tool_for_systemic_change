@@ -5,11 +5,13 @@
   <section class="sidebar">
 
     <!-- Sidebar user panel (optional) -->
+    <%- if user_signed_in? && current_user.admin? || current_user.accounts.count > 1 %>
     <div class="user-panel" style='height:70px'>
       <div class="xpull-left ixnfo">
         <%= account_selector %>
       </div>
     </div>
+    <%- end %>  
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">

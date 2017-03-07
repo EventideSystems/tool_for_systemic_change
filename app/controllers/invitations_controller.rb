@@ -7,13 +7,13 @@ class InvitationsController < Devise::InvitationsController
   end
   
   def create
-    binding.pry
     super
   end
   
   def new
-    
-    super
+    self.resource = resource_class.new
+    authorize self.resource 
+    render :new
   end
 
 

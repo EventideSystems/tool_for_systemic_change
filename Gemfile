@@ -66,6 +66,8 @@ gem 'public_activity'
 gem 'delayed_job_active_record'
 gem 'daemons'
 
+gem 'hashie', github: 'intridea/hashie', ref: '9f965fe' # SMELL Avoid hashie spam of error logs 
+
 # Downgrading Thor. See https://github.com/erikhuda/thor/issues/538
 gem 'thor', '0.19.1'
 

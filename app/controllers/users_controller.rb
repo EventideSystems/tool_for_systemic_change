@@ -1,21 +1,25 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  
+  add_breadcrumb "Users", :users_path
 
   def index
     @users = policy_scope(User).page params[:page]
   end
 
   def show
+    add_breadcrumb @user.display_name
   end
 
   def new
     @user = User.new
     authorize @user
+    add_breadcrumb "New User"
   end
 
   def edit
+    add_breadcrumb @user.display_name
   end
 
   def create

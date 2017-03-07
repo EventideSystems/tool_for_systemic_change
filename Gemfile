@@ -51,6 +51,7 @@ gem 'mini_magick'
 gem 'nested_form_fields'
 gem 'table-for'
 gem 'kaminari'
+gem 'breadcrumbs_on_rails'
 
 
 source 'https://rails-assets.org/' do 

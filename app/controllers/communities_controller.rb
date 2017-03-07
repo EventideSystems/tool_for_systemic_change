@@ -2,19 +2,24 @@ class CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
+  add_breadcrumb "Communities", :communities_path
+  
   def index
     @communities = policy_scope(Community).page params[:page]
   end
 
   def show
+    add_breadcrumb @community.name
   end
 
   def new
     @community = current_account.communities.build
     authorize @community 
+    add_breadcrumb "New Community"
   end
 
   def edit
+    add_breadcrumb @community.name
   end
 
   def create

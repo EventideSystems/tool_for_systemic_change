@@ -2,19 +2,24 @@ class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
+  add_breadcrumb "Organisations", :organisations_path
+  
   def index
     @organisations = policy_scope(Organisation).page params[:page]
   end
 
   def show
+    add_breadcrumb @organisation.name
   end
 
   def new
     @organisation = current_account.organisations.build
     authorize @organisation
+    add_breadcrumb "New Organisation"
   end
 
   def edit
+    add_breadcrumb @organisation.name
   end
 
   def create

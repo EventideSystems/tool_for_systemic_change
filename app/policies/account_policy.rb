@@ -10,6 +10,10 @@ class AccountPolicy < ApplicationPolicy
     end
   end
 
+  def index
+    system_admin?
+  end
+  
   def show?
     system_admin? || account_any_role?(record)
   end
@@ -22,6 +26,10 @@ class AccountPolicy < ApplicationPolicy
     system_admin? || account_admin?(record)
   end
   
+  def update_protected_attributes?
+    system_admin?
+  end
+  
   def destroy?
     system_admin?
   end
@@ -29,7 +37,4 @@ class AccountPolicy < ApplicationPolicy
   def switch?
     system_admin? || account_admin?(record)
   end
-  
-
-
 end

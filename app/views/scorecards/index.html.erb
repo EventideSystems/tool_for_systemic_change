@@ -12,8 +12,8 @@
     <% table.column :name %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
     <% table.column :data => "Show", :link => true %>
-    <% table.column :data => "Modify", :link_action => :edit %>
-    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.column :data => 'Edit', :link_action => :edit %>
+    <% table.column :data => 'Delete', :link_method => :delete, :link_confirm => "Are you sure?" %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @scorecards %>

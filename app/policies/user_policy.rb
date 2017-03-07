@@ -16,7 +16,11 @@ class UserPolicy < ApplicationPolicy
   end
   
   def create?
-    system_admin? || account_admin?(user_context.account)
+    system_admin? || (account_admin?(user_context.account) && max_users_not_reached?(user_context.account))
+  end
+  
+  def invite?
+    create?
   end
   
   def update?
@@ -28,5 +32,10 @@ class UserPolicy < ApplicationPolicy
     system_admin? || account_admin?(user_context.account)
   end
   
+  def max_users_not_reached?(account)
+      return false unless account.present?
+      return true if account.max_users == 0 # NOTE magic number, meaning no limit
+      return account.users.count < account.max_users
+    end
 
 end

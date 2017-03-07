@@ -60,6 +60,10 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.fetch(:user, {})
+      params.fetch(:user, {}).permit(
+        :name,
+        :email,
+        accounts_users_attributes: [:account_id, :account_role]
+      )
     end
 end

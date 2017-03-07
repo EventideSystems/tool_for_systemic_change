@@ -22,9 +22,17 @@ class User < ApplicationRecord
     return 'invitation-pending' unless invitation_token.blank?
     'active'
   end
+  
+  def display_name
+    name.presence || email
+  end 
 
   # SMELL in use?
   def default_account
     accounts_users.order(account_role: :desc).first.try(:account)
+  end
+  
+  def primary_account_name
+    default_account.present? ? default_account.name : '<none>'
   end
 end

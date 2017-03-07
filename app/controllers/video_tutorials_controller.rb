@@ -72,6 +72,12 @@ class VideoTutorialsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def video_tutorial_params
-      params.fetch(:video_tutorial, {})
+      params.fetch(:video_tutorial, {}).permit(
+        :name,
+        :description, 
+        :link_url,
+        :position,
+        :promote_to_dashboard
+      )
     end
 end

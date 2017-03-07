@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   
-  devise_for :users, :controllers => { :invitations => 'invitations' }
+  devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
 
   resources :accounts do
     member do

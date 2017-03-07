@@ -4,9 +4,10 @@ module DashboardHelper
     controller_name = options[:controller] || resources.to_s
     
     menu_item_class = controller.controller_name == controller_name ? 'active' : ''
-
+    link_class = options[:disabled] == true ? 'link-disabled' : ''
+    
     content_tag(:li, class: menu_item_class) do
-      link_to(controller: controller_name, action: 'index') do
+      link_to({controller: controller_name, action: 'index'}, {class: link_class}) do
         concat content_tag(:i, '', class: "fa fa-#{h icon}")
         concat content_tag(:span, resources.to_s.titleize)
       end

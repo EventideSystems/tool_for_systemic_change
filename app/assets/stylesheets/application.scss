@@ -21,3 +21,8 @@ div.medium-editor-element {
 .nav.nav-wizard.nav-pills > li > a{
   border-top: 0px solid transparent;
 }
+
+.sidebar a.link-disabled {
+  color: #555;
+  opacity: .65;
+}

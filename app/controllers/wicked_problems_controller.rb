@@ -5,7 +5,7 @@ class WickedProblemsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   def index
-    @wicked_problems = policy_scope(WickedProblem) # SMELL Restrict this to current accouht only
+    @wicked_problems = policy_scope(WickedProblem).page params[:page]
   end
 
   def show

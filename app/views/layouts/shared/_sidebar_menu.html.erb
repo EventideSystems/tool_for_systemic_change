@@ -1,0 +1,31 @@
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+
+  <!-- sidebar: style can be found in sidebar.less -->
+  <section class="sidebar">
+
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel" style='height:70px'>
+      <div class="xpull-left ixnfo">
+        <%= account_selector %>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <ul class="sidebar-menu">
+      <li class="header">MENU</li>
+      <%- disabled = controller.current_account.nil? %>
+      <%= menu_item_tag(:dashboard, 'dashboard') %>
+      <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled }) %>
+      <%= menu_item_tag(:wicked_problems, 'cubes', { disabled: disabled }) %>
+      <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
+      <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>
+      <%= menu_item_tag(:organisations, 'sitemap', { disabled: disabled }) %>
+      <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
+      <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
+      <%= menu_item_tag(:users, 'user-plus', { controller: :users }) %>
+      <%= menu_item_tag(:accounts, 'user-plus', { controller: :accounts }) %>
+      <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
+    </ul>
+  </section>
+</aside>

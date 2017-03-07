@@ -9,8 +9,4 @@ class WickedProblem < ApplicationRecord
 
   validates :account, presence: true
   validates :name, presence: true, uniqueness: { scope: :account_id }
-
-  def description_summary
-    Nokogiri::HTML(description).text
-  end
 end

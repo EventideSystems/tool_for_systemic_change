@@ -5,7 +5,7 @@ class ScorecardsController < ApplicationController
   add_breadcrumb "Scorecards", :scorecards_path
   
   def index
-    @scorecards = policy_scope(Scorecard).page params[:page]
+    @scorecards = policy_scope(Scorecard).order(sort_order).page params[:page]
   end
 
   def show

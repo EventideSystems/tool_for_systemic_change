@@ -48,21 +48,30 @@ class ApplicationController < ActionController::Base
       ]
     )
   end
+  
+  protected
+  
+  def sort_order
+    return { created_at: :asc } unless params[:order].present?
+    
+    sort_mode = params[:sort_mode].blank? ? :asc : params[:sort_mode].to_sym
+    { params[:order].to_sym => sort_mode } 
+  end
 
-   private
+  private
 
-   def set_session_account_id
-     if session[:account_id].blank? && user_signed_in?
-       self.current_account = current_user.default_account
-     end
+  def set_session_account_id
+   if session[:account_id].blank? && user_signed_in?
+     self.current_account = current_user.default_account
    end
+  end
 
-   def user_not_authorized(exception)
-     policy_name = exception.policy.class.to_s.underscore
-     flash[:error] = "Access denied."
-     # TODO Would be nicer to have specific error messages, but for now just use "Access denied."
-    # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-     redirect_to(request.referrer || root_path)
-   end
+  def user_not_authorized(exception)
+   policy_name = exception.policy.class.to_s.underscore
+   flash[:error] = "Access denied."
+   # TODO Would be nicer to have specific error messages, but for now just use "Access denied."
+  # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+   redirect_to(request.referrer || root_path)
+  end
 
 end

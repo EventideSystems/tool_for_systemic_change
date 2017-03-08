@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   add_breadcrumb "Users", :users_path
 
   def index
-    @users = policy_scope(User).page params[:page]
+    @users = policy_scope(User).order(sort_order).page params[:page]
   end
 
   def show

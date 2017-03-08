@@ -7,7 +7,7 @@ class WickedProblemsController < ApplicationController
   add_breadcrumb "Wicked Problems", :wicked_problems_path
   
   def index
-    @wicked_problems = policy_scope(WickedProblem).page params[:page]
+    @wicked_problems = policy_scope(WickedProblem).order(sort_order).page params[:page]
   end
 
   def show

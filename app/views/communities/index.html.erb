@@ -4,9 +4,8 @@
   </div>
   <div class='box-body no-padding'>
   <%= table_for @communities, :table_html => { :class => "table table-striped" },
-                        :sortable => false,
-                        :data_row_html => {
-                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
+                        :sortable => true,
+                        :data_row_html => { 
                           :id => lambda { |community| "community-#{community.id}" }
                         } do |table| %>
     <% table.column :name %>

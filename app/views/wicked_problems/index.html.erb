@@ -4,9 +4,8 @@
   </div>
   <div class='box-body no-padding'>
   <%= table_for @wicked_problems, :table_html => { :class => "table table-striped" },
-                        :sortable => false,
+                        :sortable => true,
                         :data_row_html => {
-                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
                           :id => lambda { |wicked_problem| "wicked_problem-#{wicked_problem.id}" }
                         } do |table| %>
     <% table.column :name %>

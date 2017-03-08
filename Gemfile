@@ -50,7 +50,7 @@ gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'nested_form_fields'
 gem 'table-for'
-gem 'kaminari'
+gem 'kaminari-bootstrap'
 gem 'breadcrumbs_on_rails'
 
 
@@ -67,7 +67,7 @@ gem 'public_activity'
 gem 'delayed_job_active_record'
 gem 'daemons'
 
-gem 'hashie', github: 'intridea/hashie', ref: '9f965fe' # SMELL Avoid hashie spam of error logs 
+gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 
 # Downgrading Thor. See https://github.com/erikhuda/thor/issues/538
 gem 'thor', '0.19.1'

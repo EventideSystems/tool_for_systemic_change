@@ -4,7 +4,7 @@ class InitiativesController < ApplicationController
   add_breadcrumb "Initiatives", :initiatives_path
   
   def index
-    @initiatives = policy_scope(Initiative).page params[:page]
+    @initiatives = policy_scope(Initiative).order(sort_order).page params[:page]
   end
 
   def show

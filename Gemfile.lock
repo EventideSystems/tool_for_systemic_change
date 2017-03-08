@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/intridea/hashie.git
-  revision: 9f965feb3793c45007030bfb62f9df277d647a28
-  ref: 9f965fe
-  specs:
-    hashie (3.5.6)
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -104,6 +97,7 @@ GEM
       sass (>= 3.2)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    hashie (3.4.6)
     i18n (0.8.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -123,6 +117,9 @@ GEM
     kaminari-activerecord (1.0.1)
       activerecord
       kaminari-core (= 1.0.1)
+    kaminari-bootstrap (3.0.1)
+      kaminari (>= 0.13.0)
+      rails
     kaminari-core (1.0.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -300,10 +297,10 @@ DEPENDENCIES
   devise
   devise_invitable
   font-awesome-sass
-  hashie!
+  hashie (~> 3.4, < 3.5)
   jbuilder (~> 2.5)
   jquery-rails
-  kaminari
+  kaminari-bootstrap
   listen (~> 3.0.5)
   mini_magick
   minitest-reporters

@@ -4,14 +4,13 @@
   </div>
   <div class='box-body no-padding'>
   <%= table_for @initiatives, :table_html => { :class => "table table-striped" },
-                        :sortable => false,
+                        :sortable => true,
                         :data_row_html => {
-                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
                           :id => lambda { |initiative| "initiative-#{initiative.id}" }
                         } do |table| %>
     <% table.column :name %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
-    <% table.column :scorecard_name %>
+    <% table.column :scorecard_name, :sortable => false %>
     <% table.column :data => "Show", :link => true %>
     <% table.column :data => "Modify", :link_action => :edit %>
     <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>

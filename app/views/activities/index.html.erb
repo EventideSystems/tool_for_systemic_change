@@ -3,7 +3,6 @@
   <%= table_for @activities, :table_html => { :class => "table table-striped" },
                         :sortable => false,
                         :data_row_html => {
-                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
                           :id => lambda { |activity| "activity-#{activity.id}" }
                         } do |table| %>
     <% table.column :name %>

@@ -5,7 +5,7 @@ class OrganisationsController < ApplicationController
   add_breadcrumb "Organisations", :organisations_path
   
   def index
-    @organisations = policy_scope(Organisation).page params[:page]
+    @organisations = policy_scope(Organisation).order(sort_order).page params[:page]
   end
 
   def show

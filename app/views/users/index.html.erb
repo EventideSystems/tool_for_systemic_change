@@ -4,14 +4,13 @@
   </div>
   <div class='box-body no-padding'>
   <%= table_for @users, :table_html => { :class => "table table-striped" },
-                        :sortable => false,
+                        :sortable => true,
                         :data_row_html => {
-                          :xclass => lambda { cycle('success', 'error', 'warning', 'info')},
                           :id => lambda { |user| "user-#{user.id}" }
                         } do |table| %>
     <% table.column :name %>
     <% table.column :email %>
-    <% table.column :primary_account_name %>
+    <% table.column :primary_account_name, :sortable => false %>
     <% table.column :data => "Show", :link => true %>
     <% table.column :data => "Modify", :link_action => :edit %>
     <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>

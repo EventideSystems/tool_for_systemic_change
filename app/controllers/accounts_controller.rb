@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
   add_breadcrumb "Accounts", :accounts_path
   
   def index
-    @accounts = policy_scope(Account).page params[:page]
+    @accounts = policy_scope(Account).order(sort_order).page params[:page]
   end
 
   def show

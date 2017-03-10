@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
+  include PublicActivity::StoreController 
+  
   before_filter :configure_permitted_parameters, if: :devise_controller?
   
   after_action :verify_authorized, except: :index, unless: :devise_controller?

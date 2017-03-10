@@ -1,11 +1,14 @@
 <div class="box">
   <div class='box-body no-padding'>
   <%= table_for @activities, :table_html => { :class => "table table-striped" },
-                        :sortable => false,
+                        :sortable => true,
                         :data_row_html => {
                           :id => lambda { |activity| "activity-#{activity.id}" }
                         } do |table| %>
-    <% table.column :name %>
+    <% table.column :created_at, :header => "Time" %>
+    <% table.column :trackable_type %>
+   
+    <% table.column :key %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @activities %>

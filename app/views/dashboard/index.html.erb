@@ -1,2 +1,90 @@
-Dash dash dash
-<%= controller.class %>
+<div class="row">
+  <div class="col-lg-3 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-aqua">
+      <div class="inner">
+        <h3><%= @scorecard_count %></h3>
+
+        <p><%= 'Scorecard'.pluralize(@scorecard_count) %></p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-check-square-o"></i>
+      </div>
+      <%= link_to(scorecards_path, {class: 'small-box-footer'}) do
+            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
+          end
+      %>
+    </div>
+  </div>
+  <!-- ./col -->
+  <div class="col-lg-3 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-green">
+      <div class="inner">
+        <h3><%= @complete_initiatives_count %></h3>
+
+        <p><%= 'Completed Initiatives'.pluralize(@complete_initiatives_count) %></p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-lightbulb-o"></i>
+      </div>
+      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
+          end
+      %>
+    </div>
+  </div>
+  <!-- ./col -->
+  <div class="col-lg-3 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-yellow">
+      <div class="inner">
+        <h3><%= @incomplete_initiatives_count %></h3>
+
+        <p><%= 'Incomplete Initiatives'.pluralize(@complete_initiatives_count) %></p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-lightbulb-o"></i>
+      </div>
+      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
+          end
+      %>
+    </div>
+  </div>
+  <!-- ./col -->
+  <div class="col-lg-3 col-xs-6">
+    <!-- small box -->
+    <div class="small-box bg-red">
+      <div class="inner">
+        <h3><%= @overdue_initiatives_count %></h3>
+
+        <p><%= 'Overdue Initiatives'.pluralize(@overdue_initiatives_count) %></p>
+      </div>
+      <div class="icon">
+        <i class="fa fa-lightbulb-o"></i>
+      </div>
+      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
+          end
+      %>
+    </div>
+  </div>
+  <!-- ./col -->
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <i class="fa fa-warning"></i>
+
+        <h3 class="box-title">Welcome</h3>
+      </div>
+      <div class="box-body">
+        <%= sanitize @welcome_message %>
+      </div>
+    </div>
+  </div>
+  <%= render 'dashboard/activities'%>
+</div>

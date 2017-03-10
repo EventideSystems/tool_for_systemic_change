@@ -19,6 +19,21 @@ class Initiative < ApplicationRecord
   
   delegate :name, to: :scorecard, prefix: true
   
+  scope :incomplete, -> {
+    joins(:checklist_items)
+    .where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
+  }
+  
+  # SMELL Lazy way
+  scope :complete, -> {
+    where.not(id: Initiative.incomplete.pluck(:id))
+  }
+  
+  scope :overdue, -> {
+    finished_at = Initiative.arel_table[:finished_at]
+    incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
+  }
+  
   def checklist_items_ordered_by_ordered_focus_area
     ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
      .where('checklist_items.initiative_id' => self.id)

@@ -7,6 +7,7 @@
     <div class='box-body'>
       <%= f.input :name %>
       <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+      <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' } %>
       <%- if policy(@account).update_protected_attributes? %>
         <%= f.input :expires_on %>
         <%= f.input :max_users %>

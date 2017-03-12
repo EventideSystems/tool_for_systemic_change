@@ -66,6 +66,7 @@ gem 'paranoia', '~> 2.2'
 gem 'public_activity', github: 'chaps-io/public_activity', branch: '1-6-stable'
 gem 'delayed_job_active_record'
 gem 'daemons'
+gem 'mailjet'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 
@@ -73,9 +74,9 @@ gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor', '0.19.1'
 
 group :test do
-  gem 'rails-controller-testing'
-  gem 'minitest-stub_any_instance'
-  gem 'minitest-reporters'
+  gem 'cucumber-rails', :require => false
+  # database_cleaner is not required, but highly recommended
+  gem 'database_cleaner'
 end
 
 group :development, :test do
@@ -86,6 +87,8 @@ group :development, :test do
   gem 'pry-coolline'
   gem 'pry-stack_explorer'
   gem 'rubocop', require: false
+  gem 'rspec-rails', '~> 3.5'
+  gem 'factory_girl_rails'
 end
 
 group :development do

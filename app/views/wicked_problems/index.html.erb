@@ -1,7 +1,12 @@
+<% content_for :page_actions do %>
+  <%= 
+    link_to(new_wicked_problem_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Wicked Problem'])
+    end 
+  %>
+<% end %>
+
 <div class="box">
-  <div class="box-header">
-    <%= link_to "New Wicked Problem", new_wicked_problem_path, class: 'btn btn-primary' %>
-  </div>
   <div class='box-body no-padding'>
   <%= table_for @wicked_problems, :table_html => { :class => "table table-striped" },
                         :sortable => true,

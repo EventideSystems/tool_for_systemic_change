@@ -73,9 +73,9 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <%= content_title %>
-        
-      <%#= breadcrumb %>  
+      <%= content_title do %>
+        <%= content_for :page_actions %>
+      <% end %>  
       <ol class="breadcrumb">
         <%= render_breadcrumbs tag: :li, separator: '' %>
       </ol>

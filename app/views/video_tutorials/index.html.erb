@@ -1,7 +1,12 @@
- <div class="box">
-  <div class="box-header">
-    <%= link_to "New Video Tutorial", new_video_tutorial_path, class: 'btn btn-primary' %>
-  </div>
+<% content_for :page_actions do %>
+  <%= 
+    link_to(new_video_tutorial_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Video Tutorial'])
+    end 
+  %>
+<% end %>
+
+<div class="box">
   <div class='box-body no-padding'>
   <%= table_for @video_tutorials, :table_html => { :class => "table table-striped" },
                         :sortable => true,

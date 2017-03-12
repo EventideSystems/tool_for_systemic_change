@@ -16,8 +16,8 @@ module DashboardHelper
   
   def content_title
     content_tag(:h1) do
-      concat controller.controller_name.titleize 
-      # <small></small>
+      concat controller.controller_name.titleize
+      concat yield if block_given?
     end
   end
 

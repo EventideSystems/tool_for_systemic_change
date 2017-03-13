@@ -3,29 +3,34 @@
   <div class='box box-primary'>
     <div class="wizard">
       <div class='box-header with-border'>
-        <h3 class='box-title'>
-          <%= form_title(@scorecard) %>
-        </h3>
+        <div class="row">
+          <div class="col-sm-3">
+            <h3 class='box-title'>
+              <%= form_title(@scorecard) %>
+            </h3>
+          </div>
+          <div class="col-sm=9" >  
+              <ul class='nav nav-wizard' style="margin-left:12px">
+              <li>
+                <a href="#scorecard" data-toggle="tab">Scorecard</a>
+              </li>
+              <li>
+                <a href="#wicked-problem" data-toggle="tab">Wicked Problem</a>
+              </li>
+              <li>
+                <a href="#community" data-toggle="tab">Community</a>
+              </li>
+              <li>
+                <a href="#initiatives" data-toggle="tab">Initiatives</a>
+              </li>
+              <li>
+                <a href="#tab5" data-toggle="tab">Preview</a>
+              </li>
+            </ul>
+          </div>
+        </div>  
       </div>
-    
-      <ul class='nav nav-wizard'>
-        <li>
-          <a href="#scorecard" data-toggle="tab">Scorecard</a>
-        </li>
-        <li>
-          <a href="#wicked-problem" data-toggle="tab">Wicked Problem</a>
-        </li>
-        <li>
-          <a href="#community" data-toggle="tab">Community</a>
-        </li>
-        <li>
-          <a href="#initiatives" data-toggle="tab">Initiatives</a>
-        </li>
-        <li>
-          <a href="#tab5" data-toggle="tab">Preview</a>
-        </li>
-      </ul>
-    
+
       <div class='box-body'>
         <div class='form-group'>
           <div class="tab-content">
@@ -35,26 +40,26 @@
             <%= render 'scorecards/form_tabs/initiatives', form: f %>
             <%= render 'scorecards/form_tabs/preview', form: f %>
           </div>
-          <div>
-            <div class='box-footer'>  
-              <ul class="pager wizard">
-                <li class="previous first" style="display:none;">
-                  <a href="#">First</a>
-                </li>
-                <li class="previous">
-                  <a href="#">Previous</a>
-                </li>
-                <li class="next last" style="display:none;">
-                  <a href="#">Last</a>
-                </li>
-                <li class="next">
-                  <a href="#">Next</a>
-                </li>
-              </ul>
-            </div>  
-          </div>
         </div>
+      </div>
       
+      <div>
+        <div class='box-footer'>  
+          <ul class="pager wizard">
+            <li class="previous first" style="display:none;">
+              <a href="#">First</a>
+            </li>
+            <li class="previous">
+              <a href="#">Previous</a>
+            </li>
+            <li class="next last" style="display:none;">
+              <a href="#">Last</a>
+            </li>
+            <li class="next">
+              <a href="#">Next</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

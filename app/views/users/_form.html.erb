@@ -5,14 +5,16 @@
       <h3 class='box-title'><%= form_title(@user) %></h3>
     </div>
     <div class='box-body'>
-        <%= f.input :name %>
-        <%= f.input :email %>
+      <%= f.input :email %>
+      <%= f.input :name %>
+      
+      <%- if policy(User).invite_with_system_role? %>
+        <%= f.input :system_role, collection: lookup_system_roles, include_blank: false %>
+      <%- end %>  
+      <%= f.input :account_role, collection: lookup_account_roles, include_blank: false %>
     </div>
-    
-    <%= render 'accounts_users', form: f %>
-
     <div class='box-footer'>
-      <%= f.button :submit, class: 'btn btn-primary' %>
+      <%= f.button :submit, class: 'btn btn-primary pull-right' %>
     </div>
   </div>
 <% end %>

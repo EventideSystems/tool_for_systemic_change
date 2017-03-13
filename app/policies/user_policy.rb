@@ -23,6 +23,10 @@ class UserPolicy < ApplicationPolicy
     create?
   end
   
+  def invite_with_system_role?
+    invite? && system_admin?
+  end
+  
   def update?
     system_admin? || account_admin?(user_context.account)
   end

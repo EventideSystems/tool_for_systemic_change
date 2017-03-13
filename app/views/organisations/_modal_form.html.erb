@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title">New Organisation</h4>
       </div>
-      <%= simple_form_for @organisation, :remote => true, :format => :js do |f| %>
+      <%= simple_form_for @organisation, :remote => true, :format => :js, html: { class: 'form-horizontal' } do |f| %>
       <span id="error-messages"></span>
       <div class="modal-body">
         <%= f.input :name %>

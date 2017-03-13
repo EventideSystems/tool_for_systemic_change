@@ -63,6 +63,13 @@ class AccountsController < ApplicationController
       format.json { render :show, status: :ok, location: @account }
     end    
   end
+  
+  protected
+  
+  def sort_order
+    return { created_at: :desc } unless params[:order].present?
+    super
+  end
 
   private
 

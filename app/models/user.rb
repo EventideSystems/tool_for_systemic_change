@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :accounts, through: :accounts_users
   
   accepts_nested_attributes_for :accounts_users
+  
+  attr_accessor :account_role # Virtual attribute used when inviting users
 
   def status
     return 'deleted' unless deleted_at.blank?

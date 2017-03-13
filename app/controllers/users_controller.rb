@@ -20,10 +20,17 @@ class UsersController < ApplicationController
 
   def edit
     add_breadcrumb @user.display_name
+    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+    @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member' 
   end
 
   def create
     @user = User.new(user_params)
+    user_params.delete(:system_role) unless policy(User).invite_with_system_role?
+    account_role = user_params.delete(:account_role)
+    
+    @user.accounts_users.build(account: current_account, role: account_role)
+    
     authorize @user
         
     respond_to do |format|
@@ -38,6 +45,17 @@ class UsersController < ApplicationController
   end
 
   def update
+    user_params.delete(:system_role) unless policy(User).invite_with_system_role?
+    account_role = user_params.delete(:account_role)
+    
+    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+    
+    if current_account_user
+      current_account_user.update_attributes(account_role: account_role)
+    else
+      user.accounts_users.build(account: current_account, role: account_role)
+    end
+    
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -67,7 +85,8 @@ class UsersController < ApplicationController
       params.fetch(:user, {}).permit(
         :name,
         :email,
-        accounts_users_attributes: [:account_id, :account_role]
+        :system_role,
+        :account_role
       )
     end
 end

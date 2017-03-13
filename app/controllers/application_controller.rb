@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   protected
   
   def sort_order
-    return { created_at: :asc } unless params[:order].present?
+    return { created_at: :desc } unless params[:order].present?
     
     sort_mode = params[:sort_mode].blank? ? :asc : params[:sort_mode].to_sym
     { params[:order].to_sym => sort_mode } 

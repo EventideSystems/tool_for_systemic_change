@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     if current_account_user
       current_account_user.update_attributes(account_role: account_role)
     else
-      user.accounts_users.build(account: current_account, role: account_role)
+      @user.accounts_users.build(account: current_account, role: account_role)
     end
     
     respond_to do |format|

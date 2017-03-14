@@ -1,3 +1,14 @@
-// Place all the styles related to the dashboard controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// NOTE These colors are the same as for scorecard_matrix.scss
+.dashboard {
+  $colors:
+    (1 red) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
+    (5 #2E74BA) (6 #009BCC) (7 #008C8C) (8 #00CCAA)
+    (9 #1CB85D);
+
+  @each $color in $colors {
+    .color#{nth($color, 1)} {
+      background: #{nth($color, 2)};
+      color: #{nth($color, 2)};
+    }
+  }
+}

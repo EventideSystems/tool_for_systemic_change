@@ -6,9 +6,10 @@
     (9 #1CB85D);
 
   @each $color in $colors {
-    .color#{nth($color, 1)} {
+    .bg-color-#{nth($color, 1)} {
       background: #{nth($color, 2)};
-      color: #{nth($color, 2)};
+      color: #FFF;
+      opacity: .6;
     }
   }
 }

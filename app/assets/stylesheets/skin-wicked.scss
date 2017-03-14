@@ -4,7 +4,10 @@
  */
 
 $primary-color: #49C5B1;
-// Secondary color #00FFFF
+$secondary-color: #00FFFF;
+
+$primary-color-analogous-1: #499BC4; 
+$primary-color-analogous-2: #49C472;
 
 .skin-wicked .main-header .navbar {
   //background-color: #3c8dbc;
@@ -34,7 +37,7 @@ $primary-color: #49C5B1;
   color: #fff;
 }
 .skin-wicked .main-header .navbar .sidebar-toggle:hover {
-  background-color: #367fa9;
+  background-color: darken($primary-color, 20%);
 }
 @media (max-width: 767px) {
   .skin-wicked .main-header .navbar .dropdown-menu li.divider {
@@ -48,13 +51,12 @@ $primary-color: #49C5B1;
   }
 }
 .skin-wicked .main-header .logo {
-  background-color: #367fa9;
   background-color: darken($primary-color, 10%);
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-wicked .main-header .logo:hover {
-  background-color: #357ca5;
+  background-color: darken($primary-color, 20%);
 }
 .skin-wicked .main-header li.user-header {
   background-color: #3c8dbc;
@@ -82,7 +84,8 @@ $primary-color: #49C5B1;
 .skin-wicked .sidebar-menu > li.active > a {
   color: #ffffff;
   background: #1e282c;
-  border-left-color: #3c8dbc;
+//  border-left-color: #3c8dbc;
+  border-left-color: $secondary-color;
 }
 .skin-wicked .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;

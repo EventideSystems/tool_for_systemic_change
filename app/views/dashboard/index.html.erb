@@ -21,9 +21,9 @@
     <!-- small box -->
     <div class="small-box bg-green">
       <div class="inner">
-        <h3><%= @complete_initiatives_count %></h3>
+        <h3><%= @initiative_count %></h3>
 
-        <p><%= 'Completed Initiatives'.pluralize(@complete_initiatives_count) %></p>
+        <p><%= 'Initiative'.pluralize(@initiative_count) %></p>
       </div>
       <div class="icon">
         <i class="fa fa-lightbulb-o"></i>
@@ -39,14 +39,14 @@
     <!-- small box -->
     <div class="small-box bg-yellow">
       <div class="inner">
-        <h3><%= @incomplete_initiatives_count %></h3>
+        <h3><%= @wicked_problem_count %></h3>
 
-        <p><%= 'Incomplete Initiatives'.pluralize(@complete_initiatives_count) %></p>
+        <p><%= 'Wicked Problem'.pluralize(@wicked_problem_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-lightbulb-o"></i>
+        <i class="fa fa-cubes"></i>
       </div>
-      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+      <%= link_to(wicked_problems_path, {class: 'small-box-footer'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>
@@ -57,14 +57,14 @@
     <!-- small box -->
     <div class="small-box bg-red">
       <div class="inner">
-        <h3><%= @overdue_initiatives_count %></h3>
+        <h3><%= @organisation_count %></h3>
 
-        <p><%= 'Overdue Initiatives'.pluralize(@overdue_initiatives_count) %></p>
+        <p><%= 'Organisation'.pluralize(@organisation_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-lightbulb-o"></i>
+        <i class="fa fa-sitemap"></i>
       </div>
-      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+      <%= link_to(organisations_path, {class: 'small-box-footer'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>

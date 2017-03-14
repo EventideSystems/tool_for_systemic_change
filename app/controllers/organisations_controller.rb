@@ -28,7 +28,7 @@ class OrganisationsController < ApplicationController
 
     respond_to do |format|
       if @organisation.save
-        format.html { redirect_to @organisation, notice: 'Organisation was successfully created.' }
+        format.html { redirect_to organisations_path, notice: 'Organisation was successfully created.' }
         format.json { render :show, status: :created, location: @organisation }
         format.js
       else
@@ -42,7 +42,7 @@ class OrganisationsController < ApplicationController
   def update
     respond_to do |format|
       if @organisation.update(organisation_params)
-        format.html { redirect_to @organisation, notice: 'Organisation was successfully updated.' }
+        format.html { redirect_to organisations_path, notice: 'Organisation was successfully updated.' }
         format.json { render :show, status: :ok, location: @organisation }
       else
         format.html { render :edit }

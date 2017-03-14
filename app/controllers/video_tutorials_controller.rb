@@ -30,7 +30,7 @@ class VideoTutorialsController < ApplicationController
     
     respond_to do |format|
       if @video_tutorial.save
-        format.html { redirect_to @video_tutorial, notice: 'Video tutorial was successfully created.' }
+        format.html { redirect_to video_tutorials_path, notice: 'Video tutorial was successfully created.' }
         format.json { render :show, status: :created, location: @video_tutorial }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class VideoTutorialsController < ApplicationController
   def update
     respond_to do |format|
       if @video_tutorial.update(video_tutorial_params)
-        format.html { redirect_to @video_tutorial, notice: 'Video tutorial was successfully updated.' }
+        format.html { redirect_to video_tutorials_path, notice: 'Video tutorial was successfully updated.' }
         format.json { render :show, status: :ok, location: @video_tutorial }
       else
         format.html { render :edit }

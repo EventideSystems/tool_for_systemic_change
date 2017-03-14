@@ -3,7 +3,7 @@ module DashboardHelper
   def menu_item_tag(resources, icon, options={})
     controller_name = options[:controller] || resources.to_s
     
-    menu_item_class = controller.controller_name == controller_name ? 'active' : ''
+    menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
     link_class = options[:disabled] == true ? 'link-disabled' : ''
     
     content_tag(:li, class: menu_item_class) do

@@ -2,8 +2,6 @@
 class Account < ApplicationRecord
   acts_as_paranoid
 
-  include Trackable
-
   enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
   
   belongs_to :sector

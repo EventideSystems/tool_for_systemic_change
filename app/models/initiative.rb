@@ -38,8 +38,6 @@ class Initiative < ApplicationRecord
      .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
      .all
   end
-  
-  
 
   private
 

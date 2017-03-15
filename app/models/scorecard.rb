@@ -2,8 +2,6 @@
 class Scorecard < ApplicationRecord
   acts_as_paranoid
 
-  include Trackable
-
   after_initialize :ensure_shared_link_id, if: :new_record?
 
   belongs_to :community

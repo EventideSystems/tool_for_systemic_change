@@ -4,9 +4,7 @@ class User < ApplicationRecord
 
   mount_uploader :profile_picture, ProfilePictureUploader
   acts_as_paranoid
-
-  include Trackable
-
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,

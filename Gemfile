@@ -88,7 +88,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'rubocop', require: false
   gem 'rspec-rails', '~> 3.5'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', :require => false
 end
 
 group :development do

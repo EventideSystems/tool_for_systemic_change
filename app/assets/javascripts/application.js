@@ -75,5 +75,17 @@
       event.preventDefault(); // Prevent link from following its href
     });
   });
+  
+  $(document).ready(function() {
+     $('.video-tutorial-wrapper').on('click', function(e) {
+       var link = $(this).data('video-tutorial-link');
+       var title = $(this).data('video-tutorial-title');
+       
+       $('.modal').find(".modal-title").text(title);
+       $('.modal').find(".modal-body").load(link);
+       $('.modal').modal('show');
+       e.preventDefault();
+     });
+  });
   //= require turbolinks
   //= require_tree .

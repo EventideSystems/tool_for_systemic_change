@@ -12,4 +12,9 @@
       opacity: .6;
     }
   }
+  
+  .scrollable-panel {
+    overflow-y: scroll; 
+    height: 250px
+  }
 }

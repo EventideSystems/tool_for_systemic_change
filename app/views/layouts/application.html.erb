@@ -37,32 +37,32 @@
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Contacts</a>
+                    <%= link_to 'Profile', user_path(current_user) %>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Settings</a>
+                    
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Account</a>
+                    <%- if controller.current_account.present? %>
+                      <%= link_to 'Account', account_path(controller.current_account) %>
+                    <%- end %>  
                   </div>
                 </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
-                </div>
                 <div class="pull-right">
                   <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'btn btn-default btn-flat' %>
                 </div>
               </li>
             </ul>
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+          <%- if current_user.admin? %>
+            <li>
+              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+          <%- end %>
         </ul>
       </div>
     </nav>
@@ -166,6 +166,6 @@
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-
+  <%= render 'layouts/shared/modal' %>
 </body>
 </html>

@@ -10,6 +10,7 @@ class VideoTutorialsController < ApplicationController
   # GET /video_tutorials/1
   # GET /video_tutorials/1.json
   def show
+    render layout: false
   end
 
   # GET /video_tutorials/new

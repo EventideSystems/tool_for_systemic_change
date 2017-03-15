@@ -9,7 +9,17 @@ $secondary-color: #00FFFF;
 $primary-color-analogous-1: #499BC4; 
 $primary-color-analogous-2: #49C472;
 
-//00b9f2
+$primary-button-color: #00b9f2;
+
+.btn-primary {
+  background-color: $primary-button-color;
+  border-color: lighten($primary-button-color, 5%);
+}
+
+.btn-primary:hover {
+  background-color: darken($primary-button-color, 5%);
+  border-color: darken($primary-button-color, 5%);
+}
 
 .skin-wicked .main-header .navbar {
   //background-color: #3c8dbc;
@@ -61,7 +71,7 @@ $primary-color-analogous-2: #49C472;
   background-color: darken($primary-color, 20%);
 }
 .skin-wicked .main-header li.user-header {
-  background-color: #3c8dbc;
+  background-color: $primary-color;
 }
 .skin-wicked .content-header {
   background: transparent;

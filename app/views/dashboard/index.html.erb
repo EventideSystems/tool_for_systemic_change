@@ -73,18 +73,29 @@
   <!-- ./col -->
 </div>
 
-<div class="row">
+<div class="row dashboard">
   <div class="col-md-6">
     <div class="box box-default">
       <div class="box-header with-border">
-        <i class="fa fa-warning"></i>
+        <i class="fa fa-exclamation"></i>
 
         <h3 class="box-title">Welcome</h3>
       </div>
-      <div class="box-body">
+      <div class="box-body scrollable-panel">
         <%= sanitize @welcome_message %>
+      </div>
+      <div class="box-footer">
+        <%= link_to(activities_path, {class: 'pull-right'}) do
+          safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
+        end %>
       </div>
     </div>
   </div>
   <%= render 'dashboard/activities'%>
+</div>
+
+<div class="row">
+  <%- @video_tutorials.each do |video_tutorial| %>
+    <%= render partial: 'video_tutorial_thumbnail', locals: { video_tutorial: video_tutorial }%>
+  <%- end %>
 </div>

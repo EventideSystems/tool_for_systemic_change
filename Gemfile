@@ -63,7 +63,7 @@ source 'https://rails-assets.org/' do
 end
 
 gem 'paranoia', '~> 2.2'
-gem 'public_activity', github: 'chaps-io/public_activity', branch: '1-6-stable'
+gem 'public_activity', require: false, github: 'chaps-io/public_activity', branch: '1-6-stable'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'mailjet'

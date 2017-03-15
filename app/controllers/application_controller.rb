@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  include PublicActivity::StoreController 
+  include PublicActivity::StoreController
   
   before_filter :configure_permitted_parameters, if: :devise_controller?
   
@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def current_account
     account_id = session[:account_id]
     
-    account_id.present? ? Account.find(account_id) : nil
+    account_id.present? ? Account.where(id: account_id).first : nil
   end
   
   def current_account=(account)

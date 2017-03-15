@@ -1,11 +1,11 @@
 <div class="col-md-6">
   <div class="box box-default">
     <div class="box-header with-border">
-      <i class="fa fa-warning"></i>
+      <i class="fa fa-history"></i>
 
       <h3 class="box-title">Recent Activity</h3>
     </div>
-    <div class="box-body">
+    <div class="box-body scrollable-panel">
       <ul>
         <%- @recent_activities.each do |activity| %>
           <li><%= "#{activity.created_at} #{activity.key}" %></li>  

@@ -31,3 +31,22 @@ div.medium-editor-element {
 .content-header:first-child a.btn {
   margin-left: 20px;
 }
+
+
+.video-tutorial-wrapper{
+  display:inline-block;
+  position:relative;
+}
+.video-tutorial-wrapper:after{ /* I have higher Z-index so I can catch the click! Yey */
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+}
+
+.video-tutorial-wrapper iframe{
+  vertical-align:top;
+}

@@ -2,8 +2,6 @@
 class Organisation < ApplicationRecord
   acts_as_paranoid
 
-  include Trackable
-
   belongs_to :account
   belongs_to :sector
   has_many :initiative_organisations, dependent: :restrict_with_exception

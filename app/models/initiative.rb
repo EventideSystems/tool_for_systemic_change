@@ -2,8 +2,6 @@
 class Initiative < ApplicationRecord
   acts_as_paranoid
 
-  include Trackable
-
   belongs_to :scorecard
   has_many :initiatives_organisations, dependent: :destroy
   has_many :organisations, through: :initiatives_organisations

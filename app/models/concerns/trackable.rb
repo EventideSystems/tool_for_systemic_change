@@ -3,8 +3,7 @@ module Trackable
   extend ActiveSupport::Concern
 
   included do
-    include PublicActivity::Model
-
+    
     tracked owner: proc { |controller, _model|
       controller ? controller.current_user : nil
     }

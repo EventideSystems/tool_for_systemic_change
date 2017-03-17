@@ -85,9 +85,9 @@
         <%= sanitize @welcome_message %>
       </div>
       <div class="box-footer">
-        <%= link_to(activities_path, {class: 'pull-right'}) do
+        <%= link_to(welcome_message_path, class: 'remote-link pull-right') do
           safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-        end %>
+        end %>        
       </div>
     </div>
   </div>

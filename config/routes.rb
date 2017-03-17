@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :sectors
   resources :users
   resources :video_tutorials
+  resource :welcome_message, only: [:show]
   resources :wicked_problems
 
   

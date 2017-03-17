@@ -63,6 +63,7 @@ class AccountsController < ApplicationController
       format.json { render :show, status: :ok, location: @account }
     end    
   end
+
   
   protected
   

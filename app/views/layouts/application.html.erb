@@ -30,21 +30,22 @@
                 <img src="<%= current_user.profile_picture_url %>" class="img-circle" alt="User Image">
                 <p>
                   <%= current_user_name %>
-                  <small><%#= current_user_membership_summary %>Member since Nov. 2016</small>
+                  <small><%= current_user_membership_summary %></small>
                 </p>
               </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <%= link_to 'Profile', user_path(current_user) %>
+                    <%= link_to 'Profile', edit_user_path(current_user) %>
                   </div>
                   <div class="col-xs-4 text-center">
                     
                   </div>
                   <div class="col-xs-4 text-center">
-                    <%- if controller.current_account.present? %>
-                      <%= link_to 'Account', account_path(controller.current_account) %>
+                    <%- if current_account.present? %>
+                      <%- path = policy(current_account).edit? ? edit_account_path(current_account) : account_path(current_account) %>
+                      <%= link_to 'Account', path %>
                     <%- end %>  
                   </div>
                 </div>

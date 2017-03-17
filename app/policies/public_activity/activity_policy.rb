@@ -8,5 +8,4 @@ class PublicActivity::ActivityPolicy < ApplicationPolicy
       end
     end
   end
-
 end

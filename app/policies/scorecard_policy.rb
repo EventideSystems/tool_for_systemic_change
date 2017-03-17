@@ -10,7 +10,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
   
   def create?
-    system_admin? || (account_admin?(record.account) && max_scorecards_not_reached?(record.account))
+    system_admin? || (current_account_admin? && max_scorecards_not_reached?(user_context.account))
   end
   
   def update?

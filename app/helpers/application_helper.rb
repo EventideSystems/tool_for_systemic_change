@@ -26,5 +26,9 @@ module ApplicationHelper
       "fa-eye"
     end
   end
+  
+  def current_account
+    controller.current_account
+  end
 
 end

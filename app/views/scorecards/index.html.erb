@@ -1,7 +1,9 @@
 <% content_for :page_actions do %>
-  <%= 
-    link_to(new_scorecard_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Scorecard'])
+  <%=
+    if policy(Scorecard).create?  
+      link_to(new_scorecard_path, class: 'btn btn-primary') do
+        safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Scorecard'])
+      end
     end 
   %>
 <% end %>

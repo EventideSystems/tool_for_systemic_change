@@ -8,7 +8,7 @@ module UsersHelper
   
   def current_user_membership_summary
     return '' unless user_signed_in?
-    "Member since #{current_user.created_at}"
+    "Member since #{current_user.created_at.strftime('%b. %Y')}"
   end
   
 end

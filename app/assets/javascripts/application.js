@@ -79,13 +79,27 @@
   $(document).ready(function() {
      $('.video-tutorial-wrapper').on('click', function(e) {
        var link = $(this).data('video-tutorial-link');
-       var title = $(this).data('video-tutorial-title');
-       
-       $('.modal').find(".modal-title").text(title);
-       $('.modal').find(".modal-body").load(link);
+       $('.modal').find(".modal-content").load(link);
        $('.modal').modal('show');
        e.preventDefault();
      });
   });
+  
+  
+  $(document).ready(function() {
+     $('.remote-link').on('click', function(e) {
+       var link = $(this).attr('href');
+       $('.modal').find(".modal-content").load(link);
+       $('.modal').modal('show');
+       e.preventDefault();
+     });
+  });
+  
+  $(document).ready(function() {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+      $(this).find('iframe').removeAttr('src');
+    });
+  });
+  
   //= require turbolinks
   //= require_tree .

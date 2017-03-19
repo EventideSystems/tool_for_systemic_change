@@ -7,4 +7,8 @@ class ActivitiesController < ApplicationController
     @activities = policy_scope(PublicActivity::Activity).order(sort_order).page params[:page]
   end
 
+  def sort_order
+    return { created_at: :desc } unless params[:order].present?
+    super
+  end
 end

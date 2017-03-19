@@ -51,10 +51,6 @@ div.medium-editor-element {
   vertical-align:top;
 }
 
-//.nav-wizard li:first a {
-//  margin-left: 22px;
-//}
-
-.required abbr[data-original-title] {
-  border-bottom-style: none
+abbr[title=required] {
+ border-bottom-style: none;
 }

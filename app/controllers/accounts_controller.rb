@@ -8,6 +8,7 @@ class AccountsController < ApplicationController
   end
 
   def show
+    @account.readonly!
     add_breadcrumb @account.name
   end
 

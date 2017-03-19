@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_account_role, only: [:show, :edit]
   
   add_breadcrumb "Users", :users_path
 
@@ -9,6 +10,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user.readonly!
     add_breadcrumb @user.display_name
   end
 
@@ -20,8 +22,7 @@ class UsersController < ApplicationController
 
   def edit
     add_breadcrumb @user.display_name
-    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
-    @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member' 
+    
   end
 
   def create
@@ -76,17 +77,23 @@ class UsersController < ApplicationController
   end
 
   private
-    def set_user
-      @user = User.find(params[:id])
-      authorize @user
-    end
+  
+  def set_account_role
+    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+    @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member' 
+  end
+  
+  def set_user
+    @user = User.find(params[:id])
+    authorize @user
+  end
 
-    def user_params
-      params.fetch(:user, {}).permit(
-        :name,
-        :email,
-        :system_role,
-        :account_role
-      )
-    end
+  def user_params
+    params.fetch(:user, {}).permit(
+      :name,
+      :email,
+      :system_role,
+      :account_role
+    )
+  end
 end

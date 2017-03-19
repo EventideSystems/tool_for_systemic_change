@@ -1,4 +1,19 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_community_path(@community) %> |
-<%= link_to 'Back', communities_path %>
+<%= simple_form_for(@community, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@community) %></h3>
+    </div>
+    <div class='box-body'>
+      <%= f.input :name, readonly: true, required: false %>
+      <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
+      <hr> 
+      <%= f.input :created_at, as: :string, readonly: true %>
+      <%= f.input :updated_at, as: :string, readonly: true %>
+    </div>
+    <%- if policy(@community).edit? %>
+      <div class='box-footer'>
+        <%= link_to 'Edit Community', edit_community_path(@community), class: 'btn btn-primary pull-right' %> 
+      </div>
+    <%- end %>
+  </div>
+<% end %>

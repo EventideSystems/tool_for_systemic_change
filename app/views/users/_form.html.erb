@@ -7,11 +7,12 @@
     <div class='box-body'>
       <%= f.input :email %>
       <%= f.input :name %>
-      
-      <%- if policy(User).invite_with_system_role? %>
-        <%= f.input :system_role, collection: lookup_system_roles, include_blank: false %>
-      <%- end %>  
+      <hr>
+      <%= f.input :system_role, collection: lookup_system_roles, include_blank: false %>
       <%= f.input :account_role, collection: lookup_account_roles, include_blank: false %>
+      <hr> 
+      <%= f.input :created_at, as: :string, readonly: true %>
+      <%= f.input :updated_at, as: :string, readonly: true %>
     </div>
     <div class='box-footer'>
       <%= f.button :submit, class: 'btn btn-primary pull-right' %>

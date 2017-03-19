@@ -7,7 +7,7 @@
     <div class='box-body'>
       <%= f.input :name %>
       <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-      <%= f.input :sector, collection: Sector.all %>
+      <%= f.association :sector, collection: Sector.all %>
       <%= f.input :weblink %>
     </div>  
     <div class='box-footer'>

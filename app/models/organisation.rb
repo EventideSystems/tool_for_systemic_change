@@ -10,4 +10,5 @@ class Organisation < ApplicationRecord
   validates :account, presence: true
   validates :name, presence: true, uniqueness: { scope: :account_id }
 
+  delegate :name, to: :sector, prefix: true
 end

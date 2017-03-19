@@ -1,0 +1,14 @@
+<div class="box">
+  <div class='box-body no-padding'>
+  <%= table_for @search_results, :table_html => { :class => "table table-striped" },
+                        :sortable => true,
+                        :data_row_html => {
+                          :id => lambda { |search_result| "search_result-#{search_result.name}" }
+                        } do |table| %>
+    <% table.column :type, :sortable => false, :formatter => lambda { |type| type.name.humanize } %>
+    <% table.column :name, :sortable => false %>
+    <% table.column :description, :sortable => false, :formatter => lambda { |description| Nokogiri::HTML(description).text}  %>
+    <% table.column :data => "Show", :link_url => lambda { |search_result| search_result.path } %>
+  <% end %>
+  </div>
+</div>

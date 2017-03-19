@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   end
   
   resources :characteristics
-  
   resources :communities
   resources :focus_area_groups
   resources :focus_areas
@@ -24,7 +23,8 @@ Rails.application.routes.draw do
   resources :video_tutorials
   resource :welcome_message, only: [:show]
   resources :wicked_problems
-
+  
+  resources :search_results, only: [:index, :show]
   
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'

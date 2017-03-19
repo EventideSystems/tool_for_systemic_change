@@ -8,7 +8,13 @@ class SearchResultsController < ApplicationController
     query = params[:query].present? ? "%#{params[:query]}%" : ''
     
     @search_results = []
-    
+
+    policy_scope(WickedProblem)
+      .where('name ILIKE ? OR description ILIKE ?', query, query)
+      .each_with_object(@search_results) do |value, memo| 
+        memo << SearchResult.new(value.class, value.name, value.description, wicked_problem_path(value))
+      end
+          
     policy_scope(Scorecard)
       .where('name ILIKE ? OR description ILIKE ?', query, query)
       .each_with_object(@search_results) do |value, memo| 
@@ -44,7 +50,6 @@ class SearchResultsController < ApplicationController
       .each_with_object(@search_results) do |value, memo| 
         memo << SearchResult.new(value.class, value.name, value.email, user_path(value))
       end
-        
   end
 
 end

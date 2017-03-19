@@ -16,8 +16,12 @@ module ApplicationHelper
   end
   
   def form_title(resource)
-    lead = resource.new_record? ? 'New' : 'Editing'
-    "#{lead} #{resource.class.name.titleize}"
+    "#{form_title_lead(resource)}#{resource.class.name.titleize}"
+  end
+  
+  def form_title_lead(resource)
+    return '' if resource.readonly?
+    resource.new_record? ? 'New ' : 'Editing '
   end
   
   def action_icon(action)

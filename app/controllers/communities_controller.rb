@@ -9,6 +9,7 @@ class CommunitiesController < ApplicationController
   end
 
   def show
+    @community.readonly!
     add_breadcrumb @community.name
   end
 

@@ -1,4 +1,22 @@
-<p id="notice"><%= notice %></p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= simple_form_for(@user, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@user) %></h3>
+    </div>
+    <div class='box-body'>
+      <%= f.input :email, required: false, readonly: true %>
+      <%= f.input :name, readonly: true %>
+      <hr>
+      <%= f.input :system_role, as: :string, readonly: true %>
+      <%= f.input :account_role, as: :string, readonly: true %>
+      <hr> 
+      <%= f.input :created_at, as: :string, readonly: true %>
+      <%= f.input :updated_at, as: :string, readonly: true %>
+    </div>
+    <%- if policy(@user).edit? %>
+      <div class='box-footer'>
+        <%= link_to 'Edit User', edit_user_path(@user), class: 'btn btn-primary pull-right' %> 
+      </div>
+    <%- end %>
+  </div>
+<% end %>

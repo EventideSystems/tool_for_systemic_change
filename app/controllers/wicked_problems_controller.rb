@@ -11,6 +11,7 @@ class WickedProblemsController < ApplicationController
   end
 
   def show
+    @wicked_problem.readonly!
     add_breadcrumb @wicked_problem.name
   end
 

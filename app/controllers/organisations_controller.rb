@@ -9,6 +9,7 @@ class OrganisationsController < ApplicationController
   end
 
   def show
+    @organisation.readonly!
     add_breadcrumb @organisation.name
   end
 

@@ -15,6 +15,7 @@ class ScorecardsController < ApplicationController
   def new
     @scorecard = current_account.scorecards.build
     authorize @scorecard
+    @scorecard.initiatives.build
     add_breadcrumb "New Scorecard"
   end
 

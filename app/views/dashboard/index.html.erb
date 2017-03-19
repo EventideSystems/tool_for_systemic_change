@@ -98,4 +98,18 @@
   <%- @video_tutorials.each do |video_tutorial| %>
     <%= render partial: 'video_tutorial_thumbnail', locals: { video_tutorial: video_tutorial }%>
   <%- end %>
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="info-box">
+      <%= link_to video_tutorials_path do %>
+      <span class="info-box-icon bg-green"><i class="fa fa-youtube-play"></i></span>
+
+      <div class="info-box-content">
+        <span class="info-box-text">All tutorials</span>
+        <span class="info-box-link">View All</span>
+      </div>
+      <% end %>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
 </div>

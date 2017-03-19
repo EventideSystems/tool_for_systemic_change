@@ -12,6 +12,27 @@
       </div>
     </div>
     <%- end %>  
+    
+    <%= form_tag search_results_path, class: 'sidebar-form', method: :get do %>
+      <div class="input-group">
+        <%= text_field_tag :query, nil, class: 'form-control', placeholder: 'Search...' %>
+        <span class="input-group-btn">
+          <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    <% end %>
+    
+    
+    <!-- <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search...">
+                  <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                    </button>
+                  </span>
+            </div>
+          </form> -->
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">

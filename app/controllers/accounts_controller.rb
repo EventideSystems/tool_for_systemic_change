@@ -66,11 +66,6 @@ class AccountsController < ApplicationController
 
   
   protected
-  
-  def sort_order
-    return { created_at: :desc } unless params[:order].present?
-    super
-  end
 
   private
 

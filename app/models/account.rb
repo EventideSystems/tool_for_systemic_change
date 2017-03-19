@@ -14,5 +14,11 @@ class Account < ApplicationRecord
   has_many :wicked_problems
   
   validates :name, presence: true
+  
+  def accounts_users_remaining
+    return :unlimited if max_users == 0 
+    max_users - accounts_users.count
+  end
+  
 end
 

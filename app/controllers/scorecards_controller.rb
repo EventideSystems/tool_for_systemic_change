@@ -29,7 +29,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        format.html { redirect_to scorecards_path, notice: 'Scorecard was successfully created.' }
+        format.html { redirect_to scorecard_path(@scorecard), notice: 'Scorecard was successfully created.' }
         format.json { render :show, status: :created, location: @scorecard }
       else
         format.html { render :new }

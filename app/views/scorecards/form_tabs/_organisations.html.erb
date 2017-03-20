@@ -1,3 +1,5 @@
+<label class="col-sm-3 control-label select">Assign Organisations</label> 
+<div class="col-md-9">  
 <%= form.nested_fields_for :initiatives_organisations do |io| %>
   <div class="box box-warning">
     <div class="box-header with-border">
@@ -12,17 +14,15 @@
       </div>
     </div>   
     <div class="box-body">  
-      <div class="row"> 
-        <div class="col-md-6">
-          <%= io.input :organisation_id, collection: lookup_organisations, label: false %>
-        </div>  
-        <div class="col-md-1">
-          <%= link_to "New Organisation", new_organisation_path, remote: true, class: "btn btn-warning organisation-link" %>
-        </div>
-      </div>  
+      <%= io.input :organisation_id, collection: lookup_organisations, label: 'Select an Organisation' %>
+      <hr>
+      <label class="col-sm-3 control-label select">Or</label>
+      <div class="col-sm-9">
+        <%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-success organisation-link" %>
+      </div>
     </div>
   </div>
 <% end %>
-<%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-success pull-right' %>
-
+<%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-primary pull-right' %>
+</div>
 

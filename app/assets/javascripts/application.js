@@ -48,7 +48,8 @@
 
   $(document).ready(function() {
     $(document).on('click', '.organisation-link', function() {
-      $(this).parent().parent().children('.col-md-6').children('.select').children('div.col-sm-9').children('select').attr('current', true);
+      $(this).parent().parent().find('select').attr('current', true);
+      // $(this).parent().parent().children('.col-md-6').children('.select').children('div.col-sm-9').children('select').attr('current', true);
     });
   });
     

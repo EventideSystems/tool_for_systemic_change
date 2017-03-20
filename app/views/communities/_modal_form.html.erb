@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title">New Community</h4>
       </div>
-      <%= simple_form_for @community, :remote => true, :format => :js do |f| %>
+      <%= simple_form_for @community, :remote => true, html: { class: 'form-horizontal' }, :format => :js do |f| %>
       <span id="error-messages"></span>
       <div class="modal-body">
         <%= f.input :name %>
@@ -13,7 +13,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <%= f.submit class: 'btn btn-primary' %>
+        <%= f.submit class: 'btn btn-success' %>
       </div>
       <% end %>
     </div>

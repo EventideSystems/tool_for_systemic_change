@@ -1,6 +1,7 @@
 <div class="tab-pane" id="initiatives">
+  <div class="col-md-12"> 
   <%= form.nested_fields_for :initiatives do |i| %>
-    <!-- <div class="box box-default"> -->
+    <div class="box box-default">
       <div class="box-header with-border">
         <h3 class="box-title">Initiative</h3>
 
@@ -16,23 +17,21 @@
       <div class="box-body">
         <%= i.input :name %>
         <%= i.input :description %>
-        <hr />
-
-            <%= render 'scorecards/form_tabs/organisations', form: i %>
-  
-        <hr />
+        <hr>
+        <%= render 'scorecards/form_tabs/organisations', form: i %>
+        <hr>
         <%= i.input :started_at %>
         <%= i.input :finished_at %>
-        <hr />
+        <hr>
         <%= i.input :contact_name %>
         <%= i.input :contact_email %>
         <%= i.input :contact_website %>
         <%= i.input :contact_position %>
        
       </div>
-    <!-- </div> -->
+    </div>
   <% end %>
   <hr />
-  <%= form.add_nested_fields_link :initiatives, 'Add Additional Initiative', class: 'btn btn-success pull-right' %>
-
+  <%= form.add_nested_fields_link :initiatives, 'Add Additional Initiative', class: 'btn btn-primary pull-right' %>
+  </div>
 </div>

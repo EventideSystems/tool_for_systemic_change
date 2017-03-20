@@ -2,14 +2,15 @@ class CharacteristicsController < ApplicationController
   before_action :set_characteristic, only: [:show, :edit, :update, :destroy]
 
   def index
-    @characteristics = Characteristic.all # SMELL Too open
+    @characteristics = policy_scope(Characteristic).order(sort_order).page params[:page]
   end
 
   def show
   end
 
   def new
-    @characteristic = Characteristic.new # SMELL Too open
+    @characteristic = Characteristic.new 
+    authorize @characteristic
   end
 
   def edit
@@ -17,10 +18,11 @@ class CharacteristicsController < ApplicationController
 
   def create
     @characteristic = Characteristic.new(characteristic_params)
-
+    authorize @characteristic
+    
     respond_to do |format|
       if @characteristic.save
-        format.html { redirect_to @characteristic, notice: 'Characteristic was successfully created.' }
+        format.html { redirect_to characteristics_path, notice: 'Characteristic was successfully created.' }
         format.json { render :show, status: :created, location: @characteristic }
       else
         format.html { render :new }
@@ -32,7 +34,7 @@ class CharacteristicsController < ApplicationController
   def update
     respond_to do |format|
       if @characteristic.update(characteristic_params)
-        format.html { redirect_to @characteristic, notice: 'Characteristic was successfully updated.' }
+        format.html { redirect_to characteristics_path, notice: 'Characteristic was successfully updated.' }
         format.json { render :show, status: :ok, location: @characteristic }
       else
         format.html { render :edit }
@@ -52,9 +54,10 @@ class CharacteristicsController < ApplicationController
   private
     def set_characteristic
       @characteristic = Characteristic.find(params[:id])
+      authorize @characteristic
     end
 
     def characteristic_params
-      params.fetch(:characteristic, {})
+      params.fetch(:characteristic, {}).permit(:name, :description, :focus_area_id, :position)
     end
 end

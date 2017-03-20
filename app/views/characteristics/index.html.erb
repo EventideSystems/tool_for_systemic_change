@@ -14,7 +14,7 @@
                           :id => lambda { |characteristic| "characteristic-#{characteristic.id}" }
                         } do |table| %>
     <% table.column :name %>
-    <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
+    <% table.column :description %>
     <% table.column :focus_area, :formatter => lambda { |focus_area| focus_area.name } %>
     <% table.column :created_at %>
     <% table.column :data => "Show", :link => true %>

@@ -1,25 +1,29 @@
-<p id="notice"><%= notice %></p>
+<% content_for :page_actions do %>
+  <%= 
+    link_to(new_focus_area_group_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Focus Area Group'])
+    end 
+  %>
+<% end %>
 
-<h1>Focus Area Groups</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @focus_area_groups.each do |focus_area_group| %>
-      <tr>
-        <td><%= link_to 'Show', focus_area_group %></td>
-        <td><%= link_to 'Edit', edit_focus_area_group_path(focus_area_group) %></td>
-        <td><%= link_to 'Destroy', focus_area_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="box">
+  <div class='box-body no-padding'>
+  <%= table_for @focus_area_groups, :table_html => { :class => "table table-striped" },
+                        :sortable => true,
+                        :data_row_html => {
+                          :id => lambda { |focus_area_group| "focus_area_group-#{focus_area_group.id}" }
+                        } do |table| %>
+    <% table.column :name %>
+    <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
+    <% table.column :created_at %>
+    <% table.column :data => "Show", :link => true %>
+    <% table.column :data => "Modify", :link_action => :edit %>
+    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.footer do %>
+      <div class="pull-right">
+        <%= paginate @focus_area_groups %>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Focus Area Group', new_focus_area_group_path %>
+  <% end %>
+  </div>
+</div>

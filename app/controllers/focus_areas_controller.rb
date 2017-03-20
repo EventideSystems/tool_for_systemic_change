@@ -1,34 +1,30 @@
 class FocusAreasController < ApplicationController
   before_action :set_focus_area, only: [:show, :edit, :update, :destroy]
 
-  # GET /focus_areas
-  # GET /focus_areas.json
+  add_breadcrumb "System", :focus_areas_path
+  
   def index
-    @focus_areas = FocusArea.all
+    @focus_areas = policy_scope(FocusArea).order(sort_order).page params[:page]
   end
 
-  # GET /focus_areas/1
-  # GET /focus_areas/1.json
   def show
   end
 
-  # GET /focus_areas/new
   def new
     @focus_area = FocusArea.new
+    authorize @focus_area
   end
 
-  # GET /focus_areas/1/edit
   def edit
   end
 
-  # POST /focus_areas
-  # POST /focus_areas.json
   def create
     @focus_area = FocusArea.new(focus_area_params)
+    authorize @focus_area
 
     respond_to do |format|
       if @focus_area.save
-        format.html { redirect_to @focus_area, notice: 'Focus area was successfully created.' }
+        format.html { redirect_to focus_areas_path, notice: 'Focus area was successfully created.' }
         format.json { render :show, status: :created, location: @focus_area }
       else
         format.html { render :new }
@@ -37,12 +33,10 @@ class FocusAreasController < ApplicationController
     end
   end
 
-  # PATCH/PUT /focus_areas/1
-  # PATCH/PUT /focus_areas/1.json
   def update
     respond_to do |format|
       if @focus_area.update(focus_area_params)
-        format.html { redirect_to @focus_area, notice: 'Focus area was successfully updated.' }
+        format.html { redirect_to focus_areas_path, notice: 'Focus area was successfully updated.' }
         format.json { render :show, status: :ok, location: @focus_area }
       else
         format.html { render :edit }
@@ -51,8 +45,6 @@ class FocusAreasController < ApplicationController
     end
   end
 
-  # DELETE /focus_areas/1
-  # DELETE /focus_areas/1.json
   def destroy
     @focus_area.destroy
     respond_to do |format|
@@ -62,13 +54,12 @@ class FocusAreasController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_focus_area
       @focus_area = FocusArea.find(params[:id])
+      authorize @focus_area
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def focus_area_params
-      params.fetch(:focus_area, {})
+      params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id)
     end
 end

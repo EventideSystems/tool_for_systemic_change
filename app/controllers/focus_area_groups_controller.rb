@@ -1,34 +1,32 @@
 class FocusAreaGroupsController < ApplicationController
   before_action :set_focus_area_group, only: [:show, :edit, :update, :destroy]
 
+  add_breadcrumb "System", :focus_area_groups_path
+  
   # GET /focus_area_groups
   # GET /focus_area_groups.json
   def index
-    @focus_area_groups = FocusAreaGroup.all
+    @focus_area_groups = policy_scope(FocusAreaGroup).order(sort_order).page params[:page]
   end
 
-  # GET /focus_area_groups/1
-  # GET /focus_area_groups/1.json
   def show
   end
 
-  # GET /focus_area_groups/new
   def new
     @focus_area_group = FocusAreaGroup.new
+    authorize @focus_area_group
   end
 
-  # GET /focus_area_groups/1/edit
   def edit
   end
 
-  # POST /focus_area_groups
-  # POST /focus_area_groups.json
   def create
     @focus_area_group = FocusAreaGroup.new(focus_area_group_params)
+    authorize @focus_area_group
 
     respond_to do |format|
       if @focus_area_group.save
-        format.html { redirect_to @focus_area_group, notice: 'Focus area group was successfully created.' }
+        format.html { redirect_to focus_area_groups_path, notice: 'Focus area group was successfully created.' }
         format.json { render :show, status: :created, location: @focus_area_group }
       else
         format.html { render :new }
@@ -37,12 +35,10 @@ class FocusAreaGroupsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /focus_area_groups/1
-  # PATCH/PUT /focus_area_groups/1.json
   def update
     respond_to do |format|
       if @focus_area_group.update(focus_area_group_params)
-        format.html { redirect_to @focus_area_group, notice: 'Focus area group was successfully updated.' }
+        format.html { redirect_to focus_area_groups_path, notice: 'Focus area group was successfully updated.' }
         format.json { render :show, status: :ok, location: @focus_area_group }
       else
         format.html { render :edit }
@@ -51,8 +47,6 @@ class FocusAreaGroupsController < ApplicationController
     end
   end
 
-  # DELETE /focus_area_groups/1
-  # DELETE /focus_area_groups/1.json
   def destroy
     @focus_area_group.destroy
     respond_to do |format|
@@ -62,13 +56,12 @@ class FocusAreaGroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_focus_area_group
       @focus_area_group = FocusAreaGroup.find(params[:id])
+      authorize @focus_area_group
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def focus_area_group_params
-      params.fetch(:focus_area_group, {})
+      params.fetch(:focus_area_group, {}).permit(:name, :description, :position)
     end
 end

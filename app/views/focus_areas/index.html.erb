@@ -1,25 +1,30 @@
-<p id="notice"><%= notice %></p>
+<% content_for :page_actions do %>
+  <%= 
+    link_to(new_focus_area_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Focus Area'])
+    end 
+  %>
+<% end %>
 
-<h1>Focus Areas</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @focus_areas.each do |focus_area| %>
-      <tr>
-        <td><%= link_to 'Show', focus_area %></td>
-        <td><%= link_to 'Edit', edit_focus_area_path(focus_area) %></td>
-        <td><%= link_to 'Destroy', focus_area, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="box">
+  <div class='box-body no-padding'>
+  <%= table_for @focus_areas, :table_html => { :class => "table table-striped" },
+                        :sortable => true,
+                        :data_row_html => {
+                          :id => lambda { |focus_area| "focus_area-#{focus_area.id}" }
+                        } do |table| %>
+    <% table.column :name %>
+    <% table.column :description %>
+    <% table.column :focus_area_group, :formatter => lambda { |focus_area_group| focus_area_group.name } %>
+    <% table.column :created_at %>
+    <% table.column :data => "Show", :link => true %>
+    <% table.column :data => "Modify", :link_action => :edit %>
+    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.footer do %>
+      <div class="pull-right">
+        <%= paginate @focus_areas %>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Focus Area', new_focus_area_path %>
+  <% end %>
+  </div>
+</div>

@@ -197,6 +197,9 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
+    nokogiri_truncate_html (0.0.5)
+      activesupport (>= 3.2.13)
+      nokogiri (>= 1.5.8)
     orm_adapter (0.5.0)
     paranoia (2.2.0)
       activerecord (>= 4.0, < 5.1)
@@ -374,6 +377,7 @@ DEPENDENCIES
   mailjet
   mini_magick
   nested_form_fields
+  nokogiri_truncate_html
   paranoia (~> 2.2)
   pg (~> 0.18)
   pry

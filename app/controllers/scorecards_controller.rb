@@ -9,6 +9,8 @@ class ScorecardsController < ApplicationController
   end
 
   def show
+    @focus_areas = FocusArea.ordered_by_group_position
+    
     add_breadcrumb @scorecard.name
   end
 

@@ -10,9 +10,12 @@
           <thead>
             <tr>
               <th>&nbsp;</th>
-              <% FocusArea.ordered_by_group_position.each_with_index do |focus_area, index| %>
+              <% @focus_areas.each_with_index do |focus_area, index| %>
                 <th colspan="<%= focus_area.characteristics.count %>" class="legend">
-                  <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">Focus Area <%= index + 1 %></div>
+                  <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                    <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
+                    </span>
+                  </div>
                 </th>
               <% end %>
             </tr>
@@ -24,7 +27,7 @@
                 <%= link_to initiative.name, initiative_path(initiative) %>
               </th>
               <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
-                <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{checklist_item.characteristic.focus_area.position}" %>"> <%# SMELL Needs to be 'relative' position %>
+                <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
                   <span>&nbsp;</span>
                 </td>
               <% end %>
@@ -38,7 +41,7 @@
               </td>
               <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
                 <td>
-                  <span><%= characteristic.name %></span>
+                  <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
                 </td>
               <% end %>
             </tr>

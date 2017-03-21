@@ -13,6 +13,10 @@
       background: #{nth($color, 2)};
       color: #{nth($color, 2)};
     }
+    
+    .text-color#{nth($color, 1)} {
+      color: #{nth($color, 2)};
+    }
   }
 
   margin: 0;

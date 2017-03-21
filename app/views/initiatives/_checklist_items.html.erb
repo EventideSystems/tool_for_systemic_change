@@ -2,6 +2,9 @@
   <div class="box box-solid">
     <div class="box-header with-border">
       <h3 class="box-title">Initative Characteristics</h3>
+      <div class="pull-right">
+        <%= link_to 'Scorecard Details', scorecard_path(@initiative.scorecard), class: 'btn btn-primary pull-right' %> 
+      </div>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
@@ -20,7 +23,7 @@
                 <div class="box-body">
                   <h3 class="box-title"><%= focus_area.name %></h3>
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
-                  <ul>
+                  <ul class="checklist-items">
                     <% checklist_items.each do |checklist_items| %>
                       <li><label>
                         <%= check_box_tag "checklist_item[#{checklist_items.id}]",

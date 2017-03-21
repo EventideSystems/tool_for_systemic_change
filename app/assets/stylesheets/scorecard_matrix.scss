@@ -29,7 +29,7 @@
       overflow-x: scroll;
       overflow-y: visible;
       width: auto;
-      margin-left: 140px;
+      margin-left: 190px;
       padding-bottom: 400px;
   }
 
@@ -55,7 +55,8 @@
       position: absolute;
       *position: relative; /*ie7*/
       left: 0;
-      width: 100px;
+      width: 150px;
+      z-index: 999;
   }
   
   .chars {

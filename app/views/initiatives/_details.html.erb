@@ -8,7 +8,8 @@
         <div class='box-body'>
           <%= f.input :name %>
           <%= f.input :description %>
-          <%= f.association :scorecard, collection: policy_scope(Scorecard), required: true %>
+          <%= f.association :scorecard, collection: policy_scope(Scorecard), required: true 
+          %>
           <hr>
           <%= render 'scorecards/form_tabs/organisations', form: f %>
           <hr>

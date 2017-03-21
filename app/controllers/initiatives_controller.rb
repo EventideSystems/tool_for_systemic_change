@@ -28,7 +28,7 @@ class InitiativesController < ApplicationController
     
     respond_to do |format|
       if @initiative.save
-        format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
+        format.html { redirect_to initiatives_path, notice: 'Initiative was successfully created.' }
         format.json { render :show, status: :created, location: @initiative }
       else
         format.html { render :new }
@@ -40,7 +40,7 @@ class InitiativesController < ApplicationController
   def update
     respond_to do |format|
       if @initiative.update(initiative_params)
-        format.html { redirect_to @initiative, notice: 'Initiative was successfully updated.' }
+        format.html { redirect_to initiatives_path, notice: 'Initiative was successfully updated.' }
         format.json { render :show, status: :ok, location: @initiative }
       else
         format.html { render :edit }
@@ -59,18 +59,6 @@ class InitiativesController < ApplicationController
 
   private
 
-    # def grouped_checklist_items(initiative)
-    #   checklist_items = initiative.checklist_items.includes(characteristic: [focus_area: :focus_area_group])
-    #     .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
-    #
-    #   checklist_items_by_focus_area = checklist_items.group_by { |ci| ci.characteristic.focus_area }
-    #   checklist_items_by_focus_area_group = checklist_items_by_focus_area.group_by do |fa|
-    #     fa.first.focus_area_group
-    #   end
-    #
-    #   checklist_items_by_focus_area_group
-    # end
-    
     def set_initiative
       @initiative = Initiative.find(params[:id])
       authorize @initiative

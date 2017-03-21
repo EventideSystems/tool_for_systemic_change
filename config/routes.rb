@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :communities
   resources :focus_area_groups
   resources :focus_areas
-  resources :initiatives, except: [:new, :create] do
+  resources :initiatives do
     resources :checklist_items
   end
   resources :initiatives_organisations

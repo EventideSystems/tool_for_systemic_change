@@ -58,6 +58,11 @@ class ScorecardsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @scorecard.name if @scorecard.present?
+    super
+  end
 
   private
 

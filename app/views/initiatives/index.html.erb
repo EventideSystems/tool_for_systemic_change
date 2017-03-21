@@ -1,3 +1,13 @@
+<% content_for :page_actions do %>
+  <%=
+    if policy(Initiative).create?  
+      link_to(new_initiative_path, class: 'btn btn-primary') do
+        safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
+      end
+    end 
+  %>
+<% end %>
+
 <div class="box">
   <div class='box-body no-padding'>
   <%= table_for @initiatives, :table_html => { :class => "table table-striped" },

@@ -1,11 +1,11 @@
 <div class="col-md-3 col-sm-6 col-xs-12">
-  <div class="info-box" data-video-tutorial-id="<%= video_tutorial.id %>">
+  <div class="info-box video-tutorial" data-video-tutorial-id="<%= video_tutorial.id %>">
     <span class="info-box-icon bg-aqua video-tutorial-wrapper" data-video-tutorial-link="<%= video_tutorial_url(video_tutorial)%>" data-video-tutorial-title="<%= video_tutorial.name %>">
       <%= video_tutorial.thumbnail_iframe %>
     </span>
     <div class="info-box-content">
-      <span class="info-box-text"><%= video_tutorial.name %></span>
-      <span class="info-box-text"><%= sanitize video_tutorial.description %></span>
+      <span><%= video_tutorial.name %></span>
+      <span><%= truncate_html(video_tutorial.description, 20) %></span>
     </div>
   </div>
 </div>

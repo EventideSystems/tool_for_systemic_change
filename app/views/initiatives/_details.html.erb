@@ -8,13 +8,17 @@
         <div class='box-body'>
           <%= f.input :name %>
           <%= f.input :description %>
+          <%= f.association :scorecard, collection: policy_scope(Scorecard), required: true %>
+          <hr>
+          <%= render 'scorecards/form_tabs/organisations', form: f %>
+          <hr>
           <%= f.input :started_at %>
           <%= f.input :finished_at %>
+          <hr>
           <%= f.input :contact_name %>
           <%= f.input :contact_email %>
           <%= f.input :contact_website %>
           <%= f.input :contact_position %>
-          <%= render 'scorecards/form_tabs/organisations', form: f %> <%# NOTE Cannot create and assign new %>
         </div>
 
         <div class='box-footer'>

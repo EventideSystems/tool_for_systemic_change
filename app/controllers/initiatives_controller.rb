@@ -13,7 +13,8 @@ class InitiativesController < ApplicationController
   end
 
   def new
-    @initiative = Initiative.new
+    @scorecard = params[:scorecard_id].present? ? policy_scope(Scorecard).find(params[:scorecard_id]) : nil
+    @initiative = Initiative.new(scorecard: @scorecard)
     authorize @initiative
     add_breadcrumb 'New Initiative'
   end

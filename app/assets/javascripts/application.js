@@ -65,6 +65,32 @@
     });
   });
   
+  $(document).ready(function() {
+    $(document).on('click', '.characteristic-comment', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).toggle();
+      event.preventDefault();
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.btn-checklist-comment-save', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
+      $(commentFormId).toggle();
+      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.btn-checklist-comment-cancel', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).toggle();
+      event.preventDefault();
+    });
+  });
+  
+  
   $(document).ready(function(){
     $(document).on('click', '.show-gaps-button', function() {
       $('.cell').toggleClass('inverse');

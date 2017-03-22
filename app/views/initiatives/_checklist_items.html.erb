@@ -24,13 +24,25 @@
                   <h3 class="box-title"><%= focus_area.name %></h3>
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
                   <ul class="checklist-items">
-                    <% checklist_items.each do |checklist_items| %>
-                      <li><label>
-                        <%= check_box_tag "checklist_item[#{checklist_items.id}]",
-                          true, checklist_items.checked,
-                          class: 'characteristic-checkbox', data: { id: checklist_items.id, initiative_id: checklist_items.initiative_id }
-                        %>
-                        <%= checklist_items.characteristic.name %>
+                    <% checklist_items.each do |checklist_item| %>
+                      <li>
+                        <label>
+                          <%= check_box_tag "checklist_item[#{checklist_item.id}]",
+                            true, checklist_item.checked,
+                            class: 'characteristic-checkbox', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }
+                          %>
+                          <%= link_to('#characteristic_comment', class: 'characteristic-comment', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }) do
+                            safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
+                          end %>
+                          <span class="characteristic-name<%= " commented" if checklist_item.comment.present? %>"><%= checklist_item.characteristic.name %></span>
+                        </label>
+                        <div class="box box-solid" style="display: none" id="characteristic-comment-form-<%=checklist_item.id%>">
+                           <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>
+                             <%= f.input  :comment, label: false %>
+                             <%= f.button :submit, "Save Comments", class: 'btn-checklist-comment-save', data: { id: checklist_item.id } %>
+                             <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
+                           <% end %>
+                        </div>
                       </li>
                     <% end %>
                   </ul>

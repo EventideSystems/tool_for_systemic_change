@@ -22,6 +22,14 @@ class InitiativesController < ApplicationController
   def edit
     add_breadcrumb @initiative.name
   end
+  
+  def edit_checklist_item_comment
+    
+  end
+  
+  def update_checklist_item_comment
+    
+  end
 
   def create
     @initiative = Initiative.new(initiative_params)

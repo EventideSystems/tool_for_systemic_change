@@ -24,7 +24,7 @@ class SearchResultsController < ApplicationController
     policy_scope(Initiative)
       .where('initiatives.name ILIKE ? OR initiatives.description ILIKE ?', query, query)
       .each_with_object(@search_results) do |value, memo| 
-        memo << SearchResult.new(value.class, value.name, value.description, organisation_path(value))
+        memo << SearchResult.new(value.class, value.name, value.description, initiative_path(value))
       end
       
     policy_scope(Community)

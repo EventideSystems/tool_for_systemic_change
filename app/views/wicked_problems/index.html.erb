@@ -6,14 +6,14 @@
   %>
 <% end %>
 
-<div class="box">
+<div class="box box-solid">
   <div class='box-body no-padding'>
   <%= table_for @wicked_problems, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
                           :id => lambda { |wicked_problem| "wicked_problem-#{wicked_problem.id}" }
                         } do |table| %>
-    <% table.column :name %>
+    <% table.column :name, :link => true %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
     <% table.column :created_at %>
     <% table.column :data => "Show", :link => true %>

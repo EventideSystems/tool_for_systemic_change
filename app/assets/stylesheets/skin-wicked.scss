@@ -11,6 +11,10 @@ $primary-color-analogous-2: #49C472;
 
 $primary-button-color: #00b9f2;
 
+span.commented {
+  color: $primary-color-analogous-1;
+}
+
 .btn-primary {
   background-color: $primary-button-color;
   border-color: lighten($primary-button-color, 5%);

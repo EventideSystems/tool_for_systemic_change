@@ -61,8 +61,13 @@
     </div>
     <div class="tab-pane" id="tab_2">
       <div class="box-header with-border">
-        <h3 class="box-title">Intiatives</h3>
-        <%= link_to 'New Initiative', new_initiative_path(scorecard_id: @scorecard.id), class: 'btn btn-primary pull-right' %>
+        <h3 class="box-title" style="margin-right: 12px">Intiatives</h3>
+        <%= if policy(Initiative).create?  
+              link_to(new_initiative_path, class: 'btn btn-primary') do
+                safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
+              end
+            end 
+        %>
       </div>
       <!-- /.box-header -->
       <div class="box-body">
@@ -94,7 +99,7 @@
       <!-- /.box-body -->
     </div>
     <div class="tab-pane" id="tab_3">
-      
+      <%= render 'scorecards/details'%>
     </div>
   </div>
 </div>

@@ -8,19 +8,16 @@
   %>
 <% end %>
 
-<div class="box">
+<div class="box box-solid">
   <div class='box-body no-padding'>
   <%= table_for @scorecards, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
                           :id => lambda { |scorecard| "scorecard-#{scorecard.id}" }
                         } do |table| %>
-    <% table.column :name %>
+    <% table.column :name, :link => true  %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
     <% table.column :created_at %>
-    <% table.column :data => "Show", :link => true %>
-    <% table.column :data => 'Edit', :link_action => :edit %>
-    <% table.column :data => 'Delete', :link_method => :delete, :link_confirm => "Are you sure?" %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @scorecards %>

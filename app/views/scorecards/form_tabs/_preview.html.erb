@@ -1,5 +1,31 @@
 <div class="tab-pane" id="tab5">
   <div class='box-body'>
-    <%= form.button :submit, class: 'btn btn-primary pull-right' %>
+    <div class="row">
+      <div class="col-md-3">
+        
+      </div>
+      <div class="col-md-9">
+        <div class="row">
+          <h3>Scorecard <strong id='preview-scorecard-name'></strong></h3>
+          <hr>
+          <p id='preview-scorecard-description'></p>
+          
+          <h3>Wicked Problem <strong id='preview-wicked-problem-name'></strong></h3>
+          <hr>
+          <p id='preview-wicked-problem-description'></p>
+          
+          <h3>Community <strong id='preview-community-name'></strong></h3>
+          <hr>
+          <p id='preview-community-description'></p>
+          
+          <h3>Initiatives <strong id='preview-community-name'></strong></h3>
+          <hr>
+          <ul id='preview-initiatives'>
+            
+          </ul>
+        </div>
+        <%= form.button :submit, class: 'btn btn-primary pull-right' %>
+      </div>
+    </div>    
   </div>
 </div>

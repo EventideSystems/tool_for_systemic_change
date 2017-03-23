@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="box-body">
-        <%= i.input :name %>
+        <%= i.input :name, input_html: { class: 'initiative-name' } %>
         <%= i.input :description %>
         <hr>
         <%= render 'scorecards/form_tabs/organisations', form: i %>

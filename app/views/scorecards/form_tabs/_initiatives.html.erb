@@ -3,7 +3,7 @@
   <%= form.nested_fields_for :initiatives do |i| %>
     <div class="box box-default">
       <div class="box-header with-border">
-        <h3 class="box-title">Initiative</h3>
+        <h3 class="box-title">New Initiative</h3>
 
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -32,6 +32,6 @@
     </div>
   <% end %>
   <hr />
-  <%= form.add_nested_fields_link :initiatives, 'Add Additional Initiative', class: 'btn btn-primary pull-right' %>
+  <%= form.add_nested_fields_link :initiatives, 'Add Additional Initiative', class: 'btn btn-primary pull-left' %>
   </div>
 </div>

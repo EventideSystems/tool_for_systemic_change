@@ -27,6 +27,12 @@ class ScorecardsController < ApplicationController
   end
 
   def create
+    scorecard_params[:initiatives_attributes].each do |key, value|
+      value[:initiatives_organisations_attributes].reject! do |key, value|
+        value.has_key?("_destroy") && value["organisation_id"].blank?
+      end
+    end
+    
     @scorecard = current_account.scorecards.build(scorecard_params)
     authorize @scorecard
 
@@ -80,6 +86,7 @@ class ScorecardsController < ApplicationController
         :wicked_problem_id,
         :community_id,
         initiatives_attributes: [
+          :_destroy,
           :name,
           :description,
           :scorecard_id,
@@ -92,6 +99,7 @@ class ScorecardsController < ApplicationController
           :contact_website,
           :contact_position,
           initiatives_organisations_attributes: [
+            :_destroy,
             :organisation_id
           ]
         ]

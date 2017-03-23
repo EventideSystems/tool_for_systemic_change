@@ -1,28 +1,27 @@
+<div class="row">
 <label class="col-sm-3 control-label select">Assign Organisations</label> 
 <div class="col-md-9">  
 <%= form.nested_fields_for :initiatives_organisations do |io| %>
-  <div class="box box-warning">
-    <div class="box-header with-border">
-      <h3 class="box-title">Organisation</h3>
-      <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-          <i class="fa fa-minus"></i>
-        </button>
+  <div class="box box-solid">   
+    <div class="box-body"> 
+      <div class="col-md-8 pull-left"> 
+        <%= io.input :organisation_id, collection: lookup_organisations, prompt: 'Select an Organisation', label: "Select Existing" %>
+      </div>
+      <div class="pull-left"> 
+        <strong>Or</strong>&nbsp;&nbsp;<%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-primary organisation-link" %>
+      </div>
+      <div class="pull-right"> 
         <%= io.remove_nested_fields_link do %>
-          <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
+          <button type="button" class="btn btn-box-tool pull-right"><i class="fa fa-remove"></i></button>
         <% end %>
-      </div>
-    </div>   
-    <div class="box-body">  
-      <%= io.input :organisation_id, collection: lookup_organisations, label: 'Select an Organisation' %>
-      <hr>
-      <label class="col-sm-3 control-label select">Or</label>
-      <div class="col-sm-9">
-        <%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-success organisation-link" %>
-      </div>
+      </div>  
     </div>
   </div>
 <% end %>
-<%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-primary pull-right' %>
+</div>
+<div class="col-md-3"></div>
+<div class="col-md-9">  
+  <%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-primary pull-left' %>
+</div>
 </div>
 

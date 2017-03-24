@@ -199,6 +199,16 @@
     });
   });
   
+  $(document).ready(function() {
+    $('.initiative-detail-scorecard').change(function() {
+      var linkElement = $('#initiative-detail-scorecard-link');
+      var newLinkId = $('.initiative-detail-scorecard').first().val();
+      
+      linkElement.attr('href', "/scorecards/" + newLinkId);
+    });
+  });
+  
+  
   
   
   //= require turbolinks

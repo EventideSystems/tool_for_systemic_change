@@ -4,7 +4,7 @@
 <%= form.nested_fields_for :initiatives_organisations do |io| %>
   <div class="box box-solid">   
     <div class="box-body"> 
-      <div class="col-md-8 pull-left"> 
+      <div class="col-md-7 pull-left"> 
         <%= io.input :organisation_id, collection: lookup_organisations, prompt: 'Select an Organisation', label: "Select Existing" %>
       </div>
       <div class="pull-left"> 
@@ -19,9 +19,7 @@
   </div>
 <% end %>
 </div>
-<div class="col-md-3"></div>
-<div class="col-md-9">  
+<div class="hidden">  
   <%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-primary pull-left' %>
-</div>
 </div>
 

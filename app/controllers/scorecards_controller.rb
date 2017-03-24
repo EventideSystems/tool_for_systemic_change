@@ -26,13 +26,7 @@ class ScorecardsController < ApplicationController
     add_breadcrumb @scorecard.name
   end
 
-  def create
-    scorecard_params[:initiatives_attributes].each do |key, value|
-      value[:initiatives_organisations_attributes].reject! do |key, value|
-        value.has_key?("_destroy") && value["organisation_id"].blank?
-      end
-    end
-    
+  def create    
     @scorecard = current_account.scorecards.build(scorecard_params)
     authorize @scorecard
 

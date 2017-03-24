@@ -8,7 +8,7 @@ class Initiative < ApplicationRecord
   has_many :checklist_items, dependent: :destroy
   has_many :characteristics, through: :checklist_items
   
-  accepts_nested_attributes_for :initiatives_organisations
+  accepts_nested_attributes_for :initiatives_organisations, allow_destroy: true, reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
 
   validates :name, presence: true
   validate :validate_finished_at_later_than_started_at

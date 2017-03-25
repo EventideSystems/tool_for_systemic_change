@@ -6,19 +6,74 @@
       </div>
       <div class="col-md-9">
         <div class="row">
-          <h3>Scorecard <strong id='preview-scorecard-name'></strong></h3>
+          <h3>Scorecard 
+          <%= 
+            link_to(
+              content_tag(
+                :i, 
+                '', 
+                class: "fa fa-external-link"
+              ),
+              nil,
+              remote: true,
+              onclick: "$('.nav-wizard a[href=\"#scorecard\"]').tab('show');"
+            )
+          %>
+          <strong id='preview-scorecard-name'></strong></h3>
           <hr>
           <p id='preview-scorecard-description'></p>
           
-          <h3>Wicked Problem <strong id='preview-wicked-problem-name'></strong></h3>
+          <h3>Wicked Problem 
+            <%= 
+              link_to(
+                content_tag(
+                  :i, 
+                  '', 
+                  class: "fa fa-external-link"
+                ),
+                nil,
+                remote: true,
+                onclick: "$('.nav-wizard a[href=\"#wicked-problem\"]').tab('show');"
+              )
+            %>  
+            <strong id='preview-wicked-problem-name'></strong>
+          </h3>
           <hr>
           <p id='preview-wicked-problem-description'></p>
           
-          <h3>Community <strong id='preview-community-name'></strong></h3>
+          <h3>Community
+            <%= 
+              link_to(
+                content_tag(
+                  :i, 
+                  '', 
+                  class: "fa fa-external-link"
+                ),
+                nil,
+                remote: true,
+                onclick: "$('.nav-wizard a[href=\"#community\"]').tab('show');"
+              )
+            %>  
+            <strong id='preview-community-name'></strong>
+          </h3>
           <hr>
           <p id='preview-community-description'></p>
           
-          <h3>Initiatives <strong id='preview-community-name'></strong></h3>
+          <h3>Initiatives
+            <%= 
+              link_to(
+                content_tag(
+                  :i, 
+                  '', 
+                  class: "fa fa-external-link"
+                ),
+                nil,
+                remote: true,
+                onclick: "$('.nav-wizard a[href=\"#initiatives\"]').tab('show');"
+              )
+            %>  
+            <strong id='preview-community-name'></strong>
+          </h3>
           <hr>
           <ul id='preview-initiatives'>
             
@@ -35,3 +90,5 @@
     </div>      
   </div>
 </div>
+
+        

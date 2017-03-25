@@ -10,6 +10,7 @@ $primary-color-analogous-1: #499BC4;
 $primary-color-analogous-2: #49C472;
 
 $primary-button-color: #00b9f2;
+$secondary-button-color: #49C5B1;
 
 span.commented {
   color: $primary-color-analogous-1;
@@ -23,6 +24,18 @@ span.commented {
 .btn-primary:hover {
   background-color: darken($primary-button-color, 5%);
   border-color: darken($primary-button-color, 5%);
+}
+
+.btn-secondary {
+  color: #FFF;
+  background-color: $secondary-button-color;
+  border-color: lighten($secondary-button-color, 5%);
+}
+
+.btn-secondary:hover {
+  color: #FFF;
+  background-color: darken($secondary-button-color, 5%);
+  border-color: darken($secondary-button-color, 5%);
 }
 
 .skin-wicked .main-header .navbar {

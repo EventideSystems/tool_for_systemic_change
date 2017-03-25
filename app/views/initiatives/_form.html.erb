@@ -7,7 +7,21 @@
     <div class='box-body'>
       <%= f.input :name, required: true  %>
       <%= f.input :description %>
-      <%= f.association :scorecard, collection: policy_scope(Scorecard), required: true %>
+      <%#= f.association :scorecard, collection: policy_scope(Scorecard), required: true %>
+      
+      
+      <%= f.association :scorecard, 
+        collection: policy_scope(Scorecard), 
+        required: true, 
+        label: safe_join(
+          [
+            link_to(content_tag(:i, '', class: "fa fa-external-link pull-left"), scorecard_path(@initiative.scorecard), id: 'initiative-detail-scorecard-link'),
+            'Scorecard'
+          ]
+        ),
+        input_html: { class: 'initiative-detail-scorecard' }
+      %>
+      
       <hr>
       <%= render 'scorecards/form_tabs/organisations', form: f %>
       <hr>
@@ -19,7 +33,7 @@
       <%= f.input :contact_website %>
       <%= f.input :contact_position %>
     <div class='box-footer'>
-      <%= f.button :submit, inpuclass: 'btn btn-primary' %>
+      <%= f.button :submit, class: 'btn btn-primary pull-right' %>
     </div>
   </div>
 <% end %>

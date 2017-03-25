@@ -13,21 +13,7 @@
         <%= f.association :scorecard, 
           collection: policy_scope(Scorecard), 
           required: true, 
-          label: safe_join(
-            [
-              content_tag(:span, 'Scorecard', style: 'margin-right: 10px'),
-              link_to(
-                content_tag(
-                  :i, 
-                  '', 
-                  class: "fa fa-external-link"
-                ), 
-                scorecard_path(@initiative.scorecard), 
-                id: 'initiative-detail-scorecard-link'
-              )
-              
-            ]
-          ),
+          label: scorecard_label(@initiative),
           input_html: { class: 'initiative-detail-scorecard' }
         %>
         <hr>

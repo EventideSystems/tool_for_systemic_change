@@ -7,11 +7,7 @@
     <div class='box-body'>
       <%= f.input :name, required: true  %>
       <%= f.input :description %>
-      <%= f.association :scorecard, 
-        collection: policy_scope(Scorecard), 
-        required: true, 
-        label: link_to('', root_path), 
-      %>
+      <%= f.association :scorecard, collection: policy_scope(Scorecard), required: true %>
       <hr>
       <%= render 'scorecards/form_tabs/organisations', form: f %>
       <hr>

@@ -1,6 +1,6 @@
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy]  
-  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link]  
+  before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
   add_breadcrumb "Scorecards", :scorecards_path
   
@@ -59,6 +59,14 @@ class ScorecardsController < ApplicationController
       format.html { redirect_to scorecards_url, notice: 'Scorecard was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def shared
+    
+  end
+  
+  def show_shared_link
+    render layout: false
   end
   
   def content_subtitle

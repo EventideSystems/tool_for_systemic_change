@@ -15,8 +15,17 @@
           required: true, 
           label: safe_join(
             [
-              link_to(content_tag(:i, '', class: "fa fa-external-link pull-left"), scorecard_path(@initiative.scorecard), id: 'initiative-detail-scorecard-link'),
-              'Scorecard'
+              content_tag(:span, 'Scorecard', style: 'margin-right: 10px'),
+              link_to(
+                content_tag(
+                  :i, 
+                  '', 
+                  class: "fa fa-external-link"
+                ), 
+                scorecard_path(@initiative.scorecard), 
+                id: 'initiative-detail-scorecard-link'
+              )
+              
             ]
           ),
           input_html: { class: 'initiative-detail-scorecard' }

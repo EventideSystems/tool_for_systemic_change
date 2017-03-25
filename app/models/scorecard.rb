@@ -13,7 +13,9 @@ class Scorecard < ApplicationRecord
   delegate :name, :description, to: :wicked_problem, prefix: true, allow_nil: true
   delegate :name, :description, to: :community, prefix: true, allow_nil: true
   
-  accepts_nested_attributes_for :initiatives
+  accepts_nested_attributes_for :initiatives,
+    allow_destroy: true, 
+    reject_if:  proc { |attributes| attributes['name'].blank? }
 
   validates :account, presence: true
   validates :name, presence: true

@@ -92,5 +92,5 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
   
-  config.action_mailer.default_url_options = { :host => 'stark-fortress-62786.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'app.wickedlab.com.au' }
 end

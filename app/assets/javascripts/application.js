@@ -15,7 +15,7 @@
   //= require bootstrap-sprockets
   //= require jquery_ujs
   //= require nested_form_fields
-
+  //= require bootstrap-datepicker
   //= require adminlte
   //= require select2
   //= require medium-editor
@@ -212,6 +212,31 @@
     });
   });
   
+  // *** New Scorecard - Datepickers
   
+  $(document).ready(function() {
+    $('[data-behaviour~=datepicker]').datepicker({
+    "format": "yyyy-mm-dd",
+    "weekStart": 1,
+    "autoclose": true
+    });
+  });
+
+  $(document).on("fields_added.nested_form_fields", function(event, param) {
+    switch (param.object_class) {
+      case "initiative":
+        $('[data-behaviour~=datepicker]').datepicker({
+          "format": "yyyy-mm-dd",
+          "weekStart": 1,
+          "autoclose": true
+        });
+      default:
+        return console.log(param.object_class);
+    }
+  });
+
+  
+  
+  //= require scorecards
   //= require turbolinks
   //= require_tree .

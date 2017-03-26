@@ -138,7 +138,6 @@ SimpleForm.setup do |config|
     end
   end
 
-  
   config.wrappers :multi_select_date, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.optional :readonly
@@ -151,7 +150,6 @@ SimpleForm.setup do |config|
       end
     end
   end
-  
   
   config.wrappers :horizontal_login_input, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5

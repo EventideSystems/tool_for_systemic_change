@@ -55,6 +55,10 @@ gem 'breadcrumbs_on_rails'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap-datepicker-rails'
 
+# Reports
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
+
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'

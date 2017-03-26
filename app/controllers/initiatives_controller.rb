@@ -87,7 +87,7 @@ class InitiativesController < ApplicationController
         :contact_website,
         :contact_position,
         initiatives_organisations_attributes: [
-          :organisation_id, :id
+          :organisation_id, :id, :_destroy
         ]
       )
     end

@@ -18,7 +18,7 @@ class ScorecardsController < ApplicationController
     @scorecard = current_account.scorecards.build
     authorize @scorecard
     @scorecard.initiatives.build
-    @scorecard.initiatives.first.initiatives_organisations.build
+   # @scorecard.initiatives.first.initiatives_organisations.build
     add_breadcrumb "New Scorecard"
   end
 

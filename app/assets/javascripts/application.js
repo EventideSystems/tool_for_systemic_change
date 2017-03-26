@@ -38,6 +38,129 @@
     var editor = new MediumEditor('.textarea', {buttonLabels: 'bootstrap'});
   });
   
+
+  
+  $(document).ready(function() {
+    $(".select2").select2();
+  });
+
+  $(document).ready(function() {
+    $(document).on('click', '.organisation-link', function() {
+      $(this).parent().parent().find('select').attr('current', true);
+    });
+  });
+    
+  $(document).ready(function() {
+    $(document).on('click', '.characteristic-checkbox', function() {
+      $.ajax({
+        url: '/initiatives/' +  $(this).data("initiative-id") + '/checklist_items/' + $(this).data("id"),
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ checklist_item: { checked: $(this).is(':checked') }}),
+        dataType: 'json'
+      });
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.characteristic-comment', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).toggle();
+      event.preventDefault();
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.btn-checklist-comment-save', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
+      $(commentFormId).toggle();
+      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.btn-checklist-comment-cancel', function(event) {
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).toggle();
+      event.preventDefault();
+    });
+  });
+  
+  
+  $(document).ready(function(){
+    $(document).on('click', '.show-gaps-button', function() {
+      $('.cell').toggleClass('inverse');
+    });
+  });
+  
+  $(document).ready(function() {
+    $('a.link-disabled').click(function(event){
+      event.preventDefault(); // Prevent link from following its href
+    });
+  });
+  
+  $(document).ready(function() {
+     $('.remote-link').on('click', function(e) {
+       var link = $(this).attr('href');
+       $('.modal').find(".modal-content").load(link);
+       $('.modal').modal('show');
+       e.preventDefault();
+     });
+  });
+  
+  $(document).ready(function() {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+      $(this).find('iframe').removeAttr('src');
+    });
+  });
+  
+
+  
+  $(document).ready(function() {
+    $('.initiative-detail-scorecard').change(function() {
+      var linkElement = $('#initiative-detail-scorecard-link');
+      var newLinkId = $('.initiative-detail-scorecard').first().val();
+      
+      linkElement.attr('href', "/scorecards/" + newLinkId);
+    });
+  });
+  
+  // *** Create Scorecard Wizard - General - Datepickers
+  
+  $(document).ready(function() {
+    $('[data-behaviour~=datepicker]').datepicker({
+    "format": "yyyy-mm-dd",
+    "weekStart": 1,
+    "autoclose": true
+    });
+  });
+
+  $(document).on("fields_added.nested_form_fields", function(event, param) {
+    switch (param.object_class) {
+      case "initiative":
+        $('[data-behaviour~=datepicker]').datepicker({
+          "format": "yyyy-mm-dd",
+          "weekStart": 1,
+          "autoclose": true
+        });
+      default:
+        return console.log(param.object_class);
+    }
+  });
+  
+  
+  // *** Create Scorecard Wizard - Initiatives
+  
+  // *** Dodgey way of effecting the creation of new controls for the next organisation record
+  $(document).ready(function() {
+    $('.scorecard_initiatives_initiatives_organisations_organisation_id > div > select').change(function() {
+      $('#assign-another-organistion').click();
+    });
+  });
+  
+  // *** Create Scorecard Wizard - Preview
+  
   $(document).ready(function() {
     $('.wizard').bootstrapWizard({
       tabClass: 'nav nav-pills',
@@ -111,66 +234,8 @@
       }
     });
   });
-  
-  $(document).ready(function() {
-    $(".select2").select2();
-  });
 
-  $(document).ready(function() {
-    $(document).on('click', '.organisation-link', function() {
-      $(this).parent().parent().find('select').attr('current', true);
-    });
-  });
-    
-  $(document).ready(function() {
-    $(document).on('click', '.characteristic-checkbox', function() {
-      $.ajax({
-        url: '/initiatives/' +  $(this).data("initiative-id") + '/checklist_items/' + $(this).data("id"),
-        type: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ checklist_item: { checked: $(this).is(':checked') }}),
-        dataType: 'json'
-      });
-    });
-  });
-  
-  $(document).ready(function() {
-    $(document).on('click', '.characteristic-comment', function(event) {
-      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-      $(commentFormId).toggle();
-      event.preventDefault();
-    });
-  });
-  
-  $(document).ready(function() {
-    $(document).on('click', '.btn-checklist-comment-save', function(event) {
-      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-      var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
-      $(commentFormId).toggle();
-      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
-    });
-  });
-  
-  $(document).ready(function() {
-    $(document).on('click', '.btn-checklist-comment-cancel', function(event) {
-      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-      $(commentFormId).toggle();
-      event.preventDefault();
-    });
-  });
-  
-  
-  $(document).ready(function(){
-    $(document).on('click', '.show-gaps-button', function() {
-      $('.cell').toggleClass('inverse');
-    });
-  });
-  
-  $(document).ready(function() {
-    $('a.link-disabled').click(function(event){
-      event.preventDefault(); // Prevent link from following its href
-    });
-  });
+  // *** Dashboard
   
   $(document).ready(function() {
      $('.video-tutorial-wrapper').on('click', function(e) {
@@ -180,61 +245,6 @@
        e.preventDefault();
      });
   });
-  
-  
-  $(document).ready(function() {
-     $('.remote-link').on('click', function(e) {
-       var link = $(this).attr('href');
-       $('.modal').find(".modal-content").load(link);
-       $('.modal').modal('show');
-       e.preventDefault();
-     });
-  });
-  
-  $(document).ready(function() {
-    $('body').on('hidden.bs.modal', '.modal', function () {
-      $(this).find('iframe').removeAttr('src');
-    });
-  });
-  
-  $(document).ready(function() {
-    $('.scorecard_initiatives_initiatives_organisations_organisation_id > div > select').change(function() {
-      $('.add_nested_fields_link').click();
-    });
-  });
-  
-  $(document).ready(function() {
-    $('.initiative-detail-scorecard').change(function() {
-      var linkElement = $('#initiative-detail-scorecard-link');
-      var newLinkId = $('.initiative-detail-scorecard').first().val();
-      
-      linkElement.attr('href', "/scorecards/" + newLinkId);
-    });
-  });
-  
-  // *** New Scorecard - Datepickers
-  
-  $(document).ready(function() {
-    $('[data-behaviour~=datepicker]').datepicker({
-    "format": "yyyy-mm-dd",
-    "weekStart": 1,
-    "autoclose": true
-    });
-  });
-
-  $(document).on("fields_added.nested_form_fields", function(event, param) {
-    switch (param.object_class) {
-      case "initiative":
-        $('[data-behaviour~=datepicker]').datepicker({
-          "format": "yyyy-mm-dd",
-          "weekStart": 1,
-          "autoclose": true
-        });
-      default:
-        return console.log(param.object_class);
-    }
-  });
-
   
   
   //= require scorecards

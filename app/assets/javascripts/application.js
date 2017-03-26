@@ -126,6 +126,25 @@
     });
   });
   
+  var ensureOrgEditControl = function (createOrgButton) {
+    var availableOrgEditControl = createOrgButton.parent().parent().find(".select [name*='[organisation_id]']").filter(function(){ 
+      return ($(this).val() == '') && $(this).is(':visible')
+    });
+
+    if (availableOrgEditControl.length == 0) {
+      createOrgButton.trigger('click');
+    }
+  } 
+  
+  $(document).ready(function() {
+    $('.assign-another-organisation').each(function() {
+      ensureOrgEditControl($(this));
+    });
+    
+    $('.assign-organisation-select').change(function() {
+      ensureOrgEditControl($('.assign-another-organisation'));
+    });
+  });
   // *** Create Scorecard Wizard - General - Datepickers
   
   $(document).ready(function() {
@@ -136,35 +155,31 @@
     });
   });
   
-  var ensureOrgEditControl = function (createOrgButton) {
-    var availableOrgEditControl = createOrgButton.parent().parent().find(".select [name*='[organisation_id]']").filter(function(){ 
-      return ($(this).val() == '') && $(this).is(':visible')
-    });
-    
-    if (availableOrgEditControl.length == 0) {
-      createOrgButton.trigger('click');
-    }
-  } 
 
-  $(document).on("fields_added.nested_form_fields", function(event, param) {
-    switch (param.object_class) {
-      case "initiative":
-        $('[data-behaviour~=datepicker]').datepicker({
-          "format": "yyyy-mm-dd",
-          "weekStart": 1,
-          "autoclose": true
-        });
-      case "initiatives_organisation":
-        var selectControl = $(event.target).find("select[name*='organisation_id']")
-        var createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
-        selectControl.change(function() {
+
+  $(document).ready(function() {
+    $(document).on("fields_added.nested_form_fields", function(event, param) {
+      switch (param.object_class) {
+        case "initiative":
+          $('[data-behaviour~=datepicker]').datepicker({
+            "format": "yyyy-mm-dd",
+            "weekStart": 1,
+            "autoclose": true
+          });
+          var createAdditionalOrganisationButton = $(event.target).find('.assign-another-organisation');
           ensureOrgEditControl(createAdditionalOrganisationButton);
-        });
+        case "initiatives_organisation":
+          var selectControl = $(event.target).find("select[name*='organisation_id']")
+          var createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
+          selectControl.change(function() {
+            ensureOrgEditControl(createAdditionalOrganisationButton);
+          });
         
-        return true;  
-      default:
-        return console.log(param.object_class);
-    }
+          return true;  
+        default:
+          return console.log(param.object_class);
+      }
+    });
   });
   
   
@@ -172,24 +187,25 @@
   
   
   // *** Dodgey way of effecting the creation of new controls for the next organisation record
+  // $(document).ready(function() {
+  //   $('.scorecard_initiatives_initiatives_organisations_organisation_id > div > select').change(function() {
+  //     ensureOrgEditControl($('.assign-another-organisation'));
+  //   });
+  // });
+  
   $(document).ready(function() {
-    $('.scorecard_initiatives_initiatives_organisations_organisation_id > div > select').change(function() {
-      ensureOrgEditControl($('.assign-another-organisation'));
+    $(document).on("fields_removed.nested_form_fields", function(event, param) {
+      switch (param.object_class) {
+        case "initiatives_organisation":
+          createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
+          selectControls = $(event.target).find("select[name*='organisation_id']")
+          ensureOrgEditControl(createAdditionalOrganisationButton);
+          return true;  
+        default:
+          return console.log(param.object_class);
+      }
     });
   });
-  
-  $(document).on("fields_removed.nested_form_fields", function(event, param) {
-    switch (param.object_class) {
-      case "initiatives_organisation":
-        createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
-        selectControls = $(event.target).find("select[name*='organisation_id']")
-        
-        return true;  
-      default:
-        return console.log(param.object_class);
-    }
-  })
-  
   
   
   // *** Create Scorecard Wizard - Preview

@@ -52,7 +52,8 @@ gem 'nested_form_fields'
 gem 'table-for'
 gem 'kaminari-bootstrap'
 gem 'breadcrumbs_on_rails'
-gem "nokogiri_truncate_html"
+gem 'nokogiri_truncate_html'
+gem 'bootstrap-datepicker-rails'
 
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  

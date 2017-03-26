@@ -56,6 +56,7 @@ class Initiative < ApplicationRecord
   end
 
   def finished_at_later_than_started_at
-    started_at.present? && finished_at.present? && finished_at > started_at
+    return true unless started_at.present? && finished_at.present? 
+    finished_at > started_at
   end
 end

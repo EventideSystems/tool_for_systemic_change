@@ -19,8 +19,10 @@
       <hr>
       <%= render 'scorecards/form_tabs/organisations', form: f %>
       <hr>
-      <%= f.input :started_at %>
-      <%= f.input :finished_at %>
+      <%#= f.input :started_at %>
+      <%= f.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+      <%#= f.input :finished_at %>
+      <%= f.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
       <hr>
       <%= f.input :contact_name %>
       <%= f.input :contact_email %>

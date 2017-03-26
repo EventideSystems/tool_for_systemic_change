@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       get 'show_shared_link'
     end
   end
-  resources :shared_scorecards, as: 'shared', :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
+  resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
   resources :sectors
   resources :users
   resources :video_tutorials

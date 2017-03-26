@@ -135,6 +135,16 @@
     "autoclose": true
     });
   });
+  
+  var ensureOrgEditControl = function (createOrgButton) {
+    var availableOrgEditControl = createOrgButton.parent().parent().find(".select [name*='[organisation_id]']").filter(function(){ 
+      return ($(this).val() == '') && $(this).is(':visible')
+    });
+    
+    if (availableOrgEditControl.length == 0) {
+      createOrgButton.trigger('click');
+    }
+  } 
 
   $(document).on("fields_added.nested_form_fields", function(event, param) {
     switch (param.object_class) {
@@ -148,7 +158,7 @@
         var selectControl = $(event.target).find("select[name*='organisation_id']")
         var createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
         selectControl.change(function() {
-          createAdditionalOrganisationButton.click();
+          ensureOrgEditControl(createAdditionalOrganisationButton);
         });
         
         return true;  
@@ -160,10 +170,11 @@
   
   // *** Create Scorecard Wizard - Initiatives
   
+  
   // *** Dodgey way of effecting the creation of new controls for the next organisation record
   $(document).ready(function() {
     $('.scorecard_initiatives_initiatives_organisations_organisation_id > div > select').change(function() {
-      $('.assign-another-organisation').click();
+      ensureOrgEditControl($('.assign-another-organisation'));
     });
   });
   
@@ -172,6 +183,7 @@
       case "initiatives_organisation":
         createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
         selectControls = $(event.target).find("select[name*='organisation_id']")
+        
         return true;  
       default:
         return console.log(param.object_class);

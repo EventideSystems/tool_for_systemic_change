@@ -10,8 +10,17 @@ class ScorecardsController < ApplicationController
 
   def show
     @focus_areas = FocusArea.ordered_by_group_position
-    
     add_breadcrumb @scorecard.name
+    
+    respond_to do |format|
+      format.html 
+      format.pdf do
+        render pdf: "file_name",   # Excluding ".pdf" extension.
+          orientation: 'Landscape',
+          layout: false
+      end
+    end
+    
   end
 
   def new

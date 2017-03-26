@@ -97,10 +97,14 @@
           
           $('ul#preview-initiatives li').remove()
           $('.initiative-name').each(function (index, value) { 
-            if ($(value).val() === "") {
-              $('ul#preview-initiatives').append('<li><em style="color:red">Name missing</em></li>');
+            if ($("input[name*='scorecard[initiatives_attributes][" + index + "][_destroy]'").length != 0) { 
+              return true;
             } else {
-              $('ul#preview-initiatives').append('<li>'+$(value).val()+'</li>');
+              if ($(value).val() === "") {
+                $('ul#preview-initiatives').append('<li><em style="color:red">Name missing</em></li>');
+              } else {
+                $('ul#preview-initiatives').append('<li>'+$(value).val()+'</li>');
+              }
             }
           });
         }

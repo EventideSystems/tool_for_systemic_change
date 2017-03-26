@@ -15,7 +15,7 @@
   current_select.attr('current', null);
   $('#organisation-modal').modal('hide');
   // SMELL Triggering behaviour indirectly via 'click'
-  current_select.parent().parent().parent().parent().parent().parent().parent().parent().parent().children().find('.assign-another-organisation').click();
+  ensureOrgEditControl(current_select.parent().parent().parent().parent().parent().parent().parent().parent().parent().children().find('.assign-another-organisation'));
 
 <% end %>
 

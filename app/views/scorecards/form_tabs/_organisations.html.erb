@@ -1,6 +1,7 @@
 <div class="row">
 <label class="col-sm-3 control-label select">Assign Organisations</label> 
-<div class="col-md-9">  
+<div class="col-md-9">
+  
 <%= form.nested_fields_for :initiatives_organisations do |io| %>
   <div class="box box-solid">   
     <div class="box-body"> 
@@ -21,7 +22,7 @@
 </div>
 <div class="col-md-3"></div>
 <div class="col-md-9">  
-  <%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-secondary pull-left', id: 'assign-another-organistion' %>
+  <%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-secondary pull-left assign-another-organisation' %>
 </div>
 </div>
 

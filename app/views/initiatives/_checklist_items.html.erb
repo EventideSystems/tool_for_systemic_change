@@ -15,13 +15,29 @@
               <h4 class="box-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapsable-<%= focus_area_group.id %>">
                   <%= focus_area_group.name %>
+                  <%- if focus_area_group.video_tutorial.present? %>
+                    <%= 
+                      link_to(video_tutorial_path(focus_area_group.video_tutorial), class: 'remote-link') do 
+                        safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
+                      end
+                    %>
+                  <%- end %>
                 </a>
               </h4>
             </div>
             <div id="collapsable-<%= focus_area_group.id %>" class="panel-collapse collapse <%= "in" if focus_area_group == FocusAreaGroup.order(:position).first %> ">
               <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
                 <div class="box-body">
-                  <h3 class="box-title"><%= focus_area.name %></h3>
+                  <h3 class="box-title">
+                    <%= focus_area.name %>
+                    <%- if focus_area.video_tutorial.present? %>
+                      <%= 
+                        link_to(video_tutorial_path(focus_area.video_tutorial), class: 'remote-link') do 
+                          safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
+                        end
+                      %>
+                    <%- end %>
+                  </h3>
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
                   <ul class="checklist-items">
                     <% checklist_items.each do |checklist_item| %>
@@ -35,6 +51,14 @@
                             safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
                           end %>
                           <span class="characteristic-name<%= " commented" if checklist_item.comment.present? %>"><%= checklist_item.characteristic.name %></span>
+                          
+                          <%- if checklist_item.characteristic.video_tutorial.present? %>
+                            <%= 
+                              link_to(video_tutorial_path(checklist_item.characteristic.video_tutorial), class: 'remote-link') do 
+                                safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
+                              end
+                            %>
+                          <%- end %>
                         </label>
                         <div class="box box-solid" style="display: none" id="characteristic-comment-form-<%=checklist_item.id%>">
                            <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>

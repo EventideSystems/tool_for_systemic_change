@@ -60,6 +60,6 @@ class FocusAreasController < ApplicationController
     end
 
     def focus_area_params
-      params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id)
+      params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id, :video_tutorial_id)
     end
 end

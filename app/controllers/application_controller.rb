@@ -2,6 +2,12 @@ class ApplicationController < ActionController::Base
   include Pundit
   include PublicActivity::StoreController
   
+  force_ssl if: :ssl_configured?
+
+  def ssl_configured?
+    Rails.env.production?
+  end
+  
   before_action :configure_permitted_parameters, if: :devise_controller?
   
   after_action :verify_authorized, except: :index, unless: :devise_controller?

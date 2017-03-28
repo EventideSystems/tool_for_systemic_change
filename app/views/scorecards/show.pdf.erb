@@ -69,7 +69,7 @@
               total_items = checklist_items.count
               checked_items = checklist_items.select { |c| c.checked }.count
               
-              percent_complete = ((checked_items / total_items.to_f) * 100).round
+              percent_complete = checked_items > 0 ? ((checked_items / total_items.to_f) * 100).round : 0
             %>
             <small><%= percent_complete %>%</small>
           </div>  

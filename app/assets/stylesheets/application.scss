@@ -68,3 +68,9 @@ ul#preview-initiatives {
 .characteristic-name {
   font-weight: normal;
 }
+
+ul.wizard {
+  li.disabled {
+    visibility: hidden;
+  }
+}

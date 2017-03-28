@@ -9,6 +9,11 @@
       <%= f.input :description , as: :string %>
       <%= f.association :focus_area %>
       <%= f.input :position %>
+      
+      <%= f.input :video_tutorial_id, collection: VideoTutorial.all, 
+        hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.' 
+      %>
+      
     </div>
     <div class='box-footer'>
       <%= f.button :submit, class: 'btn btn-primary pull-right' %>

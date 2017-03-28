@@ -1,77 +1,75 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset='utf-8' />
-    <%= stylesheet_link_tag wicked_pdf_asset_base64("pdf") %>
-    <%#= javascript_include_tag wicked_pdf_asset_base64("number_pages") %>
+$$ Need to have date/time in footer + Wicked Lab logo in header
 
-  </head>
-  <body onload='number_pages'>
-    <div id="header">
-      <%#= image_tag wicked_pdf_asset_base64('mysite.jpg') %>
-    </div>
-    <div id="content">
-      <div class="box-body scorecard-matrix">
-        <div class="box box-solid">
-          <div class="box-header with-border box-solid">
-            <h3 class="pull-left">Scorecard: <%=@scorecard.name%></h3>
-          </div>
-          <div class='box-body'>
-            <div class="outer">
-              <div class="inner">
-                <table class="xpre-scrollable"> 
-                  <thead>
-                    <tr>
-                      <th>&nbsp;</th>
-                      <% @focus_areas.each_with_index do |focus_area, index| %>
-                        <th colspan="<%= focus_area.characteristics.count %>" class="legend">
-                          <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
-                            <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
-                            </span>
-                          </div>
-                        </th>
-                      <% end %>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @scorecard.initiatives.each do |initiative| %>
-                    <tr>
-                      <th>
-                        <%= truncate(initiative.name, length: 25) %>
-                      </th>
-                      <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
-                        <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
-                          <span>&nbsp;</span>
-                        </td>
-                      <% end %>
-                    </tr>
-                    <% end %>
-                  </tbody>
-                  <tfoot>
-                    <tr class="chars"> 
-                      <td>
-                        &nbsp;
-                      </td>
-                      <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
-                        <td>
-                          <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
-                        </td>
-                      <% end %>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-            <div class='box-footer'>
-              <div class="pull-right">
-                <small>powered by</small>
-                  <%#= wicked_pdf_asset_base64('logo-long-white-bg.png', size: '73x15') %> 
-              </div>
-            </div>
-          </div>
-        </div>    
-      </div>
+<div class="row">
+  <h2>Scorecard: <%= @scorecard.name %></h2>
+</div>
 
+<h3>Overview</h3>
+
+<h4>Description</h4>
+<p><%= @scorecard.description.html_safe %></p>
+
+<h4>Initiatives</h4>
+
+<% @initiatives.each_with_index do |initiative, index| %>
+  <h5><%= "Initiative #{index+1}: #{initiative.name}" %></h5>
+  
+  <p>Description: <%= initiative.description %></p>
+  
+  <h6>Organisations:</h6>
+  <ul>
+  <% initiative.organisations.each do |organisation| %>
+    <li><%= organisation.name %></li>
+  <% end %>
+  </ul>
+<% end %>
+
+
+* List of intiatives 
+  * description of each
+  * list of organisations for each
+  * percentage completion for each
+* Overall completion %
+
+
+<div style="page-break-before: always;"><div>
+<h3>Progress Summary</h3>
+<div class="row">
+  <div class="col-sm-2 pull-left">
+    <h4>Focus Areas</h4>
+  </div>
+  
+  <div class="col-sm-8">
+    <h4>Characteristics</h4>
+  </div>
+  
+  <div class="col-sm-2 pull-right">
+    <h4>% Complete</h4>
+  </div>
+</div>
+<hr>
+
+<% @focus_areas.each_with_index do |focus_area, index | %>
+<div class="row">
+  <div class="col-sm-2 pull-left">
+    <h5><%= "Focus Area #{index+1}" %></h5>
+    <small><%= focus_area.name %></small>
+  </div>
+  
+  <div class="col-sm-10">
+  <% focus_area.characteristics.each do |characteristic| %>
+    <div class="row">
+      <div class="col-sm-8"><p><%= characteristic.name %></p></div>
+      <div class="col-sm-2 pull-right">
+        <small>100%</small>
+      </div>  
     </div>
-  </body>
-</html>
+  <% end %>
+  </div>    
+</div>
+<hr>
+<% end %>
+
+<h3>Intiative details
+  
+  Comments + check off items

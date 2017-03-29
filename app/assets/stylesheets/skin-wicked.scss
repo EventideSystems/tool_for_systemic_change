@@ -175,3 +175,25 @@ span.commented {
 .skin-wicked.layout-top-nav .main-header > .logo:hover {
   background-color: #3b8ab8;
 }
+
+div.home {
+  background-color: $primary-color;
+  color: #FFF;
+
+  h1 {
+    font-size: 44px;
+  }
+  
+  a.btn-lg {
+    color: $primary-color;
+  } 
+}
+
+section.content {
+  padding: 0px;
+}
+
+div.content-wrapper {
+  background-color: #FFF;
+}
+

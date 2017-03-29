@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <%= render 'layouts/shared/head' %>
-<body class="skin-blue sidebar-mini layout-top-nav ">
+<body class="skin-blue sidebar-mini layout-top-nav">
   <div class="wrapper">
     <header class="main-header">
       <nav class="navbar navbar-static-top" role="navigation">
@@ -17,7 +17,9 @@
     <div class="content-wrapper">
       <section class="content">
           <%= render 'layouts/shared/flash' %>
-          <%= yield %>
+          <div class="home">
+            <%= yield %>
+          </div>  
       </section>
     </div>
     <%= render 'layouts/shared/footer' %>

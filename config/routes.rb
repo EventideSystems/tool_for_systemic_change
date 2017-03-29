@@ -31,6 +31,13 @@ Rails.application.routes.draw do
   resource :welcome_message, only: [:show]
   resources :wicked_problems
   
+  resources :reports, only: [:index] do
+    collection do
+      post 'initiatives'
+      post 'stakeholders'
+    end
+  end
+
   resources :search_results, only: [:index, :show]
   
   get 'dashboard', to: 'dashboard#index'

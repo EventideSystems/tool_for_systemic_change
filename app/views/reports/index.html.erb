@@ -5,7 +5,13 @@
         <h3 class="box-title"><i class="fa fa-pie-chart"></i> Initiative Report</h3>
       </div>
       <div class="box-body">
-        <p>hh</p>
+        <p>Search for Initiatives sharing the same Wicked Problems and Communities.</p>
+        <p>NB This report reqires at least one Wicked Problem and one Community to be selected.</p>
+        <%= simple_form_for :report, url: initiatives_reports_path do |f| %>
+          <%= f.input :wicked_problems, as: :check_boxes, collection: current_account.wicked_problems %>
+          <%= f.input :communities, as: :check_boxes, collection: current_account.communities %>
+          <%= f.button :submit, 'Execute', class: 'pull-right' %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -15,9 +21,19 @@
       <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-pie-chart"></i> Stakeholder Report</h3>
       </div>
+      <%= simple_form_for :report, url: stakeholders_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">
-        <p>hh</p>
+        <p>Search for stakeholder Organistions sharing the same Wicked Problems, Community and Sector.</p>
+        
+          <%= f.input :wicked_problem, collection: current_account.wicked_problems %>
+          <%= f.input :community, collection: current_account.communities %>
+          <%= f.input :sector, collection: Sector.all %>
+
       </div>
+      <div class="box-footer">
+        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+      </div>
+      <% end %>
     </div>
   </div>
 <div>

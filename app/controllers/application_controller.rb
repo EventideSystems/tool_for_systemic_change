@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
   end
   
   def content_subtitle
-    ''
+    @content_subtitle || ''
   end
   
   protected

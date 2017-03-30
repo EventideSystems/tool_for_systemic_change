@@ -186,12 +186,14 @@ div.home {
   
   a.btn-lg {
     color: $primary-color;
+  }
+  
+  section.content {
+    padding: 0px;
   } 
 }
 
-section.content {
-  padding: 0px;
-}
+
 
 div.content-wrapper {
   background-color: #FFF;

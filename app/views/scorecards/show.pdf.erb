@@ -31,7 +31,7 @@
 <div class="alwaysbreak">
   <div class="row">
     <div class="col-sm-8">
-      <h3>Progress Summary</h3>
+      <h3>Scorecard Summary</h3>
     </div>
     <div class="col-sm-3 pull-right">
       <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
@@ -42,12 +42,12 @@
       <h4>Focus Areas</h4>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-7">
       <h4>Characteristics</h4>
     </div>
 
-    <div class="col-sm-2 pull-right">
-      <h4>% Complete</h4>
+    <div class="col-sm-3 pull-right">
+      <h4>Initiatives Mapped</h4>
     </div>
   </div>
   <hr>
@@ -69,9 +69,9 @@
               total_items = checklist_items.count
               checked_items = checklist_items.select { |c| c.checked }.count
               
-              percent_complete = checked_items > 0 ? ((checked_items / total_items.to_f) * 100).round : 0
+              # percent_complete = checked_items > 0 ? ((checked_items / total_items.to_f) * 100).round : 0
             %>
-            <small><%= percent_complete %>%</small>
+            <small><%= checked_items %></small>
           </div>  
         </div>
       <% end %>
@@ -103,7 +103,7 @@
       </div>
 
       <div class="col-sm-2 pull-right">
-        <h4>Complete</h4>
+        <h4>Mapped</h4>
       </div>
     </div>
     <hr>

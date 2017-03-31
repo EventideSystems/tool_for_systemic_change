@@ -69,7 +69,7 @@
       <div class="box-header with-border">
         <h3 class="box-title" style="margin-right: 12px">Intiatives</h3>
         <%= if policy(Initiative).create?  
-              link_to(new_initiative_path, class: 'btn btn-primary') do
+              link_to(new_initiative_path(scorecard_id: @scorecard.id), class: 'btn btn-primary') do
                 safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
               end
             end 

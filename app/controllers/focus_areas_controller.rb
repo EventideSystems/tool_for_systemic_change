@@ -52,7 +52,12 @@ class FocusAreasController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  def content_subtitle
+    return @focus_area.name if @focus_area.present?
+    super
+  end
+  
   private
     def set_focus_area
       @focus_area = FocusArea.find(params[:id])

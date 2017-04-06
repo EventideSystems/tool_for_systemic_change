@@ -50,6 +50,11 @@ class CharacteristicsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @characteristic.name if @characteristic.present?
+    super
+  end
 
   private
     def set_characteristic

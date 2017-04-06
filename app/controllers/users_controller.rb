@@ -22,7 +22,6 @@ class UsersController < ApplicationController
 
   def edit
     add_breadcrumb @user.display_name
-    
   end
 
   def create
@@ -74,6 +73,11 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def content_subtitle
+    return @user.display_name if @user.present?
+    super
   end
 
   private

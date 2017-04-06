@@ -63,6 +63,11 @@ class VideoTutorialsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @video_tutorial.name if @video_tutorial.present?
+    super
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

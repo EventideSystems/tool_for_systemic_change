@@ -10,6 +10,7 @@ class InitiativesController < ApplicationController
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     add_breadcrumb @initiative.name
+    @content_subtitle = @initiative.name
   end
 
   def new
@@ -21,6 +22,7 @@ class InitiativesController < ApplicationController
 
   def edit
     add_breadcrumb @initiative.name
+    @content_subtitle = @initiative.name
   end
   
   def edit_checklist_item_comment
@@ -64,6 +66,11 @@ class InitiativesController < ApplicationController
       format.html { redirect_to initiatives_url, notice: 'Initiative was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def content_subtitle
+    return @initiative.name if @initiative.present?
+    super
   end
 
   private

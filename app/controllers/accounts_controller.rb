@@ -64,6 +64,11 @@ class AccountsController < ApplicationController
       format.json { render :show, status: :ok, location: @account }
     end    
   end
+  
+  def content_subtitle
+    return @account.name if @account.present?
+    super
+  end
 
   
   protected

@@ -59,6 +59,11 @@ class CommunitiesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @community.name if @community.present?
+    super
+  end
 
   private
 

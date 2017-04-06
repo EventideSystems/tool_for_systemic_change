@@ -54,6 +54,11 @@ class FocusAreaGroupsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @focus_area_group.name if @focus_area_group.present?
+    super
+  end
 
   private
     def set_focus_area_group

@@ -62,6 +62,11 @@ class WickedProblemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @wicked_problem.name if @wicked_problem.present?
+    super
+  end
 
   private
 

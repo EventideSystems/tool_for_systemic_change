@@ -59,6 +59,11 @@ class OrganisationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @organisation.name if @organisation.present?
+    super
+  end
 
   private
     def set_organisation

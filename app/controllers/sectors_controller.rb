@@ -6,6 +6,7 @@ class SectorsController < ApplicationController
   end
 
   def show
+    @content_subtitle = @sector.name
   end
 
   def new
@@ -49,6 +50,11 @@ class SectorsController < ApplicationController
       format.html { redirect_to sectors_url, notice: 'Sector was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  def content_subtitle
+    return @sector.name if @sector.present?
+    super
   end
 
   private

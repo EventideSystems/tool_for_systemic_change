@@ -65,6 +65,11 @@ class ChecklistItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def content_subtitle
+    return @checklist_item.name if @checklist_item.present?
+    super
+  end
 
   private
     def set_initiative

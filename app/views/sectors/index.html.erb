@@ -1,1 +1,29 @@
-<%= resource_table :sectors, [:name, :description] %>
+<% content_for :page_actions do %>
+  <%= 
+    link_to(new_sector_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Sector'])
+    end 
+  %>
+<% end %>
+
+<div class="box">
+  <div class='box-body no-padding'>
+  <%= table_for @sectors, :table_html => { :class => "table table-striped" },
+                        :sortable => true,
+                        :data_row_html => {
+                          :id => lambda { |sector| "sector-#{sector.id}" }
+                        } do |table| %>
+    <% table.column :name %>
+    <% table.column :description %>
+    <% table.column :created_at %>
+    <% table.column :data => "Show", :link => true %>
+    <% table.column :data => "Modify", :link_action => :edit %>
+    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.footer do %>
+      <div class="pull-right">
+        <%= paginate @sectors %>
+      </div>
+    <% end %>
+  <% end %>
+  </div>
+</div>

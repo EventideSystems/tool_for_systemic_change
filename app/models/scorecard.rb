@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Scorecard < ApplicationRecord
+  include Trackable
+  
   acts_as_paranoid
 
   after_initialize :ensure_shared_link_id, if: :new_record?

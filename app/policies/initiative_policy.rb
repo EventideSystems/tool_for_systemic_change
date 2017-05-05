@@ -10,18 +10,18 @@ class InitiativePolicy < ApplicationPolicy
   end
   
   def show?
-    system_admin? || account_any_role?(record)
+    system_admin? || account_any_role?(current_account)
   end
   
   def create?
-    system_admin? || account_admin?(record)
+    system_admin? || account_admin?(current_account)
   end
   
   def update?
-    system_admin? || account_admin?(record)
+    system_admin? || account_admin?(current_account)
   end
   
   def destroy?
-    system_admin? || account_admin?(record)
+    system_admin? || account_admin?(current_account)
   end
 end

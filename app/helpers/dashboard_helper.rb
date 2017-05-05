@@ -2,6 +2,7 @@ module DashboardHelper
   
   def menu_item_tag(resources, icon, options={})
     controller_name = options[:controller] || resources.to_s
+    title = options[:title] || resources.to_s.titleize
     
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
     link_class = options[:disabled] == true ? 'link-disabled' : ''
@@ -9,7 +10,7 @@ module DashboardHelper
     content_tag(:li, class: menu_item_class) do
       link_to({controller: controller_name, action: 'index'}, {class: link_class}) do
         concat content_tag(:i, '', class: "fa fa-#{h icon}")
-        concat content_tag(:span, resources.to_s.titleize)
+        concat content_tag(:span, title)
       end
     end
   end

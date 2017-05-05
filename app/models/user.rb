@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class User < ApplicationRecord
+  include Trackable
+  
   enum system_role: { member: 0, admin: 1 }
 
   mount_uploader :profile_picture, ProfilePictureUploader

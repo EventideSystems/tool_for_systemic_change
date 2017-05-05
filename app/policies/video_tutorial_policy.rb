@@ -6,7 +6,7 @@ class VideoTutorialPolicy < ApplicationPolicy
   end
   
   def show?
-    system_admin? || account_any_role?(record)
+    system_admin? || account_any_role?(record.account)
   end
   
   def create?

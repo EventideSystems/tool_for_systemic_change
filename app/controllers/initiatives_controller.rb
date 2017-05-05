@@ -26,17 +26,17 @@ class InitiativesController < ApplicationController
   end
   
   def edit_checklist_item_comment
-    
+
   end
-  
+
   def update_checklist_item_comment
-    
+
   end
 
   def create
     @initiative = Initiative.new(initiative_params)
     authorize @initiative
-    
+
     respond_to do |format|
       if @initiative.save
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully created.' }
@@ -67,7 +67,7 @@ class InitiativesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @initiative.name if @initiative.present?
     super

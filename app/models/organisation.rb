@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Organisation < ApplicationRecord
+  include Trackable
+  
   acts_as_paranoid
 
   belongs_to :account

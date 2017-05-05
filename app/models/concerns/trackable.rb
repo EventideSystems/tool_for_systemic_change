@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 require 'public_activity'
 
-
 module Trackable
   extend ActiveSupport::Concern
 
   included do
-    
+
     include PublicActivity::Model
-    
+
     tracked owner: proc { |controller, _model|
       controller ? controller.current_user : nil
     }
@@ -20,15 +19,3 @@ module Trackable
     }
   end
 end
-
-
-[ Account,
-  ChecklistItem,
-  Community,
-  Initiative,
-  Organisation,
-  Scorecard,
-  User,
-  
-  WickedProblem
-].each { |klass| klass.include Trackable }

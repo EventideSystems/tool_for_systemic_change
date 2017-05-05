@@ -39,7 +39,7 @@
                 <tr>
                   <th>
                     <span data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
-                      <%= link_to truncate(initiative.name, length: 22), initiative_path(initiative) %>
+                      <%= link_to initiative.name, initiative_path(initiative), class: 'truncate' %>
                     </span>
                   </th>
                   <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>

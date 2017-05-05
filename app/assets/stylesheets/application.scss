@@ -75,3 +75,10 @@ ul.wizard {
   }
 }
 
+a.truncate {
+  display: block;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

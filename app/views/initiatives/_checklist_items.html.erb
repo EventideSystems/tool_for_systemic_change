@@ -47,11 +47,11 @@
                             true, checklist_item.checked,
                             class: 'characteristic-checkbox', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }
                           %>
-                          <%= link_to('#characteristic_comment', class: 'characteristic-comment', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }) do
+                          
+                          <span class="characteristic-name<%= " commented" if !checklist_item.comment.blank? %>"><%= checklist_item.characteristic.name %></span>
+                          <%= link_to('#characteristic_comment', class: 'characteristic-comment', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id, toggle: "tooltip", placement: "top", title: "Add comment" }) do
                             safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
                           end %>
-                          <span class="characteristic-name<%= " commented" if checklist_item.comment.present? %>"><%= checklist_item.characteristic.name %></span>
-                          
                           <%- if checklist_item.characteristic.video_tutorial.present? %>
                             <%= 
                               link_to(video_tutorial_path(checklist_item.characteristic.video_tutorial), class: 'remote-link') do 

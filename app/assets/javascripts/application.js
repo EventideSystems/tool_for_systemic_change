@@ -74,8 +74,14 @@
     $(document).on('click', '.btn-checklist-comment-save', function(event) {
       var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
       var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
+      var comment = $(commentFormId).find('#checklist_item_comment').val();
+
       $(commentFormId).toggle();
-      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
+      if ($.trim(comment).length == 0) {
+        $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
+      } else {  
+        $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
+      }
     });
   });
   

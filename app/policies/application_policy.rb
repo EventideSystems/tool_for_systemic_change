@@ -78,7 +78,15 @@ class ApplicationPolicy
   def system_admin?
     current_user.admin?
   end
-  
+
+  def current_account
+    user_context.account
+  end
+    
+  def current_user
+    user_context.user
+  end
+    
   def current_account_admin?
     current_user.admin? || account_admin?(user_context.account)
   end

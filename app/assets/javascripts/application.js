@@ -75,7 +75,7 @@
       var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
       var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
       var comment = $(commentFormId).find('#checklist_item_comment').val();
-
+      debugger;
       $(commentFormId).toggle();
       if ($.trim(comment).length == 0) {
         $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');

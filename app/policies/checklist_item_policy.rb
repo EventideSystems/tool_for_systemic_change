@@ -6,18 +6,24 @@ class ChecklistItemPolicy < ApplicationPolicy
   end
   
   def show?
-    system_admin? || account_any_role?(record.account)
+    system_admin? || account_any_role?(checklist_item_account)
   end
   
   def create?
-    system_admin? || account_admin?(record.account)
+    system_admin? || account_admin?(current_account)
   end
 
   def update?
-    system_admin? || account_any_role?(record.account)
+    system_admin? || account_any_role?(checklist_item_account)
   end
   
   def destroy?
-    system_admin? || account_admin?(record.account)
+    system_admin? || account_admin?(checklist_item_account)
+  end
+  
+  private
+  
+  def checklist_item_account
+    record.initiative.scorecard.account
   end
 end

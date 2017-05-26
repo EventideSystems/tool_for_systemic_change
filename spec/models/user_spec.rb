@@ -6,7 +6,7 @@ RSpec.describe VideoTutorial, type: :model do
     user = User.create!(email: 'foo@bar.com', password: 'q2341234213', password_confirmation: 'q2341234213')
     user.delete
     
-    expect{ User.create!(email: 'foo@bar.com', password: 'q2341234213', password_confirmation: 'q2341234213')}
+    expect{ User.create!(email: 'foo@bar.com', password: 'q2341234213', password_confirmation: 'q2341234213') }
       .to_not raise_exception
   end
 end  

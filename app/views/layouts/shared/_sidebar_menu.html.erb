@@ -31,10 +31,10 @@
       <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
       <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
       <%- if policy(:sidebar).show_users_link? %> 
-        <%= menu_item_tag(:users, 'user-plus') %>
+        <%= menu_item_tag(:users, 'user-plus', { disabled: disabled }) %>
       <%- end %>  
       <%- if policy(:sidebar).show_accounts_link? %>
-        <%= menu_item_tag(:accounts, 'user-plus') %>
+        <%= menu_item_tag(:accounts, 'user-plus', { disabled: disabled }) %>
       <%- end %>  
       <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
     </ul>

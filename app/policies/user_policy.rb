@@ -2,11 +2,16 @@ class UserPolicy < ApplicationPolicy
   
   class Scope < Scope
     def resolve
-      if user_context.user.admin?
-        scope.all
-      else
-        # SMELL Should we be checking here to see if the user has access to this account? Probably
+      if account_admin?(user_context.account)|| system_admin?
         scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
+      end
+    end
+  end
+  
+  class SystemScope < Scope 
+    def resolve
+      if user_context.user.admin?
+        scope.with_deleted.all
       end
     end
   end
@@ -28,7 +33,7 @@ class UserPolicy < ApplicationPolicy
   end
   
   def update?
-    system_admin? || account_admin?(user_context.account)
+    system_admin? || account_admin?(user_context.account) || record == current_user 
   end
   
   def destroy?
@@ -36,10 +41,23 @@ class UserPolicy < ApplicationPolicy
     system_admin? || account_admin?(user_context.account)
   end
   
+  def undelete?
+    system_admin?
+  end
+  
+  def resend_invitation?
+    system_admin? || account_admin?(current_account)
+  end
+  
+  def remove_from_account?
+    return false if user_context.user == record
+    system_admin? || account_admin?(user_context.account)
+  end
+    
   def max_users_not_reached?(account)
-      return false unless account.present?
-      return true if account.max_users == 0 # NOTE magic number, meaning no limit
-      return account.users.count < account.max_users
-    end
+    return false unless account.present?
+    return true if account.max_users == 0 # NOTE magic number, meaning no limit
+    return account.users.count < account.max_users
+  end
 
 end

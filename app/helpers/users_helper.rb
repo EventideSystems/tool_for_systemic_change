@@ -11,4 +11,9 @@ module UsersHelper
     "Member since #{current_user.created_at.strftime('%b. %Y')}"
   end
   
+  def user_role_in_current_account(user)
+    accounts_user = AccountsUser.where(user: user, account: current_account).first
+    accounts_user.try(:account_role)
+  end
+
 end

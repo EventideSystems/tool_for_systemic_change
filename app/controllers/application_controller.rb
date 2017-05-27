@@ -7,15 +7,14 @@ class ApplicationController < ActionController::Base
   def ssl_configured?
     Rails.env.production?
   end
-  
+
   before_action :configure_permitted_parameters, if: :devise_controller?
-  
-  after_action :verify_authorized, except: :index, unless: :devise_controller?
-  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
-  
   before_action :set_session_account_id, unless: :devise_controller?
   before_action :authenticate_user!, unless: :devise_controller? 
-  
+
+  after_action :verify_authorized, except: :index, unless: :devise_controller?
+  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
+
   protect_from_forgery with: :exception
   
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

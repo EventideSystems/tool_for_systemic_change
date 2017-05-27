@@ -26,7 +26,12 @@ Rails.application.routes.draw do
   end
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
   resources :sectors
-  resources :users
+  resources :users do
+    member do
+      get 'remove_from_account'
+    end
+  end
+  
   resources :video_tutorials
   resource :welcome_message, only: [:show]
   resources :wicked_problems
@@ -43,6 +48,15 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
+  
+  namespace :system do
+    resources :users do
+      member do
+        get 'undelete'
+        get 'resend_invitation'
+      end
+    end
+  end
   
   root to: "home#index"
 end

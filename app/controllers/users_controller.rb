@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :remove_from_account]
   before_action :set_account_role, only: [:show, :edit]
   
   add_breadcrumb "Users", :users_path
@@ -67,11 +67,20 @@ class UsersController < ApplicationController
     end
   end
 
-  def destroy
-    @user.destroy
+  def remove_from_account
+    accounts_user = AccountsUser
+      .where(user: @user, account: current_account)
+      .where.not(user: current_user)
+      .first
+    
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+      if accounts_user.present? && accounts_user.destroy
+        format.html { redirect_to users_url, notice: 'User was successfully removed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to users_url, error: 'User could not be removed.' }
+        format.json { render status: :unprocessable_entity }
+      end  
     end
   end
   
@@ -96,7 +105,6 @@ class UsersController < ApplicationController
     params.fetch(:user, {}).permit(
       :name,
       :email,
-      :system_role,
       :account_role
     )
   end

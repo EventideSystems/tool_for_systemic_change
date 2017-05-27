@@ -1,7 +1,7 @@
 module DashboardHelper
   
   def menu_item_tag(resources, icon, options={})
-    controller_name = options[:controller] || resources.to_s
+    controller_name = '/' + (options[:controller].try(:to_s) || resources.to_s)
     title = options[:title] || resources.to_s.titleize
     
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''

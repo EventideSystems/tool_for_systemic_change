@@ -1,20 +1,26 @@
 class SectorsController < ApplicationController
   before_action :set_sector, only: [:show, :edit, :update, :destroy]
 
+  add_breadcrumb "System"
+  add_breadcrumb "Sectors", :sectors_path
+  
   def index
     @sectors = policy_scope(Sector).order(sort_order).page params[:page]
   end
 
   def show
     @content_subtitle = @sector.name
+    add_breadcrumb @sector.name
   end
 
   def new
     @sector = Sector.new
     authorize @sector
+    add_breadcrumb "New Sector"
   end
 
   def edit
+    add_breadcrumb @sector.name
   end
 
   def create

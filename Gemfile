@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'paper_trail'
+
 
 # Authentication and authorisation
 gem 'devise'
@@ -71,6 +71,7 @@ end
 
 gem 'paranoia', '~> 2.2'
 gem 'public_activity', require: false, github: 'chaps-io/public_activity', branch: '1-6-stable'
+gem 'paper_trail'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'mailjet'

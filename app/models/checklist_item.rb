@@ -16,7 +16,7 @@ class ChecklistItem < ApplicationRecord
   
   def snapshot_at(timestamp)
     return self if timestamp.nil?
-    self.paper_trail.version_at(timestamp) || self.unchecked_clone
+    paper_trail.version_at(timestamp) || unchecked_clone
   end
   
   private

@@ -7,9 +7,30 @@
   <div class="tab-content">
     <div class="tab-pane active" id="tab_1">
       <div class="box-header with-border">
+        <div class="pull-left" style="padding-right: 5px">
+          <div class="input-group">
+            <button type="button" class="btn btn-default" id="daterange-btn" data-scorecard-id="<%=@scorecard.id%>" data-selected-date"<%=@selected_date%>">
+              <span>
+                <i class="fa fa-calendar"></i> <%= display_selected_date %>
+              </span>
+              <i class="fa fa-caret-down"></i>
+            </button>
+          </div>
+        </div>
+        <div class="pull-left">
+          <%= link_to(scorecard_path(@scorecard), class: 'btn btn-primary') do
+            safe_join([content_tag(:i, '', class: "fa fa-undo"), ' Clear'])
+          end %>
+        </div>
         <div class="pull-right">
           <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
-          <%= link_to(scorecard_path(@scorecard, format: :pdf), class: 'btn btn-primary') do
+          <%- print_scorecard_path = if @selected_date 
+                scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date)
+              else
+                scorecard_path(@scorecard, format: :pdf)
+              end
+          %>
+          <%= link_to(print_scorecard_path, class: 'btn btn-primary') do
             safe_join([content_tag(:i, '', class: "fa fa-print"), ' Print'])
           end %>
           <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
@@ -35,14 +56,14 @@
                 </tr>
               </thead>
               <tbody>
-                <% @scorecard.initiatives.order(name: :asc).each do |initiative| %>
+                <% @initiatives.each do |initiative| %>
                 <tr>
                   <th>
                     <span data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
                       <%= link_to initiative.name, initiative_path(initiative), class: 'truncate' %>
                     </span>
                   </th>
-                  <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
+                  <% initiative.checklist_items_ordered_by_ordered_focus_area(@parsed_selected_date).each do |checklist_item| %>
                     <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
                       <span>&nbsp;</span>
                     </td>

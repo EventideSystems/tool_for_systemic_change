@@ -9,8 +9,19 @@ class ScorecardsController < ApplicationController
   end
 
   def show
+    @selected_date = params[:selected_date]
+    @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
+    
     @focus_areas = FocusArea.ordered_by_group_position
-    @initiatives = @scorecard.initiatives.order(name: :asc)
+    @initiatives = if @parsed_selected_date.present? 
+      @scorecard.initiatives
+        .where('started_at < ? OR started_at IS NULL', @parsed_selected_date)
+        .where('finished_at > ? OR finished_at IS NULL', @parsed_selected_date)
+        .order(name: :asc)
+    else  
+      @scorecard.initiatives.order(name: :asc)
+    end
+    
     add_breadcrumb @scorecard.name
     
     respond_to do |format|
@@ -34,7 +45,7 @@ class ScorecardsController < ApplicationController
     add_breadcrumb @scorecard.name
   end
 
-  def create    
+  def create
     @scorecard = current_account.scorecards.build(scorecard_params)
     authorize @scorecard
 

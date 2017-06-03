@@ -20,6 +20,8 @@
   //= require select2
   //= require medium-editor
   //= require twitter-bootstrap-wizard
+  //= require moment
+  //= require bootstrap-daterangepicker
   
   var ready = function () {
     var o;
@@ -299,6 +301,41 @@
        $('.modal').modal('show');
        e.preventDefault();
      });
+  });
+  
+  $(document).ready(function() {
+    var dateStart = $('#daterange-btn').data('selected-date');
+
+    if (dateStart === undefined) {
+      var parsedDateStart = moment()
+    } else {
+      var parsedDateStart = moment(dateStart, 'YYYY-MM-DD').format('MMMM D, YYYY')
+    }
+
+    $('#daterange-btn').daterangepicker(
+        {
+          locale: {
+            format: 'MMMM D, YYYY'
+          },
+          startDate: parsedDateStart,
+          opens: 'right',
+          singleDatePicker: true,
+        },
+        function (start, end) {
+          $('#daterange-btn span').html(start.format('MMMM D, YYYY'));
+        }
+    );
+    
+    $('#daterange-btn').on('apply.daterangepicker', function(ev, picker) {
+      var scorecardId = $(picker.element).data('scorecard-id');
+      
+      var params = {
+        selected_date: picker.startDate.format('YYYY-MM-DD')
+      };
+      
+      var url = '/scorecards/' + scorecardId + '?' + $.param(params);
+      $(location).attr('href', url)
+    });
   });
   
   

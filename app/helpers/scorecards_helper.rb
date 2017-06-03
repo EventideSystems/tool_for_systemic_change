@@ -10,4 +10,9 @@ module ScorecardsHelper
   def lookup_wicked_problems
     controller.current_account.wicked_problems
   end
+  
+  def display_selected_date
+    return 'Select Date' if @selected_date.blank?
+    Date.parse(@selected_date).strftime('%B %-d, %Y')
+  end
 end

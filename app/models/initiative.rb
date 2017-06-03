@@ -36,11 +36,16 @@ class Initiative < ApplicationRecord
     incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
   }
   
-  def checklist_items_ordered_by_ordered_focus_area
-    ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
+  def checklist_items_ordered_by_ordered_focus_area(selected_date=nil)
+    checklist_items = ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
      .where('checklist_items.initiative_id' => self.id)
      .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
      .all
+     
+     return checklist_items unless selected_date.present?
+
+     selected_date_end_of_day = selected_date.end_of_day
+     checklist_items.map { |checklist_item| checklist_item.snapshot_at(selected_date_end_of_day) }
   end
   
   def wicked_problem_name

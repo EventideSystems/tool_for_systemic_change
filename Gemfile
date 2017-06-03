@@ -67,6 +67,8 @@ source 'https://rails-assets.org/' do
   gem 'rails-assets-twitter-bootstrap-wizard'
   gem 'rails-assets-select2'
   gem 'rails-assets-bootstrap-nav-wizard'
+  gem 'rails-assets-bootstrap-daterangepicker'
+  gem 'rails-assets-moment'
 end
 
 gem 'paranoia', '~> 2.2'
@@ -85,6 +87,8 @@ group :test do
   gem 'cucumber-rails', :require => false
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
+  gem 'rails-controller-testing'
+  gem 'timecop'
 end
 
 group :development, :test do

@@ -176,3 +176,11 @@
   margin-bottom: 25px;
   padding: 10px;
 }
+
+.range_inputs {
+  .applyBtn {
+    color: #FFF;
+    background-color: $secondary-button-color;
+    border-color: lighten($secondary-button-color, 5%);
+  }
+}

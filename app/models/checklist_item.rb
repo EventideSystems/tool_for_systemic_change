@@ -13,4 +13,19 @@ class ChecklistItem < ApplicationRecord
   def name
     characteristic.name.presence
   end
+  
+  def snapshot_at(timestamp)
+    return self if timestamp.nil?
+    paper_trail.version_at(timestamp) || unchecked_clone
+  end
+  
+  private
+  
+  def unchecked_clone
+    cloned_checklist = self.clone
+    cloned_checklist.readonly!
+    cloned_checklist.checked = false
+    cloned_checklist
+  end
+  
 end

@@ -8,7 +8,9 @@ require 'rspec/rails'
 require 'factory_girl_rails'
 require 'devise'
 require 'support/devise_support'
+require 'support/custom_matchers'
 require 'pundit/rspec'
+require 'timecop'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

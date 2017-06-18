@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     collection do
       post 'initiatives'
       post 'stakeholders'
+      post 'scorecard_activity'
+      get 'scorecard_activity'
     end
   end
 

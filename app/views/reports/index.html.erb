@@ -36,4 +36,25 @@
       <% end %>
     </div>
   </div>
+  
+  <div class="col-md-6">
+    <div class="box box-default color-palette-box">
+      <div class="box-header with-border">
+        <h3 class="box-title"><i class="fa fa-pie-chart"></i> Scorecard Activity Report</h3>
+      </div>
+      <%= simple_form_for :report, url: scorecard_activity_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <div class="box-body">
+        <p>Search for stakeholder Organistions sharing the same Wicked Problems, Community and Sector.</p>
+        
+          <%= f.input :scorecard_id, collection: current_account.scorecards %>
+          <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+          <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+
+      </div>
+      <div class="box-footer">
+        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
 <div>

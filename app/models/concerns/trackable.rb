@@ -4,7 +4,7 @@ require 'public_activity'
 module Trackable
   extend ActiveSupport::Concern
 
-  if ActiveRecord::Base.connection.table_exists? 'activities'
+  if ActiveRecord::Base.connection.data_source_exists? 'activities'
     included do
 
       include PublicActivity::Model

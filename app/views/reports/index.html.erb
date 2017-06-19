@@ -45,7 +45,10 @@
       </div>
       <%= simple_form_for :report, url: scorecard_activity_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">
-        <p>Search for stakeholder Organistions sharing the same Wicked Problems, Community and Sector.</p>
+        <p>Scorecard activity (addition and removal of characteristics across intitiatives) report.</p>
+        
+        <p><strong>PLEASE NOTE:</strong> Historical data is only available from May 30, 2017.</p>
+        <p>Reports executed for date ranges earlier than this are not accurate.</p>
         
           <%= f.input :scorecard_id, collection: current_account.scorecards %>
           <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>

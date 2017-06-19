@@ -76,12 +76,16 @@ class ReportsController < ApplicationController
   
   def scorecard_activity
     authorize :report, :index?
+    
+    @content_subtitle = 'Scorecard Activity'
+    add_breadcrumb @content_subtitle
 
     @date_from = Date.parse(params[:report][:date_from])
     @date_to = Date.parse(params[:report][:date_to])
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     
-    @content_subtitle = 'Scorecard Activity'
+
+
     @report = Reports::ScorecardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
@@ -95,6 +99,10 @@ class ReportsController < ApplicationController
   
   def scorecard_comments
     authorize :report, :index?
+    
+    @content_subtitle = 'Scorecard Comments'
+    add_breadcrumb @content_subtitle
+    
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     @date = Date.parse(params[:report][:date])
     

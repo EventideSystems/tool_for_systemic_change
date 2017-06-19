@@ -1,3 +1,5 @@
+require 'csv'
+
 module Reports
   class ScorecardActivity
     
@@ -47,6 +49,41 @@ module Reports
           focus_area: characteristic.focus_area.name,
           characteristic: characteristic.name,
         }.merge(checklist_item_counts(characteristic, initiatives(date_from, date_to), date_from, date_to))
+      end
+    end
+    
+    def to_csv
+      current_focus_area_group = '' 
+      current_focus_area = ''
+      
+      CSV.generate do |csv|
+        
+        csv << ['Scorecard', scorecard.name, '', '', '']
+        csv << ['Dates range', date_from.strftime('%d/%m/%y'), date_to.strftime('%d/%m/%y'), '', '']
+        csv << ['', '', '', '', '']
+        
+        csv << [
+          '',
+        	'Total Initiatives beginning of period', 
+          'Additions',
+          'Removals', 
+          'Total Initiatives end of period'
+        ]
+        
+        results.each do |result|
+          if result[:focus_area_group] != current_focus_area_group
+            current_focus_area_group = result[:focus_area_group]
+            current_focus_area = ''
+            csv << [result[:focus_area_group], '', '', '', '']
+          end
+          
+          if result[:focus_area] != current_focus_area 
+            current_focus_area = result[:focus_area]
+            csv << ["\t\t" + result[:focus_area], '', '', '', '']
+          end
+          
+          csv << ["\t\t\t\t" + result[:characteristic], result[:initial], result[:additions], result[:removals], result[:final]]
+        end
       end
     end
 

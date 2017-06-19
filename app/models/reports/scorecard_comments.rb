@@ -31,9 +31,9 @@ module Reports
       
       CSV.generate do |csv|
         
-        csv << ['Scorecard', scorecard.name, '', '', '']
-        csv << ['Date', date.strftime('%d/%m/%y'), '', '']
-        csv << ['', '', '', '', '']
+        csv << ['Scorecard', scorecard.name] + Array.new(initiatives.count + 1, '')
+        csv << ['Date', date.strftime('%d/%m/%y')] + Array.new(initiatives.count + 1, '')
+        csv << Array.new(initiatives.count + 3, '')
         
         csv << [
           '',
@@ -45,12 +45,12 @@ module Reports
           if result[:focus_area_group] != current_focus_area_group
             current_focus_area_group = result[:focus_area_group]
             current_focus_area = ''
-            csv << [result[:focus_area_group], '', '', '', '']
+            csv << [result[:focus_area_group]] + Array.new(initiatives.count + 2, '')
           end
         
           if result[:focus_area] != current_focus_area 
             current_focus_area = result[:focus_area]
-            csv << ["\t\t" + result[:focus_area], '', '', '', '']
+            csv << ["\t\t" + result[:focus_area]] + Array.new(initiatives.count + 2, '')
           end
 
           csv << [

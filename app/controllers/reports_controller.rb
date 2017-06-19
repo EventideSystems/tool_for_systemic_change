@@ -77,16 +77,22 @@ class ReportsController < ApplicationController
   def scorecard_activity
     authorize :report, :index?
 
-    date_from = Date.parse(params[:report][:date_from])
-    date_to = Date.parse(params[:report][:date_to])
-    scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @date_from = Date.parse(params[:report][:date_from])
+    @date_to = Date.parse(params[:report][:date_to])
+    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     
     @content_subtitle = 'Scorecard Activity'
-    @report = Reports::ScorecardActivity.new(scorecard, date_from, date_to)
+    @report = Reports::ScorecardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
       format.html
-      format.csv { send_data @report.to_csv }
+      format.csv do
+        filename = 'scorecard_activity'
+        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{filename}.csv" 
+      end
     end
   end
+  
+  
+     
 end

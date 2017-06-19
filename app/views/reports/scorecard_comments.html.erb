@@ -32,10 +32,9 @@
           <% current_focus_area = '' %>
           <tr>
             <td><strong><%= result[:focus_area_group] %></strong></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <% (@report.initiatives.count + 2).times do %>
+              <td></td>
+            <% end %>  
           </tr>
         <% end %>
         
@@ -43,10 +42,9 @@
           <% current_focus_area = result[:focus_area] %>
           <tr>
             <td style="text-align: right"><strong><%= result[:focus_area] %></strong></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <% (@report.initiatives.count + 2).times do %>
+              <td></td>
+            <% end %>  
           </tr>
         <% end %>
         <tr>

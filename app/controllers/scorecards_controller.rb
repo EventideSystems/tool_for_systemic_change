@@ -15,8 +15,8 @@ class ScorecardsController < ApplicationController
     @focus_areas = FocusArea.ordered_by_group_position
     @initiatives = if @parsed_selected_date.present? 
       @scorecard.initiatives
-        .where('started_at < ? OR started_at IS NULL', @parsed_selected_date)
-        .where('finished_at > ? OR finished_at IS NULL', @parsed_selected_date)
+        .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
+        .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
         .order(name: :asc)
     else  
       @scorecard.initiatives.order(name: :asc)

@@ -93,6 +93,21 @@ class ReportsController < ApplicationController
     end
   end
   
+  def scorecard_comments
+    authorize :report, :index?
+    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @date = Date.parse(params[:report][:date])
+    
+    @report = Reports::ScorecardComments.new(@scorecard, @date)
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        filename = 'scorecard_comments'
+        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{filename}.csv" 
+      end
+    end
+  end
   
      
 end

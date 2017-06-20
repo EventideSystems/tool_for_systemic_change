@@ -80,8 +80,8 @@ class ReportsController < ApplicationController
     @content_subtitle = 'Scorecard Activity'
     add_breadcrumb @content_subtitle
 
-    @date_from = Date.parse(params[:report][:date_from])
-    @date_to = Date.parse(params[:report][:date_to])
+    @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
+    @date_to = Date.parse(params[:report][:date_to]).end_of_day
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     
 
@@ -104,7 +104,7 @@ class ReportsController < ApplicationController
     add_breadcrumb @content_subtitle
     
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
-    @date = Date.parse(params[:report][:date])
+    @date = Date.parse(params[:report][:date]).end_of_day
     
     @report = Reports::ScorecardComments.new(@scorecard, @date)
 

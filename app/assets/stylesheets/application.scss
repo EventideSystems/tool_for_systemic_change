@@ -83,3 +83,11 @@ a.truncate {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.fa-report {
+  color: $secondary-button-color;
+}
+
+.box-report {
+  min-height: 360px;
+}

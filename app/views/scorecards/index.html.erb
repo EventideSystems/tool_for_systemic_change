@@ -13,10 +13,13 @@
   <%= table_for @scorecards, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          :id => lambda { |scorecard| "scorecard-#{scorecard.id}" }
+                          :id => lambda { |scorecard| "scorecard-#{scorecard.id}" },
+                          :class => 'test'
                         } do |table| %>
     <% table.column :name, :link => true  %>
-    <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
+    <% table.column :description, :formatter => lambda { |description| 
+      truncate(Nokogiri::HTML(description).text, length: 100) 
+    } %>
     <% table.column :created_at %>
     <% table.footer do %>
       <div class="pull-right">

@@ -2,27 +2,31 @@
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart"></i> Initiative Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Initiative Report</h3>
       </div>
-      <div class="box-body">
+      <%= simple_form_for :report, url: initiatives_reports_path do |f| %>
+      <div class="box-body box-report">
         <p>Search for Initiatives sharing the same Wicked Problems and Communities.</p>
         <p>NB This report reqires at least one Wicked Problem and one Community to be selected.</p>
-        <%= simple_form_for :report, url: initiatives_reports_path do |f| %>
+        
           <%= f.input :wicked_problems, as: :check_boxes, collection: current_account.wicked_problems %>
           <%= f.input :communities, as: :check_boxes, collection: current_account.communities %>
-          <%= f.button :submit, 'Execute', class: 'pull-right' %>
-        <% end %>
+        
       </div>
+      <div class="box-footer">
+        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+      </div>
+      <% end %>
     </div>
   </div>
   
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart"></i> Stakeholder Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Stakeholder Report</h3>
       </div>
       <%= simple_form_for :report, url: stakeholders_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="box-body">
+      <div class="box-body box-report">
         <p>Search for stakeholder Organistions sharing the same Wicked Problems, Community and Sector.</p>
         
           <%= f.input :wicked_problem, collection: current_account.wicked_problems %>
@@ -37,18 +41,18 @@
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart"></i> Scorecard Activity Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Scorecard Activity Report</h3>
       </div>
-      <%= simple_form_for :report, url: scorecard_activity_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="box-body">
-        <p>Scorecard activity (addition and removal of characteristics across intitiatives) report.</p>
+      <%= simple_form_for :report, url: scorecard_activity_reports_path(format: :csv), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <div class="box-body box-report">
+        <p>Scorecard activity report shows the addition and removal of characteristics across initiatives</p>
         
         <p><strong>PLEASE NOTE:</strong> Historical data is only available from May 30, 2017.</p>
-        <p>Reports executed for date ranges earlier than this <strong>will not</strong> be accurate.</p>
         
           <%= f.input :scorecard_id, collection: current_account.scorecards %>
           <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
@@ -56,7 +60,7 @@
 
       </div>
       <div class="box-footer">
-        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+        <%= f.button :submit, 'Download', class: 'pull-right' %>
       </div>
       <% end %>
     </div>
@@ -65,21 +69,20 @@
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart"></i> Scorecard Comments Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Scorecard Comments Report</h3>
       </div>
-      <%= simple_form_for :report, url: scorecard_comments_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="box-body">
-        <p>Scorecard comments across initiatives.</p>
+      <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :csv), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <div class="box-body box-report">
+        <p>This report shows the last comments saved across initiatives.</p>
         
         <p><strong>PLEASE NOTE:</strong> Historical data is only available from May 30, 2017.</p>
-        <p>Reports executed for date ranges earlier than this <strong>will not</strong> be accurate.</p>
         
           <%= f.input :scorecard_id, collection: current_account.scorecards %>
           <%= f.input :date, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
 
       </div>
       <div class="box-footer">
-        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+        <%= f.button :submit, 'Download', class: 'pull-right' %>
       </div>
       <% end %>
     </div>

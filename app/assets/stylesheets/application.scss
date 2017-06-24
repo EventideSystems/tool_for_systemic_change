@@ -84,10 +84,60 @@ a.truncate {
   text-overflow: ellipsis;
 }
 
+
+
 .fa-report {
   color: $secondary-button-color;
 }
 
 .box-report {
   min-height: 360px;
+}
+
+// PDF related
+label.truncate {
+  display: block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.print-table {
+  table { 
+    table-layout: fixed;
+    width: auto;
+  }
+  td { 
+    width: 36px;
+//    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.print-chars {
+  td {
+    font-size: 11px;
+    font-weight: 300;
+    white-space: nowrap;
+    position: relative;
+    text-align: left;
+    background: none;
+    padding-bottom: 10px;
+  }
+
+  span {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 50%;
+    left: 25px;
+  }
 }

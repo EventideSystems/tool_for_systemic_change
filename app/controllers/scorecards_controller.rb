@@ -34,7 +34,8 @@ class ScorecardsController < ApplicationController
           print_media_type: false,
           grayscale: false,
           background: true,
-          show_as_html: params.key?('debug')
+          show_as_html: params.key?('debug'),
+          footer: { right: 'Page [page] of [topage]' }
       end 
     end
     

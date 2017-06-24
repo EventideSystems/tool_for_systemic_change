@@ -1,150 +1,16 @@
-<div class="nobreak">  
-  <div class="row">
-    <div class="col-sm-8">
-      <h2>Scorecard: <%= @scorecard.name %></h2>
-      <%= content_tag(:h3, "Selected Date: #{@parsed_selected_date.strftime('%B %-d, %Y')}") if @parsed_selected_date.present? %>
-    </div>
-    <div class="col-sm-3 pull-right">
-      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-    </div>  
-  </div>
-  
-  <h3>Description</h3>
-  <hr>
-  <p>
-    <%= if @scorecard.description.present?
-          @scorecard.description.html_safe
-        else
-          content_tag(:em, 'No description given')
-        end
-    %>
-  </p>
-  <h3>Initiatives</h4>
-  <hr>
-
-  <% @initiatives.each_with_index do |initiative, index| %>
-    <h4><%= "Initiative #{index+1}: #{initiative.name}" %></h4>
-    <p><%= initiative.description %></p>
-    <h5>Organisations:</h5>
-    <ul>
-      <% initiative.organisations.each do |organisation| %>
-        <li><%= organisation.name %></li>
-      <% end %>
-    </ul>
-    <hr>
-  <% end %>
-  
-</div>
-
 <div class="alwaysbreak">
-  <div class="row">
-    <div class="col-sm-8">
-      <h3>Scorecard Summary</h3>
-    </div>
-    <div class="col-sm-3 pull-right">
-      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-2 pull-left">
-      <h4>Focus Areas</h4>
-    </div>
-
-    <div class="col-sm-7">
-      <h4>Characteristics</h4>
-    </div>
-
-    <div class="col-sm-3 pull-right">
-      <h4>Initiatives Mapped</h4>
-    </div>
-  </div>
+  <%= render partial: 'pdf_page', locals: { focus_areas: @focus_areas[0..3], offset: 1 } %>
+</div>
+<div class="alwaysbreak">
+  <%= render partial: 'pdf_page', locals: { focus_areas: @focus_areas[4..-1], offset: 5 } %>
+</div>
+<div class="alwaysbreak">
+  <h3>Initiatives</h3>
   <hr>
-
-  <% @focus_areas.each_with_index do |focus_area, index | %>
-    <div class="row">
-      <div class="col-sm-2 pull-left">
-        <h5><%= "Focus Area #{index+1}" %></h5>
-        <small><%= focus_area.name %></small>
-      </div>
-
-      <div class="col-sm-10">
-      <% focus_area.characteristics.each do |characteristic| %>
-        <div class="row">
-          <div class="col-sm-8"><p><%= characteristic.name %></p></div>
-          <div class="col-sm-2 pull-right">
-            <% 
-              checklist_items = @scorecard.checklist_items.where(characteristic_id: characteristic.id)
-              total_items = checklist_items.count
-              checked_items = checklist_items.select { |c| c.snapshot_at(@parsed_selected_date).checked }.count
-              
-              # percent_complete = checked_items > 0 ? ((checked_items / total_items.to_f) * 100).round : 0
-            %>
-            <small><%= checked_items %></small>
-          </div>  
-        </div>
-      <% end %>
-      </div>    
-    </div>
-    <%- if index < @focus_areas.length - 1 %>
-      <hr>
-    <%- end %>  
+  <% @initiatives.each do |initiative| %>
+    <h4>Name: <%= initiative.name %></h4>
+    <p>Created: <%= initiative.created_at.strftime('%B %-d, %Y') %>
+    <p>Description: <%= initiative.description.blank? ? "<em>No description</em>".html_safe : initiative.description %></p>
+    <hr>
   <% end %>
 </div>
-
-<% @initiatives.each_with_index do |initiative, index| %>
-  <div class="alwaysbreak">
-    <div class="row">
-      <div class="col-sm-8">
-        <h3>Initiative <%= index + 1 %>: <%= initiative.name %></h3>
-      </div>
-      <div class="col-sm-3 pull-right">
-        <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-2 pull-left">
-        <h4>Focus Areas</h4>
-      </div>
-
-      <div class="col-sm-8">
-        <h4>Characteristics</h4>
-      </div>
-
-      <div class="col-sm-2 pull-right">
-        <h4>Mapped</h4>
-      </div>
-    </div>
-    <hr>
-    <% @focus_areas.each_with_index do |focus_area, index | %>
-      <div class="row">
-        <div class="col-sm-2 pull-left">
-          <h5><%= "Focus Area #{index+1}" %></h5>
-          <small><%= focus_area.name %></small>
-        </div>
-
-        <div class="col-sm-10">
-        <% focus_area.characteristics.each do |characteristic| %>
-          <% checklist_item = initiative.checklist_items.find_by_characteristic_id(characteristic.id).snapshot_at(@parsed_selected_date) %>
-          <div class="row">
-            <div class="col-sm-8">
-              <p><%= characteristic.name %></p>
-              <%- unless checklist_item.comment.blank? %>
-                <p><em><%= checklist_item.comment %></em></p>
-              <%- end %>
-            </div>
-            <div class="col-sm-2 pull-right">
-              <%- if checklist_item.checked %>
-                &#10004;
-              <%- end %>  
-            </div>  
-          </div>
-        <% end %>
-        </div>    
-      </div>
-      <%- if index < @focus_areas.length - 1 %>
-        <hr>
-      <%- end %>
-    
-    <% end %>  
-  </div>
-<%- end %>    

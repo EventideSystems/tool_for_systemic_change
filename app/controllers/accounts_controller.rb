@@ -60,7 +60,7 @@ class AccountsController < ApplicationController
   def switch
     self.current_account = @account
     respond_to do |format|
-      format.html { redirect_back(fallback_location: dashboard_path, notice: 'Account successfully switched.') }
+      format.html { redirect_to dashboard_path, notice: 'Account successfully switched.' }
       format.json { render :show, status: :ok, location: @account }
     end    
   end

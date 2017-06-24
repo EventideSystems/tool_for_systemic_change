@@ -27,7 +27,14 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       format.html 
       format.pdf do
-        render pdf: "scorecard", layout: 'pdf.html.erb', viewport_size: '1280x1024', print_media_type: true, show_as_html: params.key?('debug')
+        render pdf: "scorecard",
+          layout: 'pdf.html.erb',
+          orientation: 'Landscape',
+          viewport_size: '1280x1024', 
+          print_media_type: false,
+          grayscale: false,
+          background: true,
+          show_as_html: params.key?('debug')
       end 
     end
     

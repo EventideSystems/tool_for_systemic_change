@@ -68,10 +68,10 @@ class ReportsController < ApplicationController
       :sector_id,
       'sectors.name as sector_name',
       'wicked_problems.name as wicked_problem_name',
-      'initiatives.name as initiative_name',  
       'communities.name as community_name', 
       'scorecards.name as scorecard_name'
     ).distinct.page params[:page]
+
   end
   
   def scorecard_activity

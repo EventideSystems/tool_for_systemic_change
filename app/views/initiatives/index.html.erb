@@ -16,8 +16,8 @@
                           id: lambda { |initiative| "initiative-#{initiative.id}" },
                           class: 'table-actions'
                         } do |table| %>
-    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %>
-    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 50) } %>
+    <% table.column :description, formatter: lambda { |text| truncate_text(text, 70) } %>
     <% table.column :scorecard_name, :sortable => false %>
     <% table.column :data => "Modify", link_action: :edit %>
     <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>

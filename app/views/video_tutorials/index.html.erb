@@ -11,14 +11,13 @@
   <%= table_for @video_tutorials, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          :id => lambda { |video_tutorial| "video_tutorial-#{video_tutorial.id}" }
+                          id: lambda { |video_tutorial| "video_tutorial-#{video_tutorial.id}" },
+                          class: 'table-actions'
                         } do |table| %>
-    <% table.column :name %>
-    <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
-    <% table.column :created_at %>
-    <% table.column :data => "Show", :link => true %>
-    <% table.column :data => "Modify", :link_action => :edit %>
-    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %> %>
+    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+    <% table.column :data => "Modify", link_action: :edit %>
+    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @video_tutorials %>

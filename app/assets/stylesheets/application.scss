@@ -141,3 +141,8 @@ label.truncate {
     left: 25px;
   }
 }
+
+
+.table-actions td:nth-last-child(-n+2) {
+  width: 10%;
+}

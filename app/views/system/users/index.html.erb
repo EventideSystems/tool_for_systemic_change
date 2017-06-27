@@ -4,9 +4,10 @@
                         link_namespace: [:system],
                         sortable: true,
                         data_row_html: {
-                          id: lambda { |user| "user-#{user.id}" }
+                          id: lambda { |user| "user-#{user.id}" },
+                          class: 'table-actions'
                         } do |table| %>
-    <% table.column :name %>
+    <% table.column :name, link: true %>
     <% table.column :email %>
     <% table.column :primary_account_name, sortable: false %>
     <% table.column :status, sortable: false %>
@@ -33,7 +34,6 @@
           end
         }
     %>
-    <% table.column data: "Show", link: true %>
     <% table.column data: "Modify", link_action: :edit %>
     <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>

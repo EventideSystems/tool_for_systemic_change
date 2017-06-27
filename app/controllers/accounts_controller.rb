@@ -69,7 +69,6 @@ class AccountsController < ApplicationController
     return @account.name if @account.present?
     super
   end
-
   
   protected
 

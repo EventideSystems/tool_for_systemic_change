@@ -11,15 +11,14 @@
   <%= table_for @focus_areas, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          :id => lambda { |focus_area| "focus_area-#{focus_area.id}" }
+                          id: lambda { |focus_area| "focus_area-#{focus_area.id}" },
+                          class: 'table-actions'
                         } do |table| %>
-    <% table.column :name %>
-    <% table.column :description %>
-    <% table.column :focus_area_group, :formatter => lambda { |focus_area_group| focus_area_group.name } %>
-    <% table.column :created_at %>
-    <% table.column :data => "Show", :link => true %>
-    <% table.column :data => "Modify", :link_action => :edit %>
-    <% table.column :data => "Delete", :link_method => :delete, :link_confirm => "Are you sure?" %>
+    <% table.column :name, link_action: :edit, formatter: lambda { |text| truncate_text(text, 30) } %>
+    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+    <% table.column :focus_area_group, :formatter => lambda { |focus_area_group| truncate_text(focus_area_group.name, 30) } %>
+    <% table.column :data => "Modify", link_action: :edit %>
+    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @focus_areas %>

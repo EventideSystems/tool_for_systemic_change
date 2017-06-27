@@ -35,10 +35,19 @@ module ApplicationHelper
     controller.current_account
   end
   
-  def pluralize_without_count(count, noun, text = nil)
+  def pluralize_without_count(count, noun, text=nil)
     if count != 0
       count == 1 ? "#{noun}#{text}" : "#{noun.pluralize}#{text}"
     end
   end
-
+  
+  def truncate_text(text, length=50)
+    safe_text = Nokogiri::HTML(text).text
+    
+    content_tag(
+      :span, 
+      truncate(safe_text, length: length), 
+      data: { toggle: "tooltip", placement: "bottom" }, title: safe_text
+    )
+  end
 end

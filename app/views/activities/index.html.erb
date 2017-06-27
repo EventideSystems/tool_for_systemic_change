@@ -3,7 +3,7 @@
   <%= table_for @activities, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          :id => lambda { |activity| "activity-#{activity.id}" }
+                          id: lambda { |activity| "activity-#{activity.id}" }
                         } do |table| %>
     <% table.column :created_at, :header => "Time" %>
     <% table.column :trackable_type, :header => "Record Type" %>

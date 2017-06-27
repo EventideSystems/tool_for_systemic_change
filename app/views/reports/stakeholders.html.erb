@@ -3,9 +3,9 @@
   <%= table_for @results, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          :id => lambda { |initiative| "initiative-#{initiative.id}" }
+                          id: lambda { |initiative| "initiative-#{initiative.id}" }
                         } do |table| %>
-    <% table.column :name, :link => true %>
+    <% table.column :name, link: true %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
     <% table.column :sector_name, :header => "Sector" %>
     <% table.column :scorecard_name, :header => "Scorecard" %>

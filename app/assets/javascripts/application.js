@@ -338,6 +338,11 @@
     });
   });
   
+  $(document).ready(function() {
+    $('.download').bind('click', function(e) {
+      e.preventDefault();
+    });
+  });
   
   //= require scorecards
   //= require turbolinks

@@ -52,6 +52,63 @@ module Reports
       end
     end
     
+    def to_xlsx
+      Axlsx::Package.new do |p|
+        p.workbook.styles.fonts.first.name = 'Calibri'
+        
+        header_1 = p.workbook.styles.add_style :fg_color => "386190", :sz => 16, b: true
+        header_2 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: true
+        header_3 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: false
+        blue_normal = p.workbook.styles.add_style :fg_color => "386190", :sz => 12, b: false
+        wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
+        date = p.workbook.styles.add_style format_code: "d/m/yy"
+        
+        p.workbook.add_worksheet do |sheet|
+          sheet.add_row(['Scorecard'], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet.add_row(['Date range'], b: true).tap do |row|
+            row.add_cell(date_from, style: date)
+            row.add_cell(date_to, style: date)
+          end
+          sheet.add_row
+          sheet.add_row([
+            '',
+          	'Initiatives beginning of period', 
+            'Additions',
+            'Removals', 
+            'Initiatives end of period'
+          ], height: 48, style: wrap_text)
+          
+          sheet.add_row([
+            "Total Scorecard Initiatives", 
+            initiative_totals[:initial],
+            initiative_totals[:additions],
+            initiative_totals[:removals],
+            initiative_totals[:final],
+          ], style: header_1)
+          
+          current_focus_area_group = '' 
+          current_focus_area = ''
+          
+          results.each do |result|
+            if result[:focus_area_group] != current_focus_area_group
+              current_focus_area_group = result[:focus_area_group]
+              current_focus_area = ''
+              sheet.add_row [result[:focus_area_group], '', '', '', ''], style: header_2
+            end
+          
+            if result[:focus_area] != current_focus_area 
+              current_focus_area = result[:focus_area]
+              sheet.add_row ["\s\s" + result[:focus_area], '', '', '', ''], style: header_3
+            end
+          
+            sheet.add_row ["\s\s\s\s" + result[:characteristic], result[:initial], result[:additions], result[:removals], result[:final]]
+          end
+          
+          sheet.column_widths 75.5, 10, 10, 10, 10
+        end
+      end.to_stream
+    end
+    
     def to_csv
       current_focus_area_group = '' 
       current_focus_area = ''
@@ -64,10 +121,10 @@ module Reports
         
         csv << [
           '',
-        	'Total Initiatives beginning of period', 
+        	'Initiatives beginning of period', 
           'Additions',
           'Removals', 
-          'Total Initiatives end of period'
+          'Initiatives end of period'
         ]
         
         results.each do |result|

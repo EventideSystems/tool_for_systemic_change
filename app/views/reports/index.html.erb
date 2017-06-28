@@ -48,7 +48,7 @@
       <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Scorecard Activity Report</h3>
       </div>
-      <%= simple_form_for :report, url: scorecard_activity_reports_path(format: :csv), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <%= simple_form_for :report, url: scorecard_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body box-report">
         <p>Scorecard activity report shows the addition and removal of characteristics across initiatives</p>
         
@@ -60,7 +60,7 @@
 
       </div>
       <div class="box-footer">
-        <%= f.button :submit, 'Download', class: 'pull-right' %>
+        <%= button_tag('Download', type: 'submit', class: "btn btn-primary pull-right") %>
       </div>
       <% end %>
     </div>
@@ -71,7 +71,7 @@
       <div class="box-header with-border">
         <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Scorecard Comments Report</h3>
       </div>
-      <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :csv), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body box-report">
         <p>This report shows the last comments saved across initiatives.</p>
         
@@ -82,7 +82,7 @@
 
       </div>
       <div class="box-footer">
-        <%= f.button :submit, 'Download', class: 'pull-right' %>
+        <%= button_tag('Download', type: 'submit', class: "btn btn-primary pull-right") %>
       </div>
       <% end %>
     </div>

@@ -94,6 +94,11 @@ class ReportsController < ApplicationController
         filename = 'scorecard_activity'
         send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{filename}.csv" 
       end
+      format.xlsx do
+        filename = 'scorecard_activity'
+        send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{filename}.xlsx" 
+      end
+        
     end
   end
   
@@ -113,6 +118,10 @@ class ReportsController < ApplicationController
       format.csv do
         filename = 'scorecard_comments'
         send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{filename}.csv" 
+      end
+      format.xlsx do
+        filename = 'scorecard_comments'
+        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{filename}.xlsx", disposition: 'attachment' 
       end
     end
   end

@@ -25,6 +25,57 @@ module Reports
       @initiatives ||= fetch_initiatives(date)
     end
     
+    def to_xlsx
+      Axlsx::Package.new do |p|
+        p.workbook.styles.fonts.first.name = 'Calibri'
+        
+        header_1 = p.workbook.styles.add_style :fg_color => "386190", :sz => 16, b: true
+        header_2 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: true
+        header_3 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: false
+        blue_normal = p.workbook.styles.add_style :fg_color => "386190", :sz => 12, b: false
+        wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
+        date_format = p.workbook.styles.add_style format_code: "d/m/yy"
+        
+        p.workbook.add_worksheet do |sheet|
+          sheet.add_row(['Scorecard'], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet.add_row(['Date'], b: true).tap do |row|
+            row.add_cell(date, style: date_format)
+          end
+          
+          sheet.add_row
+          
+          sheet.add_row [
+            '',
+          	'Total initiatives', 
+            'Total comments'
+            ] + initiatives.map.with_index {|_, index| "Initiative #{index+1}" }
+          
+          current_focus_area_group = '' 
+          current_focus_area = ''
+            
+          results.each do |result|
+            if result[:focus_area_group] != current_focus_area_group
+              current_focus_area_group = result[:focus_area_group]
+              current_focus_area = ''
+              sheet.add_row [result[:focus_area_group]] + Array.new(initiatives.count + 2, ''), style: header_2
+            end
+      
+            if result[:focus_area] != current_focus_area 
+              current_focus_area = result[:focus_area]
+              sheet.add_row  ["\s\s" + result[:focus_area]] + Array.new(initiatives.count + 2, ''), style: header_3
+            end
+
+            sheet.add_row [
+              "\s\s\s\s" + result[:characteristic], 
+              result[:initiatives_count], 
+              result[:comment_counts]                          
+            ] + initiatives.map.with_index {|_, index| result["initiative_#{index+1}".to_sym] }
+          end
+          sheet.column_widths 75.5, 10, 10
+        end
+      end.to_stream
+    end
+    
     def to_csv
       current_focus_area_group = '' 
       current_focus_area = ''

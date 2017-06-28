@@ -57,9 +57,10 @@ gem 'breadcrumbs_on_rails'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap-datepicker-rails'
 
-# Reports
+# Report related
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+gem 'axlsx'
 
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
@@ -112,7 +113,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'brakeman', require: false
-  gem 'rubocop', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

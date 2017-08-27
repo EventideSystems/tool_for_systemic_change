@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  namespace :organisations do
+    resources :imports
+  end
   UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
   
   devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }

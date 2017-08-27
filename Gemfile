@@ -62,6 +62,8 @@ gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'axlsx'
 
+gem 'shrine'
+
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'

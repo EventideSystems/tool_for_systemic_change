@@ -1,0 +1,1 @@
+json.partial! "organisations_imports/organisations_import", organisations_import: @organisations_import

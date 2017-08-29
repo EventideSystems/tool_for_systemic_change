@@ -14,6 +14,7 @@ class Account < ApplicationRecord
   has_many :scorecards
   has_many :initiatives, through: :scorecards
   has_many :wicked_problems
+  has_many :organisations_imports, class_name: 'Organisations::Import'
   
   validates :name, presence: true
   

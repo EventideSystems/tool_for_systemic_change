@@ -98,7 +98,7 @@ class OrganisationsController < ApplicationController
          csv << [
            organisation.name,
            organisation.description,
-           organisation.sector.name,
+           organisation.sector.try(:name),
            organisation.weblink
          ]
        end

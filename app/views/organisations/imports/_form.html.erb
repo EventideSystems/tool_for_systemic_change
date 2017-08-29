@@ -1,0 +1,57 @@
+<%= simple_form_for(@organisations_import) do |f| %>
+  <%= f.error_notification %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@organisations_import) %></h3>
+    </div>
+    <div class='box-body'>
+      
+      <div class="alert alert-info">
+        <h4>Importing Files</h4>
+        <p></p>
+        <p>
+          The imported .csv or .xlsx file must contain the columns 'Name', 'Description', 'Sector' and 'Weblink'.
+        </p>
+        <p>
+          <% sector_names = Sector.all.pluck(:name).map { |name| "'#{name}'"}.join(', ') %> 
+          Each 'Sector' column must contain the one of the following values: <%= sector_names %>.
+        </p>
+        <p>
+          For simplicity, you can <%= link_to 'export', organisations_path(format: :csv) %> your current 
+          Organisations, modify the downloaded file with the changes you need and import the file here.
+      </div>
+      
+      <% if @organisations_import.import_data.present? %>
+        <%= f.input :import_file_name, readonly: true, input_html: { value: @organisations_import.import.original_filename } %>
+        <%= f.input :import, as: :hidden, input_html: { value: @organisations_import.import_data } %>
+      <% else %>  
+        <%= f.input :import, as: :file, required: true %>
+      <% end %>
+      
+    </div>
+    
+    <% if !@organisations_import.processing_errors.empty? %>
+      <div class='box-body'>
+        <div class="alert alert-danger">
+          <h4>Processing Errors</h4>
+          <p>The following errors occurred while importing your file.</p>
+          <p>NB Records without errors have been imported successfully.</p>
+        </div>
+        
+        <% @organisations_import.processing_errors.each do |processing_error| %>
+          <p>
+            <strong><%= processing_error[:record].name %>:</strong> <%= processing_error[:full_messages].join(', ') %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>  
+  </div>
+  
+  <div class='box-footer'>
+    <% if @organisations_import.processing_errors.empty? %>
+      <%= f.button :submit, 'Import', class: 'btn btn-primary pull-right', style: 'margin-left: 15px' %>
+    <% end %>
+    <%= link_to('Cancel', organisations_path, class: 'btn btn-secondary pull-right') %>
+  </div>
+
+<% end %>

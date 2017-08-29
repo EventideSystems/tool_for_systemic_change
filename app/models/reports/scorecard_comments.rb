@@ -36,7 +36,7 @@ module Reports
         wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
         date_format = p.workbook.styles.add_style format_code: "d/m/yy"
         
-        p.workbook.add_worksheet do |sheet|
+        p.workbook.add_worksheet(name: 'Report') do |sheet|
           sheet.add_row(['Scorecard'], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date'], b: true).tap do |row|
             row.add_cell(date, style: date_format)

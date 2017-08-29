@@ -1,48 +1,48 @@
 class Organisations::ImportsController < ApplicationController
+  before_action :require_account_selected, only: [:new, :create, :edit, :update]
   before_action :set_organisations_import, only: [:show, :edit, :update, :destroy]
 
-  # GET /organisations/imports
-  # GET /organisations/imports.json
+  add_breadcrumb "Organisations", :organisations_path
+  add_breadcrumb "Import"
+
   def index
     @organisations_imports = Organisations::Import.all
   end
 
-  # GET /organisations/imports/1
-  # GET /organisations/imports/1.json
   def show
   end
 
-  # GET /organisations/imports/new
   def new
-    @organisations_import = Organisations::Import.new
+    @organisations_import = current_account.organisations_imports.build
+    authorize @organisations_import
   end
 
-  # GET /organisations/imports/1/edit
   def edit
   end
 
-  # POST /organisations/imports
-  # POST /organisations/imports.json
   def create
-    @organisations_import = Organisations::Import.new(organisations_import_params)
-
+    @organisations_import = current_account.organisations_imports.build(organisations_import_params.merge(user: current_user))
+    authorize @organisations_import
+    
     respond_to do |format|
-      if @organisations_import.save
-        format.html { redirect_to @organisations_import, notice: 'Import was successfully created.' }
+      if @organisations_import.save && @organisations_import.process(current_account) 
+        format.html { redirect_to organisations_path, notice: 'Organisation records successfully updated imported' }
         format.json { render :show, status: :created, location: @organisations_import }
       else
         format.html { render :new }
         format.json { render json: @organisations_import.errors, status: :unprocessable_entity }
       end
     end
+    
+    @organisations_import.destroy
+    file_system = Shrine.storages[:cache]
+    file_system.clear!
   end
 
-  # PATCH/PUT /organisations/imports/1
-  # PATCH/PUT /organisations/imports/1.json
   def update
     respond_to do |format|
       if @organisations_import.update(organisations_import_params)
-        format.html { redirect_to @organisations_import, notice: 'Import was successfully updated.' }
+        format.html { redirect_to @organisations_import, notice: 'Records successfully updated.' }
         format.json { render :show, status: :ok, location: @organisations_import }
       else
         format.html { render :edit }
@@ -51,8 +51,6 @@ class Organisations::ImportsController < ApplicationController
     end
   end
 
-  # DELETE /organisations/imports/1
-  # DELETE /organisations/imports/1.json
   def destroy
     @organisations_import.destroy
     respond_to do |format|
@@ -62,13 +60,12 @@ class Organisations::ImportsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_organisations_import
       @organisations_import = Organisations::Import.find(params[:id])
+      authorize @organisations_import
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def organisations_import_params
-      params.fetch(:organisations_import, {})
+       params.fetch(:organisations_import, {}).permit(:import)
     end
 end

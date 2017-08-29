@@ -60,7 +60,8 @@ gem 'bootstrap-datepicker-rails'
 # Report related
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
-gem 'axlsx'
+gem 'axlsx', '2.1.0.pre'
+gem 'roo', '~> 2.7.0'
 
 gem 'shrine'
 

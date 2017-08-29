@@ -4,6 +4,16 @@
       safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Organisation'])
     end 
   %>
+  <%= 
+    link_to(organisations_path(format: :csv), class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export Organisations'])
+    end 
+  %>
+  <%= 
+    link_to(new_organisations_import_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import Organisations'])
+    end 
+  %>
 <% end %>
 
 <div class="box">

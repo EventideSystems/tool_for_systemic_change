@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  namespace :initiatives do
+    resources :imports
+  end
   namespace :organisations do
     resources :imports
   end

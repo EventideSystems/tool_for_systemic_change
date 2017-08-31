@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Initiatives Imports</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @initiatives_imports.each do |initiatives_import| %>
+      <tr>
+        <td><%= link_to 'Show', initiatives_import %></td>
+        <td><%= link_to 'Edit', edit_initiatives_import_path(initiatives_import) %></td>
+        <td><%= link_to 'Destroy', initiatives_import, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Initiatives Import', new_initiatives_import_path %>

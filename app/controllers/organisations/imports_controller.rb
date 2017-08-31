@@ -21,7 +21,9 @@ class Organisations::ImportsController < ApplicationController
   end
 
   def create
-    @organisations_import = current_account.organisations_imports.build(organisations_import_params.merge(user: current_user))
+    @organisations_import = current_account.organisations_imports.build(
+      organisations_import_params.merge(user: current_user)
+    )
     authorize @organisations_import
     
     respond_to do |format|
@@ -36,7 +38,7 @@ class Organisations::ImportsController < ApplicationController
     
     @organisations_import.destroy
     file_system = Shrine.storages[:cache]
-    file_system.clear!
+    file_system.clear!(older_than: Time.now - 1.hour)
   end
 
   def update

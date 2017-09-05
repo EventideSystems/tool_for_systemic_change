@@ -24,23 +24,29 @@ class Initiatives::Import < Import
         next  
       end
       
-      initiative = scorecard.initiatives.where(
-        "lower(name) = :name ", { name: row[name_index].downcase }
-      ).first
-      initiative = scorecard.initiatives.build if initiative.nil?
+      if name_index.nil? 
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: ['Initiative name is missing']
+        )
+        next  
+      end
       
-      organisations = initiative.organisations
+      initiative = find_or_build_initiative_by_name(scorecard, row[name_index]) 
+      
+      unknown_organisation_names = []
       
       1.upto(MAX_ORGANIZATION_EXPORT).each do |org_index|
         organisation_name_index = header_row.index{ |i| i.downcase == "organisation #{org_index} name"}
         organisation_name = row[organisation_name_index]
         
         unless organisation_name.blank?
-          organisation = account.organisations.where(
-            "lower(name) = :name", { name: organisation_name.downcase }
-          ).first
-        
-          initiative.organisations += [organisation] if organisation
+          organisation = find_organisation_by_name(account, organisation_name)
+          
+          if organisation
+            initiative.organisations << organisation unless initiative.organisations.include?(organisation)
+          else
+            unknown_organisation_names << organisation_name
+          end 
         end
       end
 
@@ -58,10 +64,16 @@ class Initiatives::Import < Import
           attributes[:contact_position] = row[contact_position_index] if row[contact_position_index].present?
         end
       )
+      
+      success = success && unknown_organisation_names.empty?
 
-      processing_errors << build_processing_errors(
-        row_data: row, row_index: row_index, error_messages: organisation.errors.full_messages
-      ) unless success
+      unless success
+        error_messages = initiative.errors.full_messages || []
+        error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}." 
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: error_messages
+        ) 
+      end  
     end
     
     processing_errors.empty?
@@ -71,6 +83,18 @@ class Initiatives::Import < Import
   
   def find_scorecard_by_name(account, name)
     account.scorecards.where("lower(name) = :name", { name: name.downcase }).first
+  end
+  
+  def find_organisation_by_name(account, name)
+    account.organisations.where("lower(name) = :name", { name: name.downcase }).first
+  end
+  
+  def find_or_build_initiative_by_name(scorecard, name)
+    initiative = scorecard.initiatives.where( 
+      "lower(name) = :name ", { name: name.downcase }
+    ).first
+    
+    initiative || scorecard.initiatives.build
   end
 
 end

@@ -50,4 +50,15 @@ module ApplicationHelper
       data: { toggle: "tooltip", placement: "bottom" }, title: safe_text
     )
   end
+  
+  def import_files_instructions_link
+    content_tag(:p) do 
+      concat "For instructions on importing files go to "
+      concat link_to(
+        'www.wickedlab.com.au/help-importing-files', 
+        'http://www.wickedlab.com.au/help-importing-files', 
+        target: :_blank  
+      )
+    end  
+  end  
 end

@@ -93,15 +93,15 @@ class OrganisationsController < ApplicationController
     
     def organisations_to_csv(organisations)
       CSV.generate(force_quotes: true) do |csv|
-       csv << ["Name", "Description", "Sector", "Weblink"]
-       organisations.each do |organisation|
-         csv << [
-           organisation.name,
-           organisation.description,
-           organisation.sector.try(:name),
-           organisation.weblink
-         ]
-       end
-     end
+        csv << ["Name", "Description", "Sector", "Weblink"]
+        organisations.each do |organisation|
+          csv << [
+            organisation.name,
+            organisation.description,
+            organisation.sector.try(:name),
+            organisation.weblink
+          ]
+        end
+      end
     end
 end

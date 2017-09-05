@@ -6,7 +6,7 @@ class Organisations::Import < Import
     sector_index      = header_row.index{ |i| i.downcase == 'sector'}
     weblink_index     = header_row.index{ |i| i.downcase == 'weblink'}
     
-    data_rows.each_with_index do |row, row_index|
+    data_rows.each.with_index(1) do |row, row_index|
       organisation = find_or_build_organisation_by_name(account, row[name_index])
       sector = sector_index.nil? ? nil : find_sector_by_name(row[sector_index])
       
@@ -19,7 +19,9 @@ class Organisations::Import < Import
         end
       )
 
-      processing_errors << build_processing_errors(organisation, row, row_index) unless success
+      processing_errors << build_processing_errors(
+        row_data: row, row_index: row_index, error_messages: organisation.errors.full_messages
+      ) unless success
     end
     
     processing_errors.empty?

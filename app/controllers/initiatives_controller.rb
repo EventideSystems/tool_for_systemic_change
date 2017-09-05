@@ -4,7 +4,14 @@ class InitiativesController < ApplicationController
   add_breadcrumb "Initiatives", :initiatives_path
   
   def index
-    @initiatives = policy_scope(Initiative).order(sort_order).page params[:page]
+    @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).page params[:page]
+    
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data initiatives_to_csv(@initiatives), :type => Mime[:csv], :filename =>"#{export_filename}.csv" 
+      end
+    end
   end
 
   def show
@@ -75,6 +82,55 @@ class InitiativesController < ApplicationController
 
   private
 
+  
+  
+    def export_filename
+      "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+    end
+    
+    def initiatives_to_csv(initiatives)
+      CSV.generate(force_quotes: true) do |csv|
+        csv << [
+          'Name',
+          'Description',
+          'Scorecard Name',
+          'Started At',
+          'Finished At',
+          'Contact Name',
+          'Contact Email',
+          'Contact Phone',
+          'Contact Website',
+          'Contact Position'
+        ] + 1.upto(Initiatives::Import::MAX_ORGANIZATION_EXPORT).map do |index| 
+          "Organisation #{index} Name" 
+        end 
+        
+        initiatives.each do |initiative|
+          
+          organisations = initiative.organisations.limit(Initiatives::Import::MAX_ORGANIZATION_EXPORT)
+          organisation_memo = Array.new(Initiatives::Import::MAX_ORGANIZATION_EXPORT, '') 
+          
+          organisation_names = organisations.each_with_index.inject(organisation_memo) do |memo, (org, index)|
+            memo[index] = org.try(:name)
+            memo
+          end
+          
+          csv << [
+            initiative.name,
+            initiative.description,
+            initiative.scorecard.try(:name),
+            initiative.started_at,
+            initiative.finished_at,
+            initiative.contact_name,
+            initiative.contact_email,
+            initiative.contact_phone,
+            initiative.contact_website,
+            initiative.contact_position
+            ] + organisation_names
+        end
+      end
+    end
+  
     def set_initiative
       @initiative = Initiative.find(params[:id])
       authorize @initiative

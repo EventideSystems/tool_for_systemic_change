@@ -25,7 +25,7 @@ class Initiatives::ImportsController < ApplicationController
     
     respond_to do |format|
       if @initiatives_import.save && @initiatives_import.process(current_account)
-        format.html { redirect_to @initiatives_import, notice: 'Import was successfully created.' }
+        format.html { redirect_to initiatives_path, notice: 'Initiative records successfully imported.' }
         format.json { render :show, status: :created, location: @initiatives_import }
       else
         format.html { render :new }

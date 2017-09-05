@@ -21,9 +21,9 @@
         <tbody>
           <% import.processing_errors.each do |processing_error| %>
             <tr>
-              <td style='color: red'><%= processing_error[:full_messages].join(', ') %></td>
+              <td style='color: red'><%= processing_error[:error_messages].join(', ') %></td>
               <td><%= processing_error[:row_index] %></td>
-              <% processing_error[:row].each do |column| %>
+              <% processing_error[:row_data].each do |column| %>
                 <td><%= column %></td>
               <% end %> 
               

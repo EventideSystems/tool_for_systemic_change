@@ -14,8 +14,15 @@ class Initiatives::Import < Import
     contact_website_index  = header_row.index{ |i| i.downcase == 'contact website' }
     contact_position_index = header_row.index{ |i| i.downcase == 'contact position' }
     
-    data_rows.each do |row|
-      scorecard = account.scorecards.find_by(name: row[scorecard_name_index])
+    data_rows.each.with_index(1) do |row, row_index|
+      scorecard = scorecard_name_index.nil? ? nil : find_scorecard_by_name(account, row[scorecard_name_index])
+      
+      if scorecard.nil?
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: ['Scorecard name is invalid']
+        )
+        next  
+      end
       
       initiative = scorecard.initiatives.where(
         "lower(name) = :name ", { name: row[name_index].downcase }
@@ -52,10 +59,18 @@ class Initiatives::Import < Import
         end
       )
 
-      processing_errors << build_processing_errors(organisation, row) unless success
+      processing_errors << build_processing_errors(
+        row_data: row, row_index: row_index, error_messages: organisation.errors.full_messages
+      ) unless success
     end
     
     processing_errors.empty?
+  end
+  
+  private
+  
+  def find_scorecard_by_name(account, name)
+    account.scorecards.where("lower(name) = :name", { name: name.downcase }).first
   end
 
 end

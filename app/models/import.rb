@@ -23,8 +23,8 @@ class Import < ApplicationRecord
   
   protected
 
-  def build_processing_errors(record, row=nil, row_index=nil)
-    full_messages = record.errors.full_messages.map do |message|
+  def build_processing_errors(row_data:, row_index:, error_messages:)
+    full_messages = error_messages.map do |message|
       if message == "Sector can't be blank"
         "Sector is invalid"
       else
@@ -32,7 +32,7 @@ class Import < ApplicationRecord
       end  
     end
   
-    { record: record, full_messages: full_messages, row: row, row_index: row_index + 1 }
+    { row_data: row_data, row_index: row_index, error_messages: error_messages }
   end
 
   def rows

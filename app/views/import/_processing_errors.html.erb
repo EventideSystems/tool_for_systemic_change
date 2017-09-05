@@ -1,0 +1,36 @@
+<% if !import.processing_errors.empty? %>
+  <div class='box-body'>
+    <div class="alert alert-danger">
+      <h4>Processing Errors</h4>
+      <p>The following errors occurred while importing your file.</p>
+      <p>NB Records without errors have been imported successfully.</p>
+    </div>
+    
+    <div style="overflow-y: auto">
+      <table class='table table-striped'>
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th><em>Row</em></th>
+            <% import.header_row.each do |column| %>
+              <th><%= column %></th>
+            <% end %>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <% import.processing_errors.each do |processing_error| %>
+            <tr>
+              <td style='color: red'><%= processing_error[:full_messages].join(', ') %></td>
+              <td><%= processing_error[:row_index] %></td>
+              <% processing_error[:row].each do |column| %>
+                <td><%= column %></td>
+              <% end %> 
+              
+            </tr>
+          <% end %>  
+        </tbody>    
+      </table>
+    </div>  
+  </div>
+<% end %>  

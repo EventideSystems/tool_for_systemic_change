@@ -17,10 +17,14 @@ class Import < ApplicationRecord
     @processing_errors ||= []
   end
 
+  def header_row
+    rows.first
+  end
+  
   protected
 
-  def build_processing_errors(organisation)
-    full_messages = organisation.errors.full_messages.map do |message|
+  def build_processing_errors(record, row=nil, row_index=nil)
+    full_messages = record.errors.full_messages.map do |message|
       if message == "Sector can't be blank"
         "Sector is invalid"
       else
@@ -28,16 +32,14 @@ class Import < ApplicationRecord
       end  
     end
   
-    { record: organisation, full_messages: full_messages }
+    { record: record, full_messages: full_messages, row: row, row_index: row_index + 1 }
   end
 
   def rows
     @rows ||= import_data.present? ? load_rows : [] 
   end
 
-  def header_row
-    rows.first
-  end
+
 
   def data_rows
     rows[1..-1]

@@ -6,6 +6,16 @@
       end
     end 
   %>
+  <%= 
+    link_to(initiatives_path(format: :csv), class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export Initiatives'])
+    end 
+  %>
+  <%= 
+    link_to(new_initiatives_import_path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import Initiatives'])
+    end 
+  %>
 <% end %>
 
 <div class="box">

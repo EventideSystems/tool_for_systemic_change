@@ -1,10 +1,32 @@
 <%= simple_form_for(@initiatives_import) do |f| %>
   <%= f.error_notification %>
-
-  <div class="form-inputs">
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@initiatives_import) %></h3>
+    </div>
+    <div class='box-body'>
+      
+      <div class="alert alert-info">
+        <%= import_files_instructions_link %>
+      </div>
+      
+      <% if @initiatives_import.import_data.present? %>
+        <%= f.input :import_file_name, readonly: true, input_html: { value: @initiatives_import.import.original_filename } %>
+        <%= f.input :import, as: :hidden, input_html: { value: @initiatives_import.import_data } %>
+      <% else %>  
+        <%= f.input :import, as: :file, required: true %>
+      <% end %>
+      
+    </div>
+    
+    <%= render partial: 'import/processing_errors', locals: { import: @initiatives_import } %> 
+  </div>
+  
+  <div class='box-footer'>
+    <% if @initiatives_import.processing_errors.empty? %>
+      <%= f.button :submit, 'Import', class: 'btn btn-primary pull-right', style: 'margin-left: 15px' %>
+    <% end %>
+    <%= link_to('Cancel', initiatives_path, class: 'btn btn-secondary pull-right') %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
 <% end %>

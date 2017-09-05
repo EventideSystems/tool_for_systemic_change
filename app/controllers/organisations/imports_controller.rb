@@ -28,7 +28,7 @@ class Organisations::ImportsController < ApplicationController
     
     respond_to do |format|
       if @organisations_import.save && @organisations_import.process(current_account) 
-        format.html { redirect_to organisations_path, notice: 'Organisation records successfully updated imported' }
+        format.html { redirect_to organisations_path, notice: 'Organisation records successfully imported' }
         format.json { render :show, status: :created, location: @organisations_import }
       else
         format.html { render :new }

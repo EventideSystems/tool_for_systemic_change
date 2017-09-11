@@ -3,23 +3,24 @@ class Initiatives::Import < Import
   MAX_ORGANIZATION_EXPORT = 15
   
   def process(account)
-    name_index             = header_row.index{ |i| i.downcase == 'name'}
-    description_index      = header_row.index{ |i| i.downcase == 'description'}
-    scorecard_name_index   = header_row.index{ |i| i.downcase == 'scorecard name'}
-    started_at_index       = header_row.index{ |i| i.downcase == 'started at'}
-    finished_at_index      = header_row.index{ |i| i.downcase == 'finished at'}
-    contact_name_index     = header_row.index{ |i| i.downcase == 'contact name' }
-    contact_email_index    = header_row.index{ |i| i.downcase == 'contact email' }
-    contact_phone_index    = header_row.index{ |i| i.downcase == 'contact phone' }
-    contact_website_index  = header_row.index{ |i| i.downcase == 'contact website' }
-    contact_position_index = header_row.index{ |i| i.downcase == 'contact position' }
+    name_index             = column_index(:name)
+    description_index      = column_index(:description)
+    scorecard_name_index   = column_index(:scorecard_name)
+    started_at_index       = column_index(:started_at)
+    finished_at_index      = column_index(:finished_at)
+    contact_name_index     = column_index(:contact_name)
+    contact_email_index    = column_index(:contact_email)
+    contact_phone_index    = column_index(:contact_phone)
+    contact_website_index  = column_index(:contact_website)
+    contact_position_index = column_index(:contact_position)
+    
     
     data_rows.each.with_index(1) do |row, row_index|
       scorecard = scorecard_name_index.nil? ? nil : find_scorecard_by_name(account, row[scorecard_name_index])
       
       if scorecard.nil?
         processing_errors << build_processing_errors(
-          row_data: row, row_index: row_index, error_messages: ['Scorecard name is invalid']
+          row_data: row, row_index: row_index, error_messages: ['Scorecard is invalid']
         )
         next  
       end

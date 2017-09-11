@@ -52,13 +52,16 @@ module ApplicationHelper
   end
   
   def import_files_instructions_link
-    content_tag(:p) do 
-      concat "For instructions on importing files go to "
-      concat link_to(
-        'www.wickedlab.com.au/help-importing-files', 
-        'http://www.wickedlab.com.au/help-importing-files', 
-        target: :_blank  
-      )
+    content_tag(:p, class: 'text-light-blue') do 
+      content_tag(:strong) do
+        concat "For instructions on importing files go to "
+        concat link_to(
+          'www.wickedlab.com.au/help-importing-files',
+          'http://www.wickedlab.com.au/help-importing-files', 
+          target: :_blank, style: 'text-decoration: underline;'
+        )
+        concat "."
+      end
     end  
   end  
 end

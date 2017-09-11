@@ -39,10 +39,13 @@ class Import < ApplicationRecord
     @rows ||= import_data.present? ? load_rows : [] 
   end
 
-
-
   def data_rows
     rows[1..-1]
+  end
+  
+  def column_index(column_id)
+    candidate_column_names = [column_id.to_s.downcase, column_id.to_s.humanize.downcase]
+    header_row.index{ |i| i.downcase.in? candidate_column_names }
   end
 
   private

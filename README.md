@@ -21,4 +21,6 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+To deploy master branch on to the production system:
+
+`git push heroku master`

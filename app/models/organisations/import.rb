@@ -1,14 +1,21 @@
 class Organisations::Import < Import
   
   def process(account)
-    name_index        = header_row.index{ |i| i.downcase == 'name'}
-    description_index = header_row.index{ |i| i.downcase == 'description'}
-    sector_index      = header_row.index{ |i| i.downcase == 'sector'}
-    weblink_index     = header_row.index{ |i| i.downcase == 'weblink'}
+    name_index        = column_index(:name)
+    description_index = column_index(:description)
+    sector_index      = column_index(:sector)
+    weblink_index     = column_index(:weblink)
     
     data_rows.each.with_index(1) do |row, row_index|
       organisation = find_or_build_organisation_by_name(account, row[name_index])
       sector = sector_index.nil? ? nil : find_sector_by_name(row[sector_index])
+      
+      if sector.nil?
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: ['Sector is invalid']
+        )
+        next  
+      end
       
       success = organisation.update(
         {}.tap do |attributes|

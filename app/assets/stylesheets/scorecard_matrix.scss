@@ -29,7 +29,7 @@
       overflow-x: scroll;
       overflow-y: visible;
       width: auto;
-      margin-left: 190px;
+      margin-left: 240px;
       padding-bottom: 400px;
   }
 
@@ -129,7 +129,6 @@
 
   .cell {
     transition: background .3s, opacity .3s;
-//    border-width: 0;
     max-width: 36px;
     min-width: 36px;
     opacity: .6;

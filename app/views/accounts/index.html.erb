@@ -6,9 +6,9 @@
   %>
 <% end %>
 
-<div class="box">
+<div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @accounts, :table_html => { :class => "table table-striped" },
+  <%= table_for @accounts, :table_html => { :class => "table table-striped table-base" },
                         :sortable => true,
                         :data_row_html => {
                           id: lambda { |account| "account-#{account.id}" },

@@ -59,6 +59,13 @@
               </li>
             </ul>
           </li>
+          
+          <li>
+            <%= link_to('http://www.wickedlab.com.au/help',  target: :_blank) do
+                  safe_join([content_tag(:i, '', class: "fa fa-support"), ' User Help'])
+                end
+            %>
+          </li>  
           <%- if current_user.admin? %>
             <li>
               <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>

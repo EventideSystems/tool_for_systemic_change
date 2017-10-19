@@ -144,5 +144,35 @@ label.truncate {
 
 
 .table-actions td:nth-last-child(-n+2) {
-  width: 10%;
+  max-width: 100px !important;
 }
+
+.table-base th:first-child {
+  width: 180px !important;
+}
+
+.table-base td:first-child {
+  display: block;
+  width: 180px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+  .table-base td:first-child {
+    width: 100px !important;;
+  }
+  
+  .table-base th:first-child {
+    width: 100px !important;
+  }
+}
+
+.breadcrumb li, h1 small {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

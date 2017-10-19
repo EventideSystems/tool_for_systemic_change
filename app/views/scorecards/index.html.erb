@@ -10,7 +10,7 @@
 
 <div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @scorecards, :table_html => { :class => "table table-striped" },
+  <%= table_for @scorecards, :table_html => { :class => "table table-striped table-base" },
                         :sortable => true,
                         :data_row_html => {
                           id: lambda { |scorecard| "scorecard-#{scorecard.id}" },

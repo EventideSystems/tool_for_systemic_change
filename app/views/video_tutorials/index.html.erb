@@ -8,14 +8,24 @@
 
 <div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @video_tutorials, :table_html => { :class => "table table-striped table-base" },
+  <%= table_for @video_tutorials, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
                           id: lambda { |video_tutorial| "video_tutorial-#{video_tutorial.id}" },
                           class: 'table-actions'
                         } do |table| %>
-    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %> %>
-    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+    <% table.column :name, formatter: lambda { |text| 
+         link_to(
+           truncate_text(text, 200), 
+           "#", 
+           class: 'video-tutorial-wrapper', 
+           data: { 
+              video_tutorial_link: video_tutorial_url(table.current_row), 
+              video_tutorial_title: table.current_row.name 
+           } 
+         )
+       }
+    %>
     <% table.column :data => "Modify", link_action: :edit %>
     <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>

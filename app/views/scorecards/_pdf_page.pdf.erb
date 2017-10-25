@@ -1,7 +1,7 @@
 <div class="xnobreak">  
   <div class="row">
     <div class="col-sm-8">
-      <h2>Scorecard: <%= truncate(@scorecard.name, length: 75) %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
+      <h2>Scorecard: <%= truncate(@scorecard.name, length: 100) %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
     </div>
     <div class="col-sm-3 pull-right">
       <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>

@@ -1,9 +1,16 @@
-<div class="alwaysbreak">
-  <%= render partial: 'pdf_page', locals: { focus_areas: @focus_areas[0..3], offset: 1 } %>
-</div>
-<div class="alwaysbreak">
-  <%= render partial: 'pdf_page', locals: { focus_areas: @focus_areas[4..-1], offset: 5 } %>
-</div>
+<% chunked_initiatives = @scorecard.initiatives.order(:created_at).each_slice(8).to_a %>
+
+<% chunked_initiatives.each do |initiatives| %>
+  <div class="alwaysbreak">
+    <%= render partial: 'pdf_page', locals: { initiatives: initiatives, focus_areas: @focus_areas[0..3], offset: 1 } %>
+  </div>
+<% end %>
+<% chunked_initiatives.each do |initiatives| %>
+  <div class="alwaysbreak">
+    <%= render partial: 'pdf_page', locals: { initiatives: initiatives, focus_areas: @focus_areas[4..-1], offset: 5 } %>
+  </div>
+<% end %>
+
 <div class="alwaysbreak">
   <div class="row">
     <div class="col-sm-8">

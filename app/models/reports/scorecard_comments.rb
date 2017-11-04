@@ -48,7 +48,7 @@ module Reports
             '',
           	'Total initiatives', 
             'Total comments'
-            ] + initiatives.map.with_index {|_, index| "Initiative #{index+1}" }
+            ] + initiatives.map(&:name)
           
           current_focus_area_group = '' 
           current_focus_area = ''
@@ -90,7 +90,7 @@ module Reports
           '',
         	'Total initiatives', 
           'Total comments'
-          ] + initiatives.map.with_index {|_, index| "Initiative #{index+1}" }
+          ] + initiatives.map(&:name)
           
         results.each do |result|
           if result[:focus_area_group] != current_focus_area_group
@@ -160,8 +160,6 @@ module Reports
     def characteristics
       Characteristic.joins(focus_area: :focus_area_group).order('focus_area_groups.position, focus_areas.position')
     end
-    
-
     
     def fetch_initiatives(date)
       params = { date: date }

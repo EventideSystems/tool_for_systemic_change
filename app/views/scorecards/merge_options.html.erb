@@ -15,7 +15,7 @@
     <div>
       <%= f.select(
             :other_scorecard_id, 
-            Scorecard.where.not(id: @scorecard.id).collect {|s| [ s.name, s.id ] },
+            current_account.scorecards.where.not(id: @scorecard.id).collect {|s| [ s.name, s.id ] },
             label: "Scorecard to merge", multiple: true
           ) 
       %>

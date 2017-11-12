@@ -1,5 +1,5 @@
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy_options, :copy, :deep_copy] 
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy, :copy_options, :merge, :merge_options] 
   before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
@@ -106,7 +106,7 @@ class ScorecardsController < ApplicationController
     @copied_scorecard = params.dig(:copy) == 'deep' ? @scorecard.deep_copy(new_name) : @scorecard.copy(new_name) 
     respond_to do |format|
       if @copied_scorecard.present?
-        format.html { redirect_to scorecard_path(@copied_scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
+        format.html { redirect_to scorecard_path(@copied_scorecard), notice: 'Scorecard was successfully copied.' }
         format.json { render :show, status: :ok, location: @copied_scorecard }
       else
         format.html { render :edit }
@@ -115,15 +115,20 @@ class ScorecardsController < ApplicationController
     end 
   end
   
-  def deep_copy
-    @scorecard = @scorecard.deep_copy
+  def merge_options
+    render layout: false
+  end
+  
+  def merge
+    @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
+    @merged_scorecard = @scorecard.merge(@other_scorecard)
     respond_to do |format|
       if @scorecard.present?
-        format.html { redirect_to scorecard_path(@scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
-        format.json { render :show, status: :ok, location: @scorecard }
+        format.html { redirect_to scorecard_path(@merged_scorecard), notice: 'Scorecards were successfully merged.' }
+        format.json { render :show, status: :ok, location: @merged_scorecard }
       else
         format.html { render :edit }
-        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
+        format.json { render json: @merged_scorecard.errors, status: :unprocessable_entity }
       end
     end 
   end

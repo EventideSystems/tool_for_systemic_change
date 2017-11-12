@@ -54,7 +54,9 @@ class Initiative < ApplicationRecord
   
   def copy
     copied = self.dup
-    copied.organisations << organisations
+    organisations.each do |organisation|
+      copied.initiatives_organisations.build(organisation: organisation)
+    end
     copied.save!
     
     copied
@@ -63,7 +65,9 @@ class Initiative < ApplicationRecord
   def deep_copy
     copied = self.dup
     copied.checklist_items << checklist_items.map { |checklist_item| checklist_item.dup }
-    copied.organisations << organisations
+    organisations.each do |organisation|
+      copied.initiatives_organisations.build(organisation: organisation)
+    end
     copied.save!
     
     deep_copy_public_activity_records(copied)

@@ -1,5 +1,5 @@
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy] 
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy, :deep_copy] 
   before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 

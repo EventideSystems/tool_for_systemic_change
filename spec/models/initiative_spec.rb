@@ -3,9 +3,11 @@ require 'rails_helper'
 RSpec.describe Initiative, type: :model do
   
   context '#checklist_items_ordered_by_ordered_focus_area' do
+    let(:default_account) { create(:account) }
     let!(:characteristic_1) { create(:characteristic) }
     let!(:characteristic_2) { create(:characteristic) }
-    let!(:initiative) { create(:initiative) }
+
+    let!(:initiative) { create(:initiative, organisations: create_list(:organisation, 2, account: default_account)) }
     
     it 'checklist item count equals characteristic count' do
       expect(initiative.checklist_items_ordered_by_ordered_focus_area.count).to be(2)
@@ -56,7 +58,41 @@ RSpec.describe Initiative, type: :model do
       end
     end
     
-    context 'deep copy' do
+    context '#copy' do
+      subject { initiative.copy }
+      
+      it { expect(subject.name).to             eq(initiative.name) }
+      it { expect(subject.description).to      eq(initiative.description) }
+      it { expect(subject.scorecard_id).to     eq(initiative.scorecard_id) }
+      it { expect(subject.started_at).to       eq(initiative.started_at) }
+      it { expect(subject.finished_at).to      eq(initiative.finished_at) }
+      it { expect(subject.dates_confirmed).to  eq(initiative.dates_confirmed) }
+      it { expect(subject.contact_name).to     eq(initiative.contact_name) }
+      it { expect(subject.contact_email).to    eq(initiative.contact_email) }
+      it { expect(subject.contact_phone).to    eq(initiative.contact_phone) }
+      it { expect(subject.contact_website).to  eq(initiative.contact_website) }
+      it { expect(subject.contact_position).to eq(initiative.contact_position) }
+      
+      context 'organisations' do
+         it { expect(subject.organisations.count).to eq(2) }
+      end
+      
+      context 'checklist items' do
+        
+        before do
+          initiative.checklist_items.first.checked = true
+          initiative.checklist_items.first.comment = 'Comment'
+          initiative.checklist_items.first.save!
+        end
+        
+        it { expect(subject.checklist_items.count).to eq(2) }
+        it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
+        it { expect(subject.checklist_items.first.checked).to eq(nil) }
+        it { expect(subject.checklist_items.first.comment).to eq(nil) }
+      end
+    end
+    
+    context '#deep_copy' do
       subject { initiative.deep_copy }
       
       it { expect(subject.name).to             eq(initiative.name) }
@@ -70,6 +106,10 @@ RSpec.describe Initiative, type: :model do
       it { expect(subject.contact_phone).to    eq(initiative.contact_phone) }
       it { expect(subject.contact_website).to  eq(initiative.contact_website) }
       it { expect(subject.contact_position).to eq(initiative.contact_position) }
+      
+      context 'organisations' do
+         it { expect(subject.organisations.count).to eq(2) }
+      end
       
       context 'checklist items' do
         

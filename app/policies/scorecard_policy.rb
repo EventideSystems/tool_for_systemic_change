@@ -29,6 +29,10 @@ class ScorecardPolicy < ApplicationPolicy
     create?
   end
   
+  def copy_options?
+    copy?
+  end
+  
   def deep_copy?
     create?
   end

@@ -29,9 +29,9 @@ class Scorecard < ApplicationRecord
     Nokogiri::HTML(description).text
   end
   
-  def copy
+  def copy(copy_name)
     copied = self.dup
-    copied.name = "#{name} (copy)"
+    copied.name = copy_name || "Copy of #{name}"
     copied.shared_link_id = new_shared_link_id
     
     copied.initiatives << initiatives.map { |initiative| initiative.copy }
@@ -40,9 +40,9 @@ class Scorecard < ApplicationRecord
     copied
   end
   
-  def deep_copy
+  def deep_copy(copy_name)
     copied = self.dup
-    copied.name = "#{name} (copy)"
+    copied.name = copy_name || "Copy of #{name}"
     copied.shared_link_id = new_shared_link_id
     copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
     copied.save!

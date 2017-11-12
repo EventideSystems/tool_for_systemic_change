@@ -6,9 +6,9 @@ RSpec.describe Scorecard, type: :model do
   let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
   
   context '#copied' do
-    subject(:copied) { scorecard.copy }
+    subject(:copied) { scorecard.copy('new name') }
     
-    it { expect(copied.name).to eq(scorecard.name + ' (copy)') }
+    it { expect(copied.name).to eq('new name') }
     
     it { expect(copied.description).to eq(scorecard.description) }
     it { expect(copied.shared_link_id).to_not be_blank }
@@ -23,9 +23,9 @@ RSpec.describe Scorecard, type: :model do
   
   context '#deep_copied' do
 
-    subject(:copied) { scorecard.deep_copy }
+    subject(:copied) { scorecard.deep_copy('new name') }
     
-    it { expect(copied.name).to eq(scorecard.name + ' (copy)') }
+    it { expect(copied.name).to eq('new name') }
     it { expect(copied.description).to eq(scorecard.description) }
     it { expect(copied.shared_link_id).to_not be_blank }
     it { expect(copied.shared_link_id).to_not eq(scorecard.shared_link_id) }

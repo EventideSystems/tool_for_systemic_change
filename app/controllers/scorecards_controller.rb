@@ -1,5 +1,5 @@
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy, :deep_copy] 
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy_options, :copy, :deep_copy] 
   before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
@@ -96,16 +96,21 @@ class ScorecardsController < ApplicationController
   def show_shared_link
     render layout: false
   end
+
+  def copy_options
+    render layout: false
+  end
   
   def copy
-    @scorecard = @scorecard.copy
+    new_name = params.dig(:new_name) 
+    @copied_scorecard = params.dig(:copy) == 'deep' ? @scorecard.deep_copy(new_name) : @scorecard.copy(new_name) 
     respond_to do |format|
-      if @scorecard.present?
-        format.html { redirect_to scorecard_path(@scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
-        format.json { render :show, status: :ok, location: @scorecard }
+      if @copied_scorecard.present?
+        format.html { redirect_to scorecard_path(@copied_scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
+        format.json { render :show, status: :ok, location: @copied_scorecard }
       else
         format.html { render :edit }
-        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
+        format.json { render json: @copied_scorecard.errors, status: :unprocessable_entity }
       end
     end 
   end

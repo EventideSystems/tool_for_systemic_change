@@ -33,10 +33,14 @@ class ScorecardPolicy < ApplicationPolicy
     copy?
   end
   
-  def deep_copy?
-    create?
+  def merge_options?
+    merge?
   end
-
+  
+  def merge?
+    system_admin? || account_admin?(record.account)
+  end
+  
   def max_scorecards_not_reached?(account)
     return false unless account.present?
     return true if account.max_scorecards == 0 # NOTE magic number, meaning no limit

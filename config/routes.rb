@@ -31,6 +31,8 @@ Rails.application.routes.draw do
       get 'show_shared_link'
       post 'copy'
       get 'copy_options'
+      post 'merge'
+      get 'merge_options'
     end
   end
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]

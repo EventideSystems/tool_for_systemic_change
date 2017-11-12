@@ -51,6 +51,22 @@ class Scorecard < ApplicationRecord
     deep_copy_paper_trail_records(copied)
     copied 
   end
+  
+  def merge(other_scorecard)
+    other_scorecard.initiatives.each do |initiative|
+      initiative_name = if initiatives.find_by(name: initiative.name)
+        "#{initiative.name} (1)"
+      else
+        initiative.name
+      end
+      
+      initiative.update_attributes(scorecard_id: id, name: initiative_name)
+    end
+    
+    other_scorecard.delete
+    
+    reload
+  end
 
   private
 

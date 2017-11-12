@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   
   namespace :initiatives do
-    resources :imports
+    resources :imports, only: [:new, :create, :update]
   end
   namespace :organisations do
-    resources :imports
+    resources :imports, only: [:new, :create, :update]
   end
+  
   UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
   
   devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
   resources :scorecards do
     member do
       get 'show_shared_link'
+      get 'copy'
     end
   end
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]

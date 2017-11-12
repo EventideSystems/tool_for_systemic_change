@@ -41,6 +41,12 @@
                   safe_join([content_tag(:i, '', class: "fa fa-files-o"), ' Copy'])
                 end %>
           <% end %>
+          <% if policy(:scorecard).merge_options? %>
+            <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
+                  safe_join([content_tag(:i, '', class: "fa fa-file-text-o"), ' Merge'])
+                end %>
+          <% end %>
+          
         </div>
       </div>
       <div class="box-body scorecard-matrix">

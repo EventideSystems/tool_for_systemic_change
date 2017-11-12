@@ -2,20 +2,16 @@ class Initiatives::ImportsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
   before_action :set_initiatives_import, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @initiatives_imports = Initiatives::Import.all
-  end
-
-  def show
-  end
+  # def show
+  # end
 
   def new
     @initiatives_import = current_account.initiatives_imports.build
     authorize @initiatives_import
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
   def create
     @initiatives_import = current_account.initiatives_imports.build(
@@ -50,13 +46,13 @@ class Initiatives::ImportsController < ApplicationController
     end
   end
 
-  def destroy
-    @initiatives_import.destroy
-    respond_to do |format|
-      format.html { redirect_to initiatives_imports_url, notice: 'Import was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
+  # def destroy
+  #   @initiatives_import.destroy
+  #   respond_to do |format|
+  #     format.html { redirect_to initiatives_imports_url, notice: 'Import was successfully destroyed.' }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   private
     def set_initiatives_import

@@ -1,0 +1,105 @@
+require 'rails_helper'
+
+RSpec.describe Scorecard, type: :model do
+  
+  context '#deep_copy' do
+    let!(:characteristic) { create(:characteristic) }
+    
+    let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
+
+    subject(:copy) { scorecard.deep_copy }
+    
+    it { expect(copy.name).to eq(scorecard.name + ' (copy)') }
+    it { expect(copy.description).to eq(scorecard.description) }
+    it { expect(copy.shared_link_id).to_not be_blank }
+    it { expect(copy.shared_link_id).to_not eq(scorecard.shared_link_id) }
+    
+    it { expect(copy.wicked_problem).to eq(scorecard.wicked_problem) }
+    it { expect(copy.community).to eq(scorecard.community) }
+
+    it { expect(copy.initiatives.count).to eq(scorecard.initiatives.count) }
+    it { expect(copy.initiatives).to_not eq(scorecard.initiatives) }
+
+    context 'initiatives' do
+      let(:scorcard_first_initiative) { scorecard.initiatives.first }
+      let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
+
+      before do
+        scorcard_first_checklist_item.checked = true
+        scorcard_first_checklist_item.comment = 'Comment'
+        scorcard_first_checklist_item.save!
+      end
+
+      it do
+        copy_first_initiative = copy.initiatives.first 
+        copy_first_checklist_item = copy_first_initiative.checklist_items.first
+        expect(copy_first_checklist_item.comment).to eq('Comment') 
+      end
+    end
+    
+    context 'history' do
+      before do 
+        scorecard.update_attributes(name: 'Updated Name')
+      end
+      
+      context 'public activity' do
+      
+        let(:original_scorecard_activities) { 
+          PublicActivity::Activity.where(
+            trackable_type: "Scorecard", 
+            trackable_id: scorecard.id
+          ) 
+        }
+        
+        let(:copied_scorecard_activities) { 
+          PublicActivity::Activity.where(
+            trackable_type: "Scorecard", 
+            trackable_id: subject.id
+          ) 
+        }
+        
+        it { expect(original_scorecard_activities.count).to be(2) }
+      
+        it { expect(copied_scorecard_activities.count).to be(2) }
+        
+        it 'MUST copy all scorecard attributes (other than id and trackable_id)' do
+          copied_scorecard_activities.each_with_index do |copied_scorecard_activity, index|
+            original_attributes = original_scorecard_activities[index].attributes.delete([:id, :trackable_id])
+            copied_attributes = copied_scorecard_activity.attributes.delete([:id, :trackable_id])
+            
+            expect(copied_attributes).to match(original_attributes)
+          end
+        end
+      end
+      
+      context 'paper trail' do
+        let(:original_scorecard_versions) {
+          PaperTrail::Version.where(
+            item_type: "Scorecard",
+            item_id: scorecard.id
+          )
+        }
+
+        let(:copied_scorecard_versions) {
+          PaperTrail::Version.where(
+            item_type: "Scorecard",
+            item_id: subject.id
+          )
+        }
+
+        it { expect(original_scorecard_versions.count).to be(2) }
+
+        it { expect(copied_scorecard_versions.count).to be(2) }
+        
+        it 'MUST copy all scorecard attributes (other than id and trackable_id)' do
+          copied_scorecard_versions.each_with_index do |copied_scorecard_activity, index|
+            original_attributes = original_scorecard_versions[index].attributes.delete([:id, :trackable_id])
+            copied_attributes = copied_scorecard_activity.attributes.delete([:id, :trackable_id])
+
+            expect(copied_attributes).to match(original_attributes)
+          end
+        end
+      end
+    end
+  end
+end

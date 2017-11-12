@@ -78,9 +78,9 @@ class ApplicationController < ActionController::Base
   private
 
   def set_session_account_id
-   if session[:account_id].blank? && user_signed_in?
-     self.current_account = current_user.default_account
-   end
+    if session[:account_id].blank? && user_signed_in?
+      self.current_account = current_user.default_account
+    end
   end
 
   def user_not_authorized(exception)

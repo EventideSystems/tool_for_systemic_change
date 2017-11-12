@@ -24,6 +24,10 @@ class ScorecardPolicy < ApplicationPolicy
   def show_shared_link?
     system_admin? || account_any_role?(record.account)
   end
+  
+  def copy?
+    create?
+  end
 
   def max_scorecards_not_reached?(account)
     return false unless account.present?

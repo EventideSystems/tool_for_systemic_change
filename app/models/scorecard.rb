@@ -28,10 +28,65 @@ class Scorecard < ApplicationRecord
   def description_summary
     Nokogiri::HTML(description).text
   end
+  
+  def deep_copy
+    copied = self.dup
+    copied.name = "#{name} (copy)"
+    copied.shared_link_id = new_shared_link_id
+    copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
+    copied.save!
+    
+    deep_copy_public_activity_records(copied)
+    deep_copy_paper_trail_records(copied)
+    copied 
+  end
 
   private
 
     def ensure_shared_link_id
-      self.shared_link_id ||= SecureRandom.uuid
+      self.shared_link_id ||= new_shared_link_id
+    end
+    
+    def new_shared_link_id
+      SecureRandom.uuid
+    end
+    
+    def deep_copy_public_activity_records(copied)
+      PublicActivity::Activity.where(
+        trackable_type: "Scorecard", 
+        trackable_id: copied.id
+      ).delete_all
+     
+      original_scorecard_activities = PublicActivity::Activity.where(
+        trackable_type: "Scorecard", 
+        trackable_id: id
+      )
+    
+      original_scorecard_activities.each do |activity|
+        copied_activity = activity.dup
+        copied_activity.trackable_id = copied.id
+        copied_activity.created_at = activity.created_at
+        copied_activity.updated_at = activity.updated_at
+        copied_activity.save!
+      end
+    end
+    
+    def deep_copy_paper_trail_records(copied)
+      PaperTrail::Version.where(
+        item_type: "Scorecard", 
+        item_id: copied.id
+      ).delete_all
+     
+      original_scorecard_versions = PaperTrail::Version.where(
+        item_type: "Scorecard", 
+        item_id: id
+      )
+    
+      original_scorecard_versions.each do |version|
+        copied_version = version.dup
+        copied_version.item_id = copied.id
+        copied_version.created_at = version.created_at
+        copied_version.save!
+      end
     end
 end

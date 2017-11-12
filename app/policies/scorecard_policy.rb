@@ -28,6 +28,10 @@ class ScorecardPolicy < ApplicationPolicy
   def copy?
     create?
   end
+  
+  def deep_copy?
+    create?
+  end
 
   def max_scorecards_not_reached?(account)
     return false unless account.present?

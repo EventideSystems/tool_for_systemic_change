@@ -52,9 +52,18 @@ class Initiative < ApplicationRecord
     scorecard.try(:wicked_problem).try(:name)
   end
   
+  def copy
+    copied = self.dup
+    copied.organisations << organisations
+    copied.save!
+    
+    copied
+  end
+  
   def deep_copy
     copied = self.dup
     copied.checklist_items << checklist_items.map { |checklist_item| checklist_item.dup }
+    copied.organisations << organisations
     copied.save!
     
     deep_copy_public_activity_records(copied)

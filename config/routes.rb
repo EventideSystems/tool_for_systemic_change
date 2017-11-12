@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     member do
       get 'show_shared_link'
       get 'copy'
+      get 'deep_copy'
     end
   end
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]

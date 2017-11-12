@@ -98,6 +98,19 @@ class ScorecardsController < ApplicationController
   end
   
   def copy
+    @scorecard = @scorecard.copy
+    respond_to do |format|
+      if @scorecard.present?
+        format.html { redirect_to scorecard_path(@scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
+        format.json { render :show, status: :ok, location: @scorecard }
+      else
+        format.html { render :edit }
+        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
+      end
+    end 
+  end
+  
+  def deep_copy
     @scorecard = @scorecard.deep_copy
     respond_to do |format|
       if @scorecard.present?

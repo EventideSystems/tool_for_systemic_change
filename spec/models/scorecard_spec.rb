@@ -2,23 +2,39 @@ require 'rails_helper'
 
 RSpec.describe Scorecard, type: :model do
   
-  context '#deep_copy' do
-    let!(:characteristic) { create(:characteristic) }
+  let!(:characteristic) { create(:characteristic) }
+  let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
+  
+  context '#copied' do
+    subject(:copied) { scorecard.copy }
     
-    let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
+    it { expect(copied.name).to eq(scorecard.name + ' (copy)') }
+    
+    it { expect(copied.description).to eq(scorecard.description) }
+    it { expect(copied.shared_link_id).to_not be_blank }
+    it { expect(copied.shared_link_id).to_not eq(scorecard.shared_link_id) }
+    
+    it { expect(copied.wicked_problem).to eq(scorecard.wicked_problem) }
+    it { expect(copied.community).to eq(scorecard.community) }
 
-    subject(:copy) { scorecard.deep_copy }
-    
-    it { expect(copy.name).to eq(scorecard.name + ' (copy)') }
-    it { expect(copy.description).to eq(scorecard.description) }
-    it { expect(copy.shared_link_id).to_not be_blank }
-    it { expect(copy.shared_link_id).to_not eq(scorecard.shared_link_id) }
-    
-    it { expect(copy.wicked_problem).to eq(scorecard.wicked_problem) }
-    it { expect(copy.community).to eq(scorecard.community) }
+    it { expect(copied.initiatives.count).to eq(scorecard.initiatives.count) }
+    it { expect(copied.initiatives).to_not eq(scorecard.initiatives) }
+  end
+  
+  context '#deep_copied' do
 
-    it { expect(copy.initiatives.count).to eq(scorecard.initiatives.count) }
-    it { expect(copy.initiatives).to_not eq(scorecard.initiatives) }
+    subject(:copied) { scorecard.deep_copy }
+    
+    it { expect(copied.name).to eq(scorecard.name + ' (copy)') }
+    it { expect(copied.description).to eq(scorecard.description) }
+    it { expect(copied.shared_link_id).to_not be_blank }
+    it { expect(copied.shared_link_id).to_not eq(scorecard.shared_link_id) }
+    
+    it { expect(copied.wicked_problem).to eq(scorecard.wicked_problem) }
+    it { expect(copied.community).to eq(scorecard.community) }
+
+    it { expect(copied.initiatives.count).to eq(scorecard.initiatives.count) }
+    it { expect(copied.initiatives).to_not eq(scorecard.initiatives) }
 
     context 'initiatives' do
       let(:scorcard_first_initiative) { scorecard.initiatives.first }
@@ -31,9 +47,9 @@ RSpec.describe Scorecard, type: :model do
       end
 
       it do
-        copy_first_initiative = copy.initiatives.first 
-        copy_first_checklist_item = copy_first_initiative.checklist_items.first
-        expect(copy_first_checklist_item.comment).to eq('Comment') 
+        copied_first_initiative = copied.initiatives.first 
+        copied_first_checklist_item = copied_first_initiative.checklist_items.first
+        expect(copied_first_checklist_item.comment).to eq('Comment') 
       end
     end
     
@@ -62,7 +78,7 @@ RSpec.describe Scorecard, type: :model do
       
         it { expect(copied_scorecard_activities.count).to be(2) }
         
-        it 'MUST copy all scorecard attributes (other than id and trackable_id)' do
+        it 'MUST copied all scorecard attributes (other than id and trackable_id)' do
           copied_scorecard_activities.each_with_index do |copied_scorecard_activity, index|
             original_attributes = original_scorecard_activities[index].attributes.delete([:id, :trackable_id])
             copied_attributes = copied_scorecard_activity.attributes.delete([:id, :trackable_id])
@@ -91,7 +107,7 @@ RSpec.describe Scorecard, type: :model do
 
         it { expect(copied_scorecard_versions.count).to be(2) }
         
-        it 'MUST copy all scorecard attributes (other than id and trackable_id)' do
+        it 'MUST copied all scorecard attributes (other than id and trackable_id)' do
           copied_scorecard_versions.each_with_index do |copied_scorecard_activity, index|
             original_attributes = original_scorecard_versions[index].attributes.delete([:id, :trackable_id])
             copied_attributes = copied_scorecard_activity.attributes.delete([:id, :trackable_id])

@@ -344,6 +344,7 @@
     });
   });
   
+  
   //= require scorecards
   //= require turbolinks
   //= require_tree .

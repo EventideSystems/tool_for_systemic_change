@@ -1,5 +1,6 @@
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link]  
+  before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy] 
+  before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
   add_breadcrumb "Scorecards", :scorecards_path
@@ -96,6 +97,20 @@ class ScorecardsController < ApplicationController
     render layout: false
   end
   
+  def copy
+    @scorecard = @scorecard.deep_copy
+    respond_to do |format|
+      if @scorecard.present?
+        format.html { redirect_to scorecard_path(@scorecard, active_tab: :details), notice: 'Scorecard was successfully copied.' }
+        format.json { render :show, status: :ok, location: @scorecard }
+      else
+        format.html { render :edit }
+        format.json { render json: @scorecard.errors, status: :unprocessable_entity }
+      end
+    end 
+  end
+  
+  
   def content_subtitle
     return @scorecard.name if @scorecard.present?
     super
@@ -106,6 +121,10 @@ class ScorecardsController < ApplicationController
     def set_scorecard
       @scorecard = current_account.scorecards.find(params[:id])
       authorize @scorecard
+    end
+    
+    def set_active_tab
+      @active_tab = params.dig(:active_tab)&.to_sym || :scorecard
     end
 
     def scorecard_params

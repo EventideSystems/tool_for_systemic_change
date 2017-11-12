@@ -51,15 +51,110 @@ class Initiative < ApplicationRecord
   def wicked_problem_name
     scorecard.try(:wicked_problem).try(:name)
   end
+  
+  def deep_copy
+    copied = self.dup
+    copied.checklist_items << checklist_items.map { |checklist_item| checklist_item.dup }
+    copied.save!
+    
+    deep_copy_public_activity_records(copied)
+    deep_copy_paper_trail_records(copied)
+    copied
+  end
 
   private
 
   def create_checklist_items
-    Characteristic.all.find_each do |characteristic|
-      ChecklistItem.create!(
-        initiative: self, characteristic: characteristic
-      )
+    characteristic_ids = Characteristic.all.pluck(:id) - checklist_items.map(&:characteristic_id)
+    Characteristic.where(id: characteristic_ids).all.each do |characteristic|
+      checklist_items.create(characteristic: characteristic)
     end
+  end
+  
+  def deep_copy_public_activity_records(copied)
+    PublicActivity::Activity.where(
+      trackable_type: "Initiative", 
+      trackable_id: copied.id
+    ).delete_all
+     
+    original_initiative_activities = PublicActivity::Activity.where(
+      trackable_type: "Initiative", 
+      trackable_id: id
+    )
+    
+    original_initiative_activities.each do |activity|
+      copied_activity = activity.dup
+      copied_activity.trackable_id = copied.id
+      copied_activity.created_at = activity.created_at
+      copied_activity.updated_at = activity.updated_at
+      copied_activity.save!
+    end
+    
+    PublicActivity::Activity.where(
+      trackable_type: "ChecklistItem", 
+      trackable_id: copied.checklist_items.map(&:id)
+    ).delete_all
+    
+    original_checklist_item_activities = PublicActivity::Activity.where(
+      trackable_type: "ChecklistItem", 
+      trackable_id: checklist_items.map(&:id)
+    )
+    
+    original_checklist_item_activities.each do |activity|
+      copied_activity = activity.dup
+      
+      trackable_id = ChecklistItem.where(
+        initiative_id: copied.id,
+        characteristic_id: activity.trackable.characteristic.id
+      ).first.id
+      
+      copied_activity.trackable_id = trackable_id
+      copied_activity.created_at = activity.created_at
+      copied_activity.updated_at = activity.updated_at
+      copied_activity.save!
+    end
+  end
+  
+  def deep_copy_paper_trail_records(copied)
+    PaperTrail::Version.where(
+      item_type: "Initiative", 
+      item_id: copied.id
+    ).delete_all
+     
+    original_initiative_versions = PaperTrail::Version.where(
+      item_type: "Initiative", 
+      item_id: id
+    )
+    
+    original_initiative_versions.each do |version|
+      copied_version = version.dup
+      copied_version.item_id = copied.id
+      copied_version.created_at = version.created_at
+      copied_version.save!
+    end
+    
+    PaperTrail::Version.where(
+      item_type: "ChecklistItem", 
+      item_id: copied.checklist_items.map(&:id)
+    ).delete_all
+    
+    original_checklist_item_versions = PaperTrail::Version.where(
+      item_type: "ChecklistItem", 
+      item_id: checklist_items.map(&:id)
+    )
+    
+    original_checklist_item_versions.each do |version|
+      copied_version = version.dup
+      
+      item_id = ChecklistItem.where(
+        initiative_id: copied.id,
+        characteristic_id: version.item.characteristic.id
+      ).first.id
+      
+      copied_version.item_id = item_id
+      copied_version.created_at = version.created_at
+      copied_version.save!
+    end    
   end
 
   def validate_finished_at_later_than_started_at

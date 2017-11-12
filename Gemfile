@@ -84,8 +84,7 @@ gem 'mailjet'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 
-# Downgrading Thor. See https://github.com/erikhuda/thor/issues/538
-gem 'thor', '0.19.1'
+gem 'thor', '~> 0.20'
 
 group :test do
   gem 'cucumber-rails', :require => false
@@ -116,6 +115,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'brakeman', require: false
+  gem 'bundler-audit'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

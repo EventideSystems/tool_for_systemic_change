@@ -29,8 +29,8 @@ Rails.application.routes.draw do
   resources :scorecards do
     member do
       get 'show_shared_link'
-      get 'copy'
-      get 'deep_copy'
+      post 'copy'
+      get 'copy_options'
     end
   end
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]

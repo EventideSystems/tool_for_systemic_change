@@ -56,6 +56,7 @@ gem 'kaminari-bootstrap'
 gem 'breadcrumbs_on_rails'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap-datepicker-rails'
+gem 'bootstrap_form'
 
 # Report related
 gem 'wkhtmltopdf-binary'

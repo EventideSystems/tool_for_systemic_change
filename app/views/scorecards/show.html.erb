@@ -36,34 +36,11 @@
           <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
             safe_join([content_tag(:i, '', class: "fa fa-share-alt"), ' Share'])
           end %>
-          <% if policy(:scorecard).copy? %>
-            <%= link_to(copy_scorecard_path(@scorecard), 
-              class: 'btn btn-primary', 
-              data: { 
-                toggle: "tooltip", 
-                placement: "bottom", 
-                title: "Copy initiatives and organisations details- but excluding checklist history - into a new Scorecard" 
-              } ) do
-                    safe_join([content_tag(:i, '', class: "fa fa-files-o"), ' Copy'])
+          <% if policy(:scorecard).copy_options? %>
+            <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
+                  safe_join([content_tag(:i, '', class: "fa fa-files-o"), ' Copy'])
                 end %>
           <% end %>
-          <% if policy(:scorecard).deep_copy? %>
-            <%= link_to(deep_copy_scorecard_path(@scorecard), 
-              class: 'btn btn-primary', 
-              data: { 
-                toggle: "tooltip", 
-                placement: "bottom", 
-                title: "Copy complete details - including initiatives, organisations and checklist history - into a new Scorecard" 
-              } ) do
-                safe_join(
-                  [
-                    content_tag(:i, '', class: "fa fa-files-o"),
-                    ' Deep Copy'
-                  ]
-                )
-              end %>
-          <% end %>  
-          
         </div>
       </div>
       <div class="box-body scorecard-matrix">

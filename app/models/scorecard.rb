@@ -9,7 +9,7 @@ class Scorecard < ApplicationRecord
   belongs_to :community
   belongs_to :account
   belongs_to :wicked_problem
-  has_many :initiatives, -> { order('lower(name)') }, dependent: :destroy
+  has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy
   has_many :checklist_items, through: :initiatives
   
   delegate :name, :description, to: :wicked_problem, prefix: true, allow_nil: true

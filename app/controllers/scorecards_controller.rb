@@ -90,7 +90,6 @@ class ScorecardsController < ApplicationController
   end
   
   def shared
-    
   end
   
   def show_shared_link
@@ -116,6 +115,7 @@ class ScorecardsController < ApplicationController
   end
   
   def merge_options
+    @other_scorecards = current_account.scorecards.where.not(id: @scorecard.id).order('lower(name)')
     render layout: false
   end
   
@@ -132,7 +132,6 @@ class ScorecardsController < ApplicationController
       end
     end 
   end
-  
   
   def content_subtitle
     return @scorecard.name if @scorecard.present?

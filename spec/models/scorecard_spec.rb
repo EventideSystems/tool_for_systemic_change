@@ -134,6 +134,12 @@ RSpec.describe Scorecard, type: :model do
     it { expect(merged.community).to eq(scorecard.community) }
 
     it { expect(merged.initiatives.count).to eq(scorecard.initiatives.count + other_scorecard.initiatives.count) }
-    it { expect(merged.initiatives).to_not eq(scorecard.initiatives + other_scorecard.initiatives) }    
+    it { expect(merged.initiatives).to_not eq(scorecard.initiatives + other_scorecard.initiatives) }
+    
+    it 'removes all initiatives from merged scorecard' do
+      merged
+      other_scorecard.reload
+      expect(other_scorecard.initiatives.count).to eq(0)
+    end
   end
 end

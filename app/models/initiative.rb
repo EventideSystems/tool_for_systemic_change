@@ -64,14 +64,24 @@ class Initiative < ApplicationRecord
   
   def deep_copy
     copied = self.dup
+    
+    #
+    # INSERT INTO my_table (col1, col2, col3)
+    #     SELECT col1, 'new col2 value', col3
+    #     FROM my_table AS old
+    #     WHERE some_criteria = 'something'
+    # RETURNING *;
+    
     copied.checklist_items << checklist_items.map { |checklist_item| checklist_item.dup }
     organisations.each do |organisation|
       copied.initiatives_organisations.build(organisation: organisation)
     end
     copied.save!
     
-    deep_copy_public_activity_records(copied)
+    # deep_copy_public_activity_records(copied)
     deep_copy_paper_trail_records(copied)
+    copied.reload
+    
     copied
   end
 

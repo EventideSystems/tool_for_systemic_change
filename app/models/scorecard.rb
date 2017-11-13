@@ -9,7 +9,7 @@ class Scorecard < ApplicationRecord
   belongs_to :community
   belongs_to :account
   belongs_to :wicked_problem
-  has_many :initiatives, dependent: :destroy
+  has_many :initiatives, -> { order('lower(name)') }, dependent: :destroy
   has_many :checklist_items, through: :initiatives
   
   delegate :name, :description, to: :wicked_problem, prefix: true, allow_nil: true
@@ -30,46 +30,75 @@ class Scorecard < ApplicationRecord
   end
   
   def copy(copy_name)
+    PublicActivity.enabled = false
     copied = self.dup
-    copied.name = copy_name || "Copy of #{name}"
-    copied.shared_link_id = new_shared_link_id
     
-    copied.initiatives << initiatives.map { |initiative| initiative.copy }
-    copied.save!
+    ActiveRecord::Base.transaction do
+      copied.name = copy_name || "Copy of #{name}"
+      copied.shared_link_id = new_shared_link_id
+    
+      copied.initiatives << initiatives.map { |initiative| initiative.copy }
+      copied.save!
+    end
     
     copied
   end
   
   def deep_copy(copy_name)
     copied = self.dup
-    copied.name = copy_name || "Copy of #{name}"
-    copied.shared_link_id = new_shared_link_id
-    copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
-    copied.save!
     
-    deep_copy_public_activity_records(copied)
-    deep_copy_paper_trail_records(copied)
+    ActiveRecord::Base.transaction do 
+      PublicActivity.enabled = false
+
+      copied.name = copy_name || "Copy of #{name}"
+      copied.shared_link_id = new_shared_link_id
+      copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
+      copied.save!
+  
+      deep_copy_public_activity_records(copied)
+      deep_copy_paper_trail_records(copied)
+        
+      PublicActivity.enabled = true
+    end
+    
     copied 
   end
   
   def merge(other_scorecard)
+    existing_initiative_names = initiatives.pluck(:name)
+    
     other_scorecard.initiatives.each do |initiative|
-      initiative_name = if initiatives.find_by(name: initiative.name)
-        "#{initiative.name} (1)"
-      else
-        initiative.name
-      end
-      
-      initiative.update_attributes(scorecard_id: id, name: initiative_name)
+      initiative.update_attributes(
+        scorecard_id: id, 
+        name: non_clashing_initiative_name(
+          initiative.name, 
+          existing_initiative_names
+        )
+      )
     end
-    
+  
     other_scorecard.delete
-    
+
     reload
   end
 
   private
 
+    def non_clashing_initiative_name(name, existing_names)
+      return name unless existing_names.include?(name)
+      
+      name_match = /(.*)(\s\(\d+\))$/.match(name)
+      basename = name_match ? name_match[1] : name
+      
+      count = 1
+      while true 
+        new_name = "#{basename} (#{count})" 
+        return new_name unless existing_names.include?(new_name)
+        count += 1
+      end
+    end
+    
+    
     def ensure_shared_link_id
       self.shared_link_id ||= new_shared_link_id
     end

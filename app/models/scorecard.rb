@@ -48,17 +48,22 @@ class Scorecard < ApplicationRecord
     copied = self.dup
     
     ActiveRecord::Base.transaction do 
-      PublicActivity.enabled = false
+      
+      begin 
+        PublicActivity.enabled = false
+        PaperTrail.enabled = false
 
-      copied.name = copy_name || "Copy of #{name}"
-      copied.shared_link_id = new_shared_link_id
-      copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
-      copied.save!
+        copied.name = copy_name || "Copy of #{name}"
+        copied.shared_link_id = new_shared_link_id
+        copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
+        copied.save!
   
-      deep_copy_public_activity_records(copied)
-      deep_copy_paper_trail_records(copied)
-        
-      PublicActivity.enabled = true
+        # deep_copy_public_activity_records(copied)
+        deep_copy_paper_trail_records(copied)
+      ensure    
+        PublicActivity.enabled = true
+        PaperTrail.enabled = true
+      end
     end
     
     copied 

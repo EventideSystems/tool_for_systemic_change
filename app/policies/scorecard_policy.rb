@@ -26,19 +26,19 @@ class ScorecardPolicy < ApplicationPolicy
   end
   
   def copy?
-    false # create?
+    create?
   end
   
   def copy_options?
-    false # copy?
+    copy?
   end
 
   def merge?
-    false # system_admin? || account_admin?(record.account)
+    system_admin? || account_admin?(record.account)
   end
     
   def merge_options?
-    false # merge?
+    merge?
   end
   
   def max_scorecards_not_reached?(account)

@@ -64,25 +64,26 @@ class Initiative < ApplicationRecord
   
   def deep_copy
     copied = self.dup
-    
-    #
-    # INSERT INTO my_table (col1, col2, col3)
-    #     SELECT col1, 'new col2 value', col3
-    #     FROM my_table AS old
-    #     WHERE some_criteria = 'something'
-    # RETURNING *;
-    
-    copied.checklist_items << checklist_items.map { |checklist_item| checklist_item.dup }
     organisations.each do |organisation|
       copied.initiatives_organisations.build(organisation: organisation)
-    end
+    end    
+    
     copied.save!
+    copied.checklist_items.delete_all
     
-    # deep_copy_public_activity_records(copied)
+    query = "
+    INSERT INTO checklist_items (checked, comment, characteristic_id, initiative_id, created_at, updated_at)
+      SELECT checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
+      FROM checklist_items
+      WHERE initiative_id = #{self.id}
+    RETURNING *;
+    "
+    ActiveRecord::Base.connection.execute(query)
+   
+    deep_copy_public_activity_records(copied)
     deep_copy_paper_trail_records(copied)
-    copied.reload
     
-    copied
+    copied.reload
   end
 
   private
@@ -104,14 +105,23 @@ class Initiative < ApplicationRecord
       trackable_type: "Initiative", 
       trackable_id: id
     )
+    #
+    # original_initiative_activities.each do |activity|
+    #   copied_activity = activity.dup
+    #   copied_activity.trackable_id = copied.id
+    #   copied_activity.created_at = activity.created_at
+    #   copied_activity.updated_at = activity.updated_at
+    #   copied_activity.save!
+    # end
     
-    original_initiative_activities.each do |activity|
-      copied_activity = activity.dup
-      copied_activity.trackable_id = copied.id
-      copied_activity.created_at = activity.created_at
-      copied_activity.updated_at = activity.updated_at
-      copied_activity.save!
-    end
+    query = "
+    INSERT INTO activities (trackable_type, trackable_id, owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id)
+      SELECT trackable_type, '#{copied.id}', owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id
+      FROM activities
+      WHERE trackable_type = 'Initiative' AND trackable_id = #{self.id}
+    RETURNING *;
+    "
+    ActiveRecord::Base.connection.execute(query)
     
     PublicActivity::Activity.where(
       trackable_type: "ChecklistItem", 
@@ -149,12 +159,21 @@ class Initiative < ApplicationRecord
       item_id: id
     )
     
-    original_initiative_versions.each do |version|
-      copied_version = version.dup
-      copied_version.item_id = copied.id
-      copied_version.created_at = version.created_at
-      copied_version.save!
-    end
+    # original_initiative_versions.each do |version|
+    #   copied_version = version.dup
+    #   copied_version.item_id = copied.id
+    #   copied_version.created_at = version.created_at
+    #   copied_version.save!
+    # end
+
+    query = "
+    INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)
+      SELECT item_type, '#{copied.id}', event, whodunnit, object, created_at
+      FROM versions
+      WHERE item_type = 'Initiative' AND item_id = #{self.id}
+    RETURNING *;
+    "
+    ActiveRecord::Base.connection.execute(query)
     
     PaperTrail::Version.where(
       item_type: "ChecklistItem", 

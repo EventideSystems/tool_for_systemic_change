@@ -123,7 +123,6 @@ RSpec.describe Initiative, type: :model do
         it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
         it { expect(subject.checklist_items.first.checked).to eq(true) }
         it { expect(subject.checklist_items.first.comment).to eq('Comment') }
-        
       end
       
       context 'history' do

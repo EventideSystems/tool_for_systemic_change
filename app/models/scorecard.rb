@@ -58,7 +58,7 @@ class Scorecard < ApplicationRecord
         copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
         copied.save!
   
-        # deep_copy_public_activity_records(copied)
+        deep_copy_public_activity_records(copied)
         deep_copy_paper_trail_records(copied)
       ensure    
         PublicActivity.enabled = true
@@ -73,13 +73,10 @@ class Scorecard < ApplicationRecord
     existing_initiative_names = initiatives.pluck(:name)
     
     other_scorecard.initiatives.each do |initiative|
-      initiative.update_attributes(
-        scorecard_id: id, 
-        name: non_clashing_initiative_name(
-          initiative.name, 
-          existing_initiative_names
-        )
-      )
+      name = non_clashing_initiative_name(initiative.name, existing_initiative_names)
+      existing_initiative_names << name unless existing_initiative_names.include?(name)
+      
+      initiative.update_attributes(scorecard_id: id, name: name)
     end
   
     other_scorecard.delete

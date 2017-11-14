@@ -139,63 +139,6 @@ RSpec.describe Initiative, type: :model do
           initiative.checklist_items.second.save!
         end 
         
-        # NOTE Support for PublicActivity will be dropped in the future, as we don't need both
-        # this and the PaperTrail gem tracking changes.
-        context 'public activity' do
-        
-          let(:original_initiative_activities) { 
-            PublicActivity::Activity.where(
-              trackable_type: "Initiative", 
-              trackable_id: initiative.id
-            ) 
-          }
-        
-          let(:original_checklist_item_activities) { 
-            PublicActivity::Activity.where(
-              trackable_type: "ChecklistItem", 
-              trackable_id: initiative.checklist_items.map(&:id)
-            ) 
-          }
-        
-          let(:copied_initiative_activities) { 
-            PublicActivity::Activity.where(
-              trackable_type: "Initiative", 
-              trackable_id: subject.id
-            ) 
-          }
-        
-          let(:copied_checklist_item_activities) { 
-            PublicActivity::Activity.where(
-              trackable_type: "ChecklistItem", 
-              trackable_id: subject.checklist_items.map(&:id)
-            ) 
-          }
-        
-          it { expect(original_initiative_activities.count).to be(2) }
-          it { expect(original_checklist_item_activities.count).to be(4) }
-        
-          it { expect(copied_initiative_activities.count).to be(2) }
-          it { expect(copied_checklist_item_activities.count).to be(4) }
-          
-          it 'MUST copy all intitiative attributes (other than id and trackable_id)' do
-            copied_initiative_activities.each_with_index do |copied_initiative_activity, index|
-              original_attributes = original_initiative_activities[index].attributes.delete([:id, :trackable_id])
-              copied_attributes = copied_initiative_activity.attributes.delete([:id, :trackable_id])
-              
-              expect(copied_attributes).to match(original_attributes)
-            end
-          end
-          
-          it 'MUST copy all checklist attributes (other than id and trackable_id)' do
-            copied_checklist_item_activities.each_with_index do |copied_checklist_item_activity, index|
-              original_attributes = original_checklist_item_activities[index].attributes.delete([:id, :trackable_id])
-              copied_attributes = copied_checklist_item_activity.attributes.delete([:id, :trackable_id])
-              
-              expect(copied_attributes).to match(original_attributes)
-            end
-          end
-        end
-        
         context 'paper trail' do
         
           let(:original_initiative_versions) { 

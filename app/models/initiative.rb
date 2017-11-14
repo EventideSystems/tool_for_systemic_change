@@ -80,7 +80,7 @@ class Initiative < ApplicationRecord
     "
     ActiveRecord::Base.connection.execute(query)
    
-    deep_copy_public_activity_records(copied)
+    # deep_copy_public_activity_records(copied)
     deep_copy_paper_trail_records(copied)
     
     copied.reload
@@ -100,20 +100,7 @@ class Initiative < ApplicationRecord
       trackable_type: "Initiative", 
       trackable_id: copied.id
     ).delete_all
-     
-    original_initiative_activities = PublicActivity::Activity.where(
-      trackable_type: "Initiative", 
-      trackable_id: id
-    )
-    #
-    # original_initiative_activities.each do |activity|
-    #   copied_activity = activity.dup
-    #   copied_activity.trackable_id = copied.id
-    #   copied_activity.created_at = activity.created_at
-    #   copied_activity.updated_at = activity.updated_at
-    #   copied_activity.save!
-    # end
-    
+
     query = "
     INSERT INTO activities (trackable_type, trackable_id, owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id)
       SELECT trackable_type, '#{copied.id}', owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id
@@ -158,13 +145,6 @@ class Initiative < ApplicationRecord
       item_type: "Initiative", 
       item_id: id
     )
-    
-    # original_initiative_versions.each do |version|
-    #   copied_version = version.dup
-    #   copied_version.item_id = copied.id
-    #   copied_version.created_at = version.created_at
-    #   copied_version.save!
-    # end
 
     query = "
     INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)

@@ -57,37 +57,7 @@ RSpec.describe Scorecard, type: :model do
       before do 
         scorecard.update_attributes(name: 'Updated Name')
       end
-      
-      context 'public activity' do
-      
-        let(:original_scorecard_activities) { 
-          PublicActivity::Activity.where(
-            trackable_type: "Scorecard", 
-            trackable_id: scorecard.id
-          ) 
-        }
-        
-        let(:copied_scorecard_activities) { 
-          PublicActivity::Activity.where(
-            trackable_type: "Scorecard", 
-            trackable_id: subject.id
-          ) 
-        }
-        
-        it { expect(original_scorecard_activities.count).to be(2) }
-      
-        it { expect(copied_scorecard_activities.count).to be(2) }
-        
-        it 'MUST copied all scorecard attributes (other than id and trackable_id)' do
-          copied_scorecard_activities.each_with_index do |copied_scorecard_activity, index|
-            original_attributes = original_scorecard_activities[index].attributes.delete([:id, :trackable_id])
-            copied_attributes = copied_scorecard_activity.attributes.delete([:id, :trackable_id])
-            
-            expect(copied_attributes).to match(original_attributes)
-          end
-        end
-      end
-      
+
       context 'paper trail' do
         let(:original_scorecard_versions) {
           PaperTrail::Version.where(

@@ -66,6 +66,10 @@ class ApplicationController < ActionController::Base
     @content_subtitle || ''
   end
   
+  def info_for_paper_trail
+    { account_id: current_account.id }
+  end
+  
   protected
   
   def sort_order

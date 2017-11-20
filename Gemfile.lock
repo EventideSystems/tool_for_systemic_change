@@ -304,6 +304,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rollbar (2.15.5)
+      multi_json
     roo (2.7.1)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -447,6 +449,7 @@ DEPENDENCIES
   rails-assets-select2!
   rails-assets-twitter-bootstrap-wizard!
   rails-controller-testing
+  rollbar
   roo (~> 2.7.0)
   rspec-rails (~> 3.5)
   rubocop

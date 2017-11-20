@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  include PublicActivity::StoreController
   
   force_ssl if: :ssl_configured?
 

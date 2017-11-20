@@ -16,14 +16,14 @@ class AddAccountIdToPaperTrailVersions < ActiveRecord::Migration[5.0]
     
     %w(Initiative).each do |type|
       Version.where(item_type: type).each do |version|
-        item = type.constantize.unscoped.where(id: version.item_id).first
+        item = type.constantize.unscoped.where(id: version.item_id).includes(:scorecard).first
         version.update_attribute(:account_id, item.scorecard.account_id) if item && item.scorecard
       end
     end
     
-    %w(InitiativesOrganisation).each do |type|
+    %w(InitiativesOrganisation ChecklistItem).each do |type|
       Version.where(item_type: type).each do |version|
-        item = type.constantize.unscoped.where(id: version.item_id).first
+        item = type.constantize.unscoped.where(id: version.item_id).includes(initiative: :scorecard).first
         version.update_attribute(:account_id, item.initiative.scorecard.account_id) if item && item.initiative && item.initiative.scorecard
       end
     end

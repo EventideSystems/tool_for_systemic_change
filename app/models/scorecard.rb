@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 class Scorecard < ApplicationRecord
-  include Trackable
   has_paper_trail
   acts_as_paranoid
 
@@ -30,7 +29,6 @@ class Scorecard < ApplicationRecord
   end
   
   def copy(copy_name)
-    PublicActivity.enabled = false
     copied = self.dup
     
     ActiveRecord::Base.transaction do
@@ -50,7 +48,6 @@ class Scorecard < ApplicationRecord
     ActiveRecord::Base.transaction do 
       
       begin 
-        PublicActivity.enabled = false
         PaperTrail.enabled = false
 
         copied.name = copy_name || "Copy of #{name}"
@@ -58,10 +55,8 @@ class Scorecard < ApplicationRecord
         copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
         copied.save!
   
-        # deep_copy_public_activity_records(copied)
         deep_copy_paper_trail_records(copied)
       ensure    
-        PublicActivity.enabled = true
         PaperTrail.enabled = true
       end
     end
@@ -108,22 +103,7 @@ class Scorecard < ApplicationRecord
     def new_shared_link_id
       SecureRandom.uuid
     end
-    
-    def deep_copy_public_activity_records(copied)
-      PublicActivity::Activity.where(
-        trackable_type: "Scorecard", 
-        trackable_id: copied.id
-      ).delete_all
-     
-      query = "
-      INSERT INTO activities (trackable_type, trackable_id, owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id)
-        SELECT trackable_type, '#{copied.id}', owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id
-        FROM activities
-        WHERE trackable_type = 'Scorecard' AND trackable_id = #{self.id}
-      RETURNING *;
-      "
-      ActiveRecord::Base.connection.execute(query)
-    end
+
     
     def deep_copy_paper_trail_records(copied)
       PaperTrail::Version.where(

@@ -6,7 +6,7 @@
                           id: lambda { |activity| "activity-#{activity.id}" }
                         } do |table| %>
     <% table.column :created_at, :header => "Time" %>
-    <% table.column :trackable_type, :header => "Record Type" %>
+    <% table.column :item_type, :header => "Record Type" %>
     <% table.column :key, :header => "Action", :formatter => lambda { |key| _,action = *key.split('.'); "#{action}d"} %>
     <% table.column :owner, :header => "User", :formatter => lambda { |owner| owner.is_a?(User) ? owner.display_name : '' }, :sortable => false %>
     <% table.footer do %>

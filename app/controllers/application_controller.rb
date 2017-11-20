@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   end
   
   def info_for_paper_trail
-    { account_id: current_account.id }
+    { account_id: current_account&.id }
   end
   
   protected

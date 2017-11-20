@@ -1,17 +1,17 @@
 <div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @activities, :table_html => { :class => "table table-striped" },
+  <%= table_for @versions, :table_html => { :class => "table table-striped" },
                         :sortable => true,
                         :data_row_html => {
-                          id: lambda { |activity| "activity-#{activity.id}" }
+                          id: lambda { |version| "version-#{version.id}" }
                         } do |table| %>
     <% table.column :created_at, :header => "Time" %>
-    <% table.column :item_type, :header => "Record Type" %>
-    <% table.column :key, :header => "Action", :formatter => lambda { |key| _,action = *key.split('.'); "#{action}d"} %>
-    <% table.column :owner, :header => "User", :formatter => lambda { |owner| owner.is_a?(User) ? owner.display_name : '' }, :sortable => false %>
+    <% table.column :item_type, :header => "Record Type", :formatter => lambda { |item_type| version_item_type_name(item_type) } %>
+    <% table.column :event, :header => "Action" , :formatter => lambda { |event| version_event_past_tense(event) } %>
+    <% table.column :whodunnit, :header => "User", :formatter => lambda { |whodunnit| version_whodunnit_name(whodunnit) }, :sortable => false %>
     <% table.footer do %>
       <div class="pull-right">
-        <%= paginate @activities %>
+        <%= paginate @versions %>
       </div>
     <% end %>
   <% end %>

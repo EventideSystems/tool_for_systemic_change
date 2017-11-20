@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 class Initiative < ApplicationRecord
-  include Trackable
   has_paper_trail
   acts_as_paranoid
 

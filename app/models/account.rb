@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 class Account < ApplicationRecord
-  include Trackable
-  
+  has_paper_trail
   acts_as_paranoid
 
   enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }

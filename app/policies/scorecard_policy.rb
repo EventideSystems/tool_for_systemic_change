@@ -14,11 +14,11 @@ class ScorecardPolicy < ApplicationPolicy
   end
   
   def update?
-    system_admin? || account_admin?(record.account)
+    system_admin? || current_account_admin?
   end
   
   def destroy?
-    system_admin? || account_admin?(record.account)
+    system_admin? || current_account_admin?
   end
   
   def show_shared_link?
@@ -34,7 +34,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   def merge?
-    system_admin? || account_admin?(record.account)
+    system_admin? || current_account_admin?
   end
     
   def merge_options?

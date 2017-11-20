@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  include PublicActivity::StoreController
   
   force_ssl if: :ssl_configured?
 
@@ -64,6 +63,10 @@ class ApplicationController < ActionController::Base
   
   def content_subtitle
     @content_subtitle || ''
+  end
+  
+  def info_for_paper_trail
+    { account_id: current_account&.id }
   end
   
   protected

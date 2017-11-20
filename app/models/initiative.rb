@@ -79,7 +79,6 @@ class Initiative < ApplicationRecord
     "
     ActiveRecord::Base.connection.execute(query)
    
-    # deep_copy_public_activity_records(copied)
     deep_copy_paper_trail_records(copied)
     
     copied.reload
@@ -91,46 +90,6 @@ class Initiative < ApplicationRecord
     characteristic_ids = Characteristic.all.pluck(:id) - checklist_items.map(&:characteristic_id)
     Characteristic.where(id: characteristic_ids).all.each do |characteristic|
       checklist_items.create(characteristic: characteristic)
-    end
-  end
-  
-  def deep_copy_public_activity_records(copied)
-    PublicActivity::Activity.where(
-      trackable_type: "Initiative", 
-      trackable_id: copied.id
-    ).delete_all
-
-    query = "
-    INSERT INTO activities (trackable_type, trackable_id, owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id)
-      SELECT trackable_type, '#{copied.id}', owner_type, owner_id, key, parameters, recipient_type, recipient_id, created_at, updated_at, account_id
-      FROM activities
-      WHERE trackable_type = 'Initiative' AND trackable_id = #{self.id}
-    RETURNING *;
-    "
-    ActiveRecord::Base.connection.execute(query)
-    
-    PublicActivity::Activity.where(
-      trackable_type: "ChecklistItem", 
-      trackable_id: copied.checklist_items.map(&:id)
-    ).delete_all
-    
-    original_checklist_item_activities = PublicActivity::Activity.where(
-      trackable_type: "ChecklistItem", 
-      trackable_id: checklist_items.map(&:id)
-    )
-    
-    original_checklist_item_activities.each do |activity|
-      copied_activity = activity.dup
-      
-      trackable_id = ChecklistItem.where(
-        initiative_id: copied.id,
-        characteristic_id: activity.trackable.characteristic.id
-      ).first.id
-      
-      copied_activity.trackable_id = trackable_id
-      copied_activity.created_at = activity.created_at
-      copied_activity.updated_at = activity.updated_at
-      copied_activity.save!
     end
   end
   

@@ -64,6 +64,8 @@ gem 'roo', '~> 2.7.0'
 
 gem 'shrine'
 
+gem 'rollbar'
+
 source 'https://rails-assets.org/' do 
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'

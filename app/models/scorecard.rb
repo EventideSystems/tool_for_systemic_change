@@ -29,39 +29,11 @@ class Scorecard < ApplicationRecord
   end
   
   def copy(copy_name)
-    copied = self.dup
-    
-    ActiveRecord::Base.transaction do
-      copied.name = copy_name || "Copy of #{name}"
-      copied.shared_link_id = new_shared_link_id
-    
-      copied.initiatives << initiatives.map { |initiative| initiative.copy }
-      copied.save!
-    end
-    
-    copied
+    ScorecardCopier.new(self, copy_name, deep_copy: false).perform
   end
   
   def deep_copy(copy_name)
-    copied = self.dup
-    
-    ActiveRecord::Base.transaction do 
-      
-      begin 
-        PaperTrail.enabled = false
-
-        copied.name = copy_name || "Copy of #{name}"
-        copied.shared_link_id = new_shared_link_id
-        copied.initiatives << initiatives.map { |initiative| initiative.deep_copy }
-        copied.save!
-  
-        deep_copy_paper_trail_records(copied)
-      ensure    
-        PaperTrail.enabled = true
-      end
-    end
-    
-    copied 
+    ScorecardCopier.new(self, copy_name, deep_copy: true).perform
   end
   
   def merge(other_scorecard)
@@ -79,45 +51,29 @@ class Scorecard < ApplicationRecord
     reload
   end
 
+  def new_shared_link_id
+    SecureRandom.uuid
+  end
+  
   private
 
-    def non_clashing_initiative_name(name, existing_names)
-      return name unless existing_names.include?(name)
-      
-      name_match = /(.*)(\s\(\d+\))$/.match(name)
-      basename = name_match ? name_match[1] : name
-      
-      count = 1
-      while true 
-        new_name = "#{basename} (#{count})" 
-        return new_name unless existing_names.include?(new_name)
-        count += 1
-      end
-    end
+  def non_clashing_initiative_name(name, existing_names)
+    return name unless existing_names.include?(name)
     
+    name_match = /(.*)(\s\(\d+\))$/.match(name)
+    basename = name_match ? name_match[1] : name
     
-    def ensure_shared_link_id
-      self.shared_link_id ||= new_shared_link_id
+    count = 1
+    while true 
+      new_name = "#{basename} (#{count})" 
+      return new_name unless existing_names.include?(new_name)
+      count += 1
     end
-    
-    def new_shared_link_id
-      SecureRandom.uuid
-    end
+  end
+  
+  
+  def ensure_shared_link_id
+    self.shared_link_id ||= new_shared_link_id
+  end
 
-    
-    def deep_copy_paper_trail_records(copied)
-      PaperTrail::Version.where(
-        item_type: "Scorecard", 
-        item_id: copied.id
-      ).delete_all
-     
-      query = "
-      INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)
-        SELECT item_type, '#{copied.id}', event, whodunnit, object, created_at
-        FROM versions
-        WHERE item_type = 'Scorecard' AND item_id = #{self.id}
-      RETURNING *;
-      "
-      ActiveRecord::Base.connection.execute(query)
-    end
 end

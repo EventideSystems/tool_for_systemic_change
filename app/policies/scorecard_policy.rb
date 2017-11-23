@@ -26,7 +26,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
   
   def copy?
-    system_admin? # create?
+    create?
   end
   
   def copy_options?
@@ -34,7 +34,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   def merge?
-    system_admin? # system_admin? || current_account_admin?
+    system_admin? || current_account_admin?
   end
     
   def merge_options?

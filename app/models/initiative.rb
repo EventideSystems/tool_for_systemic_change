@@ -79,7 +79,7 @@ class Initiative < ApplicationRecord
     "
     ActiveRecord::Base.connection.execute(query)
    
-    deep_copy_paper_trail_records(copied)
+    delay.deep_copy_paper_trail_records(copied)
     
     copied.reload
   end

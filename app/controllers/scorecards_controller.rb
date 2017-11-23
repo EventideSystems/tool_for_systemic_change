@@ -102,7 +102,9 @@ class ScorecardsController < ApplicationController
   
   def copy
     new_name = params.dig(:new_name) 
-    @copied_scorecard = params.dig(:copy) == 'deep' ? @scorecard.deep_copy(new_name) : @scorecard.copy(new_name) 
+    deep_copy = params.dig(:copy) == 'deep' 
+
+    @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
     respond_to do |format|
       if @copied_scorecard.present?
         format.html { redirect_to scorecard_path(@copied_scorecard), notice: 'Scorecard was successfully copied.' }

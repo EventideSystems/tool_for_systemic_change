@@ -9,7 +9,7 @@ RSpec.describe ScorecardCopier do
   context '#copied' do
     
     let(:deep_copy?) { false }
-    let(:copied_first_initiative) { copied.initiative.where(name: scorecard.initiatives.first.name)}
+    let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
     
     before do 
       scorecard.initiatives.first.organisations = create_list(:organisation, 5)
@@ -49,10 +49,16 @@ RSpec.describe ScorecardCopier do
     it { expect(copied.initiatives.count).to eq(scorecard.initiatives.count) }
     it { expect(copied.initiatives).to_not eq(scorecard.initiatives) }
 
+    let(:scorcard_first_initiative) { scorecard.initiatives.first }
+    let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
+    
+    let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
+    let(:copied_first_checklist_item) { 
+      copied_first_initiative.checklist_items.where(characteristic_id: scorcard_first_checklist_item.characteristic_id).first 
+    }
+    
     context 'initiatives' do
-      let(:scorcard_first_initiative) { scorecard.initiatives.first }
-      let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
-
+      
       before do
         scorcard_first_checklist_item.checked = true
         scorcard_first_checklist_item.comment = 'Comment'
@@ -61,8 +67,6 @@ RSpec.describe ScorecardCopier do
 
       it do
         copied.initiatives.reload
-        copied_first_initiative = copied.initiatives.first 
-        copied_first_checklist_item = copied_first_initiative.checklist_items.first
         expect(copied_first_checklist_item.comment).to eq('Comment') 
       end
     end

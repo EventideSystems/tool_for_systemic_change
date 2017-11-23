@@ -101,7 +101,6 @@ RSpec.configure do |config|
 
 
   if Bullet.enable?
-    adsfadsf
     config.before(:each) do
 
       Bullet.start_request
@@ -111,5 +110,13 @@ RSpec.configure do |config|
       Bullet.perform_out_of_channel_notifications if Bullet.notification?
       Bullet.end_request
     end
+  end
+  
+  config.around(:each, :run_delayed_jobs) do |example|
+    Delayed::Worker.delay_jobs = false
+
+    example.run
+
+    Delayed::Worker.delay_jobs = true
   end
 end

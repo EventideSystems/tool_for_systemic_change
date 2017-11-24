@@ -32,6 +32,8 @@ class Initiatives::Import < Import
         next  
       end
       
+      
+      
       initiative = find_or_build_initiative_by_name(scorecard, row[name_index]) 
       
       unknown_organisation_names = []

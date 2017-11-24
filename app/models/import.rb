@@ -68,7 +68,15 @@ class Import < ApplicationRecord
   
     xlsx_rows = []
     xlsx.each_row_streaming do |row|
-      xlsx_rows << row.map(&:cell_value)  
+      col_count = row.last.coordinate.column
+      row_array = Array.new(col_count)
+      
+      row.each do |cell|
+        col_index = cell.coordinate.column - 1
+        row_array[col_index] = cell.cell_value
+      end
+      
+      xlsx_rows << row_array
     end
   
     xlsx_rows  

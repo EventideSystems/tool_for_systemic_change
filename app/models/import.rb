@@ -22,6 +22,25 @@ class Import < ApplicationRecord
   end
   
   protected
+  
+  def sanitize_row(row)
+    row.map do |col|
+      col.is_a?(String) ? col.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').strip : col
+    end
+  end
+  
+  def sanitized_date(col)
+
+    Date.strptime(col, "%d/%m/%y")
+  rescue ArgumentError => e
+    raise e unless e.message == 'invalid date' 
+    begin
+      Date.parse(col)
+    rescue ArgumentError => e  
+      raise e unless e.message == 'invalid date' 
+      nil
+    end
+  end
 
   def build_processing_errors(row_data:, row_index:, error_messages:)
     full_messages = error_messages.map do |message|

@@ -14,7 +14,7 @@ class Initiative < ApplicationRecord
     reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
 
   validates :name, presence: true
-  validate :validate_finished_at_later_than_started_at
+  validate :validate_finished_at_not_earlier_than_started_at
 
   after_create :create_checklist_items
   
@@ -137,12 +137,12 @@ class Initiative < ApplicationRecord
     end    
   end
 
-  def validate_finished_at_later_than_started_at
-    errors.add(:finished_at, "can't be earlier than started at date") unless finished_at_later_than_started_at
+  def validate_finished_at_not_earlier_than_started_at
+    errors.add(:finished_at, "can't be earlier than started at date") unless finished_at_not_earlier_than_started_at
   end
 
-  def finished_at_later_than_started_at
-    return true unless started_at.present? && finished_at.present? 
-    finished_at > started_at
+  def finished_at_not_earlier_than_started_at
+    return true unless started_at.present? && finished_at.present?
+    finished_at >= started_at
   end
 end

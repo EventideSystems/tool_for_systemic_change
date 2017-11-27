@@ -6,7 +6,10 @@ class Organisations::Import < Import
     sector_index      = column_index(:sector)
     weblink_index     = column_index(:weblink)
     
-    data_rows.each.with_index(1) do |row, row_index|
+    data_rows.each.with_index(1) do |raw_row, row_index|
+      
+      row = sanitize_row(raw_row)
+      
       organisation = find_or_build_organisation_by_name(account, row[name_index])
       sector = sector_index.nil? ? nil : find_sector_by_name(row[sector_index])
       

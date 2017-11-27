@@ -15,7 +15,10 @@ class Initiatives::Import < Import
     contact_position_index = column_index(:contact_position)
     
     
-    data_rows.each.with_index(1) do |row, row_index|
+    data_rows.each.with_index(1) do |raw_row, row_index|
+      
+      row = sanitize_row(raw_row)
+      
       scorecard = scorecard_name_index.nil? ? nil : find_scorecard_by_name(account, row[scorecard_name_index])
       
       if scorecard.nil?
@@ -32,8 +35,6 @@ class Initiatives::Import < Import
         next  
       end
       
-      
-      
       initiative = find_or_build_initiative_by_name(scorecard, row[name_index]) 
       
       unknown_organisation_names = []
@@ -44,27 +45,27 @@ class Initiatives::Import < Import
         
         unless organisation_name.blank?
           organisation = find_organisation_by_name(account, organisation_name)
-          
+
           if organisation
             initiative.organisations << organisation unless initiative.organisations.include?(organisation)
           else
             unknown_organisation_names << organisation_name
-          end 
+          end
         end
       end
 
       success = initiative.update(
         {}.tap do |attributes|
           attributes[:name]             = row[name_index] 
-          attributes[:description]      = row[description_index]      if row[description_index].present?
+          attributes[:description]      = row[description_index]                 if row[description_index].present?
           attributes[:scorecard]        = scorecard
-          attributes[:started_at]       = row[started_at_index]       if row[started_at_index].present?
-          attributes[:finished_at]      = row[finished_at_index]      if row[finished_at_index].present?
-          attributes[:contact_name]     = row[contact_name_index]     if row[contact_name_index].present?
-          attributes[:contact_email]    = row[contact_email_index]    if row[contact_email_index].present?  
-          attributes[:contact_phone]    = row[contact_phone_index]    if row[contact_phone_index].present? 
-          attributes[:contact_website]  = row[contact_website_index]  if row[contact_website_index].present?
-          attributes[:contact_position] = row[contact_position_index] if row[contact_position_index].present?
+          attributes[:started_at]       = sanitized_date(row[started_at_index])  if row[started_at_index].present?
+          attributes[:finished_at]      = sanitized_date(row[finished_at_index]) if row[finished_at_index].present?
+          attributes[:contact_name]     = row[contact_name_index]                if row[contact_name_index].present?
+          attributes[:contact_email]    = row[contact_email_index]               if row[contact_email_index].present?  
+          attributes[:contact_phone]    = row[contact_phone_index]               if row[contact_phone_index].present? 
+          attributes[:contact_website]  = row[contact_website_index]             if row[contact_website_index].present?
+          attributes[:contact_position] = row[contact_position_index]            if row[contact_position_index].present?
         end
       )
       
@@ -72,7 +73,7 @@ class Initiatives::Import < Import
 
       unless success
         error_messages = initiative.errors.full_messages || []
-        error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}." 
+        error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}." unless unknown_organisation_names.empty?
         processing_errors << build_processing_errors(
           row_data: row, row_index: row_index, error_messages: error_messages
         ) 

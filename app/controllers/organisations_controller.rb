@@ -7,14 +7,16 @@ class OrganisationsController < ApplicationController
   add_breadcrumb "Organisations", :organisations_path
   
   def index
-    @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).page params[:page]
-    
     respond_to do |format|
-      format.html
+      format.html do
+        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).page params[:page]
+      end
       format.csv do
+        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
         send_data organisations_to_csv(@organisations), :type => Mime[:csv], :filename =>"#{export_filename}.csv" 
       end
       format.xlsx do
+        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
         send_data @organisations.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{export_filename}.xlsx" 
       end
     end

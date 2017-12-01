@@ -4,11 +4,12 @@ class InitiativesController < ApplicationController
   add_breadcrumb "Initiatives", :initiatives_path
   
   def index
-    @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).page params[:page]
-    
     respond_to do |format|
-      format.html
+      format.html do
+        @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).page params[:page]
+      end
       format.csv do
+        @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).all
         send_data initiatives_to_csv(@initiatives), :type => Mime[:csv], :filename =>"#{export_filename}.csv" 
       end
     end
@@ -81,8 +82,6 @@ class InitiativesController < ApplicationController
   end
 
   private
-
-  
   
     def export_filename
       "initiatives_#{Date.today.strftime('%Y_%m_%d')}"

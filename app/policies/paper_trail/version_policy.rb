@@ -1,11 +1,22 @@
 class PaperTrail::VersionPolicy < ApplicationPolicy
   class Scope < Scope
+    
     def resolve
       if system_admin? || account_admin?(current_account)
-        scope.where(account_id: current_account.id)
+        visible_items_query(scope.where(account_id: current_account.id))
       else
-        scope.where(account_id: current_account.id, whodunnit: current_user.id)
+        visible_items_query(
+          scope.where(account_id: current_account.id, whodunnit: current_user.id)
+        )
       end
+    end
+    
+    private
+    
+    def visible_items_query(query)
+      query.
+        where.not(item_type: 'InitiativesOrganisation').
+        where.not(item_type: 'ChecklistItem', event: 'create')
     end
   end
 end

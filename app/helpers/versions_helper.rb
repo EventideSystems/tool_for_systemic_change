@@ -19,7 +19,9 @@ module VersionsHelper
   end
   
   def version_item_name(version_item)
-    version_item.nil? ? '[DELETED]' : version_item&.name || '[UNKNOWN]'
+    return '[DELETED]' if version_item.nil?
+    return version_item.name if version_item.respond_to?(:name) 
+    '[UNKNOWN]'
   end
   
   def version_item_type_name(version_item_type)

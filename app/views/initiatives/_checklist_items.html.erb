@@ -3,7 +3,7 @@
     <div class="box-header with-border">
       <h3 class="box-title">Initative Characteristics</h3>
       <div class="pull-right">
-        <%= link_to 'Scorecard Details', scorecard_path(@initiative.scorecard), class: 'btn btn-primary pull-right' %> 
+        <%= link_to "#{Scorecard.model_name.human} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary pull-right' %> 
       </div>
     </div>
     <!-- /.box-header -->

@@ -92,7 +92,7 @@ class InitiativesController < ApplicationController
         csv << [
           'Name',
           'Description',
-          'Scorecard Name',
+          "#{Scorecard.model_name.human} Name",
           'Started At',
           'Finished At',
           'Contact Name',

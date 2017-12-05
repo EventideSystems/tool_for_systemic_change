@@ -160,6 +160,15 @@ label.truncate {
   text-overflow: ellipsis;
 }
 
+.table-base tfoot td:first-child {
+  display: block;
+  width: 280px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 @media (max-width: 480px) {
   .table-base td:first-child {
     width: 100px !important;;

@@ -2,7 +2,7 @@
   <%=
     if policy(Scorecard).create?  
       link_to(new_scorecard_path, class: 'btn btn-primary') do
-        safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Scorecard'])
+        safe_join([content_tag(:i, '', class: "fa fa-plus"), " New #{Scorecard.model_name.human}"])
       end
     end 
   %>

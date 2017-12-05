@@ -25,6 +25,7 @@ module VersionsHelper
   end
   
   def version_item_type_name(version_item_type)
+    return Scorecard.model_name.human if version_item_type == 'Scorecard'
     version_item_type&.underscore&.titleize
   end
 end

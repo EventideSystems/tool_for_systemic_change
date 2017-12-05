@@ -23,7 +23,7 @@
       <li class="header">MENU</li>
       <%- disabled = controller.current_account.nil? %>
       <%= menu_item_tag(:dashboard, 'dashboard') %>
-      <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled }) %>
+      <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled, title: Scorecard.model_name.human.pluralize }) %>
       <%= menu_item_tag(:wicked_problems, 'cubes', { disabled: disabled }) %>
       <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
       <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>

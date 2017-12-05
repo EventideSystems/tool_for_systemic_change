@@ -8,7 +8,7 @@
         end %>
       </div>
     
-      <h3>Scorecard: <%= @report.scorecard.name %></h3>
+      <h3><%= Scorecard.model_name.human %>: <%= @report.scorecard.name %></h3>
       <h3>Date range: <%= @report.date_from.strftime('%d/%m/%y') %> to <%= @report.date_to.strftime('%d/%m/%y') %></h3>
     </div>
     <table class="table table-striped">
@@ -24,7 +24,7 @@
       <tbody>
         
         <tr>
-          <td><strong>Scorecard Initiatives</strong></td>
+          <td><strong><%= Scorecard.model_name.human %> Initiatives</strong></td>
           <td><%= @report.initiative_totals[:initial] %></td>
           <td><%= @report.initiative_totals[:additions] %></td>
           <td><%= @report.initiative_totals[:removals] %></td>

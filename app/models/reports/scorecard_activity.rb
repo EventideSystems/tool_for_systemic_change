@@ -64,7 +64,7 @@ module Reports
         date = p.workbook.styles.add_style format_code: "d/m/yy"
         
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row(['Scorecard'], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet.add_row(["#{Scorecard.model_name.human}"], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date range'], b: true).tap do |row|
             row.add_cell(date_from, style: date)
             row.add_cell(date_to, style: date)
@@ -79,7 +79,7 @@ module Reports
           ], height: 48, style: wrap_text)
           
           sheet.add_row([
-            "Total Scorecard Initiatives", 
+            "Total #{Scorecard.model_name.human} Initiatives", 
             initiative_totals[:initial],
             initiative_totals[:additions],
             initiative_totals[:removals],
@@ -115,7 +115,7 @@ module Reports
       
       CSV.generate do |csv|
         
-        csv << ['Scorecard', scorecard.name, '', '', '']
+        csv << ["#{Scorecard.model_name.human}", scorecard.name, '', '', '']
         csv << ['Dates range', date_from.strftime('%d/%m/%y'), date_to.strftime('%d/%m/%y'), '', '']
         csv << ['', '', '', '', '']
         

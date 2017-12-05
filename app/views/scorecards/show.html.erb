@@ -1,6 +1,6 @@
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">
-    <li class="<%= 'active' if @active_tab == :scorecard %>"><a href="#tab_1" data-target="#tab_1" data-toggle="tab">Scorecard</a></li>
+    <li class="<%= 'active' if @active_tab == :scorecard %>"><a href="#tab_1" data-target="#tab_1" data-toggle="tab"><%= Scorecard.model_name.human %></a></li>
     <li class="<%= 'active' if @active_tab == :initiatives %>"><a href="#tab_2" data-target="#tab_2" data-toggle="tab">Initiatives</a></li>
     <li class="<%= 'active' if @active_tab == :details %>"><a href="#tab_3" data-target="#tab_3" data-toggle="tab">Details</a></li>
   </ul>

@@ -2,10 +2,10 @@ module InitiativesHelper
   
   def scorecard_label(initiative)
     if initiative.new_record? || initiative.scorecard.nil?
-      'Scorecard'
+      Scorecard.model_name.human
     else  
       safe_join([
-        content_tag(:span, 'Scorecard', style: 'margin-right: 10px'),
+        content_tag(:span, "#{Scorecard.model_name.human}", style: 'margin-right: 10px'),
         link_to(
           content_tag(
             :i, 

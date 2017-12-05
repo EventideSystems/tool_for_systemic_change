@@ -5,7 +5,7 @@
       <div class="inner">
         <h3><%= @scorecard_count %></h3>
 
-        <p><%= 'Scorecard'.pluralize(@scorecard_count) %></p>
+        <p><%= Scorecard.model_name.human.pluralize(@scorecard_count) %></p>
       </div>
       <div class="icon">
         <i class="fa fa-check-square-o"></i>

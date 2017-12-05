@@ -2,7 +2,7 @@
 <div class="box-body scorecard-matrix">
   <div class="box box-solid">
     <div class="box-header with-border box-solid">
-      <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>">Scorecard: <%= truncate(@scorecard.name, length: 70) %></h3>
+      <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
       <div class="pull-right">
         <button class="btn xbtn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
       </div>

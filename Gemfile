@@ -66,7 +66,8 @@ gem 'shrine'
 
 gem 'rollbar'
 
-source 'https://rails-assets.org/' do 
+source 'http://insecure.rails-assets.org/' do
+# source 'https://rails-assets.org/' do
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'
   gem 'rails-assets-twitter-bootstrap-wizard'

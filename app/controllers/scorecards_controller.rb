@@ -3,7 +3,7 @@ class ScorecardsController < ApplicationController
   before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
-  add_breadcrumb "Scorecards", :scorecards_path
+  add_breadcrumb Scorecard.model_name.human.pluralize, :scorecards_path
   
   def index
     @scorecards = policy_scope(Scorecard).order(sort_order).page params[:page]
@@ -47,7 +47,7 @@ class ScorecardsController < ApplicationController
     authorize @scorecard
     @scorecard.initiatives.build
    # @scorecard.initiatives.first.initiatives_organisations.build
-    add_breadcrumb "New Scorecard"
+    add_breadcrumb "New #{Scorecard.model_name.human}"
   end
 
   def edit
@@ -60,7 +60,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        format.html { redirect_to scorecard_path(@scorecard), notice: 'Scorecard was successfully created.' }
+        format.html { redirect_to scorecard_path(@scorecard), notice: "#{Scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
         format.html { render :new }
@@ -72,7 +72,7 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
-        format.html { redirect_to @scorecard, notice: 'Scorecard was successfully updated.' }
+        format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
         format.html { render :edit }
@@ -84,7 +84,7 @@ class ScorecardsController < ApplicationController
   def destroy
     @scorecard.destroy
     respond_to do |format|
-      format.html { redirect_to scorecards_url, notice: 'Scorecard was successfully destroyed.' }
+      format.html { redirect_to scorecards_url, notice: "#{Scorecard.model_name.human} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -107,7 +107,7 @@ class ScorecardsController < ApplicationController
     @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
     respond_to do |format|
       if @copied_scorecard.present?
-        format.html { redirect_to scorecard_path(@copied_scorecard), notice: 'Scorecard was successfully copied.' }
+        format.html { redirect_to scorecard_path(@copied_scorecard), notice: "#{Scorecard.model_name.human} was successfully copied." }
         format.json { render :show, status: :ok, location: @copied_scorecard }
       else
         format.html { render :edit }
@@ -126,13 +126,17 @@ class ScorecardsController < ApplicationController
     @merged_scorecard = @scorecard.merge(@other_scorecard)
     respond_to do |format|
       if @scorecard.present?
-        format.html { redirect_to scorecard_path(@merged_scorecard), notice: 'Scorecards were successfully merged.' }
+        format.html { redirect_to scorecard_path(@merged_scorecard), notice: "#{Scorecard.model_name.human} were successfully merged." }
         format.json { render :show, status: :ok, location: @merged_scorecard }
       else
         format.html { render :edit }
         format.json { render json: @merged_scorecard.errors, status: :unprocessable_entity }
       end
     end 
+  end
+  
+  def content_title
+    Scorecard.model_name.human.pluralize
   end
   
   def content_subtitle

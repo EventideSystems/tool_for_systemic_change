@@ -16,7 +16,7 @@ module ApplicationHelper
   end
   
   def form_title(resource)
-    "#{form_title_lead(resource)}#{resource.class.name.titleize}"
+    "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"
   end
   
   def form_title_lead(resource)

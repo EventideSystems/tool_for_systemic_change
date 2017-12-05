@@ -5,7 +5,7 @@ class Initiatives::Import < Import
   def process(account)
     name_index             = column_index(:name)
     description_index      = column_index(:description)
-    scorecard_name_index   = column_index(:scorecard_name)
+    scorecard_name_index   = column_index("#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_name".to_sym)
     started_at_index       = column_index(:started_at)
     finished_at_index      = column_index(:finished_at)
     contact_name_index     = column_index(:contact_name)
@@ -23,7 +23,7 @@ class Initiatives::Import < Import
       
       if scorecard.nil?
         processing_errors << build_processing_errors(
-          row_data: row, row_index: row_index, error_messages: ['Scorecard is invalid']
+          row_data: row, row_index: row_index, error_messages: ["#{Scorecard.model_name.human} is invalid"]
         )
         next  
       end

@@ -7,11 +7,11 @@
                         } do |table| %>
     <% table.column :name, link: true %>
     <% table.column :description, :formatter => lambda { |description| Nokogiri::HTML(description).text} %>
-    <% table.column :sector_name, :header => "Sector" %>
-    <% table.column :scorecard_name, :header => "Scorecard" %>
-    <% table.column :wicked_problem_name, :header => "Wicked Problem"  %>
-    <% table.column :community_name, :header => "Community"  %>
-    <% table.column :created_at, :header => "Time" %>
+    <% table.column :sector_name, header: "Sector" %>
+    <% table.column :scorecard_name, header: Scorecard.model_name.human %>
+    <% table.column :wicked_problem_name, header: "Wicked Problem"  %>
+    <% table.column :community_name, header: "Community"  %>
+    <% table.column :created_at, header: "Time" %>
     <% table.footer do %>
       <div class="pull-right">
         <%= paginate @results %>

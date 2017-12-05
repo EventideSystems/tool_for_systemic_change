@@ -15,7 +15,7 @@
             <%= f.button :submit, class: 'btn btn-primary' %>
           <%- end %>  
           <%- if policy(@scorecard).destroy? %>
-            <%= link_to "Delete Scorecard", 
+            <%= link_to "Delete #{Scorecard.model_name.human}", 
               scorecard_path(@scorecard),
               class: 'btn btn-danger',
               method: :delete, 

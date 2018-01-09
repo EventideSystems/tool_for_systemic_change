@@ -1,9 +1,7 @@
 <% content_for :page_actions do %>
   <%=
-    if policy(Scorecard).create?  
-      link_to(new_scorecard_path, class: 'btn btn-primary') do
-        safe_join([content_tag(:i, '', class: "fa fa-plus"), " New #{Scorecard.model_name.human}"])
-      end
+    if policy(Scorecard).create? 
+      create_new_button(new_scorecard_path)
     end 
   %>
 <% end %>

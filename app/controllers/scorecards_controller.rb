@@ -47,7 +47,7 @@ class ScorecardsController < ApplicationController
     authorize @scorecard
     @scorecard.initiatives.build
    # @scorecard.initiatives.first.initiatives_organisations.build
-    add_breadcrumb "New #{Scorecard.model_name.human}"
+    add_breadcrumb "New"
   end
 
   def edit

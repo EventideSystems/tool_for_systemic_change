@@ -63,5 +63,17 @@ module ApplicationHelper
         concat "."
       end
     end  
-  end  
+  end
+  
+  def create_new_button(path) 
+    link_to(path, class: 'btn btn-primary') do
+      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' Create New'])
+    end
+  end
+  
+  def render_form_button(form)
+    content_tag(:div, class: 'box-footer') do
+      concat form.button :submit, "#{form.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary pull-right'
+    end
+  end
 end

@@ -15,7 +15,7 @@ class AccountsController < ApplicationController
   def new
     @account = Account.new(expires_on: Date.today+1.year)
     authorize @account
-    add_breadcrumb "New Account"
+    add_breadcrumb "New"
   end
 
   def edit

@@ -1,9 +1,5 @@
-<% content_for :page_actions do %>
-  <%= 
-    link_to(new_focus_area_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Focus Area'])
-    end 
-  %>
+<% content_for :page_actions do %>  
+  <%= create_new_button(new_focus_area_path) %>
 <% end %>
 
 <div class="box">

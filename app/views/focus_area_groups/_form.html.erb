@@ -13,8 +13,6 @@
         hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.' 
       %>
     </div>
-    <div class='box-footer'>
-      <%= f.button :submit, class: 'btn btn-primary pull-right' %>
-    </div>
+    <%= render_form_button(f) %>
   </div>
 <% end %>

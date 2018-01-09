@@ -1,17 +1,13 @@
 <% content_for :page_actions do %>
-  <%= 
-    link_to(new_organisation_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Organisation'])
-    end 
-  %>
+  <%= create_new_button(new_organisation_path) %>
   <%= 
     link_to(organisations_path(format: :csv), class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export Organisations'])
+      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export'])
     end 
   %>
   <%= 
     link_to(new_organisations_import_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import Organisations'])
+      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import'])
     end 
   %>
 <% end %>

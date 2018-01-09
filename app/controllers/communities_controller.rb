@@ -16,7 +16,7 @@ class CommunitiesController < ApplicationController
   def new
     @community = current_account.communities.build
     authorize @community 
-    add_breadcrumb "New Community"
+    add_breadcrumb "New"
   end
 
   def edit

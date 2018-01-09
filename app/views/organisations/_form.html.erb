@@ -10,8 +10,6 @@
       <%= f.association :sector, collection: Sector.all %>
       <%= f.input :weblink %>
     </div>  
-    <div class='box-footer'>
-      <%= f.button :submit, class: 'btn btn-primary pull-right' %>
-    </div>
+    <%= render_form_button(f) %>
   </div>
 <% end %>

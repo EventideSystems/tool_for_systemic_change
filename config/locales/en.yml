@@ -23,4 +23,5 @@ en:
   activerecord:
       models:
         scorecard: Transition Card
+        wicked_problem: Wicked Problem / Opportunity
   

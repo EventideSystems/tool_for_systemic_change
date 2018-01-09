@@ -30,7 +30,7 @@ class OrganisationsController < ApplicationController
   def new
     @organisation = current_account.organisations.build
     authorize @organisation
-    add_breadcrumb "New Organisation"
+    add_breadcrumb "New"
   end
 
   def edit

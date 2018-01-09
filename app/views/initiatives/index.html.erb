@@ -1,19 +1,17 @@
 <% content_for :page_actions do %>
   <%=
-    if policy(Initiative).create?  
-      link_to(new_initiative_path, class: 'btn btn-primary') do
-        safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
-      end
-    end 
+    if policy(Initiative).create?
+      create_new_button(new_initiative_path)
+    end
   %>
   <%= 
     link_to(initiatives_path(format: :csv), class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export Initiatives'])
+      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export'])
     end 
   %>
   <%= 
     link_to(new_initiatives_import_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import Initiatives'])
+      safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import'])
     end 
   %>
 <% end %>

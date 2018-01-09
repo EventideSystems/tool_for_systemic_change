@@ -1,9 +1,5 @@
 <% content_for :page_actions do %>
-  <%= 
-    link_to(new_wicked_problem_path, class: 'btn btn-primary') do
-      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Wicked Problem'])
-    end 
-  %>
+  <%= create_new_button(new_wicked_problem_path) %>
 <% end %>
 
 <div class="box box-solid">

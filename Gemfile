@@ -66,8 +66,9 @@ gem 'shrine'
 
 gem 'rollbar'
 
-source 'http://insecure.rails-assets.org/' do
-# source 'https://rails-assets.org/' do
+# SMELL See https://github.com/tenex/rails-assets/issues/417
+#source 'http://insecure.rails-assets.org/' do
+source 'https://rails-assets.org/' do
   gem 'rails-assets-adminlte'  
   gem 'rails-assets-medium-editor'
   gem 'rails-assets-twitter-bootstrap-wizard'

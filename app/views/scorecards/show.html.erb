@@ -102,7 +102,7 @@
     <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="tab_2">
       <div class="box-header with-border">
         <h3 class="box-title" style="margin-right: 12px">Intiatives</h3>
-        <%= if policy(Initiative).create?  
+        <%= if policy(Initiative).create?
               link_to(new_initiative_path(scorecard_id: @scorecard.id), class: 'btn btn-primary') do
                 safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
               end

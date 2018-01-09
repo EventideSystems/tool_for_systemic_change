@@ -23,7 +23,7 @@ module System
     def new
       @user = User.new
       authorize @user
-      add_breadcrumb "New User"
+      add_breadcrumb "New"
     end
 
     def edit

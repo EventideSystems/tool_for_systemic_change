@@ -16,7 +16,7 @@ class SectorsController < ApplicationController
   def new
     @sector = Sector.new
     authorize @sector
-    add_breadcrumb "New Sector"
+    add_breadcrumb "New"
   end
 
   def edit

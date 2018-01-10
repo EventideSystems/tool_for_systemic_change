@@ -64,7 +64,7 @@ class WickedProblemsController < ApplicationController
   end
   
   def content_title
-    WickedProblem.model_name.human.pluralize
+    'Wicked Problems / Opportunities'
   end
   
   def content_subtitle

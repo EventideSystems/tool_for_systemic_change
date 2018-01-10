@@ -5,18 +5,14 @@
 </div>
 <div class="modal-body">
   <h4>Direct link</h4>
-  
   <pre>
     <%= shared_url(id: @scorecard.shared_link_id) %>
-  </pre>    
-    
+  </pre>
+
   <h4>Embed on your website</h4>
-  <p>
-    <%= image_tag("scorecard-embed.png") %>
-  </p>
   <pre>
     <%= "<a href=\"#{shared_url(id: @scorecard.shared_link_id)}\" target=\"_blank\">
-      <img src=\"#{image_url("scorecard-embed.png")}\" alt=\"link to scorecard\"></img>
+      #{@scorecard.name}
     </a>"
     %>
   </pre>

@@ -76,6 +76,7 @@ source 'https://rails-assets.org/' do
   gem 'rails-assets-bootstrap-nav-wizard'
   gem 'rails-assets-bootstrap-daterangepicker'
   gem 'rails-assets-moment'
+  # gem 'rails-assets-clipboard'
 end
 
 gem 'paranoia', '~> 2.2'

@@ -125,12 +125,18 @@ RSpec.describe Reports::ScorecardActivity do
   
   describe '#initiative_totals' do
     
-    let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard)}
-    let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard)}
-    let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard)}
+    # Initial initiative
+    let!(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard, created_at: date_from - 1.day) } 
+    # Added initiatives
+    let!(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard, created_at: date_from + 1.day) }
+    let!(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard, created_at: date_from + 1.day) }
+    # Initial initiative, then deleted
+    let!(:initiative_4) { create(:initiative, name: 'initiative_3', scorecard: scorecard, created_at: date_from - 1.day, deleted_at: date_from + 1.day) }
+    # Exluded intitiative
+    let!(:initiative_5) { create(:initiative, name: 'initiative_3', scorecard: scorecard, created_at: date_to + 1.day) }
     
     it do
-      expect(subject.initiative_totals).to match({initial: 2, additions: 1, removals: 1, final: 2})
+      expect(subject.initiative_totals).to match({initial: 2, additions: 2, removals: 1, final: 3})
     end
       
   end

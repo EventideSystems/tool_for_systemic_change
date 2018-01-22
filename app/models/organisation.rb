@@ -5,7 +5,7 @@ class Organisation < ApplicationRecord
 
   belongs_to :account
   belongs_to :sector
-  has_many :initiatives_organisations, dependent: :restrict_with_exception
+  has_many :initiatives_organisations, dependent: :delete_all
   has_many :initiatives, through: :initiatives_organisations
 
   validates :account, presence: true

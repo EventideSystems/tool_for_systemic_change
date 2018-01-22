@@ -12,31 +12,10 @@ module Reports
     end
     
     def initiative_totals
-      @initiative_totals ||= initiatives(date_from, date_to).inject({initial: 0, additions: 0, removals: 0}) do |result, initiative|
-        starting_initial = result[:initial] 
-        
-        result[:initial] += 1 if ChecklistItem.where(initiative: initiative).any? do |item| 
-          state_before_range = item.snapshot_at(date_from - 1.second).checked 
-          
-          state_before_range == true
-        end
-        
-        found_in_initial = starting_initial != result[:initial] 
-        
-        result[:additions] += 1 if !found_in_initial && ChecklistItem.where(initiative: initiative).any? do |item|
-          state_before_range = item.snapshot_at(date_from - 1.second).checked 
-          state_within_range = item.snapshot_at(date_to).checked 
-          
-          state_within_range == true && (state_before_range.nil? || state_before_range == false)
-        end
-        
-        result[:removals] += 1 if found_in_initial && ChecklistItem.where(initiative: initiative).any? do |item|
-          state_before_range = item.snapshot_at(date_from - 1.second).checked 
-          state_within_range = item.snapshot_at(date_to).checked 
-          
-          state_within_range == false && state_before_range == true
-        end
-        
+      @initiative_totals ||= scorecard.initiatives.with_deleted.inject({initial: 0, additions: 0, removals: 0}) do |result, initiative|
+        result[:initial]   += 1 if (!initiative.deleted? || initiative.deleted_at >= date_from) && initiative.created_at.to_date < date_from
+        result[:additions] += 1 if (!initiative.deleted? || initiative.deleted_at >= date_to) && initiative.created_at.to_date.between?(date_from, date_to)
+        result[:removals]  += 1 if (initiative.deleted_at && initiative.deleted_at.between?(date_from, date_to)) && initiative.created_at.to_date < date_from
         result[:final] = result[:initial] + result[:additions] - result[:removals]
         result
       end
@@ -158,6 +137,7 @@ module Reports
       params = { date_from: date_from, date_to: date_to }
       
       scorecard.initiatives
+        .with_deleted
         .where('finished_at IS NULL or finished_at >= :date_from', params)
         .where('started_at IS NULL or started_at <= :date_to', params)
     end

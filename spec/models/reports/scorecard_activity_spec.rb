@@ -63,64 +63,6 @@ RSpec.describe Reports::ScorecardActivity do
         expect(results).to match(expected)
       end
     end
-  
-    context 'initiatives without date ranges' do
-    
-      let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard)}
-      let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard)}
-      let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard)}
-
-      it_behaves_like 'a valid result'
-    end
-  
-    context 'initiatives when :started_at before date_from & :finished_at after date_to' do
-    
-      let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard, started_at: date_from - 10.days)}
-      let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard, finished_at: date_to + 10.days)}
-      let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard, started_at: date_from - 10.days, finished_at: date_to + 10.days)}
-
-      it_behaves_like 'a valid result'
-    end
-  
-    context 'initiatives when :started_at & :finished_at within date_from & date_to' do
-    
-      let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard, started_at: date_from + 1.days)}
-      let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard, finished_at: date_to - 1.days)}
-      let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard, started_at: date_from + 1.days, finished_at: date_to - 1.days)}
-
-      # SMELL FIX THIS
-      # it_behaves_like 'a valid result'
-    end
-  
-    context 'initiatives when :started_at is before date_to' do
-    
-      let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard, started_at: date_to - 10.days)}
-      let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard, started_at: date_to - 10.days)}
-      let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard, started_at: date_to - 10.days)}
-
-      # SMELL FIX THIS
-      # it_behaves_like 'a valid result'
-    end
-  
-    context 'initiatives when :started_at & :finished_at before date_from & date_to' do
-    
-      let(:initiative_1) { create(:initiative, name: 'initiative_1', scorecard: scorecard, started_at: date_to - 100.days, finished_at: date_to - 50.days)}
-      let(:initiative_2) { create(:initiative, name: 'initiative_2', scorecard: scorecard, started_at: date_to - 100.days, finished_at: date_to - 50.days)}
-      let(:initiative_3) { create(:initiative, name: 'initiative_3', scorecard: scorecard, started_at: date_to - 100.days, finished_at: date_to - 50.days)}
-
-      it 'returns empty results' do
-        results = subject.results
-
-        expected = [
-          focus_area_1_hash.merge({ characteristic: "characteristic_1_1", initial: 0, additions: 0, removals: 0, final: 0 }),
-          focus_area_1_hash.merge({ characteristic: "characteristic_1_2", initial: 0, additions: 0, removals: 0, final: 0 }),
-          focus_area_2_hash.merge({ characteristic: "characteristic_2_1", initial: 0, additions: 0, removals: 0, final: 0 }),
-          focus_area_2_hash.merge({ characteristic: "characteristic_2_2", initial: 0, additions: 0, removals: 0, final: 0 })
-        ]
-
-        expect(results).to match(expected)
-      end
-    end
   end
   
   describe '#initiative_totals' do

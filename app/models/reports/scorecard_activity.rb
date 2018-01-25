@@ -27,7 +27,7 @@ module Reports
           focus_area_group: characteristic.focus_area.focus_area_group.name,
           focus_area: characteristic.focus_area.name,
           characteristic: characteristic.name,
-        }.merge(checklist_item_counts(characteristic, initiatives(date_from, date_to), date_from, date_to))
+        }.merge(checklist_item_counts(characteristic, scorecard.initiatives.with_deleted, date_from, date_to))
       end
     end
     

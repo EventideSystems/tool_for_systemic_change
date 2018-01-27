@@ -146,12 +146,13 @@ module Reports
       checklist_items = ChecklistItem.where(characteristic: characteristic, initiative: initiatives) 
       
       item_counts = checklist_items.inject({initial: 0, additions: 0, removals: 0}) do |counts, item|
-        state_before_range = item.snapshot_at(date_from - 1.second).checked 
-        state_within_range = item.snapshot_at(date_to).checked 
+        state_before_range = item.snapshot_at(date_from - 1.second).checked == true
+        item.reload # Otherwise, item will equal last snapshot
+        state_within_range = item.snapshot_at(date_to).checked == true
         
         counts[:initial]   += 1 if state_before_range == true
-        counts[:additions] += 1 if state_within_range == true && (state_before_range.nil? || state_before_range == false)
-        counts[:removals]  += 1 if state_within_range== false && state_before_range == true
+        counts[:additions] += 1 if state_within_range == true && state_before_range == false
+        counts[:removals]  += 1 if state_within_range == false && state_before_range == true
 
         counts
       end

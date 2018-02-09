@@ -9,7 +9,7 @@
       <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' }, readonly: true %>
       <%= f.input :expires_on, as: :string, readonly: true %>
       <%= f.input :max_users, readonly: true %>
-      <%= f.input :max_scorecards, readonly: true %>
+      <%= f.input :max_scorecards, readonly: true, label: "Max #{Scorecard.model_name.human.pluralize}" %>
     </div>
     <%- if policy(@account).edit? %>
       <div class='box-footer'>

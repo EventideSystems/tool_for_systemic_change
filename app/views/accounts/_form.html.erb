@@ -11,7 +11,7 @@
       <%- if policy(@account).update_protected_attributes? %>
         <%= f.input :expires_on %>
         <%= f.input :max_users %>
-        <%= f.input :max_scorecards, label: "Max #{Scorecard.model_name.human.pluralize}" %>
+        <%= f.input :max_scorecards, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
       <%- end %>  
     </div>
     <%= render_form_button(f) %>

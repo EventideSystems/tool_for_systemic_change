@@ -5,7 +5,7 @@
                         :data_row_html => {
                           id: lambda { |search_result| "search_result-#{search_result.name}" }
                         } do |table| %>
-    <% table.column :type, :sortable => false, :formatter => lambda { |type| type.name.humanize } %>
+    <% table.column :type, :sortable => false %>
     <% table.column :name, :sortable => false %>
     <% table.column :description, :sortable => false, :formatter => lambda { |description| Nokogiri::HTML(description).text}  %>
     <% table.column :data => "Show", :link_url => lambda { |search_result| search_result.path } %>

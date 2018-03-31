@@ -6,16 +6,19 @@
 <div class="modal-body">
   <h4>Direct link</h4>
   <pre>
-    <%= shared_url(id: @scorecard.shared_link_id) %>
-  </pre>
+<%= shared_url(id: @scorecard.shared_link_id) %></pre>
 
   <h4>Embed on your website</h4>
+  <h5>Direct Link</h5>
   <pre>
-    <%= "<a href=\"#{shared_url(id: @scorecard.shared_link_id)}\" target=\"_blank\">
-      #{@scorecard.name}
-    </a>"
-    %>
-  </pre>
+<%= "<a href=\"#{shared_url(id: @scorecard.shared_link_id)}\" target=\"_blank\">
+  #{@scorecard.name}
+</a>"
+%></pre>
+  <h5>IFRAME Link</h5>
+  <pre>
+<%= "<iframe src=\"#{shared_url(id: @scorecard.shared_link_id)}?iframe=true\"></iframe>" %></pre>
+  
 </div>
 <div class="modal-footer hidden">
   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

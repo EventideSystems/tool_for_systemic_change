@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<%= render 'layouts/shared/head' %>
+<head>
+  <title>WickedLab</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+</head>
 <body class="skin-blue">
   <%= link_to @scorecard.name, shared_url(id: @scorecard.shared_link_id), target: '_blank' %>
 </body>

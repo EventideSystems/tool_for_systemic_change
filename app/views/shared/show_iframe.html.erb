@@ -1,1 +1,7 @@
-<%= link_to @scorecard.name, shared_url(id: @scorecard.shared_link_id), target: '_blank' %>
+<!DOCTYPE html>
+<html>
+<%= render 'layouts/shared/head' %>
+<body class="skin-blue">
+  <%= link_to @scorecard.name, shared_url(id: @scorecard.shared_link_id), target: '_blank' %>
+</body>
+</html>

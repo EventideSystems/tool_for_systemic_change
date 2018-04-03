@@ -15,10 +15,18 @@
   #{@scorecard.name}
 </a>"
 %></pre>
-  <h5>IFRAME Link</h5>
+  <h5>IFRAME (Simple)</h5>
   <pre>
-<%= "<iframe src=\"#{shared_url(id: @scorecard.shared_link_id)}?iframe=true\" frameborder=\"0\" height=\"20px\"></iframe>" %></pre>
-  
+<%= "<iframe src=\"#{shared_url(id: @scorecard.shared_link_id)}\" frameborder=\"0\" height=\"600px\" width=\"1000px\" scrolling=\"yes\"></iframe>" %></pre>
+
+
+  <h5>IFRAME (Responsive)</h5>
+  <pre>
+<%= "<div style=\"position: relative; height: 0; overflow: hidden; padding-bottom: 56.25%\">
+  <iframe style=\"position: absolute; top:0; left: 0; width: 100%; height: 100%; border: none\" src=\"#{shared_url(id: @scorecard.shared_link_id)}\" allowfullscreen></iframe>
+</div>"%></pre> 
+
+  <p>NB You may need to adjust IFRAME styles and settings to suit the your site's style and layout</p>
 </div>
 <div class="modal-footer hidden">
   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

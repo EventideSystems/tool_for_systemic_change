@@ -1,57 +1,69 @@
 <div class="box-body scorecard-matrix">
   <div class="box box-solid">
     <div class="box-header with-border box-solid">
-      <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
-      <div class="pull-right">
-        <button class="btn xbtn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
-      </div>
+      <% unless @scorecard.present? %>
+        <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used"><%= Scorecard.model_name.human %> Missing</h3>
+      <% else %>
+        <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
+        <div class="pull-right">
+          <button class="btn xbtn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
+        </div>
+      <% end %>
     </div>
     <div class='box-body'>
       <div class="outer">
-        <div class="inner">
-          <table class="pre-scrollable"> 
-            <thead>
-              <tr>
-                <th>&nbsp;</th>
-                <% @focus_areas.each_with_index do |focus_area, index| %>
-                  <th colspan="<%= focus_area.characteristics.count %>" class="legend">
-                    <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
-                      <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
-                      </span>
-                    </div>
+        <% unless @scorecard.present? %>
+          <div class="alert alert-error">
+            <p>The linked <%= Scorecard.model_name.human %> cannot be found. The record has been deleted, or an incorrect link is in use.</p>
+            <p>Please contact your administrator, citing the URL used:</p>
+            <p><%= request.original_url %></p>
+          </div>  
+        <% else %>
+          <div class="inner">
+            <table class="pre-scrollable"> 
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <% @focus_areas.each_with_index do |focus_area, index| %>
+                    <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                      <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                        <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
+                        </span>
+                      </div>
+                    </th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% @scorecard.initiatives.each do |initiative| %>
+                <tr>
+                  <th>
+                    <span class='truncate' data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
+                      <%= initiative.name %>
+                    </span>
                   </th>
+                  <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
+                    <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
+                      <span>&nbsp;</span>
+                    </td>
+                  <% end %>
+                </tr>
                 <% end %>
-              </tr>
-            </thead>
-            <tbody>
-              <% @scorecard.initiatives.each do |initiative| %>
-              <tr>
-                <th>
-                  <span class='truncate' data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
-                    <%= initiative.name %>
-                  </span>
-                </th>
-                <% initiative.checklist_items_ordered_by_ordered_focus_area.each do |checklist_item| %>
-                  <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
-                    <span>&nbsp;</span>
-                  </td>
-                <% end %>
-              </tr>
-              <% end %>
-            </tbody>
-            <tfoot>
-              <tr class="chars"> 
-                <td>
-                  &nbsp;
-                </td>
-                <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+              </tbody>
+              <tfoot>
+                <tr class="chars"> 
                   <td>
-                    <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
+                    &nbsp;
                   </td>
-                <% end %>
-              </tr>
-            </tfoot>
-          </table>
+                  <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+                    <td>
+                      <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
+                    </td>
+                  <% end %>
+                </tr>
+              </tfoot>
+            </table>
+          <% end %>  
         </div>
       </div>
       <div class='box-footer'>

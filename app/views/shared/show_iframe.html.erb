@@ -6,6 +6,10 @@
   <%= stylesheet_link_tag 'application', media: 'all' %>
 </head>
 <body class="skin-blue">
-  <%= link_to @scorecard.name, shared_url(id: @scorecard.shared_link_id), target: '_blank' %>
+  <% if @scorecard.present? %>
+    <%= link_to @scorecard.name, shared_url(id: @scorecard.shared_link_id), target: '_blank' %>
+  <% else %>
+    <p>The linked <%= Scorecard.model_name.human %> cannot be found.</p>
+  <% end %>  
 </body>
 </html>

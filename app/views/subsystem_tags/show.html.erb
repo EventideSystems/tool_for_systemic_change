@@ -1,0 +1,19 @@
+<%= simple_form_for(@subsystem_tag, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@subsystem_tag) %></h3>
+    </div>
+    <div class='box-body'>
+      <%= f.input :name, required: false, readonly: true %>
+      <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
+      <hr> 
+      <%= f.input :created_at, as: :string, readonly: true %>
+      <%= f.input :updated_at, as: :string, readonly: true %>
+    </div>  
+    <%- if policy(@subsystem_tag).edit? %>
+      <div class='box-footer'>
+        <%= link_to 'Edit Subsytem Tag', edit_subsystem_tag_path(@subsystem_tag), class: 'btn btn-primary pull-right' %> 
+      </div>
+    <%- end %>
+  </div>
+<% end %>

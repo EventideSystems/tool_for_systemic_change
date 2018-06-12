@@ -4,6 +4,10 @@ class SidebarPolicy < Struct.new(:user_context, :sidebar)
     system_admin?
   end
   
+  def show_subsystem_tags_link?
+    system_admin?
+  end
+  
   def show_users_link?
     system_admin? || account_admin?(user_context.account, user_context.user)
   end

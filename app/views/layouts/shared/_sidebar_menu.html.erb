@@ -32,6 +32,11 @@
       <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
       <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>
       <%= menu_item_tag(:organisations, 'sitemap', { disabled: disabled }) %>
+      
+      <%- if policy(:sidebar).show_subsystem_tags_link? %>
+        <%= menu_item_tag(:subsystem_tags, 'tags', { disabled: disabled }) %>
+      <%- end %>
+      
       <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
       <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
       <%- if policy(:sidebar).show_users_link? %> 
@@ -41,6 +46,8 @@
         <%= menu_item_tag(:accounts, 'user-plus', { disabled: disabled }) %>
       <%- end %>  
       <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
+      
+
     </ul>
   </section>
 </aside>

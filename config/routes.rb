@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :subsystem_tags
   namespace :initiatives do
     resources :imports, only: [:new, :create, :update]
   end

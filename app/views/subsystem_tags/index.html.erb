@@ -1,0 +1,29 @@
+<% content_for :page_actions do %>
+  <%= create_new_button(new_subsystem_tag_path) %>
+<% end %>
+
+<div class="box box-solid">
+  <div class='box-body no-padding'>
+  <%- if @subsystem_tags.empty? %>
+    <h3>You have no subsystem tags</h3> 
+    <p>Not to worry. <%= link_to('Create your first subsystem tag', new_subsystem_tag_path)%> and get started.</p>
+  <%- else %>
+    <%= table_for @subsystem_tags, :table_html => { :class => "table table-striped table-base" },
+                          :sortable => true,
+                          :data_row_html => {
+                            id: lambda { |subsystem_tag| "subsystem_tag-#{subsystem_tag.id}" },
+                            class: 'table-actions'
+                          } do |table| %>
+      <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %> %>
+      <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+      <% table.column :data => "Modify", link_action: :edit %>
+      <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+      <% table.footer do %>
+        <div class="pull-right">
+          <%= paginate @subsystem_tags %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>  
+  </div>
+</div>

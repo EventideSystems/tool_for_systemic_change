@@ -1,0 +1,1 @@
+json.array! @subsystem_tags, partial: 'subsystem_tags/subsystem_tag', as: :subsystem_tag

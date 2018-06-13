@@ -18,8 +18,8 @@
           </div>
         </div>
         <div class="pull-left">
-          <%= link_to(scorecard_path(@scorecard), class: 'btn btn-primary') do
-            safe_join([content_tag(:i, '', class: "fa fa-undo"), ' Clear'])
+          <%= link_to(scorecard_path(@scorecard), class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Clear") do
+            content_tag(:i, '', class: "fa fa-undo")
           end %>
         </div>
         <div class="pull-right">
@@ -30,21 +30,21 @@
                 scorecard_path(@scorecard, format: :pdf)
               end
           %>
-          <%= link_to(print_scorecard_path, class: 'btn btn-primary') do
-            safe_join([content_tag(:i, '', class: "fa fa-print"), ' Print'])
+          <%= link_to(print_scorecard_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
+            content_tag(:i, '', class: "fa fa-print")
           end %>
-          <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
-            safe_join([content_tag(:i, '', class: "fa fa-share-alt"), ' Share'])
+          <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
+            content_tag(:i, '', class: "fa fa-share-alt")
           end %>
           <% if policy(:scorecard).copy_options? %>
-            <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
-                  safe_join([content_tag(:i, '', class: "fa fa-files-o"), ' Copy'])
-                end %>
+            <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
+              content_tag(:i, '', class: "fa fa-files-o")
+            end %>
           <% end %>
           <% if policy(:scorecard).merge_options? %>
-            <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary') do
-                  safe_join([content_tag(:i, '', class: "fa fa-file-text-o"), ' Merge'])
-                end %>
+            <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
+              content_tag(:i, '', class: "fa fa-file-text-o")
+            end %>
           <% end %>
           
         </div>

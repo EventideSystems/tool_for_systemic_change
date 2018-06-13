@@ -7,6 +7,10 @@ module ScorecardsHelper
     controller.current_account.organisations
   end
   
+  def lookup_subsystem_tags
+    controller.current_account.subsystem_tags
+  end
+  
   def lookup_wicked_problems
     controller.current_account.wicked_problems
   end

@@ -150,6 +150,9 @@ class InitiativesController < ApplicationController
         :contact_position,
         initiatives_organisations_attributes: [
           :organisation_id, :id, :_destroy
+        ],
+        initiatives_subsystem_tags_attributes: [
+          :subsystem_tag_id, :id, :_destroy
         ]
       )
     end

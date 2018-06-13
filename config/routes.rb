@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :checklist_items
   end
   resources :initiatives_organisations
+  resources :initiatives_subsystem_tags
   resources :organisations
   resources :scorecards do
     member do

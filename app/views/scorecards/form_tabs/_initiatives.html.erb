@@ -19,10 +19,10 @@
         <%= i.input :description %>
         <hr>
         <%= render 'scorecards/form_tabs/organisations', form: i %>
-        <hr>
-        <%#= i.input :started_at %>
+        <%= render 'scorecards/form_tabs/subsystem_tags', form: i %>
+
         <%= i.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
-        <%#= i.input :finished_at %>
+
         <%= i.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
         <hr>
         <%= i.input :contact_name %>

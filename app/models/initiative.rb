@@ -5,13 +5,19 @@ class Initiative < ApplicationRecord
 
   belongs_to :scorecard
   has_many :initiatives_organisations, dependent: :destroy
+  has_many :initiatives_subsystem_tags, dependent: :destroy
   has_many :organisations, through: :initiatives_organisations
+  has_many :subsystem_tags, through: :initiatives_subsystem_tags
   has_many :checklist_items, dependent: :destroy
   has_many :characteristics, through: :checklist_items
   
   accepts_nested_attributes_for :initiatives_organisations, 
     allow_destroy: true, 
     reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
+    
+  accepts_nested_attributes_for :initiatives_subsystem_tags, 
+    allow_destroy: true, 
+    reject_if:  proc { |attributes| attributes['subsystem_tag_id'].blank? }
 
   validates :name, presence: true
   validate :validate_finished_at_not_earlier_than_started_at

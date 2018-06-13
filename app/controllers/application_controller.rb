@@ -64,16 +64,16 @@ class ApplicationController < ActionController::Base
   def content_subtitle
     @content_subtitle || ''
   end
-  
+
   def info_for_paper_trail
     { account_id: current_account&.id }
   end
-  
+
   protected
   
   def sort_order
     return { name: :asc } unless params[:order].present?
-    
+
     sort_mode = params[:sort_mode].blank? ? :asc : params[:sort_mode].to_sym
     { params[:order].to_sym => sort_mode } 
   end

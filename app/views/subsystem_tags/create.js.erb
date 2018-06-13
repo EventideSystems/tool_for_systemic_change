@@ -1,0 +1,20 @@
+<% if @subsystem_tag.errors.count > 0 %>
+  $(".notice").remove(); 
+  //display new validation messages
+  <% @subsystem_tag.errors.full_messages.each do |message| %>
+    $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
+  <% end %>
+<% else %>
+  current_select = $('[current=true]');
+  // all_select = $('select[name*=subsystem_tags_attributes]');
+  option = document.createElement( 'option' );
+  option.value = '<%= @subsystem_tag.id %>';
+  option.text = '<%= @subsystem_tag.name %>';
+  current_select.append(option);
+  option.setAttribute('selected', 'selected');
+  current_select.attr('current', null);
+  $('#subsystem-tag-modal').modal('hide');
+  // SMELL Triggering behaviour indirectly via 'click'
+  ensureSubsystemTagEditControl(current_select.parent().parent().parent().parent().parent().parent().parent().parent().parent().children().find('.assign-another-subsystem-tag'));
+
+<% end %>

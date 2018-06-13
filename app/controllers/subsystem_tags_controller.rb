@@ -30,9 +30,11 @@ class SubsystemTagsController < ApplicationController
       if @subsystem_tag.save
         format.html { redirect_to @subsystem_tag, notice: 'Subsystem tag was successfully created.' }
         format.json { render :show, status: :created, location: @subsystem_tag }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @subsystem_tag.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

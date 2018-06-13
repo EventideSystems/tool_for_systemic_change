@@ -177,6 +177,10 @@ class ScorecardsController < ApplicationController
           initiatives_organisations_attributes: [
             :_destroy,
             :organisation_id
+          ],
+          initiatives_subsystem_tags_attributes: [
+            :_destroy,
+            :subsystem_tag_id
           ]
         ]
       )

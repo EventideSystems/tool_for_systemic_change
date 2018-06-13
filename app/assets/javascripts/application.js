@@ -38,15 +38,19 @@
   $( document ).ready(function() {
     var editor = new MediumEditor('.textarea', {buttonLabels: 'bootstrap'});
   });
-  
 
-  
   $(document).ready(function() {
     $(".select2").select2();
   });
 
   $(document).ready(function() {
     $(document).on('click', '.organisation-link', function() {
+      $(this).parent().parent().find('select').attr('current', true);
+    });
+  });
+  
+  $(document).ready(function() {
+    $(document).on('click', '.subsystem-tag-link', function() {
       $(this).parent().parent().find('select').attr('current', true);
     });
   });
@@ -122,8 +126,6 @@
     });
   });
   
-
-  
   $(document).ready(function() {
     $('.initiative-detail-scorecard').change(function() {
       var linkElement = $('#initiative-detail-scorecard-link');
@@ -141,7 +143,17 @@
     if (availableOrgEditControl.length == 0) {
       createOrgButton.trigger('click');
     }
-  } 
+  }
+  
+  var ensureSubsystemTagEditControl = function (createSubsystemTagButton) {
+    var availableSubsystemTagEditControl = createSubsystemTagButton.parent().parent().find(".select [name*='[subsystem_tag_id]']").filter(function(){ 
+      return ($(this).val() == '') && $(this).is(':visible')
+    });
+
+    if (availableSubsystemTagEditControl.length == 0) {
+      createSubsystemTagButton.trigger('click');
+    }
+  }
   
   $(document).ready(function() {
     $('.assign-another-organisation').each(function() {
@@ -151,6 +163,15 @@
     $('.assign-organisation-select').change(function() {
       ensureOrgEditControl($('.assign-another-organisation'));
     });
+    
+    $('.assign-another-subsystem-tag').each(function() {
+      ensureSubsystemTagEditControl($(this));
+    });
+    
+    $('.assign-subsystem-tag-select').change(function() {
+      ensureSubsystemTagEditControl($('.assign-another-subsystem-tag'));
+    });
+    
   });
   // *** Create Scorecard Wizard - General - Datepickers
   
@@ -175,6 +196,8 @@
           });
           var createAdditionalOrganisationButton = $(event.target).find('.assign-another-organisation');
           ensureOrgEditControl(createAdditionalOrganisationButton);
+          var createAdditionalSubsystemTagButton = $(event.target).find('.assign-another-subsystem-tag');
+          ensureSubsystemTagEditControl(createAdditionalSubsystemTagButton);
         case "initiatives_organisation":
           var selectControl = $(event.target).find("select[name*='organisation_id']")
           var createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
@@ -182,7 +205,15 @@
             ensureOrgEditControl(createAdditionalOrganisationButton);
           });
         
-          return true;  
+          return true;
+        case "initiatives_subsystem_tag":
+          var selectControl = $(event.target).find("select[name*='subsystem_tag_id']")
+          var createAdditionalSubsystemTagButton = $(event.target).parent().parent().find('.assign-another-subsystem-tag');
+          selectControl.change(function() {
+            ensureSubsystemTagEditControl(createAdditionalSubsystemTagButton);
+          });
+        
+          return true;
         default:
           return console.log(param.object_class);
       }
@@ -207,6 +238,11 @@
           createAdditionalOrganisationButton = $(event.target).parent().parent().find('.assign-another-organisation');
           selectControls = $(event.target).find("select[name*='organisation_id']")
           ensureOrgEditControl(createAdditionalOrganisationButton);
+          return true;
+        case "initiatives_subsystem_tag":
+          createAdditionalSubsystemTagButton = $(event.target).parent().parent().find('.assign-another-subsystem-tag');
+          selectControls = $(event.target).find("select[name*='subsystem_tag_id']")
+          ensureSubsystemTagEditControl(createAdditionalSubsystemTagButton);
           return true;  
         default:
           return console.log(param.object_class);

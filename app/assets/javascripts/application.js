@@ -383,6 +383,7 @@
   $(document).ready(function() {
     $('#subsystem-tags').select2({
       allowClear: true,
+      formatSelectionCssClass: function (data, container) { return "selected-subsytem-tag"; },
       placeholder: 'Select Subsystem Tags',
       tags: true,
       tokenSeparators: [','],
@@ -405,6 +406,10 @@
 
       var url = '/scorecards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)
+    });
+    
+    $("#subsystem-tags").on("change", function(e) { 
+      $('.select2-selection__choice:not(.selected-subsystem-tag)', this).addClass('selected-subsystem-tag');
     });
   });
   

@@ -190,3 +190,21 @@ label.truncate {
   padding-right: 210px;
 }
 
+.select2-selection__choice {
+  background-color: #00b9f2 !important;
+  border-color: #0dc6ff !important;
+}
+
+.select2-selection__choice__remove {
+  color: #0B73DB !important;
+}
+
+//lighten(#00b9f2, 30%) !important;
+
+.select2-selection .select2-selection--multiple {
+  border: solid grey 1px !important;
+}
+
+.select2-results__option .select2-results__option--highlighted {
+  background-color: #00b9f2 !important; 
+}

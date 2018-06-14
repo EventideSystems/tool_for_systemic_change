@@ -2,6 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.select2-search-choice {
+
+
+li.select2-selection__choice {
   background-color: rgb(13, 198, 255) !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border: inherit !important;
+}
+
+.select2-container .select2-choice:not(.select2-default) {
+    background-image: none !important;
+    background-color: #D9FFC7;
 }

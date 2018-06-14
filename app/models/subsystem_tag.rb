@@ -7,5 +7,7 @@ class SubsystemTag < ApplicationRecord
   has_many :initiatives, through: :initiatives_subsystem_tags
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }  
+  validates :name, presence: true, uniqueness: { scope: :account_id }
+
+  alias_attribute :text, :name
 end

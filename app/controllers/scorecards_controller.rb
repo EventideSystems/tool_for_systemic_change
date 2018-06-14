@@ -13,7 +13,10 @@ class ScorecardsController < ApplicationController
     @selected_date = params[:selected_date]
     @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
     
+    @selected_tags = params[:selected_tags].blank? ? [] : SubsystemTag.where(name: params[:selected_tags])
+    
     @focus_areas = FocusArea.ordered_by_group_position
+    
     @initiatives = if @parsed_selected_date.present? 
       @scorecard.initiatives
         .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
@@ -22,6 +25,14 @@ class ScorecardsController < ApplicationController
     else  
       @scorecard.initiatives.order(name: :asc)
     end
+    
+    @initiatives = if @selected_tags.present?
+      tag_ids = @selected_tags.map(&:id)
+      @initiatives.joins(:initiatives_subsystem_tags).where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
+    else 
+      @initiatives
+    end
+      
     
     add_breadcrumb @scorecard.name
     

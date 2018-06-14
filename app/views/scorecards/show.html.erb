@@ -22,6 +22,20 @@
             content_tag(:i, '', class: "fa fa-undo")
           end %>
         </div>
+        
+        <%- if policy(:sidebar).show_subsystem_tags_link? %>
+          <div class="pull-left" style="padding-right: 5px; padding-left: 5px;">
+            <div class="input-group">
+            
+              <select multiple="multiple" class="form-control" id="subsystem-tags" style="width: 300px;" data-scorecard-id="<%=@scorecard.id%>">
+                <%- @selected_tags.each do |selected_tag| %>
+                   <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
+                <%- end %>
+              </select>
+            </div>
+          </div>
+        <%- end %>
+        
         <div class="pull-right">
           <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
           <%- print_scorecard_path = if @selected_date 

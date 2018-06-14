@@ -5,7 +5,11 @@ class SubsystemTagsController < ApplicationController
   add_breadcrumb "Subsystem Tags", :subsystem_tags_path
 
   def index
-    @subsystem_tags = policy_scope(SubsystemTag).page params[:page]
+    if params['q']
+      @subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
+    else  
+      @subsystem_tags = policy_scope(SubsystemTag).page(params[:page])
+    end
   end
 
   def show

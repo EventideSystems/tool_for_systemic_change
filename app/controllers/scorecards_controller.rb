@@ -13,7 +13,7 @@ class ScorecardsController < ApplicationController
     @selected_date = params[:selected_date]
     @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
     
-    @selected_tags = params[:selected_tags].blank? ? [] : SubsystemTag.where(name: params[:selected_tags])
+    @selected_tags = params[:selected_tags].blank? ? [] : SubsystemTag.where(account: current_account, name: params[:selected_tags])
     
     @focus_areas = FocusArea.ordered_by_group_position
     

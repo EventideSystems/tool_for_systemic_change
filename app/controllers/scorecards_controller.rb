@@ -28,7 +28,11 @@ class ScorecardsController < ApplicationController
     
     @initiatives = if @selected_tags.present?
       tag_ids = @selected_tags.map(&:id)
-      @initiatives.joins(:initiatives_subsystem_tags).where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
+      @initiatives
+        .distinct
+        .joins(:initiatives_subsystem_tags)
+        .where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
+        .select('initiatives.*, lower(initiatives.name)')
     else 
       @initiatives
     end

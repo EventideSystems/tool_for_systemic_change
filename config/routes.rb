@@ -28,7 +28,18 @@ Rails.application.routes.draw do
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags
   resources :organisations
-  resources :scorecards do
+  
+  # resources :scorecards do
+  #   member do
+  #     get 'show_shared_link'
+  #     post 'copy'
+  #     get 'copy_options'
+  #     post 'merge'
+  #     get 'merge_options'
+  #   end
+  # end
+
+  resources :scorecards, path: 'transition_cards' do
     member do
       get 'show_shared_link'
       post 'copy'
@@ -37,6 +48,7 @@ Rails.application.routes.draw do
       get 'merge_options'
     end
   end
+
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
   resources :sectors
   resources :users do

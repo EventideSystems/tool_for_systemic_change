@@ -122,7 +122,7 @@ class Initiatives::Import < Import
       "lower(name) = :name ", { name: name.downcase }
     ).first
     
-    initiative || scorecard.initiatives.build
+    initiative || scorecard.initiatives.create
   end
 
 end

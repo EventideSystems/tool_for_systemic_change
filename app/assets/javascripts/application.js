@@ -390,10 +390,16 @@
       ajax: {
         url: '/subsystem_tags.json',
         dataType: 'json',
-        processResults: function(data) {
-          return {
-          results: data
+        data: function (params) {
+          var scorecardId = $(this).data('scorecardId');
+          var query = {
+            search: params.term,
+            scorecard_id: scorecardId
           }
+          return query;
+        },
+        processResults: function(data) {
+          return { results: data }
         }
       },
     });

@@ -9,7 +9,7 @@
       <div class="box-header with-border">
         <div class="pull-left" style="padding-right: 5px">
           <div class="input-group">
-            <button type="button" class="btn btn-default" id="daterange-btn" data-scorecard-id="<%=@scorecard.id%>" data-selected-date"<%=@selected_date%>">
+            <button type="button" class="btn btn-default" id="daterange-btn" data-scorecard-id="<%=@scorecard.id%>" <%= "data-selected-date=\"#{@selected_date}\"" unless @selected_date.blank? %>>
               <span>
                 <i class="fa fa-calendar"></i> <%= display_selected_date %>
               </span>
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="pull-left">
-          <%= link_to(scorecard_path(@scorecard), class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Clear") do
+          <%= link_to('#', class: 'btn btn-primary', id: 'daterange-clear-btn', data: { toggle: "tooltip"}, title: "Clear date") do
             content_tag(:i, '', class: "fa fa-undo")
           end %>
         </div>
@@ -27,7 +27,7 @@
           <div class="pull-left" style="padding-right: 5px; padding-left: 5px;">
             <div class="input-group">
             
-              <select multiple="multiple" class="form-control" id="subsystem-tags" style="width: 300px;" data-scorecard-id="<%=@scorecard.id%>">
+              <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px; width: auto;" data-scorecard-id="<%=@scorecard.id%>">
                 <%- @selected_tags.each do |selected_tag| %>
                    <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
                 <%- end %>

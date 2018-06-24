@@ -37,7 +37,6 @@ class ScorecardsController < ApplicationController
       @initiatives
     end
       
-    
     add_breadcrumb @scorecard.name
     
     respond_to do |format|

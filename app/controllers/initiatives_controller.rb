@@ -102,7 +102,9 @@ class InitiativesController < ApplicationController
           'Contact Position'
         ] + 1.upto(Initiatives::Import::MAX_ORGANIZATION_EXPORT).map do |index| 
           "Organisation #{index} Name" 
-        end 
+        end + 1.upto(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT).map do |index| 
+          "Subsystem Tag #{index} Name" 
+        end
         
         initiatives.each do |initiative|
           
@@ -111,6 +113,14 @@ class InitiativesController < ApplicationController
           
           organisation_names = organisations.each_with_index.inject(organisation_memo) do |memo, (org, index)|
             memo[index] = org.try(:name)
+            memo
+          end
+          
+          subsystem_tags = initiative.subsystem_tags.limit(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT)
+          subsystem_tag_memo = Array.new(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT, '') 
+          
+          subsystem_tag_names = subsystem_tags.each_with_index.inject(subsystem_tag_memo) do |memo, (subsystem_tag, index)|
+            memo[index] = subsystem_tag.try(:name)
             memo
           end
           
@@ -125,7 +135,7 @@ class InitiativesController < ApplicationController
             initiative.contact_phone,
             initiative.contact_website,
             initiative.contact_position
-            ] + organisation_names
+            ] + organisation_names + subsystem_tag_names
         end
       end
     end

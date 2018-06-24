@@ -7,8 +7,12 @@ class SubsystemTagsController < ApplicationController
   def index
     if params['q']
       @subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
-    else  
+    else
       @subsystem_tags = policy_scope(SubsystemTag).page(params[:page])
+    end
+    
+    if params[:scorecard_id].present?
+      @subsystem_tags = @subsystem_tags.joins(:initiatives).where('initiatives.scorecard_id' => params[:scorecard_id])
     end
   end
 

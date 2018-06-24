@@ -182,8 +182,6 @@
     "autoclose": true
     });
   });
-  
-
 
   $(document).ready(function() {
     $(document).on("fields_added.nested_form_fields", function(event, param) {
@@ -363,13 +361,21 @@
     
     $('#daterange-btn').on('apply.daterangepicker', function(ev, picker) {
       var scorecardId = $(picker.element).data('scorecard-id');
+      var date = picker.startDate.format('YYYY-MM-DD');
+      var tags = $.map($('#subsystem-tags').select2('data'), function(v) { return v.text });
       
-      var params = {
-        selected_date: picker.startDate.format('YYYY-MM-DD')
-      };
+      var params = { selected_tags: tags, selected_date: date };
       
       var url = '/scorecards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)
+    });
+    
+    $('#daterange-clear-btn').click(function(e) {
+      var scorecardId = $('#daterange-btn').data('scorecardId')
+      var tags = $.map($('#subsystem-tags').select2('data'), function(v) { return v.text });
+      var params = { selected_tags: tags };
+      var url = '/scorecards/' + scorecardId + '?' + $.param(params);
+      $(location).attr('href', url)   
     });
   });
   
@@ -407,8 +413,8 @@
     $('#subsystem-tags').on('select2:select select2:unselect', function(e) {
       var scorecardId = $(e.target).data('scorecard-id');
       var tags = $.map($('#subsystem-tags').select2('data'), function(v) { return v.text });
-
-      var params = { selected_tags: tags };
+      var date = $('#daterange-btn').data('selectedDate');
+      var params = { selected_tags: tags, selected_date: date };
 
       var url = '/scorecards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)

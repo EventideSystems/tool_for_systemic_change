@@ -1,6 +1,8 @@
 class Initiatives::Import < Import
   
   MAX_ORGANIZATION_EXPORT = 15
+  MAX_SUBSYSTEM_TAG_EXPORT = 15
+  
   
   def process(account)
     name_index             = column_index(:name)
@@ -38,7 +40,7 @@ class Initiatives::Import < Import
       initiative = find_or_build_initiative_by_name(scorecard, row[name_index]) 
       
       unknown_organisation_names = []
-      
+
       1.upto(MAX_ORGANIZATION_EXPORT).each do |org_index|
         organisation_name_index = header_row.index{ |i| i.downcase == "organisation #{org_index} name"}
         organisation_name = row[organisation_name_index]
@@ -50,6 +52,23 @@ class Initiatives::Import < Import
             initiative.organisations << organisation unless initiative.organisations.include?(organisation)
           else
             unknown_organisation_names << organisation_name
+          end
+        end
+      end
+      
+      unknown_subsystem_tag_names = []
+      
+      1.upto(MAX_SUBSYSTEM_TAG_EXPORT).each do |subsystem_tag_index|
+        subsystem_tag_name_index = header_row.index{ |i| i.downcase == "subsystem tag #{subsystem_tag_index} name"}
+        subsystem_tag_name = row[subsystem_tag_name_index]
+        
+        unless subsystem_tag_name.blank?
+          subsystem_tag = find_subsystem_tag_by_name(account, subsystem_tag_name)
+
+          if subsystem_tag
+            initiative.subsystem_tags << subsystem_tag unless initiative.subsystem_tags.include?(subsystem_tag)
+          else
+            unknown_subsystem_tag_names << subsystem_tag_name
           end
         end
       end
@@ -69,11 +88,12 @@ class Initiatives::Import < Import
         end
       )
       
-      success = success && unknown_organisation_names.empty?
+      success = success && unknown_organisation_names.empty? && unknown_subsystem_tag_names.empty?
 
       unless success
         error_messages = initiative.errors.full_messages || []
         error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}." unless unknown_organisation_names.empty?
+        error_messages << "Unknown Subsystem Tag Names: #{unknown_subsystem_tag_names.join(', ')}." unless unknown_subsystem_tag_names.empty?
         processing_errors << build_processing_errors(
           row_data: row, row_index: row_index, error_messages: error_messages
         ) 
@@ -91,6 +111,10 @@ class Initiatives::Import < Import
   
   def find_organisation_by_name(account, name)
     account.organisations.where("lower(name) = :name", { name: name.downcase }).first
+  end
+  
+  def find_subsystem_tag_by_name(account, name)
+    account.subsystem_tags.where("lower(name) = :name", { name: name.downcase }).first
   end
   
   def find_or_build_initiative_by_name(scorecard, name)

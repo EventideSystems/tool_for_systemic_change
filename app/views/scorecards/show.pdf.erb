@@ -1,4 +1,4 @@
-<% chunked_initiatives = @scorecard.initiatives.order(:created_at).each_slice(8).to_a %>
+<% chunked_initiatives = @scorecard.initiatives.order(:created_at).each_slice(24).to_a %>
 
 <% chunked_initiatives.each do |initiatives| %>
   <div class="alwaysbreak">
@@ -20,14 +20,28 @@
       <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
     </div>  
   </div>
+  <div class="legend scorecard-matrix">
+    <h3>Legend</h3>
+    <hr>
+    <%= render partial: 'legend', locals: { focus_areas: @focus_areas[0..3], offset: 1 } %>
+    <%= render partial: 'legend', locals: { focus_areas: @focus_areas[4..-1], offset: 5 } %>
+  </div> 
+</div>
+
+<div class="alwaysbreak">
+  <div class="row">
+    <div class="col-sm-8">
+      <h2><%= Scorecard.model_name.human %>: <%= @scorecard.name %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
+    </div>
+    <div class="col-sm-3 pull-right">
+      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
+    </div>  
+  </div>
   <div>
     <h3>Initiatives</h3>
     <hr>
-    <% @initiatives.each do |initiative| %>
-      <h4>Name: <%= initiative.name %></h4>
-      <p>Created: <%= initiative.created_at.strftime('%B %-d, %Y') %>
-      <p>Description: <%= initiative.description.blank? ? "<em>No description</em>".html_safe : initiative.description %></p>
-      <hr>
+    <% @initiatives.in_groups(2, false).each do |initiatives| %>
+      <%= render partial: 'initiatives', locals: { initiatives: initiatives } %>
     <% end %>
   </div>
 </div>

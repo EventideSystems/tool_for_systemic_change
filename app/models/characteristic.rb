@@ -3,8 +3,8 @@ class Characteristic < ApplicationRecord
   acts_as_paranoid
   
   attr_accessor :video_tutorial_id
-
-  default_scope { order(:focus_area_id, :position) }
+  
+  default_scope { order('focus_areas.position', :position).joins(:focus_area) }
 
   belongs_to :focus_area
   has_one :video_tutorial, as: :linked
@@ -20,5 +20,9 @@ class Characteristic < ApplicationRecord
   
   def video_tutorial_id
     video_tutorial.try(:id)
+  end
+  
+  def identifier
+    "#{focus_area.position}.#{self.position}"
   end
 end

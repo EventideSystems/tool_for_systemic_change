@@ -11,7 +11,7 @@ class Characteristic < ApplicationRecord
   has_many :checklist_items
 
   validates :position, presence: true, uniqueness: { scope: :focus_area }
-  
+  delegate :position, to: :focus_area, prefix: true
   #accepts_nested_attributes_for :video_tutorial
   
   def video_tutorial_id=(value)

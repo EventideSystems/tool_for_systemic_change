@@ -7,7 +7,7 @@
       <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
     </div>  
   </div>
-    <div class="box-body scorecard-matrix">
+    <div class="box-body scorecard-matrix scorecard-matrix-pdf">
       <div class="outer">
         <div class="inner" style="overflow-x: visible">
           <table class="print-table"> 
@@ -41,15 +41,15 @@
               <% end %>
             </tbody>
             <tfoot>
-              <tr class="print-chars"> 
+              <tr class="xprint-chars"> 
                 <td>
                   &nbsp;
                 </td>
-                <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+                <% Characteristic.joins(focus_area: :focus_area_group).all.each do |characteristic| %>
                   <% if characteristic.focus_area.id.in?(focus_areas.map(&:id)) %>
                   <td>
                     <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%> r">
-                      <%= characteristic.name %>
+                      <%= characteristic.identifier %>
                     </span>
                   </td>
                   <% end %>

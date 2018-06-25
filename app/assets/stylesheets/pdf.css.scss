@@ -1,3 +1,11 @@
 div.alwaysbreak { page-break-before: always; }
 div.nobreak:before { clear:both; }
 div.nobreak { page-break-inside: avoid; }
+
+.truncate {
+  width: 275px !important;
+}
+
+.scorecard-matrix th {
+  width: 550px !important;
+}

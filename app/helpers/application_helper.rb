@@ -76,4 +76,9 @@ module ApplicationHelper
       concat form.button :submit, "#{form.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary pull-right'
     end
   end
+  
+  def render_date(date)
+    return '<em>No data</em>'.html_safe unless date
+    date.strftime('%B %-d, %Y')
+  end
 end

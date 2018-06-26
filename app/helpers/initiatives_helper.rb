@@ -17,5 +17,5 @@ module InitiativesHelper
         )
       ])
     end
-  end    
+  end
 end

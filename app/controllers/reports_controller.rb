@@ -123,6 +123,17 @@ class ReportsController < ApplicationController
     end
   end
   
+  def transition_card_stakeholders
+    authorize :report, :index?
+    
+    @content_subtitle = "Transition Card Stakeholder Report"
+    add_breadcrumb @content_subtitle
+
+    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @report = Reports::TransitionCardStakeholders.new(@scorecard)
+    send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{transition_card_stakeholders_base_filename}.xlsx" 
+  end
+  
   private
   
   def scorecard_activity_base_filename
@@ -132,5 +143,11 @@ class ReportsController < ApplicationController
   def scorecard_comments_base_filename
     "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_comments"
   end
+
+  def transition_card_stakeholders_base_filename
+    "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_stakeholders"
+  end
+  
+  
 
 end

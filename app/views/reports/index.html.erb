@@ -1,41 +1,16 @@
 <div class="row">
-  <div class="col-md-6">
-    <div class="box box-default color-palette-box">
-      <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Initiative Report</h3>
-      </div>
-      <%= simple_form_for :report, url: initiatives_reports_path do |f| %>
-      <div class="box-body box-report">
-        <p>Search for Initiatives sharing the same Wicked Problems and Communities.</p>
-        <p>NB This report reqires at least one Wicked Problem and one Community to be selected.</p>
-        
-          <%= f.input :wicked_problems, as: :check_boxes, collection: current_account.wicked_problems %>
-          <%= f.input :communities, as: :check_boxes, collection: current_account.communities %>
-        
-      </div>
-      <div class="box-footer">
-        <%= f.button :submit, 'Execute', class: 'pull-right' %>
-      </div>
-      <% end %>
-    </div>
-  </div>
   
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Stakeholder Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Transition Card Stakeholder Report</h3>
       </div>
-      <%= simple_form_for :report, url: stakeholders_reports_path, role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="box-body box-report">
-        <p>Search for stakeholder Organistions sharing the same Wicked Problems, Community and Sector.</p>
-        
-          <%= f.input :wicked_problem, collection: current_account.wicked_problems %>
-          <%= f.input :community, collection: current_account.communities %>
-          <%= f.input :sector, collection: Sector.all %>
-
+      <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <div class="box-body">
+        <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
       </div>
       <div class="box-footer">
-        <%= f.button :submit, 'Execute', class: 'pull-right' %>
+        <%= button_tag('Download', type: 'submit', class: "btn btn-primary pull-right") %>
       </div>
       <% end %>
     </div>

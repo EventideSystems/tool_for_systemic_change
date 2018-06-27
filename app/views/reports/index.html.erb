@@ -6,11 +6,8 @@
         <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Transition Card Stakeholder Report</h3>
       </div>
       <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="box-body box-report">
-        <p><%= Scorecard.model_name.human %> activity report shows the addition and removal of characteristics across initiatives</p>
-
+      <div class="box-body">
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
-
       </div>
       <div class="box-footer">
         <%= button_tag('Download', type: 'submit', class: "btn btn-primary pull-right") %>

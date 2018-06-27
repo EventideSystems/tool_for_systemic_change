@@ -11,6 +11,9 @@ class Scorecard < ApplicationRecord
   has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy
   has_many :checklist_items, through: :initiatives
   
+  has_many :initiatives_organisations, through: :initiatives
+  has_many :organisations, through: :initiatives_organisations
+  
   delegate :name, :description, to: :wicked_problem, prefix: true, allow_nil: true
   delegate :name, :description, to: :community, prefix: true, allow_nil: true
   
@@ -53,6 +56,10 @@ class Scorecard < ApplicationRecord
 
   def new_shared_link_id
     SecureRandom.uuid
+  end
+  
+  def unique_organisations
+    organisations.uniq
   end
   
   private

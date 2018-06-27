@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       post 'initiatives'
       post 'stakeholders'
       post 'scorecard_activity'
+      post 'transition_card_stakeholders'
       get 'scorecard_activity'
       post 'scorecard_comments'
       get 'scorecard_comments'

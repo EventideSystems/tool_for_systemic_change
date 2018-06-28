@@ -53,7 +53,6 @@ class ScorecardsController < ApplicationController
           footer: { right: 'Page [page] of [topage]' }
       end 
     end
-    
   end
 
   def new

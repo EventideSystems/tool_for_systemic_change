@@ -63,7 +63,6 @@ gem 'axlsx', '2.1.0.pre'
 gem 'roo', '~> 2.7.0'
 
 gem 'shrine'
-
 gem 'rollbar'
 
 # SMELL See https://github.com/tenex/rails-assets/issues/417

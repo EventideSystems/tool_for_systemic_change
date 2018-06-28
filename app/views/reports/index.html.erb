@@ -6,7 +6,7 @@
       </div>
       <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">
-        <p>This report provides details on the number partnering organisations, the initiatives they are working on and their sector.</p>
+        <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their sector.</p>
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
       </div>
       <div class="box-footer">

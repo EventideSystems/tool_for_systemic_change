@@ -1,3 +1,5 @@
+require "prawn"
+
 class ScorecardsController < ApplicationController
   before_action :set_scorecard, only: [:show, :edit, :update, :destroy, :show_shared_link, :copy, :copy_options, :merge, :merge_options] 
   before_action :set_active_tab, only: [:show] 
@@ -42,15 +44,54 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       format.html 
       format.pdf do
-        render pdf: "scorecard",
-          layout: 'pdf.html.erb',
-          orientation: 'Landscape',
-          viewport_size: '1280x1024', 
-          print_media_type: false,
-          grayscale: false,
-          background: true,
-          show_as_html: params.key?('debug'),
-          footer: { right: 'Page [page] of [topage]' }
+        scorecard = @scorecard
+        img = File.join(Rails.root, 'app/assets/images/logo-long-white-bg.png')
+        pdf = Prawn::Document.new(:page_size => "A4", :page_layout => :landscape) do
+
+          repeat(:all) do
+            font_size 22
+            text "Transition Card: #{scorecard.name}", :valign => :top
+            image img, :position => :right, :width => 130, :vposition => :top
+            
+          end
+                    
+          string = "Page <page> of <total>"
+          options = { 
+            :at => [bounds.right - 150, 0],
+            :width => 150,
+            :align => :right,
+            :page_filter => :all,
+            :start_count_at => 1
+          }
+          number_pages string, options
+          
+
+        
+          start_new_page
+          move_down 30
+          text "Hello World"
+          
+          start_new_page
+          move_down 30
+          text "Hello World"
+          
+        end
+  
+        
+        send_data pdf.render,
+          filename: "transition_card",
+          type: 'application/pdf',
+          disposition: 'inline'
+          
+        # render pdf: "scorecard",
+        #   layout: 'pdf.html.erb',
+        #   orientation: 'Landscape',
+        #   viewport_size: '1280x1024',
+        #   print_media_type: false,
+        #   grayscale: false,
+        #   background: true,
+        #   show_as_html: params.key?('debug'),
+        #   footer: { right: 'Page [page] of [topage]' }
       end 
     end
   end

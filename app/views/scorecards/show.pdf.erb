@@ -5,6 +5,7 @@
     <%= render partial: 'pdf_page', locals: { initiatives: initiatives, focus_areas: @focus_areas[0..3], offset: 1 } %>
   </div>
 <% end %>
+
 <% chunked_initiatives.each do |initiatives| %>
   <div class="alwaysbreak">
     <%= render partial: 'pdf_page', locals: { initiatives: initiatives, focus_areas: @focus_areas[4..-1], offset: 5 } %>

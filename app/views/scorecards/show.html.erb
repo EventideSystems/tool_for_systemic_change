@@ -88,7 +88,7 @@
                       <%= link_to initiative.name, initiative_path(initiative), class: 'truncate' %>
                     </span>
                   </th>
-                  <% initiative.checklist_items_ordered_by_ordered_focus_area(@parsed_selected_date).each do |checklist_item| %>
+                  <% initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: @parsed_selected_date).each do |checklist_item| %>
                     <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
                       <span>&nbsp;</span>
                     </td>

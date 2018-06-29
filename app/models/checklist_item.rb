@@ -18,6 +18,10 @@ class ChecklistItem < ApplicationRecord
     paper_trail.version_at(timestamp) || raw_clone
   end
   
+  def focus_area
+    characteristic.focus_area
+  end
+  
   private
   
   def raw_clone

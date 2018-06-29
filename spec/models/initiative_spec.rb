@@ -16,7 +16,7 @@ RSpec.describe Initiative, type: :model do
     context 'with selected_date' do
       
       it 'retrieves original checklist item state if no changes have occurred' do
-        checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(Date.today)
+        checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
         expect(checklist_items[0].checked).to be_falsy
         expect(checklist_items[1].checked).to be_falsy
       end
@@ -24,7 +24,7 @@ RSpec.describe Initiative, type: :model do
       context 'after changes' do
         
         before do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(Date.today)
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
           Timecop.freeze(Date.today + 10)
           checklist_items[1].update_attributes!(checked: true)
           Timecop.return
@@ -36,21 +36,21 @@ RSpec.describe Initiative, type: :model do
           
         
         it 'retrieves previous checklist item state if selected_date is before changes have occurred' do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(Date.yesterday)
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.yesterday)
 
           expect(checklist_items[0].checked).to be_falsy
           expect(checklist_items[1].checked).to be_falsy
         end
         
         it 'retrieves updated checklist item state if selected_date is after changes have occurred' do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(Date.today + 11)
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today + 11)
 
           expect(checklist_items[0].checked).to be_falsy
           expect(checklist_items[1].checked).to be_truthy
         end
         
         it 'retrieves updated checklist item state if selected_date is after changes have re-occurred' do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(Date.today + 21)
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today + 21)
 
           expect(checklist_items[0].checked).to be_falsy
           expect(checklist_items[1].checked).to be_falsy

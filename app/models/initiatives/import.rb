@@ -59,8 +59,8 @@ class Initiatives::Import < Import
       unknown_subsystem_tag_names = []
       
       1.upto(MAX_SUBSYSTEM_TAG_EXPORT).each do |subsystem_tag_index|
-        subsystem_tag_name_index = header_row.index{ |i| i.downcase == "subsystem tag #{subsystem_tag_index} name"}
-        subsystem_tag_name = row[subsystem_tag_name_index]
+        subsystem_tag_name_index = header_row.index{ |i| i&.downcase == "subsystem tag #{subsystem_tag_index} name"}
+        subsystem_tag_name = subsystem_tag_name_index.present? ? row[subsystem_tag_name_index] : nil
         
         unless subsystem_tag_name.blank?
           subsystem_tag = find_subsystem_tag_by_name(account, subsystem_tag_name)

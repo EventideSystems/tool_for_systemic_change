@@ -25,7 +25,7 @@ module Prawn::ScorecardHelpers
   
   def header(focus_areas)
     [{ content: '', border_width: 0 }] + focus_areas.map.with_index do |focus_area, index|
-      { content: "Focus Area #{index+1}", 
+      { content: "Focus Area #{focus_area.position}", 
         colspan: focus_area.characteristics.count,
         text_color: focus_area_color(focus_area),
         align: :center,

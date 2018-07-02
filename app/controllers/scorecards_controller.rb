@@ -55,6 +55,7 @@ module Prawn::ScorecardHelpers
           text_color: focus_area_color(focus_area),
           border_width: 0,
           align: :center,
+          size: 10
         })
         memo
       end
@@ -82,13 +83,15 @@ module Prawn::ScorecardHelpers
   
   def data(initiatives, focus_areas)
     initiatives.map do |initiative|
-      [{ content: truncate(initiative.name, length: 35), text_color: '3C8DBC', border_width: 0, width: 200 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
+      [{ content: truncate(pdf_safe(initiative.name), length: 62, escape: false), text_color: '3C8DBC', border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
         { content: " ", border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
           cell[:background_color] = checklist_item.checked? ? focus_area_color(checklist_item.focus_area) : 'F8F8F8'
         end
       end
     end
   end
+  
+  
   
   def page_numbering
     font_size 12
@@ -116,6 +119,10 @@ module Prawn::ScorecardHelpers
     else
       { text: 'No description', styles: [:italic] }
     end
+  end
+  
+  def pdf_safe(text)
+    ActionView::Base.full_sanitizer.sanitize(text.force_encoding("UTF-8"), tags: [])  
   end
 end
 
@@ -169,10 +176,9 @@ class ScorecardsController < ApplicationController
         scorecard = @scorecard
         initiatives = @initiatives
         focus_areas = @focus_areas
-        
+
         colors = ['FF0000', 'F7C80B', 'FF6D24', '7993F2', '2E74BA', '009BCC', '008C8C', '00CCAA', '1CB85D']
-        
-        
+
         pdf = Prawn::Document.new(:page_size => "A4", :page_layout => :landscape, :top_margin => 60) do
 
           page_header(scorecard)
@@ -261,16 +267,6 @@ class ScorecardsController < ApplicationController
           filename: "transition_card",
           type: 'application/pdf',
           disposition: 'inline'
-          
-        # render pdf: "scorecard",
-        #   layout: 'pdf.html.erb',
-        #   orientation: 'Landscape',
-        #   viewport_size: '1280x1024',
-        #   print_media_type: false,
-        #   grayscale: false,
-        #   background: true,
-        #   show_as_html: params.key?('debug'),
-        #   footer: { right: 'Page [page] of [topage]' }
       end 
     end
   end

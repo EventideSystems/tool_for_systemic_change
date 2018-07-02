@@ -6,7 +6,7 @@ module Prawn::ScorecardHelpers
   include ActionView::Helpers::TextHelper
   
   def focus_area_color(focus_area)
-    ['FF0000', 'F7C80B', 'FF6D24', '7993F2', '2E74BA', '009BCC', '008C8C', '00CCAA', '1CB85D'][focus_area.position-1]
+    %w(FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0)[focus_area.position-1]
   end
   
   def page_header(scorecard)
@@ -55,7 +55,7 @@ module Prawn::ScorecardHelpers
           text_color: focus_area_color(focus_area),
           border_width: 0,
           align: :center,
-          size: 10
+          size: 8
         })
         memo
       end

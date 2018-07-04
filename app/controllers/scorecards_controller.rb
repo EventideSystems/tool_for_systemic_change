@@ -90,9 +90,7 @@ module Prawn::ScorecardHelpers
       end
     end
   end
-  
-  
-  
+
   def page_numbering
     font_size 12
     string = "Page <page> of <total>"
@@ -122,7 +120,7 @@ module Prawn::ScorecardHelpers
   end
   
   def pdf_safe(text)
-    ActionView::Base.full_sanitizer.sanitize(text.force_encoding("UTF-8"), tags: [])  
+    ActionView::Base.full_sanitizer.sanitize(text.force_encoding("UTF-8"), tags: []).gsub(/&amp;/, '&') 
   end
 end
 
@@ -204,8 +202,7 @@ class ScorecardsController < ApplicationController
               end
             end
           end
-          
-          
+
           start_new_page if initiatives.count <= 7
           
           # Legend
@@ -243,7 +240,7 @@ class ScorecardsController < ApplicationController
           column_box([0, cursor], columns: 2, width: bounds.width, reflow_margins: true) do
             initiatives.each do |initiative|
               
-              text "Name: #{initiative.name}", size: 12
+              text "Name: #{pdf_safe(initiative.name)}", size: 12
               formatted_text [ { text: 'Started At: ' }, formatted_date(initiative.started_at) ]
               formatted_text [ { text: 'Finished At: ' }, formatted_date(initiative.finished_at) ]
               formatted_text [ { text: 'Description: '}, formatted_description(initiative.description) ]
@@ -262,9 +259,9 @@ class ScorecardsController < ApplicationController
          
           page_numbering
         end
-  
+
         send_data pdf.render,
-          filename: "transition_card",
+          filename: "transition_card_#{scorecard.id}.pdf",
           type: 'application/pdf',
           disposition: 'inline'
       end 

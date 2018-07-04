@@ -39,9 +39,9 @@
         <div class="pull-right">
           <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
           <%- print_scorecard_path = if @selected_date 
-                scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date)
+                scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
               else
-                scorecard_path(@scorecard, format: :pdf)
+                scorecard_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
               end
           %>
           <%= link_to(print_scorecard_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do

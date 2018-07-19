@@ -131,7 +131,7 @@
       var linkElement = $('#initiative-detail-scorecard-link');
       var newLinkId = $('.initiative-detail-scorecard').first().val();
       
-      linkElement.attr('href', "/scorecards/" + newLinkId);
+      linkElement.attr('href', "/transition_cards/" + newLinkId);
     });
   });
   
@@ -366,7 +366,7 @@
       
       var params = { selected_tags: tags, selected_date: date };
       
-      var url = '/scorecards/' + scorecardId + '?' + $.param(params);
+      var url = '/transition_cards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)
     });
     
@@ -374,7 +374,7 @@
       var scorecardId = $('#daterange-btn').data('scorecardId')
       var tags = $.map($('#subsystem-tags').select2('data'), function(v) { return v.text });
       var params = { selected_tags: tags };
-      var url = '/scorecards/' + scorecardId + '?' + $.param(params);
+      var url = '/transition_cards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)   
     });
   });
@@ -416,7 +416,7 @@
       var date = $('#daterange-btn').data('selectedDate');
       var params = { selected_tags: tags, selected_date: date };
 
-      var url = '/scorecards/' + scorecardId + '?' + $.param(params);
+      var url = '/transition_cards/' + scorecardId + '?' + $.param(params);
       $(location).attr('href', url)
     });
     

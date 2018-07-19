@@ -12,7 +12,9 @@ class SubsystemTagsController < ApplicationController
     end
     
     if params[:scorecard_id].present?
-      @subsystem_tags = @subsystem_tags.joins(:initiatives).where('initiatives.scorecard_id' => params[:scorecard_id])
+      @subsystem_tags = @subsystem_tags
+        .joins(:initiatives)
+        .where('initiatives.scorecard_id' => params[:scorecard_id]).distinct
     end
   end
 

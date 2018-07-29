@@ -127,8 +127,10 @@ module Reports
           version_count
         end 
         
+        item_checked_at_date = item.snapshot_at(date).checked?
+        
         count[:comment_counts] += comment_counts
-        count[:initiatives_count] += 1 if comment_counts > 0
+        count[:initiatives_count] += 1 if (comment_counts > 0) || item_checked_at_date
         
         count
       end

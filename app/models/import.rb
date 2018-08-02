@@ -64,7 +64,7 @@ class Import < ApplicationRecord
   
   def column_index(column_id)
     candidate_column_names = [column_id.to_s.downcase, column_id.to_s.humanize.downcase]
-    header_row.index{ |i| i.downcase.in? candidate_column_names }
+    header_row.index{ |i| i&.downcase.in? candidate_column_names }
   end
 
   private

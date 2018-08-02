@@ -42,7 +42,7 @@ class Initiatives::Import < Import
       unknown_organisation_names = []
 
       1.upto(MAX_ORGANIZATION_EXPORT).each do |org_index|
-        organisation_name_index = header_row.index{ |i| i.downcase == "organisation #{org_index} name"}
+        organisation_name_index = header_row.index{ |i| i&.downcase == "organisation #{org_index} name"}
         organisation_name = row[organisation_name_index]
         
         unless organisation_name.blank?

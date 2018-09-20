@@ -337,6 +337,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    scout_apm (2.4.19)
     shrine (2.6.1)
       down (>= 2.3.6)
     simple_form (3.4.0)
@@ -453,6 +454,7 @@ DEPENDENCIES
   rubocop
   ruby-prof
   sass-rails (~> 5.0)
+  scout_apm
   shrine
   simple_form
   spring

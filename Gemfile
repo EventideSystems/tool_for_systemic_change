@@ -66,6 +66,7 @@ gem 'prawn-table'
 
 gem 'shrine'
 gem 'rollbar'
+gem 'scout_apm'
 
 # SMELL See https://github.com/tenex/rails-assets/issues/417
 #source 'http://insecure.rails-assets.org/' do

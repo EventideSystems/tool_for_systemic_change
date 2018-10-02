@@ -97,6 +97,7 @@ group :test do
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'timecop'
+  gem 'rspec_junit_formatter'
 end
 
 group :development, :test do

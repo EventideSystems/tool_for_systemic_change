@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/wicked_software
     docker:
-      - image: circleci/ruby:2.3.1
+      - image: circleci/ruby:2.3-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: wicked_software

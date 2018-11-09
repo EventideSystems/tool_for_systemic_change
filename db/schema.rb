@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180613091557) do
+ActiveRecord::Schema.define(version: 20181109104359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,8 +163,10 @@ ActiveRecord::Schema.define(version: 20180613091557) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["deleted_at"], name: "index_initiatives_on_deleted_at", using: :btree
+    t.index ["finished_at"], name: "index_initiatives_on_finished_at", using: :btree
     t.index ["name"], name: "index_initiatives_on_name", using: :btree
     t.index ["scorecard_id"], name: "index_initiatives_on_scorecard_id", using: :btree
+    t.index ["started_at"], name: "index_initiatives_on_started_at", using: :btree
   end
 
   create_table "initiatives_organisations", force: :cascade do |t|

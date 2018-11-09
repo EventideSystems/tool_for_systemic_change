@@ -26,6 +26,8 @@ module Reports
     end
     
     def to_xlsx
+      padding_plus_2 = Array.new(initiatives.count + 2, '')
+      
       Axlsx::Package.new do |p|
         p.workbook.styles.fonts.first.name = 'Calibri'
         
@@ -57,12 +59,12 @@ module Reports
             if result[:focus_area_group] != current_focus_area_group
               current_focus_area_group = result[:focus_area_group]
               current_focus_area = ''
-              sheet.add_row [result[:focus_area_group]] + Array.new(initiatives.count + 2, ''), style: header_2
+              sheet.add_row [result[:focus_area_group]] + padding_plus_2, style: header_2
             end
       
             if result[:focus_area] != current_focus_area 
               current_focus_area = result[:focus_area]
-              sheet.add_row  ["\s\s" + result[:focus_area]] + Array.new(initiatives.count + 2, ''), style: header_3
+              sheet.add_row  ["\s\s" + result[:focus_area]] + padding_plus_2, style: header_3
             end
 
             sheet.add_row [
@@ -79,11 +81,14 @@ module Reports
     def to_csv
       current_focus_area_group = '' 
       current_focus_area = ''
+
+      padding_plus_1 = Array.new(initiatives.count + 1, '')
+      padding_plus_2 = Array.new(initiatives.count + 2, '')
       
       CSV.generate do |csv|
         
-        csv << ["#{Scorecard.model_name.human}", scorecard.name] + Array.new(initiatives.count + 1, '')
-        csv << ['Date', date.strftime('%d/%m/%y')] + Array.new(initiatives.count + 1, '')
+        csv << ["#{Scorecard.model_name.human}", scorecard.name] + padding_plus_1
+        csv << ['Date', date.strftime('%d/%m/%y')] + padding_plus_1
         csv << Array.new(initiatives.count + 3, '')
         
         csv << [
@@ -96,12 +101,12 @@ module Reports
           if result[:focus_area_group] != current_focus_area_group
             current_focus_area_group = result[:focus_area_group]
             current_focus_area = ''
-            csv << [result[:focus_area_group]] + Array.new(initiatives.count + 2, '')
+            csv << [result[:focus_area_group]] + padding_plus_2
           end
         
           if result[:focus_area] != current_focus_area 
             current_focus_area = result[:focus_area]
-            csv << ["\t\t" + result[:focus_area]] + Array.new(initiatives.count + 2, '')
+            csv << ["\t\t" + result[:focus_area]] + padding_plus_2
           end
 
           csv << [
@@ -117,7 +122,9 @@ module Reports
     
     def comment_counts(characteristic, initiatives, date)
       
-      checklist_items = ChecklistItem.where(characteristic: characteristic, initiative: initiatives) 
+      checklist_items = ChecklistItem
+        .includes(:versions)
+        .where(characteristic: characteristic, initiative: initiatives)
       
       counts = checklist_items.inject({initiatives_count: 0, comment_counts: 0}) do |count, item|
         comment_counts = 0  
@@ -141,7 +148,9 @@ module Reports
       comments = {}
       initiatives.each_with_index do |initiative, index|
         
-        checklist_item = ChecklistItem.find_by(characteristic: characteristic, initiative: initiative) 
+        checklist_item = ChecklistItem
+          .includes(:versions)
+          .find_by(characteristic: characteristic, initiative: initiative)
         
         checklist_item_comments = []
         checklist_item_comments << "[#{checklist_item.updated_at.strftime('%Y-%m-%d')}] #{checklist_item.comment}" if (checklist_item.updated_at <= date && !checklist_item.comment.blank?)

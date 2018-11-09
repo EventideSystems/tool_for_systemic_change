@@ -107,7 +107,10 @@ class ReportsController < ApplicationController
     @content_subtitle = "#{Scorecard.model_name.human} Comments"
     add_breadcrumb @content_subtitle
     
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @scorecard = current_account
+      .scorecards
+      .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
+      .find(params[:report][:scorecard_id])
     @date = Date.parse(params[:report][:date]).end_of_day
     
     @report = Reports::ScorecardComments.new(@scorecard, @date)

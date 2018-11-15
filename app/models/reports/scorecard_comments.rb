@@ -116,7 +116,8 @@ module Reports
           focus_area_group: record['focus_area_group_name'],
           focus_area: record['focus_area_name'],
           characteristic: record['characteristic_name'],
-          comment_counts: record['comment_counts']
+          comment_counts: record['comments_count'],
+          initiatives_count: record['initiatives_count']
         }.merge(initiative_comments(record['characteristic_id'], initiatives, date))
       end
     end

@@ -78,7 +78,12 @@ module Reports
             initiative_comments = initiatives.map do |initiative| 
 
               if characteristic_comments
-                JSON.parse(characteristic_comments['comment']).each_with_object([]) do |characteristic_comment, memo|
+                
+                sorted_comments = JSON.parse(characteristic_comments['comment'])
+                  .sort_by { |comment| comment['date'] }
+                  .reverse
+                
+                sorted_comments.each_with_object([]) do |characteristic_comment, memo|
                   if characteristic_comment['initiative_id'] == initiative.id
                     memo << "[#{characteristic_comment['date']}] #{characteristic_comment['comment']}"
                   end

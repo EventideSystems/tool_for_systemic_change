@@ -24,3 +24,14 @@ Things you may want to cover:
 To deploy master branch on to the production system:
 
 `git push heroku master`
+
+
+## Development Environment
+
+```
+docker-compose build
+docker-compose up -d
+docker-compose run web rake db:create
+docker-compose run web rake db:migrate
+docker-compose run web rake db:seed
+```

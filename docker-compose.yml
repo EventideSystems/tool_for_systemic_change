@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    command: rails server -p 3000 -b '0.0.0.0'
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    environment:
+    - DATABASE_URL=postgres://db
+    - DATABASE_USER=postgres
+    - PGUSER=postgres
+    volumes:
+      - .:/app
+  db:
+    image: postgres:10.5
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+volumes:
+  db-data:

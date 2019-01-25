@@ -35,3 +35,29 @@ docker-compose run web rake db:create
 docker-compose run web rake db:migrate
 docker-compose run web rake db:seed
 ```
+
+### Running RSpec
+
+`docker-compose run -e "RAILS_ENV=test" web bundle exec rspec`
+
+### Running Rails
+
+Start up the full environment in background mode:
+
+`docker-compose up -d`
+ 
+Check that the `evoke_web_1` container is running:
+ 
+`docker ps | grep evoke_web_1`
+
+Attach to the `evoke_web_1` container (for debugging with `pry`): 
+
+`docker attach evoke_web_1`
+
+When you are done with the environment:
+
+`docker-compose down`
+
+### Accessing the shell
+
+`docker exec -it evoke_web_1 bash`

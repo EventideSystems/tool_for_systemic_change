@@ -65,7 +65,7 @@ When you are done with the environment:
 ### Accessing Postgres
 
 ```
-docker exec -it wicked_software_db_1 bash`
+docker exec -it wicked_software_db_1 bash
 su - postgres
 psql
 ```

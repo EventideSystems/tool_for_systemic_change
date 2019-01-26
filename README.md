@@ -48,13 +48,13 @@ Start up the full environment in background mode:
 
 `docker-compose up -d`
  
-Check that the `evoke_web_1` container is running:
+Check that the `wicked_software_web_1` container is running:
  
-`docker ps | grep evoke_web_1`
+`docker ps | grep wicked_software_web_1`
 
-Attach to the `evoke_web_1` container (for debugging with `pry`): 
+Attach to the `wicked_software_web_1` container (for debugging with `pry`): 
 
-`docker attach evoke_web_1`
+`docker attach wicked_software_web_1`
 
 When you are done with the environment:
 

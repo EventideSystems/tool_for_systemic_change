@@ -60,4 +60,12 @@ When you are done with the environment:
 
 ### Accessing the shell
 
-`docker exec -it evoke_web_1 bash`
+`docker exec -it wicked_software_web_1 bash`
+
+### Accessing Postgres
+
+```
+docker exec -it wicked_software_db_1 bash`
+su - postgres
+psql
+```

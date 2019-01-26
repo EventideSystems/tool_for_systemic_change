@@ -23,7 +23,9 @@ Things you may want to cover:
 
 To deploy master branch on to the production system:
 
-`git push heroku master`
+```
+git push heroku master
+```
 
 
 ## Development Environment

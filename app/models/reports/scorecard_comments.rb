@@ -217,7 +217,7 @@ module Reports
               AND versions.event = 'update'
               AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
               AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ( 
-                SELECT comment FROM checklist_items
+                SELECT TRIM(comment) FROM checklist_items
                 WHERE checklist_items.id = versions.item_id
               )
               AND versions.created_at <= '#{date.to_s}'

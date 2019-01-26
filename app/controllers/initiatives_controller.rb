@@ -144,6 +144,8 @@ class InitiativesController < ApplicationController
       @initiative = Initiative.find(params[:id])
       authorize @initiative
     end
+    
+    
 
     def initiative_params
       params.fetch(:initiative, {}).permit(
@@ -164,6 +166,33 @@ class InitiativesController < ApplicationController
         initiatives_subsystem_tags_attributes: [
           :subsystem_tag_id, :id, :_destroy
         ]
-      )
+      ).tap do |params|
+        params[:initiatives_organisations_attributes].reject! do |key, value|
+          value[:organisation_id].blank?
+        end
+        
+        params[:initiatives_organisations_attributes].transform_values! do |value|
+          value[:_destroy] = '0' if value[:_destroy] == '1' &&
+            params[:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
+              other_value[:_destroy] != '1' && 
+              other_value[:organisation_id] == value[:organisation_id]
+            end
+
+          value
+        end
+        
+        params[:initiatives_organisations_attributes].reject! do |key, value|
+          (value[:id].nil?) &&  
+          params[:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
+            other_key != key && 
+            other_value[:organisation_id] == value[:organisation_id]
+          end
+        end
+      end
     end
 end
+
+ # "initiatives_organisations_attributes"=>{
+ #   "0"=>{"_destroy"=>"1", "organisation_id"=>"3", "id"=>"11"},
+ #   "1"=>{"organisation_id"=>"3"},
+ #   "2"=>{"organisation_id"=>""}},

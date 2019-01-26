@@ -196,6 +196,30 @@ class ScorecardsController < ApplicationController
             :subsystem_tag_id
           ]
         ]
-      )
+      ).tap do |params| # NOTE Dupe of code in initiatives controller
+        params[:initiatives_attributes].each do |initiative_key, _|
+          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
+            value[:organisation_id].blank?
+          end
+        
+          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].transform_values! do |value|
+            value[:_destroy] = '0' if value[:_destroy] == '1' &&
+              params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
+                other_value[:_destroy] != '1' && 
+                other_value[:organisation_id] == value[:organisation_id]
+              end
+
+            value
+          end
+        
+          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
+            (value[:id].nil?) &&  
+            params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
+              other_key != key && 
+              other_value[:organisation_id] == value[:organisation_id]
+            end
+          end
+        end
+      end
     end
 end

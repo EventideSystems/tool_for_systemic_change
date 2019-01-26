@@ -184,20 +184,25 @@ module Reports
               AND checklist_items.initiative_id IN (SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id})
               AND TRIM(checklist_items.comment)  <> ''
               AND checklist_items.updated_at <= '#{date.to_s}'
-            ) 
-    
+            )
+
             +
   
-            ( SELECT COUNT(id) FROM versions
-              WHERE item_type = 'ChecklistItem'
-              AND item_id IN (
+            ( SELECT COUNT(DISTINCT substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) 
+              FROM versions
+              WHERE versions.item_type = 'ChecklistItem'
+              AND versions.item_id IN (
                 SELECT checklist_items.id FROM checklist_items 
                 INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
                 WHERE checklist_items.characteristic_id = characteristics.id 
                 AND initiatives.scorecard_id = #{scorecard.id}
               )
-              AND event = 'update'
-              AND TRIM(substring(object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
+              AND versions.event = 'update'
+              AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
+              AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ( 
+                SELECT comment FROM checklist_items
+                WHERE checklist_items.id = versions.item_id
+              )
               AND versions.created_at <= '#{date.to_s}'
             ) 
           ) AS comments_count
@@ -256,7 +261,20 @@ module Reports
             AND versions.event = 'update'
             AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
             AND versions.created_at <= '#{date.to_s}'
-          WHERE initiatives.scorecard_id = #{scorecard.id}
+          LEFT JOIN versions previous_versions ON previous_versions.item_id = checklist_items.id 
+            AND previous_versions.item_type = 'ChecklistItem'   
+            AND previous_versions.event = 'update'
+            AND TRIM(substring(previous_versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
+            AND previous_versions.created_at <= '#{date.to_s}' 
+            AND previous_versions.created_at < versions.created_at
+          WHERE 
+            initiatives.scorecard_id = #{scorecard.id}
+            AND (
+              substring(previous_versions.object from 'comment\:\s(.*)\ncharacteristic_id') <> 
+              substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')
+              OR
+              previous_versions.object IS NULL
+            )
         ) checklist_comments
         GROUP BY characteristic_id
         ORDER BY characteristic_id;

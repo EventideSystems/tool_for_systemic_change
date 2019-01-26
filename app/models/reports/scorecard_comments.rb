@@ -160,7 +160,10 @@ module Reports
               SELECT initiatives.id AS initiative_id FROM initiatives
               INNER JOIN checklist_items ON checklist_items.initiative_id = initiatives.id 
                 AND checklist_items.characteristic_id = characteristics.id
-                AND TRIM(checklist_items.comment)  <> ''
+                AND (
+                  TRIM(checklist_items.comment) <> ''
+                  OR checklist_items.checked = true
+                )
                 AND checklist_items.updated_at <= '#{date.to_s}'
               WHERE initiatives.scorecard_id = #{scorecard.id}
     
@@ -175,6 +178,20 @@ module Reports
                 AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
                 AND versions.created_at <= '#{date.to_s}'
               WHERE initiatives.scorecard_id = #{scorecard.id}
+              
+              UNION
+
+              SELECT initiatives.id AS initiative_id FROM initiatives
+              INNER JOIN checklist_items ON checklist_items.initiative_id = initiatives.id 
+                AND checklist_items.characteristic_id = characteristics.id
+              INNER JOIN versions ON versions.item_id = checklist_items.id 
+                AND versions.item_type = 'ChecklistItem'   
+                AND versions.event = 'update'
+                AND TRIM(substring(versions.object from 'checked\:\strue')) <> ''
+                AND versions.created_at <= '#{date.to_s}'
+                AND checklist_items.updated_at > '#{date.to_s}'
+              WHERE initiatives.scorecard_id = #{scorecard.id}
+              
             ) as initiative_checklist_items
           ) AS initiatives_count,
   

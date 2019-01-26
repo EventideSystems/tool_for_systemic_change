@@ -111,7 +111,7 @@ class ReportsController < ApplicationController
       .scorecards
       .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
       .find(params[:report][:scorecard_id])
-    @date = Date.parse(params[:report][:date]).end_of_day
+    @date = params[:report][:date].in_time_zone('Australia/Adelaide').end_of_day.utc
     
     @report = Reports::ScorecardComments.new(@scorecard, @date)
 

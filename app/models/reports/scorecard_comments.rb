@@ -308,6 +308,7 @@ module Reports
             )
           ) checklist_comments
         ) discrete_checklist_comments
+        WHERE comment_text <> '' AND comment_text IS NOT NULL
         GROUP BY characteristic_id
         ORDER BY characteristic_id;
       SQL

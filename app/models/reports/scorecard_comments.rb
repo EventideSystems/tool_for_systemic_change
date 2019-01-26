@@ -264,34 +264,43 @@ module Reports
           AND checklist_items.characteristic_id = characteristics.id
   
           UNION
-  
+
           SELECT
             characteristics.id,
             initiatives.id AS initiative_id,
-            TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) as comment_text, 
-            versions.created_at as comment_date 
-          FROM checklist_items
+            TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) as comment_text,
+            versions.created_at as comment_date
+          FROM versions
+          INNER JOIN checklist_items ON checklist_items.id = versions.item_id
           INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
           INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
-          INNER JOIN versions ON versions.item_id = checklist_items.id 
-            AND versions.item_type = 'ChecklistItem'   
-            AND versions.event = 'update'
-            AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
-            AND versions.created_at <= '#{date.to_s}'
-          LEFT JOIN versions previous_versions ON previous_versions.item_id = checklist_items.id 
-            AND previous_versions.item_type = 'ChecklistItem'   
+          LEFT JOIN versions previous_versions ON previous_versions.item_id = checklist_items.id
+            AND previous_versions.item_type = 'ChecklistItem'
             AND previous_versions.event = 'update'
             AND TRIM(substring(previous_versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
-            AND previous_versions.created_at <= '#{date.to_s}' 
+            AND previous_versions.created_at <= '#{date.to_s}'
             AND previous_versions.created_at < versions.created_at
-          WHERE 
-            initiatives.scorecard_id = #{scorecard.id}
-            AND (
-              substring(previous_versions.object from 'comment\:\s(.*)\ncharacteristic_id') <> 
-              substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')
-              OR
-              previous_versions.object IS NULL
-            )
+          WHERE versions.item_type = 'ChecklistItem'
+          AND versions.item_id IN (
+            SELECT checklist_items.id FROM checklist_items
+            INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
+            WHERE checklist_items.characteristic_id = characteristics.id
+            AND initiatives.scorecard_id = #{scorecard.id}
+          )
+          AND versions.event = 'update'
+          AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
+          AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> (
+            SELECT TRIM(comment) FROM checklist_items
+            WHERE checklist_items.id = versions.item_id
+          )
+          AND versions.created_at <= '#{date.to_s}'
+          AND (
+            substring(previous_versions.object from 'comment\:\s(.*)\ncharacteristic_id') <>
+            substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')
+            OR
+            previous_versions.object IS NULL
+          )
+
         ) checklist_comments
         GROUP BY characteristic_id
         ORDER BY characteristic_id;

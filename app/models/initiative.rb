@@ -14,7 +14,7 @@ class Initiative < ApplicationRecord
   accepts_nested_attributes_for :initiatives_organisations, 
     allow_destroy: true, 
     reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
-    
+
   accepts_nested_attributes_for :initiatives_subsystem_tags, 
     allow_destroy: true, 
     reject_if:  proc { |attributes| attributes['subsystem_tag_id'].blank? }

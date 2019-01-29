@@ -168,31 +168,30 @@ class InitiativesController < ApplicationController
         ]
       ).tap do |params|
         params[:initiatives_organisations_attributes].reject! do |key, value|
-          value[:organisation_id].blank?
+          value[:_destroy] != '1' && (
+            value[:organisation_id].blank? || (
+              value[:id].blank? && 
+              params[:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
+                selected_key != key &&
+                selected_value[:_destroy] != '1' && 
+                selected_value[:organisation_id] == value[:organisation_id]
+              end
+            )
+          )
         end
         
-        params[:initiatives_organisations_attributes].transform_values! do |value|
-          value[:_destroy] = '0' if value[:_destroy] == '1' &&
-            params[:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
-              other_value[:_destroy] != '1' && 
-              other_value[:organisation_id] == value[:organisation_id]
-            end
-
-          value
-        end
-        
-        params[:initiatives_organisations_attributes].reject! do |key, value|
-          (value[:id].nil?) &&  
-          params[:initiatives_organisations_attributes].to_h.any? do |other_key, other_value|
-            other_key != key && 
-            other_value[:organisation_id] == value[:organisation_id]
-          end
+        params[:initiatives_subsystem_tags_attributes].reject! do |key, value|
+          value[:_destroy] != '1' && (
+            value[:subsystem_tag_id].blank? || (
+              value[:id].blank? && 
+              params[:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
+                selected_key != key &&
+                selected_value[:_destroy] != '1' && 
+                selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
+              end
+            )
+          )
         end
       end
     end
 end
-
- # "initiatives_organisations_attributes"=>{
- #   "0"=>{"_destroy"=>"1", "organisation_id"=>"3", "id"=>"11"},
- #   "1"=>{"organisation_id"=>"3"},
- #   "2"=>{"organisation_id"=>""}},

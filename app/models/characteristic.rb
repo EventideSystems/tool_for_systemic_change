@@ -15,7 +15,9 @@ class Characteristic < ApplicationRecord
   #accepts_nested_attributes_for :video_tutorial
   
   def video_tutorial_id=(value)
-    VideoTutorial.find(value).update_attribute(:linked, self)
+    return if value.blank?
+    tutorial = VideoTutorial.where(id: value).first
+    tutorial.update_attribute(:linked, self) if tutorial
   end
   
   def video_tutorial_id

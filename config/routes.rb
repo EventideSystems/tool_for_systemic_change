@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     resources :imports, only: [:new, :create, :update]
   end
   
+  namespace :transition_card_comments do
+    resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
+  end
+
   UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
   
   devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
@@ -28,16 +32,6 @@ Rails.application.routes.draw do
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags
   resources :organisations
-  
-  # resources :scorecards do
-  #   member do
-  #     get 'show_shared_link'
-  #     post 'copy'
-  #     get 'copy_options'
-  #     post 'merge'
-  #     get 'merge_options'
-  #   end
-  # end
 
   resources :scorecards, path: 'transition_cards' do
     member do

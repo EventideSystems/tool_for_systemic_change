@@ -10,9 +10,6 @@ class Initiatives::ImportsController < ApplicationController
     authorize @initiatives_import
   end
 
-  # def edit
-  # end
-
   def create
     @initiatives_import = current_account.initiatives_imports.build(
       initiatives_import_params.merge(user: current_user)
@@ -46,21 +43,14 @@ class Initiatives::ImportsController < ApplicationController
     end
   end
 
-  # def destroy
-  #   @initiatives_import.destroy
-  #   respond_to do |format|
-  #     format.html { redirect_to initiatives_imports_url, notice: 'Import was successfully destroyed.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
-
   private
-    def set_initiatives_import
-      @initiatives_import = Initiatives::Import.find(params[:id])
-      authorize @initiatives_import
-    end
+  
+  def set_initiatives_import
+    @initiatives_import = Initiatives::Import.find(params[:id])
+    authorize @initiatives_import
+  end
 
-    def initiatives_import_params
-      params.fetch(:initiatives_import, {}).permit(:import)
-    end
+  def initiatives_import_params
+    params.fetch(:initiatives_import, {}).permit(:import)
+  end
 end

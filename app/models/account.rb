@@ -15,6 +15,7 @@ class Account < ApplicationRecord
   has_many :wicked_problems
   has_many :organisations_imports, class_name: 'Organisations::Import'
   has_many :initiatives_imports, class_name: 'Initiatives::Import'
+  has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import'
   has_many :subsystem_tags
   
   validates :name, presence: true

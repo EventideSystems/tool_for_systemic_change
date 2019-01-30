@@ -1,0 +1,32 @@
+<%= simple_form_for(@scorecard_comments_import, url: transition_card_comments_imports_path(@scorecard_comments_import)) do |f| %>
+  <%= f.error_notification %>
+  <div class='box box-primary'>
+    <div class='box-header with-border'>
+      <h3 class='box-title'><%= form_title(@scorecard_comments_import) %></h3>
+    </div>
+    <div class='box-body'>
+      
+      <div>
+        <%= import_files_instructions_link %>
+      </div>
+      
+      <% if @scorecard_comments_import.import_data.present? %>
+        <%= f.input :import_file_name, readonly: true, input_html: { value: @scorecard_comments_import.import.original_filename } %>
+        <%= f.input :import, as: :hidden, input_html: { value: @scorecard_comments_import.import_data } %>
+      <% else %>  
+        <%= f.input :import, as: :file, required: true %>
+      <% end %>
+      
+    </div>
+    
+    <%= render partial: 'import/processing_errors', locals: { import: @scorecard_comments_import } %> 
+  </div>
+  
+  <div class='box-footer'>
+    <% if @scorecard_comments_import.processing_errors.empty? %>
+      <%= f.button :submit, 'Import', class: 'btn btn-primary pull-right', style: 'margin-left: 15px' %>
+    <% end %>
+    <%= link_to('Cancel', initiatives_path, class: 'btn btn-secondary pull-right') %>
+  </div>
+
+<% end %>

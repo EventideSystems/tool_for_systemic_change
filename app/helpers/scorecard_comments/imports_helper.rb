@@ -1,0 +1,2 @@
+module ScorecardComments::ImportsHelper
+end

@@ -1,9 +1,8 @@
 class Initiatives::Import < Import
-  
+
   MAX_ORGANIZATION_EXPORT = 15
   MAX_SUBSYSTEM_TAG_EXPORT = 15
-  
-  
+
   def process(account)
     name_index             = column_index(:name)
     description_index      = column_index(:description)
@@ -15,14 +14,13 @@ class Initiatives::Import < Import
     contact_phone_index    = column_index(:contact_phone)
     contact_website_index  = column_index(:contact_website)
     contact_position_index = column_index(:contact_position)
-    
-    
+
     data_rows.each.with_index(1) do |raw_row, row_index|
-      
+
       row = sanitize_row(raw_row)
       
       scorecard = scorecard_name_index.nil? ? nil : find_scorecard_by_name(account, row[scorecard_name_index])
-      
+
       if scorecard.nil?
         processing_errors << build_processing_errors(
           row_data: row, row_index: row_index, error_messages: ["#{Scorecard.model_name.human} is invalid"]

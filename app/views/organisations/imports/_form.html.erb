@@ -17,7 +17,7 @@
         <%= f.input :import, as: :file, required: true %>
       <% end %>
     </div>    
-    <%= render partial: 'import/processing_errors', locals: { import: @organisations_import } %>
+    <%= render partial: 'import/processing_errors', locals: { import: @organisations_import, return_link: new_organisations_import_url } %>
   </div>
   
   <div class='box-footer'>

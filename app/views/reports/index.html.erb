@@ -26,8 +26,8 @@
         <p>This report shows the addition and removal of characteristics across initiatives over a period of time.</p>
         
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
-        <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
-        <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+        <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker-auto-bottom" }, autocomplete: "off" } %>
+        <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
 
       </div>
       <div class="box-footer">
@@ -46,7 +46,7 @@
       <div class="box-body">
         <p>This report shows the last comments saved across initiatives.</p>
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
-        <%= f.input :date, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+        <%= f.input :date, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
 
       </div>
       <div class="box-footer">

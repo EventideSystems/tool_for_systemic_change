@@ -19,7 +19,7 @@
       
     </div>
     
-    <%= render partial: 'import/processing_errors', locals: { import: @initiatives_import } %> 
+    <%= render partial: 'import/processing_errors', locals: { import: @initiatives_import, return_link: new_initiatives_import_url } %> 
   </div>
   
   <div class='box-footer'>

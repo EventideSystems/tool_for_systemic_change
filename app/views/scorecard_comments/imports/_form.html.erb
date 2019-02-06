@@ -7,7 +7,7 @@
     <div class='box-body'>
       
       <div>
-        <%= import_files_instructions_link %>
+        <%= import_comments_instructions_link %>
       </div>
       
       <% if @scorecard_comments_import.import_data.present? %>
@@ -19,7 +19,7 @@
       
     </div>
     
-    <%= render partial: 'import/processing_errors', locals: { import: @scorecard_comments_import } %> 
+    <%= render partial: 'import/processing_errors', locals: { import: @scorecard_comments_import, return_link: new_transition_card_comments_import_url } %> 
   </div>
   
   <div class='box-footer'>

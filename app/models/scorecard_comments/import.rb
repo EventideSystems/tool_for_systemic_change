@@ -62,8 +62,9 @@ class ScorecardComments::Import < Import
             if initiative && characteristic
               checklist_item = initiative.checklist_items.where(characteristic: characteristic).first
               if checklist_item
+                checklist_item.checked = true if checklist_item.checked != true
                 checklist_item.comment = comment
-                checklist_item.save
+                checklist_item.save!
               end
             else
               processing_errors << build_processing_errors(

@@ -57,7 +57,7 @@ module ApplicationHelper
         concat "For instructions on importing files go to "
         concat link_to(
           'www.wickedlab.com.au/help-importing-files',
-          'http://www.wickedlab.com.au/help-importing-files', 
+          'https://www.wickedlab.com.au/help-importing-files', 
           target: :_blank, style: 'text-decoration: underline;'
         )
         concat "."
@@ -65,6 +65,20 @@ module ApplicationHelper
     end  
   end
   
+  def import_comments_instructions_link
+    content_tag(:p, class: 'text-light-blue') do 
+      content_tag(:strong) do
+        concat "For instructions on importing files go to "
+        concat link_to(
+          'www.wickedlab.com.au/help-importing-comments',
+          'https://www.wickedlab.com.au/help-importing-comments.html', 
+          target: :_blank, style: 'text-decoration: underline;'
+        )
+        concat "."
+      end
+    end  
+  end
+
   def create_new_button(path) 
     link_to(path, class: 'btn btn-primary') do
       safe_join([content_tag(:i, '', class: "fa fa-plus"), ' Create New'])

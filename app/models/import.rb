@@ -87,6 +87,7 @@ class Import < ApplicationRecord
   
     xlsx_rows = []
     xlsx.each_row_streaming do |row|
+      next if row.last.nil?
       col_count = row.last.coordinate.column
       row_array = Array.new(col_count)
       

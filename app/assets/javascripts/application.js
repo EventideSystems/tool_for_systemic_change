@@ -176,10 +176,18 @@
   // *** Create Scorecard Wizard - General - Datepickers
   
   $(document).ready(function() {
+
     $('[data-behaviour~=datepicker]').datepicker({
-    "format": "yyyy-mm-dd",
-    "weekStart": 1,
-    "autoclose": true
+      "format": "yyyy-mm-dd",
+      "weekStart": 1,
+      "autoclose": true
+    });
+    
+    $('[data-behaviour~=datepicker-auto-bottom]').datepicker({
+      "format": "yyyy-mm-dd",
+      "weekStart": 1,
+      "autoclose": true,
+      "orientation": 'auto bottom'
     });
   });
 

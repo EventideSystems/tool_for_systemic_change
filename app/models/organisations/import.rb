@@ -5,6 +5,13 @@ class Organisations::Import < Import
     description_index = column_index(:description)
     sector_index      = column_index(:sector)
     weblink_index     = column_index(:weblink)
+
+    if name_index.nil?
+      processing_errors << build_processing_errors(
+        row_data: data_rows.first, row_index: 0, error_messages: ["Import file is mising 'name' header on first line"]
+      )
+      return false
+    end
     
     data_rows.each.with_index(1) do |raw_row, row_index|
       

@@ -32,6 +32,13 @@
           <% end %>  
         </tbody>    
       </table>
-    </div>  
+    </div>
   </div>
+  <%- if local_assigns[:return_link] -%>
+    <div class='box-footer'>
+      <%= link_to(return_link, class: 'btn btn-primary  pull-right') do
+        safe_join([content_tag(:i, '', class: 'fa fa-caret-left'), ' Return to Import Page'])
+      end %>
+    </div>
+  <%- end -%>
 <% end %>  

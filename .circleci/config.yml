@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/wicked_software
     docker:
-      - image: circleci/ruby:2.3-node-browsers
+      - image: circleci/ruby:2.6.2-stretch-node
         environment:
           PGHOST: localhost
           PGUSER: wicked_software
@@ -18,14 +18,28 @@ jobs:
     steps:
       # Install required libraries
       - run: sudo apt-get update && sudo apt-get -y install libgeos-dev libgeos++-dev libproj-dev
+      
       - checkout
 
+      - run:
+          name: "Update Node.js and npm"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+
+      - run:
+           name: Configure Bundler
+           command: |
+             echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+             source $BASH_ENV
+             gem install bundler
+             
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          - v2-dependencies-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies
+          - v2-dependencies
 
       - run:
           name: install dependencies
@@ -35,7 +49,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: v2-dependencies-{{ checksum "Gemfile.lock" }}
       # Database setup
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load

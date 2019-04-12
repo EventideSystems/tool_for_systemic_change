@@ -90,10 +90,10 @@ class ScorecardComments::Import < Import
   private
   
   def find_scorecard_by_name(account, name)
-    account.scorecards.where("lower(name) = :name", { name: name.downcase }).first
+    account.scorecards.where("lower(name) = :name", { name: name&.downcase }).first
   end
   
   def find_initiative_by_name(scorecard, name)
-    scorecard.initiatives.where("lower(name) = :name", { name: name.downcase }).first
+    scorecard.initiatives.where("lower(name) = :name", { name: name&.downcase }).first
   end
 end

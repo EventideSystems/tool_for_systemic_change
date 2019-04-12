@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  url: postgres://db
+  url: postgres://localhost
   user: postgres
   database: wicked_software_development
 

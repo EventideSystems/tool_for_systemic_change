@@ -17,6 +17,13 @@ class Organisations::Import < Import
       
       row = sanitize_row(raw_row)
       
+      if row[name_index].blank?
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: ['Row is missing name value']
+        )
+        next  
+      end
+      
       organisation = find_or_build_organisation_by_name(account, row[name_index])
       sector = sector_index.nil? ? nil : find_sector_by_name(row[sector_index])
       

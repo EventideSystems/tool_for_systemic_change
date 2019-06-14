@@ -19,18 +19,25 @@ class Initiatives::Import < Import
 
       row = sanitize_row(raw_row)
       
-      scorecard = scorecard_name_index.nil? ? nil : find_scorecard_by_name(account, row[scorecard_name_index])
-
-      if scorecard.nil?
+      if name_index.nil? 
         processing_errors << build_processing_errors(
-          row_data: row, row_index: row_index, error_messages: ["#{Scorecard.model_name.human} is invalid"]
+          row_data: row, row_index: row_index, error_messages: ["'Name' column is missing"]
         )
         next  
       end
       
-      if name_index.nil? 
+      if scorecard_name_index.nil?
         processing_errors << build_processing_errors(
-          row_data: row, row_index: row_index, error_messages: ['Initiative name is missing']
+          row_data: row, row_index: row_index, error_messages: ["'#{Scorecard.model_name.human} Name' column is missing"]
+        )
+        next  
+      end
+
+      scorecard = find_scorecard_by_name(account, row[scorecard_name_index])
+
+      if scorecard.nil?
+        processing_errors << build_processing_errors(
+          row_data: row, row_index: row_index, error_messages: ["#{Scorecard.model_name.human} cannot be found"]
         )
         next  
       end

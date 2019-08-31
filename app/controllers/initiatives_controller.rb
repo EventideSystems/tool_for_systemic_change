@@ -160,6 +160,7 @@ class InitiativesController < ApplicationController
         :contact_phone,
         :contact_website,
         :contact_position,
+        :notes,
         initiatives_organisations_attributes: [
           :organisation_id, :id, :_destroy
         ],

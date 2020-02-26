@@ -42,7 +42,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'pundit'
 
-# User interface 
+# User interface
 gem 'bootstrap-sass'
 gem 'font-awesome-sass'
 gem 'simple_form'
@@ -59,10 +59,11 @@ gem 'bootstrap_form'
 # Report related
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
-gem 'axlsx', '2.1.0.pre'
+gem 'caxlsx'
 gem 'roo', '~> 2.7.0'
 gem 'prawn'
 gem 'prawn-table'
+gem 'rubyzip', '>= 1.3.0'
 
 gem 'shrine'
 gem 'rollbar'
@@ -71,7 +72,7 @@ gem 'scout_apm'
 # SMELL See https://github.com/tenex/rails-assets/issues/417
 #source 'http://insecure.rails-assets.org/' do
 source 'https://rails-assets.org/' do
-  gem 'rails-assets-adminlte'  
+  gem 'rails-assets-adminlte'
   gem 'rails-assets-medium-editor'
   gem 'rails-assets-twitter-bootstrap-wizard'
   gem 'rails-assets-select2'

@@ -156,9 +156,8 @@ GEM
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.3)
-    jbuilder (2.6.1)
-      activesupport (>= 3.0.0, < 5.1)
-      multi_json (~> 1.2)
+    jbuilder (2.10.0)
+      activesupport (>= 5.0.0)
     jquery-rails (4.2.2)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -198,7 +197,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.14.0)
-    multi_json (1.12.1)
+    multi_json (1.14.1)
     multi_test (0.1.2)
     nested_form_fields (0.8)
       coffee-rails (>= 3.2.1)
@@ -431,7 +430,7 @@ DEPENDENCIES
   ffaker
   font-awesome-sass
   hashie (~> 3.4, < 3.5)
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.10)
   jquery-rails
   kaminari-bootstrap
   listen (~> 3.0.5)

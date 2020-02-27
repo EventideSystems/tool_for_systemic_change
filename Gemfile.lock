@@ -353,7 +353,7 @@ GEM
     scout_apm (2.4.19)
     shrine (2.6.1)
       down (>= 2.3.6)
-    simple_form (5.0.0)
+    simple_form (5.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
     slop (3.6.0)

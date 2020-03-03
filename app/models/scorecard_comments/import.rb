@@ -67,10 +67,17 @@ class ScorecardComments::Import < Import
                 checklist_item.save!
               end
             else
+              missing_data = []
+
+              missing_data << "Cannot find initiative ##{index}" if initiative.nil?
+              missing_data << "Cannot find characteristic '#{characteristic_name}''" if characteristic.nil?
+
               processing_errors << build_processing_errors(
                 row_data: row,
                 row_index: row_index,
-                error_messages: ["Unable to match '#{cell}' with a #{Initiative.model_name.human} '#{characteristic_name}'. Skipping."]
+                error_messages: [
+                  "Unable to match '#{cell}': #{missing_data.join(' ')} . Skipping."
+                ]
               )
             end
           end

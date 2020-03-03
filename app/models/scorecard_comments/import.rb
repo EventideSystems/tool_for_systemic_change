@@ -46,6 +46,15 @@ class ScorecardComments::Import < Import
         end
       end
 
+      if initiatives.empty?
+        processing_errors << build_processing_errors(
+          row_data: row,
+          row_index: row_index,
+          error_messages: ["Initiatives cannot be found. Cancelling import."]
+        )
+        return false
+      end
+
       next if row[0].strip.in?(focus_area_group_names) || row[0].strip.in?(focus_area_names)
 
       if row[0].strip.in?(characteristic_names)
@@ -69,7 +78,7 @@ class ScorecardComments::Import < Import
             else
               missing_data = []
 
-              missing_data << "Cannot find initiative ##{index}" if initiative.nil?
+              missing_data << "Cannot find initiative ##{index+1}" if initiative.nil?
               missing_data << "Cannot find characteristic '#{characteristic_name}''" if characteristic.nil?
 
               processing_errors << build_processing_errors(

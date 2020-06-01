@@ -5,19 +5,29 @@ class NetworksController < ApplicationController
   add_breadcrumb "Networks", :networks_path
 
   def index
-    @nodes = load_nodes
-    @links = load_links
+    link_data = load_link_data
+    @nodes = load_nodes(link_data)
+    @links = load_links(link_data)
   end
 
   private
 
-  def load_nodes
-    current_account.organisations.all.map do |org|
-      { id: org.id, group: 0, label: org.name.truncate(20), level: 1 }
+  def load_nodes(link_data)
+    level = 0
+    current_account.organisations.where(id: link_data.flatten.uniq).map do |org|
+      level += 1
+      level = 0 if level > 1 
+      { id: org.id, group: 0, label: org.name.truncate(20), level: level }
     end.to_json
   end
 
-  def load_links
+  def load_links(link_data)
+    link_data.map do |row|
+      { target: row[0], source: row[1], strength: 0.1 }
+    end.to_json
+  end
+
+  def load_link_data
     query = <<~SQL
       select org1.id, org2.id from initiatives
       inner join scorecards on scorecards.id = initiatives.scorecard_id
@@ -30,10 +40,7 @@ class NetworksController < ApplicationController
 
     results = ActiveRecord::Base.connection.exec_query(query).rows
 
-    results = results + results.map{|r| [r[1], r[0]]}
-
-    results.uniq.map do |row|
-      { target: row[0], source: row[1], strength: 0.7 }
-    end.to_json
+    (results + results.map{ |r| [r[1], r[0]] }).uniq
   end
+
 end

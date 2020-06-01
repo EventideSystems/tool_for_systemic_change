@@ -115,6 +115,8 @@ GEM
       nokogiri (~> 1.5)
       railties (>= 3, < 5.1)
     cucumber-wire (0.0.1)
+    d3-rails (5.9.2)
+      railties (>= 3.1)
     daemons (1.1.9)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -424,6 +426,7 @@ DEPENDENCIES
   caxlsx
   coffee-rails (~> 4.2)
   cucumber-rails
+  d3-rails
   daemons
   database_cleaner
   delayed_job_active_record

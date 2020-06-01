@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   end
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags
+  resources :networks
   resources :organisations
 
   resources :scorecards, path: 'transition_cards' do
@@ -81,6 +82,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  
   
   root to: "home#index"
 end

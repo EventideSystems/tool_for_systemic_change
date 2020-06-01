@@ -21,6 +21,7 @@
   //= require twitter-bootstrap-wizard
   //= require moment
   //= require bootstrap-daterangepicker
+  //= require d3
   
   var ready = function () {
     var o;

@@ -167,7 +167,7 @@ class ScorecardsController < ApplicationController
     level = 0
     current_account.organisations.where(id: link_data.flatten.uniq).map do |org|
       level += 1
-      level = 0 if level > 1 
+      level = 0 if level > 9 
       { id: org.id, group: 0, label: org.name.truncate(20), level: level }
     end.to_json
   end

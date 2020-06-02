@@ -24,10 +24,44 @@
 
   function getNodeColor(node, neighbors) {
     if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-      return node.level === 1 ? 'blue' : 'green'
+      return node.level === 1 ? '#499BC4' : '#49C472'
     }
 
-    return node.level === 1 ? 'red' : 'gray'
+    var nodeColor;
+    
+    switch(node.level) {
+      case 0: 
+        nodeColor = 'red';
+        break;
+      case 1: 
+        nodeColor = '#F7C80B';
+        break;
+      case 2: 
+        nodeColor = '#FF6D24';
+        break;
+      case 3: 
+        nodeColor = '#7993F2';
+        break;
+      case 4: 
+        nodeColor = '2E74BA';
+        break;
+      case 5: 
+        nodeColor = '#009BCC';
+        break;
+      case 6: 
+        nodeColor = '#008C8C';
+        break;
+      case 7: 
+        nodeColor = '#00CCAA';
+        break;
+      case 8: 
+        nodeColor = '#1CB85D';
+        break;
+      default:
+        nodeColor = 'gray';
+    }
+
+    return nodeColor;
   }
 
 
@@ -54,8 +88,8 @@
   var simulation = d3
     .forceSimulation()
     .force('link', linkForce)
-    .force('charge', d3.forceManyBody().strength(-120))
-    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(width / 3, height / 3))
 
   var dragDrop = d3.drag().on('start', function (node) {
     node.fx = node.x
@@ -94,7 +128,7 @@
     .selectAll("circle")
     .data(nodes)
     .enter().append("circle")
-      .attr("r", 10)
+      .attr("r", 7)
       .attr("fill", getNodeColor)
       .call(dragDrop)
       .on('click', selectNode)
@@ -105,7 +139,7 @@
     .data(nodes)
     .enter().append("text")
       .text(function (node) { return  node.label })
-      .attr("font-size", 15)
+      .attr("font-size", 11)
       .attr("dx", 15)
       .attr("dy", 4)
 

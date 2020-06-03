@@ -7,7 +7,7 @@
 <style>
 div.tooltip {	
   position: absolute;
-  width: auto;
+  width: 200px;
   height: auto;
   padding: 2px;				
   font: 12px sans-serif;		
@@ -201,10 +201,10 @@ div.tooltip > h5 {
            
         div.transition()        
           .duration(200)      
-          .style("opacity", 1);      
-        div.html(divHtml) 
-          .style("left", (d3.event.pageX) + "px")     
-          .style("top", (d3.event.pageY - 28) + "px");    
+          .style("opacity", 0.8);      
+        div.html(divHtml)
+          .style("left", ($('#chart').first().position().left + $('#chart').first().width() - 200) + "px")
+          .style("top",  ($('#chart').first().position().top)  + "px");      
       })                  
       .on("mouseout", function(d) {       
         div.transition()        

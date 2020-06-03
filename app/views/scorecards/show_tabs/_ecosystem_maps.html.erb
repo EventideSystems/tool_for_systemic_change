@@ -1,8 +1,42 @@
+
+
+<div id="chart">
 <svg width="100%" height="300"></svg>
+</div>
+
+<style>
+div.tooltip {	
+  position: absolute;			    		
+  width: 200px;
+  height: auto;
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: white;	
+  pointer-events: none;
+  padding: 0.5em;
+  border: 1px solid black;
+}
+
+div.tooltip > ul {
+  list-style-type: none;
+  margin: 5px;
+  padding: 5px;
+}
+
+div.tooltip > ul > li {
+  font: 7px sans-serif;	
+}
+
+</style>
 
 <script>
   var nodes = <%= @nodes.html_safe %>
   var links = <%= @links.html_safe %>
+
+  var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
 
   function getNeighbors(node) {
     return links.reduce(function (neighbors, link) {
@@ -106,13 +140,72 @@
     node.fy = null
   })
 
-  function selectNode(selectedNode) {
-    var neighbors = getNeighbors(selectedNode)
+  var tip;
+  svg.on("click", function(){
+    if (tip) tip.remove();
+  });
 
-    // we modify the styles to highlight selected nodes
-    nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-    textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-    linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+  // function selectNode(selectedNode) {
+  //   var neighbors = getNeighbors(selectedNode)
+
+  //   // we modify the styles to highlight selected nodes
+  //   nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+  //   textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+  //   linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+  // }
+
+
+
+  function selectNode(selectedNode) {
+    d3.event.stopPropagation(); 
+  
+    if (tip) tip.remove();
+    
+    tip  = svg.append("g")
+      .attr("transform", "translate(" + selectedNode.x  + "," + selectedNode.y + ")");
+      
+    var rect = tip.append("rect")
+      .style("fill", "white")
+      .style("stroke", "#49C5B1");
+    
+    tip.append("text")
+      .text(selectedNode.organisation_name)
+      .attr("font-size", "20px")
+      .attr("margin", "15px")
+      .attr("dy", "1em")
+      .attr("x", 5);
+      
+    tip.append("text")
+      .text(selectedNode.organisation_description)
+      .attr("dy", "3em")
+      .attr("x", 5);
+
+    tip.append("text")
+      .text(selectedNode.organisation_sector_name)
+      .attr("dy", "4em")
+      .attr("x", 5);
+
+    tip.append("text")
+      .text(selectedNode.organisation_weblink)
+      .attr("dy", "5em")
+      .attr("x", 5);
+
+    // var con = simulation.links
+    //   .filter(function(d1){
+    //     return d1.source.id === selectedNode.id;
+    //   })
+    //   .map(function(d1){
+    //     return d1.target.name + " with weight " + d1.weight;
+    //   })
+      
+    // tip.append("text")
+    //   .text("Connected to: " + con.join(","))
+    //   .attr("dy", "3em")
+    //   .attr("x", 5);
+    
+    var bbox = tip.node().getBBox();
+    rect.attr("width", bbox.width + 15)
+        .attr("height", bbox.height + 5)
   }
 
   var linkElements = svg.append("g")
@@ -131,7 +224,49 @@
       .attr("r", 7)
       .attr("fill", getNodeColor)
       .call(dragDrop)
-      .on('click', selectNode)
+      // .on('click', selectNode)
+      .on("mouseover", function(d) {  
+        var divHtml = "<h5>" + d.organisation_name + 
+          " [" + d.organisation_sector_name + "]</h5>"
+
+        if (d.organisation_description) {
+          divHtml += "<p><i>" + d.organisation_description + "</i></p>"
+        }
+
+        if (d.organisation_weblink) {
+          divHtml += "<p>" + d.organisation_weblink + "</p>"
+        }
+
+        if (d.initiatives_partnering_on.length) {
+          divHtml += "<h6>Initiatives Partnering On</h6>"
+          divHtml += "<ul>"
+          d.initiatives_partnering_on.forEach(function (item, index) {
+            divHtml += "<li>" + item + "</li>"
+          });
+          divHtml += "</ul>"
+        }
+
+        if (d.partnering_organisation_names.length) {
+          divHtml += "<h6>Partnering Organisations</h6>"
+          divHtml += "<ul>"
+          d.partnering_organisation_names.forEach(function (item, index) {
+            divHtml += "<li>" + item + "</li>"
+          });
+          divHtml += "</ul>"
+        }
+           
+        div.transition()        
+          .duration(200)      
+          .style("opacity", 1);      
+        div.html(divHtml)    
+          .style("left", (d3.event.pageX) + "px")     
+          .style("top", (d3.event.pageY - 28) + "px");    
+      })                  
+      .on("mouseout", function(d) {       
+        div.transition()        
+          .duration(500)      
+          .style("opacity", 0);   
+      });
 
   var textElements = svg.append("g")
     .attr("class", "texts")
@@ -139,7 +274,7 @@
     .data(nodes)
     .enter().append("text")
       .text(function (node) { return  node.label })
-      .attr("font-size", 11)
+      .attr("font-size", 9)
       .attr("dx", 15)
       .attr("dy", 4)
 
@@ -156,6 +291,10 @@
       .attr('x2', function (link) { return link.target.x })
       .attr('y2', function (link) { return link.target.y })
   })
+
+
+
+
 
   simulation.force("link").links(links)
   </script>

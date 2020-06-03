@@ -6,7 +6,7 @@
 
 <style>
 div.tooltip {	
-  position: absolute;			    		
+  position: absolute;
   width: auto;
   height: auto;
   padding: 2px;				
@@ -25,6 +25,10 @@ div.tooltip > ul {
 
 div.tooltip > ul > li {
   font: 7px sans-serif;	
+}
+
+div.tooltip > h5 {
+  font-weight: bold;
 }
 
 </style>
@@ -54,7 +58,6 @@ div.tooltip > ul > li {
   function isNeighborLink(node, link) {
     return link.target.id === node.id || link.source.id === node.id
   }
-
 
   function getNodeColor(node, neighbors) {
     if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
@@ -140,10 +143,14 @@ div.tooltip > ul > li {
     node.fy = null
   })
 
-  var tip;
-  svg.on("click", function(){
-    if (tip) tip.remove();
-  });
+  function selectNode(selectedNode) {
+    var neighbors = getNeighbors(selectedNode)
+
+    // we modify the styles to highlight selected nodes
+    nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+    textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+    linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+  }
 
   var linkElements = svg.append("g")
     .attr("class", "links")
@@ -161,7 +168,7 @@ div.tooltip > ul > li {
       .attr("r", 7)
       .attr("fill", getNodeColor)
       .call(dragDrop)
-      // .on('click', selectNode)
+      .on('click', selectNode)
       .on("mouseover", function(d) {  
         var divHtml = "<h5>" + d.organisation_name + 
           " [" + d.organisation_sector_name + "]</h5>"
@@ -175,7 +182,7 @@ div.tooltip > ul > li {
         }
 
         if (d.initiatives_partnering_on.length) {
-          divHtml += "<h6>Initiatives Partnering On</h6>"
+          divHtml += "<h6>Initiatives</h6>"
           divHtml += "<ul>"
           d.initiatives_partnering_on.forEach(function (item, index) {
             divHtml += "<li>" + item + "</li>"
@@ -195,7 +202,7 @@ div.tooltip > ul > li {
         div.transition()        
           .duration(200)      
           .style("opacity", 1);      
-        div.html(divHtml)    
+        div.html(divHtml) 
           .style("left", (d3.event.pageX) + "px")     
           .style("top", (d3.event.pageY - 28) + "px");    
       })                  

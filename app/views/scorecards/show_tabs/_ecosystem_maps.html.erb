@@ -7,7 +7,7 @@
 <style>
 div.tooltip {	
   position: absolute;			    		
-  width: 200px;
+  width: auto;
   height: auto;
   padding: 2px;				
   font: 12px sans-serif;		
@@ -144,69 +144,6 @@ div.tooltip > ul > li {
   svg.on("click", function(){
     if (tip) tip.remove();
   });
-
-  // function selectNode(selectedNode) {
-  //   var neighbors = getNeighbors(selectedNode)
-
-  //   // we modify the styles to highlight selected nodes
-  //   nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-  //   textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-  //   linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-  // }
-
-
-
-  function selectNode(selectedNode) {
-    d3.event.stopPropagation(); 
-  
-    if (tip) tip.remove();
-    
-    tip  = svg.append("g")
-      .attr("transform", "translate(" + selectedNode.x  + "," + selectedNode.y + ")");
-      
-    var rect = tip.append("rect")
-      .style("fill", "white")
-      .style("stroke", "#49C5B1");
-    
-    tip.append("text")
-      .text(selectedNode.organisation_name)
-      .attr("font-size", "20px")
-      .attr("margin", "15px")
-      .attr("dy", "1em")
-      .attr("x", 5);
-      
-    tip.append("text")
-      .text(selectedNode.organisation_description)
-      .attr("dy", "3em")
-      .attr("x", 5);
-
-    tip.append("text")
-      .text(selectedNode.organisation_sector_name)
-      .attr("dy", "4em")
-      .attr("x", 5);
-
-    tip.append("text")
-      .text(selectedNode.organisation_weblink)
-      .attr("dy", "5em")
-      .attr("x", 5);
-
-    // var con = simulation.links
-    //   .filter(function(d1){
-    //     return d1.source.id === selectedNode.id;
-    //   })
-    //   .map(function(d1){
-    //     return d1.target.name + " with weight " + d1.weight;
-    //   })
-      
-    // tip.append("text")
-    //   .text("Connected to: " + con.join(","))
-    //   .attr("dy", "3em")
-    //   .attr("x", 5);
-    
-    var bbox = tip.node().getBBox();
-    rect.attr("width", bbox.width + 15)
-        .attr("height", bbox.height + 5)
-  }
 
   var linkElements = svg.append("g")
     .attr("class", "links")

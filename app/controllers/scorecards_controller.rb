@@ -168,7 +168,35 @@ class ScorecardsController < ApplicationController
     current_account.organisations.where(id: link_data.flatten.uniq).map do |org|
       level += 1
       level = 0 if level > 9 
-      { id: org.id, group: 0, label: org.name.truncate(20), level: level }
+      
+      linked_org_ids = link_data.each_with_object([]) do |link, array|
+        if org.id.in?(link)
+          linked_id = link - [org.id]
+          array.push(linked_id)
+        end
+      end.flatten.uniq
+
+      initiatives_partnering_on = InitiativesOrganisation
+        .where(organisation_id: linked_org_ids + [org.id])
+        .joins(:initiative)
+        .pluck('initiatives.name')
+        .uniq
+
+      partnering_organisation_names = Organisation
+        .where(id: linked_org_ids).pluck(:name)
+
+      { 
+        id: org.id,
+        organisation_name: org.name,
+        organisation_description: org.description,
+        organisation_sector_name: org.sector&.name,
+        organisation_weblink: org.weblink,
+        initiatives_partnering_on: initiatives_partnering_on,
+        partnering_organisation_names: partnering_organisation_names,
+        group: 0, 
+        label: org.name.truncate(20), 
+        level: level 
+      }
     end.to_json
   end
 

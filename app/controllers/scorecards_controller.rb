@@ -38,7 +38,7 @@ class ScorecardsController < ApplicationController
     end
 
     link_data = load_link_data(@scorecard)
-    @nodes = load_nodes(link_data)
+    @nodes = load_nodes(@scorecard, link_data)
     @links = load_links(link_data)
       
     add_breadcrumb @scorecard.name
@@ -163,39 +163,48 @@ class ScorecardsController < ApplicationController
 
   private
 
-  def load_nodes(link_data)
+  def load_nodes(scorecard, link_data)
+    linked_data_ids = link_data.flatten.uniq
+
+    nodes = scorecard.organisations.uniq
+    #nodes = current_account.organisations.where(id: link_data.flatten.uniq)
+
     level = 0
-    current_account.organisations.where(id: link_data.flatten.uniq).map do |org|
-      level += 1
-      level = 0 if level > 9 
+    nodes.map do |node|
       
-      linked_org_ids = link_data.each_with_object([]) do |link, array|
-        if org.id.in?(link)
-          linked_id = link - [org.id]
-          array.push(linked_id)
-        end
-      end.flatten.uniq
+      if node.id.in?(linked_data_ids)
+        level += 1
+        level = 1 if level > 9
 
-      initiatives_partnering_on = InitiativesOrganisation
-        .where(organisation_id: linked_org_ids + [org.id])
-        .joins(:initiative)
-        .pluck('initiatives.name')
-        .uniq
+        color_level = level
+        
+        cluster_node_ids = link_data.each_with_object([]) do |link, array|
+          if node.id.in?(link)
+            linked_id = link - [node.id]
+            array.push(linked_id)
+          end
+        end.flatten.uniq
 
-      partnering_organisation_names = Organisation
-        .where(id: linked_org_ids).pluck(:name)
+        partnering_organisations = Organisation.where(id: cluster_node_ids)
+
+        partnering_initiative_names = load_partnering_initiative_names(node.id, cluster_node_ids)
+      else
+        partnering_organisations = []
+        partnering_initiative_names = []
+        color_level = 0
+      end
 
       { 
-        id: org.id,
-        organisation_name: org.name,
-        organisation_description: org.description,
-        organisation_sector_name: org.sector&.name,
-        organisation_weblink: org.weblink,
-        initiatives_partnering_on: initiatives_partnering_on,
-        partnering_organisation_names: partnering_organisation_names,
+        id: node.id,
+        organisation_name: node.name,
+        organisation_description: node.description,
+        organisation_sector_name: node.sector&.name,
+        organisation_weblink: node.weblink,
+        partnering_initiative_names: partnering_initiative_names,
+        partnering_organisation_names: partnering_organisations.map(&:name),
         group: 0, 
-        label: org.name.truncate(20), 
-        level: level 
+        label: node.name.truncate(20), 
+        level: color_level 
       }
     end.to_json
   end
@@ -222,6 +231,21 @@ class ScorecardsController < ApplicationController
     (results + results.map{ |r| [r[1], r[0]] }).uniq
   end
 
+  def load_partnering_initiative_names(organisation_id, partnering_organisation_ids)
+    query = <<~SQL
+      select distinct(name) from initiatives
+      inner join initiatives_organisations io1 
+        on io1.initiative_id = initiatives.id 
+        and io1.organisation_id = #{organisation_id}
+      inner join initiatives_organisations io2 
+        on io2.initiative_id = initiatives.id 
+        and io2.organisation_id in (#{partnering_organisation_ids.join(',')})
+    SQL
+
+    results = ActiveRecord::Base.connection.exec_query(query).rows
+    
+    results.flatten
+  end
 
     def set_scorecard
       @scorecard = current_account.scorecards.find(params[:id])

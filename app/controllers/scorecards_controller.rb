@@ -210,9 +210,22 @@ class ScorecardsController < ApplicationController
   end
 
   def load_links(link_data)
-    link_data.map do |row|
-      { target: row[0], source: row[1], strength: 0.1 }
+    grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)
+
+    upper = grouped_link_data.values.max
+    lower = grouped_link_data.values.min
+
+    grouped_link_data.map do |(target, source), link_count|
+      { 
+        target: target, 
+        source: source, 
+        strength: calc_strength(upper, lower, link_count) 
+      }
     end.to_json
+  end
+
+  def calc_strength(upper, lower, value)
+    ((0.49 / ( upper - lower)) * value) + 0.01 - ((0.49 / ( upper - lower)) * lower)
   end
 
   def load_link_data(scorecard)
@@ -228,7 +241,7 @@ class ScorecardsController < ApplicationController
 
     results = ActiveRecord::Base.connection.exec_query(query).rows
 
-    (results + results.map{ |r| [r[1], r[0]] }).uniq
+    results.map { |result| [result.min, result.max] }
   end
 
   def load_partnering_initiative_names(organisation_id, partnering_organisation_ids)

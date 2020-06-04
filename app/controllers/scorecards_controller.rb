@@ -217,6 +217,7 @@ class ScorecardsController < ApplicationController
 
     grouped_link_data.map do |(target, source), link_count|
       { 
+        id: target,
         target: target, 
         source: source, 
         strength: calc_strength(upper, lower, link_count) 
@@ -224,8 +225,13 @@ class ScorecardsController < ApplicationController
     end.to_json
   end
 
+
+  STRENGTH_ABS_LOWER = 0.01
+  STRENGTH_ABS_UPPER = 0.49
+
   def calc_strength(upper, lower, value)
-    ((0.49 / ( upper - lower)) * value) + 0.01 - ((0.49 / ( upper - lower)) * lower)
+    ((STRENGTH_ABS_UPPER / ( upper - lower)) * value) + 
+    STRENGTH_ABS_LOWER - ((STRENGTH_ABS_UPPER / ( upper - lower)) * lower)
   end
 
   def load_link_data(scorecard)

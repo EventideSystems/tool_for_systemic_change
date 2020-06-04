@@ -241,16 +241,16 @@ div.tooltip > p.wordbreak {
 
     simulation.nodes(nodes).on('tick', () => {
       nodeElements
-        .attr("cx", function(node) {
-          var chartWidth = $('#chart').first().width()
-          return node.x = Math.max(r, Math.min(chartWidth - r, node.x)) 
-        })
-        .attr("cy", function(node) { 
-          var chartHeight = $('#chart').first().height()
-          return node.y = Math.max(r, Math.min(chartHeight - r, node.y)) 
-        })
-        // .attr('cx', function (node) { return node.x })
-        // .attr('cy', function (node) { return node.y })
+        // .attr("cx", function(node) {
+        //   var chartWidth = $('#chart').first().width()
+        //   return node.x = Math.max(r, Math.min(chartWidth - r, node.x)) 
+        // })
+        // .attr("cy", function(node) { 
+        //   var chartHeight = $('#chart').first().height()
+        //   return node.y = Math.max(r, Math.min(chartHeight - r, node.y)) 
+        // })
+        .attr('cx', function (node) { return node.x })
+        .attr('cy', function (node) { return node.y })
       textElements
         .attr('x', function (node) { return node.x })
         .attr('y', function (node) { return node.y })

@@ -1,246 +1,268 @@
 
 
 <div id="chart">
-<svg width="100%" height="300"></svg>
+  <svg></svg>
 </div>
 
 <style>
 div.tooltip {	
   position: absolute;
-  width: 200px;
+  width: 250px;
   height: auto;
-  padding: 2px;				
+  padding: 5px;				
   font: 12px sans-serif;		
   background: white;	
   pointer-events: none;
   padding: 0.5em;
-  border: 1px solid black;
+  border: 1px solid grey;
 }
 
 div.tooltip > ul {
-  list-style-type: none;
-  margin: 5px;
+  /* list-style-type: none; */
+  list-style-type: square;
+  margin-left: 10px;
   padding: 5px;
 }
 
 div.tooltip > ul > li {
-  font: 9px sans-serif;	
+  font: 11px sans-serif;	
+  padding: 3px;
+  margin-left: 10px;
+}
+
+div.tooltip > h5 {
+  margin-bottom: 0px;
+  font: 14px sans-serif;
 }
 
 div.tooltip > h6 {
-  margin-bottom: 0px;	
+  margin-bottom: 0px;
+  font: 12px sans-serif;
+  font-style: bold;
 }
 
-div.tooltip > p { word-break: break-all }
+div.tooltip > p.wordbreak { 
+  word-break: break-all;
+  font: 11px sans-serif;
+}
 
 </style>
 
 <script>
-  var nodes = <%= @nodes.html_safe %>
-  var links = <%= @links.html_safe %>
+  $( document ).ready(function() {
+    var nodes = <%= @nodes.html_safe %>
+    var links = <%= @links.html_safe %>
 
-  var div = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
+    var div = d3.select("body").append("div")	
+      .attr("class", "tooltip")				
+      .style("opacity", 0);
 
 
-  function getNeighbors(node) {
-    return links.reduce(function (neighbors, link) {
-        if (link.target.id === node.id) {
-          neighbors.push(link.source.id)
-        } else if (link.source.id === node.id) {
-          neighbors.push(link.target.id)
-        }
-        return neighbors
-      },
-      [node.id]
-    )
-  }
-
-  function isNeighborLink(node, link) {
-    return link.target.id === node.id || link.source.id === node.id
-  }
-
-  function getNodeColor(node, neighbors) {
-    if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-      return node.level === 1 ? '#499BC4' : '#49C472'
+    function getNeighbors(node) {
+      return links.reduce(function (neighbors, link) {
+          if (link.target.id === node.id) {
+            neighbors.push(link.source.id)
+          } else if (link.source.id === node.id) {
+            neighbors.push(link.target.id)
+          }
+          return neighbors
+        },
+        [node.id]
+      )
     }
 
-    var nodeColor;
-    
-    switch(node.level) {
-      case 0: 
-        nodeColor = 'red';
-        break;
-      case 1: 
-        nodeColor = '#F7C80B';
-        break;
-      case 2: 
-        nodeColor = '#FF6D24';
-        break;
-      case 3: 
-        nodeColor = '#7993F2';
-        break;
-      case 4: 
-        nodeColor = '2E74BA';
-        break;
-      case 5: 
-        nodeColor = '#009BCC';
-        break;
-      case 6: 
-        nodeColor = '#008C8C';
-        break;
-      case 7: 
-        nodeColor = '#00CCAA';
-        break;
-      case 8: 
-        nodeColor = '#1CB85D';
-        break;
-      default:
-        nodeColor = 'gray';
+    function isNeighborLink(node, link) {
+      return link.target.id === node.id || link.source.id === node.id
     }
 
-    return nodeColor;
-  }
+    function getNodeColor(node, neighbors) {
+      if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+        return node.level === 1 ? '#499BC4' : '#49C472'
+      }
 
+      var nodeColor;
+      
+      switch(node.level) {
+        case 0: 
+          nodeColor = 'red';
+          break;
+        case 1: 
+          nodeColor = '#F7C80B';
+          break;
+        case 2: 
+          nodeColor = '#FF6D24';
+          break;
+        case 3: 
+          nodeColor = '#7993F2';
+          break;
+        case 4: 
+          nodeColor = '2E74BA';
+          break;
+        case 5: 
+          nodeColor = '#009BCC';
+          break;
+        case 6: 
+          nodeColor = '#008C8C';
+          break;
+        case 7: 
+          nodeColor = '#00CCAA';
+          break;
+        case 8: 
+          nodeColor = '#1CB85D';
+          break;
+        default:
+          nodeColor = 'gray';
+      }
 
-  function getLinkColor(node, link) {
-    return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
-  }
-
-  function getTextColor(node, neighbors) {
-    return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
-  }
-
-  var width = window.innerWidth
-  var height = window.innerHeight
-
-  var svg = d3.select('svg')
-  svg.attr('width', width).attr('height', height)
-
-  // simulation setup with all forces
-  var linkForce = d3
-    .forceLink()
-    .id(function (link) { return link.id })
-    .strength(function (link) { return link.strength })
-
-  var simulation = d3
-    .forceSimulation()
-    .force('link', linkForce)
-    .force('charge', d3.forceManyBody().strength(-250))
-    .force('center', d3.forceCenter(width / 3, height / 3))
-
-  var dragDrop = d3.drag().on('start', function (node) {
-    node.fx = node.x
-    node.fy = node.y
-  }).on('drag', function (node) {
-    simulation.alphaTarget(0.7).restart()
-    node.fx = d3.event.x
-    node.fy = d3.event.y
-  }).on('end', function (node) {
-    if (!d3.event.active) {
-      simulation.alphaTarget(0)
+      return nodeColor;
     }
-    node.fx = null
-    node.fy = null
-  })
-
-  function selectNode(selectedNode) {
-    var neighbors = getNeighbors(selectedNode)
-
-    // we modify the styles to highlight selected nodes
-    nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-    textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-    linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-  }
-
-  var linkElements = svg.append("g")
-    .attr("class", "links")
-    .selectAll("line")
-    .data(links)
-    .enter().append("line")
-      .attr("stroke-width", 1)
-      .attr("stroke", "rgba(50, 50, 50, 0.2)")
-
-  var nodeElements = svg.append("g")
-    .attr("class", "nodes")
-    .selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
-      .attr("r", 7)
-      .attr("fill", getNodeColor)
-      .call(dragDrop)
-      .on('click', selectNode)
-      .on("mouseover", function(d) {  
-        var divHtml = "<h5><strong>" + d.organisation_name + 
-          "</strong> [" + d.organisation_sector_name + "]</h5>"
-
-        if (d.organisation_description) {
-          divHtml += "<p><i>" + d.organisation_description + "</i></p>"
-        }
-
-        if (d.organisation_weblink) {
-          divHtml += "<p><small>" + d.organisation_weblink + "</small></p>"
-        }
-
-        if (d.partnering_initiative_names.length) {
-          divHtml += "<h6>Initiatives</h6>"
-          divHtml += "<ul>"
-          d.partnering_initiative_names.forEach(function (item, index) {
-            divHtml += "<li>" + item + "</li>"
-          });
-          divHtml += "</ul>"
-        }
-
-        if (d.partnering_organisation_names.length) {
-          divHtml += "<h6>Partnering Organisations</h6>"
-          divHtml += "<ul>"
-          d.partnering_organisation_names.forEach(function (item, index) {
-            divHtml += "<li>" + item + "</li>"
-          });
-          divHtml += "</ul>"
-        }
-           
-        div.transition()        
-          .duration(200)      
-          .style("opacity", 0.8);      
-        div.html(divHtml)
-          .style("left", ($('#chart').first().position().left + $('#chart').first().width() - 200) + "px")
-          .style("top",  ($('#chart').first().position().top)  + "px");      
-      })                  
-      .on("mouseout", function(d) {       
-        div.transition()        
-          .duration(500)      
-          .style("opacity", 0);   
-      });
-
-  var textElements = svg.append("g")
-    .attr("class", "texts")
-    .selectAll("text")
-    .data(nodes)
-    .enter().append("text")
-      .text(function (node) { return  node.label })
-      .attr("font-size", 9)
-      .attr("dx", 15)
-      .attr("dy", 4)
-
-  simulation.nodes(nodes).on('tick', () => {
-    nodeElements
-      .attr('cx', function (node) { return node.x })
-      .attr('cy', function (node) { return node.y })
-    textElements
-      .attr('x', function (node) { return node.x })
-      .attr('y', function (node) { return node.y })
-    linkElements
-      .attr('x1', function (link) { return link.source.x })
-      .attr('y1', function (link) { return link.source.y })
-      .attr('x2', function (link) { return link.target.x })
-      .attr('y2', function (link) { return link.target.y })
-  })
 
 
+    function getLinkColor(node, link) {
+      return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
+    }
+
+    function getTextColor(node, neighbors) {
+      return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
+    }
+
+    var width = window.innerWidth
+    var height = window.innerHeight
+
+    var svg = d3.select('svg')
+    svg.attr('width', width).attr('height', height)
+
+    // simulation setup with all forces
+    var linkForce = d3
+      .forceLink()
+      .id(function (link) { return link.id })
+      .strength(function (link) { return link.strength })
+
+    var simulation = d3
+      .forceSimulation()
+      .force('link', linkForce)
+      .force('charge', d3.forceManyBody().strength(-150))
+      .force('center', d3.forceCenter(width / 3, height / 3))
+
+    var dragDrop = d3.drag().on('start', function (node) {
+      node.fx = node.x
+      node.fy = node.y
+    }).on('drag', function (node) {
+      simulation.alphaTarget(0.7).restart()
+      node.fx = d3.event.x
+      node.fy = d3.event.y
+    }).on('end', function (node) {
+      if (!d3.event.active) {
+        simulation.alphaTarget(0)
+      }
+      node.fx = null
+      node.fy = null
+    })
+
+    function selectNode(selectedNode) {
+      var neighbors = getNeighbors(selectedNode)
+
+      // we modify the styles to highlight selected nodes
+      nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+      textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+      linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+    }
+
+    var linkElements = svg.append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(links)
+      .enter().append("line")
+        .attr("stroke-width", 1)
+        .attr("stroke", "rgba(50, 50, 50, 0.2)")
+
+    var nodeElements = svg.append("g")
+      .attr("class", "nodes")
+      .selectAll("circle")
+      .data(nodes)
+      .enter().append("circle")
+        .attr("r", 7)
+        .attr("fill", getNodeColor)
+        .call(dragDrop)
+        .on('click', selectNode)
+        .on("mouseover", function(d) {  
+          var divHtml = "<h5><strong>" + d.organisation_name + 
+            "</strong> [" + d.organisation_sector_name + "]</h5>"
+
+          if (d.organisation_description) {
+            divHtml += "<p><i>" + d.organisation_description + "</i></p>"
+          }
+
+          if (d.organisation_weblink) {
+            divHtml += "<p class='wordbreak'><small>" + d.organisation_weblink + "</small></p>"
+          }
+
+          if (d.partnering_initiative_names.length) {
+            divHtml += "<h6>Initiatives</h6>"
+            divHtml += "<ul>"
+            d.partnering_initiative_names.forEach(function (item, index) {
+              divHtml += "<li>" + item + "</li>"
+            });
+            divHtml += "</ul>"
+          }
+
+          if (d.partnering_organisation_names.length) {
+            divHtml += "<h6>Partnering Organisations</h6>"
+            divHtml += "<ul>"
+            d.partnering_organisation_names.forEach(function (item, index) {
+              divHtml += "<li>" + item + "</li>"
+            });
+            divHtml += "</ul>"
+          }
+            
+          div.transition()        
+            .duration(200)      
+            .style("opacity", 0.8);      
+          div.html(divHtml)
+            .style("left", ($('#chart').first().position().left + $('#chart').first().width() - 250) + "px")
+            .style("top",  ($('#chart').first().position().top)  + "px");      
+        })                  
+        .on("mouseout", function(d) {       
+          div.transition()        
+            .duration(500)      
+            .style("opacity", 0);   
+        });
+
+    var textElements = svg.append("g")
+      .attr("class", "texts")
+      .selectAll("text")
+      .data(nodes)
+      .enter().append("text")
+        .text(function (node) { return  node.label })
+        .attr("font-size", 9)
+        .attr("dx", 15)
+        .attr("dy", 4)
+
+    var r = 7
+
+    simulation.nodes(nodes).on('tick', () => {
+      nodeElements
+        .attr("cx", function(node) {
+          var chartWidth = $('svg').width()
+          return node.x = Math.max(r, Math.min(chartWidth - r, node.x)) 
+        })
+        .attr("cy", function(node) { 
+          var chartHeight = $('svg').height()
+          return node.y = Math.max(r, Math.min(chartHeight - r, node.y)) 
+        })
+        // .attr('cx', function (node) { return node.x })
+        // .attr('cy', function (node) { return node.y })
+      textElements
+        .attr('x', function (node) { return node.x })
+        .attr('y', function (node) { return node.y })
+      linkElements
+        .attr('x1', function (link) { return link.source.x })
+        .attr('y1', function (link) { return link.source.y })
+        .attr('x2', function (link) { return link.target.x })
+        .attr('y2', function (link) { return link.target.y })
+    })
 
 
-
-  simulation.force("link").links(links)
+    simulation.force("link").links(links)
+    });
   </script>

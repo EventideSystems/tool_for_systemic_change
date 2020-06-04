@@ -24,12 +24,14 @@ div.tooltip > ul {
 }
 
 div.tooltip > ul > li {
-  font: 7px sans-serif;	
+  font: 9px sans-serif;	
 }
 
-div.tooltip > h5 {
-  font-weight: bold;
+div.tooltip > h6 {
+  margin-bottom: 0px;	
 }
+
+div.tooltip > p { word-break: break-all }
 
 </style>
 
@@ -125,7 +127,7 @@ div.tooltip > h5 {
   var simulation = d3
     .forceSimulation()
     .force('link', linkForce)
-    .force('charge', d3.forceManyBody().strength(-300))
+    .force('charge', d3.forceManyBody().strength(-250))
     .force('center', d3.forceCenter(width / 3, height / 3))
 
   var dragDrop = d3.drag().on('start', function (node) {
@@ -170,21 +172,21 @@ div.tooltip > h5 {
       .call(dragDrop)
       .on('click', selectNode)
       .on("mouseover", function(d) {  
-        var divHtml = "<h5>" + d.organisation_name + 
-          " [" + d.organisation_sector_name + "]</h5>"
+        var divHtml = "<h5><strong>" + d.organisation_name + 
+          "</strong> [" + d.organisation_sector_name + "]</h5>"
 
         if (d.organisation_description) {
           divHtml += "<p><i>" + d.organisation_description + "</i></p>"
         }
 
         if (d.organisation_weblink) {
-          divHtml += "<p>" + d.organisation_weblink + "</p>"
+          divHtml += "<p><small>" + d.organisation_weblink + "</small></p>"
         }
 
-        if (d.initiatives_partnering_on.length) {
+        if (d.partnering_initiative_names.length) {
           divHtml += "<h6>Initiatives</h6>"
           divHtml += "<ul>"
-          d.initiatives_partnering_on.forEach(function (item, index) {
+          d.partnering_initiative_names.forEach(function (item, index) {
             divHtml += "<li>" + item + "</li>"
           });
           divHtml += "</ul>"

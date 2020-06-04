@@ -230,6 +230,10 @@ class ScorecardsController < ApplicationController
   STRENGTH_ABS_UPPER = 0.49
 
   def calc_strength(upper, lower, value)
+    0.7
+  end
+
+  def calc_strength(upper, lower, value)
     ((STRENGTH_ABS_UPPER / ( upper - lower)) * value) + 
     STRENGTH_ABS_LOWER - ((STRENGTH_ABS_UPPER / ( upper - lower)) * lower)
   end

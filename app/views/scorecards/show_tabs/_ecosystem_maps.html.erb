@@ -1,10 +1,12 @@
 
 
-<div id="chart" style="overflow-x">
-  <svg></svg>
+<div id="chart" width="100%" height='100%'>
+  <svg width="100%"></svg>
 </div>
 
+
 <style>
+
 div.tooltip {	
   position: absolute;
   width: 250px;
@@ -31,7 +33,7 @@ div.tooltip > ul > li {
 }
 
 div.tooltip > h5 {
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   font: 14px sans-serif;
 }
 
@@ -39,6 +41,8 @@ div.tooltip > h6 {
   margin-bottom: 0px;
   font: 12px sans-serif;
   font-style: bold;
+  border-top: 1px solid #dedede;
+  padding-top: 5px;
 }
 
 div.tooltip > p.wordbreak { 
@@ -49,14 +53,14 @@ div.tooltip > p.wordbreak {
 </style>
 
 <script>
-  $( document ).ready(function() {
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
     var nodes = <%= @nodes.html_safe %>
     var links = <%= @links.html_safe %>
 
     var div = d3.select("body").append("div")	
       .attr("class", "tooltip")				
       .style("opacity", 0)
-  
 
     function getNeighbors(node) {
       return links.reduce(function (neighbors, link) {
@@ -80,39 +84,7 @@ div.tooltip > p.wordbreak {
         return node.level === 1 ? '#499BC4' : '#49C472'
       }
 
-      var nodeColor;
-      
-      switch(node.level) {
-        case 0: 
-          nodeColor = 'red';
-          break;
-        case 1: 
-          nodeColor = '#F7C80B';
-          break;
-        case 2: 
-          nodeColor = '#FF6D24';
-          break;
-        case 3: 
-          nodeColor = '#7993F2';
-          break;
-        case 4: 
-          nodeColor = '2E74BA';
-          break;
-        case 5: 
-          nodeColor = '#009BCC';
-          break;
-        case 6: 
-          nodeColor = '#008C8C';
-          break;
-        case 7: 
-          nodeColor = '#00CCAA';
-          break;
-        case 8: 
-          nodeColor = '#1CB85D';
-          break;
-        default:
-          nodeColor = 'gray';
-      }
+      nodeColor = node.color
 
       return nodeColor;
     }
@@ -125,9 +97,9 @@ div.tooltip > p.wordbreak {
       return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
     }
 
-    var width = window.innerWidth
-    var height = window.innerHeight
-
+    var width = $('#chart').width()
+    var height = $('#chart').width()
+    
     var svg = d3.select('svg')
       .call(d3.zoom().on("zoom", function () {
         svg.attr("transform", d3.event.transform)
@@ -201,7 +173,7 @@ div.tooltip > p.wordbreak {
           }
 
           if (d.partnering_initiative_names.length) {
-            divHtml += "<h6>Initiatives</h6>"
+            divHtml += "<h6><strong>Initiatives</strong></h6>"
             divHtml += "<ul>"
             d.partnering_initiative_names.forEach(function (item, index) {
               divHtml += "<li>" + item + "</li>"
@@ -210,7 +182,7 @@ div.tooltip > p.wordbreak {
           }
 
           if (d.partnering_organisation_names.length) {
-            divHtml += "<h6>Partnering Organisations</h6>"
+            divHtml += "<h6><strong>Partnering Organisations</strong></h6>"
             divHtml += "<ul>"
             d.partnering_organisation_names.forEach(function (item, index) {
               divHtml += "<li>" + item + "</li>"
@@ -245,14 +217,6 @@ div.tooltip > p.wordbreak {
 
     simulation.nodes(nodes).on('tick', () => {
       nodeElements
-        // .attr("cx", function(node) {
-        //   var chartWidth = $('#chart').first().width()
-        //   return node.x = Math.max(r, Math.min(chartWidth - r, node.x)) 
-        // })
-        // .attr("cy", function(node) { 
-        //   var chartHeight = $('#chart').first().height()
-        //   return node.y = Math.max(r, Math.min(chartHeight - r, node.y)) 
-        // })
         .attr('cx', function (node) { return node.x })
         .attr('cy', function (node) { return node.y })
       textElements

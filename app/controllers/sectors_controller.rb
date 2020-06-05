@@ -71,6 +71,6 @@ class SectorsController < ApplicationController
     end
 
     def sector_params
-      params.fetch(:sector, {}).permit(:name, :description)
+      params.fetch(:sector, {}).permit(:name, :description, :color)
     end
 end

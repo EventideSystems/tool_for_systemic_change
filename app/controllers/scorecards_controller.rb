@@ -167,7 +167,6 @@ class ScorecardsController < ApplicationController
     linked_data_ids = link_data.flatten.uniq
 
     nodes = scorecard.organisations.uniq
-    #nodes = current_account.organisations.where(id: link_data.flatten.uniq)
 
     level = 0
     nodes.map do |node|
@@ -204,6 +203,7 @@ class ScorecardsController < ApplicationController
         partnering_organisation_names: partnering_organisations.map(&:name),
         group: 0, 
         label: node.name.truncate(20), 
+        color: node.sector.color || '#000000',
         level: color_level 
       }
     end.to_json

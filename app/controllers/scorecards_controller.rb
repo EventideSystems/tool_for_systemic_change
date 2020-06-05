@@ -168,29 +168,28 @@ class ScorecardsController < ApplicationController
 
     nodes = scorecard.organisations.uniq
 
-    level = 0
     nodes.map do |node|
       
-      if node.id.in?(linked_data_ids)
-        level += 1
-        level = 1 if level > 9
-
-        color_level = level
-        
+      if node.id.in?(linked_data_ids)        
         cluster_node_ids = link_data.each_with_object([]) do |link, array|
           if node.id.in?(link)
             linked_id = link - [node.id]
             array.push(linked_id)
           end
         end.flatten.uniq
-
+  
+        initiative_names = []
         partnering_organisations = Organisation.where(id: cluster_node_ids)
-
         partnering_initiative_names = load_partnering_initiative_names(node.id, cluster_node_ids)
       else
+        initiative_names = node
+          .initiatives_organisations
+          .joins(:initiative)
+          .where('initiatives.scorecard_id = :scorecard_id', scorecard_id: scorecard.id)
+          .to_a.map{ |i| i.initiative.name }
+
         partnering_organisations = []
         partnering_initiative_names = []
-        color_level = 0
       end
 
       { 
@@ -200,11 +199,11 @@ class ScorecardsController < ApplicationController
         organisation_sector_name: node.sector&.name,
         organisation_weblink: node.weblink,
         partnering_initiative_names: partnering_initiative_names,
+        initiative_names: initiative_names,
         partnering_organisation_names: partnering_organisations.map(&:name),
         group: 0, 
         label: node.name.truncate(20), 
-        color: node.sector.color || '#000000',
-        level: color_level 
+        color: node.sector.color || '#000000'
       }
     end.to_json
   end

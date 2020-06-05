@@ -55,6 +55,10 @@ div.tooltip > p.wordbreak {
 <script>
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
+    if ($('.tooltip').length) {
+      return
+    }
+
     var nodes = <%= @nodes.html_safe %>
     var links = <%= @links.html_safe %>
 
@@ -172,8 +176,17 @@ div.tooltip > p.wordbreak {
             divHtml += "<p class='wordbreak'><small>" + d.organisation_weblink + "</small></p>"
           }
 
-          if (d.partnering_initiative_names.length) {
+          if (d.initiative_names.length) {
             divHtml += "<h6><strong>Initiatives</strong></h6>"
+            divHtml += "<ul>"
+            d.initiative_names.forEach(function (item, index) {
+              divHtml += "<li>" + item + "</li>"
+            });
+            divHtml += "</ul>"
+          }
+
+          if (d.partnering_initiative_names.length) {
+            divHtml += "<h6><strong>Partnering Initiatives</strong></h6>"
             divHtml += "<ul>"
             d.partnering_initiative_names.forEach(function (item, index) {
               divHtml += "<li>" + item + "</li>"

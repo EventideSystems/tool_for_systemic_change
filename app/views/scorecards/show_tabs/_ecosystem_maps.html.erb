@@ -4,7 +4,7 @@
   <svg width="100%"></svg>
 </div>
 
-<div class="legend panel panel-default">
+<div class="legend">
   <%- Sector.order(:name).each do |sector| -%>
     <p>
       <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
@@ -35,7 +35,7 @@ div.legend {
   opacity: 0.9;
   width: auto;
   /* left: 230px; */
-  bottom: 0px;
+  bottom: 10px;
   font: 9px sans-serif;		
   background: white;	
   pointer-events: none;
@@ -110,7 +110,7 @@ div.chart-tooltip > p.wordbreak {
     var links = <%= @links.html_safe %>
 
     var div = d3.select("body").append("div")	
-      .attr("class", "chart-tooltip panel panel-default")				
+      .attr("class", "chart-tooltip")				
       .style("opacity", 0)
 
     function getNeighbors(node) {

@@ -1,7 +1,18 @@
+<div class="row">
+  <div class="pull-left">
+    Legend
+    <button id="hide_legend">hide</button>
+    <button id="show_legend">show</button>
+  </div>
+  <div class="pull-right">
+    Zoom 
+    <button id="zoom_in">+</button>
+    <button id="zoom_out">-</button>
+  </div>
+</div>
 
-
-<div id="chart" width="100%" height='100%'>
-  <svg width="100%"></svg>
+<div id="chart" width="100%" height='100%' style="overflow:hidden;">
+  <svg width="960" height="500"></svg>
 </div>
 
 <div class="legend">
@@ -13,7 +24,15 @@
   <%- end %>  
 </div>
 
+
 <style>
+/* svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+} */
+
 .dot {
   height: 9px;
   width: 9px;
@@ -148,15 +167,48 @@ div.chart-tooltip > p.wordbreak {
       return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
     }
 
+    let zoom = d3.zoom().on("zoom", function () {
+      svg.attr("transform", d3.event.transform)
+    })
+
     var width = $('#chart').width()
     var height = $('#chart').width()
     
     var svg = d3.select('svg')
-      .call(d3.zoom().on("zoom", function () {
-        svg.attr("transform", d3.event.transform)
-      }));
+      .attr("width", "100%")
+      .attr("height", "100%")
+      // .style("background-color", "#eeeeee")
+      .call(zoom)
+      .on("dblclick.zoom", null)
+      .on("wheel.zoom", null);
+      // .call(d3.zoom().on("zoom", function () {
+      //   svg.attr("transform", d3.event.transform)
+      // }));
       
-    svg.attr('width', width).attr('height', height)
+    d3.select("#zoom_in").on("click", function() {
+      zoom.scaleBy(svg.transition().duration(750), 1.2);
+    });
+
+    d3.select("#zoom_out").on("click", function() {
+      zoom.scaleBy(svg.transition().duration(750), 0.8);
+    });
+
+    $('#show_legend').hide()
+
+    d3.select("#hide_legend").on("click", function() {
+      $('.legend').hide()
+      $('#hide_legend').hide()
+      $('#show_legend').show()
+    });
+
+    d3.select("#show_legend").on("click", function() {
+      $('.legend').show()
+      $('#hide_legend').show()
+      $('#show_legend').hide()
+    });
+
+
+    // svg.attr('width', width).attr('height', height)
 
     // simulation setup with all forces
     var linkForce = d3

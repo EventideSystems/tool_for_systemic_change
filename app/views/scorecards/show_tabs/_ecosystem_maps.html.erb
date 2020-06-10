@@ -4,10 +4,52 @@
   <svg width="100%"></svg>
 </div>
 
+<div class="legend">
+  <%- Sector.order(:name).each do |sector| -%>
+    <p>
+      <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
+      <span class="dot-label"><%= sector.name %></span>
+    </p>
+  <%- end %>  
+</div>
 
 <style>
+.dot {
+  height: 9px;
+  width: 9px;
+  margin-top: 4px;
+  margin-left: 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
 
-div.tooltip {	
+.dot-label {
+  position: relative;
+  top: -1px;
+}
+
+div.legend {
+  position: fixed;
+  margin-left: -20px;
+  opacity: 0.9;
+  width: auto;
+  /* left: 230px; */
+  bottom: 10px;
+  font: 9px sans-serif;		
+  background: white;	
+  pointer-events: none;
+  padding: 0.5em;
+  padding-right: 1em;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0 0 10px grey;
+}
+
+div.legend > p {
+  margin-top: 0px;
+}
+
+div.chart-tooltip {	
   position: absolute;
   width: 250px;
   height: auto;
@@ -16,28 +58,29 @@ div.tooltip {
   background: white;	
   pointer-events: none;
   padding: 0.5em;
-  border: 1px solid grey;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0 0 10px grey;
 }
 
-div.tooltip > ul {
+div.chart-tooltip > ul {
   /* list-style-type: none; */
   list-style-type: square;
   margin-left: 10px;
   padding: 5px;
 }
 
-div.tooltip > ul > li {
+div.chart-tooltip > ul > li {
   font: 11px sans-serif;	
   padding: 3px;
   margin-left: 10px;
 }
 
-div.tooltip > h5 {
+div.chart-tooltip > h5 {
   margin-bottom: 5px;
   font: 14px sans-serif;
 }
 
-div.tooltip > h6 {
+div.chart-tooltip > h6 {
   margin-bottom: 0px;
   font: 12px sans-serif;
   font-style: bold;
@@ -45,7 +88,7 @@ div.tooltip > h6 {
   padding-top: 5px;
 }
 
-div.tooltip > p.wordbreak { 
+div.chart-tooltip > p.wordbreak { 
   word-break: break-all;
   font: 11px sans-serif;
 }
@@ -55,7 +98,11 @@ div.tooltip > p.wordbreak {
 <script>
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
-    if ($('.tooltip').length) {
+    // var legendLeft = $('.content').first().position().left - 20;
+
+    // $('#legend').css({left: legendLeft + 'px'})
+
+    if ($('.chart-tooltip').length) {
       return
     }
 
@@ -63,7 +110,7 @@ div.tooltip > p.wordbreak {
     var links = <%= @links.html_safe %>
 
     var div = d3.select("body").append("div")	
-      .attr("class", "tooltip")				
+      .attr("class", "chart-tooltip")				
       .style("opacity", 0)
 
     function getNeighbors(node) {

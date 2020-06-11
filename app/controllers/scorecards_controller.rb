@@ -202,7 +202,7 @@ class ScorecardsController < ApplicationController
         initiative_names: initiative_names,
         partnering_organisation_names: partnering_organisations.map(&:name),
         group: 0, 
-        label: node.name.truncate(20), 
+        label: node.name, 
         color: node.sector.color || '#000000'
       }
     end.to_json

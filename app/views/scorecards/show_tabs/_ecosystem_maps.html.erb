@@ -187,7 +187,12 @@ div.chart-tooltip > p.wordbreak {
       // .style("background-color", "#eeeeee")
       .call(zoom)
       .on("dblclick.zoom", null)
-      .on("wheel.zoom", null);
+      .on("wheel.zoom", null)
+      .on("dblclick", function(d){ 
+        nodeElements.attr('fill', function (node) { return getNodeColor(node) })
+        textElements.attr('fill', function (node) { return getTextColor(node) })
+        linkElements.attr('stroke', function (link) { return '#E5E5E5' })
+      });
       // .call(d3.zoom().on("zoom", function () {
       //   svg.attr("transform", d3.event.transform)
       // }));

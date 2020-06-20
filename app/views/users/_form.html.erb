@@ -8,7 +8,11 @@
       <%= f.input :email %>
       <%= f.input :name %>
       <hr>
-      <%= f.input :account_role, collection: lookup_account_roles, include_blank: false %>
+      <%= 
+        f.input :account_role, 
+          collection: lookup_account_roles, 
+          include_blank: false
+      %>
       <hr> 
       <%= f.input :created_at, as: :string, readonly: true %>
       <%= f.input :updated_at, as: :string, readonly: true %>

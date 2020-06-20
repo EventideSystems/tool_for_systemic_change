@@ -8,7 +8,12 @@
       <%= f.input :email %>
       <%= f.input :name %>
       <hr>
-      <%= f.input :system_role, collection: lookup_system_roles, include_blank: false %>
+      <%= 
+        f.input :system_role, 
+          collection: lookup_system_roles, 
+          include_blank: false,
+          disabled: !policy(@user).update_system_role?  
+      %>
       <div class="row">
         <label class="col-sm-3 control-label select">Account Roles</label> 
         <div class="col-md-9">

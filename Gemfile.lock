@@ -406,7 +406,7 @@ GEM
     with_template (0.2.0)
       blocks (~> 2.8.0)
       rails (>= 3.0.0)
-    wkhtmltopdf-binary (0.12.3.1)
+    wkhtmltopdf-binary (0.12.6)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 

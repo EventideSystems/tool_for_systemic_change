@@ -35,6 +35,10 @@ class UserPolicy < ApplicationPolicy
   def update?
     system_admin? || account_admin?(user_context.account) || record == current_user 
   end
+
+  def update_system_role?
+    system_admin? && record != current_user
+  end 
   
   def destroy?
     return false if user_context.user == record

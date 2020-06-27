@@ -13,18 +13,22 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  # Run rails dev:cache to toggle caching.
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
 
     config.cache_store = :null_store
   end
+
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -36,6 +40,9 @@ Rails.application.configure do
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
+
+  # Highlight code that triggered database queries in logs.
+  config.active_record.verbose_query_logs = true
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
@@ -54,22 +61,4 @@ Rails.application.configure do
 
   # Required by Devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  
-  # When inside a docker container
-  if File.file?('/.dockerenv')
-    require 'socket'
-    require 'ipaddr'
-   # Whitelist docker ip for web console
-   # Cannot render console from 172.27.0.1! Allowed networks: 127.0.0.1
-    Socket.ip_address_list.each do |addrinfo|
-      next unless addrinfo.ipv4?
-      next if addrinfo.ip_address == "127.0.0.1" # Already whitelisted 
-
-      ip = IPAddr.new(addrinfo.ip_address).mask(24)
- 
-      Logger.new(STDOUT).info "Adding #{ip.inspect} to config.web_console.whitelisted_ips"
-
-      config.web_console.whitelisted_ips << ip
-    end
-  end
 end

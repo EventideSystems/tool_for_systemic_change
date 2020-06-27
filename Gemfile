@@ -9,7 +9,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.7.2'
+gem 'rails', '~> 5.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -24,7 +24,7 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '<= 4.2.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -34,6 +34,7 @@ gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'bootsnap'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -43,19 +44,34 @@ gem 'devise_invitable'
 gem 'pundit'
 
 # User interface
-gem 'bootstrap-sass'
-gem 'font-awesome-sass'
+# gem 'bootstrap-sass', '<= 3.4.1'
+gem 'font-awesome-sass', '<= 4.7.0'
+
+# SMELL See https://github.com/tenex/rails-assets/issues/417
+#source 'http://insecure.rails-assets.org/' do
+source 'https://rails-assets.org/' do
+  gem 'rails-assets-bootstrap', '<= 3.4.1'
+  gem 'rails-assets-adminlte', '<= 2.3.11'
+  gem 'rails-assets-medium-editor', '<= 5.22.2'
+  gem 'rails-assets-twitter-bootstrap-wizard', '<= 1.3.2'
+  gem 'rails-assets-select2', '<= 4.0.3'
+  gem 'rails-assets-bootstrap-nav-wizard', '<= 0.0.3'
+  gem 'rails-assets-bootstrap-daterangepicker', '<= 2.1.25'
+  gem 'rails-assets-moment', '<= 2.9.0'
+  # gem 'rails-assets-clipboard'
+end
+
 gem 'simple_form'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'nested_form_fields'
 gem 'table-for'
 gem 'kaminari-bootstrap'
-gem 'breadcrumbs_on_rails'
+gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
-gem 'bootstrap-datepicker-rails'
-gem 'bootstrap_form'
-gem 'd3-rails'
+gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
+gem 'bootstrap_form', '<= 2.1.1'
+gem 'd3-rails', '<= 5.9.2'
 
 # Report related
 gem 'wkhtmltopdf-binary'
@@ -70,18 +86,7 @@ gem 'shrine'
 gem 'rollbar'
 gem 'scout_apm'
 
-# SMELL See https://github.com/tenex/rails-assets/issues/417
-#source 'http://insecure.rails-assets.org/' do
-source 'https://rails-assets.org/' do
-  gem 'rails-assets-adminlte'
-  gem 'rails-assets-medium-editor'
-  gem 'rails-assets-twitter-bootstrap-wizard'
-  gem 'rails-assets-select2'
-  gem 'rails-assets-bootstrap-nav-wizard'
-  gem 'rails-assets-bootstrap-daterangepicker'
-  gem 'rails-assets-moment'
-  # gem 'rails-assets-clipboard'
-end
+
 
 gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
@@ -107,7 +112,8 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry'
   gem 'pry-byebug'
-  gem 'pry-coolline'
+  # NOTE Currently errors out
+  # gem 'pry-coolline'
   gem 'pry-stack_explorer'
   gem 'rubocop', require: false
   gem 'rspec-rails', '~> 3.5'

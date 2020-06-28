@@ -3,7 +3,7 @@ class Initiative < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
-  belongs_to :scorecard
+  belongs_to :scorecard, optional: true
   has_many :initiatives_organisations, dependent: :destroy
   has_many :initiatives_subsystem_tags, dependent: :destroy
   has_many :organisations, through: :initiatives_organisations

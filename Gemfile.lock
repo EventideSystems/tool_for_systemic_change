@@ -146,8 +146,6 @@ GEM
       cucumber-core (~> 7.0, >= 7.0.0)
       cucumber-cucumber-expressions (~> 10.1, >= 10.1.0)
       cucumber-messages (~> 12.1, >= 12.1.1)
-    d3-rails (5.9.2)
-      railties (>= 3.1)
     daemons (1.3.1)
     database_cleaner (1.8.5)
     debug_inspector (0.0.3)
@@ -283,6 +281,8 @@ GEM
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     rack (2.2.3)
+    rack-proxy (0.6.5)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.2)
@@ -443,6 +443,10 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webpacker (4.0.7)
+      activesupport (>= 4.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 4.2)
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -472,7 +476,6 @@ DEPENDENCIES
   caxlsx
   coffee-rails (~> 4.2)
   cucumber-rails
-  d3-rails (<= 5.9.2)
   daemons
   database_cleaner
   delayed_job_active_record
@@ -502,7 +505,6 @@ DEPENDENCIES
   pundit
   rails (~> 6.0.3.2)
   rails-assets-adminlte (<= 2.3.11)!
-  rails-assets-bootstrap (<= 3.4.1)!
   rails-assets-bootstrap-daterangepicker (<= 2.1.25)!
   rails-assets-bootstrap-nav-wizard (<= 0.0.3)!
   rails-assets-medium-editor (<= 5.22.2)!
@@ -530,6 +532,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (>= 3.3.0)
+  webpacker
   wicked_pdf
   wkhtmltopdf-binary
 

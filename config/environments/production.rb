@@ -111,5 +111,5 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   
   # Required by Devise
-  config.action_mailer.default_url_options = { :host => 'wickedlab-staging.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'app.wickedlab.com.au' }
 end

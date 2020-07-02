@@ -38,6 +38,8 @@ gem 'bootsnap'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'webpacker'
+
 # Authentication and authorisation
 gem 'devise'
 gem 'devise_invitable'
@@ -50,7 +52,7 @@ gem 'font-awesome-sass', '<= 4.7.0'
 # SMELL See https://github.com/tenex/rails-assets/issues/417
 #source 'http://insecure.rails-assets.org/' do
 source 'https://rails-assets.org/' do
-  gem 'rails-assets-bootstrap', '<= 3.4.1'
+  # gem 'rails-assets-bootstrap', '<= 3.4.1'
   gem 'rails-assets-adminlte', '<= 2.3.11'
   gem 'rails-assets-medium-editor', '<= 5.22.2'
   gem 'rails-assets-twitter-bootstrap-wizard', '<= 1.3.2'
@@ -71,7 +73,7 @@ gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
 gem 'bootstrap_form', '<= 2.1.1'
-gem 'd3-rails', '<= 5.9.2'
+# gem 'd3-rails', '<= 5.9.2'
 
 # Report related
 gem 'wkhtmltopdf-binary'

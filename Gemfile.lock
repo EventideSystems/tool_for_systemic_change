@@ -1,6 +1,5 @@
 GEM
   remote: https://rubygems.org/
-  remote: https://rails-assets.org/
   specs:
     actioncable (6.0.3.2)
       actionpack (= 6.0.3.2)
@@ -300,21 +299,6 @@ GEM
       bundler (>= 1.3.0)
       railties (= 6.0.3.2)
       sprockets-rails (>= 2.0.0)
-    rails-assets-adminlte (2.3.11)
-    rails-assets-bootstrap (3.4.1)
-      rails-assets-jquery (>= 1.9.1, < 4)
-    rails-assets-bootstrap-daterangepicker (2.1.25)
-      rails-assets-jquery (>= 1.9.1, < 4)
-      rails-assets-moment (>= 2.9.0)
-    rails-assets-bootstrap-nav-wizard (0.0.3)
-      rails-assets-bootstrap
-    rails-assets-jquery (3.4.1)
-    rails-assets-medium-editor (5.22.2)
-    rails-assets-moment (2.9.0)
-    rails-assets-select2 (4.0.3)
-    rails-assets-twitter-bootstrap-wizard (1.3.2)
-      rails-assets-bootstrap (>= 3.3.0)
-      rails-assets-jquery (>= 1.9.1)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -504,13 +488,6 @@ DEPENDENCIES
   puma (~> 3.12)
   pundit
   rails (~> 6.0.3.2)
-  rails-assets-adminlte (<= 2.3.11)!
-  rails-assets-bootstrap-daterangepicker (<= 2.1.25)!
-  rails-assets-bootstrap-nav-wizard (<= 0.0.3)!
-  rails-assets-medium-editor (<= 5.22.2)!
-  rails-assets-moment (<= 2.9.0)!
-  rails-assets-select2 (<= 4.0.3)!
-  rails-assets-twitter-bootstrap-wizard (<= 1.3.2)!
   rails-controller-testing
   rollbar
   roo (~> 2.7.0)

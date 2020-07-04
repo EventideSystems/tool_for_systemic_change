@@ -1,2 +1,213 @@
 // @import "bootstrap/scss/bootstrap";
-@import "bootstrap/dist/css/bootstrap";
+@import "bootstrap";
+@import "admin-lte/dist/css/AdminLTE";
+@import "medium-editor/dist/css/medium-editor";
+@import "twitter-bootstrap-wizard/bootstrap/css/bootstrap";
+@import "select2";
+@import "bootstrap-nav-wizard";
+@import "bootstrap-daterangepicker/daterangepicker";
+
+@import "../stylesheets/skin-wicked";
+@import "../stylesheets/dashboard";
+@import "../stylesheets/pdf";
+@import "../stylesheets/scorecard_matrix";
+@import "../stylesheets/subsystem_tags";
+
+
+
+div.medium-editor-element {
+  height: auto;
+}
+
+.nav.nav-wizard.nav-pills {
+  margin-left: 22px;
+  margin-top: 7px;
+}
+
+.nav.nav-wizard.nav-pills > li > a{
+  border-top: 0px solid transparent;
+}
+
+.sidebar a.link-disabled {
+  color: #555;
+  opacity: .65;
+}
+
+.content-header:first-child a.btn {
+  margin-left: 20px;
+}
+
+
+.video-tutorial-wrapper{
+  display:inline-block;
+  position:relative;
+}
+.video-tutorial-wrapper:after{ /* I have higher Z-index so I can catch the click! Yey */
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+}
+
+.video-tutorial-wrapper iframe{
+  vertical-align:top;
+}
+
+abbr[title=required] {
+ border-bottom-style: none;
+}
+
+ul.checklist-items {
+  list-style-type: none;
+}
+
+ul#preview-initiatives {
+  list-style-type: none;
+}
+
+.characteristic-name {
+  font-weight: normal;
+}
+
+ul.wizard {
+  li.disabled {
+    visibility: hidden;
+  }
+}
+
+.truncate {
+  display: block;
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+.fa-report {
+  color: $secondary-button-color;
+}
+
+.box-report {
+  min-height: 360px;
+}
+
+// PDF related
+label.truncate {
+  display: block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.print-table {
+  table { 
+    table-layout: fixed;
+    width: auto;
+  }
+  td { 
+    width: 36px;
+//    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.print-chars {
+  td {
+    font-size: 11px;
+    font-weight: 300;
+    white-space: nowrap;
+    position: relative;
+    text-align: left;
+    background: none;
+    padding-bottom: 10px;
+  }
+
+  span {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 50%;
+    left: 25px;
+  }
+}
+
+
+.table-actions td:nth-last-child(-n+2) {
+  max-width: 100px !important;
+}
+
+.table-base th:first-child {
+  width: 180px !important;
+}
+
+.table-base td:first-child {
+  display: block;
+  width: 180px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-base tfoot td:first-child {
+  display: block;
+  width: 280px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+@media (max-width: 480px) {
+  .table-base td:first-child {
+    width: 100px !important;;
+  }
+  
+  .table-base th:first-child {
+    width: 100px !important;
+  }
+}
+
+.breadcrumb li, h1 small {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slogan {
+  padding-right: 210px;
+}
+
+.select2-selection__choice {
+  background-color: #00b9f2 !important;
+  border-color: #0dc6ff !important;
+}
+
+.select2-selection__choice__remove {
+  color: #f0f0f0 !important;
+}
+
+//lighten(#00b9f2, 30%) !important;
+
+.select2-selection .select2-selection--multiple {
+  border: solid grey 1px !important;
+}
+
+.select2-results__option .select2-results__option--highlighted {
+  background-color: #00b9f2 !important; 
+}
+
+

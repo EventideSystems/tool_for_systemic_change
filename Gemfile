@@ -46,22 +46,7 @@ gem 'devise_invitable'
 gem 'pundit'
 
 # User interface
-# gem 'bootstrap-sass', '<= 3.4.1'
 gem 'font-awesome-sass', '<= 4.7.0'
-
-# SMELL See https://github.com/tenex/rails-assets/issues/417
-#source 'http://insecure.rails-assets.org/' do
-source 'https://rails-assets.org/' do
-  # gem 'rails-assets-bootstrap', '<= 3.4.1'
-  gem 'rails-assets-adminlte', '<= 2.3.11'
-  gem 'rails-assets-medium-editor', '<= 5.22.2'
-  gem 'rails-assets-twitter-bootstrap-wizard', '<= 1.3.2'
-  gem 'rails-assets-select2', '<= 4.0.3'
-  gem 'rails-assets-bootstrap-nav-wizard', '<= 0.0.3'
-  gem 'rails-assets-bootstrap-daterangepicker', '<= 2.1.25'
-  gem 'rails-assets-moment', '<= 2.9.0'
-  # gem 'rails-assets-clipboard'
-end
 
 gem 'simple_form'
 gem 'carrierwave', '~> 1.0'
@@ -73,7 +58,6 @@ gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
 gem 'bootstrap_form', '<= 2.1.1'
-# gem 'd3-rails', '<= 5.9.2'
 
 # Report related
 gem 'wkhtmltopdf-binary'
@@ -87,8 +71,6 @@ gem 'rubyzip', '>= 1.3.0'
 gem 'shrine'
 gem 'rollbar'
 gem 'scout_apm'
-
-
 
 gem 'paranoia', '~> 2.2'
 gem 'paper_trail'

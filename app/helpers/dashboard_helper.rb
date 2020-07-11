@@ -7,10 +7,11 @@ module DashboardHelper
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
     link_class = options[:disabled] == true ? 'link-disabled' : ''
     
-    content_tag(:li, class: menu_item_class) do
-      link_to({controller: controller_name, action: 'index'}, {class: link_class}) do
-        concat content_tag(:i, '', class: "fa fa-#{h icon}")
-        concat content_tag(:span, title)
+    # TODO 'active' needs to be on the link (link_class), not the <li>
+    content_tag(:li, class: "nav-item " + menu_item_class) do
+      link_to({controller: controller_name, action: 'index'}, {class: "nav-link " + link_class}) do
+        concat content_tag(:i, '', class: "fa fa-#{h icon} nav-icon")
+        concat content_tag(:p, title)
       end
     end
   end

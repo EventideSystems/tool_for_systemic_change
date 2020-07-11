@@ -1,0 +1,19 @@
+<div class="nested-fields box-body">
+  
+    <%= f.input :name, input_html: { class: 'initiative-name' } %>
+    <%= f.input :description %>
+    <hr>
+    <%= render 'scorecards/form_tabs/organisations', f: f %>
+    <%= render 'scorecards/form_tabs/subsystem_tags', f: f %>
+    
+    <%= f.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+    <%= f.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+    <hr>
+    <%= f.input :contact_name %>
+    <%= f.input :contact_email %>
+    <%= f.input :contact_website %>
+    <%= f.input :contact_position %>
+    
+    <%= link_to_remove_association "remove initiative", f %>
+
+</div>

@@ -1,105 +1,35 @@
 <!DOCTYPE html>
 <html>
-<%= render 'layouts/shared/head'%>
-<body class="skin-wicked sidebar-mini">
-<div class="wrapper">
-  <header class="main-header">
+  <head>
+    <title>Some App</title>
+    <%= csrf_meta_tags %> 
+    <%= csp_meta_tag %> 
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application' %>
+    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
+  </head>
+  <body class="skin-wicked sidebar-mini">
+    <div class="wrapper">
+      <%= render partial: "layouts/header" %> 
+      <%= render partial: "layouts/sidebar" %>
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <%= content_title do %>
+            <%= content_for :page_actions %>
+          <% end %>  
+          <ol class="breadcrumb">
+            <%= render_breadcrumbs tag: :li, separator: '' %>
+          </ol>
+        </section>
 
-    <%= render 'layouts/shared/logo'%>
-
-    <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- User Account Menu -->
-          <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <!-- The user image in the navbar-->
-              <img src="<%= current_user.profile_picture_url %>" class="user-image" alt="User Image">
-              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs"><%= current_user_name %></span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- The user image in the menu -->
-              <li class="user-header">
-                <img src="<%= current_user.profile_picture_url %>" class="img-circle" alt="User Image">
-                <p>
-                  <%= current_user_name %>
-                  <small><%= current_user_membership_summary %></small>
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <%= link_to 'Profile', edit_user_path(current_user) %>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <%- if current_account.present? %>
-                      <%- path = policy(current_account).edit? ? edit_account_path(current_account) : account_path(current_account) %>
-                      <%= link_to 'Account', path %>
-                    <%- end %>  
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-right">
-                  <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'btn btn-default btn-flat' %>
-                </div>
-              </li>
-            </ul>
-          </li>
-          
-          <li>
-            <%= link_to('http://www.wickedlab.com.au/help',  target: :_blank) do
-                  safe_join([content_tag(:i, '', class: "fa fa-support"), ' User Help'])
-                end
-            %>
-          </li>  
-          <%- if current_user.admin? %>
-            <li>
-              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-            </li>
-          <%- end %>
-        </ul>
+        <section class="content">
+          <%= render 'layouts/shared/flash' %>
+          <%= yield %>
+        </section>
       </div>
-    </nav>
-  </header>
-  
-  <%= render 'layouts/shared/sidebar_menu' %>
-
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <%= content_title do %>
-        <%= content_for :page_actions %>
-      <% end %>  
-      <ol class="breadcrumb">
-        <%= render_breadcrumbs tag: :li, separator: '' %>
-      </ol>
-    </section>
-
-    <section class="content">
-      <%= render 'layouts/shared/flash' %>
-      <%= yield %>
-    </section>
-  </div>
-
-  <%= render 'layouts/shared/footer'%>
-  <%= render 'layouts/shared/control_sidebar'%>
-
-  
-</div>
-  <%= render 'layouts/shared/modal' %>
-</body>
+      <%= render partial: 'layouts/footer' %>
+      <%= render partial: 'layouts/control_sidebar'%>
+    </div>
+  </body>
 </html>

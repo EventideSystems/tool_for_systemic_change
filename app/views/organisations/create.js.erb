@@ -5,18 +5,10 @@
     $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
   <% end %>
 <% else %>
-  current_select = $('[current=true]');
-  // all_select = $('select[name*=organisations_attributes]');
-  option = document.createElement( 'option' );
-  option.value = '<%= @organisation.id %>';
-  option.text = '<%= @organisation.name %>';
-  current_select.append(option);
-  option.setAttribute('selected', 'selected');
-  current_select.attr('current', null);
   $('#organisation-modal').modal('hide');
-  // SMELL Triggering behaviour indirectly via 'click'
-  ensureOrgEditControl(current_select.parent().parent().parent().parent().parent().parent().parent().parent().parent().children().find('.assign-another-organisation'));
-
+  var newSelect = $('.scorecard_initiatives_initiatives_organisations_organisation_id').last().find('select');
+  newSelect.append($('<option>', {value: '<%= @organisation.id %>', text:'<%= @organisation.name %>'}))
+  newSelect.val('<%= @organisation.id %>');
 <% end %>
 
 

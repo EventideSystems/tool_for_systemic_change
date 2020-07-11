@@ -1,0 +1,35 @@
+<div class="row">
+<label class="col-sm-3 control-label select">Assign Organisations</label> 
+<div class="col-md-9">
+  
+<%= form.nested_fields_for :initiatives_organisations do |io| %>
+  <div class="box box-solid">   
+    <div class="box-body"> 
+      <div class="col-md-7 pull-left"> 
+        <%= 
+          io.input :organisation_id, 
+            collection: lookup_organisations, 
+            prompt: 'Select an Organisation', 
+            label: "Select Existing", 
+            input_html: { class: 'assign-organisation-select' } 
+        %>
+      </div>
+      <div class="pull-left"> 
+        <strong>Or</strong>&nbsp;&nbsp;<%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-secondary organisation-link" %>
+      </div>
+      <div class="pull-right"> 
+        <%= io.remove_nested_fields_link do %>
+          <button type="button" class="btn btn-box-tool pull-right"><i class="fa fa-remove"></i></button>
+        <% end %>
+      </div>  
+    </div>
+  </div>
+<% end %>
+</div>
+<div class="col-md-3"></div>
+<div class="col-md-9">  
+  <%= form.add_nested_fields_link :initiatives_organisations, 'Assign Another Organisation', class: 'btn btn-secondary pull-left assign-another-organisation hidden' %>
+</div>
+</div>
+<hr>
+

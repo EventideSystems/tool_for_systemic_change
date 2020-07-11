@@ -12,72 +12,51 @@
       </ul>
     </div>
   <% end %>
-  
-  <div class='box box-primary'>
-    <div class="wizard">
-      <div class='box-header with-border'>
-        <div class="row">
-          <div class="col-sm-3">
-            <h3 class='box-title'>
-              <%= form_title(@scorecard) %>
-            </h3>
-          </div>
-        </div>        
-        <div class="row">
-          <div class="col-sm-2">
-          &nbsp;
-          </div>
-          <div class="col-sm-10">  
-            <ul class='nav nav-wizard'>
-              <li>
-                <a href="#scorecard" data-toggle="tab"><%= Scorecard.model_name.human %></a>
-              </li>
-              <li>
-                <a href="#wicked-problem" data-toggle="tab">Wicked Problem / Opportunity</a>
-              </li>
-              <li>
-                <a href="#community" data-toggle="tab">Community</a>
-              </li>
-              <li>
-                <a href="#initiatives" data-toggle="tab">Initiatives</a>
-              </li>
-              <li>
-                <a href="#tab5" data-toggle="tab">Preview</a>
-              </li>
-            </ul>
-          </div>
-        </div>  
-      </div>
 
-      <div class='box-body'>
-        <div class='form-group'>
-          <div class="tab-content">
-            <%= render 'scorecards/form_tabs/scorecard', form: f %>
-            <%= render 'scorecards/form_tabs/wicked_problem', form: f %>
-            <%= render 'scorecards/form_tabs/community', form: f %>
-            <%= render 'scorecards/form_tabs/initiatives', form: f %>
-            <%= render 'scorecards/form_tabs/preview', form: f %>
-          </div>
-        </div>
+  <div class="wizard">
+    <ul class="nav">
+      <li>
+        <a class="nav-link" href="#step-1">
+          <%= Scorecard.model_name.human %>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-2">
+          Wicked Problem / Opportunity
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-3">
+          Community
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-4">
+          Initiatives
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-5">
+          Preview
+        </a>
+      </li>
+    </ul>
+  
+    <div class="tab-content">
+      <div id="step-1" class="tab-pane" role="tabpanel">
+        <%= render 'scorecards/form_tabs/scorecard', form: f %>
       </div>
-      
-      <div>
-        <div class='box-footer'>  
-          <ul class="pager wizard">
-            <li class="previous first" style="display:none;">
-              <a href="#">First</a>
-            </li>
-            <li class="previous">
-              <a href="#">Previous</a>
-            </li>
-            <li class="next last" style="display:none;">
-              <a href="#">Last</a>
-            </li>
-            <li class="next">
-              <a href="#">Next</a>
-            </li>
-          </ul>
-        </div>
+      <div id="step-2" class="tab-pane" role="tabpanel">
+        <%= render 'scorecards/form_tabs/wicked_problem', form: f %>
+      </div>
+      <div id="step-3" class="tab-pane" role="tabpanel">
+        <%= render 'scorecards/form_tabs/community', form: f %>
+      </div>
+      <div id="step-4" class="tab-pane" role="tabpanel">
+        <%= render 'scorecards/form_tabs/initiatives', form: f %>
+      </div>
+      <div id="step-5" class="tab-pane" role="tabpanel">
+        <%= render 'scorecards/form_tabs/preview', form: f %>
       </div>
     </div>
   </div>

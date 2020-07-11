@@ -5,16 +5,10 @@
     $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
   <% end %>
 <% else %>
-  current_select = $('[current=true]');
-  // all_select = $('select[name*=subsystem_tags_attributes]');
-  option = document.createElement( 'option' );
-  option.value = '<%= @subsystem_tag.id %>';
-  option.text = '<%= @subsystem_tag.name %>';
-  current_select.append(option);
-  option.setAttribute('selected', 'selected');
-  current_select.attr('current', null);
   $('#subsystem-tag-modal').modal('hide');
-  // SMELL Triggering behaviour indirectly via 'click'
-  ensureSubsystemTagEditControl(current_select.parent().parent().parent().parent().parent().parent().parent().parent().parent().children().find('.assign-another-subsystem-tag'));
-
+  var newSelect = $('.scorecard_initiatives_initiatives_subsystem_tags_subsystem_tag_id').last().find('select');
+  newSelect.append(
+    $('<option>', {value: '<%= @subsystem_tag.id %>', text:'<%= @subsystem_tag.name %>'})
+  );
+  newSelect.val('<%= @subsystem_tag.id %>');
 <% end %>

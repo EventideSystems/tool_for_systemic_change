@@ -1,9 +1,9 @@
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs">
-    <li class="<%= 'active' if @active_tab == :scorecard %>"><a href="#tab_1" data-target="#tab_1" data-toggle="tab"><%= Scorecard.model_name.human %></a></li>
-    <li class="<%= 'active' if @active_tab == :ecosystem_maps %>"><a href="#tab_2" data-target="#tab_2" data-toggle="tab">Ecosystem Maps</a></li>
-    <li class="<%= 'active' if @active_tab == :initiatives %>"><a href="#tab_3" data-target="#tab_3" data-toggle="tab">Initiatives</a></li>
-    <li class="<%= 'active' if @active_tab == :details %>"><a href="#tab_4" data-target="#tab_4" data-toggle="tab">Details</a></li>
+    <li class="nav-link <%= 'active' if @active_tab == :scorecard %>"><a href="#tab_1" class="nav-link" data-target="#tab_1" data-toggle="tab"><%= Scorecard.model_name.human %></a></li>
+    <li class="nav-link <%= 'active' if @active_tab == :ecosystem_maps %>"><a href="#tab_2" class="nav-link" data-target="#tab_2" data-toggle="tab">Ecosystem Maps</a></li>
+    <li class="nav-link <%= 'active' if @active_tab == :initiatives %>"><a href="#tab_3" class="nav-link" data-target="#tab_3" data-toggle="tab">Initiatives</a></li>
+    <li class="nav-link <%= 'active' if @active_tab == :details %>"><a href="#tab_4" class="nav-link" data-target="#tab_4" data-toggle="tab">Details</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane <%= 'active' if @active_tab == :scorecard %>" id="tab_1">

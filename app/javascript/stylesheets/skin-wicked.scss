@@ -12,6 +12,89 @@ $primary-color-analogous-2: #49C472;
 $primary-button-color: #00b9f2;
 $secondary-button-color: #49C5B1;
 
+
+body {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.navbar-wicked {
+  background-color: $primary-color;
+}
+
+.navbar-wicked .navbar-nav .nav-link {
+  color: white;
+}
+
+.skin-wicked .nav-sidebar > .nav-item:hover {
+  color: #ffffff !important;
+  background: #1e282c !important;
+//  border-left-color: #3c8dbc;
+  border-left-color: $secondary-color !important;
+}
+
+.user-image {
+  float: left;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-top: -2px;
+}
+
+.skin-wicked .brand-link {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-style: bold;
+  background-color: darken($primary-color, 10%);
+  color: #ffffff;
+  border-bottom: 0 solid transparent;
+}
+
+.skin-wicked .brand-link .brand-image-xs {
+  margin-top: 0.15em;
+  margin-left: 1em;
+}
+
+.brand-link:hover {
+  background-color: darken($primary-color, 20%);
+}
+
+.content-header > .breadcrumb {
+  float: right;
+  background: transparent;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  padding: 7px 5px;
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  border-radius: 2px;
+
+  li > a {
+    color: #212529;
+  }
+  
+  li >a > .fa {
+    margin-right: 5px;
+  }
+
+  li, h1 small {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  li+li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: '>\00a0';
+  }
+}
+
 span.commented {
   color: $primary-color-analogous-1;
 }
@@ -38,13 +121,13 @@ span.commented {
   border-color: darken($secondary-button-color, 5%);
 }
 
-.skin-wicked .main-header .navbar {
-  //background-color: #3c8dbc;
-  background-color: $primary-color;
-}
-.skin-wicked .main-header .navbar .nav > li > a {
-  color: #ffffff;
-}
+// .skin-wicked .main-header .navbar {
+//   //background-color: #3c8dbc;
+//   background-color: $primary-color;
+// }
+// .skin-wicked .main-header .navbar .nav > li > a {
+//   color: #ffffff;
+// }
 .skin-wicked .main-header .navbar .nav > li > a:hover,
 .skin-wicked .main-header .navbar .nav > li > a:active,
 .skin-wicked .main-header .navbar .nav > li > a:focus,
@@ -79,14 +162,7 @@ span.commented {
     background: #367fa9;
   }
 }
-.skin-wicked .main-header .logo {
-  background-color: darken($primary-color, 10%);
-  color: #ffffff;
-  border-bottom: 0 solid transparent;
-}
-.skin-wicked .main-header .logo:hover {
-  background-color: darken($primary-color, 20%);
-}
+
 .skin-wicked .main-header li.user-header {
   background-color: $primary-color;
 }
@@ -106,16 +182,12 @@ span.commented {
   color: #4b646f;
   background: #1a2226;
 }
-.skin-wicked .sidebar-menu > li > a {
+.sidebar-menu > li > a {
   border-left: 3px solid transparent;
 }
-.skin-wicked .sidebar-menu > li:hover > a,
-.skin-wicked .sidebar-menu > li.active > a {
-  color: #ffffff;
-  background: #1e282c;
-//  border-left-color: #3c8dbc;
-  border-left-color: $secondary-color;
-}
+
+
+
 .skin-wicked .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
   background: #2c3b41;

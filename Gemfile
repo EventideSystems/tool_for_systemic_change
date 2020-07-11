@@ -19,7 +19,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
+# gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -45,13 +45,12 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'pundit'
 
-# User interface
-gem 'font-awesome-sass', '<= 4.7.0'
-
+# User interface related
 gem 'simple_form'
+gem 'cocoon'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
-gem 'nested_form_fields'
+# gem 'nested_form_fields'
 gem 'table-for'
 gem 'kaminari-bootstrap'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'

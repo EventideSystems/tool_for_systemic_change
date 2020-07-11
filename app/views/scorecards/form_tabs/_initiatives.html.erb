@@ -1,39 +1,21 @@
-<div class="tab-pane" id="initiatives">
+<div class="tab-pane">
   <div class="col-md-12"> 
-  <%= form.nested_fields_for :initiatives do |i| %>
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title">New Initiative</h3>
 
-        <div class="box-tools pull-right">
-          <button type="button" class="btn btn-box-tool" data-widget="collapse">
-            <i class="fa fa-minus"></i>
-          </button>                      
-          <%= i.remove_nested_fields_link do %>
-            <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
-          <% end %>
-        </div>
-      </div>
-      <div class="box-body">
-        <%= i.input :name, input_html: { class: 'initiative-name' } %>
-        <%= i.input :description %>
-        <hr>
-        <%= render 'scorecards/form_tabs/organisations', form: i %>
-        <%= render 'scorecards/form_tabs/subsystem_tags', form: i %>
-
-        <%= i.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
-
-        <%= i.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
-        <hr>
-        <%= i.input :contact_name %>
-        <%= i.input :contact_email %>
-        <%= i.input :contact_website %>
-        <%= i.input :contact_position %>
-       
+    <div id="initiatives">
+      <%= form.simple_fields_for :initiatives do |initiative_form| %>
+        <%= render 'scorecards/form_tabs/initiative_fields', f: initiative_form %>
+      <% end %>
+      <div class="links">
+        <%=
+          link_to_add_association(
+            'add initiative',
+            form,
+            :initiatives,
+            partial: 'scorecards/form_tabs/initiative_fields'
+          )
+        %>
       </div>
     </div>
-  <% end %>
-  <hr />
-  <%= form.add_nested_fields_link :initiatives, 'Add Additional Initiative', class: 'btn btn-secondary pull-right' %>
+
   </div>
 </div>

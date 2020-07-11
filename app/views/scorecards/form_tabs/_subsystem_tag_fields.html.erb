@@ -1,0 +1,17 @@
+<div class="nested-fields box-body">
+  
+  <%= 
+    f.input \
+      :subsystem_tag_id, 
+      collection: lookup_subsystem_tags, 
+      prompt: 'Select a Subsystem Tag', 
+      label: "Select Existing", 
+      input_html: { class: 'assign-subsystem-tag-select' } 
+  %>
+
+  <div class="pull-left"> 
+    <strong>Or</strong>&nbsp;&nbsp;<%= link_to "Create a New Subsystem Tag", new_subsystem_tag_path, remote: true, class: "btn btn-secondary subsystem-tag-link" %>
+  </div>
+    
+  <%= link_to_remove_association "remove subsystem tag", f %>
+</div>

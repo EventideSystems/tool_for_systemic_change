@@ -74,20 +74,6 @@
 </div>
 
 <div class="row dashboard">
-  <div class="col-md-6">
-    <div class="box box-default">
-      <div class="box-header with-border">
-        <h3 class="box-title">Hello</h3>
-      </div>
-      <div class="box-body scrollable-panel">
-        <%= sanitize @welcome_message %>
-      </div>
-      <div class="box-footer">
-        <%= link_to(welcome_message_path, class: 'remote-link pull-right') do
-          safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-        end %>        
-      </div>
-    </div>
-  </div>
+  <%= render 'dashboard/welcome_message'%>
   <%= render 'dashboard/activities'%>
 </div>

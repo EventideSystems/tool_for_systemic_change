@@ -35,18 +35,21 @@ require('d3');
 require('moment');
 
 import 'cocoon';
+import 'select2';
 
 import * as d3 from 'd3';
 window.d3 = d3;
 
-// import moment from 'moment'
-// moment.locale('en')
-// window.moment = moment;
+import moment from 'moment'
+moment.locale('en')
+window.moment = moment;
 
 // import 'bootstrap-datepicker'
-// import 'bootstrap-daterangepicker'
+import 'bootstrap-daterangepicker'
 
 require("../components/transition_card");
 require("../components/transition_card_wizard");
 require("../components/initiative_checklist");
+require("../components/subsystem_tags");
+require("../components/toasts");
 

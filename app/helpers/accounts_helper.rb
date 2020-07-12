@@ -26,7 +26,7 @@ module AccountsHelper
       selected_path = controller.current_account ? switch_account_path(controller.current_account) : ''
       
       options = {
-        class: 'form-control',
+        class: 'form-control sidebar-form',
         onchange: 'top.location.href=this.options[this.selectedIndex].value;' 
       }
       
@@ -40,7 +40,9 @@ module AccountsHelper
       options.merge!(include_blank: true, prompt: 'No account selected') if selected_path.blank?
       
       content_tag(:form, '', class: 'account-select') do
-        select_tag(:account_selector, option_tags, options)
+        content_tag(:div, '', class: 'input-group') do
+          select_tag(:account_selector, option_tags, options)
+        end
       end
     end
   end

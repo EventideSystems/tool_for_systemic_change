@@ -3,6 +3,8 @@
  * ----------
  */
 
+ // *** Colors **
+
 $primary-color: #49C5B1;
 $secondary-color: #00FFFF;
 
@@ -12,6 +14,7 @@ $primary-color-analogous-2: #49C472;
 $primary-button-color: #00b9f2;
 $secondary-button-color: #49C5B1;
 
+// *** General ***
 
 body {
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -19,19 +22,14 @@ body {
   font-size: 14px;
 }
 
+// *** Navbar ***
+
 .navbar-wicked {
   background-color: $primary-color;
 }
 
 .navbar-wicked .navbar-nav .nav-link {
   color: white;
-}
-
-.skin-wicked .nav-sidebar > .nav-item:hover {
-  color: #ffffff !important;
-  background: #1e282c !important;
-//  border-left-color: #3c8dbc;
-  border-left-color: $secondary-color !important;
 }
 
 .user-image {
@@ -43,6 +41,34 @@ body {
   margin-top: -2px;
 }
 
+// *** Sidebar ***
+
+@media (min-width: 992px) {
+  .sidebar-mini .nav-sidebar .nav-item > .nav-link {
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-mini .nav-sidebar .nav-item > .nav-link:hover {  
+    border-left-color: $secondary-color;
+  }
+
+  .sidebar-mini h2.sidebar-header {
+    margin-left: -1em;
+    margin-right: -1em;
+    padding: 1em;
+    padding-left: 2em;
+    font-size: 0.9em;
+    color: #4b646f;
+    background: #1a2226;
+  }
+}
+
+form.account-select {
+  padding-top: 0.5em;
+}
+
+// *** Brand ***
+
 .skin-wicked .brand-link {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
@@ -53,13 +79,32 @@ body {
 }
 
 .skin-wicked .brand-link .brand-image-xs {
-  margin-top: 0.15em;
+  margin-top: 0.11em;
   margin-left: 1em;
 }
 
 .brand-link:hover {
   background-color: darken($primary-color, 20%);
 }
+
+// *** Toasts ***
+
+.toast {
+  position:fixed; 
+  top: 1em; 
+  right: 3em; 
+  width: 100%;
+  z-index:9999; 
+}
+
+// *** Dashboard ***
+
+// TODO Needs media query to shrink font size when smaller than laptop width 
+.small-box p {
+  font-size: 1rem;  // Default
+}
+
+// ******** ?
 
 .content-header > .breadcrumb {
   float: right;
@@ -99,6 +144,8 @@ span.commented {
   color: $primary-color-analogous-1;
 }
 
+// **** Buttons
+
 .btn-primary {
   background-color: $primary-button-color;
   border-color: lighten($primary-button-color, 5%);
@@ -121,13 +168,6 @@ span.commented {
   border-color: darken($secondary-button-color, 5%);
 }
 
-// .skin-wicked .main-header .navbar {
-//   //background-color: #3c8dbc;
-//   background-color: $primary-color;
-// }
-// .skin-wicked .main-header .navbar .nav > li > a {
-//   color: #ffffff;
-// }
 .skin-wicked .main-header .navbar .nav > li > a:hover,
 .skin-wicked .main-header .navbar .nav > li > a:active,
 .skin-wicked .main-header .navbar .nav > li > a:focus,
@@ -163,7 +203,7 @@ span.commented {
   }
 }
 
-.skin-wicked .main-header li.user-header {
+.skin-wicked li.user-header {
   background-color: $primary-color;
 }
 .skin-wicked .content-header {
@@ -178,10 +218,7 @@ span.commented {
 .skin-wicked .user-panel > .info > a {
   color: #fff;
 }
-.skin-wicked .sidebar-menu > li.header {
-  color: #4b646f;
-  background: #1a2226;
-}
+
 .sidebar-menu > li > a {
   border-left: 3px solid transparent;
 }

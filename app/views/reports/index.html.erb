@@ -26,7 +26,7 @@
         <p>This report shows the addition and removal of characteristics across initiatives over a period of time.</p>
         
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
-        <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker-auto-bottom" }, autocomplete: "off" } %>
+        <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker", datepicker_position: "bottom" }, autocomplete: "off" } %>
         <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
 
       </div>

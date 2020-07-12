@@ -1,22 +1,15 @@
-
 <div class="col-md-6">
   <div class="card">
     <div class="card-header with-border">
-      <i class="fa fa-history"></i>
-
-      <h3 class="card-title">Recent Activity</h3>
+      <h3 class="card-title">Hello</h3>
     </div>
     <div class="card-body scrollable-panel">
-      <ul>
-        <%- @recent_versions.each do |version| %>
-          <li><%= version_summary(version) %></li>  
-        <%- end %>
-      </ul>
+      <%= sanitize @welcome_message %>
     </div>
     <div class="card-footer text-right">
-      <%= link_to(activities_path) do
+      <%= link_to(welcome_message_path, class: 'remote-link') do
         safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-      end %>
+      end %>        
     </div>
   </div>
 </div>

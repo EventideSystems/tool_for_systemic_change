@@ -1,6 +1,9 @@
 <% flash.each do |type, message| %>
-  <div class="alert alert-dismissible <%= bootstrap_class_for(type) %> fade in">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <%= message %>
+
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body">
+        <%= message %>
+      </div>
+    </div>
   </div>
 <% end %>

@@ -45,8 +45,9 @@ moment.locale('en')
 window.moment = moment;
 
 // import 'bootstrap-datepicker'
-import 'bootstrap-daterangepicker'
+import 'daterangepicker';
 
+require("../components/datepickers");
 require("../components/transition_card");
 require("../components/transition_card_wizard");
 require("../components/initiative_checklist");

@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def application_title
+    return "WickedLab" if Rails.env.production?
+    "WickedLab - #{Rails.env.titleize}" 
+  end
+
   def bootstrap_class_for flash_type
     case flash_type.to_sym
     when :success

@@ -22,3 +22,10 @@
     text-transform: none !important;
   }
 }
+
+h3.card-title-recent-activity::before {
+  font-family: 'Font Awesome 5 Free';
+	content: "\f1da";
+  font-weight: 900;
+  padding: 0 5px;
+}

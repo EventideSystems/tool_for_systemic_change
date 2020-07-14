@@ -1,111 +1,116 @@
-<div class="box-header with-border">
-  <div class="pull-left">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-      </div>
-      <input 
-        type="text" 
-        class="form-control" 
-        id="transition_card_select_date" 
-        data-scorecard-id="<%=@scorecard.id%>" placeholder="Select Date"
-        <%= "data-selected-date=\"#{@selected_date}\"" unless @selected_date.blank? %>
-      >
-    </div>
-  </div>
-  <div class="pull-left">
-    <%= link_to('#', class: 'btn btn-primary', id: 'daterange-clear-btn', data: { toggle: "tooltip"}, title: "Clear date") do
-      content_tag(:i, '', class: "fa fa-undo")
-    end %>
-  </div>
-  
-  <%- if policy(:sidebar).show_subsystem_tags_link? %>
-    <div class="pull-left" style="padding-right: 5px; padding-left: 5px;">
-      <div class="input-group">
-      
-        <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px; width: auto;" data-scorecard-id="<%=@scorecard.id%>">
-          <%- @selected_tags.each do |selected_tag| %>
-              <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
-          <%- end %>
-        </select>
-      </div>
-    </div>
-  <%- end %>
-  
-  <div class="pull-right">
-    <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
-    <%- print_scorecard_path = if @selected_date 
-          scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
-        else
-          scorecard_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
-        end
-    %>
-    <%= link_to(print_scorecard_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
-      content_tag(:i, '', class: "fa fa-print")
-    end %>
-    <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
-      content_tag(:i, '', class: "fa fa-share-alt")
-    end %>
-    <% if policy(:scorecard).copy_options? %>
-      <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
-        content_tag(:i, '', class: "fa fa-files-o")
-      end %>
-    <% end %>
-    <% if policy(:scorecard).merge_options? %>
-      <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
-        content_tag(:i, '', class: "fa fa-file-text-o")
-      end %>
-    <% end %>
-    
-  </div>
-</div>
-<div class="box-body scorecard-matrix">
-  <div class="outer">
-    <div class="inner">
-      <table class="pre-scrollable"> 
-        <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <% @focus_areas.each_with_index do |focus_area, index| %>
-              <th colspan="<%= focus_area.characteristics.count %>" class="legend">
-                <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
-                  <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
-                  </span>
-                </div>
-              </th>
-            <% end %>
-          </tr>
-        </thead>
-        <tbody>
-          <% @initiatives.each do |initiative| %>
-          <tr>
-            <th>
-              <span data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
-                <%= link_to initiative.name, initiative_path(initiative), class: 'truncate' %>
-              </span>
-            </th>
-            <% initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: @parsed_selected_date).each do |checklist_item| %>
-              <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
-                <span>&nbsp;</span>
-              </td>
-            <% end %>
-          </tr>
-          <% end %>
-        </tbody>
-        <tfoot>
-          <tr class="chars"> 
-            <td>
-              &nbsp;
-            </td>
-            <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
-              <td>
-                <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
-              </td>
-            <% end %>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-</div>
 
+<div class="container">
+  <div class="row transition-card-controls p-3">
+    <div class="col-sm">
+      <div class="float-left">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="transition_card_select_date"
+            autocomplete="off"
+            data-scorecard-id="<%=@scorecard.id%>" placeholder="Select Date"
+            <%= "data-selected-date=\"#{@selected_date}\"" unless @selected_date.blank? %>
+          >
+        </div>
+      </div>
+      <div class="float-left">
+        <%= link_to('#', class: 'btn btn-primary', id: 'daterange-clear-btn', data: { toggle: "tooltip"}, title: "Clear date") do
+          content_tag(:i, '', class: "fa fa-undo")
+        end %>
+      </div>
+      
+      <%- if policy(:sidebar).show_subsystem_tags_link? %>
+        <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
+          <div class="input-group">
+          
+            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px; width: auto;" data-scorecard-id="<%=@scorecard.id%>">
+              <%- @selected_tags.each do |selected_tag| %>
+                  <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
+              <%- end %>
+            </select>
+          </div>
+        </div>
+      <%- end %>
+      
+      <div class="float-right">
+        <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
+        <%- print_scorecard_path = if @selected_date 
+              scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
+            else
+              scorecard_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
+            end
+        %>
+        <%= link_to(print_scorecard_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
+          content_tag(:i, '', class: "fa fa-print")
+        end %>
+        <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
+          content_tag(:i, '', class: "fa fa-share-alt")
+        end %>
+        <% if policy(:scorecard).copy_options? %>
+          <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
+            content_tag(:i, '', class: "fa fa-files-o")
+          end %>
+        <% end %>
+        <% if policy(:scorecard).merge_options? %>
+          <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
+            content_tag(:i, '', class: "fa fa-file-text-o")
+          end %>
+        <% end %>
+        
+      </div>
+    </div>
+  </div>
+  <div class="box-body scorecard-matrix">
+    <div class="outer">
+      <div class="inner">
+        <table class="pre-scrollable"> 
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <% @focus_areas.each_with_index do |focus_area, index| %>
+                <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                  <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                    <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
+                    </span>
+                  </div>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @initiatives.each do |initiative| %>
+            <tr>
+              <th>
+                <span data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>">
+                  <%= link_to initiative.name, initiative_path(initiative), class: 'truncate' %>
+                </span>
+              </th>
+              <% initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: @parsed_selected_date).each do |checklist_item| %>
+                <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
+                  <span>&nbsp;</span>
+                </td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr class="chars"> 
+              <td>
+                &nbsp;
+              </td>
+              <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+                <td>
+                  <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
+                </td>
+              <% end %>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

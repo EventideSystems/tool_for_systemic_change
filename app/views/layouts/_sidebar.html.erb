@@ -1,68 +1,63 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <%= render 'layouts/logo' %>
-
-<!-- Sidebar -->
-  <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 652px;"><div class="sidebar" style="min-height: 652px; overflow: hidden; width: auto; height: 652px;">
-    <!-- Sidebar user panel (optional) -->
-
-    <%- if user_signed_in? && current_user.admin? || current_user.accounts.count > 1 %>
-    <div class="user-panel" style='height:70px'>
-      <div class="xpull-left ixnfo">
-        <%= account_selector %>
+  <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: auto;">
+    <div class="sidebar" style="min-height: 700px; overflow: hidden; width: auto; height: auto;">
+      <%- if user_signed_in? && current_user.admin? || current_user.accounts.count > 1 %>
+      <div class="user-panel" style='height:70px'>
+        <div class="xpull-left ixnfo">
+          <%= account_selector %>
+        </div>
       </div>
-    </div>
-    <%- end %>  
-    
-    <%- disabled = controller.current_account.nil? %>
-
-    <%= form_tag search_results_path, class: 'sidebar-form', method: :get do %>
-      <div class="input-group">
-        <%= 
-          text_field_tag :query, 
-            nil, 
-            class: 'form-control border-0', 
-            placeholder: 'Search...',
-            disabled: disabled 
-        %>
-        <span class="input-group-btn">
-          <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-          </button>
-        </span>
-      </div>
-    <% end %>
-<!-- Sidebar Menu -->
-    <h2 class="sidebar-header">MENU</h2>
-    <nav class="mt-2">
+      <%- end %>  
       
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <%= menu_item_tag(:dashboard, 'dashboard') %>
-        <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled, title: Scorecard.model_name.human.pluralize }) %>
-        <%= menu_item_tag(
-          :wicked_problems, 
-          'cubes', 
-          { disabled: disabled, title: 'Wicked Problems /<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opportunities'.html_safe }
-        ) %>
-        <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
-        <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>
-        <%= menu_item_tag(:organisations, 'sitemap', { disabled: disabled }) %>
-        
-        <%- if policy(:sidebar).show_subsystem_tags_link? %>
-          <%= menu_item_tag(:subsystem_tags, 'tags', { disabled: disabled }) %>
-        <%- end %>
-        
-        <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
-        <%#= menu_item_tag(:networks, 'snowflake-o ', { disabled: disabled }) %>
-        <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
-        <%- if policy(:sidebar).show_users_link? %> 
-          <%= menu_item_tag(:users, 'user-plus', { disabled: disabled }) %>
-        <%- end %>  
-        <%- if policy(:sidebar).show_accounts_link? %>
-          <%= menu_item_tag(:accounts, 'user-plus', { disabled: disabled }) %>
-        <%- end %>  
-        <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
-      </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
+      <%- disabled = controller.current_account.nil? %>
+
+      <%= form_tag search_results_path, class: 'sidebar-form', method: :get do %>
+        <div class="input-group">
+          <%= 
+            text_field_tag :query, 
+              nil, 
+              class: 'form-control border-0', 
+              placeholder: 'Search...',
+              disabled: disabled 
+          %>
+          <span class="input-group-btn">
+            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      <% end %>
+
+      <h2 class="sidebar-header">MENU</h2>
+      <nav class="mt-2">      
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <%= menu_item_tag(:dashboard, 'dashboard') %>
+          <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled, title: Scorecard.model_name.human.pluralize }) %>
+          <%= menu_item_tag(
+            :wicked_problems, 
+            'cubes', 
+            { disabled: disabled, title: 'Wicked Problems /<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opportunities'.html_safe }
+          ) %>
+          <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
+          <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>
+          <%= menu_item_tag(:organisations, 'sitemap', { disabled: disabled }) %>
+          
+          <%- if policy(:sidebar).show_subsystem_tags_link? %>
+            <%= menu_item_tag(:subsystem_tags, 'tags', { disabled: disabled }) %>
+          <%- end %>
+          
+          <%= menu_item_tag(:reports, 'pie-chart', { disabled: disabled }) %>
+          <%#= menu_item_tag(:networks, 'snowflake-o ', { disabled: disabled }) %>
+          <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
+          <%- if policy(:sidebar).show_users_link? %> 
+            <%= menu_item_tag(:users, 'user-plus', { disabled: disabled }) %>
+          <%- end %>  
+          <%- if policy(:sidebar).show_accounts_link? %>
+            <%= menu_item_tag(:accounts, 'user-plus', { disabled: disabled }) %>
+          <%- end %>  
+          <%= menu_item_tag(:tutorials, 'youtube-play', { controller: :video_tutorials }) %>
+        </ul>
+      </nav>
+    </div>
   </div>
-  <!-- /.sidebar -->
 </aside>

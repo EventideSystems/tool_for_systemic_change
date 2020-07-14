@@ -19,6 +19,7 @@ $(document).on('turbolinks:load', function() {
     {
       startDate: parsedDateStart,
       autoApply: true,
+      autoUpdateInput: (dateStart !== undefined),
       locale: { format: 'MMMM D, YYYY' },
       singleDatePicker: true,
       showDropdowns: true,
@@ -34,6 +35,10 @@ $(document).on('turbolinks:load', function() {
       $(location).attr('href', url)
     }
   );
+
+  // $('#transition_card_select_date').on('apply.daterangepicker', function(ev, picker) {
+  //   $(this).val(picker.startDate.format("YYYY-MM-DD"));
+  // });
 
   $('#daterange-clear-btn').click(function(e) {
     var scorecardId = $('#transition_card_select_date').data('scorecard-id');

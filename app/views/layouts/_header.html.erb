@@ -10,39 +10,24 @@
   </ul>
 
   <!-- Right navbar links -->
-  <ul class="navbar-nav ml-auto">
+  <ul class="xmain-header navbar-nav ml-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#">
-        <img src="<%= current_user.profile_picture_url %>" class="user-image" alt="User Image">
-        <span class="hidden-xs"><%= current_user_name %></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li class="user-header">
-          <img src="<%= current_user.profile_picture_url %>" class="img-circle" alt="User Image">
-          <p>
-            <%= current_user_name %>
-            <small><%= current_user_membership_summary %></small>
-          </p>
-        </li>
-        <li class="user-body">
-          <div class="row">
-            <div class="col-xs-4 text-center">
-              <%= link_to 'Profile', edit_user_path(current_user) %>
-            </div>
-            <div class="col-xs-4 text-center">
-            </div>
-            <div class="col-xs-4 text-center">
-              <%- if current_account.present? %>
-                <%- path = policy(current_account).edit? ? edit_account_path(current_account) : account_path(current_account) %>
-                <%= link_to 'Account', path %>
-              <%- end %>  
-            </div>
-          </div>
-        </li>
-        <li class="user-footer">
-          <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'btn btn-default btn-flat' %>
-        </li>
-      </ul>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="<%= current_user.profile_picture_url %>" class="user-image" alt="User Image">
+          <span class="hidden-xs" data-toggle="tooltip" title="<%= current_user_membership_summary %>"><%= current_user_name %></span>
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to 'Profile', edit_user_path(current_user), class: 'dropdown-item' %>
+          <%- if current_account.present? %>
+            <%- path = policy(current_account).edit? ? edit_account_path(current_account) : account_path(current_account) %>
+            <%= link_to 'Account', path, class: 'dropdown-item' %>
+          <%- end %> 
+          <div class="dropdown-divider"></div>
+          <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'dropdown-item' %>
+        </div>
+      </li>
     </li>
   
     <li class="nav-item d-none d-sm-inline-block">

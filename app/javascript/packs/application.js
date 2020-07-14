@@ -54,3 +54,23 @@ require("../components/initiative_checklist");
 require("../components/subsystem_tags");
 require("../components/toasts");
 
+$(document).on('turbolinks:load', function() {
+  $('.remote-link').on('click', function(e) {
+    var link = $(this).attr('href');
+    $('.modal').find(".modal-content").load(link);
+    $('.modal').modal('show');
+    e.preventDefault();
+  });
+});
+
+$(document).on('turbolinks:load', function() {
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+});
+
+// $(document).on('turbolinks:load', function() {
+//   $('.container').tooltip({
+//     selector: "[data-toggle=tooltip]"
+//   });
+// });

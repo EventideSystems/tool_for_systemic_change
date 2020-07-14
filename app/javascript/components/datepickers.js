@@ -21,5 +21,5 @@ $(document).on('turbolinks:load', function() {
 
   $('[data-behaviour~=datepicker]').on('apply.daterangepicker', function(ev, picker) {
     $(this).val(picker.startDate.format("YYYY-MM-DD"));
-});
+  });
 });

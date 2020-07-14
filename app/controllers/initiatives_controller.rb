@@ -168,7 +168,7 @@ class InitiativesController < ApplicationController
           :subsystem_tag_id, :id, :_destroy
         ]
       ).tap do |params|
-        params[:initiatives_organisations_attributes].reject! do |key, value|
+        params[:initiatives_organisations_attributes]&.reject! do |key, value|
           value[:_destroy] != '1' && (
             value[:organisation_id].blank? || (
               value[:id].blank? && 
@@ -181,7 +181,7 @@ class InitiativesController < ApplicationController
           )
         end
         
-        params[:initiatives_subsystem_tags_attributes].reject! do |key, value|
+        params[:initiatives_subsystem_tags_attributes]&.reject! do |key, value|
           value[:_destroy] != '1' && (
             value[:subsystem_tag_id].blank? || (
               value[:id].blank? && 

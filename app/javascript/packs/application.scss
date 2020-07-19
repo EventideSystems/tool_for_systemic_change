@@ -6,12 +6,23 @@
 @import "smartwizard/dist/css/smart_wizard_arrows";
 @import 'daterangepicker';
 
+@import '../stylesheets/base_colors';
+@import '../stylesheets/base_buttons';
+@import '../stylesheets/base_forms';
+
 @import '../stylesheets/dashboard';
 @import '../stylesheets/skin-wicked';
 @import '../stylesheets/scorecard_matrix';
 @import '../stylesheets/subsystem_tags';
+@import '../stylesheets/sidebar';
+@import '../stylesheets/smartwizard';
+@import '../stylesheets/tables';
 @import '../stylesheets/pdf';
 
+.toast {
+  background-color: #006C8C;
+  color: white;
+}
 // div.medium-editor-element {
 //   height: auto;
 // }
@@ -178,9 +189,6 @@
 
 
 
-// .slogan {
-//   padding-right: 210px;
-// }
 
 // .select2-selection__choice {
 //   background-color: #00b9f2 !important;

@@ -25,7 +25,7 @@
     <% table.column :name, link: true, :formatter => lambda { |text| truncate_text(text, 30) }  %>
     <% table.column :description, :formatter => lambda { |text| truncate_text(text, 135) } %>
     <% table.footer do %>
-      <div class="pull-right">
+      <div class="float-right">
         <%= paginate @scorecards %>
       </div>
     <% end %>

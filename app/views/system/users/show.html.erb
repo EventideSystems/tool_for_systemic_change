@@ -9,7 +9,7 @@
       <hr>
       <%= f.input :system_role, as: :string, readonly: true %>
       <div class="row">
-        <label class="col-sm-3 control-label select">Account Roles</label> 
+        <label class="col-sm-3 col-form-label">Account Roles</label> 
         <div class="col-md-9">
           <%= f.simple_fields_for :accounts_users do |a| %>
           <div class="box box-solid">   
@@ -30,7 +30,7 @@
     </div>
     <%- if policy(@user).edit? %>
       <div class='box-footer'>
-        <%= link_to 'Edit User', edit_system_user_path(@user), class: 'btn btn-primary pull-right' %> 
+        <%= link_to 'Edit User', edit_system_user_path(@user), class: 'btn btn-primary float-right' %> 
       </div>
     <%- end %>
   </div>

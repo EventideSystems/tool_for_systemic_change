@@ -1,9 +1,13 @@
 <div class="tab-pane active" id="checklist-items-tab">
-  <div class="box box-solid">
-    <div class="box-header with-border">
-      <h3 class="box-title">Initative Characteristics</h3>
-      <div class="pull-right">
-        <%= link_to "#{Scorecard.model_name.human} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary pull-right' %> 
+  <div class="container">
+    <div class="row tab-content-header p-3">
+      <div class="col-sm">
+        <div class="float-left">
+          <h3>Initative Characteristics</h3>
+        </div>
+        <div class="float-right">
+          <%= link_to "#{Scorecard.model_name.human} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %> 
+        </div>
       </div>
     </div>
     <!-- /.box-header -->
@@ -61,11 +65,11 @@
                           <%- end %>
                         </label>
                         <div class="box box-solid" style="display: none" id="characteristic-comment-form-<%=checklist_item.id%>">
-                           <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>
-                             <%= f.input  :comment, label: false %>
-                             <%= f.button :submit, "Save Comments", class: 'btn-checklist-comment-save', data: { id: checklist_item.id } %>
-                             <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
-                           <% end %>
+                          <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>
+                            <%= f.input  :comment, label: false %>
+                            <%= f.button :submit, "Save Comments", class: 'btn-checklist-comment-save', data: { id: checklist_item.id } %>
+                            <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
+                          <% end %>
                         </div>
                       </li>
                     <% end %>

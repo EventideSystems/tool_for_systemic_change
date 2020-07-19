@@ -26,7 +26,7 @@ var jQuery = require("jquery");
 global.$ = global.jQuery = jQuery;
 window.$ = window.jQuery = jQuery;
 
-require("bootstrap");
+
 require("admin-lte");
 require("select2");
 require("smartwizard");
@@ -46,6 +46,8 @@ window.moment = moment;
 
 // import 'bootstrap-datepicker'
 import 'daterangepicker';
+
+require("bootstrap");
 
 require("../components/datepickers");
 require("../components/transition_card");

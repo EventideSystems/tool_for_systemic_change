@@ -5,14 +5,6 @@
 
  // *** Colors **
 
-$primary-color: #49C5B1;
-$secondary-color: #00FFFF;
-
-$primary-color-analogous-1: #499BC4; 
-$primary-color-analogous-2: #49C472;
-
-$primary-button-color: #00b9f2;
-$secondary-button-color: #49C5B1;
 
 // *** General ***
 
@@ -26,9 +18,14 @@ a {
   color: #3c8dbc;
 }
 
+.content-wrapper > .content {
+  padding: 0 1rem;
+}
+
 .content-header h1 {
   font-size: 1.5rem;
   line-height: 1.1;
+  padding-left: 10px;
 }
 
 .content-header > h1 > small {
@@ -37,6 +34,21 @@ a {
   display: inline-block;
   padding-left: 4px;
   line-height: 1;
+}
+
+.content-wrapper, 
+.content-header, 
+.content {
+  background-color: white;
+}
+.content-header .btn {
+  font-size: 14px;
+}
+
+// *** Footer ***
+
+.slogan {
+  padding-right: 210px;
 }
 
 // *** Navbar ***
@@ -56,32 +68,6 @@ a {
   border-radius: 50%;
   margin-right: 10px;
   margin-top: -2px;
-}
-
-// *** Sidebar ***
-
-@media (min-width: 992px) {
-  .sidebar-mini .nav-sidebar .nav-item > .nav-link {
-    border-left: 3px solid transparent;
-  }
-
-  .sidebar-mini .nav-sidebar .nav-item > .nav-link:hover {  
-    border-left-color: $secondary-color;
-  }
-
-  .sidebar-mini h2.sidebar-header {
-    margin-left: -1em;
-    margin-right: -1em;
-    padding: 1em;
-    padding-left: 2em;
-    font-size: 0.9em;
-    color: #4b646f;
-    background: #1a2226;
-  }
-}
-
-form.account-select {
-  padding-top: 0.5em;
 }
 
 // *** Brand ***
@@ -154,14 +140,27 @@ li.select2-selection__choice {
   color: #444;
 } 
 
-// *** Dashboard ***
+.content .nav-tabs .nav-link.active {
+  border-top-color: #3c8dbc;
+  border-top-width: 2px;
+}
 
-// *** Transition Card
+.tab-pane.active {
+  border-bottom: thin solid #dee2e6;
+  border-right:  thin solid #dee2e6;
+  border-left:   thin solid #dee2e6;
+}
 
-.transition-card-controls {
-  .btn.btn-primary {
-    font-size: 14px;
+.tab-content-header {
+
+  border-bottom: thin solid #dee2e6;
+  h3 {
+    font-size: 18px;
   }
+  
+  // .btn.btn-primary {
+  //   font-size: 14px;
+  // }
 
   .form-control {
     font-size: 14px;
@@ -173,17 +172,15 @@ li.select2-selection__choice {
   font-size: 14px
 }
 
+// *** Transition Card
+
 #transition_card_select_date {
   width: 120px;
   margin-right: 5px;
 }
 
-.content .nav-tabs .nav-link.active {
-  border-top-color: #3c8dbc;
-  border-top-width: 2px;
-}
 
-// ******** ?
+// *** Breadcrumb ***
 
 .content-header > .breadcrumb {
   float: right;
@@ -191,14 +188,14 @@ li.select2-selection__choice {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 12px;
-  padding: 7px 5px;
+  padding: 0px 5px;
   position: absolute;
   top: 70px;
   right: 10px;
   border-radius: 2px;
 
   li > a {
-    color: #212529;
+    color: #444;
   }
   
   li >a > .fa {
@@ -223,164 +220,4 @@ span.commented {
   color: $primary-color-analogous-1;
 }
 
-// **** Buttons
 
-.btn-primary {
-  background-color: $primary-button-color;
-  border-color: lighten($primary-button-color, 5%);
-}
-
-.btn-primary:hover {
-  background-color: darken($primary-button-color, 5%);
-  border-color: darken($primary-button-color, 5%);
-}
-
-.btn-secondary {
-  color: #FFF;
-  background-color: $secondary-button-color;
-  border-color: lighten($secondary-button-color, 5%);
-}
-
-.btn-secondary:hover {
-  color: #FFF;
-  background-color: darken($secondary-button-color, 5%);
-  border-color: darken($secondary-button-color, 5%);
-}
-
-.skin-wicked .main-header .navbar .nav > li > a:hover,
-.skin-wicked .main-header .navbar .nav > li > a:active,
-.skin-wicked .main-header .navbar .nav > li > a:focus,
-.skin-wicked .main-header .navbar .nav .open > a,
-.skin-wicked .main-header .navbar .nav .open > a:hover,
-.skin-wicked .main-header .navbar .nav .open > a:focus,
-.skin-wicked .main-header .navbar .nav > .active > a {
-  background: rgba(0, 0, 0, 0.1);
-  color: #f6f6f6;
-}
-.skin-wicked .main-header .navbar .sidebar-toggle {
-  color: #ffffff;
-}
-.skin-wicked .main-header .navbar .sidebar-toggle:hover {
-  color: #f6f6f6;
-  background: rgba(0, 0, 0, 0.1);
-}
-.skin-wicked .main-header .navbar .sidebar-toggle {
-  color: #fff;
-}
-.skin-wicked .main-header .navbar .sidebar-toggle:hover {
-  background-color: darken($primary-color, 20%);
-}
-@media (max-width: 767px) {
-  .skin-wicked .main-header .navbar .dropdown-menu li.divider {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  .skin-wicked .main-header .navbar .dropdown-menu li a {
-    color: #fff;
-  }
-  .skin-wicked .main-header .navbar .dropdown-menu li a:hover {
-    background: #367fa9;
-  }
-}
-
-.skin-wicked li.user-header {
-  background-color: $primary-color;
-}
-.skin-wicked .content-header {
-  background: transparent;
-}
-.skin-wicked .wrapper,
-.skin-wicked .main-sidebar,
-.skin-wicked .left-side {
-  background-color: #222d32;
-}
-.skin-wicked .user-panel > .info,
-.skin-wicked .user-panel > .info > a {
-  color: #fff;
-}
-
-.sidebar-menu > li > a {
-  border-left: 3px solid transparent;
-}
-
-
-
-.skin-wicked .sidebar-menu > li > .treeview-menu {
-  margin: 0 1px;
-  background: #2c3b41;
-}
-.skin-wicked .sidebar a {
-  color: #b8c7ce;
-}
-.skin-wicked .sidebar a:hover {
-  text-decoration: none;
-}
-.skin-wicked .treeview-menu > li > a {
-  color: #8aa4af;
-}
-.skin-wicked .treeview-menu > li.active > a,
-.skin-wicked .treeview-menu > li > a:hover {
-  color: #ffffff;
-}
-.skin-wicked .sidebar-form {
-  border-radius: 3px;
-  border: 1px solid #374850;
-  margin: 10px 10px;
-}
-.skin-wicked .sidebar-form input[type="text"],
-.skin-wicked .sidebar-form .btn {
-  box-shadow: none;
-  background-color: #374850;
-  border: 1px solid transparent;
-  height: 35px;
-}
-.skin-wicked .sidebar-form input[type="text"] {
-  color: #666;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 2px;
-}
-.skin-wicked .sidebar-form input[type="text"]:focus,
-.skin-wicked .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-  background-color: #fff;
-  color: #666;
-}
-.skin-wicked .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-  border-left-color: #fff;
-}
-.skin-wicked .sidebar-form .btn {
-  color: #999;
-  border-top-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 0;
-}
-.skin-wicked.layout-top-nav .main-header > .logo {
-  background-color: #3c8dbc;
-  color: #ffffff;
-  border-bottom: 0 solid transparent;
-}
-.skin-wicked.layout-top-nav .main-header > .logo:hover {
-  background-color: #3b8ab8;
-}
-
-div.home {
-  background-color: $primary-color;
-  color: #FFF;
-
-  h1 {
-    font-size: 44px;
-  }
-  
-  a.btn-lg {
-    color: $primary-color;
-  }
-  
-  section.content {
-    padding: 0px;
-  } 
-}
-
-div.content-wrapper {
-  background-color: #FFF;
-}

@@ -1,4 +1,5 @@
 <div class="organisations">
+
   <%= f.simple_fields_for :initiatives_organisations do |initiatives_organisation_form| %>
     <%= render 'scorecards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
   <% end %>
@@ -8,7 +9,8 @@
         'assign organisation',
         f,
         :initiatives_organisations,
-        partial: 'scorecards/form_tabs/organisation_fields'
+        partial: 'scorecards/form_tabs/organisation_fields',
+        class: 'btn btn-primary'
       )
     %>
   </div>

@@ -8,9 +8,11 @@
       label: "Select Existing", 
       input_html: { class: 'assign-organisation-select' } 
   %>
-    
-  <div class="pull-left"> 
-    <strong>Or</strong>&nbsp;&nbsp;<%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-secondary organisation-link" %>
+  
+  <div class="form-group row"> 
+    <label class="col-sm-3 col-form-label">Or</label>
+    <div class="col-sm-9"> 
+      <%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-secondary organisation-link" %>
   </div>
       
     <%= link_to_remove_association "remove association", f %>

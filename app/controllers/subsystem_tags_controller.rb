@@ -38,7 +38,7 @@ class SubsystemTagsController < ApplicationController
 
     respond_to do |format|
       if @subsystem_tag.save
-        format.html { redirect_to @subsystem_tag, notice: 'Subsystem tag was successfully created.' }
+        format.html { redirect_to subsystem_tags_path, notice: "Subsystem tag '' was successfully created." }
         format.json { render :show, status: :created, location: @subsystem_tag }
         format.js
       else
@@ -52,7 +52,7 @@ class SubsystemTagsController < ApplicationController
   def update
     respond_to do |format|
       if @subsystem_tag.update(subsystem_tag_params)
-        format.html { redirect_to @subsystem_tag, notice: 'Subsystem tag was successfully updated.' }
+        format.html { redirect_to subsystem_tags_path, notice: 'Subsystem tag was successfully updated.' }
         format.json { render :show, status: :ok, location: @subsystem_tag }
       else
         format.html { render :edit }

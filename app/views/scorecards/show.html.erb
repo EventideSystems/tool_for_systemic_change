@@ -50,8 +50,8 @@
                 <div>
                   <%= initiative.description.blank? ? content_tag(:em, 'No description given.') : initiative.description %>
                 </div>
-                <div class="pull-right">
-                  <%= link_to 'Initiative Details', initiative_path(initiative), class: 'btn btn-primary pull-right' %> 
+                <div class="float-right">
+                  <%= link_to 'Initiative Details', initiative_path(initiative), class: 'btn btn-primary float-right' %> 
                 </div>  
               </div>
             </div>

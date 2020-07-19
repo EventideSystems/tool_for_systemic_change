@@ -1,17 +1,10 @@
-<%= simple_form_for(@video_tutorial, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@video_tutorial, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
   <%= f.error_notification %>
-  <div class='box box-primary'>
-    <div class='box-header with-border'>
-      <h3 class='box-title'><%= form_title(@video_tutorial) %></h3>
-    </div>
-    <div class='box-body'>
-      <%= f.input :name %>
-      <%= f.input :description, as: :text, input_html: { class: 'textarea' } %>
-      <%= f.input :link_url %>
-      <%= f.input :position %>
-      <%= f.input :promote_to_dashboard %>
-    </div>
-
-    <%= render_form_button(f) %>
-  </div>
+  <%= form_header(@video_tutorial) %></h3>    
+  <%= f.input :name %>
+  <%= f.input :description, as: :text, input_html: { class: 'textarea' } %>
+  <%= f.input :link_url %>
+  <%= f.input :position %>
+  <%= f.input :promote_to_dashboard %>
+  <%= render_form_button(f) %>
 <% end %>

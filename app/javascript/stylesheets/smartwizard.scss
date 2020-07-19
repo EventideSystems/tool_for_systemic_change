@@ -1,0 +1,11 @@
+.sw-theme-arrows > .nav .nav-link::after {
+  border-left-color: white;
+}
+.sw-theme-arrows > .nav .nav-link.active {
+  border-color: #428bca !important;
+  background: #428bca !important;
+}
+
+.sw-theme-arrows > .nav .nav-link.active::after {
+  border-left-color: #428bca !important;
+}

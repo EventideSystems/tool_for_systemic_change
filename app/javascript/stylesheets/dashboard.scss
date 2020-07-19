@@ -21,6 +21,12 @@
   .info-box-text {  
     text-transform: none !important;
   }
+
+  .card {
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #d2d6de;
+  }
 }
 
 h3.card-title-recent-activity::before {

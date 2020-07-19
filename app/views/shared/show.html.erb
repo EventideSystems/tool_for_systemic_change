@@ -5,7 +5,7 @@
         <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used"><%= Scorecard.model_name.human %> Missing</h3>
       <% else %>
         <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
-        <div class="pull-right">
+        <div class="float-right">
           <button class="btn xbtn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
         </div>
       <% end %>
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class='box-footer'>
-        <div class="pull-right">
+        <div class="float-right">
           <small>powered by</small>
             <%= link_to(image_tag('logo-long-white-bg.png', size: '73x15'), 'http://wickedlab.com.au') %> 
         </div>

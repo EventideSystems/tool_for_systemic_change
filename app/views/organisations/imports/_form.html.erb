@@ -22,9 +22,9 @@
   
   <div class='box-footer'>
     <% if @organisations_import.processing_errors.empty? %>
-      <%= f.button :submit, 'Import', class: 'btn btn-primary pull-right', style: 'margin-left: 15px' %>
+      <%= f.button :submit, 'Import', class: 'btn btn-primary float-right', style: 'margin-left: 15px' %>
     <% end %>
-    <%= link_to('Cancel', organisations_path, class: 'btn btn-secondary pull-right') %>
+    <%= link_to('Cancel', organisations_path, class: 'btn btn-secondary float-right') %>
   </div>
 
 <% end %>

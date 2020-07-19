@@ -15,13 +15,13 @@
           disabled: !policy(@user).update_system_role?  
       %>
       <div class="row">
-        <label class="col-sm-3 control-label select">Account Roles</label> 
+        <label class="col-sm-3 col-form-label">Account Roles</label> 
         <div class="col-md-9">
           <%= f.nested_fields_for :accounts_users do |a| %>
           <div class="box box-solid">   
             <div class="box-body"> 
               <div class="col-md-7">
-                <div class="box-tools pull-right">
+                <div class="box-tools float-right">
                   <%= a.remove_nested_fields_link do %>
                     <button type="button" class="btn btn-box-tool"><i class="fa fa-remove"></i></button>
                   <% end %>

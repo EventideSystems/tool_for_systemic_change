@@ -1,0 +1,40 @@
+.form-control.is-valid {
+  border-color        : inherit;
+  padding-right       : inherit;
+  background-image    : inherit;
+  background-repeat   : inherit;
+  background-position : inherit;
+  background-size     : inherit;
+}
+
+.login-card-body .input-group .form-control.is-valid ~ .input-group-append .input-group-text,
+.register-card-body .input-group .form-control.is-valid ~ .input-group-append .input-group-text {
+  border-color        : inherit;
+}
+
+.col-form-label {
+  text-align: right;
+}
+
+form.record-form {
+  border: 1px solid #f4f4f4;
+  border-top: 3px solid #3c8dbc;
+  border-radius: 3px;
+  font-size: 14px;
+  padding-bottom: 20px;
+
+  h3 {
+    font-size: 18px;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    font-size: 14px;
+  }
+
+  .form-group.row, .action-row {
+    padding-right: 20px;
+  }
+}

@@ -1,0 +1,79 @@
+.skin-wicked .main-header .navbar .nav > li > a:hover,
+.skin-wicked .main-header .navbar .nav > li > a:active,
+.skin-wicked .main-header .navbar .nav > li > a:focus,
+.skin-wicked .main-header .navbar .nav .open > a,
+.skin-wicked .main-header .navbar .nav .open > a:hover,
+.skin-wicked .main-header .navbar .nav .open > a:focus,
+.skin-wicked .main-header .navbar .nav > .active > a {
+  background: rgba(0, 0, 0, 0.1);
+  color: #f6f6f6;
+}
+.skin-wicked .main-header .navbar .sidebar-toggle {
+  color: #ffffff;
+}
+.skin-wicked .main-header .navbar .sidebar-toggle:hover {
+  color: #f6f6f6;
+  background: rgba(0, 0, 0, 0.1);
+}
+.skin-wicked .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+.skin-wicked .main-header .navbar .sidebar-toggle:hover {
+  background-color: darken($primary-color, 20%);
+}
+@media (max-width: 767px) {
+  .skin-wicked .main-header .navbar .dropdown-menu li.divider {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .skin-wicked .main-header .navbar .dropdown-menu li a {
+    color: #fff;
+  }
+  .skin-wicked .main-header .navbar .dropdown-menu li a:hover {
+    background: #367fa9;
+  }
+}
+
+.skin-wicked li.user-header {
+  background-color: $primary-color;
+}
+.skin-wicked .content-header {
+  background: transparent;
+}
+
+.skin-wicked .user-panel > .info,
+.skin-wicked .user-panel > .info > a {
+  color: #fff;
+}
+
+.sidebar-menu > li > a {
+  border-left: 3px solid transparent;
+}
+
+
+.skin-wicked .treeview-menu > li > a {
+  color: #8aa4af;
+}
+.skin-wicked .treeview-menu > li.active > a,
+.skin-wicked .treeview-menu > li > a:hover {
+  color: #ffffff;
+}
+
+
+
+div.home {
+  background-color: $primary-color;
+  color: #FFF;
+
+  h1 {
+    font-size: 44px;
+  }
+  
+  a.btn-lg {
+    color: $primary-color;
+  }
+  
+  section.content {
+    padding: 0px;
+  } 
+}
+

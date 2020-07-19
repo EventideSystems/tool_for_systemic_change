@@ -10,7 +10,7 @@
     <% table.column :event, :header => "Action" , :formatter => lambda { |event| version_event_past_tense(event) } %>
     <% table.column :whodunnit, :header => "User", :formatter => lambda { |whodunnit| version_whodunnit_name(whodunnit) }, :sortable => false %>
     <% table.footer do %>
-      <div class="pull-right">
+      <div class="float-right">
         <%= paginate @versions %>
       </div>
     <% end %>

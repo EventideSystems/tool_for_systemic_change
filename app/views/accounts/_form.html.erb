@@ -1,19 +1,13 @@
-<%= simple_form_for(@account, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@account, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
   <%= f.error_notification %>
-  <div class='box box-primary'>
-    <div class='box-header with-border'>
-      <h3 class='box-title'><%= form_title(@account) %></h3>
-    </div>
-    <div class='box-body'>
-      <%= f.input :name %>
-      <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-      <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' } %>
-      <%- if policy(@account).update_protected_attributes? %>
-        <%= f.input :expires_on %>
-        <%= f.input :max_users %>
-        <%= f.input :max_scorecards, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
-      <%- end %>  
-    </div>
-    <%= render_form_button(f) %>
-  </div>
+  <%= form_header(@account) %>
+  <%= f.input :name %>
+  <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
+  <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' } %>
+  <%- if policy(@account).update_protected_attributes? %>
+    <%= f.input :expires_on %>
+    <%= f.input :max_users %>
+    <%= f.input :max_scorecards, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
+  <%- end %>  
+  <%= render_form_button(f) %>
 <% end %>

@@ -20,7 +20,7 @@
     <% table.column :data => "Modify", link_action: :edit %>
     <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
-      <div class="pull-right">
+      <div class="float-right">
         <%= paginate @characteristics %>
       </div>
     <% end %>

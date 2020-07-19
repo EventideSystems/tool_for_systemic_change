@@ -1,12 +1,15 @@
-//export { ensureOrgEditControl, ensureSubsystemTagEditControl }; 
-
 import * as smartwizard from "smartwizard";
 window.smartwizard = smartwizard;
 
 $(document).on('turbolinks:load', function() {
   $('.wizard').smartWizard({
     theme: 'arrows',
-    anchorSettings: { enableAllAnchors: true }
+    anchorSettings: { 
+      enableAllAnchors: true,
+      justified: true,
+      autoAdjustHeight: true,
+      markDoneStep: false
+    }
   });
 });
 

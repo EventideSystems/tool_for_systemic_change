@@ -20,8 +20,10 @@ module ApplicationHelper
     end
   end
   
-  def form_title(resource)
-    "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"
+  def form_header(resource)
+    content_tag(:h3) do
+      "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"
+    end
   end
   
   def form_title_lead(resource)
@@ -90,9 +92,10 @@ module ApplicationHelper
     end
   end
   
+  # TODO Rename this
   def render_form_button(form)
-    content_tag(:div, class: 'box-footer') do
-      concat form.button :submit, "#{form.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary pull-right'
+    content_tag(:div, class: 'd-flex justify-content-end action-row') do
+      concat form.button :submit, "#{form.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary'
     end
   end
   

@@ -1,10 +1,10 @@
-class InitiativesOrganisationsController < ApplicationController
+class InitiativesSubsystemTagsController < ApplicationController
   before_action :set_initiatives_subsystem_tag, only: [:show, :edit, :update, :destroy]
 
   # GET /initiatives_subsystem_tags
   # GET /initiatives_subsystem_tags.json
   def index
-    @initiatives_subsystem_tags = InitiativesOrganisation.all
+    @initiatives_subsystem_tags = InitiativesSubystemTag.all
   end
 
   # GET /initiatives_subsystem_tags/1
@@ -14,7 +14,7 @@ class InitiativesOrganisationsController < ApplicationController
 
   # GET /initiatives_subsystem_tags/new
   def new
-    @initiatives_subsystem_tag = InitiativesOrganisation.new
+    @initiatives_subsystem_tag = InitiativesSubystemTag.new
   end
 
   # GET /initiatives_subsystem_tags/1/edit
@@ -24,7 +24,7 @@ class InitiativesOrganisationsController < ApplicationController
   # POST /initiatives_subsystem_tags
   # POST /initiatives_subsystem_tags.json
   def create
-    @initiatives_subsystem_tag = InitiativesOrganisation.new(initiatives_subsystem_tag_params)
+    @initiatives_subsystem_tag = InitiativesSubystemTag.new(initiatives_subsystem_tag_params)
 
     respond_to do |format|
       if @initiatives_subsystem_tag.save
@@ -64,7 +64,7 @@ class InitiativesOrganisationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_initiatives_subsystem_tag
-      @initiatives_subsystem_tag = InitiativesOrganisation.find(params[:id])
+      @initiatives_subsystem_tag = InitiativesSubystemTag.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -8,18 +8,27 @@
     <%= stylesheet_pack_tag 'application' %>
     <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
   </head>
-  <body class="skin-wicked sidebar-mini">
+  <body class="skin-blue sidebar-mini layout-top-nav">
     <div class="wrapper">
-      <%= render partial: "layouts/header" %> 
+      <header class="main-header">
+        <nav class="navbar navbar-static-top" role="navigation">
+         <%= render 'layouts/logo' %>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <li><%= link_to "Sign In", new_user_session_path %></li>
+              <!-- <li><%#= link_to "Sign Up", new_user_registration_path %></li> -->
+            </ul>
+          </div>
+        </nav>
+      </header>
       <div class="content-wrapper">
         <section class="content">
-            <%= render 'layouts/shared/flash' %>
             <div class="home">
               <%= yield %>
             </div>  
         </section>
       </div>
-      <%= render partial: 'layouts/footer' %>
+      <%= render 'layouts/shared/footer' %>
     </div>
   </body>
 </html>

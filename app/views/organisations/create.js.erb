@@ -6,7 +6,8 @@
   <% end %>
 <% else %>
   $('#organisation-modal').modal('hide');
-  var newSelect = $('.scorecard_initiatives_initiatives_organisations_organisation_id').last().find('select');
+  $("[data-association='initiatives_organisation']").click();
+  var newSelect = $('.assign-organisation-select').last();
   newSelect.append($('<option>', {value: '<%= @organisation.id %>', text:'<%= @organisation.name %>'}))
   newSelect.val('<%= @organisation.id %>');
 <% end %>

@@ -17,12 +17,52 @@
 @import '../stylesheets/sidebar';
 @import '../stylesheets/smartwizard';
 @import '../stylesheets/tables';
+@import '../stylesheets/transition_cards';
 @import '../stylesheets/pdf';
+
+.modal-header {
+  .modal-title {
+    font-size: 18px;
+  }
+
+  button.close {
+    font-size: 21px;
+    float: right;
+  }
+}
 
 .toast {
   background-color: #006C8C;
   color: white;
 }
+
+.video-tutorial-wrapper{
+  display:inline-block;
+  position:relative;
+}
+.video-tutorial-wrapper:after{ /* I have higher Z-index so I can catch the click! Yey */
+  content:"";
+  position:absolute;
+  z-index:1;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+}
+
+.video-tutorial-wrapper iframe{
+  vertical-align:top;
+}
+
+ul.checklist-items {
+  list-style-type: none;
+}
+
+.characteristic-name {
+  font-weight: normal;
+}
+  
+
 // div.medium-editor-element {
 //   height: auto;
 // }
@@ -45,38 +85,8 @@
 //   margin-left: 20px;
 // }
 
-// .video-tutorial-wrapper{
-//   display:inline-block;
-//   position:relative;
-// }
-// .video-tutorial-wrapper:after{ /* I have higher Z-index so I can catch the click! Yey */
-//   content:"";
-//   position:absolute;
-//   z-index:1;
-//   width:100%;
-//   height:100%;
-//   left:0;
-//   top:0;
-// }
-
-// .video-tutorial-wrapper iframe{
-//   vertical-align:top;
-// }
-
-// abbr[title=required] {
-//  border-bottom-style: none;
-// }
-
-// ul.checklist-items {
-//   list-style-type: none;
-// }
-
 // ul#preview-initiatives {
 //   list-style-type: none;
-// }
-
-// .characteristic-name {
-//   font-weight: normal;
 // }
 
 // ul.wizard {

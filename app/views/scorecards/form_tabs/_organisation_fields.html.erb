@@ -1,20 +1,21 @@
-<div class="nested-fields box-body">
-  
-  <%= 
-    f.input \
-      :organisation_id, 
-      collection: lookup_organisations, 
-      prompt: 'Select an Organisation', 
-      label: "Select Existing", 
-      input_html: { class: 'assign-organisation-select' } 
-  %>
-  
+<div class="nested-fields pl-5">
   <div class="form-group row"> 
-    <label class="col-sm-3 col-form-label">Or</label>
-    <div class="col-sm-9"> 
-      <%= link_to "Create a New Organisation", new_organisation_path, remote: true, class: "btn btn-secondary organisation-link" %>
-  </div>
-      
-    <%= link_to_remove_association "remove association", f %>
-
+    <label class="col-sm-3 col-form-label">Select Existing</label>
+    <div class="col-sm-8">
+      <%= 
+        f.input_field \
+          :organisation_id, 
+          collection: lookup_organisations, 
+          prompt: 'Select an Organisation',
+          class: 'form-control is-valid select optional assign-organisation-select'
+      %>
+    </div>
+    <div class="col-sm-1">
+      <%= 
+        link_to_remove_association f, class: 'btn form-control' do
+          content_tag(:i, nil, class: 'fa fa-remove')
+        end
+      %>
+    </div>
+  </div>  
 </div>

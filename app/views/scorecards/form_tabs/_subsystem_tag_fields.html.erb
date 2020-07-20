@@ -1,28 +1,21 @@
-<div class="nested-fields xbox-body">
-
-  <%= 
-    f.input \
-      :subsystem_tag_id, 
-      collection: lookup_subsystem_tags, 
-      prompt: 'Select a Subsystem Tag', 
-      label: "Select Existing", 
-      input_html: { class: 'assign-subsystem-tag-select' } 
-  %>
-  
-
-  <div class="form-group row"> 
-    <label class="col-sm-3 col-form-label">Or</label>
-    <div class="col-sm-9"> 
+<div class="nested-fields pl-5">
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Select Existing</label>
+    <div class="col-sm-8">
       <%= 
-        link_to(
-          "Create a New Subsystem Tag", 
-          new_subsystem_tag_path, 
-          remote: true, 
-          class: "btn btn-secondary subsystem-tag-link"
-        )
+        f.input_field \
+          :subsystem_tag_id, 
+          collection: lookup_subsystem_tags, 
+          prompt: 'Select a Subsystem Tag', 
+          class: 'form-control is-valid select optional assign-subsystem-tag-select'
       %>
-    </div>    
-  </div>
-    
-  <%= link_to_remove_association "remove subsystem tag", f %>
+    </div>
+    <div class="col-sm-1">
+      <%= 
+        link_to_remove_association f, class: 'btn form-control' do
+          content_tag(:i, nil, class: 'fa fa-remove')
+        end
+      %>
+    </div>
+  </div>  
 </div>

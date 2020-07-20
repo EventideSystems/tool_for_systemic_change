@@ -17,52 +17,14 @@
     <div class="tab-pane <%= 'active' if @active_tab == :scorecard %>" id="tab_1">
        <%= render 'scorecards/show_tabs/transition_card'%>  
     </div>
-
     <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="tab_2">
       <%= render 'scorecards/show_tabs/ecosystem_maps'%>
     </div>
-
     <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="tab_3">
-      <div class="box-header with-border">
-        <h3 class="box-title" style="margin-right: 12px">Intiatives</h3>
-        <%= if policy(Initiative).create?
-              link_to(new_initiative_path(scorecard_id: @scorecard.id), class: 'btn btn-primary') do
-                safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
-              end
-            end 
-        %>
-      </div>
-      <!-- /.box-header -->
-      <div class="box-body">
-        <div class="box-group" id="accordion">
-          <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-          <%- @scorecard.initiatives.order(name: :asc).each_with_index do |initiative, index| %> 
-          <div class="panel box box-primary">
-            <div class="box-header with-border">
-              <h4 class="box-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%=index%>">
-                  <%= initiative.name %>
-                </a>
-              </h4>
-            </div>
-            <div id="collapse-<%=index%>" class="panel-collapse collapse<%= " in" if index == 0 %>">
-              <div class="box-body">
-                <div>
-                  <%= initiative.description.blank? ? content_tag(:em, 'No description given.') : initiative.description %>
-                </div>
-                <div class="float-right">
-                  <%= link_to 'Initiative Details', initiative_path(initiative), class: 'btn btn-primary float-right' %> 
-                </div>  
-              </div>
-            </div>
-          </div>
-          <%- end %>
-        </div>
-      </div>
-      <!-- /.box-body -->
+      <%= render 'scorecards/show_tabs/initiatives'%>
     </div>
     <div class="tab-pane <%= 'active' if @active_tab == :details %>" id="tab_4">
-      <%= render 'scorecards/details'%>
+      <%= render 'scorecards/show_tabs/details'%>
     </div>
   </div>
 </div>

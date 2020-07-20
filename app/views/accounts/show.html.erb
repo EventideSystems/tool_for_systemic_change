@@ -1,21 +1,11 @@
-<%= simple_form_for(@account, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
-  <div class='box box-primary'>
-    <div class='box-header with-border'>
-      <h3 class='box-title'><%= form_title(@account) %></h3>
-    </div>
-    <div class='box-body'>
-      <%= f.input :name, required: false, readonly: true %>
-      <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-      <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-      <%= f.input :expires_on, as: :string, readonly: true %>
-      <%= f.input :max_users, readonly: true %>
-      <%= f.input :max_scorecards, readonly: true, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
-    </div>
-    <%- if policy(@account).edit? %>
-      <div class='box-footer'>
-        <%= link_to 'Edit Account', edit_account_path(@account), class: 'btn btn-primary float-right' %> 
-      </div>
-    <%- end %>
-  </div>
+<%= simple_form_for(@account, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
+  <%= form_header(@account) %>
+  <%= f.input :name, required: false, readonly: true %>
+  <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
+  <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' }, readonly: true %>
+  <%= f.input :expires_on, as: :string, readonly: true %>
+  <%= f.input :max_users, readonly: true %>
+  <%= f.input :max_scorecards, readonly: true, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
+  <%= edit_button('Edit Account', edit_account_path(@account)) if policy(@account).edit? %> 
 <% end %>
 

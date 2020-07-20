@@ -5,6 +5,7 @@ module ApplicationHelper
     "WickedLab - #{Rails.env.titleize}" 
   end
 
+  # TODO Delete - no longer in use
   def bootstrap_class_for flash_type
     case flash_type.to_sym
     when :success
@@ -96,6 +97,12 @@ module ApplicationHelper
   def render_form_button(form)
     content_tag(:div, class: 'd-flex justify-content-end action-row') do
       concat form.button :submit, "#{form.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary'
+    end
+  end
+
+  def edit_button(title, path)
+    content_tag(:div, class: 'd-flex justify-content-end action-row') do
+      link_to title, path, class: 'btn btn-primary'
     end
   end
   

@@ -1,17 +1,30 @@
-<div class="organisations">
-
-  <%= f.simple_fields_for :initiatives_organisations do |initiatives_organisation_form| %>
-    <%= render 'scorecards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
-  <% end %>
-  <div class="links">
-    <%=
-      link_to_add_association(
-        'assign organisation',
-        f,
-        :initiatives_organisations,
-        partial: 'scorecards/form_tabs/organisation_fields',
-        class: 'btn btn-primary'
-      )
-    %>
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Assign Organisations</label>
+  <div class="organisations">
+    <%= f.simple_fields_for :initiatives_organisations do |initiatives_organisation_form| %>
+      <%= render 'scorecards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
+    <% end %>
+    <div class="links form-group row d-flex justify-content-end">
+      <%=
+        link_to_add_association(
+          'Assign an Organisation',
+          f,
+          :initiatives_organisations,
+          partial: 'scorecards/form_tabs/organisation_fields',
+          class: 'btn btn-primary'
+        )
+      %>
+      <label class="col-sm-1 col-form-label">Or</label>
+      <div class="col-sm-5"> 
+        <%= 
+          link_to(
+            "Create an Organisation", 
+            new_organisation_path, 
+            remote: true, 
+            class: "btn btn-secondary organisation-link"
+          ) 
+        %>
+      </div>
+    </div>
   </div>
 </div>

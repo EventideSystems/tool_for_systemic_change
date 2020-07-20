@@ -61,6 +61,24 @@ ul.checklist-items {
 .characteristic-name {
   font-weight: normal;
 }
+
+.truncate {
+  display: block;
+  width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// *** PDF related ***
+
+label.truncate {
+  display: block;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
   
 
 // div.medium-editor-element {
@@ -95,13 +113,6 @@ ul.checklist-items {
 //   }
 // }
 
-// .truncate {
-//   display: block;
-//   width: 220px;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-// }
 
 
 
@@ -113,14 +124,8 @@ ul.checklist-items {
 //   min-height: 360px;
 // }
 
-// // PDF related
-// label.truncate {
-//   display: block;
-//   width: 200px;
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-// }
+// PDF related
+
 
 // .print-table {
 //   table { 

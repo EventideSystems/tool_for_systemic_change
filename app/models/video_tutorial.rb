@@ -2,7 +2,7 @@
 class VideoTutorial < ApplicationRecord
   acts_as_paranoid
 
-  belongs_to :linked, polymorphic: true
+  belongs_to :linked, polymorphic: true, optional: true
   
   scope :promoted_to_dashboard, -> {
     where(promote_to_dashboard: true).order(:position)

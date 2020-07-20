@@ -6,7 +6,8 @@
   <% end %>
 <% else %>
   $('#subsystem-tag-modal').modal('hide');
-  var newSelect = $('.scorecard_initiatives_initiatives_subsystem_tags_subsystem_tag_id').last().find('select');
+  $("[data-association='initiatives_subsystem_tag']").click();
+  var newSelect = $('.assign-subsystem-tag-select').last();
   newSelect.append(
     $('<option>', {value: '<%= @subsystem_tag.id %>', text:'<%= @subsystem_tag.name %>'})
   );

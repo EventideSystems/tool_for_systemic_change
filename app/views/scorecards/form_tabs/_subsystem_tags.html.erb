@@ -1,16 +1,30 @@
-<div class="subsystem_tags">
-  <%= f.simple_fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tag_form| %>
-    <%= render 'scorecards/form_tabs/subsystem_tag_fields', f: initiatives_subsystem_tag_form %>
-  <% end %>
-  <div class="links">
-    <%=
-      link_to_add_association(
-        'assign subsytem tags',
-        f,
-        :initiatives_subsystem_tags,
-        partial: 'scorecards/form_tabs/subsystem_tag_fields',
-        class: 'btn btn-primary'
-      )
-    %>
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label">Assign Subsystem Tags</label>
+  <div class="subsystem_tags">
+    <%= f.simple_fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tag_form| %>
+      <%= render 'scorecards/form_tabs/subsystem_tag_fields', f: initiatives_subsystem_tag_form %>
+    <% end %>
+    <div class="links form-group row d-flex justify-content-end">
+      <%=
+        link_to_add_association(
+          'Assign a Tag',
+          f,
+          :initiatives_subsystem_tags,
+          partial: 'scorecards/form_tabs/subsystem_tag_fields',
+          class: 'btn btn-primary'
+        )
+      %>
+      <label class="col-sm-1 col-form-label">Or</label>
+      <div class="col-sm-5"> 
+        <%= 
+          link_to(
+            "Create a Tag", 
+            new_subsystem_tag_path, 
+            remote: true, 
+            class: "btn btn-secondary subsystem-tag-link"
+          )
+        %>
+      </div>
+    </div>
   </div>
 </div>

@@ -36,6 +36,10 @@ a {
   line-height: 1;
 }
 
+.content-wrapper > .content {
+  padding-bottom: 20px;
+}
+
 .content-wrapper, 
 .content-header, 
 .content {
@@ -46,6 +50,11 @@ a {
 }
 
 // *** Footer ***
+
+.main-footer {
+  background-color: white;
+  height: 57px;
+}
 
 .slogan {
   padding-right: 210px;

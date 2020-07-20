@@ -44,7 +44,6 @@ import moment from 'moment'
 moment.locale('en')
 window.moment = moment;
 
-// import 'bootstrap-datepicker'
 import 'daterangepicker';
 
 require("bootstrap");
@@ -70,6 +69,16 @@ $(document).on('turbolinks:load', function() {
     $('[data-toggle="tooltip"]').tooltip()
   });
 });
+
+$(document).on('turbolinks:load', function() {
+    $('.video-tutorial-wrapper').on('click', function(e) {
+      var link = $(this).data('video-tutorial-link');
+      $('.modal').find(".modal-content").load(link);
+      $('.modal').modal('show');
+      e.preventDefault();
+    });
+});
+  
 
 // $(document).on('turbolinks:load', function() {
 //   $('.container').tooltip({

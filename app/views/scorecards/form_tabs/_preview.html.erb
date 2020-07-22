@@ -16,11 +16,12 @@
               ),
               nil,
               remote: true,
-              onclick: "$('.nav-wizard a[href=\"#scorecard\"]').tab('show');"
+              onclick: "$('.wizard').smartWizard('goToStep', 0);"
             )
           %>
           <strong id='preview-scorecard-name'></strong></h3>
-          <hr>
+        </div>
+        <div class="row">
           <p id='preview-scorecard-description'></p>
           
           <h3>Wicked Problem / Opportunity
@@ -33,12 +34,13 @@
                 ),
                 nil,
                 remote: true,
-                onclick: "$('.nav-wizard a[href=\"#wicked-problem\"]').tab('show');"
+                onclick: "$('.wizard').smartWizard('goToStep', 1);"
               )
             %>  
             <strong id='preview-wicked-problem-name'></strong>
           </h3>
-          <hr>
+        </div>
+        <div class="row">
           <p id='preview-wicked-problem-description'></p>
           
           <h3>Community
@@ -51,12 +53,13 @@
                 ),
                 nil,
                 remote: true,
-                onclick: "$('.nav-wizard a[href=\"#community\"]').tab('show');"
+                onclick: "$('.wizard').smartWizard('goToStep', 2);"
               )
             %>  
             <strong id='preview-community-name'></strong>
           </h3>
-          <hr>
+        </div>
+        <div class="row">
           <p id='preview-community-description'></p>
           
           <h3>Initiatives
@@ -69,7 +72,7 @@
                 ),
                 nil,
                 remote: true,
-                onclick: "$('.nav-wizard a[href=\"#initiatives\"]').tab('show');"
+                onclick: "$('.wizard').smartWizard('goToStep', 3);"
               )
             %>  
             <strong id='preview-community-name'></strong>

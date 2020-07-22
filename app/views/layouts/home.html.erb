@@ -13,8 +13,9 @@
       <header class="main-header">
         <nav class="navbar navbar-static-top" role="navigation">
          <%= render 'layouts/logo' %>
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
+          <div class="navbar-custom-menu mr-3">
+            <!-- SMELL Inline styles -->
+            <ul class="nav navbar-nav" style="margin-top: -15px;">
               <li><%= link_to "Sign In", new_user_session_path %></li>
               <!-- <li><%#= link_to "Sign Up", new_user_registration_path %></li> -->
             </ul>

@@ -6,8 +6,8 @@
     <%= render 'scorecards/form_tabs/organisations', f: f %>
     <%= render 'scorecards/form_tabs/subsystem_tags', f: f %>
     
-    <%= f.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
-    <%= f.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
+    <%= f.input :started_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
+    <%= f.input :finished_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
     <hr>
     <%= f.input :contact_name %>
     <%= f.input :contact_email %>

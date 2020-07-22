@@ -26,7 +26,6 @@ class VideoTutorialsController < ApplicationController
   # POST /video_tutorials
   # POST /video_tutorials.json
   def create
-    binding.pry
     @video_tutorial = VideoTutorial.new(video_tutorial_params)
     authorize @video_tutorial
     

@@ -79,6 +79,10 @@ a {
   margin-top: -2px;
 }
 
+.main-header {
+  border-bottom: 0px;
+}
+
 // *** Brand ***
 
 .skin-wicked .brand-link {
@@ -163,14 +167,11 @@ li.select2-selection__choice {
 .tab-content-header {
 
   border-bottom: thin solid #dee2e6;
+  
   h3 {
     font-size: 18px;
   }
   
-  // .btn.btn-primary {
-  //   font-size: 14px;
-  // }
-
   .form-control {
     font-size: 14px;
     height: calc(2.1rem + 2px);

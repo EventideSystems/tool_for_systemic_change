@@ -38,7 +38,6 @@ class AccountsController < ApplicationController
   end
 
   def update
-    binding.pry
     respond_to do |format|
       if @account.update(account_params)
         format.html { redirect_to accounts_path, notice: 'Account was successfully updated.' }

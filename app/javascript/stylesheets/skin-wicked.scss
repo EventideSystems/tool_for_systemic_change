@@ -230,4 +230,62 @@ span.commented {
   color: $primary-color-analogous-1;
 }
 
+// *** Home ***
 
+div.home {
+  .btn {
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid transparent;
+  }
+
+  .btn-default {
+    background-color: #f4f4f4;
+    border-color: #ddd;
+  }
+
+  a.btn-lg {
+    color: #49C5B1;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+  }
+
+  .jumbotron {
+    background-color: #49C5B1;
+    color: #FFF;
+  }
+}
+
+// *** Login page ***
+
+
+
+.login-page, .register-page {
+  background: #d2d6de;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  background-color: #666;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  min-height: 313px;
+}
+
+.login-logo, .register-logo {
+  font-size: 35px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+
+
+.login-box, .register-box {
+  width: 360px;
+}

@@ -1,3 +1,22 @@
+.sidebar-mini .nav-sidebar {
+
+  i.fa:before {
+    position: relative;
+    left: 0px;
+    top: 1px; 
+  }
+  i.fa-cubes:before {
+    position: relative;
+    left: 0px;
+    top: -17px;
+  }
+
+}
+
+.sidebar .user-panel {
+  border-bottom: inherit;
+}
+
 @media (min-width: 992px) {
   .sidebar-mini .nav-sidebar .nav-item > .nav-link {
     border-left: 3px solid transparent;

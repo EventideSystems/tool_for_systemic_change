@@ -1,10 +1,19 @@
+.col-form-label {
+  padding-top: 7px;
+}
+
+.form-control {
+  height: calc(2.00rem + 2px);
+  font-size: 14px;
+}
+
 .form-control.is-valid {
-  border-color        : inherit;
+  border-color        : $form-control-color;
   padding-right       : inherit;
   background-image    : inherit;
   background-repeat   : inherit;
   background-position : inherit;
-  background-size     : inherit;
+  background-size     : inherit;  
 }
 
 .login-card-body .input-group .form-control.is-valid ~ .input-group-append .input-group-text,

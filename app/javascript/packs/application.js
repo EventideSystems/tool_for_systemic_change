@@ -64,9 +64,13 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
+
 $(document).on('turbolinks:load', function() {
+  var jqeBsTooltip = $.fn.tooltip.noConflict();
+  $.fn.tlp = jqeBsTooltip;
+
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tlp()
   });
 });
 

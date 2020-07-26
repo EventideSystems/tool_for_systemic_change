@@ -70,6 +70,16 @@ a {
   color: white;
 }
 
+// NOTE This prevents hamburger link from
+// staying 'grey' after being clicked, at 
+// least until the page is clicked 
+// elsewhere.
+// TODO Look into AdminLTE js to figure 
+// out why the bug occurs
+.navbar-light .navbar-nav .nav-link:focus {
+  color: white;
+}
+
 .user-image {
   float: left;
   width: 25px;

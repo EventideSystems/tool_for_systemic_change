@@ -55,7 +55,7 @@ gem 'table-for'
 gem 'kaminari-bootstrap'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
-gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
+# gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
 gem 'bootstrap_form', '<= 2.1.1'
 
 # Report related

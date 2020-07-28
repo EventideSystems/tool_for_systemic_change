@@ -17,6 +17,8 @@ $(document).on('turbolinks:load', function() {
         maxYear: parseInt(moment().format('YYYY'),10)
       }
     );
+
+    element.attr('autocomplete', 'off');
   });
 
   $('[data-behaviour~=datepicker]').on('apply.daterangepicker', function(ev, picker) {

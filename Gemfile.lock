@@ -69,8 +69,6 @@ GEM
       rails (>= 3.0.0)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bootstrap-datepicker-rails (1.6.4.1)
-      railties (>= 3.0)
     bootstrap_form (2.1.1)
     brakeman (4.8.2)
     breadcrumbs_on_rails (3.0.1)
@@ -437,7 +435,6 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
-  bootstrap-datepicker-rails (<= 1.6.4.1)
   bootstrap_form (<= 2.1.1)
   brakeman
   breadcrumbs_on_rails (<= 3.0.1)

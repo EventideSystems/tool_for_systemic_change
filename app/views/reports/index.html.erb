@@ -2,7 +2,7 @@
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> Transition Card Stakeholder Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Transition Card Stakeholder Report</h3>
       </div>
       <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">
@@ -19,7 +19,7 @@
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> <%= Scorecard.model_name.human %> Activity Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= Scorecard.model_name.human %> Activity Report</h3>
       </div>
       <%= simple_form_for :report, url: scorecard_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">
@@ -40,7 +40,7 @@
   <div class="col-md-6">
     <div class="box box-default color-palette-box">
       <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-pie-chart fa-report"></i> <%= Scorecard.model_name.human %> Comments Report</h3>
+        <h3 class="box-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= Scorecard.model_name.human %> Comments Report</h3>
       </div>
       <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="box-body">

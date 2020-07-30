@@ -50,12 +50,10 @@ gem 'simple_form'
 gem 'cocoon'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
-# gem 'nested_form_fields'
 gem 'table-for'
-gem 'kaminari-bootstrap'
+gem 'kaminari'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
-# gem 'bootstrap-datepicker-rails', '<= 1.6.4.1'
 gem 'bootstrap_form', '<= 2.1.1'
 
 # Report related

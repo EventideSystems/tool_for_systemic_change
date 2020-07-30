@@ -194,9 +194,6 @@ GEM
     kaminari-activerecord (1.2.1)
       activerecord
       kaminari-core (= 1.2.1)
-    kaminari-bootstrap (3.0.1)
-      kaminari (>= 0.13.0)
-      rails
     kaminari-core (1.2.1)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -455,7 +452,7 @@ DEPENDENCIES
   hashie (~> 3.4, < 3.5)
   jbuilder (~> 2.10)
   jquery-rails (>= 4.3.4)
-  kaminari-bootstrap
+  kaminari
   listen (~> 3.0.5)
   mailjet
   mini_magick

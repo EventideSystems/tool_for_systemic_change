@@ -10,18 +10,7 @@
   </head>
   <body class="hold-transition login-page">
     <div class="wrapper">
-      <div class="login-box">
-        <div class="login-logo">
-          <span class="logo-lg">
-            <%= image_tag('logo.png', style: 'height:35px;margin-top:-4px;margin-right:7px')%>
-            <b>Wicked</b>Lab
-          </span>
-        </div>
-        <div class="login-box-body">
-          <%= render 'layouts/shared/flash' %>
-          <%= yield %>
-        </div>
-      </div>
+      <%= yield %>
     </div>
   </body>
 </html>

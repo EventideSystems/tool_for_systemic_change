@@ -12,7 +12,7 @@
     <div class="wrapper">
       <header class="main-header">
         <nav class="navbar navbar-static-top" role="navigation">
-         <%= render 'layouts/logo' %>
+          <%= render 'layouts/logo' %>
           <div class="navbar-custom-menu mr-3">
             <!-- SMELL Inline styles -->
             <ul class="nav navbar-nav" style="margin-top: -15px;">
@@ -25,6 +25,7 @@
       <div class="content-wrapper">
         <section class="content">
             <div class="home">
+              <%= render partial: 'layouts/shared/flash' %>
               <%= yield %>
             </div>  
         </section>

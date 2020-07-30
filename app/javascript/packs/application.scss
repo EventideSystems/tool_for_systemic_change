@@ -20,6 +20,11 @@
 @import '../stylesheets/transition_cards';
 @import '../stylesheets/pdf';
 
+.content-header {
+  .btn {
+    margin-left: 1.2em;
+  }
+}
 .login-box {
   margin-top: 20%;
 }

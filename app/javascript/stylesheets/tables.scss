@@ -66,3 +66,24 @@ tfoot {
     width: 100px !important;
   }
 }
+
+// *** Pagination ***
+
+// .pagination>.active>a, 
+// .pagination>.active>span, 
+// .pagination>.active>a:hover, 
+// .pagination>.active>span:hover, 
+// .pagination>.active>a:focus, 
+// .pagination>.active>span:focus {
+//   background-color: #337ab7;
+//   border-color: #337ab7;
+// }
+
+.page-link {
+  color: #337ab7;
+}
+
+.page-item.active .page-link {
+  background-color: #337ab7;
+  border-color: #337ab7;
+}

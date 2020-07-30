@@ -5,7 +5,7 @@ class CommunitiesController < ApplicationController
   add_breadcrumb "Communities", :communities_path
   
   def index
-    @communities = policy_scope(Community).order(sort_order).page params[:page]
+    @communities = policy_scope(Community).order(sort_order).page(params[:page])
   end
 
   def show

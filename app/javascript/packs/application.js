@@ -66,11 +66,8 @@ $(document).on('turbolinks:load', function() {
 
 
 $(document).on('turbolinks:load', function() {
-  var jqeBsTooltip = $.fn.tooltip.noConflict();
-  $.fn.tlp = jqeBsTooltip;
-
   $(function () {
-    $('[data-toggle="tooltip"]').tlp()
+    jQuery('[data-toggle="tooltip"]').tooltip()
   });
 });
 

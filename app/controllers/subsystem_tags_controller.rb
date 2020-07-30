@@ -8,7 +8,7 @@ class SubsystemTagsController < ApplicationController
     if params['q']
       @subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
     else
-      @subsystem_tags = policy_scope(SubsystemTag).page(params[:page]).per(10)
+      @subsystem_tags = policy_scope(SubsystemTag).page(params[:page])
     end
     
     if params[:scorecard_id].present?

@@ -20,6 +20,19 @@
 @import '../stylesheets/transition_cards';
 @import '../stylesheets/pdf';
 
+.login-box {
+  margin-top: 20%;
+}
+
+.login-page {
+  background: #d2d6de;
+
+  b {
+    font-weight: 700;
+  }
+}
+
+
 .modal-header {
   .modal-title {
     font-size: 18px;

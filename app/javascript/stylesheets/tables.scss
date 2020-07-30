@@ -37,7 +37,7 @@
 
 .table-base tfoot td:first-child {
   display: block;
-  width: 280px !important;
+  width: 100% !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -47,14 +47,6 @@ tfoot {
   display: table-footer-group;
   vertical-align: middle;
   border-color: inherit;
-}
-
-.table-base tfoot td:first-child {
-  display: block;
-  width: 280px !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 @media (max-width: 480px) {

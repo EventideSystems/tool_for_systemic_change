@@ -82,6 +82,15 @@ $(document).on('turbolinks:load', function() {
   
 
 // $(document).on('turbolinks:load', function() {
+//   $('.video-tutorial-wrapper').on('click', function(e) {
+//     var link = $(this).data('video-tutorial-link');
+//     $('.modal').find(".modal-content").load(link);
+//     $('.modal').modal('show');
+//     e.preventDefault();
+//   });
+// });
+
+// $(document).on('turbolinks:load', function() {
 //   $('.container').tooltip({
 //     selector: "[data-toggle=tooltip]"
 //   });

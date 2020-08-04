@@ -21,6 +21,9 @@
 @import '../stylesheets/pdf';
 @import '../stylesheets/cards';
 
+.shared-links {
+  width: 500px; 
+}
 .modal-dialog{
   position: relative;
   display: table; /* This is important */ 
@@ -46,8 +49,7 @@
     font-weight: 700;
   }
 }
-
-
+ 
 .modal-header {
   .modal-title {
     font-size: 18px;
@@ -68,6 +70,7 @@
   display:inline-block;
   position:relative;
 }
+
 .video-tutorial-wrapper:after{ /* I have higher Z-index so I can catch the click! Yey */
   content:"";
   position:absolute;

@@ -1,10 +1,9 @@
-<div class="modal-header">
+<div class="modal-header shared-links">
   <h4 class="modal-title">Share <%= Scorecard.model_name.human %></h4>
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">×</span></button>
-  
+    <span aria-hidden="true">×</span></button>  
 </div>
-<div class="modal-body">
+<div class="modal-body shared-links">
   <h4>Direct link</h4>
   <pre>
 <%= shared_url(id: @scorecard.shared_link_id) %></pre>

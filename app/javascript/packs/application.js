@@ -59,7 +59,7 @@ require("../components/modals");
 
 $(document).on('turbolinks:load', function() {
   $(function () {
-    jQuery('[data-toggle="tooltip"]').tooltip()
+    jQuery('[data-toggle="tooltip"]').tooltip({ boundary: 'window' })
   });
 });
 

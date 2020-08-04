@@ -1,15 +1,23 @@
-<div class="box-body scorecard-matrix">
-  <div class="box box-solid">
-    <div class="box-header with-border box-solid">
+<div class="container scorecard-matrix">
+  <div class="row tab-content-header p-3"">
+    <div class="col">
       <% unless @scorecard.present? %>
-        <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used"><%= Scorecard.model_name.human %> Missing</h3>
+        <div class="float-left">
+          <h3 data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used">
+            <%= Scorecard.model_name.human %> Missing
+          </h3>
+        </div>
       <% else %>
-        <h3 class="pull-left" data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
+        <div class="float-left">
+          <h3 data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
+        </div>
         <div class="float-right">
-          <button class="btn xbtn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
+          <button class="btn btn-block btn-primary show-gaps-button" type="button">Show gap in effort</button>
         </div>
       <% end %>
     </div>
+  </div>
+  <div>  
     <div class='box-body'>
       <div class="outer">
         <% unless @scorecard.present? %>

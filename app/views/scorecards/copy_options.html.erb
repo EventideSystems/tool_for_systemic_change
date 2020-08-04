@@ -3,38 +3,31 @@
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">×</span>
   </button>
-  
 </div>
-<div class="modal-body">
-
-  
-<%= bootstrap_form_tag url: copy_scorecard_url(@scorecard),  method: "post" do |f| %>
-  <div class="modal-body">
-    <%= f.text_field :name, value: @scorecard.name, readonly: true %>
-    <%= f.text_field :new_name, value: "Copy of #{@scorecard.name}" %>
-  
-    <div>
-      <%= radio_button_tag(:copy, "shallow", true) %>
-      <%= label_tag(:copy_shallow, "Shallow copy" ) %>
-      <p>
-        Copy to include initiatives and organisations details - but exclude checklist history.
-      </p>
+<div class="modal-body">  
+  <%= bootstrap_form_tag url: copy_scorecard_url(@scorecard),  method: "post" do |f| %>
+    <div class="modal-body">
+      <%= f.text_field :name, value: @scorecard.name, readonly: true %>
+      <%= f.text_field :new_name, value: "Copy of #{@scorecard.name}" %>
+    
+      <div>
+        <%= radio_button_tag(:copy, "shallow", true) %>
+        <%= label_tag(:copy_shallow, "Shallow copy" ) %>
+        <p>
+          Copy to include initiatives and organisations details - but exclude checklist history.
+        </p>
+      </div>
+      <div>
+        <%= radio_button_tag(:copy, "deep") %>
+        <%= label_tag(:copy_deep, "Deep copy") %>
+        <p>
+          Copy to include initiatives, organisations and initiative characteristics history.
+        </p>
+      </div>
     </div>
-    <div>
-      <%= radio_button_tag(:copy, "deep") %>
-      <%= label_tag(:copy_deep, "Deep copy") %>
-      <p>
-        Copy to include initiatives, organisations and initiative characteristics history.
-      </p>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <%= f.submit "Copy #{Scorecard.model_name.human}", class: 'btn btn-secondary' %>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <%= f.submit "Copy #{Scorecard.model_name.human}", class: 'btn btn-secondary' %>
-  </div>
-<% end %>
-      
-</div>
-<div class="modal-footer hidden">
-  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+  <% end %>   
 </div>

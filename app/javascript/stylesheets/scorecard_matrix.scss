@@ -17,6 +17,10 @@
     .text-color#{nth($color, 1)} {
       color: #{nth($color, 2)};
     }
+
+    h3 {
+      font-size: 24px;
+    }
   }
 
   margin: 0;

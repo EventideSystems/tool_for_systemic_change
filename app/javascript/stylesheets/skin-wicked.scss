@@ -138,7 +138,7 @@ a {
 //lighten(#00b9f2, 30%) !important;
 
 .select2-selection .select2-selection--multiple {
-  border: solid grey 1px !important;
+  border: solid #dee2e6 1px !important;
 }
 
 .select2-results__option .select2-results__option--highlighted {
@@ -150,7 +150,8 @@ li.select2-selection__choice {
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-  border: inherit !important;
+  //border: inherit !important;
+  border: solid #dee2e6 1px !important;
 }
 
 .select2-container .select2-choice:not(.select2-default) {

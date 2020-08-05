@@ -6,6 +6,10 @@
   background: #428bca !important;
 }
 
+.sw-theme-arrows > .nav a.nav-link.active{
+  font-weight: 700;
+}
+
 .sw-theme-arrows > .nav .nav-link.active::after {
   border-left-color: #428bca !important;
 }

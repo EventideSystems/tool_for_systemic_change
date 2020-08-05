@@ -21,6 +21,13 @@
 @import '../stylesheets/pdf';
 @import '../stylesheets/cards';
 
+.control-sidebar-content {
+
+  .nav-sidebar .nav-item > .nav-link {
+    position: inherit;
+  }
+}
+
 .shared-links {
   width: 500px; 
 }

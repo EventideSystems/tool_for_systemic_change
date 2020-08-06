@@ -14,14 +14,14 @@
 
 <div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @organisations, :table_html => { :class => "table table-striped table-base" },
+  <%= table_for @organisations, :table_html => { :class => "table table-striped table-organisation" },
                         :sortable => true,
                         :data_row_html => {
                           id: lambda { |organisation| "organisation-#{organisation.id}" },
                           class: 'table-actions'
                         } do |table| %>
-    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %> %>
-    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
+    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 100) } %> %>
+    <% table.column :description, formatter: lambda { |text| truncate_text(text, 30) } %>
     <% table.column :sector_name, header: 'Sector', sortable: false %>
     <% table.column :data => "Modify", link_action: :edit %>
     <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>

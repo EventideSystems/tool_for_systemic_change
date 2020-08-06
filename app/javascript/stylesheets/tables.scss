@@ -27,12 +27,31 @@
   width: 180px !important;
 }
 
+.table-organisation th:first-child {
+  width: auto !important;
+}
+
 .table-base td:first-child {
   display: block;
   width: 180px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.table-organisation td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-organisation td:first-child {
+  display: block;
+  width: auto !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px !important;
 }
 
 .table-base tfoot td:first-child {
@@ -56,6 +75,10 @@ tfoot {
   
   .table-base th:first-child {
     width: 100px !important;
+  }
+
+  .table-base .table-organisation th:first-child {
+    width: auto !important;
   }
 }
 

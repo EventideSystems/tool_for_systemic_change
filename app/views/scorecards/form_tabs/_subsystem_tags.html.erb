@@ -4,21 +4,19 @@
     <%= f.simple_fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tag_form| %>
       <%= render 'scorecards/form_tabs/subsystem_tag_fields', f: initiatives_subsystem_tag_form %>
     <% end %>
-    <div class="links form-group row d-flex justify-content-end">
+    <div class="links row d-flex justify-content-start ml-5">
       <%=
         link_to_add_association(
-          'Assign a Tag',
+          '',
           f,
           :initiatives_subsystem_tags,
-          partial: 'scorecards/form_tabs/subsystem_tag_fields',
-          class: 'btn btn-primary'
+          partial: 'scorecards/form_tabs/subsystem_tag_fields'
         )
-      %>
-      <label class="col-sm-1 col-form-label">Or</label>
-      <div class="col-sm-5"> 
+      %> 
+      <div class="row"> 
         <%= 
           link_to(
-            "Create a Tag", 
+            "Create a Subsystem Tag", 
             new_subsystem_tag_path, 
             remote: true, 
             class: "btn btn-secondary subsystem-tag-link"

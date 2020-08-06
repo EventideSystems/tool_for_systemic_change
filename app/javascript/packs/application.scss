@@ -118,7 +118,13 @@ label.truncate {
   text-overflow: ellipsis;
 }
   
+.wizard .toolbar-bottom {
+  border-top: thin solid #eeeeee;
+}
 
+.wizard .tab-pane {
+  padding-bottom: 20px;
+}
 // div.medium-editor-element {
 //   height: auto;
 // }

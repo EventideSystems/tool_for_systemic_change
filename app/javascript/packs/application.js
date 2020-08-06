@@ -30,11 +30,9 @@ window.$ = window.jQuery = jQuery;
 require("admin-lte");
 require("select2");
 require("smartwizard");
-require("cocoon");
 require('d3');
 require('moment');
 
-import 'cocoon';
 import 'select2';
 
 import * as d3 from 'd3';
@@ -48,10 +46,12 @@ import 'daterangepicker';
 
 require("bootstrap");
 
+require('../components/cocoon');
 require("../components/datepickers");
 require("../components/transition_card");
 require("../components/transition_card_wizard");
 require("../components/initiative_checklist");
+require("../components/initiatives");
 require("../components/subsystem_tags");
 require("../components/toasts");
 require("../components/modals");

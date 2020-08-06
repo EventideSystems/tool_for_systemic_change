@@ -12,4 +12,10 @@
     $('<option>', {value: '<%= @subsystem_tag.id %>', text:'<%= @subsystem_tag.name %>'})
   );
   newSelect.val('<%= @subsystem_tag.id %>');
+
+
+  var emptyFormCount = $('.assign-subsystem-tag-select').filter(function(){return $(this).val() == ''}).length;
+  if (emptyFormCount == 0) {
+    $("[data-association='initiatives_subsystem_tag']").click();
+  }
 <% end %>

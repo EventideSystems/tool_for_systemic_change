@@ -38,7 +38,7 @@ class Organisations::ImportsController < ApplicationController
     
     @organisations_import.destroy
     file_system = Shrine.storages[:cache]
-    file_system.clear!(older_than: Time.now - 1.hour)
+    file_system.clear! { |path| path.mtime < Time.now - 1.hour } 
   end
 
   def update

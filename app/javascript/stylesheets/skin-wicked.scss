@@ -19,6 +19,10 @@ a:hover {
   color: lighten(#3c8dbc, 15%);
 }
 
+hr {
+  border-top-color: $border-color;
+}
+
 .content-wrapper > .content {
   padding: 0 1rem;
 }

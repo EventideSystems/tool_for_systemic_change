@@ -29,7 +29,8 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize @initiative
 
-
+    @initiative.initiatives_organisations.build
+    @initiative.initiatives_subsystem_tags.build
 
     add_breadcrumb 'New Initiative'
   end

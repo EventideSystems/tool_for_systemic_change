@@ -1,32 +1,36 @@
-<%= simple_form_for(@scorecard_comments_import, url: transition_card_comments_imports_path(@scorecard_comments_import)) do |f| %>
+<%= 
+  simple_form_for(
+    @scorecard_comments_import, 
+    url: transition_card_comments_imports_path(@scorecard_comments_import), 
+    html: { class: 'record-form' }
+  ) do |f| 
+  %>
   <%= f.error_notification %>
-  <div class='box box-primary'>
-    <div class='box-header with-border'>
-      <%= form_header(@scorecard_comments_import) %>
+  <%= form_header(@scorecard_comments_import) %>
+
+  <div class="row">
+    <div class="col pl-4">
+      <%= import_comments_instructions_link %>
     </div>
-    <div class='box-body'>
-      
-      <div>
-        <%= import_comments_instructions_link %>
-      </div>
-      
+  </div>
+  <div class="row">
+    <div class="col pl-4">
       <% if @scorecard_comments_import.import_data.present? %>
         <%= f.input :import_file_name, readonly: true, input_html: { value: @scorecard_comments_import.import.original_filename } %>
         <%= f.input :import, as: :hidden, input_html: { value: @scorecard_comments_import.import_data } %>
       <% else %>  
         <%= f.input :import, as: :file, required: true %>
       <% end %>
-      
     </div>
-    
     <%= render partial: 'import/processing_errors', locals: { import: @scorecard_comments_import, return_link: new_transition_card_comments_import_url } %> 
+  </div>   
+
+  <div class='d-flex justify-content-end action-row'>
+    <%= link_to('Cancel', initiatives_path, class: 'btn btn-secondary') %>
+    <% if @scorecard_comments_import.processing_errors.empty? %>
+      <%= f.button :submit, 'Import', class: 'btn btn-primary ml-2' %>
+    <% end %>
+    
   </div>
   
-  <div class='box-footer'>
-    <% if @scorecard_comments_import.processing_errors.empty? %>
-      <%= f.button :submit, 'Import', class: 'btn btn-primary float-right', style: 'margin-left: 15px' %>
-    <% end %>
-    <%= link_to('Cancel', initiatives_path, class: 'btn btn-secondary float-right') %>
-  </div>
-
 <% end %>

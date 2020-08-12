@@ -1,10 +1,14 @@
 .card {
+  border-color: $border-color;
   border-top-width: 3px;
   border-top-style: solid;
   border-top-color: #3c8dbc;
 }
 
 .card-header {
+  
+  border-color: $border-color;
+
   h5 .btn {
     font-size: 18px;
     color: #3c8dbc;
@@ -12,7 +16,11 @@
 }
 
 .dashboard .card, .reports .card {
+  border-bottom: solid $border-color 1px !important;
+  border-left: solid $border-color 1px !important;
+  border-right: solid $border-color 1px !important;
   border-top-width: 3px;
   border-top-style: solid;
   border-top-color: #d2d6de;
+  box-shadow: none;
 }

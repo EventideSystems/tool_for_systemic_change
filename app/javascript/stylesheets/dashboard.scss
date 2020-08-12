@@ -23,6 +23,10 @@
   }
 }
 
+// .dashboard .card, .reports .card {
+//   border: solid $border-color 1px !important;
+// }
+
 h3.card-title-recent-activity::before {
   font-family: 'Font Awesome 5 Free';
 	content: "\f1da";

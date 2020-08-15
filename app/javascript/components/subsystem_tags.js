@@ -29,6 +29,7 @@ $(document).on('turbolinks:load', function() {
     var params = { selected_tags: tags, selected_date: date };
 
     var url = '/transition_cards/' + scorecardId + '?' + $.param(params);
+    $('#spinner-wrapper').css('visibility', 'visible');
     $(location).attr('href', url)
   });
   

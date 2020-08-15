@@ -20,6 +20,17 @@
   border-color: darken($secondary-button-color, 5%);
 }
 
+.btn-ecosystem-map {
+  color: #333;
+  background-color: lighten(lightgrey, 11%);
+  border-color: rgb(118, 118, 118);
+}
+
+.btn-ecosystem-map:hover {
+  background-color: lighten(lightgrey, 5%);
+
+}
+
 .btn {
   font-size: 14px;
 }

@@ -52,6 +52,7 @@ require("../components/transition_card");
 require("../components/transition_card_wizard");
 require("../components/initiative_checklist");
 require("../components/initiatives");
+require("../components/spinner");
 require("../components/subsystem_tags");
 require("../components/toasts");
 require("../components/modals");

@@ -22,6 +22,16 @@
 @import '../stylesheets/pdf';
 @import '../stylesheets/cards';
 
+.brand-link-small {
+  .brand-link .brand-image-xs {
+    float: none;
+  }
+
+  .logo-xs, .logo-xl {
+    position: inherit;
+  }
+}
+
 .control-sidebar-content {
 
   .nav-sidebar .nav-item > .nav-link {

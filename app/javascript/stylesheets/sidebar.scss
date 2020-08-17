@@ -34,17 +34,14 @@
   border-bottom: inherit;
 }
 
-@media (min-width: 992px) {
-
-  .sidebar-mini h2.sidebar-header {
-    margin-left: -1em;
-    margin-right: -1em;
-    padding: 1em;
-    padding-left: 2em;
-    font-size: 0.9em;
-    color: #4b646f;
-    background: #1a2226;
-  }
+.sidebar h2.sidebar-header {
+  margin-left: -1em;
+  margin-right: -1em;
+  padding: 1em;
+  padding-left: 2em;
+  font-size: 0.9em;
+  color: #4b646f;
+  background: #1a2226;
 }
 
 form.account-select {

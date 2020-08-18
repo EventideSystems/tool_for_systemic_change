@@ -76,7 +76,6 @@ gem 'daemons'
 gem 'mailjet'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
-
 gem 'thor', '~> 0.20'
 
 group :test do

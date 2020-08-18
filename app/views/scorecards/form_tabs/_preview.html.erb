@@ -4,9 +4,9 @@
       <div class="col-md-3">
         
       </div>
-      <div class="col-md-9">
-        <div class="row">
-          <h3><%= Scorecard.model_name.human %>
+      <div class="col-md-6">
+        <div class="row preview-row">
+          <h4><%= Scorecard.model_name.human %>
           <%= 
             link_to(
               content_tag(
@@ -19,12 +19,12 @@
               onclick: "$('.wizard').smartWizard('goToStep', 0);"
             )
           %>
-          <strong id='preview-scorecard-name'></strong></h3>
+          <strong id='preview-scorecard-name'></strong></h4>
         </div>
-        <div class="row">
+        <div class="row preview-row">
           <p id='preview-scorecard-description'></p>
           
-          <h3>Wicked Problem / Opportunity
+          <h4>Wicked Problem / Opportunity
             <%= 
               link_to(
                 content_tag(
@@ -38,12 +38,13 @@
               )
             %>  
             <strong id='preview-wicked-problem-name'></strong>
-          </h3>
+          </h4>
+          <hr>
         </div>
-        <div class="row">
+        <div class="row preview-row">
           <p id='preview-wicked-problem-description'></p>
           
-          <h3>Community
+          <h4>Community
             <%= 
               link_to(
                 content_tag(
@@ -57,12 +58,12 @@
               )
             %>  
             <strong id='preview-community-name'></strong>
-          </h3>
+          </h4>
         </div>
-        <div class="row">
+        <div class="row preview-row">
           <p id='preview-community-description'></p>
           
-          <h3>Initiatives
+          <h4>Initiatives
             <%= 
               link_to(
                 content_tag(
@@ -76,8 +77,9 @@
               )
             %>  
             <strong id='preview-community-name'></strong>
-          </h3>
-          <hr>
+          </h4>
+        </div>  
+        <div class="row preview-row">
           <ul id='preview-initiatives'>
             
           </ul>

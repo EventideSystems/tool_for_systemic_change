@@ -18,6 +18,8 @@ h3.focus-area {
 
 // }
 
+// Initiatives
+
 .initiative-characteristics-container {
   border: 1px solid #f4f4f4;
   margin: 10px;
@@ -25,4 +27,21 @@ h3.focus-area {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-top: 3px solid #3c8dbc;
+}
+
+.col-nested {
+  select { 
+    width: 200px;
+  }
+}
+
+// Preview
+ul#preview-initiatives {
+  list-style-type: none;
+}
+
+.preview-row {
+  border-bottom: 1px solid #f4f4f4;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
 }

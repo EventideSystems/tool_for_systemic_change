@@ -8,7 +8,11 @@ $(document).on('turbolinks:load', function() {
       enableAllAnchors: true,
       justified: true,
       autoAdjustHeight: true,
-      markDoneStep: false
+      markDoneStep: false,
+    },
+    lang: { 
+      next: 'Next \u203A',
+      previous: '\u2039 Previous'
     }
   });
 });

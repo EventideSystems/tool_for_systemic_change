@@ -32,6 +32,18 @@
   visibility: hidden;
 }
 
+.sw .toolbar > .btn {
+  color: #337ab7;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+.sw .toolbar > .btn:hover {
+  color: #0056b3;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
 .wizard .tab-content {
   padding: 10px;
 }

@@ -8,6 +8,12 @@
   border-color: darken($primary-button-color, 5%);
 }
 
+// NOTE This does not work
+// .btn .btn-primary:active {
+//   background-color: darken($primary-button-color, 10%);
+//   border-color: darken($primary-button-color, 10%);
+// }
+
 .btn-secondary {
   color: #FFF;
   background-color: $secondary-button-color;
@@ -20,6 +26,12 @@
   border-color: darken($secondary-button-color, 5%);
 }
 
+.btn .btn-secondary:active {
+  color: #FFF;
+  background-color: darken($secondary-button-color, 10%);
+  border-color: darken($secondary-button-color, 10%);
+}
+
 .btn-ecosystem-map {
   color: #333;
   background-color: lighten(lightgrey, 11%);
@@ -28,7 +40,6 @@
 
 .btn-ecosystem-map:hover {
   background-color: lighten(lightgrey, 5%);
-
 }
 
 .btn {

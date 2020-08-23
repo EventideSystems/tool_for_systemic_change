@@ -34,13 +34,14 @@ Rails.application.routes.draw do
   resources :networks
   resources :organisations
 
-  resources :scorecards, path: 'transition_cards' do
+  resources :transition_cards do
     member do
       get 'show_shared_link'
       post 'copy'
       get 'copy_options'
       post 'merge'
       get 'merge_options'
+      get 'ecosystem_maps'
     end
   end
 

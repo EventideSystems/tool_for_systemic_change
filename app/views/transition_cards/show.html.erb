@@ -15,16 +15,16 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane <%= 'active' if @active_tab == :scorecard %>" id="tab_1">
-       <%= render 'scorecards/show_tabs/transition_card'%>  
+       <%= render 'transition_cards/show_tabs/transition_card'%>  
     </div>
     <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="tab_2">
-      <%= render 'scorecards/show_tabs/ecosystem_maps'%>
+      <%= render 'transition_cards/show_tabs/ecosystem_maps'%>
     </div>
     <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="tab_3">
-      <%= render 'scorecards/show_tabs/initiatives'%>
+      <%= render 'transition_cards/show_tabs/initiatives'%>
     </div>
     <div class="tab-pane <%= 'active' if @active_tab == :details %>" id="tab_4">
-      <%= render 'scorecards/show_tabs/details'%>
+      <%= render 'transition_cards/show_tabs/details'%>
     </div>
   </div>
 </div>

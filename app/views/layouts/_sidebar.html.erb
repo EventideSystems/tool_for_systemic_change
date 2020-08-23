@@ -32,7 +32,7 @@
       <nav class="mt-2">      
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <%= menu_item_tag(:dashboard, 'dashboard') %>
-          <%= menu_item_tag(:scorecards, 'check-square-o', { disabled: disabled, title: Scorecard.model_name.human.pluralize }) %>
+          <%= menu_item_tag(:transition_cards, 'check-square-o', { disabled: disabled, title: Scorecard.model_name.human.pluralize }) %>
           <%= menu_item_tag(
             :wicked_problems, 
             'cubes', 

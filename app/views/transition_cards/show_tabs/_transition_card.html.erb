@@ -37,25 +37,25 @@
       
       <div class="float-right">
         <button class="btn btn-primary show-gaps-button" type="button">Show gap in effort</button>
-        <%- print_scorecard_path = if @selected_date 
-              scorecard_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
+        <%- print_transition_card_path = if @selected_date 
+              transition_card_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
             else
-              scorecard_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
+              transition_card_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
             end
         %>
-        <%= link_to(print_scorecard_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
+        <%= link_to(print_transition_card_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
           content_tag(:i, '', class: "fa fa-print")
         end %>
-        <%= link_to(show_shared_link_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
+        <%= link_to(show_shared_link_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
           content_tag(:i, '', class: "fa fa-share-alt")
         end %>
         <% if policy(:scorecard).copy_options? %>
-          <%= link_to(copy_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
+          <%= link_to(copy_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
             content_tag(:i, '', class: "fa fa-files-o")
           end %>
         <% end %>
         <% if policy(:scorecard).merge_options? %>
-          <%= link_to(merge_options_scorecard_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
+          <%= link_to(merge_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
             content_tag(:i, '', class: "fa fa-file-text-o")
           end %>
         <% end %>

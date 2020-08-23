@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "accounts page", :type => :request do
   it "creates a new account" do
-    # @user = FactoryGirl.create(:user)
+    # @user = FactoryBot.create(:user)
 #
 #     sign_in_as_a_valid_user
 #

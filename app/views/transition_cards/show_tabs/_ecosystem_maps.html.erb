@@ -1,36 +1,66 @@
-<div class="box-body">
+<div class="box-body" id="ecosystem-maps", data-scorecard-id="<%=@scorecard.id%>">
   
-  <div class="d-flex flex-row">
-    <div class="p-2" style="margin-left: 10px; margin-top: 10px;">
-      Legend
-      <button id="hide_legend" class="btn btn-ecosystem-map btn-sm">hide</button>
-      <button id="show_legend" class="btn btn-ecosystem-map btn-sm">show</button>
+  <ul id="ecosystem-maps-nav" class="nav nav-tabs nav-pills justify-content-end p-1">
+    <li class="nav-item">
+      <a href="#tab_organisations" class="nav-link" data-target="#tab_organisations" data-toggle="tab">Organisations</a>
+    </li>
+    <li class="nav-item">
+      <a href="#tab_initiatives" class="nav-link" data-target="#tab_initiatives" data-toggle="tab">Initiatives</a>
+    </li>
+  </ul>  
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab_organisations">
+      <div class="d-flex flex-row">
+        <div class="p-2" style="margin-left: 10px; margin-top: 10px;">
+          Legend
+          <button id="hide_legend" class="btn btn-ecosystem-map btn-sm">hide</button>
+          <button id="show_legend" class="btn btn-ecosystem-map btn-sm">show</button>
+        </div>
+
+        <div class="p-2" style="margin-top: 10px;">
+          Labels
+          <button id="hide_labels" class="btn btn-ecosystem-map btn-sm">hide</button>
+          <button id="show_labels" class="btn btn-ecosystem-map btn-sm">show</button>
+        </div>
+
+        <div class="ml-auto p-2" style= "margin-left: 10px; margin-top: 10px;">
+          Zoom 
+          <button id="zoom_in" class="btn btn-ecosystem-map btn-sm">+</button>
+          <button id="zoom_out" class="btn btn-ecosystem-map btn-sm">-</button>
+        </div>
+      </div>
+      <div id="organisations-chart" width="100%" height='100%' style="overflow:hidden;">
+        <svg width="960" height="900"></svg>
+      </div>
+
+      <div class="legend pt-3">
+        <%- Sector.order(:name).each do |sector| -%>
+          <p>
+            <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
+            <span class="dot-label"><%= sector.name %></span>
+          </p>
+        <%- end %>  
+      </div>
     </div>
 
-    <div class="p-2" style="margin-top: 10px;">
-      Labels
-      <button id="hide_labels" class="btn btn-ecosystem-map btn-sm">hide</button>
-      <button id="show_labels" class="btn btn-ecosystem-map btn-sm">show</button>
+    <div class="tab-pane" id="tab_initiatives">
+      <div class="d-flex flex-row">
+        <div class="p-2" style="margin-top: 10px;">
+          Labels
+          <button id="hide_labels" class="btn btn-ecosystem-map btn-sm">hide</button>
+          <button id="show_labels" class="btn btn-ecosystem-map btn-sm">show</button>
+        </div>
+
+        <div class="ml-auto p-2" style= "margin-left: 10px; margin-top: 10px;">
+          Zoom 
+          <button id="zoom_in" class="btn btn-ecosystem-map btn-sm">+</button>
+          <button id="zoom_out" class="btn btn-ecosystem-map btn-sm">-</button>
+        </div>
+      </div>
+      <div id="initiatives-chart" width="100%" height='100%' style="overflow:hidden;">
+        <svg width="960" height="900"></svg>
+      </div>
     </div>
-
-    <div class="ml-auto p-2" style= "margin-left: 10px; margin-top: 10px;">
-      Zoom 
-      <button id="zoom_in" class="btn btn-ecosystem-map btn-sm">+</button>
-      <button id="zoom_out" class="btn btn-ecosystem-map btn-sm">-</button>
-    </div>
-  </div>
-    
-
-  <div id="chart" width="100%" height='100%' style="overflow:hidden;", data-scorecard-id="<%=@scorecard.id%>">
-    <svg width="960" height="900"></svg>
-  </div>
-
-  <div class="legend pt-3">
-    <%- Sector.order(:name).each do |sector| -%>
-      <p>
-        <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
-        <span class="dot-label"><%= sector.name %></span>
-      </p>
-    <%- end %>  
   </div>
 </div>

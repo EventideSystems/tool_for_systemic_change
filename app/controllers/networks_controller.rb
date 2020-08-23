@@ -1,8 +1,6 @@
 class NetworksController < ApplicationController
 
   skip_after_action :verify_policy_scoped
-  
-  add_breadcrumb "Networks", :networks_path
 
   def index
     link_data = load_link_data

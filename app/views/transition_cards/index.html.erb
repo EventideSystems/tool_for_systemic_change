@@ -1,7 +1,7 @@
 <% content_for :page_actions do %>
   <%=
     if policy(Scorecard).create? 
-      create_new_button(new_scorecard_path)
+      create_new_button(new_transition_card_path)
     end 
   %>
 

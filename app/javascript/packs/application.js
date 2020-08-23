@@ -56,6 +56,7 @@ require("../components/spinner");
 require("../components/subsystem_tags");
 require("../components/toasts");
 require("../components/modals");
+require("../components/ecosystem_maps");
 
 
 $(document).on('turbolinks:load', function() {

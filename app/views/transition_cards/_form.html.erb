@@ -1,4 +1,4 @@
-<%= simple_form_for(@scorecard, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@scorecard, role: 'form', url: transition_card_path(@scorecard), html: { class: 'form-horizontal' }) do |f| %>
 <%= f.error_notification %>
 
   <% if @scorecard.errors.any? %>

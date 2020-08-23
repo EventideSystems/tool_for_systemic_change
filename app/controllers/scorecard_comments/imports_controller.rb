@@ -13,7 +13,7 @@ class ScorecardComments::ImportsController < ApplicationController
     
     respond_to do |format|
       if @scorecard_comments_import.save && @scorecard_comments_import.process(current_account)
-        format.html { redirect_to scorecards_path, notice: 'Transition Card Comments records successfully imported.' }
+        format.html { redirect_to transition_cards_path, notice: 'Transition Card Comments records successfully imported.' }
         format.json { render :show, status: :created, location: @scorecard_comments_import }
       else
         format.html { render :new }

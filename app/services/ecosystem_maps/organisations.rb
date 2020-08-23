@@ -71,7 +71,8 @@ module EcosystemMaps
 
     def build_link_data
       query = <<~SQL
-        select org1.id, org2.id from initiatives
+        select org1.id, org2.id 
+        from initiatives
         inner join scorecards on scorecards.id = initiatives.scorecard_id
         inner join initiatives_organisations io1 on io1.initiative_id = initiatives.id
         inner join organisations org1 on org1.id = io1.organisation_id
@@ -105,6 +106,12 @@ module EcosystemMaps
       @link_data ||= build_link_data
     end
 
+    STRENGTH_ABS_LOWER = 0.01
+    STRENGTH_ABS_UPPER = 0.49
+  
+    def calc_strength(upper, lower, value)    
+      0.05
+    end
 
   end
 end

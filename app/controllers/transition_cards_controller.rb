@@ -1,10 +1,12 @@
 class TransitionCardsController < ApplicationController
   before_action :set_scorecard, 
     only: [
-      :show, :edit, :update, :destroy, :show_shared_link, 
-      :copy, :copy_options, :merge, :merge_options,
-      :ecosystem_maps
+      :show, :edit, :update, :destroy, 
+      :show_shared_link, :copy, :copy_options, :merge, :merge_options,
+      :ecosystem_maps_organisations,
+      :ecosystem_maps_initiatives
     ] 
+    
   before_action :set_active_tab, only: [:show] 
   before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link] 
 
@@ -156,12 +158,16 @@ class TransitionCardsController < ApplicationController
     end 
   end
   
-  def ecosystem_maps
-    link_data = load_link_data(@scorecard)
-    nodes = load_nodes(@scorecard, link_data)
-    links = load_links(link_data)
+  def ecosystem_maps_initiatives
+    data = EcosystemMaps::Initiatives.new(@scorecard)
 
-    render json: { data: { nodes: nodes, links: links } }
+    render json: { data: { nodes: data.nodes, links: data.links } }
+  end
+
+  def ecosystem_maps_organisations
+    data = EcosystemMaps::Organisations.new(@scorecard)
+
+    render json: { data: { nodes: data.nodes, links: data.links } }
   end
 
   def content_title
@@ -175,183 +181,77 @@ class TransitionCardsController < ApplicationController
 
   private
 
-  def load_nodes(scorecard, link_data)
-    linked_data_ids = link_data.flatten.uniq
-
-    nodes = scorecard.organisations.uniq
-
-    nodes.map do |node|
-      
-      if node.id.in?(linked_data_ids)        
-        cluster_node_ids = link_data.each_with_object([]) do |link, array|
-          if node.id.in?(link)
-            linked_id = link - [node.id]
-            array.push(linked_id)
-          end
-        end.flatten.uniq
+  def set_scorecard
+    @scorecard = current_account.scorecards.find(params[:id])
+    authorize @scorecard
+  end
   
-        initiative_names = []
-        partnering_organisations = Organisation.where(id: cluster_node_ids)
-        partnering_initiative_names = load_partnering_initiative_names(node.id, cluster_node_ids)
-      else
-        initiative_names = node
-          .initiatives_organisations
-          .joins(:initiative)
-          .where('initiatives.scorecard_id = :scorecard_id', scorecard_id: scorecard.id)
-          .to_a.map{ |i| i.initiative.name }
-
-        partnering_organisations = []
-        partnering_initiative_names = []
-      end
-
-      { 
-        id: node.id,
-        organisation_name: node.name,
-        organisation_description: node.description,
-        organisation_sector_name: node.sector&.name,
-        organisation_weblink: node.weblink,
-        partnering_initiative_names: partnering_initiative_names,
-        initiative_names: initiative_names,
-        partnering_organisation_names: partnering_organisations.map(&:name),
-        group: 0, 
-        label: node.name, 
-        color: node.sector.color || '#000000'
-      }
-    end
+  def set_active_tab
+    @active_tab = params.dig(:active_tab)&.to_sym || :scorecard
   end
 
-  def load_links(link_data)
-    grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)
-
-    upper = grouped_link_data.values.max
-    lower = grouped_link_data.values.min
-
-    grouped_link_data.map do |(target, source), link_count|
-      { 
-        id: target,
-        target: target, 
-        source: source, 
-        strength: calc_strength(upper, lower, link_count) 
-      }
-    end
-  end
-
-
-  STRENGTH_ABS_LOWER = 0.01
-  STRENGTH_ABS_UPPER = 0.49
-
-  def calc_strength(upper, lower, value)    
-    0.05
-  end
-
-  # def calc_strength(upper, lower, value)
-  #   ((STRENGTH_ABS_UPPER / ( upper - lower)) * value) + 
-  #   STRENGTH_ABS_LOWER - ((STRENGTH_ABS_UPPER / ( upper - lower)) * lower)
-  # end
-
-  def load_link_data(scorecard)
-    query = <<~SQL
-      select org1.id, org2.id from initiatives
-      inner join scorecards on scorecards.id = initiatives.scorecard_id
-      inner join initiatives_organisations io1 on io1.initiative_id = initiatives.id
-      inner join organisations org1 on org1.id = io1.organisation_id
-      inner join initiatives_organisations io2 on io2.initiative_id = initiatives.id
-      inner join organisations org2 on org2.id = io2.organisation_id
-      where org1.id <> org2.id and initiatives.scorecard_id = #{scorecard.id};
-    SQL
-
-    results = ActiveRecord::Base.connection.exec_query(query).rows
-
-    results.map { |result| [result.min, result.max] }
-  end
-
-  def load_partnering_initiative_names(organisation_id, partnering_organisation_ids)
-    query = <<~SQL
-      select distinct(name) from initiatives
-      inner join initiatives_organisations io1 
-        on io1.initiative_id = initiatives.id 
-        and io1.organisation_id = #{organisation_id}
-      inner join initiatives_organisations io2 
-        on io2.initiative_id = initiatives.id 
-        and io2.organisation_id in (#{partnering_organisation_ids.join(',')})
-    SQL
-
-    results = ActiveRecord::Base.connection.exec_query(query).rows
-    
-    results.flatten
-  end
-
-    def set_scorecard
-      @scorecard = current_account.scorecards.find(params[:id])
-      authorize @scorecard
-    end
-    
-    def set_active_tab
-      @active_tab = params.dig(:active_tab)&.to_sym || :scorecard
-    end
-
-    def scorecard_params
-      params.require(:scorecard).permit(
-        :name, 
-        :description, 
-        :wicked_problem_id,
-        :community_id,
-        initiatives_attributes: [
+  def scorecard_params
+    params.require(:scorecard).permit(
+      :name, 
+      :description, 
+      :wicked_problem_id,
+      :community_id,
+      initiatives_attributes: [
+        :_destroy,
+        :name,
+        :description,
+        :scorecard_id,
+        :started_at,
+        :finished_at,
+        :dates_confirmed,
+        :contact_name,
+        :contact_email,
+        :contact_phone,
+        :contact_website,
+        :contact_position,
+        initiatives_organisations_attributes: [
           :_destroy,
-          :name,
-          :description,
-          :scorecard_id,
-          :started_at,
-          :finished_at,
-          :dates_confirmed,
-          :contact_name,
-          :contact_email,
-          :contact_phone,
-          :contact_website,
-          :contact_position,
-          initiatives_organisations_attributes: [
-            :_destroy,
-            :organisation_id
-          ],
-          initiatives_subsystem_tags_attributes: [
-            :_destroy,
-            :subsystem_tag_id
-          ]
+          :organisation_id
+        ],
+        initiatives_subsystem_tags_attributes: [
+          :_destroy,
+          :subsystem_tag_id
         ]
-      ).tap do |params| # NOTE Dupe of code in initiatives controller
-        unless params[:initiatives_attributes].blank?
-          params[:initiatives_attributes].each do |initiative_key, _|
-            params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
-              value[:_destroy] != '1' && (
-                value[:organisation_id].blank? || (
-                  value[:id].blank? && 
-                  params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
-                    selected_key != key &&
-                    selected_value[:_destroy] != '1' && 
-                    selected_value[:organisation_id] == value[:organisation_id]
-                  end
-                )
+      ]
+    ).tap do |params| # NOTE Dupe of code in initiatives controller
+      unless params[:initiatives_attributes].blank?
+        params[:initiatives_attributes].each do |initiative_key, _|
+          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
+            value[:_destroy] != '1' && (
+              value[:organisation_id].blank? || (
+                value[:id].blank? && 
+                params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
+                  selected_key != key &&
+                  selected_value[:_destroy] != '1' && 
+                  selected_value[:organisation_id] == value[:organisation_id]
+                end
               )
-            end  
-          end
+            )
+          end  
         end
-        
-        unless params[:initiatives_attributes].blank?
-          params[:initiatives_attributes].each do |initiative_key, _|
-            params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
-              value[:_destroy] != '1' && (
-                value[:subsystem_tag_id].blank? || (
-                  value[:id].blank? && 
-                  params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
-                    selected_key != key &&
-                    selected_value[:_destroy] != '1' && 
-                    selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
-                  end
-                )
+      end
+      
+      unless params[:initiatives_attributes].blank?
+        params[:initiatives_attributes].each do |initiative_key, _|
+          params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
+            value[:_destroy] != '1' && (
+              value[:subsystem_tag_id].blank? || (
+                value[:id].blank? && 
+                params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
+                  selected_key != key &&
+                  selected_value[:_destroy] != '1' && 
+                  selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
+                end
               )
-            end  
-          end
+            )
+          end  
         end
       end
     end
+  end
 end

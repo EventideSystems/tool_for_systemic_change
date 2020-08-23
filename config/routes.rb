@@ -41,7 +41,8 @@ Rails.application.routes.draw do
       get 'copy_options'
       post 'merge'
       get 'merge_options'
-      get 'ecosystem_maps'
+      get 'ecosystem_maps_organisations'
+      get 'ecosystem_maps_initiatives'
     end
   end
 

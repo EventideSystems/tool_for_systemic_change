@@ -2,7 +2,7 @@
   <label class="col-sm-3 col-form-label">Assign Subsystem Tags</label>
   <div class="subsystem_tags">
     <%= f.simple_fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tag_form| %>
-      <%= render 'scorecards/form_tabs/subsystem_tag_fields', f: initiatives_subsystem_tag_form %>
+      <%= render 'transition_cards/form_tabs/subsystem_tag_fields', f: initiatives_subsystem_tag_form %>
     <% end %>
     <div class="links row d-flex justify-content-start ml-5">
       <%=
@@ -10,7 +10,7 @@
           '',
           f,
           :initiatives_subsystem_tags,
-          partial: 'scorecards/form_tabs/subsystem_tag_fields'
+          partial: 'transition_cards/form_tabs/subsystem_tag_fields'
         )
       %>
     </div>

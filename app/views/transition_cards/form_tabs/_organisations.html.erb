@@ -2,7 +2,7 @@
   <label class="col-sm-3 col-form-label">Assign Organisations</label>
   <div class="organisations">
     <%= f.simple_fields_for :initiatives_organisations do |initiatives_organisation_form| %>
-      <%= render 'scorecards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
+      <%= render 'transition_cards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
     <% end %>
     <div class="links row d-flex justify-content-start ml-5">
       <%=
@@ -10,7 +10,7 @@
           '',
           f,
           :initiatives_organisations,
-          partial: 'scorecards/form_tabs/organisation_fields'
+          partial: 'transition_cards/form_tabs/organisation_fields'
         )
       %>
     </div>

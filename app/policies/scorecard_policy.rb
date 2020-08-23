@@ -48,7 +48,12 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   # TODO Will need to check this against account option, per spec
-  def ecosystem_maps?
+  def ecosystem_maps_organisations?
+    true
+  end
+
+  # TODO Will need to check this against account option, per spec
+  def ecosystem_maps_initiatives?
     true
   end
   

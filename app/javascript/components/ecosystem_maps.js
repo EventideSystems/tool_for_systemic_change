@@ -1,184 +1,70 @@
-<div class="box-body">
-  
-  <div class="d-flex flex-row">
-    <div class="p-2" style="margin-left: 10px; margin-top: 10px;">
-      Legend
-      <button id="hide_legend" class="btn btn-ecosystem-map btn-sm">hide</button>
-      <button id="show_legend" class="btn btn-ecosystem-map btn-sm">show</button>
-    </div>
+function getData() {
+  var transitionCardId = $('div#chart').data('scorecard-id');
+  var ecosystemMapsUrl = `/transition_cards/${transitionCardId}/ecosystem_maps`;
+  return $.get(ecosystemMapsUrl);
+};
 
-    <div class="p-2" style="margin-top: 10px;">
-      Labels
-      <button id="hide_labels" class="btn btn-ecosystem-map btn-sm">hide</button>
-      <button id="show_labels" class="btn btn-ecosystem-map btn-sm">show</button>
-    </div>
-
-    <div class="ml-auto p-2" style= "margin-left: 10px; margin-top: 10px;">
-      Zoom 
-      <button id="zoom_in" class="btn btn-ecosystem-map btn-sm">+</button>
-      <button id="zoom_out" class="btn btn-ecosystem-map btn-sm">-</button>
-    </div>
-  </div>
-    
-
-  <div id="chart" width="100%" height='100%' style="overflow:hidden;">
-    <svg width="960" height="900"></svg>
-  </div>
-
-  <div class="legend pt-3">
-    <%- Sector.order(:name).each do |sector| -%>
-      <p>
-        <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
-        <span class="dot-label"><%= sector.name %></span>
-      </p>
-    <%- end %>  
-  </div>
-
-
-  <style>
-  /* svg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: -1;
-  } */
-
-  .dot {
-    height: 9px;
-    width: 9px;
-    margin-top: 0px;
-    margin-left: 4px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .dot-label {
-    position: relative;
-    top: -1px;
-  }
-
-  div.legend {
-    position: fixed;
-    margin-top: 15px;
-    margin-left: 5px;
-    opacity: 0.9;
-    width: auto;
-    /* left: 230px; */
-    bottom: 10px;
-    font: 9px sans-serif;		
-    background: white;	
-    pointer-events: none;
-    padding: 0.5em;
-    padding-right: 1em;
-    border: 1px solid #E5E5E5;
-    box-shadow: 0 0 10px grey;
-    
-  }
-
-  div.legend > p {
-    margin-top: 0px;
-    line-height: 0.1;
-  }
-
-  div.chart-tooltip {	
-    position: absolute;
-    width: 250px;
-    height: auto;
-    padding: 5px;				
-    font: 12px sans-serif;		
-    background: white;	
-    pointer-events: none;
-    padding: 0.5em;
-    border: 1px solid #E5E5E5;
-    box-shadow: 0 0 10px grey;
-  }
-
-  div.chart-tooltip > ul {
-    /* list-style-type: none; */
-    list-style-type: square;
-    margin-left: 10px;
-    padding: 5px;
-  }
-
-  div.chart-tooltip > ul > li {
-    font: 11px sans-serif;	
-    padding: 3px;
-    margin-left: 10px;
-  }
-
-  div.chart-tooltip > h5 {
-    margin-bottom: 5px;
-    font: 14px sans-serif;
-  }
-
-  div.chart-tooltip > h6 {
-    margin-bottom: 0px;
-    font: 12px sans-serif;
-    font-style: bold;
-    border-top: 1px solid #dedede;
-    padding-top: 5px;
-  }
-
-  div.chart-tooltip > p.wordbreak { 
-    word-break: break-all;
-    font: 11px sans-serif;
-  }
-
-  </style>
-
-  <script>
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-
-      // var legendLeft = $('.content').first().position().left - 20;
-
-      // $('#legend').css({left: legendLeft + 'px'})
-
-      if ($('.chart-tooltip').length) {
-        return
+function getNeighbors(node) {
+  return links.reduce(function (neighbors, link) {
+      if (link.target.id === node.id) {
+        neighbors.push(link.source.id)
+      } else if (link.source.id === node.id) {
+        neighbors.push(link.target.id)
       }
+      return neighbors
+    },
+    [node.id]
+  )
+}
 
-      var nodes = <%= @nodes.html_safe %>
-      var links = <%= @links.html_safe %>
+function isNeighborLink(node, link) {
+  return link.target.id === node.id || link.source.id === node.id
+}
 
-      var div = d3.select("body").append("div")	
-        .attr("class", "chart-tooltip")				
-        .style("opacity", 0)
+function getNodeColor(node, neighbors) {
+  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
+    return node.level === 1 ? '#499BC4' : '#49C472'
+  }
 
-      function getNeighbors(node) {
-        return links.reduce(function (neighbors, link) {
-            if (link.target.id === node.id) {
-              neighbors.push(link.source.id)
-            } else if (link.source.id === node.id) {
-              neighbors.push(link.target.id)
-            }
-            return neighbors
-          },
-          [node.id]
-        )
-      }
+  nodeColor = node.color
 
-      function isNeighborLink(node, link) {
-        return link.target.id === node.id || link.source.id === node.id
-      }
+  return nodeColor;
+}
 
-      function getNodeColor(node, neighbors) {
-        if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-          return node.level === 1 ? '#499BC4' : '#49C472'
-        }
+function getLinkColor(node, link) {
+  return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
+}
 
-        nodeColor = node.color
+function getTextColor(node, neighbors) {
+  return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
+}
 
-        return nodeColor;
-      }
+function selectNode(selectedNode) {
+  var neighbors = getNeighbors(selectedNode)
 
-      function getLinkColor(node, link) {
-        return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
-      }
+  // we modify the styles to highlight selected nodes
+  nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+  textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
+  linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
+}
 
-      function getTextColor(node, neighbors) {
-        return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
-      }
+
+$(document).on('turbolinks:load', function() {
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+    if ($('.chart-tooltip').length) {
+      return
+    }
+
+    var div = d3.select("body").append("div")	
+      .attr("class", "chart-tooltip")				
+      .style("opacity", 0)
+
+
+    $.when(getData()).then(function(data) {
+
+      var nodes = data['data']['nodes'];
+      var links = data['data']['links'];
 
       let zoom = d3.zoom().on("zoom", function () {
         svg.attr("transform", d3.event.transform)
@@ -269,14 +155,6 @@
         node.fy = null
       })
 
-      function selectNode(selectedNode) {
-        var neighbors = getNeighbors(selectedNode)
-
-        // we modify the styles to highlight selected nodes
-        nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-        textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-        linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-      }
 
       var linkElements = svg.append("g")
         .attr("class", "links")
@@ -375,9 +253,9 @@
           .attr('x2', function (link) { return link.target.x })
           .attr('y2', function (link) { return link.target.y })
       })
-
+    
 
       simulation.force("link").links(links)
     });
-    </script>
-</div>
+  });
+});

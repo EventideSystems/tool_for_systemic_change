@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe ScorecardsController, type: :controller do
+RSpec.describe TransitionCardsController, type: :controller do
   
   # describe "GET show" do
   #
-  #   @user = FactoryGirl.create(:admin_user)
+  #   @user = FactoryBot.create(:admin_user)
   #   login_user(@user)
   #
   #   let!(:account) { create(:account) }

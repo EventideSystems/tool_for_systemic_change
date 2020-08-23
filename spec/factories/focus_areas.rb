@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:focus_area_position) { |n| n }
   
   factory :focus_area do

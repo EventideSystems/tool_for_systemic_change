@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:characteristic_position) { |n| n }
   
   factory :characteristic do

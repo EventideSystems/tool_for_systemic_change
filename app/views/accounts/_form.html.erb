@@ -5,9 +5,19 @@
   <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
   <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' } %>
   <%- if policy(@account).update_protected_attributes? %>
-    <%= f.input :expires_on, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %> 
+    <%= f.input :expires_on, :as => :string, input_html: { data: { behaviour: "datepicker" }} %> 
     <%= f.input :max_users %>
     <%= f.input :max_scorecards, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
+    <div class="row">
+      <div class="col-sm-3 col-form-label optional">
+        <label>Solution Ecosystem Maps</label>
+      </div>
+      <div class="icheck-primary col-sm-9 mt-1">
+        <label class="">
+          <%= f.input :solution_ecosystem_maps, as: :boolean, label: false %>
+        </label>
+      </div> 
+    </div>
   <%- end %>  
   <%= render_form_button(f) %>
 <% end %>

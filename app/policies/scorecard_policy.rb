@@ -47,14 +47,18 @@ class ScorecardPolicy < ApplicationPolicy
     return account.scorecards.count < account.max_scorecards
   end
 
+  def ecosystem_maps?
+    system_admin? || current_account&.solution_ecosystem_maps?
+  end
+
   # TODO Will need to check this against account option, per spec
   def ecosystem_maps_organisations?
-    true
+    ecosystem_maps?
   end
 
   # TODO Will need to check this against account option, per spec
   def ecosystem_maps_initiatives?
-    true
+    ecosystem_maps?
   end
   
 end

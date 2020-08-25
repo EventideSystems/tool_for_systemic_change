@@ -1,4 +1,4 @@
-<%= simple_form_for(@scorecard, role: 'form', url: transition_card_path(@scorecard), html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@scorecard, role: 'form', method: :post, url: transition_cards_path, html: { class: 'form-horizontal' }) do |f| %>
 <%= f.error_notification %>
 
   <% if @scorecard.errors.any? %>
@@ -46,19 +46,19 @@
   
     <div class="tab-content">
       <div id="step-1" class="tab-pane" role="tabpanel">
-        <%= render 'scorecards/form_tabs/scorecard', form: f %>
+        <%= render 'transition_cards/form_tabs/scorecard', form: f %>
       </div>
       <div id="step-2" class="tab-pane" role="tabpanel">
-        <%= render 'scorecards/form_tabs/wicked_problem', form: f %>
+        <%= render 'transition_cards/form_tabs/wicked_problem', form: f %>
       </div>
       <div id="step-3" class="tab-pane" role="tabpanel">
-        <%= render 'scorecards/form_tabs/community', form: f %>
+        <%= render 'transition_cards/form_tabs/community', form: f %>
       </div>
       <div id="step-4" class="tab-pane" role="tabpanel">
-        <%= render 'scorecards/form_tabs/initiatives', form: f %>
+        <%= render 'transition_cards/form_tabs/initiatives', form: f %>
       </div>
       <div id="step-5" class="tab-pane" role="tabpanel">
-        <%= render 'scorecards/form_tabs/preview', form: f %>
+        <%= render 'transition_cards/form_tabs/preview', form: f %>
       </div>
     </div>
   </div>

@@ -105,12 +105,12 @@ function displayInitiatives() {
     var linkForce = d3
       .forceLink()
       .id(function (link) { return link.id })
-      .strength(function (link) { return link.strength })
+      .strength(function (link) { return 0.001 })
 
     var simulation = d3
       .forceSimulation()
       .force('link', linkForce)
-      .force('charge', d3.forceManyBody().strength(-50))
+      .force('charge', d3.forceManyBody().strength(-30))
       .force('center', d3.forceCenter(width / 3, height / 3))
 
     var dragDrop = d3.drag().on('start', function (node) {

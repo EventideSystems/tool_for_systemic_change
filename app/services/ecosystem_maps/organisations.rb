@@ -71,14 +71,14 @@ module EcosystemMaps
 
     def build_link_data
       query = <<~SQL
-        select org1.id, org2.id 
-        from initiatives
-        inner join scorecards on scorecards.id = initiatives.scorecard_id
-        inner join initiatives_organisations io1 on io1.initiative_id = initiatives.id
-        inner join organisations org1 on org1.id = io1.organisation_id
-        inner join initiatives_organisations io2 on io2.initiative_id = initiatives.id
-        inner join organisations org2 on org2.id = io2.organisation_id
-        where org1.id <> org2.id and initiatives.scorecard_id = #{transition_card.id};
+        SELECT org1.id, org2.id 
+        FROM initiatives
+        INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
+        INNER JOIN initiatives_organisations io1 ON io1.initiative_id = initiatives.id
+        INNER JOIN organisations org1 ON org1.id = io1.organisation_id
+        INNER JOIN initiatives_organisations io2 ON io2.initiative_id = initiatives.id
+        INNER JOIN organisations org2 ON org2.id = io2.organisation_id
+        WHERE org1.id <> org2.id AND initiatives.scorecard_id = #{transition_card.id};
       SQL
   
       results = ActiveRecord::Base.connection.exec_query(query).rows
@@ -88,13 +88,13 @@ module EcosystemMaps
 
     def build_partnering_initiative_names(organisation_id, partnering_organisation_ids)
       query = <<~SQL
-        select distinct(name) from initiatives
-        inner join initiatives_organisations io1 
-          on io1.initiative_id = initiatives.id 
-          and io1.organisation_id = #{organisation_id}
-        inner join initiatives_organisations io2 
-          on io2.initiative_id = initiatives.id 
-          and io2.organisation_id in (#{partnering_organisation_ids.join(',')})
+        SELECT DISTINCT(name) FROM initiatives
+        INNER JOIN initiatives_organisations io1 
+          ON io1.initiative_id = initiatives.id 
+          AND io1.organisation_id = #{organisation_id}
+        INNER JOIN initiatives_organisations io2 
+          ON io2.initiative_id = initiatives.id 
+          AND io2.organisation_id IN (#{partnering_organisation_ids.join(',')})
       SQL
   
       results = ActiveRecord::Base.connection.exec_query(query).rows

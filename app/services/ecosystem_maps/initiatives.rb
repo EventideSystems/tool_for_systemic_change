@@ -26,14 +26,15 @@ module EcosystemMaps
     end
 
     def links
-      initiative_ids = transition_card.initiatives.pluck(:id).to_a.join(',')
-
       query = <<~SQL
         SELECT DISTINCT io1.initiative_id, io2.initiative_id
         FROM initiatives_organisations io1
-        INNER JOIN initiatives_organisations io2 ON io2.organisation_id = io1.organisation_id
-        INNER JOIN initiatives i1 ON i1.id = io1.initiative_id AND i1.deleted_at IS NULL
-        INNER JOIN initiatives i2 ON i2.id = io2.initiative_id AND i2.deleted_at IS NULL
+        INNER JOIN initiatives_organisations io2 
+        ON io2.organisation_id = io1.organisation_id
+        INNER JOIN initiatives i1 
+        ON i1.id = io1.initiative_id AND i1.deleted_at IS NULL
+        INNER JOIN initiatives i2 
+        ON i2.id = io2.initiative_id AND i2.deleted_at IS NULL
         WHERE io1.initiative_id <> io2.initiative_id
         AND i1.scorecard_id = #{transition_card.id}
         AND i2.scorecard_id = #{transition_card.id}
@@ -41,7 +42,7 @@ module EcosystemMaps
 
       results = ActiveRecord::Base.connection.exec_query(query).rows
 
-      (results + results.map{ |r| [r[1], r[0]] }).uniq.map do |result|
+      results.map do |result|
         { 
           id: result.first,
           target: result.first, 
@@ -70,8 +71,5 @@ module EcosystemMaps
     def next_color(color_index)
       COLORS[color_index % COLORS.length]
     end
-
   end
-
-
 end

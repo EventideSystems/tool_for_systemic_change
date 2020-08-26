@@ -27,25 +27,26 @@ module EcosystemMaps
 
     def links
       initiative_ids = transition_card.initiatives.pluck(:id).to_a.join(',')
-      
+
       query = <<~SQL
-        SELECT initiatives_organisations.initiative_id, io.initiative_id
-        FROM initiatives_organisations
-        INNER JOIN initiatives_organisations io 
-        ON initiatives_organisations.initiative_id <> io.initiative_id
-        AND initiatives_organisations.organisation_id = io.organisation_id
-        WHERE initiatives_organisations.initiative_id IN (#{initiative_ids})
-        AND io.initiative_id IN (#{initiative_ids})
+        SELECT DISTINCT io1.initiative_id, io2.initiative_id
+        FROM initiatives_organisations io1
+        INNER JOIN initiatives_organisations io2 ON io2.organisation_id = io1.organisation_id
+        INNER JOIN initiatives i1 ON i1.id = io1.initiative_id AND i1.deleted_at IS NULL
+        INNER JOIN initiatives i2 ON i2.id = io2.initiative_id AND i2.deleted_at IS NULL
+        WHERE io1.initiative_id <> io2.initiative_id
+        AND i1.scorecard_id = #{transition_card.id}
+        AND i2.scorecard_id = #{transition_card.id}
       SQL
 
       results = ActiveRecord::Base.connection.exec_query(query).rows
 
       (results + results.map{ |r| [r[1], r[0]] }).uniq.map do |result|
         { 
-            id: result.first,
-            target: result.first, 
-            source: result.second, 
-            strength: 0.1
+          id: result.first,
+          target: result.first, 
+          source: result.second, 
+          strength: 0.1
         }
       end
     end

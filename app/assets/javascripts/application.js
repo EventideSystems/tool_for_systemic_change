@@ -126,33 +126,7 @@
   // });
   
   
-  // $(document).ready(function(){
-  //   $(document).on('click', '.show-gaps-button', function() {
-  //     $('.cell').toggleClass('inverse');
-  //   });
-  // });
-  
-  // $(document).ready(function() {
-  //   $('a.link-disabled').click(function(event){
-  //     event.preventDefault(); // Prevent link from following its href
-  //   });
-  // });
-  
-  // $(document).ready(function() {
-  //    $('.remote-link').on('click', function(e) {
-  //      var link = $(this).attr('href');
-  //      $('.modal').find(".modal-content").load(link);
-  //      $('.modal').modal('show');
-  //      e.preventDefault();
-  //    });
-  // });
-  
-  // $(document).ready(function() {
-  //   $('body').on('hidden.bs.modal', '.modal', function () {
-  //     $(this).find('iframe').removeAttr('src');
-  //   });
-  // });
-  
+
   // $(document).ready(function() {
   //   $('.initiative-detail-scorecard').change(function() {
   //     var linkElement = $('#initiative-detail-scorecard-link');

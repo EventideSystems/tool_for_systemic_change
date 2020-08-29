@@ -1,3 +1,5 @@
+
+
 function getNeighbors(links, node) {
   return links.reduce(function (neighbors, link) {
       if (link.target.id === node.id) {
@@ -375,51 +377,77 @@ function displayOrganisations() {
         .attr("fill", getNodeColor)
         .call(dragDrop)
         .on('click', selectNode)
-        .on("mouseover", function(d) {  
-          var divHtml = "<h5><strong>" + d.organisation_name + 
-            "</strong> [" + d.organisation_sector_name + "]</h5>"
+        .on("mouseenter", function(d) {
 
-          if (d.organisation_description) {
-            divHtml += "<p><i>" + d.organisation_description + "</i></p>"
-          }
+          var boundingRect = document
+            .querySelector('#organisations-chart')
+            .getBoundingClientRect();
 
-          if (d.organisation_weblink) {
-            divHtml += "<p class='wordbreak'><small>" + d.organisation_weblink + "</small></p>"
-          }
+          var absoluteRect = $('#organisations-chart').offset();
 
-          if (d.initiative_names.length) {
-            divHtml += "<h6><strong>Initiatives</strong></h6>"
-            divHtml += "<ul>"
-            d.initiative_names.forEach(function (item, index) {
-              divHtml += "<li>" + item + "</li>"
-            });
-            divHtml += "</ul>"
-          }
+          var my = absoluteRect.top - boundingRect.top + 50;
+          //var mx = absoluteRect.left - boundingRect.left + d['x'] - 10;
 
-          if (d.partnering_initiative_names.length) {
-            divHtml += "<h6><strong>Partnering Initiatives</strong></h6>"
-            divHtml += "<ul>"
-            d.partnering_initiative_names.forEach(function (item, index) {
-              divHtml += "<li>" + item + "</li>"
-            });
-            divHtml += "</ul>"
-          }
+          var mx = d['x'] + 10 +  boundingRect.left;
 
-          if (d.partnering_organisation_names.length) {
-            divHtml += "<h6><strong>Partnering Organisations</strong></h6>"
-            divHtml += "<ul>"
-            d.partnering_organisation_names.forEach(function (item, index) {
-              divHtml += "<li>" + item + "</li>"
-            });
-            divHtml += "</ul>"
-          }
+          console.log(`absoluteRect.left: ${absoluteRect.left}`);
+          console.log(`boundingRect.left: ${boundingRect.left}`);
+          console.log(`d['x']: ${d['x']}`);
+          console.log(`mx: ${mx}`);
+
+
+          var link = `/organisations/${d['id']}?modal=true`;
+          $('#ecosystem-maps-modal').modal({backdrop: false})
+          $('#ecosystem-maps-modal').find(".modal-content").load(link);
+          $('#ecosystem-maps-modal').css('top', my);
+          $('#ecosystem-maps-modal').css('left', mx);
+          $('#ecosystem-maps-modal').modal('show');
+          
+          // debugger;
+          // var divHtml = "<h5><strong>" + d.organisation_name + 
+          //   "</strong> [" + d.organisation_sector_name + "]</h5>"
+
+          // if (d.organisation_description) {
+          //   divHtml += "<p><i>" + d.organisation_description + "</i></p>"
+          // }
+
+          // if (d.organisation_weblink) {
+          //   divHtml += "<p class='wordbreak'><small>" + d.organisation_weblink + "</small></p>"
+          // }
+
+          // if (d.initiative_names.length) {
+          //   divHtml += "<h6><strong>Initiatives</strong></h6>"
+          //   divHtml += "<ul>"
+          //   d.initiative_names.forEach(function (item, index) {
+          //     divHtml += "<li>" + item + "</li>"
+          //   });
+          //   divHtml += "</ul>"
+          // }
+
+          // if (d.partnering_initiative_names.length) {
+          //   divHtml += "<h6><strong>Partnering Initiatives</strong></h6>"
+          //   divHtml += "<ul>"
+          //   d.partnering_initiative_names.forEach(function (item, index) {
+          //     divHtml += "<li>" + item + "</li>"
+          //   });
+          //   divHtml += "</ul>"
+          // }
+
+          // if (d.partnering_organisation_names.length) {
+          //   divHtml += "<h6><strong>Partnering Organisations</strong></h6>"
+          //   divHtml += "<ul>"
+          //   d.partnering_organisation_names.forEach(function (item, index) {
+          //     divHtml += "<li>" + item + "</li>"
+          //   });
+          //   divHtml += "</ul>"
+          // }
             
-          div.transition()        
-            .duration(200)      
-            .style("opacity", 0.8);      
-          div.html(divHtml)
-            .style("left", ($('#organisations-chart').first().position().left + $('#organisations-chart').first().width() - 250) + "px")
-            .style("top",  ($('#organisations-chart').first().position().top)  + "px");      
+          // div.transition()        
+          //   .duration(200)      
+          //   .style("opacity", 0.8);      
+          // div.html(divHtml)
+          //   .style("left", ($('#organisations-chart').first().position().left + $('#organisations-chart').first().width() - 250) + "px")
+          //   .style("top",  ($('#organisations-chart').first().position().top)  + "px");      
         })                  
         .on("mouseout", function(d) {       
           div.transition()        

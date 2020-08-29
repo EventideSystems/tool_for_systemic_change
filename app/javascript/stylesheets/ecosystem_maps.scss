@@ -19,6 +19,13 @@
   } 
 }
 
+// Modal
+
+#ecosystem-maps-modal {
+  position: absolute;
+  width: auto;
+}
+
 // Chart
 .dot {
   height: 9px;
@@ -102,4 +109,11 @@ div.chart-tooltip > p.wordbreak {
   font: 11px sans-serif;
 }
 
+.non-modal {
+  top:10%;
+  left:50%;
+  bottom:auto;
+  right:auto;
+//  margin-left:-300px;
+}
 

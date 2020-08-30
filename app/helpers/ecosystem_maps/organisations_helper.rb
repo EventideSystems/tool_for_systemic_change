@@ -1,0 +1,2 @@
+module EcosystemMaps::OrganisationsHelper
+end

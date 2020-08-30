@@ -26,8 +26,6 @@ $(document).on('turbolinks:load', function() {
 
   $('#ecosystem-maps-modal').on('shown.bs.modal', function () {
 
-    // $(document).off('focusin.bs.modal');
-
     var ecosystemMapsTimer;
 
     function hideEcosystemMapModal() {

@@ -114,6 +114,24 @@ div.chart-tooltip > p.wordbreak {
   left:50%;
   bottom:auto;
   right:auto;
-//  margin-left:-300px;
+}
+
+#ecosystem-maps-modal {
+
+  h5 {
+    font-size: 16px;
+  }
+
+  h6 {
+    font-size: 14px;
+  }
+
+  p, li {
+    font-size: 12px;
+  }
+
+  .modal-body {
+    overflow-y: auto;
+  }
 }
 

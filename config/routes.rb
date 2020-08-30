@@ -46,6 +46,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :ecosystem_maps do
+    resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
+  end
+
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
   resources :sectors
   resources :users do

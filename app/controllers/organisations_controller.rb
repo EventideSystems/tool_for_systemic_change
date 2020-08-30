@@ -25,13 +25,9 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    if params[:modal] == 'true'
-      render 'show_modal', layout: false
-    else
-      @organisation.readonly!
-      render 'show'
-      add_breadcrumb @organisation.name
-    end
+    @organisation.readonly!
+    render 'show'
+    add_breadcrumb @organisation.name
   end
 
   def new

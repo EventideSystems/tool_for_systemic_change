@@ -1,4 +1,17 @@
 
+function getScorecardId() {
+  return $('div#ecosystem-maps').data('scorecard-id')
+}
+
+function getScreenCoords(x, y, ctm) {
+  var xn = ctm.e + x*ctm.a + y*ctm.c;
+  var yn = ctm.f + x*ctm.b + y*ctm.d;
+  return { x: xn, y: yn };
+}
+
+function showNodeDialog(nodeData, node, dataUrl) {
+  debugger;
+}
 
 function getNeighbors(links, node) {
   return links.reduce(function (neighbors, link) {
@@ -378,6 +391,10 @@ function displayOrganisations() {
         .call(dragDrop)
         .on('click', selectNode)
         .on("mouseenter", function(d) {
+          var dataUrl = `/ecosystem_maps/${getScorecardId()}/organisations/${d['id']}`;
+
+          ctm = this.getScreenCTM();
+          coords = getScreenCoords(d.x, d.y, ctm);
 
           var boundingRect = document
             .querySelector('#organisations-chart')
@@ -388,66 +405,18 @@ function displayOrganisations() {
           var my = absoluteRect.top - boundingRect.top + 50;
           //var mx = absoluteRect.left - boundingRect.left + d['x'] - 10;
 
-          var mx = d['x'] + 10 +  boundingRect.left;
+          var mx = coords.x + 10;
 
-          console.log(`absoluteRect.left: ${absoluteRect.left}`);
-          console.log(`boundingRect.left: ${boundingRect.left}`);
-          console.log(`d['x']: ${d['x']}`);
-          console.log(`mx: ${mx}`);
+          maxContentHeight = $(window).height() - (my + 20);
 
+          showNodeDialog(this, d, dataUrl);
 
-          var link = `/organisations/${d['id']}?modal=true`;
           $('#ecosystem-maps-modal').modal({backdrop: false})
-          $('#ecosystem-maps-modal').find(".modal-content").load(link);
+          $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl);
           $('#ecosystem-maps-modal').css('top', my);
           $('#ecosystem-maps-modal').css('left', mx);
+          $('#ecosystem-maps-modal .modal-content').css('max-height', maxContentHeight);
           $('#ecosystem-maps-modal').modal('show');
-          
-          // debugger;
-          // var divHtml = "<h5><strong>" + d.organisation_name + 
-          //   "</strong> [" + d.organisation_sector_name + "]</h5>"
-
-          // if (d.organisation_description) {
-          //   divHtml += "<p><i>" + d.organisation_description + "</i></p>"
-          // }
-
-          // if (d.organisation_weblink) {
-          //   divHtml += "<p class='wordbreak'><small>" + d.organisation_weblink + "</small></p>"
-          // }
-
-          // if (d.initiative_names.length) {
-          //   divHtml += "<h6><strong>Initiatives</strong></h6>"
-          //   divHtml += "<ul>"
-          //   d.initiative_names.forEach(function (item, index) {
-          //     divHtml += "<li>" + item + "</li>"
-          //   });
-          //   divHtml += "</ul>"
-          // }
-
-          // if (d.partnering_initiative_names.length) {
-          //   divHtml += "<h6><strong>Partnering Initiatives</strong></h6>"
-          //   divHtml += "<ul>"
-          //   d.partnering_initiative_names.forEach(function (item, index) {
-          //     divHtml += "<li>" + item + "</li>"
-          //   });
-          //   divHtml += "</ul>"
-          // }
-
-          // if (d.partnering_organisation_names.length) {
-          //   divHtml += "<h6><strong>Partnering Organisations</strong></h6>"
-          //   divHtml += "<ul>"
-          //   d.partnering_organisation_names.forEach(function (item, index) {
-          //     divHtml += "<li>" + item + "</li>"
-          //   });
-          //   divHtml += "</ul>"
-          // }
-            
-          // div.transition()        
-          //   .duration(200)      
-          //   .style("opacity", 0.8);      
-          // div.html(divHtml)
-          //   .style("left", ($('#organisations-chart').first().position().left + $('#organisations-chart').first().width() - 250) + "px")
-          //   .style("top",  ($('#organisations-chart').first().position().top)  + "px");      
         })                  
         .on("mouseout", function(d) {       
           div.transition()        

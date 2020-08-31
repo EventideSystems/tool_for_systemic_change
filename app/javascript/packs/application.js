@@ -64,10 +64,3 @@ $(document).on('turbolinks:load', function() {
     jQuery('[data-toggle="tooltip"]').tooltip({ boundary: 'window' })
   });
 });
-
-
-// $(document).on('turbolinks:load', function() {
-//   $('.container').tooltip({
-//     selector: "[data-toggle=tooltip]"
-//   });
-// });

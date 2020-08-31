@@ -118,6 +118,11 @@ div.chart-tooltip > p.wordbreak {
 
 #ecosystem-maps-modal {
 
+  // .modal-dialog {
+  //   width: 50%;
+  //   max-width: 50%;
+  // }
+
   h5 {
     font-size: 16px;
   }
@@ -128,6 +133,10 @@ div.chart-tooltip > p.wordbreak {
 
   p, li {
     font-size: 12px;
+  }
+
+  .modal-content {
+    max-height: 70vh;
   }
 
   .modal-body {

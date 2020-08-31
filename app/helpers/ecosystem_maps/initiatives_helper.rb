@@ -1,0 +1,2 @@
+module EcosystemMaps::InitiativesHelper
+end

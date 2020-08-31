@@ -10,7 +10,17 @@ function getScreenCoords(x, y, ctm) {
 }
 
 function showNodeDialog(nodeData, node, dataUrl) {
-  debugger;
+  ctm = nodeData.getScreenCTM();
+  coords = getScreenCoords(node.x, node.y, ctm);
+
+  $('#ecosystem-maps-modal').data('coords-x', coords.x);
+  $('#ecosystem-maps-modal').data('coords-y', coords.y);
+  $('#ecosystem-maps-modal').css('opacity', 0);
+  
+  $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl, function() {
+    $('#ecosystem-maps-modal').modal({backdrop: false});
+    $('#ecosystem-maps-modal').modal('show');
+  });
 }
 
 function getNeighbors(links, node) {
@@ -107,13 +117,16 @@ function displayInitiatives() {
     d3.select("#tab_initiatives #hide_labels").on("click", function() {
       $('#tab_initiatives #hide_labels').hide()
       $('#tab_initiatives #show_labels').show()
-      textElements.attr('opacity', function (node) { return "0.0" })
+      textElements.attr('visibility', function (node) { return "hidden" })
     });
 
+    // NOTE Setting the opacity leaves the labels around, hidden. This 
+    // affects the mouse pointer, leaving it as a text select and unable to be
+    // used as a simple pointer.
     d3.select("#tab_initiatives #show_labels").on("click", function() {
       $('#tab_initiatives #hide_labels').show()
       $('#tab_initiatives #show_labels').hide()
-      textElements.attr('opacity', function (node) { return "1.0" })
+      textElements.attr('visibility', function (node) { return "visible" })
     });
 
     // simulation setup with all forces
@@ -170,50 +183,8 @@ function displayInitiatives() {
         .call(dragDrop)
         .on('click', selectNode)
         .on("mouseover", function(d) {  
-          var divHtml = "<h5><strong>" + d.initiative_name + "</strong></h5>"
-
-          if (d.initiative_description) {
-            divHtml += "<p><i>" + d.initiative_description + "</i></p>"
-          }
-
-          if (d.partnering_organisation_names.length) {
-            divHtml += "<h6><strong>Partnering Organisations</strong></h6>"
-            divHtml += "<ul>"
-            d.partnering_organisation_names.forEach(function (item, index) {
-              divHtml += "<li>" + item + "</li>"
-            });
-            divHtml += "</ul>"
-          }
-
-          if (d.subsystem_tag_names.length) {
-            divHtml += "<h6><strong>Subsystem Tags</strong></h6>"
-            divHtml += "<ul>"
-            d.subsystem_tag_names.forEach(function (item, index) {
-              divHtml += "<li>" + item + "</li>"
-            });
-            divHtml += "</ul>"
-          }
-
-          if (d.initiative_started_at) {
-            divHtml += "<h6><strong>Started At</strong></h6>"
-            divHtml += "<ul>"
-            divHtml += "<li>" + d.initiative_started_at + "</li>"
-            divHtml += "</ul>"
-          }
-
-          if (d.initiative_finished_at) {
-            divHtml += "<h6><strong>Finished At</strong></h6>"
-            divHtml += "<ul>"
-            divHtml += "<li>" + d.initiative_finished_at + "</li>"
-            divHtml += "</ul>"
-          }
-            
-          div.transition()        
-            .duration(200)      
-            .style("opacity", 0.8);      
-          div.html(divHtml)
-            .style("left", ($('#initiatives-chart').first().position().left + $('#initiatives-chart').first().width() - 250) + "px")
-            .style("top",  ($('#initiatives-chart').first().position().top)  + "px");      
+          var dataUrl = `/ecosystem_maps/${getScorecardId()}/initiatives/${d['id']}`;
+          showNodeDialog(this, d, dataUrl);    
         })                  
         .on("mouseout", function(d) {       
           div.transition()        
@@ -392,32 +363,8 @@ function displayOrganisations() {
         .on('click', selectNode)
         .on("mouseenter", function(d) {
           var dataUrl = `/ecosystem_maps/${getScorecardId()}/organisations/${d['id']}`;
-
-          ctm = this.getScreenCTM();
-          coords = getScreenCoords(d.x, d.y, ctm);
-
-          var boundingRect = document
-            .querySelector('#organisations-chart')
-            .getBoundingClientRect();
-
-          var absoluteRect = $('#organisations-chart').offset();
-
-          var my = absoluteRect.top - boundingRect.top + 50;
-          //var mx = absoluteRect.left - boundingRect.left + d['x'] - 10;
-
-          var mx = coords.x + 10;
-
-          maxContentHeight = $(window).height() - (my + 20);
-
           showNodeDialog(this, d, dataUrl);
-
-          $('#ecosystem-maps-modal').modal({backdrop: false})
-          $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl);
-          $('#ecosystem-maps-modal').css('top', my);
-          $('#ecosystem-maps-modal').css('left', mx);
-          $('#ecosystem-maps-modal .modal-content').css('max-height', maxContentHeight);
-          $('#ecosystem-maps-modal').modal('show');
-        })                  
+        })
         .on("mouseout", function(d) {       
           div.transition()        
             .duration(500)      

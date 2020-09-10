@@ -7,16 +7,16 @@ assignees: ''
 
 ---
 
-**Describe the task**
-A clear and concise description of what needs to be performed.
+## Describe the task
+_A clear and concise description of what needs to be performed._
 
-**Success Criteria**
-How will we know if we've completed the task successfully? Use MUST, MUST NOT, SHOULD, MAY qualifiers for each criteria.
+## Success Criteria
+_How will we know if we've completed the task successfully? Use MUST, MUST NOT, SHOULD, MAY qualifiers for each criteria._
 
 - [ ] MUST .._required criteria_..
 - [ ] MUST NOT.._required criteria_..
 - [ ] SHOULD .._ideal criteria, but not required_..
 - [ ] MAY .._optional criteria/stretch target_..
 
-**Additional Notes**
-Any details that may aid in performing this task.
+## Additional Notes
+_Any details that may aid in performing this task._

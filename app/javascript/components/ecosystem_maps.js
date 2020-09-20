@@ -58,6 +58,10 @@ function getTextColor(node, neighbors) {
   return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
 }
 
+function labelsVisible() {
+  return $('[data-target="ecosystem-maps.toggleLabels"]').hasClass('active')
+}
+
 function displayInitiatives() {
 
   if ($('div#ecosystem-maps').data('initiatives-rendered') == true) {
@@ -110,23 +114,6 @@ function displayInitiatives() {
 
     d3.select("#tab_initiatives #zoom_out").on("click", function() {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
-    });
-
-    $('#tab_initiatives #show_labels').hide()
-
-    d3.select("#tab_initiatives #hide_labels").on("click", function() {
-      $('#tab_initiatives #hide_labels').hide()
-      $('#tab_initiatives #show_labels').show()
-      textElements.attr('visibility', function (node) { return "hidden" })
-    });
-
-    // NOTE Setting the opacity leaves the labels around, hidden. This 
-    // affects the mouse pointer, leaving it as a text select and unable to be
-    // used as a simple pointer.
-    d3.select("#tab_initiatives #show_labels").on("click", function() {
-      $('#tab_initiatives #hide_labels').show()
-      $('#tab_initiatives #show_labels').hide()
-      textElements.attr('visibility', function (node) { return "visible" })
     });
 
     // simulation setup with all forces
@@ -192,6 +179,14 @@ function displayInitiatives() {
             .style("opacity", 0);   
         });
 
+    var labelVisibility = function() {
+      if (labelsVisible()) {
+        return "visible" 
+      } else {
+        return "hidden"
+      }
+    }
+
     var textElements = svg.append("g")
       .attr("class", "texts")
       .selectAll("text")
@@ -201,6 +196,7 @@ function displayInitiatives() {
         .attr("font-size", 9)
         .attr("dx", 15)
         .attr("dy", 4)
+        .attr("visibility", labelVisibility)
 
     var r = 7
 
@@ -221,7 +217,6 @@ function displayInitiatives() {
         .attr('y2', function (link) { return link.target.y })
     })
   
-
     simulation.force("link").links(links)
   });
 }
@@ -278,34 +273,6 @@ function displayOrganisations() {
 
     d3.select("#tab_organisations #zoom_out").on("click", function() {
       zoom.scaleBy(svg.transition().duration(750), 0.8);
-    });
-
-    $('#show_legend').hide()
-
-    d3.select("#tab_organisations #hide_legend").on("click", function() {
-      $('#tab_organisations .legend').hide()
-      $('#tab_organisations #hide_legend').hide()
-      $('#tab_organisations #show_legend').show()
-    });
-
-    d3.select("#show_legend").on("click", function() {
-      $('#tab_organisations .legend').show()
-      $('#tab_organisations #hide_legend').show()
-      $('#tab_organisations #show_legend').hide()
-    });
-
-    $('#tab_organisations #show_labels').hide()
-
-    d3.select("#tab_organisations #hide_labels").on("click", function() {
-      $('#tab_organisations #hide_labels').hide()
-      $('#tab_organisations #show_labels').show()
-      textElements.attr('opacity', function (node) { return "0.0" })
-    });
-
-    d3.select("#tab_organisations #show_labels").on("click", function() {
-      $('#tab_organisations #hide_labels').show()
-      $('#tab_organisations #show_labels').hide()
-      textElements.attr('opacity', function (node) { return "1.0" })
     });
 
     // simulation setup with all forces
@@ -371,6 +338,14 @@ function displayOrganisations() {
             .style("opacity", 0);   
         });
 
+    var labelVisibility = function() {
+      if (labelsVisible()) {
+        return "visible" 
+      } else {
+        return "hidden"
+      }
+    }
+
     var textElements = svg.append("g")
       .attr("class", "texts")
       .selectAll("text")
@@ -380,6 +355,7 @@ function displayOrganisations() {
         .attr("font-size", 9)
         .attr("dx", 15)
         .attr("dy", 4)
+        .attr("visibility", labelVisibility)
 
     var r = 7
 
@@ -413,7 +389,6 @@ $(document).on('turbolinks:load', function() {
   $('a[data-target="#tab_initiatives"]').on('shown.bs.tab', function (e) {
     displayInitiatives();
   });
-
 
   $('a[data-target="#ecosystem_maps"]').on('shown.bs.tab', function (e) {
     displayOrganisations();

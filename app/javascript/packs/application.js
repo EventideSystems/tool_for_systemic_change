@@ -26,7 +26,6 @@ var jQuery = require("jquery");
 global.$ = global.jQuery = jQuery;
 window.$ = window.jQuery = jQuery;
 
-
 require("admin-lte");
 require("select2");
 require("smartwizard");
@@ -64,3 +63,5 @@ $(document).on('turbolinks:load', function() {
     jQuery('[data-toggle="tooltip"]').tooltip({ boundary: 'window' })
   });
 });
+
+import "controllers"

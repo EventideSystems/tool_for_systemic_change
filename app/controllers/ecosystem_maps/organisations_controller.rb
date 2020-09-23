@@ -26,6 +26,13 @@ class EcosystemMaps::OrganisationsController < ApplicationController
       .joins(:initiative)
       .map(&:initiative)
       .uniq
+
+    @connections = @partnering_organisations.count
+
+    @weighted_connections = InitiativesOrganisation
+      .where(initiative: initiatives)
+      .where(organisation: @partnering_organisations)
+      .count
   end
 
   private

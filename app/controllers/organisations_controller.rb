@@ -5,6 +5,8 @@ class OrganisationsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update] 
 
   add_breadcrumb "Organisations", :organisations_path
+
+  respond_to :js, :html
   
   def index
     respond_to do |format|
@@ -24,6 +26,7 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation.readonly!
+    render 'show'
     add_breadcrumb @organisation.name
   end
 

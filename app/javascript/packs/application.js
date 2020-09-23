@@ -26,7 +26,6 @@ var jQuery = require("jquery");
 global.$ = global.jQuery = jQuery;
 window.$ = window.jQuery = jQuery;
 
-
 require("admin-lte");
 require("select2");
 require("smartwizard");
@@ -56,6 +55,7 @@ require("../components/spinner");
 require("../components/subsystem_tags");
 require("../components/toasts");
 require("../components/modals");
+require("../components/ecosystem_maps");
 
 
 $(document).on('turbolinks:load', function() {
@@ -64,9 +64,4 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
-
-// $(document).on('turbolinks:load', function() {
-//   $('.container').tooltip({
-//     selector: "[data-toggle=tooltip]"
-//   });
-// });
+import "controllers"

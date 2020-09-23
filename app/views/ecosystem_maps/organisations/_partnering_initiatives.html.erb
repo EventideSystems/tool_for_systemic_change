@@ -1,0 +1,8 @@
+<%- if @partnering_initiatives.present? %> 
+  <h6><strong>Partnering Initiatives</strong></h6>
+  <ul>
+    <%- @partnering_initiatives.each do |partnering_initiative| %>
+    <li><%= partnering_initiative.name %></li>
+  <%- end -%>  
+  </ul>
+<%-end -%>

@@ -46,7 +46,7 @@ class Scorecard < ApplicationRecord
       name = non_clashing_initiative_name(initiative.name, existing_initiative_names)
       existing_initiative_names << name unless existing_initiative_names.include?(name)
       
-      initiative.update_attributes(scorecard_id: id, name: name)
+      initiative.update(scorecard_id: id, name: name)
     end
   
     other_scorecard.delete

@@ -26,11 +26,11 @@ RSpec.describe Initiative, type: :model do
         before do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
           Timecop.freeze(Date.today + 10)
-          checklist_items[1].update_attributes!(checked: true)
+          checklist_items[1].update!(checked: true)
           Timecop.return
           
           Timecop.freeze(Date.today + 20)
-          checklist_items[1].update_attributes!(checked: false)
+          checklist_items[1].update!(checked: false)
           Timecop.return
         end  
           
@@ -128,7 +128,7 @@ RSpec.describe Initiative, type: :model do
       context 'history' do
         
         before do 
-          initiative.update_attributes(name: 'Updated Name')
+          initiative.update(name: 'Updated Name')
         
           initiative.checklist_items.first.checked = true
           initiative.checklist_items.first.comment = 'Comment'

@@ -1,0 +1,8 @@
+<%- if @subsystem_tags.present? %>
+  <h6><strong>Subsystem Tags</strong></h6>
+  <ul>
+    <% @subsystem_tags.each do |subsystem_tag| %>
+    <li><%= subsystem_tag.name %></li>
+    <%- end %>
+  </ul>
+<%- end %>

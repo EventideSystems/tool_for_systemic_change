@@ -1,0 +1,34 @@
+
+  <ul id="transition-card-nav" class="nav nav-tabs">
+    <li class="nav-item">
+      <a href="#tab_1" class="nav-link <%= 'active' if @active_tab == :scorecard %>" data-target="#transition_card" data-toggle="tab"><%= Scorecard.model_name.human %></a>
+    </li>
+    <% if policy(@scorecard).ecosystem_maps? %>
+      <li class="nav-item">
+        <a href="#tab_2" class="nav-link <%= 'active' if @active_tab == :ecosystem_maps %>" data-target="#ecosystem_maps" data-toggle="tab">Ecosystem Maps</a>
+      </li>
+    <% end %>
+    <li class="nav-item">
+      <a href="#tab_3" class="nav-link <%= 'active' if @active_tab == :initiatives %>" data-target="#initiatives" data-toggle="tab">Initiatives</a>
+    </li>
+    <li class="nav-item">
+      <a href="#tab_4" class="nav-link <%= 'active' if @active_tab == :details %>" data-target="#details" data-toggle="tab">Details</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane <%= 'active' if @active_tab == :scorecard %>" id="transition_card">
+       <%= render 'transition_cards/show_tabs/transition_card'%>  
+    </div>
+    <% if policy(@scorecard).ecosystem_maps? %>
+      <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="ecosystem_maps">
+        <%= render 'transition_cards/show_tabs/ecosystem_maps'%>
+      </div>
+    <% end %>
+    <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="initiatives">
+      <%= render 'transition_cards/show_tabs/initiatives'%>
+    </div>
+    <div class="tab-pane <%= 'active' if @active_tab == :details %>" id="details">
+      <%= render 'transition_cards/show_tabs/details'%>
+    </div>
+  </div>
+</div>

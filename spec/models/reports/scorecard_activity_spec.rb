@@ -16,12 +16,12 @@ RSpec.describe Reports::ScorecardActivity do
     Timecop.freeze(date_from - 1.day)
   
     # Check items in the first initiative
-    initiative_1.checklist_items.find_by(characteristic: characteristic_1_1).update_attributes!(checked: true)
-    initiative_1.checklist_items.find_by(characteristic: characteristic_1_2).update_attributes!(checked: true)
+    initiative_1.checklist_items.find_by(characteristic: characteristic_1_1).update!(checked: true)
+    initiative_1.checklist_items.find_by(characteristic: characteristic_1_2).update!(checked: true)
   
     # Check items in the second initiative
-    initiative_2.checklist_items.find_by(characteristic: characteristic_1_1).update_attributes!(checked: true)
-    initiative_2.checklist_items.find_by(characteristic: characteristic_2_1).update_attributes!(checked: true)
+    initiative_2.checklist_items.find_by(characteristic: characteristic_1_1).update!(checked: true)
+    initiative_2.checklist_items.find_by(characteristic: characteristic_2_1).update!(checked: true)
 
     initiative_3 # force generation of checklist items in base (nil) checked state
   
@@ -30,18 +30,18 @@ RSpec.describe Reports::ScorecardActivity do
     # Data within date range
     Timecop.freeze(date_to - 1.day)
     # Check items in the first initiative
-    initiative_1.checklist_items.find_by(characteristic: characteristic_2_1).update_attributes!(checked: true)
-    initiative_1.checklist_items.find_by(characteristic: characteristic_2_2).update_attributes!(checked: true)
+    initiative_1.checklist_items.find_by(characteristic: characteristic_2_1).update!(checked: true)
+    initiative_1.checklist_items.find_by(characteristic: characteristic_2_2).update!(checked: true)
   
     # Uncheck items in the second initiative
-    initiative_2.checklist_items.find_by(characteristic: characteristic_1_1).update_attributes!(checked: false)
-    initiative_2.checklist_items.find_by(characteristic: characteristic_2_1).update_attributes!(checked: false)
+    initiative_2.checklist_items.find_by(characteristic: characteristic_1_1).update!(checked: false)
+    initiative_2.checklist_items.find_by(characteristic: characteristic_2_1).update!(checked: false)
   
     # Check items in the second initiative
-    initiative_2.checklist_items.find_by(characteristic: characteristic_2_2).update_attributes!(checked: true)
+    initiative_2.checklist_items.find_by(characteristic: characteristic_2_2).update!(checked: true)
   
     # Check items in the third initiative
-    initiative_3.checklist_items.find_by(characteristic: characteristic_1_1).update_attributes!(checked: true)
+    initiative_3.checklist_items.find_by(characteristic: characteristic_1_1).update!(checked: true)
   
     Timecop.return
   end

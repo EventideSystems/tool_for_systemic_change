@@ -73,7 +73,7 @@ RSpec.describe ScorecardCopier do
     
     context 'history' do
       before do 
-        scorecard.update_attributes(name: 'Updated Name')
+        scorecard.update(name: 'Updated Name')
       end
 
       context 'paper trail' do

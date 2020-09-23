@@ -46,5 +46,19 @@ class ScorecardPolicy < ApplicationPolicy
     return true if account.max_scorecards == 0 # NOTE magic number, meaning no limit
     return account.scorecards.count < account.max_scorecards
   end
+
+  def ecosystem_maps?
+    system_admin? || current_account&.solution_ecosystem_maps?
+  end
+
+  # TODO Will need to check this against account option, per spec
+  def ecosystem_maps_organisations?
+    ecosystem_maps?
+  end
+
+  # TODO Will need to check this against account option, per spec
+  def ecosystem_maps_initiatives?
+    ecosystem_maps?
+  end
   
 end

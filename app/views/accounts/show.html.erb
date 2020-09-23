@@ -6,6 +6,23 @@
   <%= f.input :expires_on, as: :string, readonly: true %>
   <%= f.input :max_users, readonly: true %>
   <%= f.input :max_scorecards, readonly: true, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
+  <div class="row">
+    <div class="col-sm-3 col-form-label optional">
+      <label>Solution Ecosystem Maps</label>
+    </div>
+    <div class="icheck-primary col-sm-9 mt-1">
+      <label class="">
+        <%= 
+          f.input(
+            :solution_ecosystem_maps, 
+            as: :boolean, 
+            label: false, 
+            input_html: { onclick: "return false;" }
+          )
+        %>
+      </label>
+    </div> 
+  </div>
   <%= edit_button('Edit Account', edit_account_path(@account)) if policy(@account).edit? %> 
 <% end %>
 

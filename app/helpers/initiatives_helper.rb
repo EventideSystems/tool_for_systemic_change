@@ -12,7 +12,7 @@ module InitiativesHelper
             '', 
             class: "fa fa-external-link"
           ), 
-          scorecard_path(initiative.scorecard), 
+          transition_card_path(initiative.scorecard), 
           id: 'initiative-detail-scorecard-link'
         )
       ])

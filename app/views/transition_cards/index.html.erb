@@ -1,7 +1,7 @@
 <% content_for :page_actions do %>
   <%=
     if policy(Scorecard).create? 
-      create_new_button(new_scorecard_path)
+      create_new_button(new_transition_card_path)
     end 
   %>
 
@@ -16,7 +16,8 @@
 
 <div class="box box-solid">
   <div class='box-body no-padding'>
-  <%= table_for @scorecards, :table_html => { :class => "table table-striped table-base" },
+  <%= table_for @scorecards, 
+                        :table_html => { :class => "table table-striped table-base" },
                         :sortable => true,
                         :data_row_html => {
                           id: lambda { |scorecard| "scorecard-#{scorecard.id}" },
@@ -24,7 +25,8 @@
                         } do |table| %>
     <% 
       table.column :name, 
-        link: true, 
+        link: true,
+        link_url: lambda { |record| transition_card_path(record) },
         formatter: lambda { |text| truncate_text(text, 30) },
         link_html: { data: { behaviour: 'show-spinner'} }  
     %>

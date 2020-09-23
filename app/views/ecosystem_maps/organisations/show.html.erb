@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <strong>
+      <%= @organisation.name %>
+    </strong>
+    [ <%= @organisation.sector_name %> ]
+  </h5>
+</div>
+<div class="modal-body">
+  <%= render 'description' %>
+  <%= render 'partnering_initiatives' %>
+  <%= render 'partnering_organisations' %>
+  <%= render 'metrics' %>
+</div>
+

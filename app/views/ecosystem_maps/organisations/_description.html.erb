@@ -1,0 +1,13 @@
+<%- if @organisation.description.present? || @organisation.weblink.present? -%>
+  <%- if @organisation.description.present? -%>
+    <p><i><%= @organisation.description %></i></p>
+  <%- end -%>
+  <%- if @organisation.weblink.present? -%>
+    <p class='wordbreak'>
+      <small>
+        <%= link_to nil, @organisation.weblink, target: :blank %>
+      </small>
+    </p>
+  <%- end -%>
+  <hr>
+<%- end %>

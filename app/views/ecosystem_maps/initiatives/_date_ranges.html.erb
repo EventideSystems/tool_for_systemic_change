@@ -1,0 +1,13 @@
+<%- if @initiative.started_at.present? -%>
+<h6><strong>Started At</strong></h6>
+  <ul>
+    <li><%= @initiative.started_at %></li>
+  </ul>
+<%- end %>
+
+<%- if @initiative.finished_at.present? -%>
+<h6><strong>Finished At</strong></h6>
+  <ul>
+    <li><%= @initiative.finished_at %></li>
+  </ul>
+<%- end %>

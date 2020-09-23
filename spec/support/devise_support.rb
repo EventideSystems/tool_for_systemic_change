@@ -6,7 +6,7 @@
 #   # Define a method which signs in as a valid user.
 #   def sign_in_as_a_valid_user
 #     # ASk factory girl to generate a valid user for us.
-#     @user ||= FactoryGirl.create :user
+#     @user ||= FactoryBot.create :user
 #
 #     # We action the login request using the parameters before we begin.
 #     # The login requests will match these to the user we just created in the factory, and authenticate us.
@@ -24,14 +24,14 @@ module ControllerMacros
   def login_admin
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:admin]
-      sign_in FactoryGirl.create(:admin) # Using factory girl as an example
+      sign_in FactoryBot.create(:admin) # Using factory girl as an example
     end
   end
 
   def login_user(user=nil)
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      user = user || FactoryGirl.create(:user)
+      user = user || FactoryBot.create(:user)
       # user.confirm! # or set a confirmed_at inside the factory. Only necessary if you are using the "confirmable" module
       sign_in user
     end

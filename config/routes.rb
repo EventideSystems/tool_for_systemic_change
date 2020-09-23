@@ -34,14 +34,21 @@ Rails.application.routes.draw do
   resources :networks
   resources :organisations
 
-  resources :scorecards, path: 'transition_cards' do
+  resources :transition_cards do
     member do
       get 'show_shared_link'
       post 'copy'
       get 'copy_options'
       post 'merge'
       get 'merge_options'
+      get 'ecosystem_maps_organisations'
+      get 'ecosystem_maps_initiatives'
     end
+  end
+
+  resources :ecosystem_maps do
+    resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
+    resources :initiatives, only: [:show], controller: 'ecosystem_maps/initiatives'
   end
 
   resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]

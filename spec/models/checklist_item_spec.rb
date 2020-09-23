@@ -13,11 +13,11 @@ RSpec.describe ChecklistItem, type: :model do
     context 'with changes' do
       before do
         Timecop.freeze(Date.today + 10.days)
-        subject.update_attributes(checked: true)
+        subject.update(checked: true)
         Timecop.return
                 
         Timecop.freeze(Date.today + 20.days)
-        subject.update_attributes(checked: false)
+        subject.update(checked: false)
         Timecop.return
       end
       

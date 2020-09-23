@@ -161,11 +161,11 @@ GEM
       addressable (~> 2.5)
     erubi (1.9.0)
     execjs (2.7.0)
-    factory_girl (4.9.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
-      railties (>= 3.0.0)
+    factory_bot (6.1.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.1.0)
+      factory_bot (~> 6.1.0)
+      railties (>= 5.0.0)
     ffaker (2.15.0)
     ffi (1.13.1)
     globalid (0.4.2)
@@ -447,7 +447,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   devise_invitable
-  factory_girl_rails
+  factory_bot_rails
   ffaker
   hashie (~> 3.4, < 3.5)
   jbuilder (~> 2.10)

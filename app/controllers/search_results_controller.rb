@@ -18,7 +18,7 @@ class SearchResultsController < ApplicationController
     policy_scope(Scorecard)
       .where('name ILIKE ? OR description ILIKE ?', query, query)
       .each_with_object(@search_results) do |value, memo| 
-        memo << SearchResult.new(value.model_name.human, value.name, value.description, scorecard_path(value))
+        memo << SearchResult.new(value.model_name.human, value.name, value.description, transition_card_path(value))
       end
       
     policy_scope(Initiative)

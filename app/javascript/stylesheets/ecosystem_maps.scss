@@ -1,0 +1,154 @@
+// Buttons
+
+#ecosystem-maps {
+  .nav-link {
+    background-color: white;
+    border-color: #d2d6de;
+    color: #444;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 4px;
+  }
+
+  .nav-link.active {
+    background-color: #00b9f2;
+    border-color: #0dc6ff;
+    color: white;
+  } 
+
+  .nav-tabs {
+    border-bottom: none;
+  }
+}
+
+// Modal
+
+#ecosystem-maps-modal {
+  position: absolute;
+  width: auto;
+
+  // .modal-header {
+  //   cursor: move;
+  // }
+}
+
+// Chart
+.dot {
+  height: 9px;
+  width: 9px;
+  margin-top: 0px;
+  margin-left: 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-label {
+  position: relative;
+  top: -1px;
+}
+
+div.legend {
+  position: fixed;
+  margin-top: 15px;
+  margin-left: 5px;
+  opacity: 0.9;
+  width: auto;
+  /* left: 230px; */
+  bottom: 10px;
+  font: 9px sans-serif;		
+  background: white;	
+  pointer-events: none;
+  padding: 0.5em;
+  padding-right: 1em;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0 0 10px grey;
+  
+}
+
+div.legend > p {
+  margin-top: 0px;
+  line-height: 0.1;
+}
+
+div.chart-tooltip {	
+  position: absolute;
+  width: 250px;
+  height: auto;
+  padding: 5px;				
+  font: 12px sans-serif;		
+  background: white;	
+  pointer-events: none;
+  padding: 0.5em;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0 0 10px grey;
+}
+
+div.chart-tooltip > ul {
+  /* list-style-type: none; */
+  list-style-type: square;
+  margin-left: 10px;
+  padding: 5px;
+}
+
+div.chart-tooltip > ul > li {
+  font: 11px sans-serif;	
+  padding: 3px;
+  margin-left: 10px;
+}
+
+div.chart-tooltip > h5 {
+  margin-bottom: 5px;
+  font: 14px sans-serif;
+}
+
+div.chart-tooltip > h6 {
+  margin-bottom: 0px;
+  font: 12px sans-serif;
+  font-style: bold;
+  border-top: 1px solid #dedede;
+  padding-top: 5px;
+}
+
+div.chart-tooltip > p.wordbreak { 
+  word-break: break-all;
+  font: 11px sans-serif;
+}
+
+.non-modal {
+  top:10%;
+  left:50%;
+  bottom:auto;
+  right:auto;
+}
+
+#ecosystem-maps-modal {
+
+  // .modal-dialog {
+  //   width: 50%;
+  //   max-width: 50%;
+  // }
+
+  h5 {
+    font-size: 16px;
+  }
+
+  h6 {
+    font-size: 14px;
+  }
+
+  p, li {
+    font-size: 12px;
+  }
+
+  .modal-content {
+    max-height: 70vh;
+  }
+
+  .modal-body {
+    overflow-y: auto;
+  }
+}
+

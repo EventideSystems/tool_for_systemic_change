@@ -47,7 +47,7 @@ module EcosystemMaps
           id: result.first,
           target: result.first, 
           source: result.second, 
-          strength: 0.1
+          strength: 1
         }
       end
     end

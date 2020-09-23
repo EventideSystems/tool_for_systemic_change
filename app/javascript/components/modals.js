@@ -26,6 +26,7 @@ $(document).on('turbolinks:load', function() {
 
   var ecosystemMapsTimer;
 
+
   function hideEcosystemMapModal() {
     $('#ecosystem-maps-modal').modal('hide')
   };
@@ -71,7 +72,26 @@ $(document).on('turbolinks:load', function() {
 
     $('#ecosystem-maps-modal > .modal-dialog').on("mouseleave", function() {
       clearTimeout(ecosystemMapsTimer);
+      ecosystemMapsTimer = null;
       hideEcosystemMapModal();
     });
+
+    // $("#ecosystem-maps-modal .modal-header").on("mousedown", function(mousedownEvt) {
+    //   var $draggable = $(this);
+    //   var x = mousedownEvt.pageX - $draggable.offset().left,
+    //       y = mousedownEvt.pageY - $draggable.offset().top;
+    //   $("body").on("mousemove.draggable", function(mousemoveEvt) {
+    //       $draggable.closest(".modal-content").offset({
+    //         "left": mousemoveEvt.pageX - x,
+    //         "top": mousemoveEvt.pageY - y
+    //       });
+    //   });
+    //   $("body").one("mouseup", function() {
+    //       $("body").off("mousemove.draggable");
+    //   });
+    //   $draggable.closest(".modal").one("bs.modal.hide", function() {
+    //       $("body").off("mousemove.draggable");
+    //   });
+    // });
   });
 });

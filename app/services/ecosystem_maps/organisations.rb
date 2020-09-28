@@ -29,17 +29,10 @@ module EcosystemMaps
     end
 
     def nodes
-      links = link_data.uniq
+      
       nodes = transition_card.organisations.uniq
 
-      pyimport :networkx
-      graph = networkx.Graph.new
-      graph.add_edges_from(links)
-
-      betweenness = networkx.betweenness_centrality(
-        graph, 
-        link_data.flatten.uniq.count
-      )
+      betweenness = build_betweenness(link_data)
       
       nodes.map do |node|
         { 
@@ -68,6 +61,20 @@ module EcosystemMaps
       results = ActiveRecord::Base.connection.exec_query(query).rows
   
       results.map { |result| [result.min, result.max] }
+    end
+
+    def build_betweenness(link_data)
+      pyimport :networkx
+
+      links = link_data.uniq
+
+      graph = networkx.Graph.new
+      graph.add_edges_from(links)
+
+      networkx.betweenness_centrality(
+        graph, 
+        link_data.flatten.uniq.count
+      )
     end
 
     # def build_partnering_initiative_names(organisation_id, partnering_organisation_ids)

@@ -33,6 +33,8 @@ class EcosystemMaps::OrganisationsController < ApplicationController
       .where(initiative: initiatives)
       .where(organisation: @partnering_organisations)
       .count
+
+    @betweenness = params[:betweenness].to_d.round(6)
   end
 
   private

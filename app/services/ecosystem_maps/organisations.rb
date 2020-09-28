@@ -1,5 +1,11 @@
+require 'pycall/import'
+
 module EcosystemMaps
+
   class Organisations
+
+    include PyCall::Import
+
     attr_reader :transition_card
     
     def initialize(transition_card)
@@ -23,14 +29,24 @@ module EcosystemMaps
     end
 
     def nodes
-      linked_data_ids = link_data.flatten.uniq
+      links = link_data.uniq
       nodes = transition_card.organisations.uniq
-  
+
+      pyimport :networkx
+      graph = networkx.Graph.new
+      graph.add_edges_from(links)
+
+      betweenness = networkx.betweenness_centrality(
+        graph, 
+        link_data.flatten.uniq.count
+      )
+      
       nodes.map do |node|
         { 
           id: node.id,
           label: node.name, 
-          color: node.sector.color || '#000000'
+          color: node.sector.color || '#000000',
+          betweenness: betweenness[node.id] 
         }
       end
     end

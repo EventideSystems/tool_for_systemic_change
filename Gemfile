@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.2' unless ENV['CI']
+ruby '2.6.6' unless ENV['CI']
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -76,6 +76,8 @@ gem 'mailjet'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor', '~> 0.20'
+
+gem 'pycall'
 
 group :test do
   gem 'cucumber-rails', :require => false

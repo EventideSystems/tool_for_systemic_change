@@ -17,7 +17,7 @@ function showNodeDialog(nodeData, node, dataUrl) {
   $('#ecosystem-maps-modal').css('opacity', 0);
   
   $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl, function() {
-    $('#ecosystem-maps-modal').modal({backdrop: false, draggable: true});
+    $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
     $('#ecosystem-maps-modal').modal('show');
   });
 }
@@ -146,7 +146,7 @@ function displayMap(mapDiv, mapData, getNodeUrl, forceStrength) {
         .call(dragDrop)
         .on('click', selectNode)
         .on("mouseover", function(d) {  
-          var dataUrl = getNodeUrl(d['id']);
+          var dataUrl = getNodeUrl(d);
           showNodeDialog(this, d, dataUrl);    
         })                  
         .on("mouseout", function(d) {       
@@ -205,8 +205,8 @@ function displayInitiatives() {
     return $.get(dataUrl);
   };
 
-  function getNodeUrl(id) {
-    return `/ecosystem_maps/${getScorecardId()}/initiatives/${id}`
+  function getNodeUrl(node) {
+    return `/ecosystem_maps/${getScorecardId()}/initiatives/${node['id']}`
   }
 
   displayMap('#initiatives-chart', getData, getNodeUrl, -30)
@@ -220,8 +220,8 @@ function displayOrganisations() {
     return $.get(dataUrl);
   };
 
-  function getNodeUrl(id) {
-    return `/ecosystem_maps/${getScorecardId()}/organisations/${id}`
+  function getNodeUrl(node) {
+    return `/ecosystem_maps/${getScorecardId()}/organisations/${node['id']}?betweenness=${node['betweenness']}`
   }
 
   displayMap('#organisations-chart', getData, getNodeUrl, -30)

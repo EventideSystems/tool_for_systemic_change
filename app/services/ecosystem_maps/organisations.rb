@@ -75,6 +75,8 @@ module EcosystemMaps
         graph, 
         link_data.flatten.uniq.count
       )
+    rescue
+      {}
     end
 
     # def build_partnering_initiative_names(organisation_id, partnering_organisation_ids)

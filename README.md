@@ -71,3 +71,14 @@ docker exec -it wicked_software_db_1 bash
 su - postgres
 psql
 ```
+
+### Building on Heroku
+
+Have been trying a lot of things, nothing working. But something like this may work:
+
+heroku buildpacks:clear -a wickedlab-staging
+heroku buildpacks:add https://github.com/ferrisoxide/heroku-buildpack-python.git -i 1 -a wickedlab-staging
+heroku buildpacks:add heroku/nodejs -i 2 -a wickedlab-staging
+heroku buildpacks:add heroku/ruby -i 3 -a wickedlab-staging
+
+git push -f wickedlab-staging staging:master 

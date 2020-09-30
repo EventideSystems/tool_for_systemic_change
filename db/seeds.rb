@@ -697,3 +697,70 @@ end
     .create_with(attributes)
     .find_or_create_by!(video_tutorial_attributes.slice(:name))
 end
+
+default_account = Account.find_by(name: 'Default account')
+
+[
+  'South West Western Australia',
+  'Urban greening',
+  'Suburbs of Marion, Park Holme and Oaklands Park',
+  'South Australia',
+  'Fleurieu Peninsula (Patpangga)',
+  'Adelaide CBD & Greater Metro Region',
+  'Clare Valley (Kyneetcha)'
+].each do |community_name|
+  Community
+    .create_with(name: community_name, account: default_account)
+    .find_or_create_by!(name: community_name, account: default_account)
+end
+
+[
+  'Food Security',
+  'Greening',
+  'test',
+  'Disaster Resilience',
+  'Consumption and Waste'
+].each do |wicked_problem_name|
+  WickedProblem
+    .create_with(name: wicked_problem_name, account: default_account)
+    .find_or_create_by!(name: wicked_problem_name, account: default_account)
+end
+
+[
+  'Climate and environment (private land)',
+  'Culture and community (private land)',
+  'Funding and investment (private land)',
+  'Knowledge and skills (private land)',
+  'Knowledge and skills (public land)',
+  'Policy and planning (private land)',
+  'Private land only',
+  'Public land only',
+  'Culture and community (public land)',
+  'Climate and environment (public land)',
+  'Policy and planning (public land)',
+  'Culture and community (public land), Private and public land',
+  'Policy and planning (public land), Private and public land',
+  'Private and public land',
+  'Funding and investment (public land)',
+  'Funding and investment (public land), Private and public land',
+  'Subsystem Test',
+  'Food availability',
+  'Food access',
+  'Food utilisation',
+  'Children and Young People',
+  'Small Business',
+  'Neighbourhoods and Communities',
+  'Strategic and Connected Networks',
+  'Diversity and Inclusion',
+  'Health and wellbeing',
+  'Public Informaton Campaign',
+  'Enterprise',
+  'Education',
+  'Research',
+  'Community',
+  'CBD',
+].each do |subsystem_tag_name|
+  SubsystemTag
+    .create_with(name: subsystem_tag_name, account: default_account)
+    .find_or_create_by!(name: subsystem_tag_name, account: default_account)
+end

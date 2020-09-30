@@ -24,7 +24,6 @@ default: &default
 development:
   <<: *default
   url: postgres://localhost
-  user: postgres
   database: wicked_software_development
 
   # The specified database role being used to connect to postgres.

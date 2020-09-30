@@ -4,8 +4,6 @@ class CreateFocusAreas < ActiveRecord::Migration[5.0]
       t.string   :name
       t.string   :description
       t.integer  :focus_area_group_id
-      t.datetime :created_at,          null: false
-      t.datetime :updated_at,          null: false
       t.integer  :position
       t.datetime :deleted_at
       t.timestamps

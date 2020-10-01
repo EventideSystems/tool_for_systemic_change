@@ -61,10 +61,8 @@ function labelsVisible() {
   return $('[data-target="ecosystem-maps.toggleLabels"]').hasClass('active')
 }
 
-function displayMap(mapDiv, mapData, getNodeUrl, forceStrength) {
-  if ($(mapDiv).data('rendered') == true) {
-    return
-  }
+function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStrength) {
+  if ($(mapDiv).data('rendered') == true) { return }
 
   $(mapDiv).data('rendered', true)
 
@@ -86,23 +84,31 @@ function displayMap(mapDiv, mapData, getNodeUrl, forceStrength) {
       .call(zoom)
       .on("dblclick.zoom", null)
       .on("wheel.zoom", null)
-      .on("dblclick", function(d){ 
-        nodeElements.attr('fill', function (node) { return getNodeColor(node) })
-        textElements.attr('fill', function (node) { return getTextColor(node) })
-        linkElements.attr('stroke', function (link) { return '#E5E5E5' })
-      });
 
     // simulation setup with all forces
     var linkForce = d3
       .forceLink()
       .id(function (link) { return link.id })
-      .strength(function (link) { return 0.001 })
+      //.strength(function (link) { return 0.009 })
+      .strength(calcLinkStrength(nodes, links))
+
+    var collide = d3.bboxCollide(function (d,i) {
+        debugger;
+        var topLeft = [d.y-3, d.x-3]
+        var bottomRight = [d.y+4, d.x+100]
+        return [topLeft, bottomRight]
+      })
+      .strength(0.5)
+      .iterations(20)
 
     var simulation = d3
       .forceSimulation()
       .force('link', linkForce)
-      .force('charge', d3.forceManyBody().strength(forceStrength))
-      .force('center', d3.forceCenter(width / 3, height / 3))
+      .force('charge', d3.forceManyBody().strength(calcForceStrength(nodes, links)))
+      .force('center', d3.forceCenter(width / 2.5, height / 3))
+      //.force("collide", collide)
+      //.force('cluster', d3.forceCluster());
+      
 
     var dragDrop = d3.drag().on('start', function (node) {
       node.fx = node.x
@@ -180,12 +186,9 @@ function displayMap(mapDiv, mapData, getNodeUrl, forceStrength) {
       nodeElements
         .attr("cx", function(node) { return node.x = Math.max(r, Math.min(width - r, node.x)); })
         .attr("cy", function(node) { return node.y = Math.max(r, Math.min(height - r, node.y)); });
-
-        // .attr('cx', function (node) { return node.x })
-        // .attr('cy', function (node) { return node.y })
       textElements
-        .attr('x', function (node) { return node.x })
-        .attr('y', function (node) { return node.y })
+        .attr('x', function (node) { return node.x - 5 })
+        .attr('y', function (node) { return node.y - 1 })
       linkElements
         .attr('x1', function (link) { return link.source.x })
         .attr('y1', function (link) { return link.source.y })
@@ -209,7 +212,19 @@ function displayInitiatives() {
     return `/ecosystem_maps/${getScorecardId()}/initiatives/${node['id']}`
   }
 
-  displayMap('#initiatives-chart', getData, getNodeUrl, -30)
+  function calcLinkStrength(nodes, links) {
+    // x = links.length;
+    // y = 0.0002063777*x - 0.00345955;      
+    return 0.005
+  }
+
+  function calcForceStrength(nodes, links) { 
+   // x = links.length / nodes.length
+   // y = (−282.914 * Math.pow(x, 2)) + (1409.871 * x) − 1884.819 
+    return -50
+  }
+
+  displayMap('#initiatives-chart', getData, getNodeUrl, calcLinkStrength, calcForceStrength)
 }
 
 function displayOrganisations() {
@@ -224,7 +239,16 @@ function displayOrganisations() {
     return `/ecosystem_maps/${getScorecardId()}/organisations/${node['id']}?betweenness=${node['betweenness']}`
   }
 
-  displayMap('#organisations-chart', getData, getNodeUrl, -30)
+  function calcLinkStrength(nodes, links) {
+    x = links.length;
+    y = 0.0002063777*x - 0.00345955;      
+    return y
+  }
+
+  function calcForceStrength(nodes, links) { return -40 }
+  
+
+  displayMap('#organisations-chart', getData, getNodeUrl, calcLinkStrength, calcForceStrength)
 }
 
 $(document).on('turbolinks:load', function() {

@@ -29,9 +29,8 @@ module EcosystemMaps
     end
 
     def nodes
-      
       nodes = transition_card.organisations.uniq
-
+  
       betweenness = build_betweenness(link_data)
       
       nodes.map do |node|

@@ -12,14 +12,20 @@ function showNodeDialog(nodeData, node, dataUrl) {
   ctm = nodeData.getScreenCTM();
   coords = getScreenCoords(node.x, node.y, ctm);
 
+  closeNodeDialog()
+
   $('#ecosystem-maps-modal').data('coords-x', coords.x);
   $('#ecosystem-maps-modal').data('coords-y', coords.y);
   $('#ecosystem-maps-modal').css('opacity', 0);
   
   $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl, function() {
-    $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
     $('#ecosystem-maps-modal').modal('show');
   });
+}
+
+function closeNodeDialog() {
+  $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
+  $('#ecosystem-maps-modal').modal('hide');
 }
 
 function getNeighbors(links, node) {
@@ -62,6 +68,8 @@ function labelsVisible() {
 }
 
 function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStrength) {
+  closeNodeDialog()
+
   if ($(mapDiv).data('rendered') == true) { return }
 
   $(mapDiv).data('rendered', true)
@@ -82,6 +90,9 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
       .attr("width", width)
       .attr("height", height)
       .call(zoom)
+      .on("click", function(event) { 
+        closeNodeDialog()
+      }) 
       .on("dblclick.zoom", null)
       .on("wheel.zoom", null)
 
@@ -93,21 +104,20 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
       .strength(calcLinkStrength(nodes, links))
 
     var collide = d3.bboxCollide(function (d,i) {
-        debugger;
         var topLeft = [d.y-3, d.x-3]
         var bottomRight = [d.y+4, d.x+100]
         return [topLeft, bottomRight]
       })
-      .strength(0.5)
-      .iterations(20)
+      .strength(0.01)
+      .iterations(50)
 
     var simulation = d3
       .forceSimulation()
       .force('link', linkForce)
       .force('charge', d3.forceManyBody().strength(calcForceStrength(nodes, links)))
       .force('center', d3.forceCenter(width / 2.5, height / 3))
+      //.force('cluster', d3.forceCluster())
       //.force("collide", collide)
-      //.force('cluster', d3.forceCluster());
       
 
     var dragDrop = d3.drag().on('start', function (node) {
@@ -150,15 +160,25 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
         .attr("r", 6)
         .attr("fill", getNodeColor)
         .call(dragDrop)
-        .on('click', selectNode)
-        .on("mouseover", function(d) {  
+        .on('click', function(d) { 
           var dataUrl = getNodeUrl(d);
-          showNodeDialog(this, d, dataUrl);    
+          showNodeDialog(this, d, dataUrl);
+        })            
+        .on('dblclick', function(d) {
+          d3.event.stopPropagation();
+          selectNode(d)
+        })
+        .on("mouseover", function(d) {
+          var text = $(`.texts text:contains("${d.label}")`)[0]
+          var textElement = d3.select(text)
+          textElement.attr('visibility', 'visible')
         })                  
-        .on("mouseout", function(d) {       
-          div.transition()        
-            .duration(500)      
-            .style("opacity", 0);   
+        .on("mouseout", function(d) {   
+          if (!labelsVisible()) {  
+            var text = $(`.texts text:contains("${d.label}")`)[0]
+            var textElement = d3.select(text)
+            textElement.attr('visibility', 'hidden')
+          }
         });
 
     var labelVisibility = function() {
@@ -247,7 +267,6 @@ function displayOrganisations() {
 
   function calcForceStrength(nodes, links) { return -40 }
   
-
   displayMap('#organisations-chart', getData, getNodeUrl, calcLinkStrength, calcForceStrength)
 }
 
@@ -262,5 +281,9 @@ $(document).on('turbolinks:load', function() {
 
   $('a[data-target="#ecosystem_maps"]').on('shown.bs.tab', function (e) {
     displayOrganisations();
+  });
+
+  $('a[data-target="#ecosystem_maps"]').on('hide.bs.tab', function (e) {
+    closeNodeDialog()
   });
 });

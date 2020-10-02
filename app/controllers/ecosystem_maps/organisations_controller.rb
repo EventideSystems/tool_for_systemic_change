@@ -27,6 +27,12 @@ class EcosystemMaps::OrganisationsController < ApplicationController
       .map(&:initiative)
       .uniq
 
+    if @partnering_initiatives.present?
+      @initiatives = []
+    else
+      @initiatives = initiatives
+    end
+
     @connections = @partnering_organisations.count
 
     @weighted_connections = InitiativesOrganisation

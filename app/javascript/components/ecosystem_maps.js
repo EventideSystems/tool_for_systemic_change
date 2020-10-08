@@ -92,6 +92,11 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
       .call(zoom)
       .on("click", function(event) { 
         closeNodeDialog()
+      })
+      .on("dblclick", function(event) { 
+        nodeElements.attr('fill', function (node) { return getNodeColor(node) })
+        textElements.attr('fill', function (node) { return getTextColor(node) })
+        linkElements.attr('stroke', function (link) { return '#E5E5E5' })
       }) 
       .on("dblclick.zoom", null)
       .on("wheel.zoom", null)

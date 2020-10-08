@@ -12,9 +12,19 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('turbolinks:load', function() {
   $(document).on('click', '.characteristic-comment', function(event) {
-    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-    $(commentFormId).toggle();
     event.preventDefault();
+    console.log('click.characteristic-comment')
+    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+    $(commentFormId).show();
+  });
+
+  $('a[data-target="#checklist-items-tab"]').on('shown.bs.tab', function (e) {
+    $(document).on('click', '.characteristic-comment', function(event) {
+      event.preventDefault();
+      console.log('click.characteristic-comment')
+      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).show();
+    });
   });
 });
 
@@ -24,7 +34,7 @@ $(document).on('turbolinks:load', function() {
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
     var comment = $(commentFormId).find('#checklist_item_comment').val();
     
-    $(commentFormId).toggle();
+    $(commentFormId).hide();
     if ($.trim(comment).length == 0) {
       $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
     } else {  
@@ -35,8 +45,8 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('turbolinks:load', function() {
   $(document).on('click', '.btn-checklist-comment-cancel', function(event) {
-    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-    $(commentFormId).toggle();
     event.preventDefault();
+    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+    $(commentFormId).hide();
   });
 });

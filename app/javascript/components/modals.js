@@ -24,17 +24,6 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('turbolinks:load', function() {
 
-  var ecosystemMapsTimer;
-
-
-  function hideEcosystemMapModal() {
-    $('#ecosystem-maps-modal').modal('hide')
-  };
-
-  $('#ecosystem-maps-modal').on('show.bs.modal', function () {
-    clearTimeout(ecosystemMapsTimer);
-  });
-
   $('#ecosystem-maps-modal').on('shown.bs.modal', function () {
 
     var ecosystemMapsModal = $('#ecosystem-maps-modal');
@@ -42,11 +31,11 @@ $(document).on('turbolinks:load', function() {
     var coords_x = ecosystemMapsModal.data('coords-x');
     var coords_y = ecosystemMapsModal.data('coords-y');
 
-    var modalLeft = coords_x + 25;
+    var modalLeft = coords_x + 30;
     var modalWidth = ecosystemMapsModal.width();
 
     if (modalLeft + modalWidth > $(window).width()) {
-      modalLeft = coords_x - modalWidth - 25;
+      modalLeft = coords_x - modalWidth - 30;
     }
 
     var modalTop = coords_y + $(window).scrollTop() - 90;
@@ -62,36 +51,5 @@ $(document).on('turbolinks:load', function() {
     $('#ecosystem-maps-modal').css('top', modalTop);
     $('#ecosystem-maps-modal').css('left', modalLeft);
     $('#ecosystem-maps-modal').css('opacity', 0.85);
-    
-    ecosystemMapsTimer = setTimeout(hideEcosystemMapModal, 4000);
-
-    $('#ecosystem-maps-modal > .modal-dialog').on("mouseenter", function() {
-      clearTimeout(ecosystemMapsTimer);
-      ecosystemMapsTimer = null;
-    });
-
-    $('#ecosystem-maps-modal > .modal-dialog').on("mouseleave", function() {
-      clearTimeout(ecosystemMapsTimer);
-      ecosystemMapsTimer = null;
-      hideEcosystemMapModal();
-    });
-
-    // $("#ecosystem-maps-modal .modal-header").on("mousedown", function(mousedownEvt) {
-    //   var $draggable = $(this);
-    //   var x = mousedownEvt.pageX - $draggable.offset().left,
-    //       y = mousedownEvt.pageY - $draggable.offset().top;
-    //   $("body").on("mousemove.draggable", function(mousemoveEvt) {
-    //       $draggable.closest(".modal-content").offset({
-    //         "left": mousemoveEvt.pageX - x,
-    //         "top": mousemoveEvt.pageY - y
-    //       });
-    //   });
-    //   $("body").one("mouseup", function() {
-    //       $("body").off("mousemove.draggable");
-    //   });
-    //   $draggable.closest(".modal").one("bs.modal.hide", function() {
-    //       $("body").off("mousemove.draggable");
-    //   });
-    // });
   });
 });

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_27_085028) do
+ActiveRecord::Schema.define(version: 2020_08_24_090254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2020_06_27_085028) do
     t.date "expires_on"
     t.integer "max_users", default: 1
     t.integer "max_scorecards", default: 1
+    t.boolean "solution_ecosystem_maps"
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|
@@ -50,13 +51,16 @@ ActiveRecord::Schema.define(version: 2020_06_27_085028) do
     t.text "parameters"
     t.string "recipient_type"
     t.integer "recipient_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "account_id"
     t.index ["account_id"], name: "index_activities_on_account_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
+    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
+    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
   end
 
   create_table "characteristics", id: :serial, force: :cascade do |t|
@@ -126,10 +130,10 @@ ActiveRecord::Schema.define(version: 2020_06_27_085028) do
     t.string "name"
     t.string "description"
     t.integer "focus_area_group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "position"
     t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
@@ -266,6 +270,7 @@ ActiveRecord::Schema.define(version: 2020_06_27_085028) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invitations_count"], name: "index_users_on_invitations_count"
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
     t.index ["name"], name: "index_users_on_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["system_role"], name: "index_users_on_system_role"

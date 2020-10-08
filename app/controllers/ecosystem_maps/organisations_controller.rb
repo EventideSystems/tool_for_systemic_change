@@ -27,12 +27,20 @@ class EcosystemMaps::OrganisationsController < ApplicationController
       .map(&:initiative)
       .uniq
 
+    if @partnering_initiatives.present?
+      @initiatives = []
+    else
+      @initiatives = initiatives
+    end
+
     @connections = @partnering_organisations.count
 
     @weighted_connections = InitiativesOrganisation
       .where(initiative: initiatives)
       .where(organisation: @partnering_organisations)
       .count
+
+    @betweenness = params[:betweenness].to_d.round(10)
   end
 
   private

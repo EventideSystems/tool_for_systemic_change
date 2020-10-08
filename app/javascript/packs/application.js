@@ -30,11 +30,15 @@ require("admin-lte");
 require("select2");
 require("smartwizard");
 require('d3');
+require('d3-bboxCollide');
 require('moment');
 
 import 'select2';
 
-import * as d3 from 'd3';
+import * as d3Base from 'd3'
+import { bboxCollide } from 'd3-bboxCollide';
+import { forceCluster } from 'd3-force-cluster'
+const d3 = Object.assign(d3Base, { bboxCollide, forceCluster })
 window.d3 = d3;
 
 import moment from 'moment'

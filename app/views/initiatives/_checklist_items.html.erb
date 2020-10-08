@@ -64,10 +64,10 @@
                             %>
                           <%- end %>
                         </label>
-                        <div class="box box-solid" style="display: none" id="characteristic-comment-form-<%=checklist_item.id%>">
+                        <div class="box box-solid mb-3" id="characteristic-comment-form-<%=checklist_item.id%>" style="display: none">
                           <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>
                             <%= f.input  :comment, label: false %>
-                            <%= f.button :submit, "Save Comments", class: 'btn-checklist-comment-save', data: { id: checklist_item.id } %>
+                            <%= f.button :submit, "Save Comments", class: 'btn btn-secondary btn-checklist-comment-save', data: { id: checklist_item.id } %>
                             <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                           <% end %>
                         </div>

@@ -1,5 +1,11 @@
+require 'pycall/import'
+
 module EcosystemMaps
+
   class Organisations
+
+    include PyCall::Import
+
     attr_reader :transition_card
     
     def initialize(transition_card)
@@ -23,14 +29,16 @@ module EcosystemMaps
     end
 
     def nodes
-      linked_data_ids = link_data.flatten.uniq
       nodes = transition_card.organisations.uniq
   
+      betweenness = build_betweenness(link_data)
+      
       nodes.map do |node|
         { 
           id: node.id,
           label: node.name, 
-          color: node.sector.color || '#000000'
+          color: node.sector.color || '#000000',
+          betweenness: betweenness[node.id] 
         }
       end
     end
@@ -54,6 +62,22 @@ module EcosystemMaps
       results.map { |result| [result.min, result.max] }
     end
 
+    def build_betweenness(link_data)
+      pyimport :networkx
+
+      links = link_data.uniq
+
+      graph = networkx.Graph.new
+      graph.add_edges_from(links)
+
+      networkx.betweenness_centrality(
+        graph, 
+        link_data.flatten.uniq.count
+      )
+    rescue
+      {}
+    end
+
     # def build_partnering_initiative_names(organisation_id, partnering_organisation_ids)
     #   query = <<~SQL
     #     SELECT DISTINCT(name) FROM initiatives
@@ -73,7 +97,6 @@ module EcosystemMaps
     def link_data
       @link_data ||= build_link_data
     end
-
     
     STRENGTH_BUCKET_SIZE = 4
     STRENGTH_BUCKET_WIDTH = 100.0 / STRENGTH_BUCKET_SIZE

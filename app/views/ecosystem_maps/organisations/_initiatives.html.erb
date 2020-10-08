@@ -1,0 +1,8 @@
+<%- if @initiatives.present? %> 
+  <h6><strong>Initiatives</strong></h6>
+  <ul>
+    <%- @initiatives.each do |initiative| %>
+      <li><%= initiative.name %></li>
+    <%- end -%>  
+  </ul>
+<%-end -%>

@@ -97,7 +97,6 @@ module EcosystemMaps
     def link_data
       @link_data ||= build_link_data
     end
-
     
     STRENGTH_BUCKET_SIZE = 4
     STRENGTH_BUCKET_WIDTH = 100.0 / STRENGTH_BUCKET_SIZE

@@ -65,6 +65,7 @@ gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
 
 gem 'shrine'
+gem 'marcel', '~> 0.3'
 gem 'rollbar'
 gem 'scout_apm'
 

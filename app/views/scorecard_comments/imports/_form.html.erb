@@ -2,7 +2,7 @@
   simple_form_for(
     @scorecard_comments_import, 
     url: transition_card_comments_imports_path(@scorecard_comments_import), 
-    html: { class: 'record-form' }
+    html: { class: 'record-form', multipart: true }
   ) do |f| 
   %>
   <%= f.error_notification %>

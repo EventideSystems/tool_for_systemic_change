@@ -30,7 +30,7 @@ class ScorecardComments::Import < Import
 
       # Find Initiatives
       if initiatives.empty? && row[0].downcase == 'name of initiative'
-        initiative_names = row[1..-1]
+        initiative_names = row[1..-1].select(&:present?)
         initiative_names.each_with_index do |initiative_name, index|
           initiative = find_initiative_by_name(scorecard, initiative_name)
           if initiative.nil?

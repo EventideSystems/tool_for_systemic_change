@@ -9,3 +9,5 @@ Shrine.storages = {
 Shrine.plugin :activerecord
 Shrine.plugin :remove_invalid
 Shrine.plugin :cached_attachment_data
+Shrine.plugin :infer_extension
+#Shrine.plugin :determine_mime_type

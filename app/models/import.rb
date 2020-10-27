@@ -20,6 +20,10 @@ class Import < ApplicationRecord
   def header_row
     rows.first
   end
+
+  def original_filename
+    import&.original_filename || JSON.parse(import_data).dig('metadata', 'filename')
+  end
   
   protected
   
@@ -70,12 +74,16 @@ class Import < ApplicationRecord
   private
   
   def load_rows
-    case import.mime_type
-    when 'text/csv' 
+    if File.extname(import.metadata['filename']) == '.csv'
       import_csv_rows
-    when 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-      import_xlsx_rows
-    end  
+    else
+      case import.mime_type
+      when 'text/csv' 
+        import_csv_rows
+      when 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+        import_xlsx_rows
+      end
+    end 
   end
 
   def import_csv_rows

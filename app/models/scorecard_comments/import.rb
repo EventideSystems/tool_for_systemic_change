@@ -1,6 +1,5 @@
 class ScorecardComments::Import < Import
   def process(account)
-
     scorecard = nil
     initiatives = {}
 

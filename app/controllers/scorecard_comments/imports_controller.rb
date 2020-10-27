@@ -8,7 +8,7 @@ class ScorecardComments::ImportsController < ApplicationController
   def create
     @scorecard_comments_import = current_account.scorecard_comments_imports.build(
       scorecard_comments_import_params.merge(user: current_user)
-    ) 
+    )
     authorize @scorecard_comments_import
     
     respond_to do |format|

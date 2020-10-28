@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.3'
+gem 'rails', '~> 6.0.3.4'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -64,7 +64,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
 
-gem 'shrine'
+gem 'shrine', '>= 3.3.0'
 gem 'rollbar'
 gem 'scout_apm'
 

@@ -1,22 +1,22 @@
-class FocusAreasController < ApplicationController
-  before_action :set_focus_area, only: [:show, :edit, :update, :destroy]
+# frozen_string_literal: true
 
-  add_breadcrumb "System", :focus_areas_path
-  
+class FocusAreasController < ApplicationController
+  before_action :set_focus_area, only: %i[show edit update destroy]
+
+  add_breadcrumb 'System', :focus_areas_path
+
   def index
     @focus_areas = policy_scope(FocusArea).order(sort_order).page params[:page]
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @focus_area = FocusArea.new
     authorize @focus_area
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @focus_area = FocusArea.new(focus_area_params)
@@ -52,19 +52,21 @@ class FocusAreasController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @focus_area.name if @focus_area.present?
+
     super
   end
-  
-  private
-    def set_focus_area
-      @focus_area = FocusArea.find(params[:id])
-      authorize @focus_area
-    end
 
-    def focus_area_params
-      params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id, :video_tutorial_id)
-    end
+  private
+
+  def set_focus_area
+    @focus_area = FocusArea.find(params[:id])
+    authorize @focus_area
+  end
+
+  def focus_area_params
+    params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id, :video_tutorial_id)
+  end
 end

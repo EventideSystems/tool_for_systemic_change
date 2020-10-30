@@ -102,6 +102,7 @@ group :development, :test do
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'bullet'
+  gem 'rubycritic'
 end
 
 group :development do

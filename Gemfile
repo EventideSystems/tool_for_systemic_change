@@ -76,7 +76,7 @@ gem 'daemons'
 gem 'mailjet'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
-gem 'thor', '~> 0.20'
+gem 'thor', '~> 1.0'
 
 gem 'pycall'
 

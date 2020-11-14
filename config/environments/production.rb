@@ -61,6 +61,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "wicked_software_production"
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :mailjet
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -111,5 +112,5 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   
   # Required by Devise
-  config.action_mailer.default_url_options = { :host => 'app.wickedlab.com.au' }
+  config.action_mailer.default_url_options = { host: 'app.wickedlab.com.au' }
 end

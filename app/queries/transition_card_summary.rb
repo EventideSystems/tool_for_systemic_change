@@ -1,145 +1,73 @@
 class TransitionCardSummary
 
   class << self
-  private
 
+    def execute(transition_card, snapshot_at, subsystem_tags)
+      query = select_sql(transition_card.id, snapshot_at, subsystem_tags)
+      results = ActiveRecord::Base.connection.execute(query)
 
-
-end
-
-
-# SELECT * 
-# FROM crosstab($$
-# select
-# initiatives.name as initiative,
-# characteristics.id as characteristic,
-# (case checklist_items.checked
-# when true then true
-# else false
-# end)::BOOL as checked
-# from checklist_items
-# inner join characteristics on characteristics.id = checklist_items.characteristic_id
-# inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-# inner join initiatives on initiatives.id = checklist_items.initiative_id
-# inner join scorecards on scorecards.id = initiatives.scorecard_id
-# where scorecards.id = 5
-# ORDER BY initiatives.name, focus_areas.position, characteristics.position
-# $$,
-# $$
-# select characteristics.id from characteristics 
-# inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-# order by focus_areas.position, characteristics.position
-# $$
-# )
-# AS final_result(
-#   initiative TEXT,
-# "1" BOOL,
-# "2" BOOL,
-# "3" BOOL,
-# "4" BOOL,
-# "5" BOOL,
-# "6" BOOL,
-# "7" BOOL,
-# "8" BOOL,
-# "9" BOOL,
-# "10" BOOL,
-# "11" BOOL,
-# "12" BOOL,
-# "13" BOOL,
-# "14" BOOL,
-# "15" BOOL,
-# "16" BOOL,
-# "17" BOOL,
-# "18" BOOL,
-# "19" BOOL,
-# "20" BOOL,
-# "21" BOOL,
-# "22" BOOL,
-# "23" BOOL,
-# "24" BOOL,
-# "25" BOOL,
-# "26" BOOL,
-# "27" BOOL,
-# "28" BOOL,
-# "29" BOOL,
-# "30" BOOL,
-# "31" BOOL,
-# "32" BOOL,
-# "33" BOOL,
-# "34" BOOL,
-# "35" BOOL,
-# "36" BOOL
-# );
-
-
-
-EXPLAIN  ANALYSE
-SELECT * 
-FROM crosstab($$
-select
-initiatives.name as initiative,
-characteristics.id as characteristic,
-jsonb_build_object(
-  'name', characteristics.name,
-  'checked', (
-    case checklist_items.checked
-    when true then true
-    else false
+      results
     end
-  )
-)  
 
-from checklist_items
-inner join characteristics on characteristics.id = checklist_items.characteristic_id
-inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-inner join initiatives on initiatives.id = checklist_items.initiative_id
-inner join scorecards on scorecards.id = initiatives.scorecard_id
-where scorecards.id = 5
-ORDER BY initiatives.name, focus_areas.position, characteristics.position
-$$,
-$$
-select characteristics.id from characteristics 
-inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-order by focus_areas.position, characteristics.position
-$$
-)
-AS final_result(
-  initiative TEXT,
-"1" JSONB,
-"2" JSONB,
-"3" JSONB,
-"4" JSONB,
-"5" JSONB,
-"6" JSONB,
-"7" JSONB,
-"8" JSONB,
-"9" JSONB,
-"10" JSONB,
-"11" JSONB,
-"12" JSONB,
-"13" JSONB,
-"14" JSONB,
-"15" JSONB,
-"16" JSONB,
-"17" JSONB,
-"18" JSONB,
-"19" JSONB,
-"20" JSONB,
-"21" JSONB,
-"22" JSONB,
-"23" JSONB,
-"24" JSONB,
-"25" JSONB,
-"26" JSONB,
-"27" JSONB,
-"28" JSONB,
-"29" JSONB,
-"30" JSONB,
-"31" JSONB,
-"32" JSONB,
-"33" JSONB,
-"34" JSONB,
-"35" JSONB,
-"36" JSONB
-);
+    private
 
+    def final_result_sql
+      ['initiative TEXT'].concat(
+        Characteristic
+          .joins(:focus_area)
+          .order('focus_areas.position', 'characteristics.position')
+          .map do |characteristic|
+            "\"#{characteristic.id}\" JSONB"
+          end
+        ).join(',')
+    end
+
+    def subsystem_sql(subsystem_tags)
+      return '' if subsystem_tags.empty?
+
+      subsystem_tags_ids = subsystem_tags.map(&:id)
+
+      <<~SQL
+        AND initiatives.id IN (
+          SELECT initiative_id 
+          FROM initiatives_subsystem_tags 
+          WHERE subsystem_tag_id IN (#{subsystem_tags_ids.join(',')})
+        )
+      SQL
+    end
+
+    def select_sql(transition_card_id, snapshot_at, subsystem_tags)
+      snapshot_at_arg = snapshot_at.present? ? "'#{snapshot_at}'" : 'NULL'
+      
+
+      <<~SQL
+        SELECT * 
+        FROM crosstab(
+        $$
+          SELECT
+          initiatives.name AS initiative,
+          characteristics.id AS characteristic,
+          jsonb_build_object(
+            'name', characteristics.name,
+            'checked', checklist_item_at_time(checklist_items.id, #{snapshot_at_arg})
+          )
+          FROM checklist_items
+          INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
+          INNER JOIN focus_areas ON focus_areas.id = characteristics.focus_area_id
+          INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
+          INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
+          WHERE scorecards.id = #{transition_card_id}
+          #{subsystem_sql(subsystem_tags)}
+          ORDER BY initiatives.name, focus_areas.position, characteristics.position
+        $$,
+        $$
+          SELECT characteristics.id FROM characteristics 
+          INNER JOIN focus_areas ON focus_areas.id = characteristics.focus_area_id
+          ORDER BY focus_areas.position, characteristics.position
+        $$
+        )
+        AS final_result(#{final_result_sql})
+      SQL
+    end
+  end
+end

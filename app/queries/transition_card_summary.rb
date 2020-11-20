@@ -6,7 +6,9 @@ class TransitionCardSummary
       query = select_sql(transition_card.id, snapshot_at, subsystem_tags)
       results = ActiveRecord::Base.connection.execute(query)
 
-      results
+      results.map do |result|
+        result.deep_transform_values{ |v| JSON.parse(v) }
+      end
     end
 
     private
@@ -45,7 +47,10 @@ class TransitionCardSummary
         FROM crosstab(
         $$
           SELECT
-          initiatives.name AS initiative,
+          jsonb_build_object(
+            'id', initiatives.id,
+            'name', initiatives.name
+          ) AS initiative,
           characteristics.id AS characteristic,
           jsonb_build_object(
             'name', characteristics.name,

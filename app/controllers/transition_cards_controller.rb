@@ -24,31 +24,37 @@ class TransitionCardsController < ApplicationController
     
     @focus_areas = FocusArea.ordered_by_group_position
     
-    @initiatives = if @parsed_selected_date.present? 
-      @scorecard.initiatives
-        .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
-        .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
-        .order(name: :asc)
-    else  
-      @scorecard.initiatives.order(name: :asc)
-    end
+    @characteristics = Characteristic.joins(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
     
-    @initiatives = if @selected_tags.present?
-      tag_ids = @selected_tags.map(&:id)
-      @initiatives
-        .distinct
-        .joins(:initiatives_subsystem_tags)
-        .where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
-        .select('initiatives.*, lower(initiatives.name)')
-    else 
-      @initiatives
-    end
-      
+    @results = TransitionCardSummary.execute(@scorecard, @parsed_selected_date, @selected_tags)
+
     add_breadcrumb @scorecard.name
     
     respond_to do |format|
       format.html 
       format.pdf do
+
+        # TODO Convert PDF to use transition card summary data
+        @initiatives = if @parsed_selected_date.present? 
+          @scorecard.initiatives
+            .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
+            .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
+            .order(name: :asc)
+        else  
+          @scorecard.initiatives.order(name: :asc)
+        end
+        
+        @initiatives = if @selected_tags.present?
+          tag_ids = @selected_tags.map(&:id)
+          @initiatives
+            .distinct
+            .joins(:initiatives_subsystem_tags)
+            .where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
+            .select('initiatives.*, lower(initiatives.name)')
+        else 
+          @initiatives
+        end
+
         pdf = ScorecardPdfGenerator.new(
           scorecard: @scorecard, 
           initiatives: @initiatives, 

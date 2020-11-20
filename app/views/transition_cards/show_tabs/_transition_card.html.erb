@@ -81,26 +81,31 @@
             </tr>
           </thead>
           <tbody>
-            <% @initiatives.each do |initiative| %>
+            <% @results.each do |result| %>
             <tr>
               <th>
-                <!--span data-toggle="tooltip" data-placement="top" title="<%= initiative.name %>"-->
+                <!--span data-toggle="tooltip" data-placement="top" title="<%= result.dig('initiative', 'name') %>"-->
                   <%= 
                     link_to(
-                      initiative.name, 
-                      initiative_path(initiative), 
+                      result.dig('initiative', 'name'), 
+                      initiative_path(id: result.dig('initiative', 'id')), 
                       class: 'truncate',
                       data: {
                         toggle: 'tooltip',
                         placement: 'top',
-                        title: initiative.name
+                        title: result.dig('initiative', 'name')
                       }
                     )
                   %>
                 </span>
               </th>
-              <% initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: @parsed_selected_date).each do |checklist_item| %>
-                <td data-toggle="tooltip" data-placement="left" data-container=".inner" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
+              <% @characteristics.each do |characteristic| %>
+                <td 
+                  data-toggle="tooltip" 
+                  data-placement="left" 
+                  data-container=".inner" 
+                  title="<%= result.dig(characteristic.id.to_s, 'name') %>" 
+                  class="cell <%= "gap" unless result.dig(characteristic.id.to_s, 'checked') %> <%= "color#{@focus_areas.index(characteristic.focus_area)+1}" %>">
                   <span>&nbsp;</span>
                 </td>
               <% end %>
@@ -112,7 +117,7 @@
               <td>
                 &nbsp;
               </td>
-              <% Characteristic.order(:position).joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+              <% @characteristics.each do |characteristic| %>
                 <td>
                   <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%>"><%= characteristic.name %></span>
                 </td>

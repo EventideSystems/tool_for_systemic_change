@@ -25,6 +25,8 @@ development:
   <<: *default
   url: postgres://localhost
   database: wicked_software_development
+  username: tom
+  password: solidfuel22
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -59,6 +61,8 @@ development:
 test: &test
   <<: *default
   database: wicked_software_test
+  username: tom
+  password: solidfuel22
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

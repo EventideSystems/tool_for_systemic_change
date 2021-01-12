@@ -227,35 +227,39 @@ class TransitionCardsController < ApplicationController
     ).tap do |params| # NOTE Dupe of code in initiatives controller
       unless params[:initiatives_attributes].blank?
         params[:initiatives_attributes].each do |initiative_key, _|
-          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
-            value[:_destroy] != '1' && (
-              value[:organisation_id].blank? || (
-                value[:id].blank? && 
-                params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
-                  selected_key != key &&
-                  selected_value[:_destroy] != '1' && 
-                  selected_value[:organisation_id] == value[:organisation_id]
-                end
+          if params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).present?
+            params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
+              value[:_destroy] != '1' && (
+                value[:organisation_id].blank? || (
+                  value[:id].blank? && 
+                  params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
+                    selected_key != key &&
+                    selected_value[:_destroy] != '1' && 
+                    selected_value[:organisation_id] == value[:organisation_id]
+                  end
+                )
               )
-            )
-          end  
+            end 
+          end
         end
       end
       
       unless params[:initiatives_attributes].blank?
         params[:initiatives_attributes].each do |initiative_key, _|
-          params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
-            value[:_destroy] != '1' && (
-              value[:subsystem_tag_id].blank? || (
-                value[:id].blank? && 
-                params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
-                  selected_key != key &&
-                  selected_value[:_destroy] != '1' && 
-                  selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
-                end
+          if params.dig(:initiatives_attributes, initiative_key, :initiatives_subsystem_tags_attributes).present?
+            params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
+              value[:_destroy] != '1' && (
+                value[:subsystem_tag_id].blank? || (
+                  value[:id].blank? && 
+                  params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
+                    selected_key != key &&
+                    selected_value[:_destroy] != '1' && 
+                    selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
+                  end
+                )
               )
-            )
-          end  
+            end  
+          end
         end
       end
     end

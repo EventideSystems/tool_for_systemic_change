@@ -47,7 +47,6 @@ class TransitionCardSummary
     def select_sql(transition_card_id, snapshot_at, subsystem_tags)
       snapshot_at_arg = snapshot_at.present? ? "'#{snapshot_at}'" : 'NULL'
       
-
       <<~SQL
         SELECT * 
         FROM crosstab(
@@ -65,7 +64,9 @@ class TransitionCardSummary
           FROM checklist_items
           INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
           INNER JOIN focus_areas ON focus_areas.id = characteristics.focus_area_id
-          INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
+          INNER JOIN initiatives 
+            ON initiatives.id = checklist_items.initiative_id 
+            AND initiatives.deleted_at IS NULL
           INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
           WHERE scorecards.id = #{transition_card_id}
           #{subsystem_sql(subsystem_tags)}

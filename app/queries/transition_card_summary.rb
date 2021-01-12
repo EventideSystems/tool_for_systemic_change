@@ -7,7 +7,14 @@ class TransitionCardSummary
       results = ActiveRecord::Base.connection.execute(query)
 
       results.map do |result|
-        result.deep_transform_values{ |v| JSON.parse(v) }
+        begin
+          result.deep_transform_values{ |v| JSON.parse(v) }
+        rescue TypeError => e
+          Rails.logger.error e.message
+          Rails.logger.error v.class.name
+          Rails.logger.error v.to_s
+          raise
+        end
       end
     end
 

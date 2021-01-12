@@ -11,8 +11,7 @@ class TransitionCardSummary
           result.deep_transform_values{ |v| JSON.parse(v) }
         rescue TypeError => e
           Rails.logger.error e.message
-          Rails.logger.error v.class.name
-          Rails.logger.error v.to_s
+          Rails.logger.error result.inspect
           raise
         end
       end

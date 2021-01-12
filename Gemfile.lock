@@ -263,7 +263,7 @@ GEM
       ast (~> 2.4.1)
     path_expander (1.1.0)
     pdf-core (0.7.0)
-    pg (0.21.0)
+    pg (1.2.3)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
@@ -517,7 +517,7 @@ DEPENDENCIES
   nokogiri_truncate_html
   paper_trail
   paranoia (~> 2.2)
-  pg (~> 0.18)
+  pg (~> 1.2)
   prawn
   prawn-table
   pry

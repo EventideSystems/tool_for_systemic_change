@@ -75,7 +75,8 @@ GEM
       msgpack (~> 1.0)
     bootstrap_form (2.1.1)
     brakeman (4.10.0)
-    breadcrumbs_on_rails (3.0.1)
+    breadcrumbs_on_rails (4.0.0)
+      rails (>= 5.0)
     builder (3.2.4)
     bullet (6.1.0)
       activesupport (>= 3.0.0)
@@ -491,7 +492,7 @@ DEPENDENCIES
   bootsnap
   bootstrap_form (<= 2.1.1)
   brakeman
-  breadcrumbs_on_rails (<= 3.0.1)
+  breadcrumbs_on_rails (<= 4.0.1)
   bullet
   bundler-audit
   byebug

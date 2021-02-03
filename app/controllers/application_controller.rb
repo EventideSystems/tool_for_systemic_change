@@ -24,13 +24,16 @@ class ApplicationController < ActionController::Base
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
-    account_id = session[:account_id]
-    
-    account_id.present? ? Account.where(id: account_id).first : nil
+    @current_account ||= (
+      account_id = session[:account_id]
+      account_id.present? ? Account.where(id: account_id).first : nil
+    )
   end
   
   def current_account=(account)
+    @current_account = nil
     session[:account_id] = account.present? ? account.id : nil
+    current_account
   end
   
   def pundit_user

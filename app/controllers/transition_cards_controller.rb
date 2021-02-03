@@ -24,7 +24,7 @@ class TransitionCardsController < ApplicationController
     
     @focus_areas = FocusArea.ordered_by_group_position
     
-    @characteristics = Characteristic.joins(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
+    @characteristics = Characteristic.includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
     
     @results = TransitionCardSummary.execute(@scorecard, @parsed_selected_date, @selected_tags)
 

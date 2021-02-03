@@ -21,7 +21,14 @@
                   <%= focus_area_group.name %>
                   <%- if focus_area_group.video_tutorial.present? %>
                     <%= 
-                      link_to(video_tutorial_path(focus_area_group.video_tutorial), class: 'remote-link') do 
+                      link_to(
+                        video_tutorial_path(focus_area_group.video_tutorial), 
+                        class: 'video-tutorial-wrapper',
+                          data: { 
+                            video_tutorial_link: video_tutorial_path(focus_area_group.video_tutorial), 
+                            video_tutorial_title: focus_area_group.video_tutorial.name 
+                          } 
+                      ) do 
                         safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
                       end
                     %>
@@ -36,7 +43,14 @@
                     <%= focus_area.name %>
                     <%- if focus_area.video_tutorial.present? %>
                       <%= 
-                        link_to(video_tutorial_path(focus_area.video_tutorial), class: 'remote-link') do 
+                        link_to(
+                          video_tutorial_path(focus_area.video_tutorial), 
+                          class: 'video-tutorial-wrapper',
+                          data: { 
+                            video_tutorial_link: video_tutorial_path(focus_area.video_tutorial), 
+                            video_tutorial_title: focus_area.video_tutorial.name 
+                          } 
+                        ) do 
                           safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
                         end
                       %>

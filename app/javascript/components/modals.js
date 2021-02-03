@@ -1,4 +1,13 @@
 $(document).on('turbolinks:load', function() {
+  $('.video-tutorial-wrapper').on('click', function(e) {
+    var link = $(this).data('video-tutorial-link');
+    $('#default-modal').find(".modal-content").load(link);
+    $('#default-modal').modal('show');
+    e.preventDefault();
+  });
+});
+
+$(document).on('turbolinks:load', function() {
   $('.remote-link').on('click', function(e) {
     var link = $(this).attr('href');
     $('#default-modal').find(".modal-content").load(link);
@@ -13,14 +22,7 @@ $(document).on('turbolinks:load', function() {
  });
 });
 
-$(document).on('turbolinks:load', function() {
-  $('.video-tutorial-wrapper').on('click', function(e) {
-    var link = $(this).data('video-tutorial-link');
-    $('.modal').find(".modal-content").load(link);
-    $('.modal').modal('show');
-    e.preventDefault();
-  });
-});
+
 
 $(document).on('turbolinks:load', function() {
 

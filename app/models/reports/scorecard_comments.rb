@@ -174,7 +174,7 @@ module Reports
               INNER JOIN versions ON versions.item_id = checklist_items.id
                 AND versions.item_type = 'ChecklistItem'
                 AND versions.event = 'update'
-                AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
+                AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> ''
                 AND versions.created_at <= '#{date.to_s}'
               WHERE initiatives.scorecard_id = #{scorecard.id}
 
@@ -204,7 +204,7 @@ module Reports
 
             +
 
-            ( SELECT COUNT(DISTINCT substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id'))
+            ( SELECT COUNT(DISTINCT substring(versions.object from 'comment\:\s(.*)\n[.*]'))
               FROM versions
               WHERE versions.item_type = 'ChecklistItem'
               AND versions.item_id IN (
@@ -214,8 +214,8 @@ module Reports
                 AND initiatives.scorecard_id = #{scorecard.id}
               )
               AND versions.event = 'update'
-              AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> ''
-              AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> (
+              AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> ''
+              AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> (
                 SELECT TRIM(comment) FROM checklist_items
                 WHERE checklist_items.id = versions.item_id
               )
@@ -271,8 +271,8 @@ module Reports
 
             SELECT * FROM (
             SELECT
-              DISTINCT ON (TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')))
-              TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')),
+              DISTINCT ON (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')))
+              TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')),
               characteristics.id as characteristic_id,
               initiatives.id AS initiative_id,
               TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp AS comment_date
@@ -281,10 +281,10 @@ module Reports
             INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
             INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
             WHERE initiatives.scorecard_id = #{scorecard.id}
-              AND (TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id'))) <> ''
+              AND (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]'))) <> ''
               AND TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp <= '#{date.to_s}'
             ORDER BY
-              (TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id'))),
+              (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]'))),
               TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp
             ) checklist_items
           ) filtered_checklist_items

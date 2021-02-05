@@ -156,8 +156,6 @@ class InitiativesController < ApplicationController
       authorize @initiative
     end
     
-    
-
     def initiative_params
       params.fetch(:initiative, {}).permit(
         :name,
@@ -179,31 +177,33 @@ class InitiativesController < ApplicationController
           :subsystem_tag_id, :id, :_destroy
         ]
       ).tap do |params|
-        params[:initiatives_organisations_attributes]&.reject! do |key, value|
-          value[:_destroy] != '1' && (
-            value[:organisation_id].blank? || (
-              value[:id].blank? && 
-              params[:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
-                selected_key != key &&
-                selected_value[:_destroy] != '1' && 
-                selected_value[:organisation_id] == value[:organisation_id]
-              end
-            )
-          )
-        end
+        # Remove organisations that are already assigned
+        params[:initiatives_organisations_attributes].reject! do |key, value|
+          value[:id].blank? && 
+          params[:initiatives_organisations_attributes].values.find do |attributes|
+            (value[:organisation_id] == attributes[:organisation_id]) &&
+            attributes[:id].present?
+          end
+        end  
         
-        params[:initiatives_subsystem_tags_attributes]&.reject! do |key, value|
-          value[:_destroy] != '1' && (
-            value[:subsystem_tag_id].blank? || (
-              value[:id].blank? && 
-              params[:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
-                selected_key != key &&
-                selected_value[:_destroy] != '1' && 
-                selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
-              end
-            )
-          )
-        end
+        # Remove duplicates
+        params[:initiatives_organisations_attributes] = ActionController::Parameters.new(
+          params[:initiatives_organisations_attributes].to_h.invert.invert
+        ).permit!
+
+        # Remove subsystem tags that are already assigned
+        params[:initiatives_subsystem_tags_attributes].reject! do |key, value|
+          value[:id].blank? && 
+          params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
+            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) &&
+            attributes[:id].present?
+          end
+        end  
+        
+        # Remove duplicates
+        params[:initiatives_subsystem_tags_attributes] = ActionController::Parameters.new(
+          params[:initiatives_subsystem_tags_attributes].to_h.invert.invert
+        ).permit!
       end
     end
 end

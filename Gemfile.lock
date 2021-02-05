@@ -103,7 +103,7 @@ GEM
       mimemagic (~> 0.3)
       nokogiri (~> 1.10, >= 1.10.4)
       rubyzip (>= 1.3.0, < 3)
-    cocoon (1.2.14)
+    cocoon (1.2.15)
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)

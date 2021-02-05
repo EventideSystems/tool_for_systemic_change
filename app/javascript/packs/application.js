@@ -32,6 +32,7 @@ require("smartwizard");
 require('d3');
 require('d3-bboxCollide');
 require('moment');
+require("@nathanvda/cocoon")
 
 import 'select2';
 
@@ -49,7 +50,6 @@ import 'daterangepicker';
 
 require("bootstrap");
 
-require('../components/cocoon');
 require("../components/datepickers");
 require("../components/transition_card");
 require("../components/transition_card_wizard");

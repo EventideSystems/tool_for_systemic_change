@@ -55,7 +55,7 @@ module Reports
               'Additions',
               'Removals',
               'Initiatives end of period',
-              'Initiative comment updates'
+              'New comments'
             ],
             height: 48, style: wrap_text
           )
@@ -101,39 +101,39 @@ module Reports
       end.to_stream
     end
 
-    def to_csv
-      current_focus_area_group = ''
-      current_focus_area = ''
+    # def to_csv
+    #   current_focus_area_group = ''
+    #   current_focus_area = ''
 
-      CSV.generate do |csv|
-        csv << [Scorecard.model_name.human.to_s, scorecard.name, '', '', '']
-        csv << ['Dates range', date_from.strftime('%d/%m/%y'), date_to.strftime('%d/%m/%y'), '', '']
-        csv << ['', '', '', '', '']
+    #   CSV.generate do |csv|
+    #     csv << [Scorecard.model_name.human.to_s, scorecard.name, '', '', '']
+    #     csv << ['Dates range', date_from.strftime('%d/%m/%y'), date_to.strftime('%d/%m/%y'), '', '']
+    #     csv << ['', '', '', '', '']
 
-        csv << [
-          '',
-          'Initiatives beginning of period',
-          'Additions',
-          'Removals',
-          'Initiatives end of period'
-        ]
+    #     csv << [
+    #       '',
+    #       'Initiatives beginning of period',
+    #       'Additions',
+    #       'Removals',
+    #       'Initiatives end of period'
+    #     ]
 
-        results.each do |result|
-          if result[:focus_area_group] != current_focus_area_group
-            current_focus_area_group = result[:focus_area_group]
-            current_focus_area = ''
-            csv << [result[:focus_area_group], '', '', '', '']
-          end
+    #     results.each do |result|
+    #       if result[:focus_area_group] != current_focus_area_group
+    #         current_focus_area_group = result[:focus_area_group]
+    #         current_focus_area = ''
+    #         csv << [result[:focus_area_group], '', '', '', '']
+    #       end
 
-          if result[:focus_area] != current_focus_area
-            current_focus_area = result[:focus_area]
-            csv << ["\t\t" + result[:focus_area], '', '', '', '']
-          end
+    #       if result[:focus_area] != current_focus_area
+    #         current_focus_area = result[:focus_area]
+    #         csv << ["\t\t" + result[:focus_area], '', '', '', '']
+    #       end
 
-          csv << ["\t\t\t\t" + result[:characteristic], result[:initial], result[:additions], result[:removals], result[:final]]
-        end
-      end
-    end
+    #       csv << ["\t\t\t\t" + result[:characteristic], result[:initial], result[:additions], result[:removals], result[:final]]
+    #     end
+    #   end
+    # end
 
     private
 
@@ -148,50 +148,22 @@ module Reports
     # NOTE: This is comments changed across intitiatives. If we need total number of times
     # a comment has changed, remove the 'distinct' from below
     INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
-      select characteristic_id, count(distinct(checklist_items.*)) as count from checklist_items
-      inner join versions
-        on versions.item_id = checklist_items.id
-        AND versions.item_type = 'ChecklistItem'
+      select 
+        characteristic_id, 
+        count(distinct(checklist_item_first_comments.*)) as count 
+      from checklist_items
+      left join checklist_item_first_comments
+        on checklist_item_first_comments.checklist_item_id = checklist_items.id
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
-        checklist_items.comment IS NOT NULL and checklist_items.comment <> ''
-        AND versions.event = 'update'
-        AND TRIM(substring(versions.object from 'comment\:\s(.*)\ncharacteristic_id')) <> checklist_items.comment
-        AND versions.created_at BETWEEN $1 AND  $2
+        checklist_item_first_comments.first_comment_at BETWEEN $1 AND $2
         AND initiatives.scorecard_id=$3
       group by characteristic_id
     SQL
 
-    # NOTE: Not in use, but some ideas on how to speed up creating the result
-    INITIATIVE_CHECKED_UPDATES_SQL = <<~SQL.freeze
-      select 
-        checklist_items.id, 
-        checklist_items.checked, 
-        TRIM(substring(version_before.object from 'checked\:\strue')) <> '' as before
-      from checklist_items
-      left join (
-        select distinct on (item_id) * from versions
-        where item_type = 'ChecklistItem'
-        and created_at < '2021-01-27'
-        order by item_id, created_at desc
-      ) as version_before
-      on checklist_items.id = version_before.item_id
-
-      left join (
-        select distinct on (item_id) * from versions
-        where item_type = 'ChecklistItem'
-        and created_at between '2021-01-27' and '2021-01-28'
-        order by item_id, created_at desc
-      ) as version_during
-
-      inner join initiatives on initiatives.id = checklist_items.initiative_id
-      where initiatives.scorecard_id = 8;
-    SQL
-
     private_constant \
       :INITIATIVE_TOTALS_SQL, 
-      :INITIATIVE_COMMENT_UPDATES_SQL, 
-      :INITIATIVE_CHECKED_UPDATES_SQL
+      :INITIATIVE_COMMENT_UPDATES_SQL
 
     def build_common_bind_vars
       [
@@ -251,10 +223,6 @@ module Reports
         build_common_bind_vars,
         prepare: true
       )
-    end
-
-    def fetch_all_checklist_item_counts
-    
     end
 
     def checklist_item_counts(characteristic, initiatives, date_from, date_to)

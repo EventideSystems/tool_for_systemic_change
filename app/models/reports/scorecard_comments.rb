@@ -174,7 +174,7 @@ module Reports
               INNER JOIN versions ON versions.item_id = checklist_items.id
                 AND versions.item_type = 'ChecklistItem'
                 AND versions.event = 'update'
-                AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> ''
+                AND TRIM(versions.object->>'comment') <> ''
                 AND versions.created_at <= '#{date.to_s}'
               WHERE initiatives.scorecard_id = #{scorecard.id}
 
@@ -186,7 +186,7 @@ module Reports
               INNER JOIN versions ON versions.item_id = checklist_items.id
                 AND versions.item_type = 'ChecklistItem'
                 AND versions.event = 'update'
-                AND TRIM(substring(versions.object from 'checked\:\strue')) <> ''
+                AND versions.object->>'checked' = 'true'
                 AND versions.created_at <= '#{date.to_s}'
                 AND checklist_items.updated_at > '#{date.to_s}'
               WHERE initiatives.scorecard_id = #{scorecard.id}
@@ -204,7 +204,7 @@ module Reports
 
             +
 
-            ( SELECT COUNT(DISTINCT substring(versions.object from 'comment\:\s(.*)\n[.*]'))
+            ( SELECT COUNT(DISTINCT versions.object->>'comment')
               FROM versions
               WHERE versions.item_type = 'ChecklistItem'
               AND versions.item_id IN (
@@ -214,8 +214,8 @@ module Reports
                 AND initiatives.scorecard_id = #{scorecard.id}
               )
               AND versions.event = 'update'
-              AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> ''
-              AND TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')) <> (
+              AND TRIM(versions.object->>'comment') <> ''
+              AND TRIM(versions.object->>'comment') <> (
                 SELECT TRIM(comment) FROM checklist_items
                 WHERE checklist_items.id = versions.item_id
               )
@@ -271,21 +271,21 @@ module Reports
 
             SELECT * FROM (
             SELECT
-              DISTINCT ON (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')))
-              TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]')),
+              DISTINCT ON (TRIM(versions.object->>'comment'))
+              TRIM(versions.object->>'comment'),
               characteristics.id as characteristic_id,
               initiatives.id AS initiative_id,
-              TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp AS comment_date
+              TRIM(versions.object->>'updated_at')::timestamp AS comment_date
             FROM versions
             INNER JOIN checklist_items ON checklist_items.id = versions.item_id AND versions.item_type = 'ChecklistItem'
             INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
             INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
             WHERE initiatives.scorecard_id = #{scorecard.id}
-              AND (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]'))) <> ''
-              AND TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp <= '#{date.to_s}'
+              AND (TRIM(versions.object->>'comment')) <> ''
+              AND TRIM(versions.object->>'updated_at')::timestamp <= '#{date.to_s}'
             ORDER BY
-              (TRIM(substring(versions.object from 'comment\:\s(.*)\n[.*]'))),
-              TRIM(substring(versions.object from 'updated_at:\s(.*)\sZ'))::timestamp
+              (TRIM(versions.object->>'comment')),
+              TRIM(versions.object->>'updated_at')::timestamp
             ) checklist_items
           ) filtered_checklist_items
           ORDER BY comment_text, comment_date

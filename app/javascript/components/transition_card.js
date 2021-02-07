@@ -41,7 +41,7 @@ $(document).on('turbolinks:load', function() {
   //   $(this).val(picker.startDate.format("YYYY-MM-DD"));
   // });
 
-  $('#daterange-clear-btn').click(function(e) {
+  $('#daterange-clear-btn').on('click', function(e) {
     var scorecardId = $('#transition_card_select_date').data('scorecard-id');
     var tags = $.map($('#subsystem-tags').select2('data'), function(v) { return v.text });
     var params = { selected_tags: tags };

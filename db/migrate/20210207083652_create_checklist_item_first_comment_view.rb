@@ -3,7 +3,7 @@ class CreateChecklistItemFirstCommentView < ActiveRecord::Migration[6.0]
     connection.execute(<<~SQL)
       CREATE OR REPLACE VIEW checklist_item_first_comments AS
         select
-          checklist_items.id,
+          checklist_items.id as checklist_item_id,
           case 
             when previous_versions.created_at is null then checklist_items.comment
             else previous_versions.object->>'comment'

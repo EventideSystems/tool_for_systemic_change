@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', function() {
     var link = $(this).attr('href');
     $('#default-modal').find(".modal-content").load(link);
     $('#default-modal').modal('show');
-   // e.preventDefault();
+    e.preventDefault();
   });
 });
 
@@ -21,8 +21,6 @@ $(document).on('turbolinks:load', function() {
    $(this).find('iframe').removeAttr('src');
  });
 });
-
-
 
 $(document).on('turbolinks:load', function() {
 

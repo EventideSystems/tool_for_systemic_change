@@ -154,73 +154,36 @@ module Reports
           characteristics.name AS characteristic_name,
           characteristics.id AS characteristic_id,
 
-          ( SELECT COUNT(DISTINCT(initiative_checklist_items.initiative_id)) FROM
-            (
-              SELECT initiatives.id AS initiative_id FROM initiatives
-              INNER JOIN checklist_items ON checklist_items.initiative_id = initiatives.id
-                AND checklist_items.characteristic_id = characteristics.id
-                AND (
-                  TRIM(checklist_items.comment) <> ''
-                  OR checklist_items.checked = true
-                )
-                AND checklist_items.updated_at <= '#{date.to_s}'
-              WHERE initiatives.scorecard_id = #{scorecard.id}
-
-              UNION
-
-              SELECT initiatives.id AS initiative_id FROM initiatives
-              INNER JOIN checklist_items ON checklist_items.initiative_id = initiatives.id
-                AND checklist_items.characteristic_id = characteristics.id
-              INNER JOIN versions ON versions.item_id = checklist_items.id
-                AND versions.item_type = 'ChecklistItem'
-                AND versions.event = 'update'
-                AND TRIM(versions.object->>'comment') <> ''
-                AND versions.created_at <= '#{date.to_s}'
-              WHERE initiatives.scorecard_id = #{scorecard.id}
-
-              UNION
-
-              SELECT initiatives.id AS initiative_id FROM initiatives
-              INNER JOIN checklist_items ON checklist_items.initiative_id = initiatives.id
-                AND checklist_items.characteristic_id = characteristics.id
-              INNER JOIN versions ON versions.item_id = checklist_items.id
-                AND versions.item_type = 'ChecklistItem'
-                AND versions.event = 'update'
-                AND versions.object->>'checked' = 'true'
-                AND versions.created_at <= '#{date.to_s}'
-                AND checklist_items.updated_at > '#{date.to_s}'
-              WHERE initiatives.scorecard_id = #{scorecard.id}
-
-            ) as initiative_checklist_items
+          (
+            select count(distinct(checklist_items.initiative_id)) 
+            FROM checklist_items
+            LEFT JOIN checklist_item_first_comments
+              ON checklist_item_first_comments.checklist_item_id = checklist_items.id
+              AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
+            LEFT JOIN checklist_item_first_checkeds
+              ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
+              AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
+            WHERE checklist_items.characteristic_id = characteristics.id
+            AND checklist_items.initiative_id IN (
+              SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
+            )
+            AND (
+              checklist_item_first_comments.first_comment_at IS NOT NULL
+              OR checklist_item_first_checkeds.first_checked_at IS NOT NULL
+            ) 
           ) AS initiatives_count,
 
           (
-            ( SELECT COUNT(id) FROM checklist_items
-              WHERE checklist_items.characteristic_id = characteristics.id
-              AND checklist_items.initiative_id IN (SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id})
-              AND TRIM(checklist_items.comment)  <> ''
-              AND checklist_items.updated_at <= '#{date.to_s}'
+            SELECT count(id) 
+            FROM checklist_items
+            INNER JOIN checklist_item_first_comments
+              ON checklist_item_first_comments.checklist_item_id = checklist_items.id 
+            WHERE checklist_items.characteristic_id = characteristics.id
+            AND checklist_items.initiative_id IN (
+              SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
-
-            +
-
-            ( SELECT COUNT(DISTINCT versions.object->>'comment')
-              FROM versions
-              WHERE versions.item_type = 'ChecklistItem'
-              AND versions.item_id IN (
-                SELECT checklist_items.id FROM checklist_items
-                INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
-                WHERE checklist_items.characteristic_id = characteristics.id
-                AND initiatives.scorecard_id = #{scorecard.id}
-              )
-              AND versions.event = 'update'
-              AND TRIM(versions.object->>'comment') <> ''
-              AND TRIM(versions.object->>'comment') <> (
-                SELECT TRIM(comment) FROM checklist_items
-                WHERE checklist_items.id = versions.item_id
-              )
-              AND versions.created_at <= '#{date.to_s}'
-            )
+            AND checklist_item_first_comments.first_comment IS NOT NULL
+            AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
           ) AS comments_count
 
         FROM characteristics
@@ -234,6 +197,7 @@ module Reports
     end
 
     def generate_comments
+
       sql = <<~SQL
         SELECT
           characteristic_id,
@@ -255,38 +219,19 @@ module Reports
             comment_date
           FROM (
             SELECT
-              checklist_items.comment as comment_text,
-              characteristics.id AS characteristic_id,
+              checklist_item_first_comments.first_comment as comment_text,
+              checklist_items.characteristic_id AS characteristic_id,
               initiatives.id AS initiative_id,
-              checklist_items.updated_at as comment_date
+              checklist_item_first_comments.first_comment_at as comment_date
             FROM checklist_items
-            INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
-            INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
-            AND checklist_items.updated_at <= '#{date.to_s}'
-            AND TRIM(checklist_items.comment) <> ''
-            AND initiatives.scorecard_id = #{scorecard.id}
-            AND checklist_items.characteristic_id = characteristics.id
-
-            UNION
-
-            SELECT * FROM (
-            SELECT
-              DISTINCT ON (TRIM(versions.object->>'comment'))
-              TRIM(versions.object->>'comment'),
-              characteristics.id as characteristic_id,
-              initiatives.id AS initiative_id,
-              TRIM(versions.object->>'updated_at')::timestamp AS comment_date
-            FROM versions
-            INNER JOIN checklist_items ON checklist_items.id = versions.item_id AND versions.item_type = 'ChecklistItem'
-            INNER JOIN initiatives ON initiatives.id = checklist_items.initiative_id
-            INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id
+            INNER JOIN initiatives 
+              ON initiatives.id = checklist_items.initiative_id
+            LEFT JOIN checklist_item_first_comments
+              ON checklist_item_first_comments.checklist_item_id = checklist_items.id 
             WHERE initiatives.scorecard_id = #{scorecard.id}
-              AND (TRIM(versions.object->>'comment')) <> ''
-              AND TRIM(versions.object->>'updated_at')::timestamp <= '#{date.to_s}'
-            ORDER BY
-              (TRIM(versions.object->>'comment')),
-              TRIM(versions.object->>'updated_at')::timestamp
-            ) checklist_items
+              AND checklist_item_first_comments.first_comment IS NOT NULL
+              AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
+            ORDER BY checklist_item_first_comments.first_comment_at
           ) filtered_checklist_items
           ORDER BY comment_text, comment_date
 

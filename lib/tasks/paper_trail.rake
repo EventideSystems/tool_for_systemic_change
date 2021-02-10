@@ -10,10 +10,10 @@ namespace :paper_trail do
 
     PaperTrail::Version.where.not(old_object: nil).find_each do |version|
       begin
-        version.update_columns old_object: nil, object: YAML.load(version.old_object)
+        version.update_columns old_object: nil, object: (YAML.load(version.old_object) || {})
       rescue Exception => e
-        puts "Failed on version ##{version.id}"
-        puts e.message
+        Rails.logger.error "Failed on version ##{version.id}"
+        Rails.logger.error e.message
       end
     end
 

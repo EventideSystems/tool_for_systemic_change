@@ -7,7 +7,7 @@
 <div class="modal-body">
 
   
-  <%= bootstrap_form_tag url: merge_scorecard_url(@scorecard),  method: "post" do |f| %>
+  <%= bootstrap_form_tag url: merge_transition_card_url(@scorecard),  method: "post" do |f| %>
     <div class="modal-body">
       <%= f.text_field :target_scorecard, value: @scorecard.name, readonly: true, label: "Target #{Scorecard.model_name.human}"  %>
       <p>

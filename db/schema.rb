@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_10_051254) do
+ActiveRecord::Schema.define(version: 2021_02_12_072925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 2021_02_10_051254) do
     t.index ["deleted_at"], name: "index_characteristics_on_deleted_at"
     t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id"
     t.index ["position"], name: "index_characteristics_on_position"
+  end
+
+  create_table "checklist_item_comments", force: :cascade do |t|
+    t.bigint "checklist_item_id"
+    t.string "comment"
+    t.datetime "deleted_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["checklist_item_id"], name: "index_checklist_item_comments_on_checklist_item_id"
   end
 
   create_table "checklist_items", id: :serial, force: :cascade do |t|

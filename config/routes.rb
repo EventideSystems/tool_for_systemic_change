@@ -27,7 +27,12 @@ Rails.application.routes.draw do
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
-    resources :checklist_items
+    resources :checklist_items do
+      member do
+        post 'update_comment'
+        post 'create_comment'
+      end
+    end
   end
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags

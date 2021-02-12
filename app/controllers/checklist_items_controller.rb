@@ -1,6 +1,7 @@
 class ChecklistItemsController < ApplicationController
   before_action :set_initiative
-  before_action :set_checklist_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_checklist_item, 
+    only: [:show, :edit, :update, :update_comment, :create_comment, :destroy]
   before_action :require_account_selected
   
   # GET /checklist_items
@@ -54,6 +55,18 @@ class ChecklistItemsController < ApplicationController
         format.json { render json: @checklist_item.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def update_comment
+    @checklist_item.current_checklist_item_comment.update(
+      comment: params.dig(:checklist_item, :current_comment)
+    )
+  end
+
+  def create_comment
+    @checklist_item.checklist_item_comments.create(
+      comment: params.dig(:checklist_item, :new_comment)
+    )
   end
 
   # DELETE /checklist_items/1

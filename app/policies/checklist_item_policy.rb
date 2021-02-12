@@ -13,8 +13,16 @@ class ChecklistItemPolicy < ApplicationPolicy
     system_admin? || account_admin?(current_account)
   end
 
+  def create_comment?
+    update?
+  end
+
   def update?
     system_admin? || account_any_role?(checklist_item_account)
+  end
+
+  def update_comment?
+    update?
   end
   
   def destroy?

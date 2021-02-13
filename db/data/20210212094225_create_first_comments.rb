@@ -11,7 +11,7 @@ class CreateFirstComments < ActiveRecord::Migration[6.0]
 
   def down
     connection.execute(<<~SQL)
-      DELETE FROM checklist_item_comments
+      DELETE checklist_item_comments
     SQL
   end
 end

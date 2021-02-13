@@ -157,9 +157,9 @@ module Reports
           (
             select count(distinct(checklist_items.initiative_id)) 
             FROM checklist_items
-            LEFT JOIN checklist_item_first_comments
-              ON checklist_item_first_comments.checklist_item_id = checklist_items.id
-              AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
+            LEFT JOIN checklist_item_comments
+              ON checklist_item_comments.checklist_item_id = checklist_items.id
+              AND checklist_item_comments.created_at <= '#{date.to_s}'
             LEFT JOIN checklist_item_first_checkeds
               ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
               AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
@@ -168,22 +168,23 @@ module Reports
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND (
-              checklist_item_first_comments.first_comment_at IS NOT NULL
+              checklist_item_comments.created_at IS NOT NULL
               OR checklist_item_first_checkeds.first_checked_at IS NOT NULL
             ) 
           ) AS initiatives_count,
 
           (
-            SELECT count(id) 
+            SELECT count(distinct(checklist_item_comments.id)) 
             FROM checklist_items
-            INNER JOIN checklist_item_first_comments
-              ON checklist_item_first_comments.checklist_item_id = checklist_items.id 
+            INNER JOIN checklist_item_comments
+              ON checklist_item_comments.checklist_item_id = checklist_items.id 
             WHERE checklist_items.characteristic_id = characteristics.id
             AND checklist_items.initiative_id IN (
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
-            AND checklist_item_first_comments.first_comment IS NOT NULL
-            AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
+            AND checklist_item_comments.comment IS NOT NULL
+            AND checklist_item_comments.comment <> ''
+            AND checklist_item_comments.created_at <= '#{date.to_s}'
           ) AS comments_count
 
         FROM characteristics
@@ -212,26 +213,25 @@ module Reports
           ) AS comment
         FROM (
           SELECT
-            DISTINCT ON (comment_text)
             comment_text,
             characteristic_id,
             initiative_id,
             comment_date
           FROM (
             SELECT
-              checklist_item_first_comments.first_comment as comment_text,
+              checklist_item_comments.comment as comment_text,
               checklist_items.characteristic_id AS characteristic_id,
               initiatives.id AS initiative_id,
-              checklist_item_first_comments.first_comment_at as comment_date
+              checklist_item_comments.created_at as comment_date
             FROM checklist_items
             INNER JOIN initiatives 
               ON initiatives.id = checklist_items.initiative_id
-            LEFT JOIN checklist_item_first_comments
-              ON checklist_item_first_comments.checklist_item_id = checklist_items.id 
+            LEFT JOIN checklist_item_comments
+              ON checklist_item_comments.checklist_item_id = checklist_items.id 
             WHERE initiatives.scorecard_id = #{scorecard.id}
-              AND checklist_item_first_comments.first_comment IS NOT NULL
-              AND checklist_item_first_comments.first_comment_at <= '#{date.to_s}'
-            ORDER BY checklist_item_first_comments.first_comment_at
+              AND checklist_item_comments.comment IS NOT NULL
+              AND checklist_item_comments.created_at <= '#{date.to_s}'
+            ORDER BY checklist_item_comments.created_at
           ) filtered_checklist_items
           ORDER BY comment_text, comment_date
 

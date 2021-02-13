@@ -55,7 +55,7 @@ module Reports
               'Additions',
               'Removals',
               'Initiatives end of period',
-              'New comments'
+              'Initiative comment updates'
             ],
             height: 48, style: wrap_text
           )
@@ -150,13 +150,13 @@ module Reports
     INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
       select 
         characteristic_id, 
-        count(distinct(checklist_item_first_comments.*)) as count 
+        count(distinct(checklist_item_comments.*)) as count 
       from checklist_items
-      left join checklist_item_first_comments
-        on checklist_item_first_comments.checklist_item_id = checklist_items.id
+      left join checklist_item_comments
+        on checklist_item_comments.checklist_item_id = checklist_items.id
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
-        checklist_item_first_comments.first_comment_at BETWEEN $1 AND $2
+      checklist_item_comments.created_at BETWEEN $1 AND $2
         AND initiatives.scorecard_id=$3
       group by characteristic_id
     SQL

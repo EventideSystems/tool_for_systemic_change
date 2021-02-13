@@ -15,6 +15,7 @@ $(document).on('turbolinks:load', function() {
     event.preventDefault();
     console.log('click.characteristic-comment')
     var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+    $(commentFormId).find('#checklist_item_new_comment').val('');
     $(commentFormId).show();
   });
 
@@ -23,6 +24,7 @@ $(document).on('turbolinks:load', function() {
       event.preventDefault();
       console.log('click.characteristic-comment')
       var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).find('#checklist_item_new_comment').val('');
       $(commentFormId).show();
     });
   });
@@ -38,7 +40,7 @@ $(document).on('turbolinks:load', function() {
 
     $(commentFormId).hide();
 
-    if (($.trim(currentComment).length == 0) || ($.trim(newComment).length == 0)) {
+    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
       $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
     } else {  
       $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
@@ -52,13 +54,12 @@ $(document).on('turbolinks:load', function() {
     var newComment = $(commentFormId).find('#checklist_item_new_comment').val();
     
     $(commentFormId).find('#checklist_item_current_comment').val(newComment);
-    $(commentFormId).find('#checklist_item_new_comment').val('');
 
     $(commentFormId).find('.characteristic-update-comment-form').show();
 
     $(commentFormId).hide();
 
-    if (($.trim(currentComment).length == 0) || ($.trim(newComment).length == 0)) {
+    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
       $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
     } else {  
       $(characteristicLink).siblings('span.characteristic-name').addClass('commented');

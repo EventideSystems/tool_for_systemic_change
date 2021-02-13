@@ -66,7 +66,7 @@
                             class: 'characteristic-checkbox', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }
                           %>
                           
-                          <span class="characteristic-name<%= " commented" if !checklist_item.comment.blank? %>"><%= checklist_item.characteristic.name %></span>
+                          <span class="characteristic-name<%= " commented" if checklist_item.current_comment.present? %>"><%= checklist_item.characteristic.name %></span>
                           <%= link_to(
                             '#characteristic_comment', 
                             class: 'characteristic-comment', 
@@ -110,7 +110,7 @@
                               format: :json 
                             ) do |f| %>
                               <%= f.input  :current_comment, label: false %>
-                              <%= f.button :submit, "Update Previous Comment", class: 'btn btn-secondary btn-checklist-comment-update-current', data: { id: checklist_item.id } %>
+                              <%= f.button :submit, "Update Existing Comment", class: 'btn btn-secondary btn-checklist-comment-update-current', data: { id: checklist_item.id } %>
                               <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                             <% end %>
                           </div>
@@ -127,7 +127,7 @@
                               format: :json
                             ) do |f| %>
                               <%= f.input  :new_comment, label: false %>
-                              <%= f.button :submit, "Record New Comment", class: 'btn btn-secondary btn-checklist-comment-create-new', data: { id: checklist_item.id } %>
+                              <%= f.button :submit, "Save New Comment", class: 'btn btn-secondary btn-checklist-comment-create-new', data: { id: checklist_item.id } %>
                               <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                             <% end %>
                           </div>

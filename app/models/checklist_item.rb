@@ -27,7 +27,7 @@ class ChecklistItem < ApplicationRecord
   end
 
   def current_checklist_item_comment
-    checklist_item_comments.order(created_at: :desc).first
+    checklist_item_comments.to_a.max_by(&:created_at)
   end
 
   def current_comment

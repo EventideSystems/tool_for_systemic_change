@@ -58,12 +58,16 @@ class ChecklistItemsController < ApplicationController
   end
 
   def update_comment
+    return if params.dig(:checklist_item, :current_comment).blank?
+
     @checklist_item.current_checklist_item_comment.update(
       comment: params.dig(:checklist_item, :current_comment)
     )
   end
 
   def create_comment
+    return if params.dig(:checklist_item, :new_comment).blank?
+
     @checklist_item.checklist_item_comments.create(
       comment: params.dig(:checklist_item, :new_comment)
     )
@@ -102,4 +106,5 @@ class ChecklistItemsController < ApplicationController
     def checklist_item_params
       params.require(:checklist_item).permit(:checked, :comment)
     end
+    
 end

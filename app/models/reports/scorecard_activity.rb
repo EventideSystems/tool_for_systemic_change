@@ -150,13 +150,15 @@ module Reports
     INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
       select 
         characteristic_id, 
-        count(distinct(checklist_item_comments.*)) as count 
+        count(distinct(checklist_item_comments.id)) as count 
       from checklist_items
-      left join checklist_item_comments
+      inner join checklist_item_comments
         on checklist_item_comments.checklist_item_id = checklist_items.id
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
-      checklist_item_comments.created_at BETWEEN $1 AND $2
+        checklist_item_comments.created_at BETWEEN $1 AND $2
+        AND checklist_item_comments.comment <> ''
+        AND checklist_item_comments.comment IS NOT NULL
         AND initiatives.scorecard_id=$3
       group by characteristic_id
     SQL

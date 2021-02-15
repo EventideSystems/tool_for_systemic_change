@@ -109,7 +109,7 @@
                               remote: true, 
                               format: :json 
                             ) do |f| %>
-                              <%= f.input  :current_comment, label: false %>
+                              <%= f.input  :current_comment, label: false, hint: 'NB blank comments are ignored' %>
                               <%= f.button :submit, "Update Existing Comment", class: 'btn btn-secondary btn-checklist-comment-update-current', data: { id: checklist_item.id } %>
                               <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                             <% end %>
@@ -126,7 +126,7 @@
                               remote: true, 
                               format: :json
                             ) do |f| %>
-                              <%= f.input  :new_comment, label: false %>
+                              <%= f.input  :new_comment, label: false, hint: 'NB blank comments are ignored' %>
                               <%= f.button :submit, "Save New Comment", class: 'btn btn-secondary btn-checklist-comment-create-new', data: { id: checklist_item.id } %>
                               <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                             <% end %>

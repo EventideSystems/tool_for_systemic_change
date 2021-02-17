@@ -21,7 +21,7 @@ module Reports
           focus_area: characteristic.focus_area.name,
           characteristic: characteristic.name,
           comment_updates: initiative_comment_updates_for_characteristic(characteristic)
-        }.merge(checklist_item_counts(characteristic, scorecard.initiatives.with_deleted, date_from, date_to))
+        }.merge(checklist_item_counts_for_characteristic(characteristic))
       end
     end
 
@@ -101,59 +101,59 @@ module Reports
       end.to_stream
     end
 
-    # def to_csv
-    #   current_focus_area_group = ''
-    #   current_focus_area = ''
-
-    #   CSV.generate do |csv|
-    #     csv << [Scorecard.model_name.human.to_s, scorecard.name, '', '', '']
-    #     csv << ['Dates range', date_from.strftime('%d/%m/%y'), date_to.strftime('%d/%m/%y'), '', '']
-    #     csv << ['', '', '', '', '']
-
-    #     csv << [
-    #       '',
-    #       'Initiatives beginning of period',
-    #       'Additions',
-    #       'Removals',
-    #       'Initiatives end of period'
-    #     ]
-
-    #     results.each do |result|
-    #       if result[:focus_area_group] != current_focus_area_group
-    #         current_focus_area_group = result[:focus_area_group]
-    #         current_focus_area = ''
-    #         csv << [result[:focus_area_group], '', '', '', '']
-    #       end
-
-    #       if result[:focus_area] != current_focus_area
-    #         current_focus_area = result[:focus_area]
-    #         csv << ["\t\t" + result[:focus_area], '', '', '', '']
-    #       end
-
-    #       csv << ["\t\t\t\t" + result[:characteristic], result[:initial], result[:additions], result[:removals], result[:final]]
-    #     end
-    #   end
-    # end
-
     private
 
     INITIATIVE_TOTALS_SQL = <<~SQL.freeze
       select
-        count(initiatives.id) filter(where (deleted_at IS NULL OR deleted_at >= $1) AND created_at < $1) as initial,
-        count(initiatives.id) FILTER(where (deleted_at IS NULL OR deleted_at >= $2) AND created_at BETWEEN $1 AND $2) as additions,
-        count(initiatives.id) filter(where deleted_at BETWEEN $1 AND  $2) as removals
-      from initiatives where scorecard_id=$3
+        count(distinct(initiatives.id)) filter(
+          where checklist_item_comments.created_at < $1
+          or checklist_item_at_time(checklist_items.id, $1) = true
+        ) as initial,
+        count(distinct(initiatives.id)) filter(
+          where (
+            checklist_item_comments.created_at BETWEEN $1 AND $2
+            or checklist_item_at_time(checklist_items.id, $2) = true
+          ) and not (
+            checklist_item_comments.created_at < $1
+          )
+        ) as additions,
+        count(distinct(initiatives.id)) filter(
+          where (
+            checklist_item_comments.created_at < $1
+            or checklist_item_at_time(checklist_items.id, $1) = true
+          ) and not (
+              checklist_item_comments.created_at > $1
+            )
+        ) as removals,
+        count(distinct(initiatives.id)) filter(
+          where (
+            checklist_item_comments.created_at BETWEEN $1 AND $2
+            and other_comments.id is not null
+          )
+        ) as comment_updates
+      from initiatives
+      inner join checklist_items
+        on checklist_items.initiative_id = initiatives.id
+      left join checklist_item_comments
+        on checklist_item_comments.checklist_item_id = checklist_items.id
+        and checklist_item_comments.comment <> ''
+        and checklist_item_comments.comment is not null
+      left join checklist_item_comments other_comments 
+        on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
+        and other_comments.id <> checklist_item_comments.id
+      where scorecard_id=$3
     SQL
 
-    # NOTE: This is comments changed across intitiatives. If we need total number of times
-    # a comment has changed, remove the 'distinct' from below
     INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
       select 
         characteristic_id, 
-        count(distinct(checklist_item_comments.id)) as count 
+        (count(distinct(checklist_item_comments.id)) - 1) as count 
       from checklist_items
       inner join checklist_item_comments
         on checklist_item_comments.checklist_item_id = checklist_items.id
+      inner join checklist_item_comments other_comments 
+        on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
+        and other_comments.id <> checklist_item_comments.id
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
         checklist_item_comments.created_at BETWEEN $1 AND $2
@@ -162,6 +162,45 @@ module Reports
         AND initiatives.scorecard_id=$3
       group by characteristic_id
     SQL
+
+    CHECKLIST_ITEM_COUNTS_SQL = <<~SQL.freeze
+      select
+        checklist_items.characteristic_id,
+        count(distinct(checklist_items.id)) filter(
+          where checklist_item_comments.created_at < $1
+          or checklist_item_at_time(checklist_items.id, $1) = true
+        ) as initial,
+        count(distinct(checklist_items.id)) filter(
+          where (
+            checklist_item_comments.created_at BETWEEN $1 AND $2
+            or checklist_item_at_time(checklist_items.id, $2) = true
+          ) and not (
+            checklist_item_comments.created_at < $1
+          ) and not (
+            checklist_item_at_time(checklist_items.id, $1) = true
+          )
+        ) as additions,
+        count(distinct(checklist_items.id)) filter(
+          where (
+            checklist_item_comments.created_at < $1
+            or checklist_item_at_time(checklist_items.id, $1) = true
+          ) and not (
+            checklist_item_comments.created_at > $1
+          ) and not (
+            checklist_item_at_time(checklist_items.id, $2) = true
+          )
+        ) as removals
+      from initiatives
+      inner join checklist_items
+        on checklist_items.initiative_id = initiatives.id
+      left join checklist_item_comments
+        on checklist_item_comments.checklist_item_id = checklist_items.id
+        and checklist_item_comments.comment <> ''
+        and checklist_item_comments.comment is not null
+      where scorecard_id=$3
+      group by checklist_items.characteristic_id    
+    SQL
+
 
     private_constant \
       :INITIATIVE_TOTALS_SQL, 
@@ -195,6 +234,12 @@ module Reports
       update.present? ? update['count'] : 0
     end
 
+    def checklist_item_counts_for_characteristic(characteristic)
+      checklist_item_counts.find do |item_counts|
+        item_counts[:characteristic_id] == characteristic.id
+      end
+    end
+
     def fetch_initiatives(date_from, date_to)
       params = { date_from: date_from, date_to: date_to }
 
@@ -213,7 +258,6 @@ module Reports
       ).first.then do |totals|
         totals.symbolize_keys!
         totals[:final] = totals[:initial] + totals[:additions] - totals[:removals]
-        totals[:comment_updates] = initiative_comment_updates.sum { |a| a['count'] }
         totals
       end
     end
@@ -222,26 +266,26 @@ module Reports
       ApplicationRecord.connection.exec_query(
         INITIATIVE_COMMENT_UPDATES_SQL,
         '-- INITIATIVE COMMENT UPDATES --',
+        
         build_common_bind_vars,
         prepare: true
       )
     end
 
-    def checklist_item_counts(characteristic, initiatives, date_from, date_to)
-      checklist_items = ChecklistItem.where(characteristic: characteristic, initiative: initiatives)
-
-      item_counts = checklist_items.each_with_object({ initial: 0, additions: 0, removals: 0 }) do |item, counts|
-        state_before_range = item.snapshot_at(date_from - 1.second).checked == true
-        item.reload # Otherwise, item will equal last snapshot
-        state_within_range = item.snapshot_at(date_to).checked == true
-
-        counts[:initial]   += 1 if state_before_range == true
-        counts[:additions] += 1 if state_within_range == true && state_before_range == false
-        counts[:removals]  += 1 if state_within_range == false && state_before_range == true
+    def fetch_checklist_item_counts
+      ApplicationRecord.connection.exec_query(
+        CHECKLIST_ITEM_COUNTS_SQL,
+        '-- CHECKLIST ITEM COUNTS --',
+        build_common_bind_vars,
+        prepare: true
+      ).to_a.map(&:symbolize_keys).map do |counts|
+        counts[:final] = counts[:initial] + counts[:additions] - counts[:removals]
+        counts
       end
-
-      item_counts[:final] = item_counts[:initial] + item_counts[:additions] - item_counts[:removals]
-      item_counts
     end
+
+    def checklist_item_counts
+      @checklist_item_counts ||= fetch_checklist_item_counts
+    end 
   end
 end

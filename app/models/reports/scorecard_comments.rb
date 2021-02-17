@@ -233,7 +233,7 @@ module Reports
               AND checklist_item_comments.created_at <= '#{date.to_s}'
             ORDER BY checklist_item_comments.created_at
           ) filtered_checklist_items
-          ORDER BY comment_text, comment_date
+          ORDER BY comment_date
 
         ) discrete_checklist_comments
         WHERE comment_text <> '' AND comment_text IS NOT NULL

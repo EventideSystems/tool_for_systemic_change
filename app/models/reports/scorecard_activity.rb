@@ -149,15 +149,19 @@ module Reports
       where scorecard_id=$3
     SQL
 
-    INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
+    INITIATIVE_COMMENT_UPDATE_TOTALS_SQL = <<~SQL.freeze
       select 
         count(distinct(initiatives.id))
       from checklist_items
       inner join checklist_item_comments
         on checklist_item_comments.checklist_item_id = checklist_items.id
+        AND checklist_item_comments.comment <> ''
+        AND checklist_item_comments.comment IS NOT NULL
       inner join checklist_item_comments other_comments 
         on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
         and other_comments.id <> checklist_item_comments.id
+        AND other_comments.comment <> ''
+        AND other_comments.comment IS NOT NULL
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
         checklist_item_comments.created_at BETWEEN $1 AND $2
@@ -169,21 +173,24 @@ module Reports
 
     CHARACTERISTIC_COMMENT_UPDATES_SQL = <<~SQL.freeze
       select 
-        characteristic_id, 
-        (count(distinct(checklist_item_comments.id)) - 1) as count 
+        checklist_items.characteristic_id, 
+        count(distinct(checklist_item_comments.id)) as count 
       from checklist_items
       inner join checklist_item_comments
         on checklist_item_comments.checklist_item_id = checklist_items.id
-      inner join checklist_item_comments other_comments 
-        on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
-        and other_comments.id <> checklist_item_comments.id
-      inner join initiatives on initiatives.id = checklist_items.initiative_id
+        and checklist_item_comments.comment <> ''
+        and checklist_item_comments.comment IS NOT NULL
+      left join checklist_item_comments all_comments 
+        on all_comments.checklist_item_id = checklist_items.id
+        and all_comments.comment <> ''
+        and all_comments.comment IS NOT NULL
+      inner join initiatives 
+        on initiatives.id = checklist_items.initiative_id
       where
         checklist_item_comments.created_at BETWEEN $1 AND $2
-        AND checklist_item_comments.comment <> ''
-        AND checklist_item_comments.comment IS NOT NULL
-        AND initiatives.scorecard_id=$3
-      group by characteristic_id
+        and initiatives.scorecard_id=$3
+      group by checklist_items.characteristic_id
+      having (count(distinct(all_comments.id)) > 1);
     SQL
 
     CHECKLIST_ITEM_COUNTS_SQL = <<~SQL.freeze
@@ -286,7 +293,7 @@ module Reports
 
     def fetch_initiative_comment_updates
       ApplicationRecord.connection.exec_query(
-        INITIATIVE_COMMENT_UPDATES_SQL,
+        INITIATIVE_COMMENT_UPDATE_TOTALS_SQL,
         '-- INITIATIVE COMMENT UPDATES --',
         build_common_bind_vars,
         prepare: true

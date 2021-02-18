@@ -78,7 +78,8 @@ RSpec.describe Reports::ScorecardActivity do
     let!(:initiative_5) { create(:initiative, name: 'initiative_3', scorecard: scorecard, created_at: date_to + 1.day) }
     
     it do
-      expect(subject.initiative_totals).to match({initial: 2, additions: 2, removals: 1, final: 3})
+      expect(subject.initiative_totals)
+        .to match({initial: 2, additions: 2, removals: 1, final: 3, comment_updates: 0})
     end
       
   end

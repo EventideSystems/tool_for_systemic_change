@@ -15,6 +15,7 @@ $(document).on('turbolinks:load', function() {
     event.preventDefault();
     console.log('click.characteristic-comment')
     var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+    $(commentFormId).find('#checklist_item_new_comment').val('');
     $(commentFormId).show();
   });
 
@@ -23,19 +24,42 @@ $(document).on('turbolinks:load', function() {
       event.preventDefault();
       console.log('click.characteristic-comment')
       var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+      $(commentFormId).find('#checklist_item_new_comment').val('');
       $(commentFormId).show();
     });
   });
 });
 
 $(document).on('turbolinks:load', function() {
-  $(document).on('click', '.btn-checklist-comment-save', function(event) {
+
+  $(document).on('click', '.btn-checklist-comment-update-current', function(event) {
     var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
-    var comment = $(commentFormId).find('#checklist_item_comment').val();
-    
+    var currentComment = $(commentFormId).find('#checklist_item_current_comment').val();
+    var newComment = $(commentFormId).find('#checklist_item_new_comment').val();
+
     $(commentFormId).hide();
-    if ($.trim(comment).length == 0) {
+
+    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
+      $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
+    } else {  
+      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
+    }
+  });
+
+  $(document).on('click', '.btn-checklist-comment-create-new', function(event) {
+    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
+    var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
+    var currentComment = $(commentFormId).find('#checklist_item_current_comment').val();
+    var newComment = $(commentFormId).find('#checklist_item_new_comment').val();
+    
+    $(commentFormId).find('#checklist_item_current_comment').val(newComment);
+
+    $(commentFormId).find('.characteristic-update-comment-form').show();
+
+    $(commentFormId).hide();
+
+    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
       $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
     } else {  
       $(characteristicLink).siblings('span.characteristic-name').addClass('commented');

@@ -45,6 +45,7 @@ class Initiative < ApplicationRecord
     checklist_items = ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
      .where('checklist_items.initiative_id' => self.id)
      .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
+     .includes(:initiative, :checklist_item_comments, characteristic: :video_tutorial)
      .all
      
      checklist_items = checklist_items.select { |checklist_item| checklist_item.focus_area.id.in?(focus_areas.map(&:id)) } if focus_areas.present? 

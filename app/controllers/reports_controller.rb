@@ -84,8 +84,6 @@ class ReportsController < ApplicationController
     @date_to = Date.parse(params[:report][:date_to]).end_of_day
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     
-
-
     @report = Reports::ScorecardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|

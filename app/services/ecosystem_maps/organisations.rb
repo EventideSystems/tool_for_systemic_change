@@ -74,7 +74,8 @@ module EcosystemMaps
         graph, 
         link_data.flatten.uniq.count
       )
-    rescue
+    rescue Exception => e
+      raise
       {}
     end
 

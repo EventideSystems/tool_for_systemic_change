@@ -17,8 +17,6 @@ module Reports
     def results
       @results ||= characteristics.inject([]) do |result, characteristic|
         result << {
-          focus_area_group: characteristic.focus_area.focus_area_group.name,
-          focus_area: characteristic.focus_area.name,
           characteristic: characteristic.name,
           comment_updates: initiative_comment_updates_for_characteristic(characteristic)
         }.merge(checklist_item_counts_for_characteristic(characteristic))
@@ -37,7 +35,9 @@ module Reports
         date = p.workbook.styles.add_style format_code: 'd/m/yy'
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row([Scorecard.model_name.human.to_s], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet
+            .add_row([Scorecard.model_name.human.to_s], style: header_1)
+            .add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date range'], b: true).tap do |row|
             row.add_cell(date_from, style: date)
             row.add_cell(date_to - 1.second, style: date)
@@ -68,6 +68,15 @@ module Reports
                           initiative_totals[:final],
                           initiative_totals[:comment_updates]
                         ], style: header_1)
+
+          sheet.add_row do |row|
+            row.add_cell('Initiative Characteristics', style: header_1)
+            row.add_cell('Characteristics beginning of period', height: 48, style: wrap_text)
+            row.add_cell('Additions', height: 48, style: wrap_text)
+            row.add_cell('Removals', height: 48, style: wrap_text)
+            row.add_cell('Characteristics end of period', height: 48, style: wrap_text)
+            row.add_cell('Characteristic comment updates', height: 48, style: wrap_text)
+          end
 
           current_focus_area_group = ''
           current_focus_area = ''
@@ -141,6 +150,8 @@ module Reports
       left join checklist_item_comments other_comments 
         on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
         and other_comments.id <> checklist_item_comments.id
+        and other_comments.comment <> ''
+        and other_comments.comment is not null
       where scorecard_id=$3
     SQL
 
@@ -165,6 +176,8 @@ module Reports
 
     CHECKLIST_ITEM_COUNTS_SQL = <<~SQL.freeze
       select
+        focus_area_groups.name as focus_area_group,
+        focus_areas.name as focus_area,
         checklist_items.characteristic_id,
         count(distinct(checklist_items.id)) filter(
           where checklist_item_comments.created_at < $1
@@ -197,8 +210,14 @@ module Reports
         on checklist_item_comments.checklist_item_id = checklist_items.id
         and checklist_item_comments.comment <> ''
         and checklist_item_comments.comment is not null
+      inner join characteristics 
+        on characteristics.id = checklist_items.characteristic_id
+      inner join focus_areas 
+        on focus_areas.id = characteristics.focus_area_id
+      inner join focus_area_groups 
+        on focus_area_groups.id = focus_areas.focus_area_group_id
       where scorecard_id=$3
-      group by checklist_items.characteristic_id    
+      group by focus_area_groups.name, focus_areas.name, checklist_items.characteristic_id    
     SQL
 
 
@@ -266,7 +285,6 @@ module Reports
       ApplicationRecord.connection.exec_query(
         INITIATIVE_COMMENT_UPDATES_SQL,
         '-- INITIATIVE COMMENT UPDATES --',
-        
         build_common_bind_vars,
         prepare: true
       )

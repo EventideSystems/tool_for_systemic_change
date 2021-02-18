@@ -18,7 +18,7 @@ module Reports
       @results ||= characteristics.inject([]) do |result, characteristic|
         result << {
           characteristic: characteristic.name,
-          comment_updates: initiative_comment_updates_for_characteristic(characteristic)
+          comment_updates: comment_updates_for_characteristic(characteristic)
         }.merge(checklist_item_counts_for_characteristic(characteristic))
       end
     end
@@ -133,13 +133,7 @@ module Reports
           ) and not (
               checklist_item_comments.created_at > $1
             )
-        ) as removals,
-        count(distinct(initiatives.id)) filter(
-          where (
-            checklist_item_comments.created_at BETWEEN $1 AND $2
-            and other_comments.id is not null
-          )
-        ) as comment_updates
+        ) as removals
       from initiatives
       inner join checklist_items
         on checklist_items.initiative_id = initiatives.id
@@ -156,6 +150,24 @@ module Reports
     SQL
 
     INITIATIVE_COMMENT_UPDATES_SQL = <<~SQL.freeze
+      select 
+        count(distinct(initiatives.id))
+      from checklist_items
+      inner join checklist_item_comments
+        on checklist_item_comments.checklist_item_id = checklist_items.id
+      inner join checklist_item_comments other_comments 
+        on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
+        and other_comments.id <> checklist_item_comments.id
+      inner join initiatives on initiatives.id = checklist_items.initiative_id
+      where
+        checklist_item_comments.created_at BETWEEN $1 AND $2
+        AND checklist_item_comments.comment <> ''
+        AND checklist_item_comments.comment IS NOT NULL
+        AND initiatives.scorecard_id=$3
+      having (count(distinct(checklist_item_comments.id)) > 1)
+    SQL
+
+    CHARACTERISTIC_COMMENT_UPDATES_SQL = <<~SQL.freeze
       select 
         characteristic_id, 
         (count(distinct(checklist_item_comments.id)) - 1) as count 
@@ -223,7 +235,7 @@ module Reports
 
     private_constant \
       :INITIATIVE_TOTALS_SQL, 
-      :INITIATIVE_COMMENT_UPDATES_SQL
+      :CHARACTERISTIC_COMMENT_UPDATES_SQL
 
     def build_common_bind_vars
       [
@@ -245,8 +257,12 @@ module Reports
       @initiative_comment_updates ||= fetch_initiative_comment_updates
     end
 
-    def initiative_comment_updates_for_characteristic(characteristic)
-      update = initiative_comment_updates.find do |comment_update|
+    def characteristic_comment_updates
+      @characteristic_comment_updates ||= fetch_characteristic_comment_updates
+    end
+
+    def comment_updates_for_characteristic(characteristic)
+      update = characteristic_comment_updates.find do |comment_update|
         comment_update['characteristic_id'] == characteristic.id
       end
 
@@ -268,6 +284,17 @@ module Reports
                .where('started_at IS NULL or started_at <= :date_to', params)
     end
 
+    def fetch_initiative_comment_updates
+      ApplicationRecord.connection.exec_query(
+        INITIATIVE_COMMENT_UPDATES_SQL,
+        '-- INITIATIVE COMMENT UPDATES --',
+        build_common_bind_vars,
+        prepare: true
+      ).first.then do |comment_updates|
+        { comment_updates: comment_updates['count'] }
+      end
+    end
+
     def fetch_initiative_totals
       ApplicationRecord.connection.exec_query(
         INITIATIVE_TOTALS_SQL,
@@ -277,13 +304,14 @@ module Reports
       ).first.then do |totals|
         totals.symbolize_keys!
         totals[:final] = totals[:initial] + totals[:additions] - totals[:removals]
+        totals.merge!(fetch_initiative_comment_updates)
         totals
       end
     end
 
-    def fetch_initiative_comment_updates
+    def fetch_characteristic_comment_updates
       ApplicationRecord.connection.exec_query(
-        INITIATIVE_COMMENT_UPDATES_SQL,
+        CHARACTERISTIC_COMMENT_UPDATES_SQL,
         '-- INITIATIVE COMMENT UPDATES --',
         build_common_bind_vars,
         prepare: true

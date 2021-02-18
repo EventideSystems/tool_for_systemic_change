@@ -66,8 +66,18 @@
                             class: 'characteristic-checkbox', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }
                           %>
                           
-                          <span class="characteristic-name<%= " commented" if !checklist_item.comment.blank? %>"><%= checklist_item.characteristic.name %></span>
-                          <%= link_to('#characteristic_comment', class: 'characteristic-comment', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id, toggle: "tooltip", placement: "top", title: "Add comment" }) do
+                          <span class="characteristic-name<%= " commented" if checklist_item.current_comment.present? %>"><%= checklist_item.characteristic.name %></span>
+                          <%= link_to(
+                            '#characteristic_comment', 
+                            class: 'characteristic-comment', 
+                            data: {
+                              id: checklist_item.id, 
+                              initiative_id: checklist_item.initiative_id, 
+                              toggle: "tooltip",
+                              placement: "top", 
+                              title: "Edit comments" 
+                            }
+                          ) do
                             safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
                           end %>
                           <%- if checklist_item.characteristic.video_tutorial.present? %>
@@ -85,15 +95,45 @@
                             %>
                           <%- end %>
                         </label>
-                        <div class="box box-solid mb-3" id="characteristic-comment-form-<%=checklist_item.id%>" style="display: none">
-                          <%= simple_form_for [checklist_item.initiative, checklist_item], html: { class: 'form-horizontal' }, remote: true, format: :json do |f|   %>
-                            <%= f.input  :comment, label: false %>
-                            <%= f.button :submit, "Save Comments", class: 'btn btn-secondary btn-checklist-comment-save', data: { id: checklist_item.id } %>
-                            <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
-                          <% end %>
+                        <div id="characteristic-comment-form-<%=checklist_item.id%>" style="display: none">
+                          <div 
+                            class="box box-solid mb-3 characteristic-update-comment-form" 
+                            style="<%= 'display: none' if checklist_item.current_comment.blank? %>"
+                          >
+                            <%= simple_form_for([checklist_item.initiative, checklist_item],
+                              method: :post,
+                              url: update_comment_initiative_checklist_item_url(
+                                checklist_item.initiative, checklist_item
+                              ),
+                              html: { class: 'form-horizontal' }, 
+                              remote: true, 
+                              format: :json 
+                            ) do |f| %>
+                              <%= f.input  :current_comment, label: false, hint: 'NB blank comments are ignored' %>
+                              <%= f.button :submit, "Update Existing Comment", class: 'btn btn-secondary btn-checklist-comment-update-current', data: { id: checklist_item.id } %>
+                              <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
+                            <% end %>
+                          </div>
+                        
+                          <div class="box box-solid mb-3 characteristic-update-comment-form">
+                            <%= simple_form_for(
+                              [checklist_item.initiative, checklist_item],
+                              method: :post,
+                              url: create_comment_initiative_checklist_item_url(
+                                checklist_item.initiative, checklist_item
+                              ),
+                              html: { class: 'form-horizontal' }, 
+                              remote: true, 
+                              format: :json
+                            ) do |f| %>
+                              <%= f.input  :new_comment, label: false, hint: 'NB blank comments are ignored' %>
+                              <%= f.button :submit, "Save New Comment", class: 'btn btn-secondary btn-checklist-comment-create-new', data: { id: checklist_item.id } %>
+                              <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
+                            <% end %>
+                          </div>
                         </div>
-                      </li>
-                    <% end %>
+                      <%- end -%>  
+                    </li>
                   </ul>
                 </div>
               <% end %>

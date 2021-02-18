@@ -1,6 +1,7 @@
 class ChecklistItemsController < ApplicationController
   before_action :set_initiative
-  before_action :set_checklist_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_checklist_item, 
+    only: [:show, :edit, :update, :update_comment, :create_comment, :destroy]
   before_action :require_account_selected
   
   # GET /checklist_items
@@ -56,6 +57,22 @@ class ChecklistItemsController < ApplicationController
     end
   end
 
+  def update_comment
+    return if params.dig(:checklist_item, :current_comment).blank?
+
+    @checklist_item.current_checklist_item_comment.update(
+      comment: params.dig(:checklist_item, :current_comment)
+    )
+  end
+
+  def create_comment
+    return if params.dig(:checklist_item, :new_comment).blank?
+
+    @checklist_item.checklist_item_comments.create(
+      comment: params.dig(:checklist_item, :new_comment)
+    )
+  end
+
   # DELETE /checklist_items/1
   # DELETE /checklist_items/1.json
   def destroy
@@ -89,4 +106,5 @@ class ChecklistItemsController < ApplicationController
     def checklist_item_params
       params.require(:checklist_item).permit(:checked, :comment)
     end
+    
 end

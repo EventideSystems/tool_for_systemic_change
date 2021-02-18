@@ -291,7 +291,7 @@ module Reports
         build_common_bind_vars,
         prepare: true
       ).first.then do |comment_updates|
-        { comment_updates: comment_updates['count'] }
+        { comment_updates:  comment_updates&.dig('count') || 0 }
       end
     end
 

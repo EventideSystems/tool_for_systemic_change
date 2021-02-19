@@ -114,39 +114,16 @@ module Reports
 
     INITIATIVE_TOTALS_SQL = <<~SQL.freeze
       select
-        count(distinct(initiatives.id)) filter(
-          where checklist_item_comments.created_at < $1
-          or checklist_item_at_time(checklist_items.id, $1) = true
+        count(initiatives.id) filter(
+          where (deleted_at IS NULL OR deleted_at >= $1) AND created_at < $1
         ) as initial,
-        count(distinct(initiatives.id)) filter(
-          where (
-            checklist_item_comments.created_at BETWEEN $1 AND $2
-            or checklist_item_at_time(checklist_items.id, $2) = true
-          ) and not (
-            checklist_item_comments.created_at < $1
-          )
+        count(initiatives.id) filter(
+          where (deleted_at IS NULL OR deleted_at >= $2) AND created_at BETWEEN $1 AND $2
         ) as additions,
-        count(distinct(initiatives.id)) filter(
-          where (
-            checklist_item_comments.created_at < $1
-            or checklist_item_at_time(checklist_items.id, $1) = true
-          ) and not (
-              checklist_item_comments.created_at > $1
-            )
+        count(initiatives.id) filter(
+          where deleted_at BETWEEN $1 AND  $2
         ) as removals
-      from initiatives
-      inner join checklist_items
-        on checklist_items.initiative_id = initiatives.id
-      left join checklist_item_comments
-        on checklist_item_comments.checklist_item_id = checklist_items.id
-        and checklist_item_comments.comment <> ''
-        and checklist_item_comments.comment is not null
-      left join checklist_item_comments other_comments 
-        on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
-        and other_comments.id <> checklist_item_comments.id
-        and other_comments.comment <> ''
-        and other_comments.comment is not null
-      where scorecard_id=$3
+      from initiatives where scorecard_id=$3
     SQL
 
     INITIATIVE_COMMENT_UPDATE_TOTALS_SQL = <<~SQL.freeze

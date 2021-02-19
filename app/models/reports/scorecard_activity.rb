@@ -54,8 +54,7 @@ module Reports
               'Initiatives beginning of period',
               'Additions',
               'Removals',
-              'Initiatives end of period',
-              'Initiative comment updates'
+              'Initiatives end of period'
             ],
             height: 48, style: wrap_text
           )
@@ -65,8 +64,7 @@ module Reports
                           initiative_totals[:initial],
                           initiative_totals[:additions],
                           initiative_totals[:removals],
-                          initiative_totals[:final],
-                          initiative_totals[:comment_updates]
+                          initiative_totals[:final]
                         ], style: header_1)
 
           sheet.add_row do |row|

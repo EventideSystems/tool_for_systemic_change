@@ -63,16 +63,22 @@ class ScorecardComments::Import < Import
         row[1..-1].each_with_index do |cell, index|
           comment = cell&.strip
 
-          if !comment.blank?
+          if comment.present?
             characteristic = Characteristic.find_by(name: characteristic_name)
             initiative = initiatives[index+1]
 
-            if initiative && characteristic
-              checklist_item = initiative.checklist_items.where(characteristic: characteristic).first
-              if checklist_item
+            if initiative.present? && characteristic.present?
+              checklist_item = initiative
+                .checklist_items
+                .includes(:checklist_item_comments)
+                .find_by(characteristic: characteristic)
+ 
+              if checklist_item.present?
                 checklist_item.checked = true if checklist_item.checked != true
-                checklist_item.comment = comment
                 checklist_item.save!
+                if checklist_item.current_comment != comment
+                  checklist_item.checklist_item_comments.create(comment: comment)
+                end
               end
             else
               missing_data = []
@@ -109,6 +115,10 @@ class ScorecardComments::Import < Import
   end
 
   def find_initiative_by_name(scorecard, name)
-    scorecard.initiatives.where("lower(name) = :name", { name: name&.downcase }).first
+    scorecard
+      .initiatives
+      .where("lower(name) = :name", { name: name&.downcase })
+      .includes(:checklist_items)
+      .first
   end
 end

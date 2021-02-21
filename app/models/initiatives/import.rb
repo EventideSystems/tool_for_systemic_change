@@ -70,10 +70,9 @@ class Initiatives::Import < Import
         unless subsystem_tag_name.blank?
           subsystem_tag = find_subsystem_tag_by_name(account, subsystem_tag_name)
 
-          if subsystem_tag
+          if subsystem_tag.blank?
+            subsystem_tag = SubsystemTag.create!(account: account, name: subsystem_tag_name)
             initiative.subsystem_tags << subsystem_tag unless initiative.subsystem_tags.include?(subsystem_tag)
-          else
-            unknown_subsystem_tag_names << subsystem_tag_name
           end
         end
       end

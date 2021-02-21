@@ -10,6 +10,9 @@ $(document).on('turbolinks:load', function() {
       autoAdjustHeight: false,
       markDoneStep: false,
     },
+    keyboardSettings: {
+      keyNavigation: false
+    },
     lang: { 
       next: 'Next \u203A',
       previous: '\u2039 Previous'

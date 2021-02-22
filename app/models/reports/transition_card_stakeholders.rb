@@ -37,12 +37,12 @@ module Reports
           sheet.add_row(["Organisations", "Total Initiatives", "Sector", "Initiatives"], style: header_3)
           scorecard.unique_organisations.each do |organisation|
             name = organisation.name
-            initatives = initiatives_for_organisation(organisation)
-            initatives_names = initatives.map(&:name)
-            total_initatives = initatives.count
+            initiatives = initiatives_for_organisation(organisation)
+            initiatives_names = initiatives.map(&:name)
+            total_initiatives = initiatives.count
             sector = organisation.sector&.name || '' 
             
-            sheet.add_row([name, total_initatives, sector] + initatives_names)
+            sheet.add_row([name, total_initiatives, sector] + initiatives_names)
           end
           
           sheet.add_row

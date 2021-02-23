@@ -47,7 +47,7 @@ gem 'pundit'
 # User interface related
 gem 'simple_form'
 gem 'cocoon'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave', '~> 1.3'
 gem 'mini_magick'
 gem 'table-for'
 gem 'kaminari'

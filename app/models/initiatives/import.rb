@@ -72,8 +72,9 @@ class Initiatives::Import < Import
 
           if subsystem_tag.blank?
             subsystem_tag = SubsystemTag.create!(account: account, name: subsystem_tag_name)
-            initiative.subsystem_tags << subsystem_tag unless initiative.subsystem_tags.include?(subsystem_tag)
           end
+          
+          initiative.subsystem_tags << subsystem_tag unless initiative.subsystem_tags.include?(subsystem_tag)
         end
       end
 

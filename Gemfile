@@ -99,7 +99,7 @@ group :development, :test do
   # gem 'pry-coolline'
   gem 'pry-stack_explorer'
   gem 'rubocop', require: false
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails', '~> 4.1'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'bullet'

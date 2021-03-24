@@ -40,3 +40,6 @@ yarn-debug.log*
 /pyvenv.cfg
 /lib64
 /share
+
+/config/credentials/development.key
+/config/credentials/staging.key

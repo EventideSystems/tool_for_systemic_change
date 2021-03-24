@@ -63,17 +63,26 @@ module EcosystemMaps
     end
 
     def build_betweenness(link_data)
-      pyimport :networkx
+      #pyimport :networkx
 
       links = link_data.uniq
 
-      graph = networkx.Graph.new
-      graph.add_edges_from(links)
-
-      networkx.betweenness_centrality(
-        graph, 
-        link_data.flatten.uniq.count
+      lambda = Aws::Lambda::Client.new(region: 'us-west-2')
+      response = lambda.invoke(
+        function_name: 'betweennessCentrality', 
+        payload: { 'links' => links }.to_json
       )
+
+      payload = JSON.parse(response.payload.read)
+      JSON.parse(payload['body'])
+
+      # graph = networkx.Graph.new
+      # graph.add_edges_from(links)
+
+      # networkx.betweenness_centrality(
+      #   graph, 
+      #   link_data.flatten.uniq.count
+      # )
     rescue Exception => e
       raise
       {}

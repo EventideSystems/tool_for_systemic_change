@@ -74,7 +74,9 @@ module EcosystemMaps
       )
 
       payload = JSON.parse(response.payload.read)
-      JSON.parse(payload['body'])
+      data = JSON.parse(payload['body'])
+
+      data.transform_keys(&:to_i)
 
       # graph = networkx.Graph.new
       # graph.add_edges_from(links)

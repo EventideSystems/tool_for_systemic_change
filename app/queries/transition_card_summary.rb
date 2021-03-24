@@ -8,7 +8,7 @@ class TransitionCardSummary
 
       results.map do |result|
         begin
-          result.deep_transform_values{ |v| JSON.parse(v) }
+          result.deep_transform_values{ |v| JSON.parse(v) if v.present? }
         rescue TypeError => e
           Rails.logger.error e.message
           Rails.logger.error result.inspect

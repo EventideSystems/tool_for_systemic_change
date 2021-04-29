@@ -476,6 +476,8 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.1)
+    trix-rails (2.3.0)
+      rails (> 4.1, < 7.0)
     ttfunk (1.6.2.1)
     tty-which (0.4.2)
     turbolinks (5.2.1)
@@ -582,6 +584,7 @@ DEPENDENCIES
   table-for
   thor (~> 0.20)
   timecop
+  trix-rails
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)

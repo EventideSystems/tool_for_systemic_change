@@ -22,7 +22,12 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :characteristics
+  resources :characteristics do
+    member do
+      get 'description'
+    end
+  end
+  
   resources :communities
   resources :focus_area_groups
   resources :focus_areas

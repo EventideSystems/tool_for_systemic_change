@@ -14,6 +14,20 @@ class Characteristic < ApplicationRecord
   delegate :position, to: :focus_area, prefix: true
   #accepts_nested_attributes_for :video_tutorial
   
+  DESCRIPTION_TEMPLATE = <<~HTML
+    <h1>Initiative Characteristics</h1>
+    <br/>
+    <em>Details go here...</em>
+    <br/>
+    <h1>Why it is important</h1>
+    <br/>
+    <em>Details go here...</em>
+    <br/>
+    <h1>Examples</h1>
+    <br/>
+    <em>Details go here...</em>
+  HTML
+
   def video_tutorial_id=(value)
     return if value.blank?
     tutorial = VideoTutorial.where(id: value).first

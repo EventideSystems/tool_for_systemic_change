@@ -73,3 +73,10 @@ import "controllers"
 //trix editor
 import 'trix/dist/trix.css'
 import 'trix/dist/trix.js'
+
+$(window).on('load', function() {
+  document.addEventListener("trix-file-accept", function(event) {
+    event.preventDefault();
+  });
+});
+

@@ -2,7 +2,7 @@
   <%= f.error_notification %>
   <%= form_header(@characteristic) %>
   <%= f.input :name %>
-  <%= f.input :description , as: :string %>
+  <%= f.input :description , as: :trix_editor %>
   <%= f.association :focus_area %>
   <%= f.input :position %>
   <%= f.input :video_tutorial_id, collection: VideoTutorial.all, 

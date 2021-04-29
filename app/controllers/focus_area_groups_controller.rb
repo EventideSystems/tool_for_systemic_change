@@ -6,7 +6,7 @@ class FocusAreaGroupsController < ApplicationController
   # GET /focus_area_groups
   # GET /focus_area_groups.json
   def index
-    @focus_area_groups = policy_scope(FocusAreaGroup).order(sort_order).page params[:page]
+    @focus_area_groups = policy_scope(FocusAreaGroup).unscoped.order(sort_order).page params[:page]
   end
 
   def show

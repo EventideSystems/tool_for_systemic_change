@@ -5,7 +5,7 @@ class SectorsController < ApplicationController
   add_breadcrumb "Sectors", :sectors_path
   
   def index
-    @sectors = policy_scope(Sector).order(sort_order).page params[:page]
+    @sectors = policy_scope(Sector).unscoped.order(sort_order).page params[:page]
   end
 
   def show

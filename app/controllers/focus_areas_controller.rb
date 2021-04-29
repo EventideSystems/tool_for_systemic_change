@@ -6,7 +6,10 @@ class FocusAreasController < ApplicationController
   add_breadcrumb 'System', :focus_areas_path
 
   def index
-    @focus_areas = policy_scope(FocusArea).order(sort_order).page params[:page]
+    @focus_areas = policy_scope(FocusArea)
+      .unscoped.joins(:focus_area_group)
+      .order(sort_order)
+      .page params[:page]
   end
 
   def show; end

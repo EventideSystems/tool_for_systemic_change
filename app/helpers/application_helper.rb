@@ -59,6 +59,14 @@ module ApplicationHelper
     )
   end
   
+  def truncate_html(text, length=25)
+    return '' unless text.present?
+
+    strip_tags(
+      text.gsub('<br>', ' ').gsub(/<\/h\d>/, ' ')
+    ).truncate(length)
+  end
+
   def import_files_instructions_link
     content_tag(:p, class: 'text-light-blue') do 
       content_tag(:strong) do

@@ -1,5 +1,5 @@
 class CharacteristicsController < ApplicationController
-  before_action :set_characteristic, only: [:show, :edit, :update, :destroy]
+  before_action :set_characteristic, only: [:show, :edit, :update, :destroy, :description]
 
   def index
     @characteristics = policy_scope(Characteristic).order(sort_order).page params[:page]
@@ -8,12 +8,14 @@ class CharacteristicsController < ApplicationController
   def show
   end
 
+
   def new
-    @characteristic = Characteristic.new 
+    @characteristic = Characteristic.new(description: Characteristic::DESCRIPTION_TEMPLATE)
     authorize @characteristic
   end
 
   def edit
+    @characteristic.description = Characteristic::DESCRIPTION_TEMPLATE if @characteristic.description.blank?
   end
 
   def create
@@ -50,6 +52,10 @@ class CharacteristicsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def description
+    render layout: false
+  end
   
   def content_subtitle
     return @characteristic.name if @characteristic.present?
@@ -57,12 +63,13 @@ class CharacteristicsController < ApplicationController
   end
 
   private
-    def set_characteristic
-      @characteristic = Characteristic.find(params[:id])
-      authorize @characteristic
-    end
 
-    def characteristic_params
-      params.fetch(:characteristic, {}).permit(:name, :description, :focus_area_id, :position, :video_tutorial_id)
-    end
+  def set_characteristic
+    @characteristic = Characteristic.find(params[:id])
+    authorize @characteristic
+  end
+
+  def characteristic_params
+    params.fetch(:characteristic, {}).permit(:name, :description, :focus_area_id, :position, :video_tutorial_id)
+  end
 end

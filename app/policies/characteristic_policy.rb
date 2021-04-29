@@ -24,4 +24,8 @@ class CharacteristicPolicy < ApplicationPolicy
   def destroy?
     system_admin?
   end
+
+  def description?
+    true
+  end
 end

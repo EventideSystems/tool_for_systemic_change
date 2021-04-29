@@ -12,7 +12,7 @@ namespace :deploy do
   HEROKU_PRODUCTION_DEPLOY = <<~BASH
     git push wickedlab-production master:master && \
     heroku run rake db:migrate -a wickedlab && \
-    heroku run rake data:migrate -a wickedlab-staging && \
+    heroku run rake data:migrate -a wickedlab && \
     heroku restart -a wickedlab
   BASH
 

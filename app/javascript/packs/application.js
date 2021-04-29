@@ -69,3 +69,7 @@ $(document).on('turbolinks:load', function() {
 });
 
 import "controllers"
+
+//trix editor
+import 'trix/dist/trix.css'
+import 'trix/dist/trix.js'

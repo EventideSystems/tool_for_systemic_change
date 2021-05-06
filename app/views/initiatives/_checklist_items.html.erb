@@ -98,7 +98,12 @@
                             <%= 
                               link_to(
                                 description_characteristic_path(checklist_item.characteristic), 
-                                class: 'remote-link'
+                                class: 'remote-link description-characteristic-link',
+                                data: {
+                                  toggle: "tooltip",
+                                  placement: "top", 
+                                  title: "More information" 
+                                }
                               ) do
                                 safe_join([content_tag(:i, '', class: "fas fa-info-circle")])
                               end

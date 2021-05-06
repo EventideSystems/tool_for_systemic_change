@@ -146,6 +146,15 @@ label.truncate {
   font-size: 18px;
 }
 
+a.description-characteristic-link {
+  color: #49C5B1;
+}
+
+
+a.description-characteristic-link:hover {
+  color: darken(#49C5B1, 10%);
+}
+
 // div.medium-editor-element {
 //   height: auto;
 // }

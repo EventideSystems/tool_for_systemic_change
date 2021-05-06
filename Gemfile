@@ -80,7 +80,7 @@ gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
-gem 'thor', '~> 0.20'
+gem 'thor', '~> 1.1'
 
 group :test do
   gem 'cucumber-rails', :require => false

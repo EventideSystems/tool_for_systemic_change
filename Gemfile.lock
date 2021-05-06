@@ -106,7 +106,9 @@ GEM
       rails (>= 3.0.0)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bootstrap_form (2.1.1)
+    bootstrap_form (4.5.0)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     brakeman (4.10.0)
     breadcrumbs_on_rails (3.0.1)
     builder (3.2.4)
@@ -274,7 +276,9 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0512)
-    mimemagic (0.3.5)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -528,7 +532,7 @@ DEPENDENCIES
   aws-sdk-lambda
   aws-sdk-rails
   bootsnap
-  bootstrap_form (<= 2.1.1)
+  bootstrap_form (<= 4.5.1)
   brakeman
   breadcrumbs_on_rails (<= 3.0.1)
   bullet

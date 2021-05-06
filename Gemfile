@@ -53,7 +53,7 @@ gem 'table-for'
 gem 'kaminari'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
-gem 'bootstrap_form', '<= 2.1.1'
+gem 'bootstrap_form', '<= 4.5.1'
 gem 'trix-rails', require: 'trix'
 
 # Report related

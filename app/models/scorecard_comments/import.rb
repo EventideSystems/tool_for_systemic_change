@@ -5,12 +5,10 @@ class ScorecardComments::Import < Import
 
     focus_area_group_names = FocusAreaGroup.all.pluck(:name)
     focus_area_names = FocusArea.all.pluck(:name)
-    characteristic_names = Characteristic.all.pluck(:name).map(&:downcase)
+    characteristic_names = Characteristic.all.pluck(:name).map{ |name| name.gsub(/\A\d+\.\d+\s/, '') }
 
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
-
-      Rails.logger.info "Processing row: #{row.to_s}"
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]
@@ -34,7 +32,6 @@ class ScorecardComments::Import < Import
       # Find Initiatives
       if initiatives.empty? && row[0].downcase == 'name of initiative'
         initiative_names = row[1..-1].select(&:present?)
-        Rails.logger.info "ScorecardComments::Import: Initiatives identified: #{initiative_names.join(';')}"
         
         initiative_names.each_with_index do |initiative_name, index|
           initiative = find_initiative_by_name(scorecard, initiative_name)
@@ -71,9 +68,8 @@ class ScorecardComments::Import < Import
         row[1..-1].each_with_index do |cell, index|
           comment = cell&.strip
 
-          if comment.present?
-            Rails.logger.info "Importing comment #{comment}"
-            characteristic = Characteristic.find_by(name: characteristic_name)
+          if comment.present?            
+            characteristic = Characteristic.find_by("characteristics.name ilike :name", name: "%#{characteristic_name}")
             initiative = initiatives[index+1]
 
             if initiative.present? && characteristic.present?
@@ -89,8 +85,6 @@ class ScorecardComments::Import < Import
                 if checklist_item.current_comment != comment
                   checklist_item.checklist_item_comments.create(comment: comment)
                 end
-              else
-                Rails.logger.error "Checklist item missing for #{initiative.name} - #{characteristic.name}"
               end
             else
               missing_data = []
@@ -111,7 +105,6 @@ class ScorecardComments::Import < Import
       else
         Rails.logger.warn "row[0] '#{row[0]}' not found in characteristic_names"
       end
-
     end
     processing_errors.empty?
   end

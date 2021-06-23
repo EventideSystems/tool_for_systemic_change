@@ -10,6 +10,8 @@ class ScorecardComments::Import < Import
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
 
+      scorecard_name = ''
+
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]
@@ -25,11 +27,15 @@ class ScorecardComments::Import < Import
         next
       end
 
+      Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
+
       next if row[0].nil?
 
       # Find Initiatives
       if initiatives.empty? && row[0].downcase == 'name of initiative'
         initiative_names = row[1..-1].select(&:present?)
+        Rails.logger.info "ScorecardComments::Import: Initiatives identified: #{initiative_names.join(';')}"
+        
         initiative_names.each_with_index do |initiative_name, index|
           initiative = find_initiative_by_name(scorecard, initiative_name)
           if initiative.nil?

@@ -13,7 +13,6 @@ class ScorecardComments::Import < Import
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]
-        Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
         scorecard = find_scorecard_by_name(account, scorecard_name)
         if scorecard.nil?
           processing_errors << build_processing_errors(
@@ -26,15 +25,14 @@ class ScorecardComments::Import < Import
         next
       end
 
-      Rails.logger.info "Processing row: #{row.to_s}"
+      Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
 
       next if row[0].nil?
 
+      # Find Initiatives
       if initiatives.empty? && row[0].downcase == 'name of initiative'
-        Rails.logger.info "Finding initiative names"
-
         initiative_names = row[1..-1].select(&:present?)
-        Rails.logger.info "Initiatives identified: #{initiative_names.join(';')}"
+        Rails.logger.info "ScorecardComments::Import: Initiatives identified: #{initiative_names.join(';')}"
         
         initiative_names.each_with_index do |initiative_name, index|
           initiative = find_initiative_by_name(scorecard, initiative_name)
@@ -70,10 +68,12 @@ class ScorecardComments::Import < Import
           comment = cell&.strip
 
           if comment.present?
+            Rails.logger.info "Importing comment #{comment}"
             characteristic = Characteristic.find_by(name: characteristic_name)
             initiative = initiatives[index+1]
 
             if initiative.present? && characteristic.present?
+            
               checklist_item = initiative
                 .checklist_items
                 .includes(:checklist_item_comments)
@@ -85,6 +85,8 @@ class ScorecardComments::Import < Import
                 if checklist_item.current_comment != comment
                   checklist_item.checklist_item_comments.create(comment: comment)
                 end
+              else
+                Rails.logger.error "Checklist item missing for #{initiative.name} - #{characteristic.name}"
               end
             else
               missing_data = []

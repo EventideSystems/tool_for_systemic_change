@@ -5,7 +5,7 @@ class ScorecardComments::Import < Import
 
     focus_area_group_names = FocusAreaGroup.all.pluck(:name)
     focus_area_names = FocusArea.all.pluck(:name)
-    characteristic_names = Characteristic.all.pluck(:name)
+    characteristic_names = Characteristic.all.pluck(:name).map(&:downcase)
 
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
@@ -56,9 +56,11 @@ class ScorecardComments::Import < Import
 
       next if row[0].strip.in?(focus_area_group_names) || row[0].strip.in?(focus_area_names)
 
-      if row[0].strip.in?(characteristic_names)
+      if row[0].strip.downcase.in?(characteristic_names)
 
         characteristic_name = row[0].strip
+
+        Rails.logger.info "Identifying characteristic name: #{characteristic_name}"
 
         row[1..-1].each_with_index do |cell, index|
           comment = cell&.strip
@@ -90,6 +92,8 @@ class ScorecardComments::Import < Import
             end
           end
         end
+      else
+        Rails.logger.warn "row[0] '#{row[0]}' not found in characteristic_names"
       end
 
     end

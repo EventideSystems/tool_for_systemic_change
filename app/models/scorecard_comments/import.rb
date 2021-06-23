@@ -10,10 +10,13 @@ class ScorecardComments::Import < Import
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
 
+      Rails.logger.info "Processing row: #{row.to_s}"
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]
         scorecard = find_scorecard_by_name(account, scorecard_name)
+        Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
+
         if scorecard.nil?
           processing_errors << build_processing_errors(
             row_data: row,
@@ -25,8 +28,7 @@ class ScorecardComments::Import < Import
         next
       end
 
-      Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
-
+     
       next if row[0].nil?
 
       # Find Initiatives

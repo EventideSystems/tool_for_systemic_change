@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.6' unless ENV['CI']
+ruby '2.7.3' unless ENV['CI']
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -8,11 +8,11 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3.4'
+gem 'rails', '= 6.0.3.7'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 5.0.4'
+gem 'puma', '>= 5.3.1'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -65,7 +65,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
 
-gem 'marcel', '~> 0.3'
+gem 'marcel'
 gem 'shrine', '>= 3.3.0'
 gem 'rollbar'
 gem 'scout_apm'

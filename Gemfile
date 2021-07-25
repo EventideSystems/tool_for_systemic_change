@@ -100,7 +100,7 @@ group :development, :test do
   # gem 'pry-coolline'
   gem 'pry-stack_explorer'
   gem 'rubocop', require: false
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'bullet'
@@ -110,7 +110,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

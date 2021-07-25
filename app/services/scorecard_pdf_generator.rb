@@ -2,7 +2,7 @@ require 'prawn/scorecards_helper'
 
 class ScorecardPdfGenerator
 
-  def initialize(scorecard: scorecard, initiatives: initiatives, focus_areas: focus_areas)
+  def initialize(scorecard:, initiatives:, focus_areas:)
     @scorecard = scorecard
     @initiatives = initiatives
     @focus_areas = focus_areas

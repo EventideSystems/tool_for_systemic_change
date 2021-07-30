@@ -19,9 +19,6 @@ class InitiativesController < ApplicationController
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     add_breadcrumb @initiative.name
     @content_subtitle = @initiative.name
-
-    @initiative.initiatives_organisations.build
-    @initiative.initiatives_subsystem_tags.build
   end
 
   def new
@@ -29,17 +26,11 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize @initiative
 
-    @initiative.initiatives_organisations.build
-    @initiative.initiatives_subsystem_tags.build
-
     add_breadcrumb 'New Initiative'
   end
 
   def edit
     add_breadcrumb @initiative.name
-
-    @initiative.initiatives_organisations.build
-    @initiative.initiatives_subsystem_tags.build
 
     @content_subtitle = @initiative.name
   end

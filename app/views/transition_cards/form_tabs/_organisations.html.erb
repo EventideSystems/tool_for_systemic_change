@@ -1,19 +1,39 @@
 <div class="form-group row">
   <label class="col-sm-3 col-form-label">Assign Organisations</label>
   <div class="organisations">
-    <%= f.simple_fields_for :initiatives_organisations do |initiatives_organisation_form| %>
-      <%= render 'transition_cards/form_tabs/organisation_fields', f: initiatives_organisation_form %>
-    <% end %>
-    <div class="links row d-flex justify-content-start ml-5">
-      <%=
-        link_to_add_association(
-          '',
-          f,
-          :initiatives_organisations,
-          partial: 'transition_cards/form_tabs/organisation_fields'
-        )
-      %>
+    <div data-controller='initiative-nested-form' 
+      data-nested-form-wrapper-selector-value='.nested-form-wrapper'
+      data-initiative-nested-form-new-item-value="{}"
+    >
+      <template data-initiative-nested-form-target="template">
+        <%= f.fields_for :initiatives_organisations, InitiativesOrganisation.new, child_index: 'NEW_RECORD' do |initiatives_organisation_fields| %>
+          <%= render "transition_cards/form_tabs/organisation_form", f: initiatives_organisation_fields %>
+        <% end %>
+      </template>
+
+      <%= f.fields_for :initiatives_organisations do |initiatives_organisation_fields| %>
+        <%= render "transition_cards/form_tabs/organisation_form", f: initiatives_organisation_fields %>
+      <% end %>
+
+      <!-- Inserted elements will be injected before that target. -->
+      <div data-initiative-nested-form-target="target"></div>
+
+      <div class="links row d-flex justify-content-start ml-5">
+        <button type="button" class="btn btn-secondary" data-action="initiative-nested-form#add">
+          Add Another
+        </button>
+
+        <div class="col">
+          <%= 
+            link_to(
+              "Create an Organisation", 
+              new_organisation_path, 
+              remote: true, 
+              class: "btn btn-secondary organisation-link"
+            ) 
+          %>
+        </div>   
+      </div>
     </div>
   </div>
 </div>
-<hr/>

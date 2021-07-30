@@ -20,7 +20,7 @@ $(document).on('turbolinks:load', function() {
       ).length;
       
       if (emptyFormCount == 0) {
-        $("[data-association='initiatives_organisation']").click();
+        $("[data-association='initiatives_organisation']")[0].click();
       }
     });
   });
@@ -32,7 +32,7 @@ $(document).on('turbolinks:load', function() {
       ).length;
       
       if (emptyFormCount == 0) {
-        $("[data-association='initiatives_subsystem_tag']").click();
+        $("[data-association='initiatives_subsystem_tag']")[0].click();
       }
     });
   });
@@ -45,7 +45,7 @@ $(document).on('turbolinks:load', function() {
     ).length;
     
     if (emptyFormCount == 0) {
-      $("[data-association='initiatives_organisation']").click();
+      $("[data-association='initiatives_organisation']")[0].click();
     }
   });
 });
@@ -57,7 +57,7 @@ $(document).on('turbolinks:load', function() {
     ).length;
     
     if (emptyFormCount == 0) {
-      $("[data-association='initiatives_subsystem_tag']").click();
+      $("[data-association='initiatives_subsystem_tag']")[0].click();
     }
   });
 });

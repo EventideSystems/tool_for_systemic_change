@@ -1,0 +1,22 @@
+
+<div class="nested-form-wrapper nested-fields pl-5" data-new-record="<%= f.object.new_record? %>">
+  <div class="form-group row"> 
+    <label class="pt-1">Select Existing</label>
+    <div class="col col-nested">
+      <%= 
+        f.input_field \
+          :subsystem_tag_id, 
+          collection: lookup_subsystem_tags, 
+          prompt: 'Select a Subsystem Tag',
+          class: 'form-control is-valid select optional assign-organisation-select'
+      %>
+    </div>
+
+    <div class="col-sm-1">
+      <button type="button" data-action="initiative-nested-form#remove" class='btn form-control'>
+        <%= content_tag(:i, nil, class: 'fa fa-remove') %>
+      </button>
+    </div>
+    <%= f.hidden_field :_destroy %>
+  </div>
+</div>

@@ -32,7 +32,8 @@ require("smartwizard");
 require('d3');
 require('d3-bboxCollide');
 require('moment');
-require("@nathanvda/cocoon")
+
+import "cocoon-js-vanilla";
 
 import 'select2';
 

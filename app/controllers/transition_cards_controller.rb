@@ -73,8 +73,6 @@ class TransitionCardsController < ApplicationController
     authorize @scorecard
 
     @scorecard.initiatives.build
-    @scorecard.initiatives.first.initiatives_subsystem_tags.build
-    @scorecard.initiatives.first.initiatives_organisations.build
 
     add_breadcrumb "New"
   end

@@ -13,4 +13,6 @@ class Organisation < ApplicationRecord
   validates :sector_id, presence: true
 
   delegate :name, to: :sector, prefix: true, allow_nil: true
+
+  accepts_nested_attributes_for :initiatives_organisations, reject_if: :all_blank, allow_destroy: true
 end

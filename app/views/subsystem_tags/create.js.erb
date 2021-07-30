@@ -6,16 +6,14 @@
   <% end %>
 <% else %>
   $('#subsystem-tag-modal').modal('hide');
-  $("[data-association='initiatives_subsystem_tag']").click();
-  var newSelect = $('.assign-subsystem-tag-select').last();
-  newSelect.append(
-    $('<option>', {value: '<%= @subsystem_tag.id %>', text:'<%= @subsystem_tag.name %>'})
-  );
-  newSelect.val('<%= @subsystem_tag.id %>');
 
-
-  var emptyFormCount = $('.assign-subsystem-tag-select').filter(function(){return $(this).val() == ''}).length;
-  if (emptyFormCount == 0) {
-    $("[data-association='initiatives_subsystem_tag']").click();
+  newItem = {
+    id: <%= @subsystem_tag.id %>,
+    name: '<%= @subsystem_tag.name %>'
   }
+
+  $('div.subsystem-tags').children()
+                        .first()
+                        .attr('data-initiative-nested-form-new-item-value', JSON.stringify(newItem))
+
 <% end %>

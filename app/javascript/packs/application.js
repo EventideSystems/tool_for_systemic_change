@@ -33,8 +33,6 @@ require('d3');
 require('d3-bboxCollide');
 require('moment');
 
-// import "cocoon-js-vanilla";
-
 import 'select2';
 
 import * as d3Base from 'd3'
@@ -51,14 +49,10 @@ import 'daterangepicker';
 
 require("bootstrap");
 
-require("trix")
-require("@rails/actiontext")
-
 require("../components/datepickers");
 require("../components/transition_card");
 require("../components/transition_card_wizard");
 require("../components/initiative_checklist");
-require("../components/initiatives");
 require("../components/spinner");
 require("../components/subsystem_tags");
 require("../components/toasts");

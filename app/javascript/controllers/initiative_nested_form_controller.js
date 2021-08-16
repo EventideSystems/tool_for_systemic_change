@@ -1,5 +1,4 @@
 import NestedForm from "stimulus-rails-nested-form"
-
 export default class extends NestedForm {
   static values = { newItem: Object }
 
@@ -16,7 +15,6 @@ export default class extends NestedForm {
     );
     
     newSelect.val(newItem.id);
-    
   }
 
 }

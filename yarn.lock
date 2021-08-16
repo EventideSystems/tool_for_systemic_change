@@ -918,9 +918,9 @@
     spark-md5 "^3.0.0"
 
 "@rails/ujs@^6.0.3-2":
-  version "6.0.3-2"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-6.0.3-2.tgz#e14c1f29086858215ce7ccd9ad6d8888c458b4a3"
-  integrity sha512-WcpIEftNCfGDEgk6KerOugiet75Mir5q/HT1yt3dDhpBI91BaZ15lfSQIsZwMw2nyeDz9A9QBz8dAFAd4gXIzg==
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-6.1.4.tgz#093d5341595a02089ed309dec40f3c37da7b1b10"
+  integrity sha512-O3lEzL5DYbxppMdsFSw36e4BHIlfz/xusynwXGv3l2lhSlvah41qviRpsoAlKXxl37nZAqK+UUF5cnGGK45Mfw==
 
 "@rails/webpacker@^5.1.1":
   version "5.4.0"
@@ -2136,11 +2136,6 @@ coa@^2.0.2:
     "@types/q" "^1.5.1"
     chalk "^2.4.1"
     q "^1.1.2"
-
-cocoon-js-vanilla@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/cocoon-js-vanilla/-/cocoon-js-vanilla-1.2.0.tgz#595348499d315d3b5828dd77a20974756cf59321"
-  integrity sha512-qLomIVL0Krfc983WLgaYPPktMjMtBN+F/CV15NPVDc9U9BCe2OL5WyAIYkPrVhDRphoYBmHCdIlZkq+vSBI4xg==
 
 codemirror@^5.60.0:
   version "5.62.2"
@@ -7331,9 +7326,9 @@ simple-swizzle@^0.2.2:
     is-arrayish "^0.3.1"
 
 smartwizard@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/smartwizard/-/smartwizard-5.0.0.tgz#7d01f16df2207e4cac644e24174c9f308a5dd77e"
-  integrity sha512-vcJGoQDRhWyl5Ff9bst/C6BAbNC7prNbpc8c/PHjctaE5cZuHRZuVMa9Uopa2Ydn7H0dcE35dPR6Y65LFEMFBw==
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/smartwizard/-/smartwizard-5.1.1.tgz#16313081f66a7b6a1ed6d7b2787a4960967d22c0"
+  integrity sha512-AFeP/zDXOEE4/AsHTsWIHQC/HyJlavOus7EtCs2nwsh1MkRDNtRFFadOLXCw7BlgT9xExQwmSIqxZdXKHuyFrw==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

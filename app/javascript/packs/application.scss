@@ -23,6 +23,8 @@
 @import '../stylesheets/cards';
 @import '../stylesheets/ecosystem_maps';
 
+@import "trix/dist/trix";
+
 .brand-link-small {
   .brand-link .brand-image-xs {
     float: none;
@@ -154,6 +156,19 @@ a.description-characteristic-link {
 a.description-characteristic-link:hover {
   color: darken(#49C5B1, 10%);
 }
+
+trix-editor.rich_text_area {
+  overflow-y: auto;
+  resize: vertical;
+
+  #scorecard_notes {
+    min-height: 100px;
+  }
+} 
+
+trix-editor.rich_text_area#scorecard_notes {
+  min-height: 200px;
+} 
 
 // div.medium-editor-element {
 //   height: auto;

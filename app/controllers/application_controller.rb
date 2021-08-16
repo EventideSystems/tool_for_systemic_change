@@ -1,12 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
   
-  force_ssl if: :ssl_configured?
-
-  def ssl_configured?
-    Rails.env.production?
-  end
-
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_session_account_id, unless: :devise_controller?
   before_action :authenticate_user!, unless: :devise_controller? 

@@ -23,7 +23,7 @@
     <%= f.input :contact_website %>
     <%= f.input :contact_position %>
     <hr>
-    <%= f.input :notes %>
+     <%= f.input :notes, as: :rich_text_area %>
     <div class='box-footer'>
       <%= f.button :submit, class: 'btn btn-primary float-right' %>
     </div>

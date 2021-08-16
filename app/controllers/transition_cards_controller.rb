@@ -200,6 +200,7 @@ class TransitionCardsController < ApplicationController
       :description, 
       :wicked_problem_id,
       :community_id,
+      :notes,
       initiatives_attributes: [
         :_destroy,
         :name,
@@ -213,6 +214,7 @@ class TransitionCardsController < ApplicationController
         :contact_phone,
         :contact_website,
         :contact_position,
+        :notes,
         initiatives_organisations_attributes: [
           :_destroy,
           :organisation_id

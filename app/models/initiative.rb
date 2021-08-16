@@ -11,6 +11,8 @@ class Initiative < ApplicationRecord
   has_many :checklist_items, dependent: :destroy
   has_many :characteristics, through: :checklist_items
   
+  has_rich_text :notes
+  
   accepts_nested_attributes_for :initiatives_organisations, 
     allow_destroy: true, 
     reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
@@ -42,17 +44,20 @@ class Initiative < ApplicationRecord
   }
   
   def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil)
-    checklist_items = ChecklistItem.includes(characteristic: {focus_area: :focus_area_group})
+    checklist_items = ChecklistItem.includes(characteristic: { focus_area: :focus_area_group })
      .where('checklist_items.initiative_id' => self.id)
-     .order('focus_area_groups.position', 'focus_areas.position', 'characteristics.position')
-     .includes(:initiative, :checklist_item_comments, characteristic: :video_tutorial)
-     .all
+     .order(
+       'focus_area_groups_focus_areas_2.position', 
+       'focus_areas_characteristics.position', 
+       'characteristics.position'
+      ).includes(:initiative, :checklist_item_comments, characteristic: :video_tutorial).all
      
-     checklist_items = checklist_items.select { |checklist_item| checklist_item.focus_area.id.in?(focus_areas.map(&:id)) } if focus_areas.present? 
+    
+    checklist_items = checklist_items.select { |checklist_item| checklist_item.focus_area.id.in?(focus_areas.map(&:id)) } if focus_areas.present? 
      
-     checklist_items = checklist_items.map { |checklist_item| checklist_item.snapshot_at(selected_date.end_of_day) } if selected_date.present?
+    checklist_items = checklist_items.map { |checklist_item| checklist_item.snapshot_at(selected_date.end_of_day) } if selected_date.present?
      
-     checklist_items
+    checklist_items
   end
   
   def wicked_problem_name

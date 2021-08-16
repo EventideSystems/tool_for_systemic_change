@@ -33,7 +33,7 @@ require('d3');
 require('d3-bboxCollide');
 require('moment');
 
-import "cocoon-js-vanilla";
+// import "cocoon-js-vanilla";
 
 import 'select2';
 
@@ -50,6 +50,9 @@ window.moment = moment;
 import 'daterangepicker';
 
 require("bootstrap");
+
+require("trix")
+require("@rails/actiontext")
 
 require("../components/datepickers");
 require("../components/transition_card");
@@ -81,3 +84,6 @@ $(window).on('load', function() {
   });
 });
 
+
+require("trix")
+require("@rails/actiontext")

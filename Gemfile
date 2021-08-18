@@ -79,7 +79,7 @@ gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
 
-gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
+gem 'hashie', '~> 4.1' # NOTE Older version to avoid spamming the log
 gem 'thor'
 
 group :test do

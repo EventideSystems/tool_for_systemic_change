@@ -4,16 +4,23 @@
 
 .scorecard-matrix {
   $colors:
-    (1 red) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
+    (1 #FF0000) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
     (5 #2E74BA) (6 #009BCC) (7 #008C8C) (8 #00CCAA)
     (9 #1CB85D);
 
+  $color-alpha: 44;
+
   @each $color in $colors {
-    .color#{nth($color, 1)} {
+    .actual#{nth($color, 1)} {
       background: #{nth($color, 2)};
       color: #{nth($color, 2)};
     }
     
+    .planned#{nth($color, 1)} {
+      background: #{nth($color, 2)}#{$color-alpha};
+      color: #{nth($color, 2)}#{$color-alpha};
+    }
+
     .text-color#{nth($color, 1)} {
       color: #{nth($color, 2)};
     }

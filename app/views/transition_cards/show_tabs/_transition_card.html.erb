@@ -104,8 +104,9 @@
                   data-toggle="tooltip" 
                   data-placement="left" 
                   data-container=".inner" 
+                  data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>" 
-                  class="cell <%= "gap" unless result.dig(characteristic.id.to_s, 'checked') %> <%= "color#{@focus_areas.index(characteristic.focus_area)+1}" %>">
+                  class="cell <%= "gap" unless result.dig(characteristic.id.to_s, 'checked') %> <%= "#{result.dig(characteristic.id.to_s, 'status')}#{@focus_areas.index(characteristic.focus_area)+1}" %>">
                   <span>&nbsp;</span>
                 </td>
               <% end %>

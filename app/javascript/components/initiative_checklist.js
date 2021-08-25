@@ -44,14 +44,17 @@ $(document).on('turbolinks:load', function() {
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
     var currentComment = $(commentFormId).find('#checklist_item_current_comment').val();
     var newComment = $(commentFormId).find('#checklist_item_new_comment').val();
+    var commentStatus = $(commentFormId).find('#checklist_item_current_comment_status').val();
+    
 
     $(commentFormId).hide();
 
-    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
-      $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
-    } else {  
-      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
-    }
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('actual');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('planned');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('suggestion');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('more-information');
+   
+    $(characteristicLink).siblings('span.characteristic-name').addClass(commentStatus)
   });
 
   $(document).on('click', '.btn-checklist-comment-create-new', function(event) {
@@ -59,6 +62,7 @@ $(document).on('turbolinks:load', function() {
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
     var currentComment = $(commentFormId).find('#checklist_item_current_comment').val();
     var newComment = $(commentFormId).find('#checklist_item_new_comment').val();
+    var commentStatus = $(commentFormId).find('#checklist_item_new_comment_status').val()
     
     $(commentFormId).find('#checklist_item_current_comment').val(newComment);
 
@@ -66,15 +70,12 @@ $(document).on('turbolinks:load', function() {
 
     $(commentFormId).hide();
 
-    if (($.trim(currentComment).length == 0) && ($.trim(newComment).length == 0)) {
-      $(characteristicLink).siblings('span.characteristic-name').removeClass('commented');
-    } else {  
-      $(characteristicLink).siblings('span.characteristic-name').addClass('commented');
-    }
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('actual');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('planned');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('suggestion');
+    $(characteristicLink).siblings('span.characteristic-name').removeClass('more-information');
 
-    $(commentFormId).find('textarea').each(function () {
-      this.setAttribute('style', 'height: 54px');
-    });
+    $(characteristicLink).siblings('span.characteristic-name').addClass(commentStatus)
   });
 });
 

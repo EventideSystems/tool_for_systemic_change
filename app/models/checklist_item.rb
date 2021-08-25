@@ -11,7 +11,7 @@ class ChecklistItem < ApplicationRecord
   validates :initiative, presence: true
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
-  attr_reader :new_comment # support creating comments
+  attr_reader :new_comment, :new_comment_status # support creating comments
 
   def name
     characteristic.name.presence
@@ -32,6 +32,10 @@ class ChecklistItem < ApplicationRecord
 
   def current_comment
     current_checklist_item_comment&.comment
+  end
+
+  def current_comment_status
+    current_checklist_item_comment&.status
   end
   
   private

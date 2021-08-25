@@ -160,6 +160,7 @@ module Reports
             LEFT JOIN checklist_item_comments
               ON checklist_item_comments.checklist_item_id = checklist_items.id
               AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.status = 'actual'
             LEFT JOIN checklist_item_first_checkeds
               ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
               AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
@@ -185,6 +186,7 @@ module Reports
             AND checklist_item_comments.comment IS NOT NULL
             AND checklist_item_comments.comment <> ''
             AND checklist_item_comments.created_at <= '#{date.to_s}'
+            AND checklist_item_comments.status = 'actual'
           ) AS comments_count
 
         FROM characteristics
@@ -231,6 +233,7 @@ module Reports
             WHERE initiatives.scorecard_id = #{scorecard.id}
               AND checklist_item_comments.comment IS NOT NULL
               AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.status = 'actual'
             ORDER BY checklist_item_comments.created_at
           ) filtered_checklist_items
           ORDER BY comment_date

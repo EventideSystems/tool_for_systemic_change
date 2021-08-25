@@ -61,7 +61,8 @@ class ChecklistItemsController < ApplicationController
     return if params.dig(:checklist_item, :current_comment).blank?
 
     @checklist_item.current_checklist_item_comment.update(
-      comment: params.dig(:checklist_item, :current_comment)
+      comment: params.dig(:checklist_item, :current_comment),
+      status: params.dig(:checklist_item, :current_comment_status)
     )
   end
 
@@ -69,7 +70,8 @@ class ChecklistItemsController < ApplicationController
     return if params.dig(:checklist_item, :new_comment).blank?
 
     @checklist_item.checklist_item_comments.create(
-      comment: params.dig(:checklist_item, :new_comment)
+      comment: params.dig(:checklist_item, :new_comment),
+      status: params.dig(:checklist_item, :new_comment_status)
     )
   end
 

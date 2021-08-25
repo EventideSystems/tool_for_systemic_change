@@ -254,8 +254,20 @@ li.select2-selection__choice {
   }
 }
 
-span.commented {
+span.actual {
   color: $primary-color-analogous-1;
+}
+
+span.planned {
+  color: #00CCAA;
+}
+
+span.suggestion {
+  color: #008C8C;
+}
+
+span.more_information {
+  color: #1CB85D;
 }
 
 // *** Home ***
@@ -324,3 +336,5 @@ i.report-icon {
 h3.box-title {
   font-size: 18px;
 }
+
+

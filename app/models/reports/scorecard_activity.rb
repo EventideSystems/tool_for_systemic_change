@@ -228,7 +228,9 @@ module Reports
     end
 
     def characteristics
-      Characteristic.joins(focus_area: :focus_area_group).order('focus_area_groups.position, focus_areas.position')
+      Characteristic
+        .joins(focus_area: :focus_area_group)
+        .order('focus_area_groups_focus_areas.position, focus_areas.position')
     end
 
     def initiatives(date_from, date_to)

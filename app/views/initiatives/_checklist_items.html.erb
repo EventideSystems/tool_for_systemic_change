@@ -112,9 +112,7 @@
                         </label>
                         <div id="characteristic-comment-form-<%=checklist_item.id%>" style="display: none">
                           <div 
-                            class="box box-solid mb-3 characteristic-update-comment-form" 
-                            style="<%= 'display: none' if checklist_item.current_comment.blank? %>"
-                          >
+                            class="box box-solid mb-3 characteristic-update-comment-form">
                             <%= simple_form_for([checklist_item.initiative, checklist_item],
                               method: :post,
                               url: update_comment_initiative_checklist_item_url(
@@ -126,25 +124,21 @@
                             ) do |f| %>
                               <%= f.input :current_comment_status, as: :select, collection: comment_statuses_collection, label: false, default: 'actual' %>
                               <%= f.input :current_comment, as: :text, label: false, hint: 'NB blank comments are ignored' %>
-                              <%= f.button :submit, "Update Existing Comment", class: 'btn btn-secondary btn-checklist-comment-update-current', data: { id: checklist_item.id } %>
-                              <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
-                            <% end %>
-                          </div>
-                          <div class="box box-solid mb-3 characteristic-update-comment-form">
-                            <hr/>
-                            <%= simple_form_for(
-                              [checklist_item.initiative, checklist_item],
-                              method: :post,
-                              url: create_comment_initiative_checklist_item_url(
-                                checklist_item.initiative, checklist_item
-                              ),
-                              html: { class: 'form-horizontal' }, 
-                              remote: true, 
-                              format: :json
-                            ) do |f| %>
-                              <%= f.input :new_comment_status, as: :select, collection: comment_statuses_collection, label: false, default: 'actual' %>
-                              <%= f.input  :new_comment, as: :text, label: false, hint: 'NB blank comments are ignored' %>
-                              <%= f.button :submit, "Save New Comment", class: 'btn btn-secondary btn-checklist-comment-create-new', data: { id: checklist_item.id } %>
+                              <%= 
+                                f.button :submit, 
+                                  "Update Existing", 
+                                  class: 'btn btn-primary checklist-comment-update', 
+                                  disabled: checklist_item.current_comment.blank?,
+                                  data: { id: checklist_item.id } 
+                              %>
+                              <%= f.button :submit, "Save New", class: 'btn btn-secondary checklist-comment-new', data: { id: checklist_item.id } %>
+                              <%= 
+                                f.button :submit, 
+                                  "Remove", class: 
+                                  'btn btn-danger checklist-comment-remove', 
+                                  disabled: checklist_item.current_comment.blank?,
+                                  data: { id: checklist_item.id, confirm: "Are you sure?"} 
+                              %>
                               <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
                             <% end %>
                           </div>

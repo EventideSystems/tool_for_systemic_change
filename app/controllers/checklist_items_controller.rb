@@ -58,21 +58,35 @@ class ChecklistItemsController < ApplicationController
   end
 
   def update_comment
-    return if params.dig(:checklist_item, :current_comment).blank?
+    case params[:commit]
+    when "Update Existing"
+      return if params.dig(:checklist_item, :current_comment).blank?
+ 
+      if @checklist_item.current_checklist_item_comment.blank?
+        @checklist_item.checklist_item_comments.create(
+          comment: params.dig(:checklist_item, :current_comment),
+          status: params.dig(:checklist_item, :current_comment_status)
+        )
+      else
+        @checklist_item.current_checklist_item_comment.update(
+          comment: params.dig(:checklist_item, :current_comment),
+          status: params.dig(:checklist_item, :current_comment_status)
+        )
+      end
+    when "Save New"
+      return if params.dig(:checklist_item, :current_comment).blank?
 
-    @checklist_item.current_checklist_item_comment.update(
-      comment: params.dig(:checklist_item, :current_comment),
-      status: params.dig(:checklist_item, :current_comment_status)
-    )
+      @checklist_item.checklist_item_comments.create(
+        comment: params.dig(:checklist_item, :current_comment),
+        status: params.dig(:checklist_item, :current_comment_status)
+      )
+    when "Remove"
+      @checklist_item.checklist_item_comments&.last&.delete
+    end
   end
 
   def create_comment
     return if params.dig(:checklist_item, :new_comment).blank?
-
-    @checklist_item.checklist_item_comments.create(
-      comment: params.dig(:checklist_item, :new_comment),
-      status: params.dig(:checklist_item, :new_comment_status)
-    )
   end
 
   # DELETE /checklist_items/1

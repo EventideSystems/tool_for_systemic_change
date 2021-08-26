@@ -24,7 +24,7 @@ en:
     attributes:
       checklist_item_comment/status:
         actual: Actual
-        planned: Plannned
+        planned: Planned
         suggestion: Suggestion / idea
         more_information: More information
     models:

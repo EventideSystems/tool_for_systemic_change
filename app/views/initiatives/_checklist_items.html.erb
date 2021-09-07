@@ -59,92 +59,71 @@
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
                   <ul class="checklist-items">
                     <% checklist_items.each do |checklist_item| %>
-                      <li>
-                        <label>
-                          <%= check_box_tag "checklist_item[#{checklist_item.id}]",
-                            true, checklist_item.checked,
-                            class: 'characteristic-checkbox', data: { id: checklist_item.id, initiative_id: checklist_item.initiative_id }
-                          %>
-                          
-                          <span class="characteristic-name <%= current_comment_status_style(checklist_item) %>"><%= checklist_item.characteristic.name %></span>
-                          <%= link_to(
-                            '#characteristic_comment', 
-                            class: 'characteristic-comment', 
-                            data: {
-                              id: checklist_item.id, 
-                              initiative_id: checklist_item.initiative_id, 
-                              toggle: "tooltip",
-                              placement: "top", 
-                              title: "Edit comments" 
-                            }
-                          ) do
-                            safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
-                          end %>
-                          <%- if checklist_item.characteristic.video_tutorial.present? %>
+                      <div data-controller="comments">
+                        <li>
+                          <label>
                             <%= 
-                              link_to(
-                                video_tutorial_path(checklist_item.characteristic.video_tutorial), 
-                                class: 'video-tutorial-wrapper',
+                              check_box_tag "checklist_item[#{checklist_item.id}]",
+                                true, checklist_item.checked,
+                                class: 'characteristic-checkbox', 
                                 data: { 
-                                  video_tutorial_link: video_tutorial_path(checklist_item.characteristic.video_tutorial), 
-                                  video_tutorial_title: checklist_item.characteristic.video_tutorial.name 
-                                } 
-                              ) do 
-                                safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
-                              end
-                            %>
-                          <%- end %>
-                          <%- if checklist_item.characteristic.description.present? %>
-                            <%= 
-                              link_to(
-                                description_characteristic_path(checklist_item.characteristic), 
-                                class: 'remote-link description-characteristic-link',
-                                data: {
-                                  toggle: "tooltip",
-                                  placement: "top", 
-                                  title: "More information" 
+                                  id: checklist_item.id, 
+                                  initiative_id: checklist_item.initiative_id,
+                                  comments_target: "checklistItem"
                                 }
-                              ) do
-                                safe_join([content_tag(:i, '', class: "fas fa-info-circle")])
-                              end
-                            %>  
-                          <%- end -%>
-                        </label>
-                        <div id="characteristic-comment-form-<%=checklist_item.id%>" style="display: none">
-                          <div 
-                            class="box box-solid mb-3 characteristic-update-comment-form">
-                            <%= simple_form_for([checklist_item.initiative, checklist_item],
-                              method: :post,
-                              url: update_comment_initiative_checklist_item_url(
-                                checklist_item.initiative, checklist_item
-                              ),
-                              html: { class: 'form-horizontal' }, 
-                              remote: true, 
-                              format: :json 
-                            ) do |f| %>
-                              <%= f.input :current_comment_status, as: :select, collection: comment_statuses_collection, label: false, default: 'actual' %>
-                              <%= f.input :current_comment, as: :text, label: false, hint: 'NB blank comments are ignored' %>
+                            %>
+                            
+                            <span class="characteristic-name <%= current_comment_status_style(checklist_item) %>" data-comments-target="characteristic">
+                              <%= checklist_item.characteristic.name %>
+                            </span>
+                            <%= link_to(
+                              '#characteristic_comment', 
+                              class: 'characteristic-comment', 
+                              data: {
+                                action: "comments#open",
+                                id: checklist_item.id, 
+                                initiative_id: checklist_item.initiative_id, 
+                                toggle: "tooltip",
+                                placement: "top", 
+                                title: "Edit comments" 
+                              }
+                            ) do
+                              safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
+                            end %>
+                            <%- if checklist_item.characteristic.video_tutorial.present? %>
                               <%= 
-                                f.button :submit, 
-                                  "Update Existing", 
-                                  class: 'btn btn-primary checklist-comment-update', 
-                                  disabled: checklist_item.current_comment.blank?,
-                                  data: { id: checklist_item.id } 
+                                link_to(
+                                  video_tutorial_path(checklist_item.characteristic.video_tutorial), 
+                                  class: 'video-tutorial-wrapper',
+                                  data: { 
+                                    video_tutorial_link: video_tutorial_path(checklist_item.characteristic.video_tutorial), 
+                                    video_tutorial_title: checklist_item.characteristic.video_tutorial.name 
+                                  } 
+                                ) do 
+                                  safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
+                                end
                               %>
-                              <%= f.button :submit, "Save New", class: 'btn btn-secondary checklist-comment-new', data: { id: checklist_item.id } %>
+                            <%- end %>
+                            <%- if checklist_item.characteristic.description.present? %>
                               <%= 
-                                f.button :submit, 
-                                  "Remove", class: 
-                                  'btn btn-danger checklist-comment-remove', 
-                                  disabled: checklist_item.current_comment.blank?,
-                                  data: { id: checklist_item.id, confirm: "Are you sure?"} 
-                              %>
-                              <button class="btn btn-default btn-checklist-comment-cancel" data-id="<%=checklist_item.id%>">Cancel</button>
-                            <% end %>
-                          </div>
-                        </div>
-                      <%- end -%>  
-                    </li>
+                                link_to(
+                                  description_characteristic_path(checklist_item.characteristic), 
+                                  class: 'remote-link description-characteristic-link',
+                                  data: {
+                                    toggle: "tooltip",
+                                    placement: "top", 
+                                    title: "More information" 
+                                  }
+                                ) do
+                                  safe_join([content_tag(:i, '', class: "fas fa-info-circle")])
+                                end
+                              %>  
+                            <%- end -%>
+                          </label>
+                          <%= render 'checklist_item_form', checklist_item: checklist_item, comment_statuses_collection: comment_statuses_collection %>
+                        </li>
+                      </div>
+                    <%- end -%>
                   </ul>
                 </div>
               <% end %>

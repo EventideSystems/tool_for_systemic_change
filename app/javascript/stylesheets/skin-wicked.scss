@@ -254,21 +254,46 @@ li.select2-selection__choice {
   }
 }
 
+$color-actual: $primary-color-analogous-1;
+$color-planned: #00CCAA;
+$color-suggestion: #008C8C;
+$color-more-information: #1CB85D;
+
 span.actual {
-  color: $primary-color-analogous-1;
+  color: $color-actual;
 }
 
 span.planned {
-  color: #00CCAA;
+  color: $color-planned;
 }
 
 span.suggestion {
-  color: #008C8C;
+  color: $color-suggestion;
 }
 
 span.more_information {
-  color: #1CB85D;
+  color: $color-more-information;
 }
+
+.form-check {
+  label[for=checklist_item_current_comment_status_actual].form-check-label {
+    color: $color-actual;
+  }
+
+  label[for=checklist_item_current_comment_status_planned].form-check-label {
+    color: $color-planned;
+  }
+
+  label[for=checklist_item_current_comment_status_suggestion].form-check-label {
+    color: $color-suggestion;
+  }
+
+  label[for=checklist_item_current_comment_status_more_information].form-check-label {
+    color: $color-more-information;
+  }
+}
+
+
 
 // *** Home ***
 
@@ -338,3 +363,7 @@ h3.box-title {
 }
 
 
+textarea[name='checklist_item[current_comment]'] {
+  height: 90px;
+  width: 300px;
+}

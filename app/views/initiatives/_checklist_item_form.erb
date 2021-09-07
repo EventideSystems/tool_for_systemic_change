@@ -1,0 +1,78 @@
+
+<div id="characteristic-comment-form-<%=checklist_item.id%>" data-comments-target='form' style="display: none">
+  <div class="box box-solid mb-3 characteristic-update-comment-form">
+    <%= simple_form_for([checklist_item.initiative, checklist_item],
+      method: :post,
+      url: update_comment_initiative_checklist_item_url(
+        checklist_item.initiative, checklist_item
+      ),
+      html: { 
+        class: 'form-horizontal',
+        data: { action: "ajax:success->comments#onPostSuccess" }
+      }, 
+      remote: true, 
+      format: :json 
+    ) do |f| %>
+      <div class="d-flex flex-row">
+        <div class='mt-1'>
+          <%= f.input :current_comment, as: :text, label: false %>
+        </div>
+        <div class='ml-3'>
+          <%= 
+            f.input :current_comment_status, 
+              as: :radio_buttons, 
+              collection: comment_statuses_collection, 
+              label_text: false, 
+              checked: checklist_item.current_comment_status || 'actual'
+            %>
+        </div>
+      </div>
+      <div class="mb-3">
+        <small>NB blank comments are ignored</small>
+      </div>
+      <%= 
+        f.button :submit, 
+          "Update Existing", 
+          class: 'btn btn-primary checklist-comment-update', 
+          disabled: checklist_item.current_comment.blank?,
+          data: {
+            comments_target: "updateExistingBtn",
+            id: checklist_item.id 
+          }
+      %>
+      <%= 
+        f.button :submit, 
+          "Save New", 
+          class: 'btn btn-secondary checklist-comment-new', 
+          data: { 
+            action: "comments#saveNew",
+            comments_target: "saveNewBtn",
+            id: checklist_item.id 
+          } 
+      %>
+      <%= 
+        f.button :submit, 
+          "Remove Current", class: 
+          'btn btn-danger checklist-comment-remove', 
+          disabled: checklist_item.current_comment.blank?,
+          data: { 
+            id: checklist_item.id, 
+            comments_target: "removeCurrentBtn",
+            confirm: "This will remove the current comment. Are you sure?"
+          } 
+      %>
+      <%#= 
+        f.button :submit, 
+          "Remove All", class: 
+          'btn btn-danger checklist-comment-remove', 
+          disabled: checklist_item.current_comment.blank?,
+          data: { 
+            id: checklist_item.id, 
+            confirm: "Are you sure?"
+          } 
+      %>
+      
+      <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
+    <% end %>
+  </div>
+</div>

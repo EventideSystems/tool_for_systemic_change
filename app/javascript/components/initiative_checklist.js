@@ -8,34 +8,8 @@ $(document).on('turbolinks:load', function() {
       dataType: 'json'
     });
   });
-
-  
 });
 
-$(document).on('turbolinks:load', function() {
-  $(document).on('click', '.characteristic-comment', function(event) {
-    event.preventDefault();
-    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-    $(commentFormId).find('#checklist_item_new_comment').val('');
-    $(commentFormId).show();
-
-    $(commentFormId).find('textarea').each(function () {
-      this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-    }).on('input', function () {
-      this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
-    });
-  });
-
-  $('a[data-target="#checklist-items-tab"]').on('shown.bs.tab', function (e) {
-    $(document).on('click', '.characteristic-comment', function(event) {
-      event.preventDefault();
-      var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-      $(commentFormId).find('#checklist_item_new_comment').val('');
-      $(commentFormId).show();
-    });
-  });
-});
 
 $(document).on('turbolinks:load', function() {
 
@@ -44,7 +18,7 @@ $(document).on('turbolinks:load', function() {
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
     var commentStatus = $(commentFormId).find('#checklist_item_current_comment_status').val();
 
-    $(commentFormId).hide();
+    // $(commentFormId).hide();
 
     $(characteristicLink).siblings('span.characteristic-name').removeClass('actual');
     $(characteristicLink).siblings('span.characteristic-name').removeClass('planned');
@@ -62,7 +36,7 @@ $(document).on('turbolinks:load', function() {
     var characteristicLink = 'a.characteristic-comment[data-id=' + $(this).data('id') + ']';
     var commentStatus = $(commentFormId).find('#checklist_item_current_comment_status').val();
 
-    $(commentFormId).hide();
+    // $(commentFormId).hide();
 
     $(characteristicLink).siblings('span.characteristic-name').removeClass('actual');
     $(characteristicLink).siblings('span.characteristic-name').removeClass('planned');
@@ -74,13 +48,5 @@ $(document).on('turbolinks:load', function() {
 
   $(document).on('click', '.checklist-comment-remove', function(event) {
     location.reload();
-  });
-});
-
-$(document).on('turbolinks:load', function() {
-  $(document).on('click', '.btn-checklist-comment-cancel', function(event) {
-    event.preventDefault();
-    var commentFormId = '#characteristic-comment-form-' + $(this).data('id');
-    $(commentFormId).hide();
   });
 });

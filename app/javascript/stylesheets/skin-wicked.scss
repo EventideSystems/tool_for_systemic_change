@@ -254,10 +254,10 @@ li.select2-selection__choice {
   }
 }
 
-$color-actual: $primary-color-analogous-1;
+$color-actual: #009BCC;
 $color-planned: #00CCAA;
-$color-suggestion: #008C8C;
-$color-more-information: #1CB85D;
+$color-suggestion: #F7C80B;
+$color-more-information: #7993F2;
 
 span.actual {
   color: $color-actual;
@@ -365,5 +365,5 @@ h3.box-title {
 
 textarea[name='checklist_item[current_comment]'] {
   height: 90px;
-  width: 300px;
+  width: 400px;
 }

@@ -27,8 +27,6 @@ export default class extends Controller {
 
     characteristic_element.addClass(status);
 
-    $(this.checklistItemTarget).prop('checked', (status === 'actual') || (status === 'planned'));
-
     $(this.formTarget).hide()
   }
 
@@ -36,6 +34,11 @@ export default class extends Controller {
     $(updateExistingBtn).prop('disabled', false);
     $(removeCurrentBtn).prop('disabled', false);
   }
+
+  removeCurrent(event) {
+    event.preventDefault()
+  }
+
   // update() {
   //   Rails.fire(this.element, 'submit');
   // }

@@ -293,6 +293,25 @@ span.more_information {
   }
 }
 
+.form-check {
+  label[for=checklist_item_new_comment_status_actual].form-check-label {
+    color: $color-actual;
+  }
+
+  label[for=checklist_item_new_comment_status_planned].form-check-label {
+    color: $color-planned;
+  }
+
+  label[for=checklist_item_new_comment_status_suggestion].form-check-label {
+    color: $color-suggestion;
+  }
+
+  label[for=checklist_item_new_comment_status_more_information].form-check-label {
+    color: $color-more-information;
+  }
+}
+
+
 
 
 // *** Home ***
@@ -367,3 +386,9 @@ textarea[name='checklist_item[current_comment]'] {
   height: 90px;
   width: 400px;
 }
+
+textarea[name='checklist_item[new_comment]'] {
+  height: 85px;
+  width: 400px;
+}
+

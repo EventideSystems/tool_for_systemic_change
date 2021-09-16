@@ -78,20 +78,18 @@ class ChecklistItemsController < ApplicationController
           status: params.dig(:checklist_item, :current_comment_status)
         )
       end
-    when "Save New"
-      return if params.dig(:checklist_item, :current_comment).blank?
+    when "Save New Comment"
+      return if params.dig(:checklist_item, :new_comment).blank?
 
       @checklist_item.update_attribute(
         :checked, 
-        params.dig(:checklist_item, :current_comment_status).in?(['actual', 'planned'])
+        params.dig(:checklist_item, :new_comment_status).in?(['actual', 'planned'])
       )
 
       @checklist_item.checklist_item_comments.create(
-        comment: params.dig(:checklist_item, :current_comment),
-        status: params.dig(:checklist_item, :current_comment_status)
+        comment: params.dig(:checklist_item, :new_comment),
+        status: params.dig(:checklist_item, :new_comment_status)
       )
-    when "Remove Current"
-      @checklist_item.checklist_item_comments&.last&.delete
     end
   end
 

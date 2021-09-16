@@ -90,35 +90,8 @@
                             ) do
                               safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
                             end %>
-                            <%- if checklist_item.characteristic.video_tutorial.present? %>
-                              <%= 
-                                link_to(
-                                  video_tutorial_path(checklist_item.characteristic.video_tutorial), 
-                                  class: 'video-tutorial-wrapper',
-                                  data: { 
-                                    video_tutorial_link: video_tutorial_path(checklist_item.characteristic.video_tutorial), 
-                                    video_tutorial_title: checklist_item.characteristic.video_tutorial.name 
-                                  } 
-                                ) do 
-                                  safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
-                                end
-                              %>
-                            <%- end %>
-                            <%- if checklist_item.characteristic.description.present? %>
-                              <%= 
-                                link_to(
-                                  description_characteristic_path(checklist_item.characteristic), 
-                                  class: 'remote-link description-characteristic-link',
-                                  data: {
-                                    toggle: "tooltip",
-                                    placement: "top", 
-                                    title: "More information" 
-                                  }
-                                ) do
-                                  safe_join([content_tag(:i, '', class: "fas fa-info-circle")])
-                                end
-                              %>  
-                            <%- end -%>
+                            <%= render 'checklist_item_video_tutorial', checklist_item: checklist_item %>
+                            <%= render 'checklist_item_description', checklist_item: checklist_item %>
                           </label>
                           <%= render 'checklist_item_form', checklist_item: checklist_item, comment_statuses_collection: comment_statuses_collection %>
                         </li>

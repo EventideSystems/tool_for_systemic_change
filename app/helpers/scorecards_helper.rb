@@ -19,4 +19,20 @@ module ScorecardsHelper
     return 'Select Date' if @selected_date.blank?
     Date.parse(@selected_date).strftime('%B %-d, %Y')
   end
+
+  def cell_class(result, focus_areas, characteristic)
+    classes = ['cell']
+
+    if result.dig(characteristic.id.to_s, 'status').in? ['actual', 'planned']
+      classes << "#{result.dig(characteristic.id.to_s, 'status')}#{@focus_areas.index(characteristic.focus_area)+1}"      
+    else
+      if result.dig(characteristic.id.to_s, 'checked')
+        classes << "checked#{@focus_areas.index(characteristic.focus_area)+1}"
+      else
+        classes << 'gap'
+      end
+    end
+
+    classes.join(' ')
+  end
 end

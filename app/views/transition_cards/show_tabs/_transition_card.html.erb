@@ -106,7 +106,7 @@
                   data-container=".inner" 
                   data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>" 
-                  class="cell <%= "gap" unless result.dig(characteristic.id.to_s, 'checked') %> <%= "#{result.dig(characteristic.id.to_s, 'status')}#{@focus_areas.index(characteristic.focus_area)+1}" %>">
+                  class="<%= cell_class(result, @focus_areas, characteristic) %>"
                   <span>&nbsp;</span>
                 </td>
               <% end %>

@@ -70,13 +70,13 @@ class TransitionCardSummary
             ON initiatives.id = checklist_items.initiative_id 
             AND initiatives.deleted_at IS NULL
           INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
-          LEFT JOIN (
+          LEFT OUTER JOIN (
             SELECT checklist_item_id, MAX(created_at) max_created_at
             FROM checklist_item_comments
             #{last_comment_where_clause}
             GROUP BY checklist_item_id
           ) last_comment ON last_comment.checklist_item_id = checklist_items.id
-          LEFT JOIN checklist_item_comments 
+          LEFT OUTER JOIN checklist_item_comments 
             ON checklist_item_comments.checklist_item_id = last_comment.checklist_item_id
             AND checklist_item_comments.created_at = last_comment.max_created_at
           WHERE scorecards.id = #{transition_card_id}

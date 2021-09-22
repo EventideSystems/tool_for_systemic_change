@@ -30,6 +30,12 @@ class TransitionCardSummary
         ).join(',')
     end
 
+    def last_comment_where_clause(snapshot_at)
+      return '' if snapshot_at.blank?
+
+      "AND created_at <= '#{snapshot_at}'"
+    end
+
     def subsystem_sql(subsystem_tags)
       return '' if subsystem_tags.empty?
 
@@ -46,7 +52,6 @@ class TransitionCardSummary
 
     def select_sql(transition_card_id, snapshot_at, subsystem_tags)
       snapshot_at_arg = snapshot_at.present? ? "'#{snapshot_at}'" : 'NULL'
-      last_comment_where_clause = snapshot_at.present? ? "WHERE created_at <= '#{snapshot_at}'" : ''
 
       <<~SQL
         SELECT * 
@@ -70,15 +75,17 @@ class TransitionCardSummary
             ON initiatives.id = checklist_items.initiative_id 
             AND initiatives.deleted_at IS NULL
           INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
-          LEFT OUTER JOIN (
+          LEFT JOIN (
             SELECT checklist_item_id, MAX(created_at) max_created_at
             FROM checklist_item_comments
-            #{last_comment_where_clause}
+            WHERE checklist_item_comments.deleted_at IS NULL
+            #{last_comment_where_clause(snapshot_at)}
             GROUP BY checklist_item_id
           ) last_comment ON last_comment.checklist_item_id = checklist_items.id
-          LEFT OUTER JOIN checklist_item_comments 
+          LEFT JOIN checklist_item_comments 
             ON checklist_item_comments.checklist_item_id = last_comment.checklist_item_id
             AND checklist_item_comments.created_at = last_comment.max_created_at
+            AND checklist_item_comments.deleted_at IS NULL
           WHERE scorecards.id = #{transition_card_id}
           #{subsystem_sql(subsystem_tags)}
           ORDER BY initiatives.name, focus_areas.position, characteristics.position

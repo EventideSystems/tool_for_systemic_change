@@ -106,7 +106,7 @@
                   data-container=".inner" 
                   data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>" 
-                  class="<%= cell_class(result, @focus_areas, characteristic) %>"
+                  class="<%= cell_class(result, @focus_areas, characteristic) %>">
                   <span>&nbsp;</span>
                 </td>
               <% end %>

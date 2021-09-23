@@ -179,7 +179,9 @@ module Reports
         checklist_items.characteristic_id,
         count(distinct(checklist_items.id)) filter(
           where (
-            checklist_item_comments.created_at < $1 AND checklist_item_comments.deleted_at IS NULL
+            checklist_item_comments.created_at < $1 
+            AND checklist_item_comments.deleted_at IS NULL
+            AND checklist_item_comments.status = 'actual'
           ) or checklist_item_at_time(checklist_items.id, $1) = true
         ) as initial,
         count(distinct(checklist_items.id)) filter(
@@ -187,8 +189,11 @@ module Reports
             ( 
               checklist_item_comments.created_at BETWEEN $1 AND $2
               AND checklist_item_comments.deleted_at IS NULL
+              AND checklist_item_comments.status = 'actual'
               and not (
-                ( checklist_item_comments.created_at < $1 AND checklist_item_comments.deleted_at IS NULL )
+                ( checklist_item_comments.created_at < $1 
+                  AND checklist_item_comments.deleted_at IS NULL 
+                )
               )
             )
             or (

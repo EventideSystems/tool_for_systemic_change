@@ -161,6 +161,7 @@ module Reports
               ON checklist_item_comments.checklist_item_id = checklist_items.id
               AND checklist_item_comments.created_at <= '#{date.to_s}'
               AND checklist_item_comments.status = 'actual'
+              AND checklist_item_comments.deleted_at IS NULL
             LEFT JOIN checklist_item_first_checkeds
               ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
               AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
@@ -169,7 +170,7 @@ module Reports
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND (
-              checklist_item_comments.created_at IS NOT NULL
+              (checklist_item_comments.created_at IS NOT NULL  AND checklist_item_comments.deleted_at IS NULL)
               OR checklist_item_first_checkeds.first_checked_at IS NOT NULL
             ) 
           ) AS initiatives_count,
@@ -184,6 +185,7 @@ module Reports
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND checklist_item_comments.comment IS NOT NULL
+            AND checklist_item_comments.deleted_at IS NULL
             AND checklist_item_comments.comment <> ''
             AND checklist_item_comments.created_at <= '#{date.to_s}'
             AND checklist_item_comments.status = 'actual'
@@ -234,6 +236,7 @@ module Reports
               AND checklist_item_comments.comment IS NOT NULL
               AND checklist_item_comments.created_at <= '#{date.to_s}'
               AND checklist_item_comments.status = 'actual'
+              AND checklist_item_comments.deleted_at IS NULL
             ORDER BY checklist_item_comments.created_at
           ) filtered_checklist_items
           ORDER BY comment_date

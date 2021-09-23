@@ -187,12 +187,14 @@ module Reports
             ( 
               checklist_item_comments.created_at BETWEEN $1 AND $2
               AND checklist_item_comments.deleted_at IS NULL
+              and not (
+                ( checklist_item_comments.created_at < $1 AND checklist_item_comments.deleted_at IS NULL )
+              )
             )
-            or checklist_item_at_time(checklist_items.id, $2) = true
-          ) and not (
-            ( checklist_item_comments.created_at < $1 AND checklist_item_comments.deleted_at IS NULL )
-          ) and not (
-            checklist_item_at_time(checklist_items.id, $1) = true
+            or (
+              checklist_item_at_time(checklist_items.id, $2) = true 
+              and not (checklist_item_at_time(checklist_items.id, $1) = true)
+            )
           )
         ) as additions,
         count(distinct(checklist_items.id)) filter(

@@ -17,7 +17,7 @@ class CreateChecklistStatusAtTime < ActiveRecord::Migration[6.1]
           INNER JOIN checklist_items ON checklist_item_comments.checklist_item_id = checklist_items.id
           WHERE checklist_items.id = the_checklist_item_id 
           AND checklist_item_comments.updated_at < at
-          ORDER BY checklist_item_comments.updated_at DESC LIMIT 1;
+          ORDER BY checklist_item_comments.created_at DESC LIMIT 1;
           
           IF NOT FOUND THEN
             SELECT object->>'status'

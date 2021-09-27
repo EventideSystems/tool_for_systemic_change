@@ -182,7 +182,10 @@ module Reports
             checklist_item_comments.created_at < $1 
             AND checklist_item_comments.deleted_at IS NULL
             AND checklist_item_comments.status = 'actual'
-          ) or checklist_item_at_time(checklist_items.id, $1) = true
+          ) or (
+            checklist_item_at_time(checklist_items.id, $1) = true
+            AND checklist_item_status_at_time(checklist_items.id, $1) <> 'planned'
+          )
         ) as initial,
         count(distinct(checklist_items.id)) filter(
           where (
@@ -197,19 +200,32 @@ module Reports
               )
             )
             or (
-              checklist_item_at_time(checklist_items.id, $2) = true 
-              and not (checklist_item_at_time(checklist_items.id, $1) = true)
+              (
+                checklist_item_at_time(checklist_items.id, $2) = true
+                AND checklist_item_status_at_time(checklist_items.id, $2) <> 'planned'
+              )
+              and not (
+                checklist_item_at_time(checklist_items.id, $1) = true
+                AND checklist_item_status_at_time(checklist_items.id, $1) <> 'planned'
+              )
             )
           )
         ) as additions,
         count(distinct(checklist_items.id)) filter(
           where (
-            (checklist_item_comments.created_at < $1  AND checklist_item_comments.deleted_at IS NULL)
-            or checklist_item_at_time(checklist_items.id, $1) = true
+            (
+              checklist_item_comments.created_at < $1 
+              AND checklist_item_comments.deleted_at IS NULL
+            )
+            or (
+              checklist_item_at_time(checklist_items.id, $1) = true
+              AND checklist_item_status_at_time(checklist_items.id, $1) <> 'planned'
+            )
           ) and not (
             (checklist_item_comments.created_at > $1  AND checklist_item_comments.deleted_at IS NULL)
           ) and not (
             checklist_item_at_time(checklist_items.id, $2) = true
+            AND checklist_item_status_at_time(checklist_items.id, $2) <> 'planned'
           )
         ) as removals
       from initiatives

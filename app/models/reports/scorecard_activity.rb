@@ -162,7 +162,6 @@ module Reports
       left join checklist_item_comments all_comments 
         on all_comments.checklist_item_id = checklist_items.id
         and all_comments.comment <> ''
-        AND checklist_item_comments.status = 'actual'
         and all_comments.comment IS NOT NULL
         AND all_comments.deleted_at IS NULL
       inner join initiatives 

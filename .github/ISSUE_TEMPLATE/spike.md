@@ -2,7 +2,7 @@
 name: Spike
 about: Describe an architectural spike
 title: ''
-labels: 'Spike'
+labels: spike
 assignees: ''
 
 ---

@@ -55,6 +55,7 @@ gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'nokogiri_truncate_html'
 gem 'bootstrap_form', '<= 2.1.1'
 gem 'trix-rails', require: 'trix'
+gem 'nested_form_fields'
 
 # Report related
 gem 'wkhtmltopdf-binary'

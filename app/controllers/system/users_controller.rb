@@ -35,17 +35,23 @@ module System
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
     
-      @user.accounts_users.build(account: current_account, role: account_role)
+      if current_account.users.where(email: @user.email).exists?
+        redirect_to system_users_path, alert: "A user with the email '#{user.email}' is already a member of this account."
+      elsif max_users_reached?
+        redirect_to users_path, alert: "You have reached the maximum number of users for this account."
+      else
+        @user.accounts_users.build(account: current_account, role: account_role)
 
-      authorize @user
+        authorize @user
 
-      respond_to do |format|
-        if @user.save
-          format.html { redirect_to system_users_path, notice: 'User was successfully created.' }
-          format.json { render :show, status: :created, location: @user }
-        else
-          format.html { render :new }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+        respond_to do |format|
+          if @user.save
+            format.html { redirect_to system_users_path, notice: 'User was successfully created.' }
+            format.json { render :show, status: :created, location: @user }
+          else
+            format.html { render :new }
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
         end
       end
     end
@@ -58,6 +64,8 @@ module System
     
       if current_account_user
         current_account_user.update(account_role: account_role)
+      elsif max_users_reached?
+        redirect_to users_path, alert: "You have reached the maximum number of users for this account." and return
       else
         @user.accounts_users.build(account: current_account, account_role: account_role)
       end
@@ -91,6 +99,12 @@ module System
     end
 
     private
+
+    # SMELL: This is a duplicate of the code in the InvitationsContoller class.
+    def max_users_reached?
+      return false if current_account.max_users.zero? || current_account.max_users.blank?
+      current_account.users.count >= current_account.max_users
+    end
   
     def set_account_role
       current_account_user = @user.accounts_users.find_by_account_id(current_account.id)

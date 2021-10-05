@@ -57,7 +57,7 @@ module System
       current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
     
       if current_account_user
-        current_account_user.update_attributes(account_role: account_role)
+        current_account_user.update(account_role: account_role)
       else
         @user.accounts_users.build(account: current_account, account_role: account_role)
       end

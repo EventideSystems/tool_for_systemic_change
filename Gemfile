@@ -99,7 +99,8 @@ group :development, :test do
   # NOTE Currently errors out
   # gem 'pry-coolline'
   gem 'pry-stack_explorer'
-  gem 'rubocop', require: false
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
   gem 'rspec-rails'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'

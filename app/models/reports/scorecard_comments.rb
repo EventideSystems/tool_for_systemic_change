@@ -195,7 +195,7 @@ module Reports
             AND checklist_item_comments.deleted_at IS NULL
             AND checklist_item_comments.comment <> ''
             AND checklist_item_comments.created_at <= '#{date.to_s}'
-            AND checklist_item_comments.status = 'actual'
+            AND checklist_item_comments.status = '#{status}'
           ) AS comments_count
 
         FROM characteristics

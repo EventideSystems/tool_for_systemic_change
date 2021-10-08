@@ -177,8 +177,11 @@ module Reports
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND (
-              (checklist_item_comments.created_at IS NOT NULL  AND checklist_item_comments.deleted_at IS NULL)
-              OR checklist_item_first_checkeds.first_checked_at IS NOT NULL
+              (
+                checklist_item_comments.created_at IS NOT NULL
+                AND checklist_item_comments.deleted_at IS NULL
+                AND checklist_item_comments.status = '#{status}'
+              )
             )
           ) AS initiatives_count,
 

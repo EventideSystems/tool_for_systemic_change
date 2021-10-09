@@ -154,15 +154,12 @@
   }
 
   .gap {
-    background: #f8f8f8;
+    background: #333333;
   }
 
-  .cell.inverse {
-    background: #f8f8f8 !important;;
-  }
-
-  .gap.inverse {
-    background: #333333 !important;
+  .cell.hidden {
+    background: #f8f8f8 !important;
+    border: 1px solid white !important;
   }
 
   .legend {

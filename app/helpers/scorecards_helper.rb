@@ -23,15 +23,27 @@ module ScorecardsHelper
   def cell_class(result, focus_areas, characteristic)
     classes = ['cell']
 
-    if result.dig(characteristic.id.to_s, 'status').in? ['actual', 'planned']
-      classes << "#{result.dig(characteristic.id.to_s, 'status')}#{@focus_areas.index(characteristic.focus_area)+1}"      
+    characteristic_data = result[characteristic.id.to_s]
+
+    if characteristic_data['status'].in? ['actual', 'planned']
+      classes << [
+        "#{characteristic_data['status']}#{@focus_areas.index(characteristic.focus_area)+1}",
+        characteristic_data['status']
+      ]
     else
-      if result.dig(characteristic.id.to_s, 'checked')
-        classes << "checked#{@focus_areas.index(characteristic.focus_area)+1}"
+      if characteristic_data['checked']
+        classes << [
+          "checked#{@focus_areas.index(characteristic.focus_area)+1}",
+          "checked"
+        ]
       else
         classes << 'gap'
       end
+
+      classes << 'no-comment' if characteristic_data['comment'].blank?
     end
+
+    classes << 'hidden' unless characteristic_data['status'] == 'actual'
 
     classes.join(' ')
   end

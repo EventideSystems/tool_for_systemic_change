@@ -66,7 +66,8 @@ class TransitionCardSummary
           jsonb_build_object(
             'name', characteristics.name,
             'checked', checklist_item_at_time(checklist_items.id, #{snapshot_at_arg}),
-            'status', checklist_item_comments.status
+            'status', checklist_item_comments.status,
+            'comment', checklist_item_comments.comment 
           )
           FROM checklist_items
           INNER JOIN characteristics ON characteristics.id = checklist_items.characteristic_id

@@ -26,7 +26,7 @@
         <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
           <div class="input-group">
           
-            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px; width: auto;" data-scorecard-id="<%=@scorecard.id%>">
+            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px;" data-scorecard-id="<%=@scorecard.id%>">
               <%- @selected_tags.each do |selected_tag| %>
                   <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
               <%- end %>
@@ -37,7 +37,7 @@
       
       <div class="float-right">
         <div class="float-left" style="padding-right: 5px; padding-left: 5px;"> 
-          <select class="form-control" name='status-filter' id="status-filter" data-transition-cards-target="filter" data-action="change->transition-cards#selectFilter">
+          <select multiple="multiple" class="form-control" name='status-filter[]' id="status-filter" style="min-width: 300px; width: auto"  data-transition-cards-target="filter">
             <%- ['Actual', 'Planned', 'No Comment', 'Gap in Effort'].each do |option| %>
               <option value="<%= option %>" <%= 'selected' if option == 'Actual' %>><%= option %></option>
             <%- end %>

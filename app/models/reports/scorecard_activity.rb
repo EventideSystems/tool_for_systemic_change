@@ -73,7 +73,7 @@ module Reports
             row.add_cell('Additions', height: 48, style: wrap_text)
             row.add_cell('Removals', height: 48, style: wrap_text)
             row.add_cell('Characteristics end of period', height: 48, style: wrap_text)
-            row.add_cell('Characteristic comment updates', height: 48, style: wrap_text)
+            row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
           end
 
           current_focus_area_group = ''

@@ -214,8 +214,11 @@ module Reports
         ) as additions,
 
         count(distinct(checklist_items.id)) filter(
-          where checklist_item_comments.created_at < $1 
-          AND checklist_item_comments.deleted_at IS NULL
+          WHERE checklist_item_comments.deleted_at IS NULL
+          AND (
+            checklist_item_at_time(checklist_items.id, $1) = true
+            OR checklist_item_at_time(checklist_items.id, $1) IS NULL
+          )
           AND checklist_item_at_time(checklist_items.id, $2) = false
         ) as removals
       from initiatives

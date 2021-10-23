@@ -8,6 +8,19 @@ module Prawn
     def focus_area_color(focus_area)
       %w(FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0)[focus_area.position-1]
     end
+
+    def focus_area_desaturated_color(focus_area)
+      %W(C4A7A9 CAC5B3 CEBCB5 CBCED9 A4ACB4 9FAFB4 8E9C9C A3B7B3 A1B2A8)[focus_area.position-1]
+    end
+
+    def checklist_item_color(checklist_item)
+      case checklist_item.current_comment_status
+      when 'actual' then focus_area_color(checklist_item.focus_area)
+      when 'planned' then focus_area_desaturated_color(checklist_item.focus_area)
+      else
+        'F8F8F8'
+      end
+    end
   
     def page_header(scorecard)
       img = File.join(Rails.root, 'app/assets/images/logo-long-white-bg.png')
@@ -85,7 +98,7 @@ module Prawn
       initiatives.map do |initiative|
         [{ content: truncate(pdf_safe(initiative.name), length: 62, escape: false), text_color: '3C8DBC', border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
           { content: " ", border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
-            cell[:background_color] = checklist_item.checked? ? focus_area_color(checklist_item.focus_area) : 'F8F8F8'
+            cell[:background_color] = checklist_item.checked? ? checklist_item_color(checklist_item) : 'F8F8F8'
           end
         end
       end

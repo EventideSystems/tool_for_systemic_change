@@ -46,8 +46,8 @@
       <div class="card-body">
         <p>This report shows the first time comments have been recorded across initiatives.</p>
         <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
-        <%= f.input :date, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
-
+        <%= f.input :date, as: :string, input_html: { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
+        <%= f.input :status, collection: options_for_comment_statuses, include_blank: false  %>
       </div>
       <div class="card-footer">
         <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>

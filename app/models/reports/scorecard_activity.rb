@@ -73,7 +73,7 @@ module Reports
             row.add_cell('Additions', height: 48, style: wrap_text)
             row.add_cell('Removals', height: 48, style: wrap_text)
             row.add_cell('Characteristics end of period', height: 48, style: wrap_text)
-            row.add_cell('Characteristic comment updates', height: 48, style: wrap_text)
+            row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
           end
 
           current_focus_area_group = ''
@@ -132,11 +132,13 @@ module Reports
         on checklist_item_comments.checklist_item_id = checklist_items.id
         AND checklist_item_comments.comment <> ''
         AND checklist_item_comments.comment IS NOT NULL
+        AND checklist_item_comments.deleted_at IS NULL
       inner join checklist_item_comments other_comments 
         on other_comments.checklist_item_id = checklist_item_comments.checklist_item_id
         and other_comments.id <> checklist_item_comments.id
         AND other_comments.comment <> ''
         AND other_comments.comment IS NOT NULL
+        AND other_comments.deleted_at IS NULL
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       where
         checklist_item_comments.created_at BETWEEN $1 AND $2
@@ -154,11 +156,14 @@ module Reports
       inner join checklist_item_comments
         on checklist_item_comments.checklist_item_id = checklist_items.id
         and checklist_item_comments.comment <> ''
+        AND checklist_item_comments.status = 'actual'
         and checklist_item_comments.comment IS NOT NULL
+        AND checklist_item_comments.deleted_at IS NULL
       left join checklist_item_comments all_comments 
         on all_comments.checklist_item_id = checklist_items.id
         and all_comments.comment <> ''
         and all_comments.comment IS NOT NULL
+        AND all_comments.deleted_at IS NULL
       inner join initiatives 
         on initiatives.id = checklist_items.initiative_id
       where
@@ -174,28 +179,47 @@ module Reports
         focus_areas.name as focus_area,
         checklist_items.characteristic_id,
         count(distinct(checklist_items.id)) filter(
-          where checklist_item_comments.created_at < $1
-          or checklist_item_at_time(checklist_items.id, $1) = true
+          where (
+            checklist_item_comments.created_at < $1 
+            AND checklist_item_comments.deleted_at IS NULL
+            AND checklist_item_comments.status = 'actual'
+          ) or (
+            checklist_item_at_time(checklist_items.id, $1) = true
+            AND checklist_item_status_at_time(checklist_items.id, $1) <> 'planned'
+          )
         ) as initial,
         count(distinct(checklist_items.id)) filter(
           where (
-            checklist_item_comments.created_at BETWEEN $1 AND $2
-            or checklist_item_at_time(checklist_items.id, $2) = true
-          ) and not (
-            checklist_item_comments.created_at < $1
-          ) and not (
-            checklist_item_at_time(checklist_items.id, $1) = true
+            ( 
+              checklist_item_comments.created_at BETWEEN $1 AND $2
+              AND checklist_item_comments.deleted_at IS NULL
+              AND checklist_item_comments.status = 'actual'
+              and not (
+                ( checklist_item_comments.created_at < $1 
+                  AND checklist_item_comments.deleted_at IS NULL 
+                )
+              )
+            )
+            or (
+              (
+                checklist_item_at_time(checklist_items.id, $2) = true
+                AND checklist_item_status_at_time(checklist_items.id, $2) <> 'planned'
+              )
+              and not (
+                checklist_item_at_time(checklist_items.id, $1) = true
+                AND checklist_item_status_at_time(checklist_items.id, $1) <> 'planned'
+              )
+            )
           )
         ) as additions,
+
         count(distinct(checklist_items.id)) filter(
-          where (
-            checklist_item_comments.created_at < $1
-            or checklist_item_at_time(checklist_items.id, $1) = true
-          ) and not (
-            checklist_item_comments.created_at > $1
-          ) and not (
-            checklist_item_at_time(checklist_items.id, $2) = true
+          WHERE checklist_item_comments.deleted_at IS NULL
+          AND (
+            checklist_item_at_time(checklist_items.id, $1) = true
+            OR checklist_item_at_time(checklist_items.id, $1) IS NULL
           )
+          AND checklist_item_at_time(checklist_items.id, $2) = false
         ) as removals
       from initiatives
       inner join checklist_items
@@ -204,6 +228,7 @@ module Reports
         on checklist_item_comments.checklist_item_id = checklist_items.id
         and checklist_item_comments.comment <> ''
         and checklist_item_comments.comment is not null
+        AND checklist_item_comments.deleted_at IS NULL
       inner join characteristics 
         on characteristics.id = checklist_items.characteristic_id
       inner join focus_areas 

@@ -3,11 +3,14 @@ require 'csv'
 module Reports
   class ScorecardComments
 
-    attr_reader :scorecard, :date
+    attr_reader :scorecard, :date, :status
 
-    def initialize(scorecard, date)
+    def initialize(scorecard, date, status)
+      raise ArgumentError, 'Status is invalid' unless status.in?(ChecklistItemComment.statuses.keys)
+
       @scorecard = scorecard
       @date = date
+      @status = status
     end
 
     def results
@@ -48,6 +51,9 @@ module Reports
           sheet.add_row(["#{Scorecard.model_name.human}"], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date'], b: true).tap do |row|
             row.add_cell(date, style: date_format)
+          end
+          sheet.add_row(['Status'], b: true).tap do |row|
+            row.add_cell(status.titleize)
           end
 
           sheet.add_row
@@ -115,6 +121,7 @@ module Reports
 
         csv << ["#{Scorecard.model_name.human}", scorecard.name] + padding_plus_1
         csv << ['Date', date.strftime('%d/%m/%y')] + padding_plus_1
+        csv << ['Status', status.titleize] + padding_plus_1
         csv << Array.new(initiatives.count + 3, '')
 
         csv << [
@@ -155,11 +162,13 @@ module Reports
           characteristics.id AS characteristic_id,
 
           (
-            select count(distinct(checklist_items.initiative_id)) 
+            select count(distinct(checklist_items.initiative_id))
             FROM checklist_items
             LEFT JOIN checklist_item_comments
               ON checklist_item_comments.checklist_item_id = checklist_items.id
               AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.status = '#{status}'
+              AND checklist_item_comments.deleted_at IS NULL
             LEFT JOIN checklist_item_first_checkeds
               ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
               AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
@@ -168,23 +177,28 @@ module Reports
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND (
-              checklist_item_comments.created_at IS NOT NULL
-              OR checklist_item_first_checkeds.first_checked_at IS NOT NULL
-            ) 
+              (
+                checklist_item_comments.created_at IS NOT NULL
+                AND checklist_item_comments.deleted_at IS NULL
+                AND checklist_item_comments.status = '#{status}'
+              )
+            )
           ) AS initiatives_count,
 
           (
-            SELECT count(distinct(checklist_item_comments.id)) 
+            SELECT count(distinct(checklist_item_comments.id))
             FROM checklist_items
             INNER JOIN checklist_item_comments
-              ON checklist_item_comments.checklist_item_id = checklist_items.id 
+              ON checklist_item_comments.checklist_item_id = checklist_items.id
             WHERE checklist_items.characteristic_id = characteristics.id
             AND checklist_items.initiative_id IN (
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
             )
             AND checklist_item_comments.comment IS NOT NULL
+            AND checklist_item_comments.deleted_at IS NULL
             AND checklist_item_comments.comment <> ''
             AND checklist_item_comments.created_at <= '#{date.to_s}'
+            AND checklist_item_comments.status = '#{status}'
           ) AS comments_count
 
         FROM characteristics
@@ -224,13 +238,15 @@ module Reports
               initiatives.id AS initiative_id,
               checklist_item_comments.created_at as comment_date
             FROM checklist_items
-            INNER JOIN initiatives 
+            INNER JOIN initiatives
               ON initiatives.id = checklist_items.initiative_id
             LEFT JOIN checklist_item_comments
-              ON checklist_item_comments.checklist_item_id = checklist_items.id 
+              ON checklist_item_comments.checklist_item_id = checklist_items.id
             WHERE initiatives.scorecard_id = #{scorecard.id}
               AND checklist_item_comments.comment IS NOT NULL
               AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.status = '#{status}'
+              AND checklist_item_comments.deleted_at IS NULL
             ORDER BY checklist_item_comments.created_at
           ) filtered_checklist_items
           ORDER BY comment_date

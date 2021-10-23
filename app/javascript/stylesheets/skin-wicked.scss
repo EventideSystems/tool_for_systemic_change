@@ -254,9 +254,65 @@ li.select2-selection__choice {
   }
 }
 
-span.commented {
-  color: $primary-color-analogous-1;
+$color-actual: #009BCC;
+$color-planned: #00CCAA;
+$color-suggestion: #F7C80B;
+$color-more-information: #7993F2;
+
+span.actual {
+  color: $color-actual;
 }
+
+span.planned {
+  color: $color-planned;
+}
+
+span.suggestion {
+  color: $color-suggestion;
+}
+
+span.more_information {
+  color: $color-more-information;
+}
+
+.form-check {
+  label[for=checklist_item_current_comment_status_actual].form-check-label {
+    color: $color-actual;
+  }
+
+  label[for=checklist_item_current_comment_status_planned].form-check-label {
+    color: $color-planned;
+  }
+
+  label[for=checklist_item_current_comment_status_suggestion].form-check-label {
+    color: $color-suggestion;
+  }
+
+  label[for=checklist_item_current_comment_status_more_information].form-check-label {
+    color: $color-more-information;
+  }
+}
+
+.form-check {
+  label[for=checklist_item_new_comment_status_actual].form-check-label {
+    color: $color-actual;
+  }
+
+  label[for=checklist_item_new_comment_status_planned].form-check-label {
+    color: $color-planned;
+  }
+
+  label[for=checklist_item_new_comment_status_suggestion].form-check-label {
+    color: $color-suggestion;
+  }
+
+  label[for=checklist_item_new_comment_status_more_information].form-check-label {
+    color: $color-more-information;
+  }
+}
+
+
+
 
 // *** Home ***
 
@@ -324,3 +380,15 @@ i.report-icon {
 h3.box-title {
   font-size: 18px;
 }
+
+
+textarea[name='checklist_item[current_comment]'] {
+  height: 90px;
+  width: 400px;
+}
+
+textarea[name='checklist_item[new_comment]'] {
+  height: 85px;
+  width: 400px;
+}
+

@@ -21,7 +21,12 @@
 
 en:
   activerecord:
-      models:
-        scorecard: Transition Card
-        wicked_problem: Wicked Problem / Opportunity
-  
+    attributes:
+      checklist_item_comment/status:
+        actual: Actual
+        planned: Planned
+        suggestion: Suggestion / idea
+        more_information: More information
+    models:
+      scorecard: Transition Card
+      wicked_problem: Wicked Problem / Opportunity

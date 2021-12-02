@@ -1,0 +1,29 @@
+<div class="tab-pane" id="details-tab">
+  <div class="p-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Initiative</th>
+          <th>Characteristic</th>
+          <th>Event</th>
+          <th>Ocurred at</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activities.each do |activity| %>
+          <tr>
+            <td><%= activity.initiative_name %></td>
+            <td><%= activity.characteristic_name %></td>
+            <td><%= activity.event.titleize %></td>
+            <td><%= activity.occuring_at %></td>
+            <td><%= activity.from_status %></td>
+            <td><%= activity.to_status %></td>
+            <td><%= activity.comment %></td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+</div>

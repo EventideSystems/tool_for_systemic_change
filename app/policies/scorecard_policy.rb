@@ -40,6 +40,10 @@ class ScorecardPolicy < ApplicationPolicy
   def merge_options?
     merge?
   end
+
+  def activity?
+    system_admin?
+  end
   
   def max_scorecards_not_reached?(account)
     return false unless account.present?

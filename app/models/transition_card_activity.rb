@@ -1,0 +1,3 @@
+class TransitionCardActivity < ApplicationRecord
+
+end

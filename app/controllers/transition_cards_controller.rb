@@ -27,6 +27,8 @@ class TransitionCardsController < ApplicationController
     @characteristics = Characteristic.includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
     
     @results = TransitionCardSummary.execute(@scorecard, @parsed_selected_date, @selected_tags)
+    
+    @activities = TransitionCardActivity.where(transition_card_id: @scorecard.id).order(:occuring_at)
 
     add_breadcrumb @scorecard.name
     

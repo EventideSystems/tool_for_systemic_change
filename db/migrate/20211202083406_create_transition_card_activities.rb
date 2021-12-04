@@ -10,7 +10,7 @@ class CreateTransitionCardActivities < ActiveRecord::Migration[6.1]
           characteristics.name as characteristic_name,
           checklist_item_activities.event,
           checklist_item_activities.comment,
-          checklist_item_activities.occuring_at,
+          checklist_item_activities.occurred_at,
           checklist_item_activities.from_status,
           checklist_item_activities.to_status 
         from checklist_item_activities
@@ -23,7 +23,7 @@ class CreateTransitionCardActivities < ActiveRecord::Migration[6.1]
 
   def down
     connection.execute(<<~SQL)
-      DROP VIEW checklist_item_activities
+      DROP VIEW IF EXISTS transition_card_activities
     SQL
   end
 end

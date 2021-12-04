@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_02_083406) do
+ActiveRecord::Schema.define(version: 2021_12_03_100713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,4 +369,299 @@ ActiveRecord::Schema.define(version: 2021_12_02_083406) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+
+  create_view "checklist_item_first_comments", sql_definition: <<-SQL
+      SELECT checklist_items.id AS checklist_item_id,
+          CASE
+              WHEN (previous_versions.created_at IS NULL) THEN checklist_items.comment
+              ELSE (previous_versions.object ->> 'comment'::text)
+          END AS first_comment,
+          CASE
+              WHEN (previous_versions.created_at IS NULL) THEN checklist_items.updated_at
+              ELSE last_versions.created_at
+          END AS first_comment_at
+     FROM ((checklist_items
+       JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
+              versions.item_type,
+              versions.item_id,
+              versions.event,
+              versions.whodunnit,
+              versions.old_object,
+              versions.created_at,
+              versions.account_id,
+              versions.object
+             FROM versions
+            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND (((versions.object ->> 'comment'::text) IS NULL) OR ((versions.object ->> 'comment'::text) = ''::text)))
+            ORDER BY versions.item_id, versions.created_at DESC) last_versions ON ((last_versions.item_id = checklist_items.id)))
+       LEFT JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
+              versions.item_type,
+              versions.item_id,
+              versions.event,
+              versions.whodunnit,
+              versions.old_object,
+              versions.created_at,
+              versions.account_id,
+              versions.object
+             FROM versions
+            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.object ->> 'comment'::text) IS NOT NULL))
+            ORDER BY versions.item_id, versions.created_at) previous_versions ON (((previous_versions.item_id = checklist_items.id) AND (previous_versions.created_at > last_versions.created_at))))
+    WHERE (((previous_versions.object ->> 'comment'::text) IS NOT NULL) OR (((previous_versions.object ->> 'comment'::text) IS NULL) AND (checklist_items.comment IS NOT NULL)))
+    ORDER BY checklist_items.id;
+  SQL
+  create_view "checklist_item_first_checkeds", sql_definition: <<-SQL
+      SELECT checklist_items.id AS checklist_item_id,
+          CASE
+              WHEN (previous_versions.created_at IS NULL) THEN checklist_items.updated_at
+              ELSE last_versions.created_at
+          END AS first_checked_at
+     FROM ((checklist_items
+       LEFT JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
+              versions.item_type,
+              versions.item_id,
+              versions.event,
+              versions.whodunnit,
+              versions.old_object,
+              versions.created_at,
+              versions.account_id,
+              versions.object
+             FROM versions
+            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.object ->> 'checked'::text) IS NULL))
+            ORDER BY versions.item_id, versions.created_at DESC) last_versions ON ((last_versions.item_id = checklist_items.id)))
+       LEFT JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
+              versions.item_type,
+              versions.item_id,
+              versions.event,
+              versions.whodunnit,
+              versions.old_object,
+              versions.created_at,
+              versions.account_id,
+              versions.object
+             FROM versions
+            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.object ->> 'checked'::text) = 'true'::text))
+            ORDER BY versions.item_id, versions.created_at) previous_versions ON (((previous_versions.item_id = checklist_items.id) AND (previous_versions.created_at > last_versions.created_at))))
+    WHERE (((previous_versions.object ->> 'checked'::text) = 'true'::text) OR (((previous_versions.object ->> 'checked'::text) IS NULL) AND (checklist_items.checked = true)))
+    ORDER BY checklist_items.id;
+  SQL
+  create_view "checklist_item_first_comment_view", sql_definition: <<-SQL
+      SELECT DISTINCT ON (checklist_items.id) 'first_comment'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occuring_at,
+      NULL::text AS from_status,
+      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((checklist_items
+       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+  SQL
+  create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
+      checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occuring_at,
+      (versions.object ->> 'status'::text) AS from_status,
+      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
+       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
+  SQL
+  create_view "checklist_item_new_comments_view", sql_definition: <<-SQL
+      SELECT DISTINCT ON (checklist_items.id) 'new_comment'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occuring_at,
+      NULL::text AS from_status,
+      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM (((checklist_items
+       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+       JOIN checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < checklist_item_comments.id))))
+    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+  SQL
+  create_view "checklist_item_checked_view", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_checked'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      ''::text AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_items.updated_at) AS occuring_at,
+          CASE (versions.object ->> 'checked'::text)
+              WHEN 'true'::text THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END AS from_status,
+          CASE COALESCE(((next_versions.object ->> 'checked'::text) = 'true'::text), checklist_items.checked)
+              WHEN true THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND ((next_versions.object ->> 'checked'::text) IS NOT NULL) AND (versions.id < next_versions.id))))
+       JOIN checklist_items ON (((versions.item_id = checklist_items.id) AND ((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.event)::text = 'update'::text) AND (
+          CASE (versions.object ->> 'checked'::text)
+              WHEN 'true'::text THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END <>
+          CASE COALESCE(((next_versions.object ->> 'checked'::text) = 'true'::text), checklist_items.checked)
+              WHEN true THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END))));
+  SQL
+  create_view "checklist_item_activities", sql_definition: <<-SQL
+      SELECT checklist_item_first_comment_view.event,
+      checklist_item_first_comment_view.checklist_item_id,
+      checklist_item_first_comment_view.comment,
+      checklist_item_first_comment_view.occuring_at,
+      checklist_item_first_comment_view.from_status,
+      checklist_item_first_comment_view.to_status
+     FROM checklist_item_first_comment_view
+  UNION
+   SELECT checklist_item_updated_comments_view.event,
+      checklist_item_updated_comments_view.checklist_item_id,
+      checklist_item_updated_comments_view.comment,
+      checklist_item_updated_comments_view.occuring_at,
+      checklist_item_updated_comments_view.from_status,
+      checklist_item_updated_comments_view.to_status
+     FROM checklist_item_updated_comments_view
+  UNION
+   SELECT checklist_item_new_comments_view.event,
+      checklist_item_new_comments_view.checklist_item_id,
+      checklist_item_new_comments_view.comment,
+      checklist_item_new_comments_view.occuring_at,
+      checklist_item_new_comments_view.from_status,
+      checklist_item_new_comments_view.to_status
+     FROM checklist_item_new_comments_view
+  UNION
+   SELECT checklist_item_checked_view.event,
+      checklist_item_checked_view.checklist_item_id,
+      checklist_item_checked_view.comment,
+      checklist_item_checked_view.occuring_at,
+      checklist_item_checked_view.from_status,
+      checklist_item_checked_view.to_status
+     FROM checklist_item_checked_view;
+  SQL
+  create_view "transition_card_activities", sql_definition: <<-SQL
+      SELECT scorecards.id AS transition_card_id,
+      scorecards.name AS transition_card_name,
+      initiatives.id AS initiative_id,
+      initiatives.name AS initiative_name,
+      characteristics.name AS characteristic_name,
+      checklist_item_activities.event,
+      checklist_item_activities.comment,
+      checklist_item_activities.occuring_at,
+      checklist_item_activities.from_status,
+      checklist_item_activities.to_status
+     FROM ((((checklist_item_activities
+       JOIN checklist_items ON ((checklist_items.id = checklist_item_activities.checklist_item_id)))
+       JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
+       JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
+       JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)));
+  SQL
+  create_view "events_checklist_item_first_comments", sql_definition: <<-SQL
+      SELECT DISTINCT ON (checklist_items.id) 'first_comment'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
+      NULL::text AS from_status,
+      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((checklist_items
+       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+  SQL
+  create_view "events_checklist_item_updated_comments", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
+      checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occurred_at,
+      (versions.object ->> 'status'::text) AS from_status,
+      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
+       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
+  SQL
+  create_view "events_checklist_item_new_comments", sql_definition: <<-SQL
+      SELECT DISTINCT ON (checklist_items.id) 'new_comment'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
+      NULL::text AS from_status,
+      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM (((checklist_items
+       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+       JOIN checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < checklist_item_comments.id))))
+    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+  SQL
+  create_view "events_checklist_item_checkeds", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_checked'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      ''::text AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_items.updated_at) AS occurred_at,
+          CASE (versions.object ->> 'checked'::text)
+              WHEN 'true'::text THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END AS from_status,
+          CASE COALESCE(((next_versions.object ->> 'checked'::text) = 'true'::text), checklist_items.checked)
+              WHEN true THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND ((next_versions.object ->> 'checked'::text) IS NOT NULL) AND (versions.id < next_versions.id))))
+       JOIN checklist_items ON (((versions.item_id = checklist_items.id) AND ((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.event)::text = 'update'::text) AND (
+          CASE (versions.object ->> 'checked'::text)
+              WHEN 'true'::text THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END <>
+          CASE COALESCE(((next_versions.object ->> 'checked'::text) = 'true'::text), checklist_items.checked)
+              WHEN true THEN 'checked'::text
+              ELSE 'unchecked'::text
+          END))));
+  SQL
+  create_view "events_checklist_item_activities", sql_definition: <<-SQL
+      SELECT events_checklist_item_first_comments.event,
+      events_checklist_item_first_comments.checklist_item_id,
+      events_checklist_item_first_comments.comment,
+      events_checklist_item_first_comments.occurred_at,
+      events_checklist_item_first_comments.from_status,
+      events_checklist_item_first_comments.to_status
+     FROM events_checklist_item_first_comments
+  UNION
+   SELECT events_checklist_item_updated_comments.event,
+      events_checklist_item_updated_comments.checklist_item_id,
+      events_checklist_item_updated_comments.comment,
+      events_checklist_item_updated_comments.occurred_at,
+      events_checklist_item_updated_comments.from_status,
+      events_checklist_item_updated_comments.to_status
+     FROM events_checklist_item_updated_comments
+  UNION
+   SELECT events_checklist_item_new_comments.event,
+      events_checklist_item_new_comments.checklist_item_id,
+      events_checklist_item_new_comments.comment,
+      events_checklist_item_new_comments.occurred_at,
+      events_checklist_item_new_comments.from_status,
+      events_checklist_item_new_comments.to_status
+     FROM events_checklist_item_new_comments
+  UNION
+   SELECT events_checklist_item_checkeds.event,
+      events_checklist_item_checkeds.checklist_item_id,
+      events_checklist_item_checkeds.comment,
+      events_checklist_item_checkeds.occurred_at,
+      events_checklist_item_checkeds.from_status,
+      events_checklist_item_checkeds.to_status
+     FROM events_checklist_item_checkeds;
+  SQL
+  create_view "events_transition_card_activities", sql_definition: <<-SQL
+      SELECT scorecards.id AS transition_card_id,
+      scorecards.name AS transition_card_name,
+      initiatives.id AS initiative_id,
+      initiatives.name AS initiative_name,
+      characteristics.name AS characteristic_name,
+      events_checklist_item_activities.event,
+      events_checklist_item_activities.comment,
+      events_checklist_item_activities.occurred_at,
+      events_checklist_item_activities.from_status,
+      events_checklist_item_activities.to_status
+     FROM ((((events_checklist_item_activities
+       JOIN checklist_items ON ((checklist_items.id = events_checklist_item_activities.checklist_item_id)))
+       JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
+       JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
+       JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)));
+  SQL
 end

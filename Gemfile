@@ -65,6 +65,7 @@ gem 'roo', '~> 2.7.0'
 gem 'prawn'
 gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
+gem 'scenic'
 
 gem 'marcel'
 gem 'shrine', '>= 3.3.0'

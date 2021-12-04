@@ -77,11 +77,13 @@ Rails.application.routes.draw do
     collection do
       post 'initiatives'
       post 'stakeholders'
+      get 'scorecard_activity'
       post 'scorecard_activity'
       post 'transition_card_stakeholders'
-      get 'scorecard_activity'
       post 'scorecard_comments'
       get 'scorecard_comments'
+      get 'transition_card_activity'
+      post 'transition_card_activity'
     end
   end
 

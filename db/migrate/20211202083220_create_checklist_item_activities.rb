@@ -14,7 +14,7 @@ class CreateChecklistItemActivities < ActiveRecord::Migration[6.1]
 
   def down
     connection.execute(<<~SQL)
-      DROP VIEW checklist_item_activities
+      DROP VIEW IF EXISTS checklist_item_activities
     SQL
   end
 end

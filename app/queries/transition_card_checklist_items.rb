@@ -23,6 +23,11 @@ class TransitionCardChecklistItems
         data[:unchecked_count_during_period]
     end
 
+    def calc_new_comments_assigned_actual_count_during_period(data)
+      (data[:new_actual_comment_count_during_period] || 0) +
+        (data[:first_actual_comment_count_during_period] || 0)
+    end
+
     def fetch_transition_card_initiatives_totals(transition_card_id, date_from, date_to)
       ApplicationRecord.connection.exec_query(
         TOTAL_TRANSITION_CARD_INITIATIVES_SQL,
@@ -32,6 +37,9 @@ class TransitionCardChecklistItems
       ).map do |data|
         data.symbolize_keys!
         data[:final_count_at_end_of_period] = calc_final_count_at_end_of_period(data)
+
+        data[:new_comments_assigned_actual_count_during_period] =
+          calc_new_comments_assigned_actual_count_during_period(data)
         data
       end
     end
@@ -130,7 +138,38 @@ class TransitionCardChecklistItems
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, events_checklist_item_new_comments.occurred_at asc
         ) as comments_during_period
         group by focus_area_group_id, focus_area_id, characteristic_id
-      )
+      ),
+
+      first_actual_comments_during_period as (
+        select
+          focus_area_group_id,
+          focus_area_id,
+          characteristic_id,
+          sum(case when to_status = 'actual' then 1 else 0 end) as actual_count
+        from (
+          select
+            distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
+            focus_area_groups.id as focus_area_group_id,
+            focus_areas.id as focus_area_id,
+            characteristics.id as characteristic_id,
+            initiatives.id as initiative_id,
+            events_checklist_item_first_comments.occurred_at,
+            events_checklist_item_first_comments.to_status
+          from characteristics
+          inner join focus_areas on focus_areas.id = characteristics.focus_area_id
+          inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
+          inner join checklist_items on checklist_items.characteristic_id = characteristics.id
+          inner join initiatives on initiatives.id = checklist_items.initiative_id
+          left join events_checklist_item_first_comments
+            on events_checklist_item_first_comments.checklist_item_id = checklist_items.id
+            and events_checklist_item_first_comments.occurred_at >= $1
+            and events_checklist_item_first_comments.occurred_at <= $2
+          where initiatives.scorecard_id = $3
+          and initiatives.deleted_at is null
+          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, events_checklist_item_first_comments.occurred_at asc
+        ) as comments_during_period
+        group by focus_area_group_id, focus_area_id, characteristic_id
+      )#{'      '}
 
       select
         focus_area_groups.name as focus_area_group_name,
@@ -139,7 +178,8 @@ class TransitionCardChecklistItems
         checked_status_before_period.checked_count as checked_count_before_period,
         checked_status_during_period.checked_count as checked_count_during_period,
         checked_status_during_period.unchecked_count as unchecked_count_during_period,
-        new_actual_comments_during_period.actual_count as new_actual_comment_count_during_period
+        new_actual_comments_during_period.actual_count as new_actual_comment_count_during_period,
+        first_actual_comments_during_period.actual_count as first_actual_comment_count_during_period
       from checked_status_before_period
       left join checked_status_during_period
         on checked_status_before_period.focus_area_group_id = checked_status_during_period.focus_area_group_id
@@ -149,6 +189,10 @@ class TransitionCardChecklistItems
         on new_actual_comments_during_period.focus_area_group_id = checked_status_during_period.focus_area_group_id
         and new_actual_comments_during_period.focus_area_id = checked_status_during_period.focus_area_id
         and new_actual_comments_during_period.characteristic_id = checked_status_during_period.characteristic_id
+      left join first_actual_comments_during_period
+        on first_actual_comments_during_period.focus_area_group_id = checked_status_during_period.focus_area_group_id
+        and first_actual_comments_during_period.focus_area_id = checked_status_during_period.focus_area_id
+        and first_actual_comments_during_period.characteristic_id = checked_status_during_period.characteristic_id
       inner join characteristics on characteristics.id = checked_status_before_period.characteristic_id
       inner join focus_areas on focus_areas.id = characteristics.focus_area_id
       inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id

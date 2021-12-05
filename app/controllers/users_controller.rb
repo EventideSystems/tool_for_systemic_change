@@ -105,6 +105,7 @@ class UsersController < ApplicationController
     params.fetch(:user, {}).permit(
       :name,
       :email,
+      :time_zone,
       :account_role
     )
   end

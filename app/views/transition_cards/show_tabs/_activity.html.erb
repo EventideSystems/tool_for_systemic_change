@@ -18,7 +18,7 @@
             <td><%= activity.initiative_name %></td>
             <td><%= activity.characteristic_name %></td>
             <td><%= activity.event.titleize %></td>
-            <td><%= activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z') %></td>
+            <td data-toggle="tooltip" title="<%= activity.occurred_at %>"><%= activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z') %></td>
             <td><%= activity.from_status %></td>
             <td><%= activity.to_status %></td>
             <td><%= activity.comment %></td>

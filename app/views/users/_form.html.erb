@@ -3,6 +3,7 @@
   <%= form_header(@user) %>
   <%= f.input :email %>
   <%= f.input :name %>
+  <%= f.input :time_zone, as: :select, collection: options_for_timezone_select, include_blank: false %>
   <hr>
   <%= 
     f.input :account_role, 

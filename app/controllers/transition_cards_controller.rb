@@ -28,7 +28,7 @@ class TransitionCardsController < ApplicationController
     
     @results = TransitionCardSummary.execute(@scorecard, @parsed_selected_date, @selected_tags)
     
-    @activities = TransitionCardActivity.where(transition_card_id: @scorecard.id).order(:occuring_at)
+    @activities = Events::TransitionCardActivity.where(transition_card_id: @scorecard.id).order(:occurred_at)
 
     add_breadcrumb @scorecard.name
     

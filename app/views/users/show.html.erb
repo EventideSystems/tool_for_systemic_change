@@ -2,6 +2,7 @@
   <%= form_header(@user) %>
   <%= f.input :email, required: false, readonly: true %>
   <%= f.input :name, readonly: true %>
+  <%= f.input :time_zone, readonly: true %>
   <hr>
   <%= f.input :system_role, as: :string, readonly: true %>
   <%= f.input :account_role, as: :string, readonly: true %>

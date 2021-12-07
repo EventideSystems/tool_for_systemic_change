@@ -4,6 +4,10 @@ module ScorecardsHelper
 
   ACTUAL_OR_PLANNED =  %w[actual planned].freeze
 
+  def activity_occurred_at(activity)
+    activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
+  end
+
   def lookup_communities
     controller.current_account.communities.order(:name)
   end

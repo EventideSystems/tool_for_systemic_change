@@ -60,8 +60,10 @@ class ChecklistItemsController < ApplicationController
   def update_comment
     case params[:commit]
     when "Update Existing"
+      
       return if params.dig(:checklist_item, :current_comment).blank?
  
+
       @checklist_item.update_attribute(
         :checked, 
         params.dig(:checklist_item, :current_comment_status).in?(['actual', 'planned'])
@@ -90,6 +92,11 @@ class ChecklistItemsController < ApplicationController
         comment: params.dig(:checklist_item, :new_comment),
         status: params.dig(:checklist_item, :new_comment_status)
       )
+    end
+
+    respond_to do |f|
+      f.html { redirect_to :index }
+      f.js
     end
   end
 

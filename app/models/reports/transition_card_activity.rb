@@ -52,7 +52,7 @@ module Reports
                 row[:checked_count_during_period],
                 row[:unchecked_count_during_period],
                 row[:final_count_at_end_of_period],
-                row[:new_comments_assigned_actual_count_during_period]
+                row[:new_actual_comment_count_during_period]
               ]
             )
           end

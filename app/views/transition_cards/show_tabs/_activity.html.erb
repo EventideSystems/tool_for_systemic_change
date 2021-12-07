@@ -3,10 +3,10 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>Event</th>
+          <th>Occurred at</th>
           <th>Initiative</th>
           <th>Characteristic</th>
-          <th>Event</th>
-          <th>Ocurred at</th>
           <th>From</th>
           <th>To</th>
           <th>Comment</th>
@@ -15,13 +15,13 @@
       <tbody>
         <% @activities.each do |activity| %>
           <tr>
-            <td><%= activity.initiative_name %></td>
-            <td><%= activity.characteristic_name %></td>
             <td><%= activity.event.titleize %></td>
-            <td data-toggle="tooltip" title="<%= activity.occurred_at %>"><%= activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z') %></td>
-            <td><%= activity.from_status %></td>
-            <td><%= activity.to_status %></td>
-            <td><%= activity.comment %></td>
+            <td data-toggle="tooltip" title="<%= activity.occurred_at %>"><%= activity_occurred_at(activity) %></td>
+            <td><%= activity.initiative_name.presence || 'NA' %></td>
+            <td><%= activity.characteristic_name.presence || 'NA' %></td>
+            <td><%= activity.from_status.presence || 'NA' %></td>
+            <td><%= activity.to_status.presence || 'NA' %></td>
+            <td><%= activity.comment.presence || 'NA' %></td>
           </tr>
         <%- end %>
       </tbody>

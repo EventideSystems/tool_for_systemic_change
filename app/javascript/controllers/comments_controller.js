@@ -9,6 +9,13 @@ export default class extends Controller {
 
   open(event) {
     event.preventDefault()
+
+    let newStatusElement = $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"]:checked')
+    let newTextElement = $(this.newCommentTarget).find('textarea[name="checklist_item[new_comment]"]')
+
+    newTextElement.val('')
+    newStatusElement.val('')
+
     $(this.formTarget).show()
   }
 
@@ -45,6 +52,7 @@ export default class extends Controller {
   }
 
   onNewCommentSuccess(event) {
+
     let newStatusElement = $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"]:checked')
     let currentStatusElement = $(this.currentCommentTarget).find('input[name="checklist_item[current_comment_status]"]:checked')
 
@@ -59,11 +67,9 @@ export default class extends Controller {
 
     this.updateCharacteristic(newStatusElement.val())
     $(this.formTarget).hide()
-
-    newTextElement.val('')
-    newStatusElement.val('')
-
     $(this.currentCommentTarget).show()
+
+ 
   }
 
   updateCharacteristic(status) {

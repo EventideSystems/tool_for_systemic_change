@@ -9,7 +9,7 @@
         ),
         html: { 
           class: 'form-horizontal',
-          data: { action: "ajax:success->comments#onUpdateCommentSuccess" }
+          data: { action: "ajax:complete->comments#onUpdateCommentSuccess" }
         }, 
         remote: true, 
         format: :json 
@@ -53,7 +53,7 @@
         ),
         html: { 
           class: 'form-horizontal',
-          data: { action: "ajax:success->comments#onNewCommentSuccess" }
+          data: { action: "ajax:complete->comments#onNewCommentSuccess" }
         }, 
         remote: true, 
         format: :json 

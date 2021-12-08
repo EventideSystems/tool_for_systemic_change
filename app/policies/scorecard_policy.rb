@@ -42,7 +42,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   def activity?
-    system_admin?
+    system_admin? || account_any_role?(record.account)
   end
   
   def max_scorecards_not_reached?(account)

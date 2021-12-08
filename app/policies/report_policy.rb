@@ -22,6 +22,6 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def transition_card_activity?
-    system_admin?
+    true
   end
 end

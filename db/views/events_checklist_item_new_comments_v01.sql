@@ -1,5 +1,5 @@
 select 
-  distinct on (checklist_items.id) 
+  distinct on (checklist_item_comments.id) 
   'new_comment' as event, 
   checklist_items.id as checklist_item_id,
   coalesce(versions.object->>'comment', checklist_item_comments.comment) as comment,
@@ -15,4 +15,4 @@ left join versions
 inner join checklist_item_comments previous_comments 
   on checklist_items.id = previous_comments.checklist_item_id 
   and previous_comments.id < checklist_item_comments.id
-order by checklist_items.id desc, checklist_item_comments.created_at asc, versions.created_at asc
+order by checklist_item_comments.id desc, checklist_item_comments.created_at asc, versions.created_at asc

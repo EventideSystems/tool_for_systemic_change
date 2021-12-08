@@ -110,13 +110,6 @@ class TransitionCardChecklistItems
           sum(case when to_status = 'actual' then 1 else 0 end) as actual_count
         from (
           select
-            distinct on (
-              focus_area_groups.id, 
-              focus_areas.id, 
-              characteristics.id, 
-              initiatives.id,
-              checklist_items.id
-            )
             focus_area_groups.id as focus_area_group_id,
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,

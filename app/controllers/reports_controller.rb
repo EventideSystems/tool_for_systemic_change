@@ -74,34 +74,10 @@ class ReportsController < ApplicationController
 
   end
 
-  def scorecard_activity
-    authorize :report, :index?
-
-    @content_subtitle = "#{Scorecard.model_name.human} Activity"
-    add_breadcrumb @content_subtitle
-
-    @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
-    @date_to = Date.parse(params[:report][:date_to]).end_of_day
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
-
-    @report = Reports::ScorecardActivity.new(@scorecard, @date_from, @date_to)
-
-    respond_to do |format|
-      format.html
-      format.csv do
-        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{scorecard_activity_base_filename}.csv"
-      end
-      format.xlsx do
-        filename = 'scorecard_activity'
-        send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{scorecard_activity_base_filename}.xlsx"
-      end
-    end
-  end
-
   def transition_card_activity
     authorize :report, :transition_card_activity?
 
-    @content_subtitle = "#{Scorecard.model_name.human} Activity [New]"
+    @content_subtitle = "#{Scorecard.model_name.human} Activity"
     add_breadcrumb @content_subtitle
 
     @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
@@ -113,11 +89,11 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{scorecard_activity_base_filename}_v2.csv"
+        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{scorecard_activity_base_filename}.csv"
       end
       format.xlsx do
         filename = 'transiton_card_activity'
-        send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{scorecard_activity_base_filename}_v2.xlsx"
+        send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{scorecard_activity_base_filename}.xlsx"
       end
     end
   end

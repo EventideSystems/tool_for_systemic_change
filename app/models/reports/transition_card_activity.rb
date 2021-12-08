@@ -103,7 +103,7 @@ module Reports
 
     def add_report_header(sheet, header_1, blue_normal, date)
       sheet
-        .add_row([Scorecard.model_name.human.to_s + ' [NEW]'], style: header_1)
+        .add_row([Scorecard.model_name.human.to_s], style: header_1)
         .add_cell(scorecard.name, style: blue_normal)
 
       sheet.add_row(['Date range'], b: true).tap do |row|

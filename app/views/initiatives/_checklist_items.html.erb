@@ -6,55 +6,29 @@
           <h3>Initiative Characteristics</h3>
         </div>
         <div class="float-right">
-          <%= link_to "#{Scorecard.model_name.human} Details", transition_card_path(@initiative.scorecard), class: 'btn btn-primary float-right' %> 
+          <%= link_to "#{Scorecard.model_name.human} Details", transition_card_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
         </div>
       </div>
     </div>
     <!-- /.box-header -->
     <div class="box-body">
       <div class="box-group" id="accordion">
-        <% FocusAreaGroup.order(:position).each do |focus_area_group| %>
+        <% @focus_areas_groups.each do |focus_area_group| %>
           <div class="initiative-characteristics-container">
             <div class="focus-area-group-container">
               <h4 class="focus-area-group-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapsable-<%= focus_area_group.id %>">
                   <%= focus_area_group.name %>
-                  <%- if focus_area_group.video_tutorial.present? %>
-                    <%= 
-                      link_to(
-                        video_tutorial_path(focus_area_group.video_tutorial), 
-                        class: 'video-tutorial-wrapper',
-                          data: { 
-                            video_tutorial_link: video_tutorial_path(focus_area_group.video_tutorial), 
-                            video_tutorial_title: focus_area_group.video_tutorial.name 
-                          } 
-                      ) do 
-                        safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
-                      end
-                    %>
-                  <%- end %>
+                  <%= link_to_video_tutorial(focus_area_group.video_tutorial) %>
                 </a>
               </h4>
             </div>
-            <div id="collapsable-<%= focus_area_group.id %>" class="panel-collapse collapse <%= "show" if focus_area_group == FocusAreaGroup.order(:position).first %> ">
+            <div id="collapsable-<%= focus_area_group.id %>" class="panel-collapse collapse <%= "show" if focus_area_group == @focus_areas_groups.first %> ">
               <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
                 <div class="box-body">
                   <h3 class="focus-area">
                     <%= focus_area.name %>
-                    <%- if focus_area.video_tutorial.present? %>
-                      <%= 
-                        link_to(
-                          video_tutorial_path(focus_area.video_tutorial), 
-                          class: 'video-tutorial-wrapper',
-                          data: { 
-                            video_tutorial_link: video_tutorial_path(focus_area.video_tutorial), 
-                            video_tutorial_title: focus_area.video_tutorial.name 
-                          } 
-                        ) do 
-                          safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
-                        end
-                      %>
-                    <%- end %>
+                    <%= link_to_video_tutorial(focus_area.video_tutorial) %>
                   </h3>
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
                   <ul class="checklist-items">
@@ -62,30 +36,30 @@
                       <div data-controller="comments">
                         <li>
                           <label>
-                            <%= 
+                            <%=
                               check_box_tag "checklist_item[#{checklist_item.id}]",
                                 true, checklist_item.checked,
-                                class: 'characteristic-checkbox', 
-                                data: { 
-                                  id: checklist_item.id, 
+                                class: 'characteristic-checkbox',
+                                data: {
+                                  id: checklist_item.id,
                                   initiative_id: checklist_item.initiative_id,
                                   comments_target: "checklistItem"
                                 }
                             %>
-                            
+
                             <span class="characteristic-name <%= current_comment_status_style(checklist_item) %>" data-comments-target="characteristic">
                               <%= checklist_item.characteristic.name %>
                             </span>
                             <%= link_to(
-                              '#characteristic_comment', 
-                              class: 'characteristic-comment', 
+                              '#characteristic_comment',
+                              class: 'characteristic-comment',
                               data: {
                                 action: "comments#open",
-                                id: checklist_item.id, 
-                                initiative_id: checklist_item.initiative_id, 
+                                id: checklist_item.id,
+                                initiative_id: checklist_item.initiative_id,
                                 toggle: "tooltip",
-                                placement: "top", 
-                                title: "Edit comments" 
+                                placement: "top",
+                                title: "Edit comments"
                               }
                             ) do
                               safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
@@ -104,6 +78,6 @@
           </div>
         <% end %>
       </div>
-    </div>  
+    </div>
   </div>
 </div>

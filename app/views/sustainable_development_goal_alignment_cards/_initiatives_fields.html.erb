@@ -1,0 +1,48 @@
+<div class="duplicatable_nested_form">
+  <div class='form-group'>
+    <%= form.input :name %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :description %>
+  </div>
+  <h4>
+    Organisation
+  </h4>
+  <%= form.simple_fields_for :organisations do |o| %>
+    
+    <div class="duplicatable_nested_form">
+      <div class='form-group'>
+        <%= o.input :name %>
+      </div>
+      <div class='form-group'>
+        <%= o.input :description %>
+      </div>
+      <% if o.object.new_record? %>
+        <%= link_to 'Remove', '', :remote => true, :class => 'destroy_duplicate_nested_form' %>
+      <% else %>
+        <%= link_to 'Remove', initiatives_path(o.object), :method => :delete, :remote => true, :class => 'destroy_duplicate_nested_form' %><%= o.input :id, as: :hidden %>
+      <% end %>
+    </div>
+    <%= link_to 'Add Another Organisation', '', :class => 'duplicate_nested_form' %>
+  
+  <% end %>
+  <div class='form-group'>
+    <%= form.input :started_at %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :finished_at %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :contact_name %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :contact_email %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :contact_website %>
+  </div>
+  <div class='form-group'>
+    <%= form.input :contact_position %>
+  </div><% if form.object.new_record? %><%= link_to 'Remove', '', :remote => true, :class => 'destroy_duplicate_nested_form' %><% else %><%= link_to 'Remove', initiatives_path(form.object), :method => :delete, :remote => true, :class => 'destroy_duplicate_nested_form' %><%= form.input :id, as: :hidden %><% end %>
+</div>
+<%= link_to 'Add Another Initiative', '', :class => 'duplicate_nested_form' %>

@@ -7,14 +7,14 @@ class SharedController < ApplicationController
 
   def show
     response.headers.delete 'X-Frame-Options'
-    
+
     load_scorecard_and_results
 
     if @scorecard.present?
       @focus_areas = FocusArea.ordered_by_group_position
       @characteristics = Characteristic.includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
     end
-    
+
     if params[:iframe] == 'true'
       render 'show_iframe', layout: false
     else
@@ -26,6 +26,6 @@ class SharedController < ApplicationController
 
   def load_scorecard_and_results
     @scorecard = Scorecard.find_by_shared_link_id(params[:id])
-    @results = TransitionCardSummary.execute(@scorecard, nil, []) if @scorecard.present?
+    @results = ScorecardGrid.execute(@scorecard, nil, []) if @scorecard.present?
   end
 end

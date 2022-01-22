@@ -1,0 +1,17 @@
+<div class="col-md-6">
+  <% initiatives.each do |initiative| %>
+    <h4>Name: <%= initiative.name %></h4>
+    <p>Started At: <%= render_date(initiative.started_at) %></p>
+    <p>Finished At: <%= render_date(initiative.finished_at) %></p>
+    <p>Description: <%= initiative.description.blank? ? "<em>No description</em>".html_safe : initiative.description %></p>
+    <%- if initiative.subsystem_tags.any? %>
+    <h5>Subsystems</h5>
+    <ul>
+      <%- initiative.subsystem_tags.each do |subsystem| %>
+        <li><%= subsystem.name %></li>
+      <%- end %>
+    </ul>
+    <%- end %>
+    <hr>
+  <% end %>
+</div>  

@@ -1,0 +1,64 @@
+<div class="xnobreak">  
+  <div class="row">
+    <div class="col-sm-8">
+      <h2><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 100) %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
+    </div>
+    <div class="col-sm-3 float-right">
+      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
+    </div>  
+  </div>
+    <div class="box-body scorecard-matrix scorecard-matrix-pdf">
+      <div class="outer">
+        <div class="inner" style="overflow-x: visible">
+          <table class="print-table"> 
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <% focus_areas.each_with_index do |focus_area, index| %>
+                  <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                    <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                      <span class="text-color<%="#{index + offset}"%>">Focus Area <%= index + offset %>
+                      </span>
+                    </div>
+                  </th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <% initiatives.each do |initiative| %>
+              <tr>
+                <th>
+                  <label class="truncate" style='color: #3c8dbc'><%= initiative.name %></label>
+                </th>
+                <% initiative.checklist_items_ordered_by_ordered_focus_area(@parsed_selected_date).each do |checklist_item| %>
+                  <% if checklist_item.characteristic.focus_area.id.in?(focus_areas.map(&:id)) %>
+                  <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
+                    <span>&nbsp;</span>
+                  </td>
+                  <% end %>
+                <% end %>
+              </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr class="xprint-chars"> 
+                <td>
+                  &nbsp;
+                </td>
+                <% Characteristic.joins(focus_area: :focus_area_group).all.each do |characteristic| %>
+                  <% if characteristic.focus_area.id.in?(focus_areas.map(&:id)) %>
+                  <td>
+                    <span class="text-color<%= @focus_areas.index(characteristic.focus_area)+1%> r">
+                      <%= characteristic.identifier %>
+                    </span>
+                  </td>
+                  <% end %>
+                <% end %>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

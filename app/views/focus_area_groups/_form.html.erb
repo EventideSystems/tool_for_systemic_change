@@ -1,11 +1,12 @@
 <%= simple_form_for(@focus_area_group, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>  
+  <%= f.error_notification %>
   <%= form_header(@focus_area_group) %>
   <%= f.input :name %>
   <%= f.input :description , as: :string %>
+  <%= f.input :scorecard_type, collection: options_for_scorecard_type, label: 'Scorecard Type', include_blank: false %>
   <%= f.input :position %>
-  <%= f.input :video_tutorial_id, collection: VideoTutorial.all, 
-    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.' 
+  <%= f.input :video_tutorial_id, collection: VideoTutorial.all,
+    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.'
   %>
   <%= render_form_button(f) %>
 <% end %>

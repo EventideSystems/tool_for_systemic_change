@@ -1,10 +1,16 @@
 <div class="tab-pane" id="community">
   <div class="box-body">
-    <%= form.association :community, collection: lookup_communities, label: "Select a Community", value_method: :id %>
+    <%=
+      form.association :community,
+        collection: lookup_communities,
+        label: "Select a Community",
+        value_method: :id,
+        input_html: { data: :community_selector }
+      %>
     <hr>
-    <div class="form-group row"> 
+    <div class="form-group row">
       <label class="col-sm-3 col-form-label">Or</label>
-      <div class="col-sm-9"> 
+      <div class="col-sm-9">
         <%= link_to "Create a New Community", new_community_path, remote: true, class: "btn btn-secondary pull-left" %>
       </div>
     </div>

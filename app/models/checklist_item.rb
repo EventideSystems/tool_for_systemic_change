@@ -16,12 +16,12 @@ class ChecklistItem < ApplicationRecord
   def name
     characteristic.name.presence
   end
-  
+
   def snapshot_at(timestamp)
     return self if timestamp.nil?
     paper_trail.version_at(timestamp) || raw_clone
   end
-  
+
   def focus_area
     characteristic.focus_area
   end
@@ -37,14 +37,14 @@ class ChecklistItem < ApplicationRecord
   def current_comment_status
     current_checklist_item_comment&.status
   end
-  
+
   private
-  
+
   def raw_clone
     raw_clone = self.clone
     raw_clone.checked = nil
     raw_clone.readonly!
     raw_clone
   end
-  
+
 end

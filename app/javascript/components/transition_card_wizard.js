@@ -4,7 +4,7 @@ window.smartwizard = smartwizard;
 $(document).on('turbolinks:load', function() {
   $('.wizard').smartWizard({
     theme: 'arrows',
-    anchorSettings: { 
+    anchorSettings: {
       enableAllAnchors: true,
       justified: true,
       autoAdjustHeight: false,
@@ -13,7 +13,7 @@ $(document).on('turbolinks:load', function() {
     keyboardSettings: {
       keyNavigation: false
     },
-    lang: { 
+    lang: {
       next: 'Next \u203A',
       previous: '\u2039 Previous'
     }
@@ -37,60 +37,60 @@ $(document).on('turbolinks:load', function() {
       url: "/wicked_problems/" + index + ".json",
       context: document.body,
       success: function(data) {
-        $("#preview-wicked-problem-description").html(data["description"]); 
+        $("#preview-wicked-problem-description").html(data["description"]);
       }
     });
   };
-  
+
   function fetchCommunityDescription(index) {
     $.ajax({
       url: "/communities/" + index + ".json",
       context: document.body,
       success: function(data) {
-        $("#preview-community-description").html(data["description"]); 
+        $("#preview-community-description").html(data["description"]);
       }
     });
   };
-  
+
   $('.wizard').on("leaveStep", function(e, a1, a2, a3, stepPosition) {
 
-    var scorecard_name = $('#scorecard_name').val();
-    var scorecard_desc = $('#scorecard_description').val();
+    var scorecard_name = $('#transition_card_name').val();
+    var scorecard_desc = $('#transition_card_description').val();
 
     if (scorecard_name === "") {
       scorecard_name = '<em style="color:red">Missing</em>'
     }
-    
-    $("#preview-scorecard-name").html(scorecard_name);
-    $("#preview-scorecard-description").html(scorecard_desc);
-    
-    var wicked_problem_name = $('#scorecard_wicked_problem_id option:selected').text();
-    var wicked_problem_id = $('#scorecard_wicked_problem_id').val();
-    
+
+    $("#preview-transition_card-name").html(scorecard_name);
+    $("#preview-transition_card-description").html(scorecard_desc);
+
+    var wicked_problem_name = $("[data='wicked_problem_selector'] option:selected").text();
+    var wicked_problem_id = $("[data='wicked_problem_selector']").val();
+
     if (wicked_problem_name === "") {
       wicked_problem_name = '<em style="color:red">Missing</em>'
     }
-    
+
     $("#preview-wicked-problem-name").html(wicked_problem_name);
     if (wicked_problem_id) {
       fetchWickedProblemDescription(wicked_problem_id);
     }
-    
-    var community_name = $('#scorecard_community_id option:selected').text();
-    var community_id = $('#scorecard_community_id').val();
-    
+
+    var community_name = $("[data='community_selector'] option:selected").text();
+    var community_id = $("[data='community_selector']").val();
+
     if (community_name === "") {
       community_name = '<em style="color:red">Missing</em>'
     }
-    
+
     $("#preview-community-name").html(community_name);
     if (community_id) {
       fetchCommunityDescription(community_id);
     }
 
     $('ul#preview-initiatives li').remove()
-    $('.initiative-name').each(function (index, value) { 
-      if ($("input[name*='scorecard[initiatives_attributes][" + index + "][_destroy]'").length != 0) { 
+    $('.initiative-name').each(function (index, value) {
+      if ($("input[name*='transition_card[initiatives_attributes][" + index + "][_destroy]'").length != 0) {
         return true;
       } else {
         if ($(value).val() === "") {

@@ -1,8 +1,14 @@
 <div class="tab-pane" id="wicked-problem">
   <div class="box-body">
-    <%= form.association :wicked_problem, collection: lookup_wicked_problems, label: "Select a Wicked Problem / Opportunity", value_method: :id %>
+    <%=
+      form.association :wicked_problem,
+        collection: lookup_wicked_problems,
+        label: "Select a Wicked Problem / Opportunity",
+        value_method: :id,
+        input_html: { data: :wicked_problem_selector }
+      %>
     <hr>
-    <div class="form-group row"> 
+    <div class="form-group row">
       <label class="col-sm-3 col-form-label">Or</label>
       <div class="col-sm-9">
         <%= link_to "Create a New Wicked Problem / Opportunity", new_wicked_problem_path, remote: true, class: "btn btn-secondary pull-left" %>

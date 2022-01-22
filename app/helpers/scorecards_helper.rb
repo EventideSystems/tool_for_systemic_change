@@ -39,7 +39,7 @@ module ScorecardsHelper
         "#{characteristic_data['status']}#{@focus_areas.index(characteristic.focus_area)+1}",
         characteristic_data['status']
       ]
-      
+
       classes << 'hidden' unless characteristic_data['status'] == 'actual'
     else
       if characteristic_data['checked']

@@ -42,6 +42,7 @@ gem 'webpacker'
 # Authentication and authorisation
 gem 'devise'
 gem 'devise_invitable'
+gem 'mandrill_mailer'
 gem 'pundit'
 
 # User interface related
@@ -56,6 +57,8 @@ gem 'nokogiri_truncate_html'
 gem 'bootstrap_form', '<= 2.1.1'
 gem 'trix-rails', require: 'trix'
 gem 'nested_form_fields'
+
+
 
 # Report related
 gem 'wkhtmltopdf-binary'
@@ -76,7 +79,7 @@ gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
 gem 'delayed_job_active_record'
 gem 'daemons'
-gem 'mailjet'
+# gem 'mailjet'
 gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
@@ -108,6 +111,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'bullet'
   gem 'rubycritic'
+  gem 'dotenv-rails'
 end
 
 group :development do

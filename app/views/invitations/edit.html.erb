@@ -1,11 +1,46 @@
-<h2><%= t 'devise.invitations.edit.header' %></h2>
+<div class="login-box">
+  <div class="login-logo">
+    <span class="logo-lg">
+      <%= image_tag('logo.png', style: 'height:35px;margin-top:-4px;margin-right:7px')%>
+      <b>Wicked</b>Lab
+    </span>
+  </div>
 
-<%= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put, class: 'form-horizontal' } do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :invitation_token %>
+  <%= render partial: 'layouts/shared/flash' %>
 
-  <%= f.input :password %>
-  <%= f.input :password_confirmation %>
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg"><%= t 'devise.invitations.edit.header' %></p>
+      <%= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put, class: 'form-horizontal' } do |f| %>
+        <%= devise_error_messages! %>
+        <%= f.hidden_field :invitation_token %>
 
-  <%= f.button :submit, t("devise.invitations.edit.submit_button") %>
-<% end %>
+        <div class="input-group mb-3">
+          <%= f.input_field :password, required: false, autofocus: true, label: false, placeholder: 'New password', type: 'password', class: 'form-control' %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <%= f.input_field :password_confirmation, required: false, autofocus: true, label: false, placeholder: 'Password confirmation', type: 'password', class: 'form-control' %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-2">&nbsp;</div>
+          <div class="col-10">
+            <%= f.button :submit, t("devise.invitations.edit.submit_button"), class: 'btn btn-primary btn-block' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

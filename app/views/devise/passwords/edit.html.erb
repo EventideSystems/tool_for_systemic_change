@@ -1,19 +1,52 @@
-<h2>Change your password</h2>
-
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'form-horizontal' }) do |f| %>
-  <%= f.error_notification %>
-
-  <%= f.input :reset_password_token, as: :hidden %>
-  <%= f.full_error :reset_password_token %>
-
-  <div class="form-inputs">
-    <%= f.input :password, label: "New password", required: true, autofocus: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
-    <%= f.input :password_confirmation, label: "Confirm your new password", required: true %>
+<div class="login-box">
+  <div class="login-logo">
+    <span class="logo-lg">
+      <%= image_tag('logo.png', style: 'height:35px;margin-top:-4px;margin-right:7px')%>
+      <b>Wicked</b>Lab
+    </span>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Change my password" %>
-  </div>
-<% end %>
+  <%= render partial: 'layouts/shared/flash' %>
 
-<%= render "devise/shared/links" %>
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Change your password</p>
+
+      <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'form-horizontal'}) do |f| %>
+        <%= f.error_notification %>
+
+        <%= f.input :reset_password_token, as: :hidden %>
+        <%= f.full_error :reset_password_token %>
+
+        <div class="input-group mb-3">
+          <%= f.input_field :password, required: false, autofocus: true, label: false, placeholder: 'New password', type: 'password', class: 'form-control' %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <%= f.input_field :password_confirmation, required: false, autofocus: true, label: false, placeholder: 'Password confirmation', type: 'password', class: 'form-control' %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-2">
+            <%= link_to "Log in", new_session_path(resource_name) %>
+          </div>
+          <div class="col-10">
+            <%= f.button :submit, "Change my password", class: 'btn btn-primary btn-block' %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

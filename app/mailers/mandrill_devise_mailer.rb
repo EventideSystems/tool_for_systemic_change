@@ -14,7 +14,7 @@ class MandrillDeviseMailer < Devise::Mailer
       subject: headers[:subject],
       to: headers[:to],
       from: headers[:from],
-      from_name: 'WickedLab',
+      from_name: 'Wicked Lab',
       view_content_link: true,
       vars: {
         content: render(layout: 'devise_mailer').html_safe

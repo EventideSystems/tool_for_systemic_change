@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Initiative < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
@@ -14,12 +15,12 @@ class Initiative < ApplicationRecord
   has_rich_text :notes
 
   accepts_nested_attributes_for :initiatives_organisations,
-    allow_destroy: true,
-    reject_if:  proc { |attributes| attributes['organisation_id'].blank? }
+                                allow_destroy: true,
+                                reject_if: proc { |attributes| attributes['organisation_id'].blank? }
 
   accepts_nested_attributes_for :initiatives_subsystem_tags,
-    allow_destroy: true,
-    reject_if:  proc { |attributes| attributes['subsystem_tag_id'].blank? }
+                                allow_destroy: true,
+                                reject_if: proc { |attributes| attributes['subsystem_tag_id'].blank? }
 
   validates :name, presence: true
   validate :validate_finished_at_not_earlier_than_started_at
@@ -28,46 +29,53 @@ class Initiative < ApplicationRecord
 
   delegate :name, to: :scorecard, prefix: true
 
-  scope :incomplete, -> {
+  scope :incomplete, lambda {
     joins(:checklist_items)
-    .where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
+      .where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
   }
 
   # SMELL Lazy way
-  scope :complete, -> {
+  scope :complete, lambda {
     where.not(id: Initiative.incomplete.pluck(:id))
   }
 
-  scope :overdue, -> {
+  scope :overdue, lambda {
     finished_at = Initiative.arel_table[:finished_at]
     incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
   }
 
   def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil)
     checklist_items = ChecklistItem
-      .includes(
-        :initiative,
-        :checklist_item_comments,
-        characteristic: [
-          :video_tutorial,
-          focus_area: [
-            :video_tutorial,
-            focus_area_group: :video_tutorial
-          ]
-        ]
-      ).where(
-        'checklist_items.initiative_id' => self.id,
-        'focus_area_groups_focus_areas_2.scorecard_type' => self.scorecard.type
-      ).order(
-        'focus_area_groups_focus_areas_2.position',
-        'focus_areas_characteristics.position',
-        'characteristics.position'
-      ).all
+                      .includes(
+                        :initiative,
+                        :checklist_item_comments,
+                        characteristic: [
+                          :video_tutorial,
+                          { focus_area: [
+                            :video_tutorial,
+                            { focus_area_group: :video_tutorial }
+                          ] }
+                        ]
+                      ).where(
+                        'checklist_items.initiative_id' => id,
+                        'focus_area_groups_focus_areas_2.scorecard_type' => scorecard.type
+                      ).order(
+                        'focus_area_groups_focus_areas_2.position',
+                        'focus_areas_characteristics.position',
+                        'characteristics.position'
+                      ).all
 
+    if focus_areas.present?
+      checklist_items = checklist_items.select do |checklist_item|
+        checklist_item.focus_area.id.in?(focus_areas.map(&:id))
+      end
+    end
 
-    checklist_items = checklist_items.select { |checklist_item| checklist_item.focus_area.id.in?(focus_areas.map(&:id)) } if focus_areas.present?
-
-    checklist_items = checklist_items.map { |checklist_item| checklist_item.snapshot_at(selected_date.end_of_day) } if selected_date.present?
+    if selected_date.present?
+      checklist_items = checklist_items.map do |checklist_item|
+        checklist_item.snapshot_at(selected_date.end_of_day)
+      end
+    end
 
     checklist_items
   end
@@ -77,7 +85,7 @@ class Initiative < ApplicationRecord
   end
 
   def copy
-    copied = self.dup
+    copied = dup
     organisations.each do |organisation|
       copied.initiatives_organisations.build(organisation: organisation)
     end
@@ -87,7 +95,7 @@ class Initiative < ApplicationRecord
   end
 
   def deep_copy
-    copied = self.dup
+    copied = dup
     organisations.each do |organisation|
       copied.initiatives_organisations.build(organisation: organisation)
     end
@@ -99,7 +107,7 @@ class Initiative < ApplicationRecord
     INSERT INTO checklist_items (checked, comment, characteristic_id, initiative_id, created_at, updated_at)
       SELECT checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
       FROM checklist_items
-      WHERE initiative_id = #{self.id}
+      WHERE initiative_id = #{id}
     RETURNING *;
     "
     ActiveRecord::Base.connection.execute(query)
@@ -121,12 +129,12 @@ class Initiative < ApplicationRecord
 
   def deep_copy_paper_trail_records(copied)
     PaperTrail::Version.where(
-      item_type: "Initiative",
+      item_type: 'Initiative',
       item_id: copied.id
     ).delete_all
 
     original_initiative_versions = PaperTrail::Version.where(
-      item_type: "Initiative",
+      item_type: 'Initiative',
       item_id: id
     )
 
@@ -134,18 +142,18 @@ class Initiative < ApplicationRecord
     INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)
       SELECT item_type, '#{copied.id}', event, whodunnit, object, created_at
       FROM versions
-      WHERE item_type = 'Initiative' AND item_id = #{self.id}
+      WHERE item_type = 'Initiative' AND item_id = #{id}
     RETURNING *;
     "
     ActiveRecord::Base.connection.execute(query)
 
     PaperTrail::Version.where(
-      item_type: "ChecklistItem",
+      item_type: 'ChecklistItem',
       item_id: copied.checklist_items.map(&:id)
     ).delete_all
 
     original_checklist_item_versions = PaperTrail::Version.where(
-      item_type: "ChecklistItem",
+      item_type: 'ChecklistItem',
       item_id: checklist_items.map(&:id)
     )
 
@@ -169,10 +177,10 @@ class Initiative < ApplicationRecord
 
   def finished_at_not_earlier_than_started_at
     return true unless started_at.present? && finished_at.present?
+
     finished_at >= started_at
   end
 end
-
 
 # SELECT
 # initiatives.name,
@@ -181,7 +189,6 @@ end
 # INNER JOIN initiatives on initiatives.scorecard_id = scorecards.id
 # INNER JOIN initiatives on initiatives.scorecard_id = scorecards.id
 # WHERE scorecards.id = 5 ORDER BY initiatives.name
-
 
 # select
 # initiatives.name as initiative,

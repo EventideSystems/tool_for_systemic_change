@@ -70,7 +70,7 @@
       </div>
     </div>
   </div>
-  <div class="box-body scorecard-matrix pl-3" data-transition-cards-target="grid">
+  <div class="box-body scorecard-matrix sdg-card pl-3" data-transition-cards-target="grid">
     <div class="outer">
       <div class="inner">
         <table class="pre-scrollable">
@@ -113,7 +113,11 @@
                   data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>"
                   class="<%= cell_class(result, @focus_areas, characteristic) %>">
-                  <span>&nbsp;</span>
+
+                  <div class="square">
+                    <div class="content">
+                    </div>
+                  </div>
                 </td>
               <% end %>
             </tr>

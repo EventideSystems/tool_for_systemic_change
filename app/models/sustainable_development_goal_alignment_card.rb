@@ -1,0 +1,3 @@
+class SustainableDevelopmentGoalAlignmentCard < Scorecard
+
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_07_081936) do
+ActiveRecord::Schema.define(version: 2022_01_22_072135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.integer "max_users", default: 1
     t.integer "max_scorecards", default: 1
     t.boolean "solution_ecosystem_maps"
+    t.boolean "allow_transition_cards", default: true
+    t.boolean "allow_sustainable_development_goal_alignment_cards", default: false
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|
@@ -95,11 +97,11 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.integer "account_id"
     t.index ["account_id"], name: "index_activities_on_account_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
-    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
+    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
-    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
+    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
-    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable"
   end
 
   create_table "characteristics", id: :serial, force: :cascade do |t|
@@ -174,8 +176,10 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "scorecard_type", default: "TransitionCard"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["position"], name: "index_focus_area_groups_on_position"
+    t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
   end
 
   create_table "focus_areas", id: :serial, force: :cascade do |t|
@@ -186,6 +190,7 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "icon_name", default: ""
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
@@ -269,8 +274,10 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type", default: "TransitionCard"
     t.index ["account_id"], name: "index_scorecards_on_account_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
+    t.index ["type"], name: "index_scorecards_on_type"
   end
 
   create_table "sectors", id: :serial, force: :cascade do |t|
@@ -323,7 +330,7 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invitations_count"], name: "index_users_on_invitations_count"
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
-    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["name"], name: "index_users_on_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["system_role"], name: "index_users_on_system_role"
@@ -511,20 +518,69 @@ ActiveRecord::Schema.define(version: 2021_12_07_081936) do
      FROM events_checklist_item_checkeds;
   SQL
   create_view "events_transition_card_activities", sql_definition: <<-SQL
-      SELECT scorecards.id AS transition_card_id,
-      scorecards.name AS transition_card_name,
-      initiatives.id AS initiative_id,
-      initiatives.name AS initiative_name,
-      characteristics.name AS characteristic_name,
-      events_checklist_item_activities.event,
-      events_checklist_item_activities.comment,
-      events_checklist_item_activities.occurred_at,
-      events_checklist_item_activities.from_status,
-      events_checklist_item_activities.to_status
-     FROM ((((events_checklist_item_activities
-       JOIN checklist_items ON ((checklist_items.id = events_checklist_item_activities.checklist_item_id)))
-       JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
-       JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
-       JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)));
+      SELECT events_transition_card_activities_v02.transition_card_id,
+      events_transition_card_activities_v02.transition_card_name,
+      events_transition_card_activities_v02.initiative_id,
+      events_transition_card_activities_v02.initiative_name,
+      events_transition_card_activities_v02.characteristic_name,
+      events_transition_card_activities_v02.event,
+      events_transition_card_activities_v02.comment,
+      events_transition_card_activities_v02.occurred_at,
+      events_transition_card_activities_v02.from_status,
+      events_transition_card_activities_v02.to_status
+     FROM ( SELECT scorecards.id AS transition_card_id,
+              scorecards.name AS transition_card_name,
+              initiatives.id AS initiative_id,
+              initiatives.name AS initiative_name,
+              characteristics.name AS characteristic_name,
+              events_checklist_item_activities.event,
+              events_checklist_item_activities.comment,
+              events_checklist_item_activities.occurred_at,
+              events_checklist_item_activities.from_status,
+              events_checklist_item_activities.to_status
+             FROM ((((events_checklist_item_activities
+               JOIN checklist_items ON ((checklist_items.id = events_checklist_item_activities.checklist_item_id)))
+               JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
+               JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
+               JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)))
+          UNION
+           SELECT scorecards.id AS transition_card_id,
+              scorecards.name AS transition_card_name,
+              initiatives.id AS initiative_id,
+              initiatives.name AS initiative_name,
+              NULL::character varying,
+              'initiative_created'::text,
+              NULL::text,
+              initiatives.created_at,
+              NULL::text,
+              NULL::text
+             FROM (initiatives
+               JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)))
+          UNION
+           SELECT scorecards.id AS transition_card_id,
+              scorecards.name AS transition_card_name,
+              initiatives.id AS initiative_id,
+              initiatives.name AS initiative_name,
+              NULL::character varying,
+              'initiative_deleted'::text,
+              NULL::text,
+              initiatives.deleted_at,
+              NULL::text,
+              NULL::text
+             FROM (initiatives
+               JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)))
+            WHERE (initiatives.deleted_at IS NOT NULL)
+          UNION
+           SELECT scorecards.id AS transition_card_id,
+              scorecards.name AS transition_card_name,
+              NULL::integer,
+              NULL::character varying,
+              NULL::character varying,
+              'transition_card_created'::text,
+              NULL::text,
+              scorecards.created_at,
+              NULL::text,
+              NULL::text
+             FROM scorecards) events_transition_card_activities_v02;
   SQL
 end

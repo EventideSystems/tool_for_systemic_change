@@ -1,0 +1,20 @@
+<div class="tab-pane">
+  <div class="col-md-12"> 
+    <div id="initiatives">
+      <%= form.simple_fields_for :initiatives do |initiative_form| %>
+        <%= render 'transition_cards/form_tabs/initiative_fields', f: initiative_form %>
+      <% end %>
+      <div class="links row d-flex justify-content-end ml-5">
+        <%#=
+          link_to_add_association(
+            'Add Another Initiative',
+            form,
+            :initiatives,
+            partial: 'transition_cards/form_tabs/initiative_fields',
+            class: "btn btn-secondary"
+          )
+        %>
+      </div>
+    </div>
+  </div>
+</div>

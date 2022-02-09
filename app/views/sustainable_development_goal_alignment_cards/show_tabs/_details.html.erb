@@ -1,6 +1,6 @@
 <div class="tab-pane" id="details-tab">
   <div class="p-3">
-    <%= simple_form_for(@scorecard, role: 'form', url: transition_card_path(@scorecard), html: { class: 'form-horizontal' } ) do |f| %>
+    <%= simple_form_for(@scorecard, role: 'form', html: { class: 'form-horizontal' } ) do |f| %>
       <%= f.error_notification %>
       <%= f.input :name %>
       <%= f.input :description %>
@@ -10,12 +10,12 @@
       <div class="d-flex justify-content-end">
         <%- if policy(@scorecard).update? %>
           <%= f.button :submit, class: 'btn btn-primary mr-1' %>
-        <%- end %>  
+        <%- end %>
         <%- if policy(@scorecard).destroy? %>
-          <%= link_to "Delete #{Scorecard.model_name.human}", 
+          <%= link_to "Delete #{Scorecard.model_name.human}",
             transition_card_path(@scorecard),
             class: 'btn btn-danger',
-            method: :delete, 
+            method: :delete,
             data: { confirm: 'Are you sure?' } %>
         <%- end %>
       </div>

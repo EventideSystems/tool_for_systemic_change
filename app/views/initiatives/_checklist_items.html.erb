@@ -6,7 +6,8 @@
           <h3>Initiative Characteristics</h3>
         </div>
         <div class="float-right">
-          <%= link_to "#{Scorecard.model_name.human} Details", transition_card_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
+
+          <%= link_to "#{@initiative.scorecard.model_name.human} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
         </div>
       </div>
     </div>

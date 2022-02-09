@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class InitiativesController < ApplicationController
-  before_action :set_initiative, only: [:show, :edit, :update, :destroy]
+  before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
 
-  add_breadcrumb "Initiatives", :initiatives_path
+  add_breadcrumb 'Initiatives', :initiatives_path
 
   def index
     respond_to do |format|
@@ -11,13 +13,14 @@ class InitiativesController < ApplicationController
       end
       format.csv do
         @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).all
-        send_data initiatives_to_csv(@initiatives), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
+        send_data initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv"
       end
     end
   end
 
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
+
     add_breadcrumb @initiative.name
     @content_subtitle = @initiative.name
   end
@@ -36,13 +39,9 @@ class InitiativesController < ApplicationController
     @content_subtitle = @initiative.name
   end
 
-  def edit_checklist_item_comment
+  def edit_checklist_item_comment; end
 
-  end
-
-  def update_checklist_item_comment
-
-  end
+  def update_checklist_item_comment; end
 
   def create
     @initiative = Initiative.new(initiative_params)
@@ -81,6 +80,7 @@ class InitiativesController < ApplicationController
 
   def content_subtitle
     return @initiative.name if @initiative.present?
+
     super
   end
 
@@ -92,7 +92,7 @@ class InitiativesController < ApplicationController
 
   def initiatives_to_csv(initiatives)
     CSV.generate(force_quotes: true) do |csv|
-      csv << [
+      csv << ([
         'Name',
         'Description',
         "#{Scorecard.model_name.human} Name",
@@ -107,27 +107,24 @@ class InitiativesController < ApplicationController
         "Organisation #{index} Name"
       end + 1.upto(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT).map do |index|
         "Subsystem Tag #{index} Name"
-      end
+      end)
 
       initiatives.each do |initiative|
-
         organisations = initiative.organisations.limit(Initiatives::Import::MAX_ORGANIZATION_EXPORT)
         organisation_memo = Array.new(Initiatives::Import::MAX_ORGANIZATION_EXPORT, '')
 
-        organisation_names = organisations.each_with_index.inject(organisation_memo) do |memo, (org, index)|
+        organisation_names = organisations.each_with_index.each_with_object(organisation_memo) do |(org, index), memo|
           memo[index] = org.try(:name)
-          memo
         end
 
         subsystem_tags = initiative.subsystem_tags.limit(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT)
         subsystem_tag_memo = Array.new(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT, '')
 
-        subsystem_tag_names = subsystem_tags.each_with_index.inject(subsystem_tag_memo) do |memo, (subsystem_tag, index)|
+        subsystem_tag_names = subsystem_tags.each_with_index.each_with_object(subsystem_tag_memo) do |(subsystem_tag, index), memo|
           memo[index] = subsystem_tag.try(:name)
-          memo
         end
 
-        csv << [
+        csv << ([
           initiative.name,
           initiative.description,
           initiative.scorecard.try(:name),
@@ -138,16 +135,16 @@ class InitiativesController < ApplicationController
           initiative.contact_phone,
           initiative.contact_website,
           initiative.contact_position
-          ] + organisation_names + subsystem_tag_names
+        ] + organisation_names + subsystem_tag_names)
       end
     end
   end
 
   def set_focus_area_groups
     @focus_areas_groups = FocusAreaGroup
-      .includes(:video_tutorial, focus_areas: :video_tutorial)
-      .where(scorecard_type: @initiative.scorecard.type)
-      .order(:position)
+                          .includes(:video_tutorial, focus_areas: :video_tutorial)
+                          .where(scorecard_type: @initiative.scorecard.type)
+                          .order(:position)
   end
 
   def set_initiative
@@ -169,20 +166,20 @@ class InitiativesController < ApplicationController
       :contact_website,
       :contact_position,
       :notes,
-      initiatives_organisations_attributes: [
-        :organisation_id, :id, :_destroy
+      initiatives_organisations_attributes: %i[
+        organisation_id id _destroy
       ],
-      initiatives_subsystem_tags_attributes: [
-        :subsystem_tag_id, :id, :_destroy
+      initiatives_subsystem_tags_attributes: %i[
+        subsystem_tag_id id _destroy
       ]
     ).tap do |params|
       # Remove organisations that are already assigned
-      params[:initiatives_organisations_attributes].reject! do |key, value|
+      params[:initiatives_organisations_attributes].reject! do |_key, value|
         value[:id].blank? &&
-        params[:initiatives_organisations_attributes].values.find do |attributes|
-          (value[:organisation_id] == attributes[:organisation_id]) &&
-          attributes[:id].present?
-        end
+          params[:initiatives_organisations_attributes].values.find do |attributes|
+            (value[:organisation_id] == attributes[:organisation_id]) &&
+              attributes[:id].present?
+          end
       end
 
       # Remove duplicates
@@ -191,12 +188,12 @@ class InitiativesController < ApplicationController
       ).permit!
 
       # Remove subsystem tags that are already assigned
-      params[:initiatives_subsystem_tags_attributes].reject! do |key, value|
+      params[:initiatives_subsystem_tags_attributes].reject! do |_key, value|
         value[:id].blank? &&
-        params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
-          (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) &&
-          attributes[:id].present?
-        end
+          params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
+            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) &&
+              attributes[:id].present?
+          end
       end
 
       # Remove duplicates

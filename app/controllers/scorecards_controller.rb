@@ -1,30 +1,37 @@
+# frozen_string_literal: true
+
 class ScorecardsController < ApplicationController
   before_action :set_scorecard,
-    only: [
-      :show, :edit, :update, :destroy,
-      :show_shared_link, :copy, :copy_options, :merge, :merge_options,
-      :ecosystem_maps_organisations,
-      :ecosystem_maps_initiatives
-    ]
+                only: %i[
+                  show edit update destroy
+                  show_shared_link copy copy_options merge merge_options
+                  ecosystem_maps_organisations
+                  ecosystem_maps_initiatives
+                ]
 
   before_action :set_active_tab, only: [:show]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update, :show_shared_link]
+  before_action :require_account_selected, only: %i[new create edit update show_shared_link]
 
   def show
     @selected_date = params[:selected_date]
     @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
 
-    @selected_tags = params[:selected_tags].blank? ? [] : SubsystemTag.where(account: current_account, name: params[:selected_tags])
+    @selected_tags = if params[:selected_tags].blank?
+                       []
+                     else
+                       SubsystemTag.where(account: current_account,
+                                          name: params[:selected_tags])
+                     end
 
     @focus_areas = FocusArea
-      .joins(:focus_area_group)
-      .where(focus_area_groups: { scorecard_type: @scorecard.type })
-      .ordered_by_group_position
+                   .joins(:focus_area_group)
+                   .where(focus_area_groups: { scorecard_type: @scorecard.type })
+                   .ordered_by_group_position
 
     @characteristics = Characteristic
-      .includes(focus_area: :focus_area_group)
-      .per_scorecard_type(@scorecard.type)
-      .order('focus_areas.position, characteristics.position')
+                       .includes(focus_area: :focus_area_group)
+                       .per_scorecard_type(@scorecard.type)
+                       .order('focus_areas.position, characteristics.position')
 
     @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
@@ -35,27 +42,26 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-
-        # TODO Convert PDF to use transition card summary data
+        # TODO: Convert PDF to use transition card summary data
         @initiatives = if @parsed_selected_date.present?
-          @scorecard.initiatives
-            .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
-            .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
-            .order(name: :asc)
-        else
-          @scorecard.initiatives.order(name: :asc)
-        end
+                         @scorecard.initiatives
+                                   .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
+                                   .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
+                                   .order(name: :asc)
+                       else
+                         @scorecard.initiatives.order(name: :asc)
+                       end
 
         @initiatives = if @selected_tags.present?
-          tag_ids = @selected_tags.map(&:id)
-          @initiatives
-            .distinct
-            .joins(:initiatives_subsystem_tags)
-            .where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
-            .select('initiatives.*, lower(initiatives.name)')
-        else
-          @initiatives
-        end
+                         tag_ids = @selected_tags.map(&:id)
+                         @initiatives
+                           .distinct
+                           .joins(:initiatives_subsystem_tags)
+                           .where('initiatives_subsystem_tags.subsystem_tag_id' => tag_ids)
+                           .select('initiatives.*, lower(initiatives.name)')
+                       else
+                         @initiatives
+                       end
 
         pdf = ScorecardPdfGenerator.new(
           scorecard: @scorecard,
@@ -63,9 +69,9 @@ class ScorecardsController < ApplicationController
           focus_areas: @focus_areas
         ).perform
         send_data pdf.render,
-          filename: "transition_card_#{@scorecard.id}.pdf",
-          type: 'application/pdf',
-          disposition: 'inline'
+                  filename: "transition_card_#{@scorecard.id}.pdf",
+                  type: 'application/pdf',
+                  disposition: 'inline'
       end
     end
   end
@@ -76,7 +82,7 @@ class ScorecardsController < ApplicationController
 
     @scorecard.initiatives.build
 
-    add_breadcrumb "New"
+    add_breadcrumb 'New'
   end
 
   def edit
@@ -89,7 +95,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        format.html { redirect_to transition_card_path(@scorecard), notice: "#{Scorecard.model_name.human} was successfully created." }
+        format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
         format.html { render :new }
@@ -101,7 +107,7 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
-        format.html { redirect_to transition_card_path(@scorecard), notice: "#{Scorecard.model_name.human} was successfully updated." }
+        format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
         format.html { render :edit }
@@ -113,13 +119,14 @@ class ScorecardsController < ApplicationController
   def destroy
     @scorecard.destroy
     respond_to do |format|
-      format.html { redirect_to transition_cards_url, notice: "#{Scorecard.model_name.human} was successfully destroyed." }
+      format.html do
+        redirect_to transition_cards_url, notice: "#{Scorecard.model_name.human} was successfully destroyed."
+      end
       format.json { head :no_content }
     end
   end
 
-  def shared
-  end
+  def shared; end
 
   def show_shared_link
     render layout: false
@@ -130,13 +137,16 @@ class ScorecardsController < ApplicationController
   end
 
   def copy
-    new_name = params.dig(:new_name)
-    deep_copy = params.dig(:copy) == 'deep'
+    new_name = params[:new_name]
+    deep_copy = params[:copy] == 'deep'
 
     @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
     respond_to do |format|
       if @copied_scorecard.present?
-        format.html { redirect_to transition_card_path(@copied_scorecard), notice: "#{Scorecard.model_name.human} was successfully copied." }
+        format.html do
+          redirect_to transition_card_path(@copied_scorecard),
+                      notice: "#{Scorecard.model_name.human} was successfully copied."
+        end
         format.json { render :show, status: :ok, location: @copied_scorecard }
       else
         format.html { render :edit }
@@ -155,7 +165,10 @@ class ScorecardsController < ApplicationController
     @merged_scorecard = @scorecard.merge(@other_scorecard)
     respond_to do |format|
       if @scorecard.present?
-        format.html { redirect_to transition_card_path(@merged_scorecard), notice: "#{Scorecard.model_name.human} were successfully merged." }
+        format.html do
+          redirect_to transition_card_path(@merged_scorecard),
+                      notice: "#{Scorecard.model_name.human} were successfully merged."
+        end
         format.json { render :show, status: :ok, location: @merged_scorecard }
       else
         format.html { render :edit }
@@ -178,6 +191,7 @@ class ScorecardsController < ApplicationController
 
   def content_subtitle
     return @scorecard.name if @scorecard.present?
+
     super
   end
 
@@ -189,7 +203,7 @@ class ScorecardsController < ApplicationController
   end
 
   def set_active_tab
-    @active_tab = params.dig(:active_tab)&.to_sym || :scorecard
+    @active_tab = params[:active_tab]&.to_sym || :scorecard
   end
 
   def scorecard_params
@@ -214,52 +228,53 @@ class ScorecardsController < ApplicationController
         :contact_position,
         :notes,
         :type,
-        initiatives_organisations_attributes: [
-          :_destroy,
-          :organisation_id
+        { initiatives_organisations_attributes: %i[
+          _destroy
+          organisation_id
         ],
-        initiatives_subsystem_tags_attributes: [
-          :_destroy,
-          :subsystem_tag_id
-        ]
+          initiatives_subsystem_tags_attributes: %i[
+            _destroy
+            subsystem_tag_id
+          ] }
       ]
-    ).tap do |params| # NOTE Dupe of code in initiatives controller
+    ).tap do |params| # NOTE: Dupe of code in initiatives controller
       params[:type] = scorecard_class_name
 
       unless params[:initiatives_attributes].blank?
         params[:initiatives_attributes].each do |initiative_key, _|
-          if params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).present?
-            params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
-              value[:_destroy] != '1' && (
-                value[:organisation_id].blank? || (
-                  value[:id].blank? &&
-                  params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
-                    selected_key != key &&
-                    selected_value[:_destroy] != '1' &&
-                    selected_value[:organisation_id] == value[:organisation_id]
-                  end
-                )
+          next unless params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).present?
+
+          params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
+            value[:_destroy] != '1' && (
+              value[:organisation_id].blank? || (
+                value[:id].blank? &&
+                params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
+                  selected_key != key &&
+                  selected_value[:_destroy] != '1' &&
+                  selected_value[:organisation_id] == value[:organisation_id]
+                end
               )
-            end
+            )
           end
         end
       end
 
       unless params[:initiatives_attributes].blank?
         params[:initiatives_attributes].each do |initiative_key, _|
-          if params.dig(:initiatives_attributes, initiative_key, :initiatives_subsystem_tags_attributes).present?
-            params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
-              value[:_destroy] != '1' && (
-                value[:subsystem_tag_id].blank? || (
-                  value[:id].blank? &&
-                  params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
-                    selected_key != key &&
-                    selected_value[:_destroy] != '1' &&
-                    selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
-                  end
-                )
+          next unless params.dig(:initiatives_attributes, initiative_key,
+                                 :initiatives_subsystem_tags_attributes).present?
+
+          params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
+            value[:_destroy] != '1' && (
+              value[:subsystem_tag_id].blank? || (
+                value[:id].blank? &&
+                params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
+                  selected_key != key &&
+                  selected_value[:_destroy] != '1' &&
+                  selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]
+                end
               )
-            end
+            )
           end
         end
       end

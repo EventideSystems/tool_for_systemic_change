@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_05_071249) do
+ActiveRecord::Schema.define(version: 2022_01_22_072135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 2021_12_05_071249) do
     t.integer "max_users", default: 1
     t.integer "max_scorecards", default: 1
     t.boolean "solution_ecosystem_maps"
+    t.boolean "allow_transition_cards", default: true
+    t.boolean "allow_sustainable_development_goal_alignment_cards", default: false
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|
@@ -174,8 +176,10 @@ ActiveRecord::Schema.define(version: 2021_12_05_071249) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "scorecard_type", default: "TransitionCard"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["position"], name: "index_focus_area_groups_on_position"
+    t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
   end
 
   create_table "focus_areas", id: :serial, force: :cascade do |t|
@@ -186,6 +190,7 @@ ActiveRecord::Schema.define(version: 2021_12_05_071249) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "icon_name", default: ""
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
@@ -269,8 +274,10 @@ ActiveRecord::Schema.define(version: 2021_12_05_071249) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type", default: "TransitionCard"
     t.index ["account_id"], name: "index_scorecards_on_account_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
+    t.index ["type"], name: "index_scorecards_on_type"
   end
 
   create_table "sectors", id: :serial, force: :cascade do |t|

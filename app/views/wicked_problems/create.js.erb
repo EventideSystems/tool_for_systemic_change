@@ -1,11 +1,11 @@
 <% if @wicked_problem.errors.count > 0 %>
-  $(".notice").remove(); 
+  $(".notice").remove();
   //display new validation messages
   <% @wicked_problem.errors.full_messages.each do |message| %>
     $('#error-messages').append('<div class="alert alert-error"><%= escape_javascript(message)%></div>');
   <% end %>
 <% else %>
-  select = $('select#scorecard_wicked_problem_id');
+  select = $("[data='wicked_problem_selector']");
   option = document.createElement( 'option' );
   option.value = '<%= @wicked_problem.id %>';
   option.text = '<%= @wicked_problem.name %>';

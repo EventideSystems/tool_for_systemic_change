@@ -1,0 +1,2 @@
+class TransitionCardPolicy < ScorecardPolicy
+end

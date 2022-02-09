@@ -1,0 +1,130 @@
+<div class="container-fluid" data-controller='transition-cards'>
+  <div class="row tab-content-header p-3">
+    <div class="col-sm">
+      <div class="float-left">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            id="transition_card_select_date"
+            autocomplete="off"
+            data-scorecard-id="<%=@scorecard.id%>" placeholder="Select Date"
+            <%= "data-selected-date=\"#{@selected_date}\"" unless @selected_date.blank? %>
+          >
+        </div>
+      </div>
+      <div class="float-left">
+        <%= link_to('#', class: 'btn btn-primary', id: 'daterange-clear-btn', data: { toggle: "tooltip" }, title: "Clear date") do
+          content_tag(:i, '', class: "fa fa-undo")
+        end %>
+      </div>
+
+      <%- if policy(:sidebar).show_subsystem_tags_link? %>
+        <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
+          <div class="input-group">
+
+            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px;" data-scorecard-id="<%=@scorecard.id%>">
+              <%- @selected_tags.each do |selected_tag| %>
+                  <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
+              <%- end %>
+            </select>
+          </div>
+        </div>
+      <%- end %>
+
+      <div class="float-right">
+        <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
+          <select multiple="multiple" class="form-control" name='status-filter[]' id="status-filter" style="min-width: 300px; width: auto"  data-transition-cards-target="filter">
+            <%- ['Actual', 'Planned', 'No Comment', 'Gap in Effort'].each do |option| %>
+              <option value="<%= option %>" <%= 'selected' if option == 'Actual' %>><%= option %></option>
+            <%- end %>
+          </select>
+        </div>
+
+        <%- print_transition_card_path = if @selected_date
+              transition_card_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
+            else
+              transition_card_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
+            end
+        %>
+        <%= link_to(print_transition_card_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
+          content_tag(:i, '', class: "fa fa-print")
+        end %>
+        <%= link_to(show_shared_link_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
+          content_tag(:i, '', class: "fa fa-share-alt")
+        end %>
+        <% if policy(:scorecard).copy_options? %>
+          <%= link_to(copy_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
+            content_tag(:i, '', class: "fa fa-files-o")
+          end %>
+        <% end %>
+        <% if policy(:scorecard).merge_options? %>
+          <%= link_to(merge_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
+            content_tag(:i, '', class: "fa fa-file-text-o")
+          end %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+  <div class="box-body scorecard-matrix sdg-card pl-3" data-transition-cards-target="grid">
+    <div class="outer">
+      <div class="inner">
+        <table class="pre-scrollable">
+          <thead style="height: 50px">
+            <tr>
+              <th>&nbsp;</th>
+              <% @focus_areas.each_with_index do |focus_area, index| %>
+                <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                  <div class="mr-2" data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                    <%= focus_area_icon(focus_area) %>
+                  </div>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+            <tr>
+              <th>
+                <!--span data-toggle="tooltip" data-placement="top" title="<%= result.dig('initiative', 'name') %>"-->
+                  <%=
+                    link_to(
+                      result.dig('initiative', 'name'),
+                      initiative_path(id: result.dig('initiative', 'id')),
+                      class: 'truncate',
+                      data: {
+                        toggle: 'tooltip',
+                        placement: 'top',
+                        title: result.dig('initiative', 'name')
+                      }
+                    )
+                  %>
+                </span>
+              </th>
+              <% @characteristics.each do |characteristic| %>
+                <td
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  data-container=".inner"
+                  data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
+                  title="<%= result.dig(characteristic.id.to_s, 'name') %>"
+                  class="<%= cell_class(result, @focus_areas, characteristic) %>">
+
+                  <div class="square">
+                    <div class="content">
+                    </div>
+                  </div>
+                </td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

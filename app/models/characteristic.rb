@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 class Characteristic < ApplicationRecord
   acts_as_paranoid
-  
+
   attr_accessor :video_tutorial_id
-  
+
   default_scope { order('focus_areas.position', :position).joins(:focus_area) }
 
   belongs_to :focus_area
@@ -13,7 +13,12 @@ class Characteristic < ApplicationRecord
   validates :position, presence: true, uniqueness: { scope: :focus_area }
   delegate :position, to: :focus_area, prefix: true
   #accepts_nested_attributes_for :video_tutorial
-  
+
+  scope :per_scorecard_type, -> (scorecard_type) {
+    joins(focus_area: :focus_area_group)
+      .where('focus_area_groups_focus_areas.scorecard_type' => scorecard_type)
+  }
+
   DESCRIPTION_TEMPLATE = <<~HTML
     <h1>Initiative Characteristics</h1>
     <br/>
@@ -33,11 +38,11 @@ class Characteristic < ApplicationRecord
     tutorial = VideoTutorial.where(id: value).first
     tutorial.update_attribute(:linked, self) if tutorial
   end
-  
+
   def video_tutorial_id
     video_tutorial.try(:id)
   end
-  
+
   def identifier
     "#{focus_area.position}.#{self.position}"
   end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   resources :subsystem_tags
   namespace :initiatives do
     resources :imports, only: [:new, :create, :update]
@@ -7,13 +7,18 @@ Rails.application.routes.draw do
   namespace :organisations do
     resources :imports, only: [:new, :create, :update]
   end
-  
+
   namespace :transition_card_comments do
     resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
   end
 
+  # TODO: Fix this route once we have a proper transition_card_comments import
+  namespace :sustainable_development_goal_alignment_card_comments do
+    resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
+  end
+
   UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
-  
+
   devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
 
   resources :accounts do
@@ -21,13 +26,13 @@ Rails.application.routes.draw do
       get 'switch'
     end
   end
-  
+
   resources :characteristics do
     member do
       get 'description'
     end
   end
-  
+
   resources :communities
   resources :focus_area_groups
   resources :focus_areas
@@ -56,6 +61,18 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :sustainable_development_goal_alignment_cards do
+    member do
+      get 'show_shared_link'
+      post 'copy'
+      get 'copy_options'
+      post 'merge'
+      get 'merge_options'
+      get 'ecosystem_maps_organisations'
+      get 'ecosystem_maps_initiatives'
+    end
+  end
+
   resources :ecosystem_maps do
     resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
     resources :initiatives, only: [:show], controller: 'ecosystem_maps/initiatives'
@@ -68,11 +85,11 @@ Rails.application.routes.draw do
       get 'remove_from_account'
     end
   end
-  
+
   resources :video_tutorials
   resource :welcome_message, only: [:show]
   resources :wicked_problems
-  
+
   resources :reports, only: [:index] do
     collection do
       post 'initiatives'
@@ -88,11 +105,11 @@ Rails.application.routes.draw do
   end
 
   resources :search_results, only: [:index, :show]
-  
+
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
-  
+
   namespace :system do
     resources :users do
       member do
@@ -101,6 +118,6 @@ Rails.application.routes.draw do
       end
     end
   end
-  
+
   root to: "home#index"
 end

@@ -22,7 +22,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane <%= 'active' if @active_tab == :scorecard %>" id="transition_card">
-       <%= render 'transition_cards/show_tabs/transition_card'%>  
+       <%= render 'transition_cards/show_tabs/scorecard'%>
     </div>
     <% if policy(@scorecard).ecosystem_maps? %>
       <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="ecosystem_maps">

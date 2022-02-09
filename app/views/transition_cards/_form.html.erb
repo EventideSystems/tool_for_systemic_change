@@ -18,7 +18,7 @@
       <li>
         <span class="align-middle">
         <a class="nav-link pt-3" href="#step-1">
-          <%= Scorecard.model_name.human %>
+          <%= @scorecard.model_name.human %>
         </a>
         </span>
       </li>
@@ -43,16 +43,16 @@
         </a>
       </li>
     </ul>
-  
+
     <div class="tab-content">
       <div id="step-1" class="tab-pane" role="tabpanel">
         <%= render 'transition_cards/form_tabs/scorecard', form: f %>
       </div>
       <div id="step-2" class="tab-pane" role="tabpanel">
-        <%= render 'transition_cards/form_tabs/wicked_problem', form: f %>
+        <%= render 'scorecards/form_tabs/wicked_problem', form: f %>
       </div>
       <div id="step-3" class="tab-pane" role="tabpanel">
-        <%= render 'transition_cards/form_tabs/community', form: f %>
+        <%= render 'scorecards/form_tabs/community', form: f %>
       </div>
       <div id="step-4" class="tab-pane" role="tabpanel">
         <%= render 'transition_cards/form_tabs/initiatives', form: f %>

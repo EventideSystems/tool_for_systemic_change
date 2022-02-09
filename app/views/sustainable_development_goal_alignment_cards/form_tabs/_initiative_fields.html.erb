@@ -1,0 +1,21 @@
+<div class="nested-fields box-body">
+  
+    <%= f.input :name, input_html: { class: 'initiative-name' } %>
+    <%= f.input :description %>
+    <hr>
+    <%= render 'transition_cards/form_tabs/organisations', f: f %>
+    <%= render 'transition_cards/form_tabs/subsystem_tags', f: f %>
+    
+    <%= f.input :started_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
+    <%= f.input :finished_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
+    <hr>
+    <%= f.input :contact_name %>
+    <%= f.input :contact_email %>
+    <%= f.input :contact_website %>
+    <%= f.input :contact_position %>
+    
+    <%# <div class="row d-flex justify-content-end ml-5">
+      <%#= link_to_remove_association "Remove Initiative", f, class: "btn btn-danger" %>
+    <%#/div> %>
+    <%# <hr/> %>
+</div>

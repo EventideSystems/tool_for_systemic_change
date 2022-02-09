@@ -32,6 +32,8 @@ module ScorecardsHelper
   def cell_class(result, _focus_areas, characteristic)
     classes = ['cell']
 
+    return 'cell hidden' if result.blank?
+
     characteristic_data = result[characteristic.id.to_s]
 
     if characteristic_data['status'].in?(ACTUAL_OR_PLANNED) && characteristic_data['comment'].present?

@@ -36,6 +36,8 @@ module ScorecardsHelper
 
     characteristic_data = result[characteristic.id.to_s]
 
+    return 'cell hidden' if characteristic_data.blank?
+
     if characteristic_data['status'].in?(ACTUAL_OR_PLANNED) && characteristic_data['comment'].present?
       classes << [
         "#{characteristic_data['status']}#{@focus_areas.index(characteristic.focus_area) + 1}",

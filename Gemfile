@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 6.1.4.1'
+gem 'rails', '>= 6.1.4.2'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -57,8 +57,6 @@ gem 'nokogiri_truncate_html'
 gem 'bootstrap_form', '<= 2.1.1'
 gem 'trix-rails', require: 'trix'
 gem 'nested_form_fields'
-
-
 
 # Report related
 gem 'wkhtmltopdf-binary'

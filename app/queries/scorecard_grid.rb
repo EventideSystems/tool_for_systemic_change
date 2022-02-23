@@ -80,6 +80,7 @@ class ScorecardGrid
           ) events_checklist_item_activities on true
           where initiatives.scorecard_id = #{scorecard.id}
           #{subsystem_sql(subsystem_tags)}
+          order by initiative
           $$,
           $$
             select characteristics.id from characteristics

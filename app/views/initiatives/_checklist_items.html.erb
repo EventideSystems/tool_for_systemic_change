@@ -34,7 +34,11 @@
                   <% checklist_items = @grouped_checklist_items.to_a.find_all { |ci| ci.characteristic.focus_area.id == focus_area.id } %>
                   <ul class="checklist-items">
                     <% checklist_items.each do |checklist_item| %>
-                      <div data-controller="comments">
+                      <div
+                          data-controller="comments"
+                          data-load-path="<%=edit_initiatives_checklist_item_path(checklist_item)%>"
+                          data-state-path="<%=comment_status_initiative_checklist_item_path(@initiative, checklist_item)%>"
+                      >
                         <li>
                           <label>
                             <%=
@@ -65,10 +69,11 @@
                             ) do
                               safe_join([content_tag(:i, '', class: "fa fa-comments-o")])
                             end %>
-                            <%= render 'checklist_item_video_tutorial', checklist_item: checklist_item %>
+                            <%= render 'checklist_item_video_tutorial', video_tutorial: checklist_item.characteristic.video_tutorial %>
                             <%= render 'checklist_item_description', checklist_item: checklist_item %>
                           </label>
-                          <%= render 'checklist_item_form', checklist_item: checklist_item, comment_statuses_collection: comment_statuses_collection %>
+
+                          <div data-comments-target="form"></div>
                         </li>
                       </div>
                     <%- end -%>

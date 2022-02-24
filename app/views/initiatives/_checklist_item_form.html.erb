@@ -1,5 +1,5 @@
 
-<div id="characteristic-comment-form-<%=checklist_item.id%>" data-comments-target='form' style="display: none">
+<div id="characteristic-comment-form-<%=checklist_item.id%>" data-comments-target='form'>
   <div class="box box-solid mb-3 characteristic-update-comment-form">
     <div data-comments-target="currentComment" style="<%= 'display: none' if checklist_item.current_comment.blank? %>">
       <%= simple_form_for([checklist_item.initiative, checklist_item],
@@ -7,23 +7,25 @@
         url: update_comment_initiative_checklist_item_url(
           checklist_item.initiative, checklist_item
         ),
-        html: { 
+        html: {
           class: 'form-horizontal',
-          data: { action: "ajax:complete->comments#onUpdateCommentSuccess" }
-        }, 
-        remote: true, 
-        format: :json 
+          data: {
+            action: "ajax:success->comments#onPostSuccess ajax:error->comments#onPostUpdateCommentError"
+          }
+        },
+        remote: true,
+        format: :json
       ) do |f| %>
-        <div class="d-flex flex-row"">
+        <div class="d-flex flex-row">
           <div class='mt-1'>
             <%= f.input :current_comment, as: :text, label: false %>
           </div>
           <div class='ml-3'>
-            <%= 
-              f.input :current_comment_status, 
-                as: :radio_buttons, 
-                collection: comment_statuses_collection, 
-                label_text: false, 
+            <%=
+              f.input :current_comment_status,
+                as: :radio_buttons,
+                collection: comment_statuses_collection,
+                label_text: false,
                 checked: checklist_item.current_comment_status
               %>
           </div>
@@ -31,13 +33,13 @@
         <div class="mb-3">
           <small>NB blank comments are ignored</small>
         </div>
-        <%= 
-          f.button :submit, 
-            "Update Existing", 
-            class: 'btn btn-secondary checklist-comment-update', 
+        <%=
+          f.button :submit,
+            "Update Existing",
+            class: 'btn btn-secondary checklist-comment-update',
             data: {
               comments_target: "updateExistingBtn",
-              id: checklist_item.id 
+              id: checklist_item.id
             }
         %>
         <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
@@ -51,12 +53,12 @@
         url: update_comment_initiative_checklist_item_url(
           checklist_item.initiative, checklist_item
         ),
-        html: { 
+        html: {
           class: 'form-horizontal',
-          data: { action: "ajax:complete->comments#onNewCommentSuccess" }
-        }, 
-        remote: true, 
-        format: :json 
+          data: { action: "ajax:success->comments#onPostSuccess ajax:error->comments#onPostNewCommentError" }
+        },
+        remote: true,
+        format: :json
       ) do |f| %>
         <div class="d-flex flex-row">
           <div class='mt-1'>
@@ -66,11 +68,11 @@
             </div>
           </div>
           <div class='ml-3'>
-            <%= 
-              f.input :new_comment_status, 
-                as: :radio_buttons, 
-                collection: comment_statuses_collection, 
-                label_text: false, 
+            <%=
+              f.input :new_comment_status,
+                as: :radio_buttons,
+                collection: comment_statuses_collection,
+                label_text: false,
                 checked: checklist_item.new_comment_status
               %>
             <div class="characteristicAlert callout callout-danger" style="display: none" data-comments-target="missingStatusAlert">
@@ -81,14 +83,10 @@
         <div class="mb-3">
           <small>NB blank comments are ignored</small>
         </div>
-        <%= 
-          f.button :submit, 
-            "Save New Comment", 
-            class: 'btn btn-secondary checklist-comment-new', 
-            data: { 
-              id: checklist_item.id,
-              action: "click->comments#validateNewComment"
-            } 
+        <%=
+          f.button :submit,
+            "Save New Comment",
+            class: 'btn btn-secondary checklist-comment-new'
         %>
         <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
       <% end %>

@@ -1,13 +1,13 @@
-<%- if checklist_item.characteristic.video_tutorial.present? %>
-  <%= 
+<%- if video_tutorial.present? %>
+  <%=
     link_to(
-      video_tutorial_path(checklist_item.characteristic.video_tutorial), 
+      video_tutorial_path(video_tutorial),
       class: 'video-tutorial-wrapper',
-      data: { 
-        video_tutorial_link: video_tutorial_path(checklist_item.characteristic.video_tutorial), 
-        video_tutorial_title: checklist_item.characteristic.video_tutorial.name 
-      } 
-    ) do 
+      data: {
+        video_tutorial_link: video_tutorial_path(video_tutorial),
+        video_tutorial_title: video_tutorial.name
+      }
+    ) do
       safe_join([content_tag(:i, '', class: "fa fa-youtube-play")])
     end
   %>

@@ -2,21 +2,22 @@ import Rails from "@rails/ujs";
 import { Controller } from "stimulus";
 
 export default class extends Controller {
-  static targets = [ 
-    "form", "newComment", "currentComment", "characteristic", "checklistItem", "saveNewBtn", 
-    "updateExistingBtn", "removeCurrentBtn", "missingStatusAlert", "missingCommentAlert" 
-  ]
+  static targets = ["form", "characteristic", "checklistItem", "currentComment", "newComment", "missingStatusAlert", "missingCommentAlert"]
 
   open(event) {
     event.preventDefault()
 
-    let newStatusElement = $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"]:checked')
-    let newTextElement = $(this.newCommentTarget).find('textarea[name="checklist_item[new_comment]"]')
+    let loadPath = this.element.dataset.loadPath;
 
-    newTextElement.val('')
-    newStatusElement.val('')
+    let formTarget = this.formTarget;
+    $(formTarget).show();
 
-    $(this.formTarget).show()
+    Rails.ajax({
+      type: "get",
+      url: loadPath,
+      success: function(data) { formTarget.innerHTML = data.body.getInnerHTML() },
+      error: function(data) { alert('Error') }
+    })
   }
 
   close(event) {
@@ -24,64 +25,53 @@ export default class extends Controller {
     $(this.formTarget).hide()
   }
 
-  validateNewComment(event) {
-    let status = $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"]:checked').val()
-    let comment = $(this.newCommentTarget).find('textarea[name="checklist_item[new_comment]"]').val()
+  onPostSuccess(event) {
+    $(this.formTarget).hide()
 
-    if (status == undefined) {
-      event.preventDefault()
+    let statePath = this.element.dataset.statePath;
+    let characteristicTarget = $(this.characteristicTarget)
+    let checklistItemTarget = $(this.checklistItemTarget)
+
+    Rails.ajax({
+      type: "get",
+      url: statePath,
+      success: function(data) {
+        characteristicTarget.removeClass('actual')
+        characteristicTarget.removeClass('planned')
+        characteristicTarget.removeClass('suggestion')
+        characteristicTarget.removeClass('more_information')
+
+        characteristicTarget.addClass( data.comment_status )
+        checklistItemTarget.prop('checked', data.checked)
+       },
+      error: function(data) { alert('Error') }
+    })
+  }
+
+  // SMELL: Never called
+  onPostUpdateCommentError(event) {
+    event.preventDefault()
+  }
+
+  onPostNewCommentError(event) {
+    event.preventDefault()
+
+    $(this.missingStatusAlertTarget).show()
+
+
+    let [data, status, xhr] = event.detail;
+
+    if (data.errors.includes("Status can't be blank")) {
       $(this.missingStatusAlertTarget).show()
     } else {
       $(this.missingStatusAlertTarget).hide()
     }
 
-    if (comment == '') {
-      event.preventDefault()
+    if (data.errors.includes("Comment can't be blank")) {
       $(this.missingCommentAlertTarget).show()
     } else {
       $(this.missingCommentAlertTarget).hide()
     }
-
   }
 
-  onUpdateCommentSuccess(event) {
-    let status = $(this.currentCommentTarget).find('input[name="checklist_item[current_comment_status]"]:checked').val()
-
-    this.updateCharacteristic(status)
-    $(this.formTarget).hide()
-  }
-
-  onNewCommentSuccess(event) {
-
-    let newStatusElement = $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"]:checked')
-    let currentStatusElement = $(this.currentCommentTarget).find('input[name="checklist_item[current_comment_status]"]:checked')
-
-    let newTextElement = $(this.newCommentTarget).find('textarea[name="checklist_item[new_comment]"]')
-    let currentTextElement = $(this.currentCommentTarget).find('textarea[name="checklist_item[current_comment]"]')
-    
-    currentTextElement.val(newTextElement.val())
-    currentStatusElement.val([newStatusElement.val()])
-
-    $(this.currentCommentTarget).find('input[name="checklist_item[current_comment_status]"][value="' + newStatusElement.val() + '"]').prop('checked', true)
-    $(this.newCommentTarget).find('input[name="checklist_item[new_comment_status]"][value="' + newStatusElement.val() + '"]').prop('checked', false)
-
-    this.updateCharacteristic(newStatusElement.val())
-    $(this.formTarget).hide()
-    $(this.currentCommentTarget).show()
-
- 
-  }
-
-  updateCharacteristic(status) {
-    let characteristic_element = $(this.characteristicTarget);
-
-    characteristic_element.removeClass('actual');
-    characteristic_element.removeClass('planned');
-    characteristic_element.removeClass('suggestion');
-    characteristic_element.removeClass('more-information');
-
-    characteristic_element.addClass(status);
-
-    $(this.checklistItemTarget).prop('checked', (status == 'actual' || status == 'planned'));
-  }
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_22_072135) do
+ActiveRecord::Schema.define(version: 2022_02_23_105340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -582,5 +582,20 @@ ActiveRecord::Schema.define(version: 2022_01_22_072135) do
               NULL::text,
               NULL::text
              FROM scorecards) events_transition_card_activities_v02;
+  SQL
+  create_view "scorecard_type_characteristics", sql_definition: <<-SQL
+      SELECT characteristics.id,
+      characteristics.name,
+      characteristics.description,
+      characteristics.focus_area_id,
+      characteristics."position",
+      characteristics.deleted_at,
+      characteristics.created_at,
+      characteristics.updated_at,
+      focus_area_groups.scorecard_type
+     FROM ((characteristics
+       JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
+       JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+    ORDER BY focus_areas."position", characteristics."position";
   SQL
 end

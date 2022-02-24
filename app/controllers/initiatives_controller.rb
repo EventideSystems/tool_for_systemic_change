@@ -84,6 +84,12 @@ class InitiativesController < ApplicationController
     super
   end
 
+  def edit_checklist_item
+    @checklist_item = ChecklistItem.find(params[:id])
+    authorize @checklist_item
+    render partial: 'checklist_item_form', locals: { checklist_item: @checklist_item }
+  end
+
   private
 
   def export_filename

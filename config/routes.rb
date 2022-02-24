@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :subsystem_tags
   namespace :initiatives do
     resources :imports, only: [:new, :create, :update]
+    resources :checklist_items, only: [:edit], controller: '/initiatives', action: 'edit_checklist_item'
   end
   namespace :organisations do
     resources :imports, only: [:new, :create, :update]
@@ -41,6 +42,7 @@ Rails.application.routes.draw do
       member do
         post 'update_comment'
         post 'create_comment'
+        get 'comment_status'
       end
     end
   end

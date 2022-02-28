@@ -22,7 +22,7 @@ module Reports
         date = p.workbook.styles.add_style format_code: 'd/m/yy'
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row([scorecard.model_name.human.to_s], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet.add_row([scorecard.model_name.human], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
           sheet.add_row(['Community', scorecard.community.name])
           sheet.add_row(['Date generated']).add_cell(Date.today, style: date)

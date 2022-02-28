@@ -1,8 +1,10 @@
-class AccountsController < ApplicationController
-  before_action :set_account, only: [:show, :edit, :update, :destroy, :switch]
+# frozen_string_literal: true
 
-  add_breadcrumb "Accounts", :accounts_path
-  
+class AccountsController < ApplicationController
+  before_action :set_account, only: %i[show edit update destroy switch]
+
+  add_breadcrumb 'Accounts', :accounts_path
+
   def index
     @accounts = policy_scope(Account).order(sort_order).page params[:page]
   end
@@ -13,9 +15,9 @@ class AccountsController < ApplicationController
   end
 
   def new
-    @account = Account.new(expires_on: Date.today+1.year)
+    @account = Account.new(expires_on: Date.today + 1.year)
     authorize @account
-    add_breadcrumb "New"
+    add_breadcrumb 'New'
   end
 
   def edit
@@ -56,44 +58,42 @@ class AccountsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def switch
     self.current_account = @account
     respond_to do |format|
       format.html { redirect_to dashboard_path, notice: 'Account successfully switched.' }
       format.json { render :show, status: :ok, location: @account }
-    end    
+    end
   end
-  
+
   def content_subtitle
     return @account.name if @account.present?
+
     super
   end
-  
-  protected
 
   private
 
-    def set_account
-      @account = Account.find(params[:id])
-      authorize @account
-    end
+  def set_account
+    @account = Account.find(params[:id])
+    authorize @account
+  end
 
-    def account_params
-      params.fetch(:account, {}).permit(
-        :name,
-        :description,
-        :weblink,
-        :sector_id,
-        :welcome_message,
-        :deactivated,
-        :expires_on,
-        :max_users,
-        :max_scorecards,
-        :solution_ecosystem_maps
-      )
-    end
+  def account_params
+    params.fetch(:account, {}).permit(
+      :name,
+      :description,
+      :weblink,
+      :sector_id,
+      :welcome_message,
+      :deactivated,
+      :expires_on,
+      :max_users,
+      :max_scorecards,
+      :solution_ecosystem_maps,
+      :allow_transition_cards,
+      :allow_sustainable_development_goal_alignment_cards
+    )
+  end
 end
-
-
-

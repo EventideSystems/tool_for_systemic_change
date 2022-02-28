@@ -12,17 +12,51 @@
     </div>
     <div class="icheck-primary col-sm-9 mt-1">
       <label class="">
-        <%= 
+        <%=
           f.input(
-            :solution_ecosystem_maps, 
-            as: :boolean, 
-            label: false, 
+            :solution_ecosystem_maps,
+            as: :boolean,
+            label: false,
             input_html: { onclick: "return false;" }
           )
         %>
       </label>
-    </div> 
+    </div>
   </div>
-  <%= edit_button('Edit Account', edit_account_path(@account)) if policy(@account).edit? %> 
+  <div class="row">
+    <div class="col-sm-3 col-form-label optional">
+      <label>Allow Transition Cards?</label>
+    </div>
+    <div class="icheck-primary col-sm-9 mt-1">
+      <label class="">
+        <%=
+          f.input(
+            :allow_transition_cards,
+            as: :boolean,
+            label: false,
+            input_html: { onclick: "return false;" }
+          )
+        %>
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 col-form-label optional">
+      <label>Allow SDG Goal Alignment Cards?</label>
+    </div>
+    <div class="icheck-primary col-sm-9 mt-1">
+      <label class="">
+        <%=
+          f.input(
+            :allow_sustainable_development_goal_alignment_cards,
+            as: :boolean,
+            label: false,
+            input_html: { onclick: "return false;" }
+          )
+        %>
+      </label>
+    </div>
+  </div>
+  <%= edit_button('Edit Account', edit_account_path(@account)) if policy(@account).edit? %>
 <% end %>
 

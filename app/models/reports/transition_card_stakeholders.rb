@@ -30,7 +30,8 @@ module Reports
           sheet.add_row
 
           sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: header_1)
-          sheet.add_row(['Total Transition Card Initiatives', total_transition_card_initiatives], style: header_1)
+          sheet.add_row(["Total #{scorecard.model_name.human} Initiatives", total_transition_card_initiatives],
+                        style: header_1)
 
           sheet.add_row
 

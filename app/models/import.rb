@@ -72,11 +72,6 @@ class Import < ApplicationRecord
     header_row.index { |i| i&.downcase.in? candidate_column_names }
   end
 
-  def column_index_for_scorecard_name
-    candidate_column_names = %w[scorecard_name transition_card_name sdg_card_name]
-    header_row.index { |i| i&.downcase.gsub(/\s/, '_').in? candidate_column_names }
-  end
-
   private
 
   def load_rows

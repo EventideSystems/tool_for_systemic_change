@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module Reports
   class ScorecardComments
-
     attr_reader :scorecard, :date, :status
 
     def initialize(scorecard, date, status)
@@ -40,15 +41,15 @@ module Reports
       Axlsx::Package.new do |p|
         p.workbook.styles.fonts.first.name = 'Calibri'
 
-        header_1 = p.workbook.styles.add_style :fg_color => "386190", :sz => 16, b: true
-        header_2 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: true
-        header_3 = p.workbook.styles.add_style :bg_color => "dce6f1", :fg_color => "386190", :sz => 12, b: false
-        blue_normal = p.workbook.styles.add_style :fg_color => "386190", :sz => 12, b: false
+        header_1 = p.workbook.styles.add_style fg_color: '386190', sz: 16, b: true
+        header_2 = p.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true
+        header_3 = p.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
+        blue_normal = p.workbook.styles.add_style fg_color: '386190', sz: 12, b: false
         wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
-        date_format = p.workbook.styles.add_style format_code: "d/m/yy"
+        date_format = p.workbook.styles.add_style format_code: 'd/m/yy'
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row(["#{Scorecard.model_name.human}"], style: header_1).add_cell(scorecard.name, style: blue_normal)
+          sheet.add_row([Scorecard.model_name.human.to_s], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date'], b: true).tap do |row|
             row.add_cell(date, style: date_format)
           end
@@ -60,9 +61,9 @@ module Reports
 
           sheet.add_row [
             '',
-          	'Total initiatives',
+            'Total initiatives',
             'Total comments'
-            ] + initiatives.map(&:name)
+          ] + initiatives.map(&:name)
 
           current_focus_area_group = ''
           current_focus_area = ''
@@ -76,31 +77,27 @@ module Reports
 
             if result[:focus_area] != current_focus_area
               current_focus_area = result[:focus_area]
-              sheet.add_row  ["\s\s" + result[:focus_area]] + padding_plus_2, style: header_3
+              sheet.add_row ["  #{result[:focus_area]}"] + padding_plus_2, style: header_3
             end
 
             characteristic_comments = comments.detect { |a| a['characteristic_id'] == result[:characteristic_id] }
 
             initiative_comments = initiatives.map do |initiative|
+              next unless characteristic_comments
 
-              if characteristic_comments
-                sorted_comments = JSON.parse(characteristic_comments['comment'])
-                  .sort_by { |comment| comment['date'] }
-                  .reverse
+              sorted_comments = JSON.parse(characteristic_comments['comment'])
+                                    .sort_by { |comment| comment['date'] }
+                                    .reverse
 
-                sorted_comments.each_with_object([]) do |characteristic_comment, memo|
-                  if characteristic_comment['initiative_id'] == initiative.id
-                    memo << "[#{characteristic_comment['date']}] #{characteristic_comment['comment']}"
-                  end
-                end.join('; ')
-              else
-                nil
-              end
-
+              sorted_comments.each_with_object([]) do |characteristic_comment, memo|
+                if characteristic_comment['initiative_id'] == initiative.id
+                  memo << "[#{characteristic_comment['date']}] #{characteristic_comment['comment']}"
+                end
+              end.join('; ')
             end
 
             sheet.add_row [
-              "\s\s\s\s" + result[:characteristic],
+              "    #{result[:characteristic]}",
               result[:initiatives_count],
               result[:comment_counts]
             ] + initiative_comments
@@ -118,35 +115,34 @@ module Reports
       padding_plus_2 = Array.new(initiatives.count + 2, '')
 
       CSV.generate do |csv|
-
-        csv << ["#{Scorecard.model_name.human}", scorecard.name] + padding_plus_1
-        csv << ['Date', date.strftime('%d/%m/%y')] + padding_plus_1
-        csv << ['Status', status.titleize] + padding_plus_1
+        csv << ([scorecard.model_name.human.to_s, scorecard.name] + padding_plus_1)
+        csv << (['Date', date.strftime('%d/%m/%y')] + padding_plus_1)
+        csv << (['Status', status.titleize] + padding_plus_1)
         csv << Array.new(initiatives.count + 3, '')
 
-        csv << [
+        csv << ([
           '',
-        	'Total initiatives',
+          'Total initiatives',
           'Total comments'
-          ] + initiatives.map(&:name)
+        ] + initiatives.map(&:name))
 
         results.each do |result|
           if result[:focus_area_group] != current_focus_area_group
             current_focus_area_group = result[:focus_area_group]
             current_focus_area = ''
-            csv << [result[:focus_area_group]] + padding_plus_2
+            csv << ([result[:focus_area_group]] + padding_plus_2)
           end
 
           if result[:focus_area] != current_focus_area
             current_focus_area = result[:focus_area]
-            csv << ["\t\t" + result[:focus_area]] + padding_plus_2
+            csv << (["\t\t#{result[:focus_area]}"] + padding_plus_2)
           end
 
-          csv << [
-            "\t\t\t\t" + result[:characteristic],
+          csv << ([
+            "\t\t\t\t#{result[:characteristic]}",
             result[:initiatives_count],
             result[:comment_counts]
-          ] + initiatives.map.with_index {|_, index| result["initiative_#{index+1}".to_sym] }
+          ] + initiatives.map.with_index { |_, index| result["initiative_#{index + 1}".to_sym] })
         end
       end
     end
@@ -166,12 +162,12 @@ module Reports
             FROM checklist_items
             LEFT JOIN checklist_item_comments
               ON checklist_item_comments.checklist_item_id = checklist_items.id
-              AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.created_at <= '#{date}'
               AND checklist_item_comments.status = '#{status}'
               AND checklist_item_comments.deleted_at IS NULL
             LEFT JOIN checklist_item_first_checkeds
               ON checklist_item_first_checkeds.checklist_item_id = checklist_items.id
-              AND checklist_item_first_checkeds.first_checked_at <= '#{date.to_s}'
+              AND checklist_item_first_checkeds.first_checked_at <= '#{date}'
             WHERE checklist_items.characteristic_id = characteristics.id
             AND checklist_items.initiative_id IN (
               SELECT id FROM initiatives WHERE initiatives.scorecard_id = #{scorecard.id}
@@ -197,7 +193,7 @@ module Reports
             AND checklist_item_comments.comment IS NOT NULL
             AND checklist_item_comments.deleted_at IS NULL
             AND checklist_item_comments.comment <> ''
-            AND checklist_item_comments.created_at <= '#{date.to_s}'
+            AND checklist_item_comments.created_at <= '#{date}'
             AND checklist_item_comments.status = '#{status}'
           ) AS comments_count
 
@@ -212,7 +208,6 @@ module Reports
     end
 
     def generate_comments
-
       sql = <<~SQL
         SELECT
           characteristic_id,
@@ -244,7 +239,7 @@ module Reports
               ON checklist_item_comments.checklist_item_id = checklist_items.id
             WHERE initiatives.scorecard_id = #{scorecard.id}
               AND checklist_item_comments.comment IS NOT NULL
-              AND checklist_item_comments.created_at <= '#{date.to_s}'
+              AND checklist_item_comments.created_at <= '#{date}'
               AND checklist_item_comments.status = '#{status}'
               AND checklist_item_comments.deleted_at IS NULL
             ORDER BY checklist_item_comments.created_at
@@ -263,18 +258,18 @@ module Reports
     def initiative_comments(characteristic, initiatives, date)
       comments = {}
       initiatives.each_with_index do |initiative, index|
-
         checklist_item = ChecklistItem
-          .includes(:versions)
-          .find_by(characteristic: characteristic, initiative: initiative)
+                         .includes(:versions)
+                         .find_by(characteristic: characteristic, initiative: initiative)
 
         checklist_item_comments = []
-        checklist_item_comments << "[#{checklist_item.updated_at.strftime('%Y-%m-%d')}] #{checklist_item.comment}" if (checklist_item.updated_at <= date && !checklist_item.comment.blank?)
-        checklist_item_comments += checklist_item.versions.inject([]) do |version_comments, version|
+        if checklist_item.updated_at <= date && !checklist_item.comment.blank?
+          checklist_item_comments << "[#{checklist_item.updated_at.strftime('%Y-%m-%d')}] #{checklist_item.comment}"
+        end
+        checklist_item_comments += checklist_item.versions.each_with_object([]) do |version, version_comments|
           if !version.reify.nil? && version.reify.updated_at <= date && !version.reify.comment.blank?
             version_comments << "[#{version.reify.updated_at.strftime('%Y-%m-%d')}] #{version.reify.comment}"
           end
-          version_comments
         end
 
         comments["initiative_#{index + 1}".to_sym] = checklist_item_comments.compact.reverse.join(';')
@@ -292,8 +287,8 @@ module Reports
       params = { date: date }
 
       scorecard.initiatives
-        .where('started_at <= :date OR started_at IS NULL', params)
-        .where('finished_at >= :date OR finished_at IS NULL', params)
+               .where('started_at <= :date OR started_at IS NULL', params)
+               .where('finished_at >= :date OR finished_at IS NULL', params)
     end
   end
 end

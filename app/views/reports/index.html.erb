@@ -2,12 +2,12 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header with-border">
-        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Transition Card Stakeholder Report</h3>
+        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= stakeholder_report_name %></h3>
       </div>
       <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="card-body">
         <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their sector.</p>
-        <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
+        <%= render partial: 'scorecard_selector', locals: { f: f } %>
       </div>
       <div class="card-footer">
         <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
@@ -20,13 +20,13 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= Scorecard.model_name.human %> Activity Report</h3>
+          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name %></h3>
         </div>
         <%= simple_form_for :report, url: transition_card_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
         <div class="card-body">
           <p>This report shows the addition and removal of characteristics across initiatives over a period of time.</p>
-          
-          <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
+
+          <%= render partial: 'scorecard_selector', locals: { f: f } %>
           <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker", datepicker_position: "bottom" }, autocomplete: "off" } %>
           <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
 
@@ -38,16 +38,16 @@
       </div>
     </div>
   <% end %>
-  
+
   <div class="col-md-6">
     <div class="card">
       <div class="card-header with-border">
-        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= Scorecard.model_name.human %> Comments Report</h3>
+        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= comments_report_name %></h3>
       </div>
       <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="card-body">
         <p>This report shows the first time comments have been recorded across initiatives.</p>
-        <%= f.input :scorecard_id, collection: current_account.scorecards, label: Scorecard.model_name.human %>
+        <%= render partial: 'scorecard_selector', locals: { f: f } %>
         <%= f.input :date, as: :string, input_html: { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
         <%= f.input :status, collection: options_for_comment_statuses, include_blank: false  %>
       </div>

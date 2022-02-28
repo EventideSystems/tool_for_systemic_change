@@ -1,12 +1,24 @@
+# frozen_string_literal: true
+
 class ReportsController < ApplicationController
-
   skip_after_action :verify_policy_scoped
- # skip_after_action :verify_authorized
+  # skip_after_action :verify_authorized
 
-  add_breadcrumb "Reports", :reports_path
+  add_breadcrumb 'Reports', :reports_path
+
+  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 
   def index
     authorize :report, :index?
+
+    @scorecards = policy_scope(Scorecard).order(:name)
+
+    @scorecard_types = current_account.scorecard_types.map do |scorecard_type|
+      ScorecardType.new(
+        scorecard_type.model_name.human.pluralize,
+        policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
+      )
+    end
   end
 
   def initiatives
@@ -15,18 +27,14 @@ class ReportsController < ApplicationController
     @content_subtitle = 'Initiatives'
     add_breadcrumb @content_subtitle
 
-    query = policy_scope(Initiative).joins(scorecard: [:community, :wicked_problem])
+    query = policy_scope(Initiative).joins(scorecard: %i[community wicked_problem])
 
     wicked_problem_ids = params[:report][:wicked_problems].reject { |e| e.to_s.empty? }
     community_ids = params[:report][:communities].reject { |e| e.to_s.empty? }
 
-    if wicked_problem_ids
-      query = query.where('scorecards.wicked_problem_id' => wicked_problem_ids)
-    end
+    query = query.where('scorecards.wicked_problem_id' => wicked_problem_ids) if wicked_problem_ids
 
-    if community_ids
-      query = query.where('scorecards.community_id' => community_ids)
-    end
+    query = query.where('scorecards.community_id' => community_ids) if community_ids
 
     @results = query.select(
       :id,
@@ -46,17 +54,15 @@ class ReportsController < ApplicationController
     @content_subtitle = 'Stakeholders'
     add_breadcrumb @content_subtitle
 
-    query = current_account.organisations.joins(:sector, initiatives: [scorecard: [:wicked_problem, :community]])
+    query = current_account.organisations.joins(:sector, initiatives: [scorecard: %i[wicked_problem community]])
 
-    if !params[:report][:sector].blank?
-      query = query.where(sector_id: params[:report][:sector])
-    end
+    query = query.where(sector_id: params[:report][:sector]) unless params[:report][:sector].blank?
 
-    if !params[:report][:wicked_problem].blank?
+    unless params[:report][:wicked_problem].blank?
       query = query.where('scorecards.wicked_problem_id' => params[:report][:wicked_problem])
     end
 
-    if !params[:report][:community].blank?
+    unless params[:report][:community].blank?
       query = query.where('scorecards.community_id' => params[:report][:community])
     end
 
@@ -71,7 +77,6 @@ class ReportsController < ApplicationController
       'communities.name as community_name',
       'scorecards.name as scorecard_name'
     ).distinct.page params[:page]
-
   end
 
   def transition_card_activity
@@ -89,11 +94,11 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{scorecard_activity_base_filename}.csv"
+        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_activity_base_filename}.csv"
       end
       format.xlsx do
         filename = 'transiton_card_activity'
-        send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{scorecard_activity_base_filename}.xlsx"
+        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_activity_base_filename}.xlsx"
       end
     end
   end
@@ -105,9 +110,9 @@ class ReportsController < ApplicationController
     add_breadcrumb @content_subtitle
 
     @scorecard = current_account
-      .scorecards
-      .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
-      .find(params[:report][:scorecard_id])
+                 .scorecards
+                 .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
+                 .find(params[:report][:scorecard_id])
     @date = params[:report][:date].in_time_zone('Australia/Adelaide').end_of_day.utc
     @status = params[:report][:status]
 
@@ -116,10 +121,11 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data @report.to_csv, :type => Mime[:csv], :filename =>"#{scorecard_comments_base_filename}.csv"
+        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_comments_base_filename}.csv"
       end
       format.xlsx do
-        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename}.xlsx", disposition: 'attachment'
+        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename}.xlsx",
+                                        disposition: 'attachment'
       end
     end
   end
@@ -127,12 +133,13 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders
     authorize :report, :index?
 
-    @content_subtitle = "Transition Card Stakeholder Report"
+    @content_subtitle = 'Transition Card Stakeholder Report'
     add_breadcrumb @content_subtitle
 
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     @report = Reports::TransitionCardStakeholders.new(@scorecard)
-    send_data @report.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{transition_card_stakeholders_base_filename}.xlsx"
+    send_data @report.to_xlsx.read, type: Mime[:xlsx],
+                                    filename: "#{transition_card_stakeholders_base_filename}.xlsx"
   end
 
   private
@@ -148,7 +155,4 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders_base_filename
     "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_stakeholders"
   end
-
-
-
 end

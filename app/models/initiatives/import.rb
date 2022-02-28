@@ -28,10 +28,22 @@ module Initiatives
         end
 
         if scorecard_name_index.nil?
+          scorecard_column_names = ['Scorecard Name']
+          scorecard_column_names << 'Transition Card Name' if account.allow_transition_cards?
+          scorecard_column_names << 'SDG Card Name' if account.allow_sustainable_development_goal_alignment_cards?
+
+          scorecard_column_names = scorecard_column_names.map { |name| "'#{name}'" }
+
+          column_names = if scorecard_column_names.count == 3
+                           "#{scorecard_column_names[1..2].join(', ')} or #{scorecard_column_names.last}"
+                         else
+                           "#{scorecard_column_names.first} or #{scorecard_column_names.last}"
+                         end
+
           processing_errors << build_processing_errors(
             row_data: row,
             row_index: row_index,
-            error_messages: ["Scorecard name column is missing. Please add a column named 'Scorecard Name' or 'Transition Card Name'"]
+            error_messages: ["Scorecard name column is missing. Please add a column named #{column_names}"]
           )
           next
         end

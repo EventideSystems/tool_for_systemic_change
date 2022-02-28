@@ -91,7 +91,7 @@ module Reports
     def add_initiative_totals(sheet, header_1)
       sheet.add_row(
         [
-          "Total #{Scorecard.model_name.human} Initiatives",
+          "Total #{scorecard.model_name.human} Initiatives",
           initiative_totals[:initial],
           initiative_totals[:additions],
           initiative_totals[:removals],
@@ -103,7 +103,7 @@ module Reports
 
     def add_report_header(sheet, header_1, blue_normal, date)
       sheet
-        .add_row([Scorecard.model_name.human.to_s], style: header_1)
+        .add_row([scorecard.model_name.human], style: header_1)
         .add_cell(scorecard.name, style: blue_normal)
 
       sheet.add_row(['Date range'], b: true).tap do |row|

@@ -199,7 +199,10 @@ module Reports
 
         FROM characteristics
         INNER JOIN focus_areas ON focus_areas.id = characteristics.focus_area_id AND focus_areas.deleted_at IS NULL
-        INNER JOIN focus_area_groups ON focus_area_groups.id = focus_areas.focus_area_group_id AND focus_area_groups.deleted_at IS NULL
+        INNER JOIN focus_area_groups
+          ON focus_area_groups.id = focus_areas.focus_area_group_id
+          AND focus_area_groups.deleted_at IS NULL
+          AND focus_area_groups.scorecard_type = '#{scorecard.type}'
         WHERE characteristics.deleted_at IS NULL
         ORDER BY focus_area_groups.position ASC, focus_areas.position ASC, characteristics.position ASC;
       SQL

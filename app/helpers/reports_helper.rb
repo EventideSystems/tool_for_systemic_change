@@ -23,7 +23,7 @@ module ReportsHelper
     "#{current_account.scorecard_types.first.model_name.human} Stakeholder Report"
   end
 
-  def scorecard_label
+  def report_scorecard_label
     return 'Scorecard' if current_account.scorecard_types.count > 1
 
     current_account.scorecard_types.first.model_name.human

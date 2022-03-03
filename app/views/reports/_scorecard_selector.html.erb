@@ -1,5 +1,5 @@
 <%- if current_account.scorecard_types.count > 1 %>
-<%= f.input :scorecard_id, collection: @scorecard_types, as: :grouped_select, group_method: :scorecards, label: scorecard_label %>
+<%= f.input :scorecard_id, collection: @scorecard_types, as: :grouped_select, group_method: :scorecards, label: report_scorecard_label %>
 <%- else %>
-<%= f.input :scorecard_id, collection: @scorecards, label: scorecard_label %>
+<%= f.input :scorecard_id, collection: @scorecards, label: report_scorecard_label %>
 <%- end %>

@@ -11,8 +11,8 @@ class SharedController < ApplicationController
     load_scorecard_and_results
 
     if @scorecard.present?
-      @focus_areas = FocusArea.ordered_by_group_position
-      @characteristics = Characteristic.includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
+      @focus_areas = FocusArea.per_scorecard_type(@scorecard.type).ordered_by_group_position
+      @characteristics = Characteristic.per_scorecard_type(@scorecard.type).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
     end
 
     if params[:iframe] == 'true'

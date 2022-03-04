@@ -50,7 +50,7 @@ class ScorecardCopier
   def copy_initiatives(source_scorecard_id, target_scorecard_id)
     insert_query = "
     INSERT INTO initiatives (name, description, scorecard_id, started_at, finished_at, dates_confirmed, contact_name, contact_email, contact_phone, contact_website, contact_position, deleted_at, created_at, updated_at)
-      SELECT concat('Copy of ', name), description, #{target_scorecard_id}, started_at, finished_at, dates_confirmed, contact_name, contact_email, contact_phone, contact_website, contact_position, deleted_at, created_at, updated_at
+      SELECT name, description, #{target_scorecard_id}, started_at, finished_at, dates_confirmed, contact_name, contact_email, contact_phone, contact_website, contact_position, deleted_at, created_at, updated_at
       FROM initiatives
       WHERE scorecard_id = #{source_scorecard_id}
       ORDER BY id

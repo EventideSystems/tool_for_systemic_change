@@ -103,7 +103,7 @@
                       }
                     )
                   %>
-                </span>
+                <%# </span> %>
               </th>
               <% @characteristics.each do |characteristic| %>
                 <td
@@ -112,12 +112,9 @@
                   data-container=".inner"
                   data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>"
-                  class="<%= cell_class(result, @focus_areas, characteristic) %>">
-
-                  <div class="square">
-                    <div class="content">
-                    </div>
-                  </div>
+                  class="<%= cell_class(result, @focus_areas, characteristic) %>"
+                  style="<%= cell_style(result, @focus_areas, characteristic) %>"
+                >
                 </td>
               <% end %>
             </tr>

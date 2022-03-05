@@ -6,8 +6,13 @@
   <%= f.association :focus_area_group %>
   <%= f.input :position %>
 
-  <%= f.input :video_tutorial_id, collection: VideoTutorial.all, 
-    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.' 
+  <%- if @focus_area.focus_area_group.scorecard_type == 'SustainableDevelopmentGoalAlignmentCard' %>
+    <%= f.input :icon_name, collection: options_for_icon_name %>
+    <%= f.input :base_color, collection: option_for_base_color %>
+  <%- end %>
+
+  <%= f.input :video_tutorial_id, collection: VideoTutorial.all,
+    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.'
   %>
   <%= render_form_button(f) %>
 <% end %>

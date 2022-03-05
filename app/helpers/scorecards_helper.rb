@@ -53,8 +53,8 @@ module ScorecardsHelper
         ]
       end
 
-      classes << if characteristic_data['checked'] && characteristic_data['comment'].blank?
-                   'no-comment'
+      classes << if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
+                   ['no-comment', "no-comment#{@focus_areas.index(characteristic.focus_area) + 1}"]
                  else
                    'gap'
                  end
@@ -65,10 +65,50 @@ module ScorecardsHelper
     classes.join(' ')
   end
 
+  def cell_style(result, _focus_areas, characteristic)
+    return '' if result.blank?
+
+    characteristic_data = result[characteristic.id.to_s]
+
+    return '' if characteristic_data.blank?
+
+    case characteristic_data['status']
+    when 'actual' then "background-color: #{characteristic.focus_area.base_color}"
+    when 'planned' then "background-color: #{lighten_color(characteristic.focus_area.base_color, 0.2)}"
+    else
+      base_color = lighten_color(characteristic.focus_area.base_color, 0.2)
+      secondary_color = lighten_color(characteristic.focus_area.base_color, 0.7)
+
+      if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
+        "background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        #{characteristic.focus_area.base_color} 2px,
+        #{characteristic.focus_area.base_color} 4px
+        );"
+      else
+        ''
+      end
+    end
+  end
+
   def scorecard_path(scorecard)
     case scorecard.type
     when 'TransitionCard' then transition_card_path(scorecard)
     when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(scorecard)
     end
+  end
+
+  private
+
+  # Source: https://www.redguava.com.au/2011/10/lighten-or-darken-a-hexadecimal-color-in-ruby-on-rails/
+  def lighten_color(hex_color, amount = 0.6)
+    hex_color = hex_color.gsub('#', '')
+    rgb = hex_color.scan(/../).map(&:hex)
+    rgb[0] = [(rgb[0].to_i + (255 * amount)).round, 255].min
+    rgb[1] = [(rgb[1].to_i + (255 * amount)).round, 255].min
+    rgb[2] = [(rgb[2].to_i + (255 * amount)).round, 255].min
+    '#%02x%02x%02x' % rgb
   end
 end

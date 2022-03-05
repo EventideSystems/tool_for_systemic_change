@@ -23,13 +23,13 @@ class ScorecardCopier
       source_checklist_items_ids,
       target_checklist_items_ids = copy_checklist_items(source_initiative_ids, target_initiative_ids)
 
-      source_checklist_item_comment_ids,
-      target_checklist_item_comment_ids = copy_checklist_item_comments(source_checklist_items_ids,
-                                                                       target_checklist_items_ids)
-
       copy_initiative_organisations(source_initiative_ids, target_initiative_ids)
 
       if deep_copy
+        source_checklist_item_comment_ids,
+        target_checklist_item_comment_ids = copy_checklist_item_comments(source_checklist_items_ids,
+                                                                         target_checklist_items_ids)
+
         copy_paper_trail_records('Scorecard', [source.id], [target.id])
         copy_paper_trail_records('Initiative', source_initiative_ids, target_initiative_ids)
         copy_paper_trail_records('ChecklistItem', source_checklist_items_ids, target_checklist_items_ids)

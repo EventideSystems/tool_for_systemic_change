@@ -36,7 +36,7 @@
             <%= menu_item_tag(:transition_cards, 'check-square-o', { disabled: disabled, title: TransitionCard.model_name.human.pluralize }) %>
           <% end %>
           <%- if policy(:sidebar).show_sustainable_development_goal_alignment_cards? %>
-            <%= menu_item_tag(:sustainable_development_goal_alignment_cards, 'check-square-o', { disabled: disabled, title: SustainableDevelopmentGoalAlignmentCard.model_name.human.pluralize }) %>
+            <%= sdg_card_menu_item(disabled: disabled) %>
           <% end %>
           <%= menu_item_tag(
             :wicked_problems,

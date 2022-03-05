@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.7.3' unless ENV['CI']
+ruby '2.7.5' unless ENV['CI']
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")

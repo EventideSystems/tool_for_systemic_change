@@ -18,8 +18,6 @@ Rails.application.routes.draw do
     resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
   end
 
-  UUID_OR_NUMERIC_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
-
   devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
 
   resources :accounts do
@@ -80,7 +78,10 @@ Rails.application.routes.draw do
     resources :initiatives, only: [:show], controller: 'ecosystem_maps/initiatives'
   end
 
-  resources :shared, :constraints => { id: UUID_OR_NUMERIC_REGEX }, only: [:show]
+  resources :shared, constraints: {
+    id: /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
+  }, only: [:show]
+
   resources :sectors
   resources :users do
     member do

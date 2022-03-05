@@ -24,6 +24,16 @@
       color: #{nth($color, 2)}#{$color-alpha};
     }
 
+    .no-comment#{nth($color, 1)} {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        #{nth($color, 2)} 5px,
+        #{nth($color, 2)} 10px
+      );
+    }
+
     .text-color#{nth($color, 1)} {
       color: #{nth($color, 2)};
     }
@@ -195,8 +205,8 @@
 }
 
 .sdg-card .cell {
-  max-width: 16px;
-  min-width: 16px;
+  max-width: 11px;
+  min-width: 11px;
 }
 
 div.transition-card-matrix {
@@ -236,4 +246,19 @@ div.sdg-card thead {
   height: 5.5em;
 }
 
+div.scorecard-matrix.sdg-card tbody tr td.cell {
+  opacity: 1;
+  border-bottom: 5px solid white !important;
+  border-top: 6px solid white !important;
+  border-left: 1px solid white !important;
+  border-right: 1px solid white !important;
+}
+
+div.scorecard-matrix.sdg-card tbody tr td.cell.hidden {
+  background: #f8f8f8 !important;
+}
+
+div.scorecard-matrix.sdg-card tbody tr td.cell.gap {
+  opacity: .6;
+}
 

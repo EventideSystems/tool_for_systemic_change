@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_05_054923) do
+ActiveRecord::Schema.define(version: 2022_03_05_121401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 2022_03_05_054923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type", default: "TransitionCard"
+    t.integer "linked_scorecard_id"
     t.index ["account_id"], name: "index_scorecards_on_account_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
     t.index ["type"], name: "index_scorecards_on_type"

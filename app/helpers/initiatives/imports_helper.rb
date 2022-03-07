@@ -1,2 +1,0 @@
-module Initiatives::ImportsHelper
-end

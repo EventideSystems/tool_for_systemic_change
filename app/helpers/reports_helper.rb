@@ -24,7 +24,7 @@ module ReportsHelper
   end
 
   def report_scorecard_label
-    return 'Select card' if current_account.scorecard_types.count > 1
+    return 'Select Card' if current_account.scorecard_types.count > 1
 
     current_account.scorecard_types.first.model_name.human
   end

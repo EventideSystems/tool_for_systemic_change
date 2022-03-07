@@ -74,10 +74,11 @@ module ScorecardsHelper
 
     case characteristic_data['status']
     when 'actual' then "background-color: #{characteristic.focus_area.base_color}"
-    when 'planned' then "background-color: #{lighten_color(characteristic.focus_area.base_color, 0.2)}"
+    when 'planned' then
+      "background-color: #{lighten_color(characteristic.focus_area.base_color, 0.3)}"
     else
-      base_color = lighten_color(characteristic.focus_area.base_color, 0.2)
-      secondary_color = lighten_color(characteristic.focus_area.base_color, 0.7)
+      # base_color = lighten_color(characteristic.focus_area.base_color, 0.2)
+      # secondary_color = lighten_color(characteristic.focus_area.base_color, 0.7)
 
       if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
         "background: repeating-linear-gradient(
@@ -91,6 +92,18 @@ module ScorecardsHelper
         ''
       end
     end
+  end
+
+  def collection_for_linked_scorecard(parent_scorecard)
+    return [] if parent_scorecard.blank?
+
+    parent_scorecard
+      .account
+      .scorecards
+      .where(linked_scorecard_id: [nil, parent_scorecard.linked_scorecard_id].uniq)
+      .where.not(type: parent_scorecard.type)
+      .order(:name)
+      .pluck(:name, :id)
   end
 
   def scorecard_path(scorecard)

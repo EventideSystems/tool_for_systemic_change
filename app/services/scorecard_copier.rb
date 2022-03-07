@@ -148,6 +148,8 @@ class ScorecardCopier
   end
 
   def copy_paper_trail_records(item_type, source_ids, target_ids)
+    return if source_ids.empty? || target_ids.empty?
+
     case_fragment = build_case_fragment(
       'versions.item_id',
       source_ids,

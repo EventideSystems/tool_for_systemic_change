@@ -1,7 +1,7 @@
 
   <ul id="transition-card-nav" class="nav nav-tabs">
     <li class="nav-item">
-      <a href="#tab_1" class="nav-link <%= 'active' if @active_tab == :scorecard %>" data-target="#transition_card" data-toggle="tab"><%= Scorecard.model_name.human %></a>
+      <a href="#tab_1" class="nav-link <%= 'active' if @active_tab == :scorecard %>" data-target="#transition_card" data-toggle="tab"><%= @scorecard.model_name.human %></a>
     </li>
     <% if policy(@scorecard).ecosystem_maps? %>
       <li class="nav-item">

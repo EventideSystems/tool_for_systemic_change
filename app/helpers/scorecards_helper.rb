@@ -84,9 +84,9 @@ module ScorecardsHelper
         "background: repeating-linear-gradient(
         45deg,
         transparent,
-        transparent 2px,
-        #{characteristic.focus_area.base_color} 2px,
-        #{characteristic.focus_area.base_color} 4px
+        transparent 1px,
+        #{characteristic.focus_area.base_color} 1px,
+        #{characteristic.focus_area.base_color} 2px
         );"
       else
         ''

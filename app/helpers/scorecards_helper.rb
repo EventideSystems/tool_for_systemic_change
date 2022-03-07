@@ -113,6 +113,13 @@ module ScorecardsHelper
     end
   end
 
+  def copy_scorecard_url(scorecard)
+    case scorecard.type
+    when 'TransitionCard' then copy_transition_card_url(@scorecard)
+    when 'SustainableDevelopmentGoalAlignmentCard' then copy_sustainable_development_goal_alignment_card_url(scorecard)
+    end
+  end
+
   private
 
   # Source: https://www.redguava.com.au/2011/10/lighten-or-darken-a-hexadecimal-color-in-ruby-on-rails/

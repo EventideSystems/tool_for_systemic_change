@@ -213,6 +213,7 @@ class ScorecardsController < ApplicationController
       :wicked_problem_id,
       :community_id,
       :notes,
+      :linked_scorecard_id,
       initiatives_attributes: [
         :_destroy,
         :name,

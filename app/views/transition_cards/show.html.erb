@@ -33,7 +33,7 @@
       <%= render 'transition_cards/show_tabs/initiatives'%>
     </div>
     <div class="tab-pane <%= 'active' if @active_tab == :details %>" id="details">
-      <%= render 'transition_cards/show_tabs/details'%>
+      <%= render 'scorecards/show_tabs/details'%>
     </div>
      <% if policy(@scorecard).activity? %>
       <div class="tab-pane <%= 'active' if @active_tab == :activity %>" id="activity">

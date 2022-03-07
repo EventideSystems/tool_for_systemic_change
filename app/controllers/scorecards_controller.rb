@@ -144,8 +144,8 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       if @copied_scorecard.present?
         format.html do
-          redirect_to transition_card_path(@copied_scorecard),
-                      notice: "#{Scorecard.model_name.human} was successfully copied."
+          redirect_to @copied_scorecard,
+                      notice: "#{@copied_scorecard.model_name.human} was successfully copied."
         end
         format.json { render :show, status: :ok, location: @copied_scorecard }
       else

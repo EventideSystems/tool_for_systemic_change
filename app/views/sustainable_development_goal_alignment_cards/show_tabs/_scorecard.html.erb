@@ -82,6 +82,8 @@
                   <div class="mr-2" data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
                     <%= focus_area_icon(focus_area) %>
                   </div>
+                  <div class="divider">
+                  </div>
                 </th>
               <% end %>
             </tr>
@@ -90,20 +92,18 @@
             <% @results.each do |result| %>
             <tr>
               <th>
-                <!--span data-toggle="tooltip" data-placement="top" title="<%= result.dig('initiative', 'name') %>"-->
-                  <%=
-                    link_to(
-                      result.dig('initiative', 'name'),
-                      initiative_path(id: result.dig('initiative', 'id')),
-                      class: 'truncate',
-                      data: {
-                        toggle: 'tooltip',
-                        placement: 'top',
-                        title: result.dig('initiative', 'name')
-                      }
-                    )
-                  %>
-                <%# </span> %>
+                <%=
+                  link_to(
+                    result.dig('initiative', 'name'),
+                    initiative_path(id: result.dig('initiative', 'id')),
+                    class: 'truncate',
+                    data: {
+                      toggle: 'tooltip',
+                      placement: 'top',
+                      title: result.dig('initiative', 'name')
+                    }
+                  )
+                %>
               </th>
               <% @characteristics.each do |characteristic| %>
                 <td

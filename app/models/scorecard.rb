@@ -9,6 +9,7 @@ class Scorecard < ApplicationRecord
   belongs_to :community
   belongs_to :account
   belongs_to :wicked_problem
+  belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
 
   has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy
   has_many :checklist_items, through: :initiatives
@@ -29,6 +30,21 @@ class Scorecard < ApplicationRecord
   validates :community, presence: true
   validates :wicked_problem, presence: true
   validates :shared_link_id, uniqueness: true
+  validate :linked_scorecard_must_be_in_same_account
+
+  before_save :set_inverse_linked_scorecard, if: :linked_scorecard_id_changed?
+
+  def set_inverse_linked_scorecard
+    if linked_scorecard_id_was.present?
+      Scorecard.find(linked_scorecard_id_was).update_column(:linked_scorecard_id, nil)
+    end
+
+    if linked_scorecard_id.present?
+      Scorecard.find(linked_scorecard_id).update_column(:linked_scorecard_id, id)
+    end
+
+    true
+  end
 
   def description_summary
     Nokogiri::HTML(description).text
@@ -58,6 +74,12 @@ class Scorecard < ApplicationRecord
   end
 
   private
+
+  def linked_scorecard_must_be_in_same_account
+    if linked_scorecard.present? && linked_scorecard.account != account
+      errors.add(:linked_scorecard_id, "must be in the same account")
+    end
+  end
 
   def non_clashing_initiative_name(name, existing_names)
     return name unless existing_names.include?(name)

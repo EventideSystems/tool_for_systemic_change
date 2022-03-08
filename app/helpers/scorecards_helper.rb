@@ -73,20 +73,17 @@ module ScorecardsHelper
     return '' if characteristic_data.blank?
 
     case characteristic_data['status']
-    when 'actual' then "background-color: #{characteristic.focus_area.base_color}"
+    when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
     when 'planned' then
-      "background-color: #{lighten_color(characteristic.focus_area.base_color, 0.3)}"
+      "background-color: #{characteristic.focus_area.planned_color}"
     else
-      # base_color = lighten_color(characteristic.focus_area.base_color, 0.2)
-      # secondary_color = lighten_color(characteristic.focus_area.base_color, 0.7)
-
       if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
         "background: repeating-linear-gradient(
         45deg,
         transparent,
         transparent 1px,
-        #{characteristic.focus_area.base_color} 1px,
-        #{characteristic.focus_area.base_color} 2px
+        #{characteristic.focus_area.actual_color} 2px,
+        #{characteristic.focus_area.actual_color} 3px
         );"
       else
         ''
@@ -120,15 +117,4 @@ module ScorecardsHelper
     end
   end
 
-  private
-
-  # Source: https://www.redguava.com.au/2011/10/lighten-or-darken-a-hexadecimal-color-in-ruby-on-rails/
-  def lighten_color(hex_color, amount = 0.6)
-    hex_color = hex_color.gsub('#', '')
-    rgb = hex_color.scan(/../).map(&:hex)
-    rgb[0] = [(rgb[0].to_i + (255 * amount)).round, 255].min
-    rgb[1] = [(rgb[1].to_i + (255 * amount)).round, 255].min
-    rgb[2] = [(rgb[2].to_i + (255 * amount)).round, 255].min
-    '#%02x%02x%02x' % rgb
-  end
 end

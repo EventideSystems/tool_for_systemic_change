@@ -1,4 +1,4 @@
-
+<div data-controller='scorecards'>
   <ul id="transition-card-nav" class="nav nav-tabs">
     <li class="nav-item">
       <a href="#tab_1" class="nav-link <%= 'active' if @active_tab == :scorecard %>" data-target="#transition_card" data-toggle="tab"><%= @scorecard.model_name.human %></a>
@@ -16,7 +16,7 @@
     </li>
     <% if policy(@scorecard).activity? %>
       <li class="nav-item">
-        <a href="#tab_5" class="nav-link <%= 'active' if @active_tab == :activity %>" data-target="#activity" data-toggle="tab">Activity</a>
+        <a href="#tab_5" class="nav-link <%= 'active' if @active_tab == :activity %>" data-target="#activity" data-toggle="tab" data-action="click->scorecards#loadActivities">Activity</a>
       </li>
     <%- end -%>
   </ul>
@@ -36,8 +36,8 @@
       <%= render 'scorecards/show_tabs/details'%>
     </div>
      <% if policy(@scorecard).activity? %>
-      <div class="tab-pane <%= 'active' if @active_tab == :activity %>" id="activity">
-        <%= render 'transition_cards/show_tabs/activity'%>
+      <div class="tab-pane <%= 'active' if @active_tab == :activity %>" id="activity" data-scorecards-target="activities">
+        <%#= render 'transition_cards/show_tabs/activity'%>
       </div>
     <%- end -%>
   </div>

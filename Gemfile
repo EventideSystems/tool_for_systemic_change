@@ -85,6 +85,11 @@ gem 'aws-sdk-rails'
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor'
 
+# Profiling related
+gem 'rack-mini-profiler'
+gem 'memory_profiler'
+gem 'stackprof'
+
 group :test do
   gem 'cucumber-rails', :require => false
   # database_cleaner is not required, but highly recommended

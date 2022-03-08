@@ -8,7 +8,8 @@
 
   <%- if @focus_area.focus_area_group.scorecard_type == 'SustainableDevelopmentGoalAlignmentCard' %>
     <%= f.input :icon_name, collection: options_for_icon_name %>
-    <%= f.input :base_color, collection: option_for_base_color %>
+    <%= f.input :actual_color %>
+    <%= f.input :planned_color %>
   <%- end %>
 
   <%= f.input :video_tutorial_id, collection: VideoTutorial.all,

@@ -84,7 +84,7 @@ class ScorecardGrid
             inner join initiatives on checklist_items.initiative_id = initiatives.id
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
-            inner join most_recent_activities on most_recent_activities.checklist_item_id = checklist_items.id
+            left join most_recent_activities on most_recent_activities.checklist_item_id = checklist_items.id
             where initiatives.scorecard_id = #{scorecard.id}
             #{subsystem_sql(subsystem_tags)}
             order by initiative

@@ -1,0 +1,29 @@
+<div class="tab-pane" id="details-tab">
+  <div class="p-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Event</th>
+          <th>Occurred at</th>
+          <th>Initiative</th>
+          <th>Characteristic</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% activities.each do |activity| %>
+          <tr>
+            <td><%= activity.event.titleize %></td>
+            <td data-toggle="tooltip" title="<%= activity.occurred_at %>"><%= activity_occurred_at(activity) %></td>
+            <td><%= activity.initiative_name.presence || 'NA' %></td>
+            <td><%= activity.characteristic_name.presence || 'NA' %></td>
+            <td><%= activity.from_status.presence || 'NA' %></td>
+            <td><%= activity.to_status.presence || 'NA' %></td>
+            <td><%= activity.comment.presence || 'NA' %></td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+</div>

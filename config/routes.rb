@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'ecosystem_maps_initiatives'
+      get 'activities'
     end
   end
 
@@ -72,6 +73,7 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'ecosystem_maps_initiatives'
+      get 'activities'
     end
   end
 

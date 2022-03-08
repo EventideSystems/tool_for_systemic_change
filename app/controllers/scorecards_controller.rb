@@ -7,6 +7,7 @@ class ScorecardsController < ApplicationController
                   show_shared_link copy copy_options merge merge_options
                   ecosystem_maps_organisations
                   ecosystem_maps_initiatives
+                  activities
                 ]
 
   before_action :set_active_tab, only: [:show]
@@ -35,7 +36,6 @@ class ScorecardsController < ApplicationController
 
     @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-    @activities = Events::TransitionCardActivity.where(transition_card_id: @scorecard.id).order(occurred_at: :desc)
 
     add_breadcrumb @scorecard.name
 
@@ -187,6 +187,12 @@ class ScorecardsController < ApplicationController
     data = EcosystemMaps::Organisations.new(@scorecard)
 
     render json: { data: { nodes: data.nodes, links: data.links } }
+  end
+
+  def activities
+    @activities = Events::TransitionCardActivity.where(transition_card_id: @scorecard.id).order(occurred_at: :desc)
+
+    render partial: '/scorecards/show_tabs/activities', locals: { activities: @activities }
   end
 
   def content_subtitle

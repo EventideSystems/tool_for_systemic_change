@@ -4,6 +4,7 @@ class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
       query = crosstab_sql(scorecard, wrap_date(snapshot_at), subsystem_tags)
+
       results = ActiveRecord::Base.connection.execute(query)
 
       results.map do |result|
@@ -45,6 +46,20 @@ class ScorecardGrid
           select *
           from crosstab(
             $$
+            with most_recent_activities as (
+              select distinct on (checklist_item_id)
+                events_checklist_item_activities.checklist_item_id,
+                events_checklist_item_activities.to_status,
+                events_checklist_item_activities.comment,
+                events_checklist_item_activities.occurred_at
+              from events_checklist_item_activities
+              inner join checklist_items on events_checklist_item_activities.checklist_item_id = checklist_items.id
+              inner join initiatives on checklist_items.initiative_id = initiatives.id
+              where initiatives.scorecard_id = #{scorecard.id}
+              and events_checklist_item_activities.occurred_at < #{snapshot_at}
+              order by checklist_item_id, occurred_at desc
+            )
+
             select
               -- Key column
               jsonb_build_object(
@@ -57,11 +72,11 @@ class ScorecardGrid
               jsonb_build_object(
                 'focus_area_id', characteristics.focus_area_id,
                 'focus_area_group_id', focus_area_groups.id,
-                'checklist_item_id', events_checklist_item_activities.checklist_item_id,
+                'checklist_item_id', most_recent_activities.checklist_item_id,
                 'characteristics_id', characteristics.id,
-                'comment', events_checklist_item_activities.comment,
+                'comment', most_recent_activities.comment,
                 'name', characteristics.name,
-                'status', events_checklist_item_activities.to_status
+                'status', most_recent_activities.to_status
               ) as checklist_item
 
             from checklist_items
@@ -69,14 +84,7 @@ class ScorecardGrid
             inner join initiatives on checklist_items.initiative_id = initiatives.id
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
-            left join lateral (
-              select checklist_item_id, to_status, comment
-              from events_checklist_item_activities
-              where checklist_items.id = events_checklist_item_activities.checklist_item_id
-              and events_checklist_item_activities.occurred_at < #{snapshot_at}
-              order by occurred_at desc
-              limit 1
-            ) events_checklist_item_activities on true
+            inner join most_recent_activities on most_recent_activities.checklist_item_id = checklist_items.id
             where initiatives.scorecard_id = #{scorecard.id}
             #{subsystem_sql(subsystem_tags)}
             order by initiative

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_070816) do
+ActiveRecord::Schema.define(version: 2022_03_08_112711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -586,7 +586,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_070816) do
               NULL::text
              FROM scorecards) events_transition_card_activities_v02;
   SQL
-  create_view "scorecard_type_characteristics", sql_definition: <<-SQL
+  create_view "scorecard_type_characteristics", materialized: true, sql_definition: <<-SQL
       SELECT characteristics.id,
       characteristics.name,
       characteristics.description,

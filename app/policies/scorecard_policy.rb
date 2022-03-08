@@ -47,6 +47,10 @@ class ScorecardPolicy < ApplicationPolicy
     system_admin? || account_any_role?(record.account)
   end
 
+  def activities?
+    system_admin? || account_any_role?(record.account)
+  end
+
   def max_scorecards_not_reached?(account)
     return false unless account.present?
     return true if account.max_scorecards.zero? # NOTE: magic number, meaning no limit

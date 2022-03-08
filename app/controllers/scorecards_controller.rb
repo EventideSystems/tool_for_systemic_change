@@ -36,7 +36,6 @@ class ScorecardsController < ApplicationController
 
     @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-
     add_breadcrumb @scorecard.name
 
     respond_to do |format|

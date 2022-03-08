@@ -7,9 +7,9 @@ class FocusAreasController < ApplicationController
 
   def index
     @focus_areas = policy_scope(FocusArea)
-      .unscoped.joins(:focus_area_group)
-      .order(sort_order)
-      .page params[:page]
+                   .unscoped.joins(:focus_area_group)
+                   .order(sort_order)
+                   .page params[:page]
   end
 
   def show; end
@@ -70,6 +70,17 @@ class FocusAreasController < ApplicationController
   end
 
   def focus_area_params
-    params.fetch(:focus_area, {}).permit(:name, :description, :position, :focus_area_group_id, :video_tutorial_id)
+    params
+      .fetch(:focus_area, {})
+      .permit(
+        :name,
+        :description,
+        :position,
+        :icon_name,
+        :actual_color,
+        :planned_color,
+        :focus_area_group_id,
+        :video_tutorial_id
+      )
   end
 end

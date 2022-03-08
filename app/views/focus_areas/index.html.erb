@@ -19,7 +19,8 @@
         order: "focus_area_groups.name"
     %>
     <% table.column :scorecard_type %>
-    <% table.column :base_color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
+    <% table.column :actual_color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
+    <% table.column :planned_color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
     <% table.column :data => "Modify", link_action: :edit %>
     <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>

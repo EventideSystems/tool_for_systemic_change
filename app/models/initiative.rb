@@ -120,11 +120,19 @@ class Initiative < ApplicationRecord
   private
 
   def create_checklist_items
-    characteristic_ids = Characteristic.per_scorecard_type(scorecard.type).all.pluck(:id) - checklist_items.map(&:characteristic_id)
+    missing_characteristic_ids = \
+      Characteristic.per_scorecard_type(scorecard.type).pluck(:id) - checklist_items.map(&:characteristic_id)
 
-    Characteristic.where(id: characteristic_ids).all.each do |characteristic|
-      checklist_items.create(characteristic: characteristic)
-    end
+    ChecklistItem.insert_all(
+      missing_characteristic_ids.map do |characteristic_id|
+        {
+          initiative_id: id,
+          characteristic_id: characteristic_id,
+          created_at: Time.zone.now,
+          updated_at: Time.zone.now
+        }
+      end
+    )
   end
 
   def deep_copy_paper_trail_records(copied)

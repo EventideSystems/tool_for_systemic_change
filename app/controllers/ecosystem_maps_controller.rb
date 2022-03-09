@@ -1,2 +1,0 @@
-class EcosystemMapsController < ApplicationController
-end

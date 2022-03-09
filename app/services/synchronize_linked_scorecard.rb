@@ -16,7 +16,7 @@ class SynchronizeLinkedScorecard
       source_initiatives.each_with_index do |source_itinerary, index|
         target_itinerary = target_initiatives[index]
 
-        SynchronizeLinkedItinerary.call(source_itinerary, target_itinerary)
+        ::SynchronizeLinkedInitiative.call(source_itinerary, target_itinerary)
       end
     end
 

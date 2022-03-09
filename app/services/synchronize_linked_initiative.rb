@@ -1,31 +1,31 @@
-class SynchronizeLinkedItinerary
+class SynchronizeLinkedInitiative
   class << self
-    def call(source_itinerary, target_itinerary=nil)
-      return if source_itinerary.scorecard.linked_scorecard.blank?
+    def call(source_initiative, target_initiative=nil)
+      return if source_initiative.scorecard.linked_scorecard.blank?
 
-      target_itinerary = target_itinerary || fetch_target_itinerary(source_itinerary)
+      target_initiative = target_initiative || fetch_target_initiative(source_initiative)
 
-      update_initiative_attributes(source_itinerary, target_itinerary)
-      synchronize_initiative_organisations(source_itinerary, target_itinerary)
-      synchronize_initiative_subsystems_tags(source_itinerary, target_itinerary)
+      update_initiative_attributes(source_initiative, target_initiative)
+      synchronize_initiative_organisations(source_initiative, target_initiative)
+      synchronize_initiative_subsystems_tags(source_initiative, target_initiative)
 
-      source_itinerary.save!
-      target_itinerary.save!
+      source_initiative.save!
+      target_initiative.save!
     end
 
     private
 
-    def build_new_itinerary(source_itinerary)
-      Itinerary.new.tap do |itinerary|
-        update_initiative_attributes(source_itinerary, new_itinerary)
+    def build_new_initiative(source_initiative)
+      Initiative.new.tap do |new_initiative|
+        update_initiative_attributes(source_initiative, new_initiative)
       end
     end
 
-    def fetch_target_itinerary(source_itinerary)
-      target_scorecard = source_itinerary.scorecard.linked_scorecard
+    def fetch_target_initiative(source_initiative)
+      target_scorecard = source_initiative.scorecard.linked_scorecard
 
-      target_scorecard.initiatives.find_by(name: source_itinerary.name) || build_new_itinerary(source_itinerary).tap do |itinerary|
-        target_scorecard.initiatives << itinerary
+      target_scorecard.initiatives.find_by(name: source_initiative.name) || build_new_initiative(source_initiative).tap do |initiative|
+        target_scorecard.initiatives << initiative
       end
     end
 
@@ -52,7 +52,7 @@ class SynchronizeLinkedItinerary
     end
 
     def update_initiative_attributes(initiative_1, initiative_2)
-      if initiative_1.updated_at > initiative_2.updated_at || initiative_2.new_record?
+      if  initiative_2.new_record? || initiative_1.updated_at > initiative_2.updated_at
         source_initiative = initiative_1
         target_initiative = initiative_2
       else
@@ -63,7 +63,7 @@ class SynchronizeLinkedItinerary
       source_attributes = \
         source_initiative
           .attributes
-          .except(*%w[id name scorecard_id created_at deleted_at updated_at old_notes])
+          .except(*%w[id scorecard_id created_at deleted_at updated_at old_notes])
           .select { |_, v| v.present? }
 
       target_initiative.assign_attributes(source_attributes)

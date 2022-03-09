@@ -50,7 +50,7 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       if @initiative.save
 
-        SynchronizeLinkedItinerary.call(@initiative)
+        SynchronizeLinkedInitiative.call(@initiative)
 
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully created.' }
         format.json { render :show, status: :created, location: @initiative }
@@ -65,7 +65,7 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       if @initiative.update(initiative_params)
 
-        SynchronizeLinkedItinerary.call(@initiative)
+        SynchronizeLinkedInitiative.call(@initiative)
 
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully updated.' }
         format.json { render :show, status: :ok, location: @initiative }

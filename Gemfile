@@ -48,8 +48,6 @@ gem 'pundit'
 # User interface related
 gem 'simple_form'
 gem 'cocoon'
-gem 'carrierwave', '~> 1.0'
-gem 'mini_magick'
 gem 'table-for'
 gem 'kaminari'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'

@@ -67,8 +67,7 @@ class ScorecardPolicy < ApplicationPolicy
     ecosystem_maps?
   end
 
-  # TODO: Will need to check this against account option, per spec
-  def ecosystem_maps_initiatives?
-    ecosystem_maps?
+  def link_scorecards?
+    record.account.allow_transition_cards? && record.account.allow_sustainable_development_goal_alignment_cards?
   end
 end

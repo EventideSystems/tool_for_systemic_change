@@ -17,7 +17,6 @@
     <li class="nav-item dropdown">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="<%= current_user.profile_picture_url %>" class="user-image" alt="User Image">
           <span class="hidden-xs" data-toggle="tooltip" title="<%= current_user_membership_summary %>"><%= current_user_name %></span>
         </a>
 
@@ -26,13 +25,13 @@
           <%- if current_account.present? %>
             <%- path = policy(current_account).edit? ? edit_account_path(current_account) : account_path(current_account) %>
             <%= link_to 'Account', path, class: 'dropdown-item' %>
-          <%- end %> 
+          <%- end %>
           <div class="dropdown-divider"></div>
           <%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: 'dropdown-item' %>
         </div>
       </li>
     </li>
-  
+
     <li class="nav-item d-none d-sm-inline-block">
       <%= link_to('http://www.wickedlab.com.au/help',  target: :_blank, class: 'nav-link') do
           safe_join([content_tag(:i, '', class: "fa fa-support"), ' User Help'])

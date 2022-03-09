@@ -99,4 +99,5 @@ class Scorecard < ApplicationRecord
   def ensure_shared_link_id
     self.shared_link_id ||= new_shared_link_id
   end
+
 end

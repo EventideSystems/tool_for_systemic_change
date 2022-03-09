@@ -182,25 +182,3 @@ class Initiative < ApplicationRecord
   end
 end
 
-# SELECT
-# initiatives.name,
-# jsonb_build_object('name', initiatives.name)
-# FROM scorecards
-# INNER JOIN initiatives on initiatives.scorecard_id = scorecards.id
-# INNER JOIN initiatives on initiatives.scorecard_id = scorecards.id
-# WHERE scorecards.id = 5 ORDER BY initiatives.name
-
-# select
-# initiatives.name as initiative,
-# characteristics.name as characteristic,
-# case checklist_items.checked
-# when true then true
-# else false
-# end as checked
-# from checklist_items
-# inner join characteristics on characteristics.id = checklist_items.characteristic_id
-# inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-# inner join initiatives on initiatives.id = checklist_items.initiative_id
-# inner join scorecards on scorecards.id = initiatives.scorecard_id
-# where scorecards.id = 4
-# ORDER BY initiatives.name, focus_areas.position, characteristics.position

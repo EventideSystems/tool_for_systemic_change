@@ -6,7 +6,6 @@ class ScorecardsController < ApplicationController
                   show edit update destroy
                   show_shared_link copy copy_options merge merge_options
                   ecosystem_maps_organisations
-                  ecosystem_maps_initiatives
                   activities
                 ]
 
@@ -94,6 +93,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
+        SynchronizeLinkedScorecard.call(@scorecard)
         format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
@@ -106,6 +106,7 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
+        SynchronizeLinkedScorecard.call(@scorecard)
         format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
@@ -174,12 +175,6 @@ class ScorecardsController < ApplicationController
         format.json { render json: @merged_scorecard.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def ecosystem_maps_initiatives
-    data = EcosystemMaps::Initiatives.new(@scorecard)
-
-    render json: { data: { nodes: data.nodes, links: data.links } }
   end
 
   def ecosystem_maps_organisations

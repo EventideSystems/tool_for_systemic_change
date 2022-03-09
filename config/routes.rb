@@ -46,7 +46,6 @@ Rails.application.routes.draw do
   end
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags
-  resources :networks
   resources :organisations
 
   resources :transition_cards do
@@ -57,7 +56,6 @@ Rails.application.routes.draw do
       post 'merge'
       get 'merge_options'
       get 'ecosystem_maps_organisations'
-      get 'ecosystem_maps_initiatives'
       get 'activities'
     end
   end
@@ -70,14 +68,12 @@ Rails.application.routes.draw do
       post 'merge'
       get 'merge_options'
       get 'ecosystem_maps_organisations'
-      get 'ecosystem_maps_initiatives'
       get 'activities'
     end
   end
 
   resources :ecosystem_maps do
     resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
-    resources :initiatives, only: [:show], controller: 'ecosystem_maps/initiatives'
   end
 
   resources :shared, constraints: {

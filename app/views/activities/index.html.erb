@@ -5,10 +5,10 @@
                         :data_row_html => {
                           id: lambda { |version| "version-#{version.id}" }
                         } do |table| %>
-    <% table.column :created_at, :header => "Time" %>
-    <% table.column :item_type, :header => "Record Type", :formatter => lambda { |item_type| version_item_type_name(item_type) } %>
-    <% table.column :event, :header => "Action" , :formatter => lambda { |event| version_event_past_tense(event) } %>
-    <% table.column :whodunnit, :header => "User", :formatter => lambda { |whodunnit| version_whodunnit_name(whodunnit) }, :sortable => false %>
+    <% table.column :created_at, header: "Time" %>
+    <% table.column :item_type, header: "Record Type", formatter: lambda { |item_type| version_item_type_name(item_type) } %>
+    <% table.column :event, header: "Action" , formatter: lambda { |event| version_event_past_tense(event) } %>
+    <% table.column :whodunnit, header: "User", formatter: lambda { |whodunnit| version_whodunnit_name(whodunnit) }, :sortable => false %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @versions %>

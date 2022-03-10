@@ -12,8 +12,8 @@
                         } do |table| %>
     <% table.column :name, link: true %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 200) } %>
-    <% table.column :data => "Modify", link_action: :edit %>
-    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column data: "Modify", link_action: :edit %>
+    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @wicked_problems %>

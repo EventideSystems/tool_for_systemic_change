@@ -14,8 +14,8 @@
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
     <% table.column :scorecard_type %>
     <% table.column :position %>
-    <% table.column :data => "Modify", link_action: :edit %>
-    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column data: "Modify", link_action: :edit %>
+    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @focus_area_groups %>

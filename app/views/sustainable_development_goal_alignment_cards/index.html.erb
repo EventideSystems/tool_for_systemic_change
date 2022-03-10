@@ -30,7 +30,7 @@
         formatter: lambda { |text| truncate_text(text, 30) },
         link_html: { data: { behaviour: 'show-spinner'} }
     %>
-    <% table.column :description, :formatter => lambda { |text| truncate_text(text, 135) } %>
+    <% table.column :description, formatter: lambda { |text| truncate_text(text, 135) } %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @scorecards %>

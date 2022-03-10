@@ -12,18 +12,18 @@
     <% table.column :primary_account_name, sortable: false %>
     <% table.column :status, sortable: false %>
     <% table.column :created_at %>
-    
-    <% table.column :data => lambda { 
-          case table.current_row.status 
+
+    <% table.column data: lambda {
+          case table.current_row.status
           when 'deleted'
             'Undelete'
           when 'invitation-pending'
             'Resend Invitation'
           else
-            '-'  
+            '-'
           end
         },
-        link_url: lambda { |user| 
+        link_url: lambda { |user|
           case user.status
           when 'deleted'
             undelete_system_user_path(user)

@@ -6,14 +6,14 @@
   <div class='box-body no-padding'>
   <%= table_for @communities, :table_html => { :class => "table table-striped table-base" },
                         :sortable => true,
-                        :data_row_html => { 
+                        :data_row_html => {
                           id: lambda { |community| "community-#{community.id}" },
                           class: 'table-actions'
                         } do |table| %>
     <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
-    <% table.column :data => "Modify", link_action: :edit %>
-    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column data: "Modify", link_action: :edit %>
+    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @communities %>

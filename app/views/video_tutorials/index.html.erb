@@ -10,20 +10,20 @@
                           id: lambda { |video_tutorial| "video_tutorial-#{video_tutorial.id}" },
                           class: 'table-actions'
                         } do |table| %>
-    <% table.column :name, formatter: lambda { |text| 
+    <% table.column :name, formatter: lambda { |text|
          link_to(
-           truncate_text(text, 200), 
-           "#", 
-           class: 'video-tutorial-wrapper', 
-           data: { 
-              video_tutorial_link: video_tutorial_url(table.current_row), 
-              video_tutorial_title: table.current_row.name 
-           } 
+           truncate_text(text, 200),
+           "#",
+           class: 'video-tutorial-wrapper',
+           data: {
+              video_tutorial_link: video_tutorial_url(table.current_row),
+              video_tutorial_title: table.current_row.name
+           }
          )
        }
     %>
-    <% table.column :data => "Modify", link_action: :edit %>
-    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column data: "Modify", link_action: :edit %>
+    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @video_tutorials %>

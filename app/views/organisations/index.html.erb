@@ -1,14 +1,14 @@
 <% content_for :page_actions do %>
   <%= create_new_button(new_organisation_path) %>
-  <%= 
+  <%=
     link_to(organisations_path(format: :csv), class: 'btn btn-primary') do
       safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export'])
-    end 
+    end
   %>
-  <%= 
+  <%=
     link_to(new_organisations_import_path, class: 'btn btn-primary') do
       safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import'])
-    end 
+    end
   %>
 <% end %>
 
@@ -23,8 +23,8 @@
     <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 100) } %> %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 30) } %>
     <% table.column :sector_name, header: 'Sector', sortable: false %>
-    <% table.column :data => "Modify", link_action: :edit %>
-    <% table.column :data => "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column data: "Modify", link_action: :edit %>
+    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @organisations %>

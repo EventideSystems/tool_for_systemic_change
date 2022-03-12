@@ -69,7 +69,12 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'activities'
+      get 'targets_network_map'
     end
+
+    resources :characteristics, only: [:show],
+      controller: 'sustainable_development_goal_alignment_cards',
+      action: 'characteristic'
   end
 
   resources :ecosystem_maps do

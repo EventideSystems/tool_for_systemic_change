@@ -29,7 +29,7 @@ module EcosystemMaps
       FocusArea.where(id: TargetsNetworkMapping.pluck(:focus_area_id).uniq).map do |node|
         {
           id: "focus-area-#{node.id}",
-          label: node.name,
+          label: node.short_name,
           color: node.actual_color,
           size: 10,
         }
@@ -40,7 +40,7 @@ module EcosystemMaps
       Characteristic.where(id: TargetsNetworkMapping.pluck(:characteristic_id).uniq).map do |node|
         {
           id: "characteristic-#{node.id}",
-          label: node.name,
+          label: node.short_name,
           color: node.focus_area.actual_color,
           characteristic_id: node.id,
           size: 6

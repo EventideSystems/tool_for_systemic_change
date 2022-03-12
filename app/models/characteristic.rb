@@ -46,4 +46,8 @@ class Characteristic < ApplicationRecord
   def identifier
     "#{focus_area.position}.#{self.position}"
   end
+
+  def short_name
+    name.match(/(\d*\.\d*)\s.*/)[1] || name
+  end
 end

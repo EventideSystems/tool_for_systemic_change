@@ -37,4 +37,8 @@ class FocusArea < ApplicationRecord
   def video_tutorial_id
     video_tutorial.try(:id)
   end
+
+  def short_name
+    name.match(/(Goal\s\d*)\.*./)[1] || name
+  end
 end

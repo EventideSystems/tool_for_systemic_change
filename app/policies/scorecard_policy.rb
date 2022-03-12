@@ -67,6 +67,16 @@ class ScorecardPolicy < ApplicationPolicy
     ecosystem_maps?
   end
 
+  # TODO: Rename this to 'show_targets_network_map?'
+  def targets_network_maps?
+    record.is_a?(SustainableDevelopmentGoalAlignmentCard) &&
+      record.account.allow_sustainable_development_goal_alignment_cards?
+  end
+
+  def targets_network_map?
+    targets_network_maps?
+  end
+
   def link_scorecards?
     record.account.allow_transition_cards? && record.account.allow_sustainable_development_goal_alignment_cards?
   end

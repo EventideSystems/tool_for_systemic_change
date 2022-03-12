@@ -1,11 +1,11 @@
 <div class="box-body" id="ecosystem-maps" data-scorecard-id="<%=@scorecard.id%>" data-controller="ecosystem-maps">
-  <nav class="navbar nav-pills navbar-expand-md justify-content-md-left justify-content-start">
+  <nav class="navbar-maps navbar nav-pills navbar-expand-md justify-content-md-left justify-content-start">
     <div class="navbar-collapse collapse justify-content-left align-items-left w-100" id="collapsingNavbar2">
       <ul class="navbar-nav nav-tabs mr-auto text-md-center text-left">
         <li class="nav-item">
           <a class="nav-link" href="#" data-action="click->ecosystem-maps#toggleLabels" data-target="ecosystem-maps.toggleLabels">
             Labels
-          </a> 
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" href="#" data-action="click->ecosystem-maps#toggleLegend" data-target="ecosystem-maps.toggleLegend">
@@ -52,10 +52,10 @@
       <div class="legend pt-3">
         <%- Sector.order(:name).each do |sector| -%>
           <p>
-            <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span> 
+            <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span>
             <span class="dot-label"><%= sector.name %></span>
           </p>
-        <%- end %>  
+        <%- end %>
       </div>
     </div>
 

@@ -1,1 +1,59 @@
-Foo
+<div class="box-body">
+  <nav class="navbar-maps navbar nav-pills navbar-expand-md justify-content-md-left justify-content-start">
+    <div class="navbar-collapse collapse justify-content-left align-items-left w-100" id="collapsingNavbar2">
+      <ul class="navbar-nav nav-tabs mr-auto text-md-center text-left">
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLabels" data-scorecards-target="targetsNetworkMapLabelsBtn">
+            Labels
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLegend" data-scorecards-target="targetsNetworkMapLegendBtn">
+            Legend
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomIn" data-target="ecosystem-maps.toggleLegend">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomOut">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomReset">
+            Reset
+          </a>
+        </li>
+      </ul>
+      <ul id="ecosystem-maps-nav" class="d-none nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+        <li class="nav-item">
+          <a href="#tab_organisations" class="nav-link active" data-target="#tab_organisations" data-toggle="tab">
+            Organisations
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#tab_initiatives" class="nav-link" data-target="#tab_initiatives" data-toggle="tab">
+            Initiatives
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div style="height: 500px" class="tab-content" id="target-network-map-container">
+
+  </div>
+
+  <div style="display:none" class="legend pt-3" data-scorecards-target="targetsNetworkMapLegendPanel">
+    <%- FocusArea.per_scorecard_type('SustainableDevelopmentGoalAlignmentCard').order(:name).each do |focus_area| -%>
+      <p>
+        <span class="dot" style="background-color: <%= focus_area.actual_color.presence || '#000' %>"></span>
+        <span class="dot-label"><%= focus_area.name %></span>
+      </p>
+    <%- end %>
+  </div>
+
+</div>

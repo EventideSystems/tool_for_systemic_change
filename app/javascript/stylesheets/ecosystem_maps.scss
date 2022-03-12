@@ -1,6 +1,4 @@
-// Buttons
-
-#ecosystem-maps {
+.navbar-maps {
   .nav-link {
     background-color: white;
     border-color: #d2d6de;
@@ -16,11 +14,17 @@
     background-color: #00b9f2;
     border-color: #0dc6ff;
     color: white;
-  } 
+
+  }
 
   .nav-tabs {
+    border-top-width: 1px;
     border-bottom: none;
   }
+}
+
+.content .navbar-maps .nav-link.active {
+  border-top-color: #0dc6ff !important;
 }
 
 // Modal
@@ -55,14 +59,14 @@ div.legend {
   width: auto;
   /* left: 230px; */
   bottom: 10px;
-  font: 9px sans-serif;		
-  background: white;	
+  font: 9px sans-serif;
+  background: white;
   pointer-events: none;
   padding: 0.5em;
   padding-right: 1em;
   border: 1px solid #E5E5E5;
   box-shadow: 0 0 10px grey;
-  
+
 }
 
 div.legend > p {
@@ -70,13 +74,13 @@ div.legend > p {
   line-height: 0.1;
 }
 
-div.chart-tooltip {	
+div.chart-tooltip {
   position: absolute;
   width: 250px;
   height: auto;
-  padding: 5px;				
-  font: 12px sans-serif;		
-  background: white;	
+  padding: 5px;
+  font: 12px sans-serif;
+  background: white;
   pointer-events: none;
   padding: 0.5em;
   border: 1px solid #E5E5E5;
@@ -91,7 +95,7 @@ div.chart-tooltip > ul {
 }
 
 div.chart-tooltip > ul > li {
-  font: 11px sans-serif;	
+  font: 11px sans-serif;
   padding: 3px;
   margin-left: 10px;
 }
@@ -109,7 +113,7 @@ div.chart-tooltip > h6 {
   padding-top: 5px;
 }
 
-div.chart-tooltip > p.wordbreak { 
+div.chart-tooltip > p.wordbreak {
   word-break: break-all;
   font: 11px sans-serif;
 }

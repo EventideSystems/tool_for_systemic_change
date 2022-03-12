@@ -31,6 +31,7 @@ module EcosystemMaps
           id: "focus-area-#{node.id}",
           label: node.name,
           color: node.actual_color,
+          size: 10,
         }
       end
     end
@@ -41,6 +42,8 @@ module EcosystemMaps
           id: "characteristic-#{node.id}",
           label: node.name,
           color: node.focus_area.actual_color,
+          characteristic_id: node.id,
+          size: 6
         }
       end
     end

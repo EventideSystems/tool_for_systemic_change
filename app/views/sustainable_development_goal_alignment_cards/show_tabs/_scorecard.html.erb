@@ -26,7 +26,7 @@
         <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
           <div class="input-group">
 
-            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px;" data-scorecard-id="<%=@scorecard.id%>">
+            <select multiple="multiple" class="form-control" id="subsystem-tags" style="min-width: 300px;" data-scorecard-id=<%=@scorecard.id%>">
               <%- @selected_tags.each do |selected_tag| %>
                   <option value="<%= selected_tag.id %>" selected="selected"><%= selected_tag.text %></option>
               <%- end %>
@@ -50,6 +50,9 @@
               transition_card_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
             end
         %>
+        <%= link_to('#', class: 'btn btn-outline-secondary', data: { toggle: "tooltip", transition_cards_target: 'compactViewBtn', action: 'click->transition-cards#toggleCompactGridView' }, title: "Compact view") do
+          content_tag(:i, '', class: "fas fa-compress-alt")
+        end %>
         <%= link_to(print_transition_card_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
           content_tag(:i, '', class: "fa fa-print")
         end %>
@@ -71,7 +74,7 @@
     </div>
   </div>
   <div class="box-body scorecard-matrix sdg-card pl-3" data-transition-cards-target="grid">
-    <div class="outer">
+    <div class="outer pb-4">
       <div class="inner">
         <table class="pre-scrollable">
           <thead>
@@ -105,6 +108,10 @@
                   )
                 %>
               </th>
+              <% @focus_areas.each_with_index do |focus_area, index|  %>
+                <td colspan="<%= focus_area.characteristics.count %>" class="focus-area-cell" style="display:none; <%= focus_area_cell_style(result, focus_area) %>">
+                </td>
+              <%- end -%>
               <% @characteristics.each do |characteristic| %>
                 <td
                   data-toggle="tooltip"
@@ -112,7 +119,7 @@
                   data-container=".inner"
                   data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
                   title="<%= result.dig(characteristic.id.to_s, 'name') %>"
-                  class="<%= cell_class(result, @focus_areas, characteristic) %>"
+                  class="characteristic-cell <%= cell_class(result, @focus_areas, characteristic) %>"
                   style="<%= cell_style(result, @focus_areas, characteristic) %>"
                 >
                 </td>

@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 
 export default class extends Controller {
-  static targets = [ "filter", "grid" ]
+  static targets = [ "filter", "grid", "compactViewBtn" ]
 
   connect() {
     // Source: https://github.com/pascallaliberte/stimulus-turbolinks-select2/blob/master/_assets/controllers/multi-select_controller.js
@@ -47,5 +47,23 @@ export default class extends Controller {
 
   select2unmount() {
     $(this.filterTarget).select2('destroy');
+  }
+
+  toggleCompactGridView(event) {
+    event.preventDefault()
+
+    if ($(this.compactViewBtnTarget).hasClass('btn-outline-secondary') == true) {
+      $('#status-filter').prop('disabled', true)
+      $('td.focus-area-cell').show()
+      $('td.characteristic-cell').hide()
+      $(this.compactViewBtnTarget).removeClass('btn-outline-secondary')
+      $(this.compactViewBtnTarget).addClass('btn-primary')
+    } else {
+      $('#status-filter').prop('disabled', false)
+      $('td.focus-area-cell').hide()
+      $('td.characteristic-cell').show()
+      $(this.compactViewBtnTarget).removeClass('btn-primary')
+      $(this.compactViewBtnTarget).addClass('btn-outline-secondary')
+    }
   }
 }

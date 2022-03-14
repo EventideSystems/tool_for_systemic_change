@@ -3,6 +3,7 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
+  before_action :set_scorecards_and_types, only: [:show, :new, :edit]
 
   add_breadcrumb 'Initiatives', :initiatives_path
 
@@ -162,6 +163,20 @@ class InitiativesController < ApplicationController
   def set_initiative
     @initiative = Initiative.find(params[:id])
     authorize @initiative
+  end
+
+  # SMELL: Duplication of code in reports_controller
+  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
+
+  def set_scorecards_and_types
+    @scorecards = policy_scope(Scorecard).order(:name)
+
+    @scorecard_types = current_account.scorecard_types.map do |scorecard_type|
+      ScorecardType.new(
+        scorecard_type.model_name.human.pluralize,
+        policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
+      )
+    end
   end
 
   def initiative_params

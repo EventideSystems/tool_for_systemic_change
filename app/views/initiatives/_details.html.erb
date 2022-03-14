@@ -3,19 +3,21 @@
     <%= f.error_notification %>
     <%= form_header(@initiative) %>
     <%= f.input :name %>
-    <%= f.input :description %>    
-    <%= f.association :scorecard, 
-      collection: policy_scope(Scorecard), 
-      required: true, 
-      label: scorecard_label(@initiative),
-      input_html: { class: 'initiative-detail-scorecard' }
-    %>
+    <%= f.input :description %>
+    <%- if current_account.scorecard_types.count > 1 %>
+      <%= f.association :scorecard, collection: @scorecard_types, as: :grouped_select, group_method: :scorecards, label: scorecard_label(@initiative) %>
+    <%- else %>
+      <%= f.association :scorecard, collection: @scorecards, label: scorecard_label(@initiative) %>
+    <%- end %>
+
+
+
     <hr>
     <%= render 'transition_cards/form_tabs/organisations', f: f %>
     <hr>
     <%= render 'transition_cards/form_tabs/subsystem_tags', f: f %>
     <hr>
-    <%= f.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %> 
+    <%= f.input :started_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
     <%= f.input :finished_at, :as => :string, :input_html => { data: { behaviour: "datepicker" }} %>
     <hr>
     <%= f.input :contact_name %>

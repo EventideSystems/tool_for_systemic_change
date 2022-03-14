@@ -112,6 +112,15 @@ module ScorecardsHelper
     any_actual ? "background-color: #{focus_area.actual_color}" : ''
   end
 
+  def linked_scorecard_label(scorecard)
+    case scorecard
+    when TransitionCard then 'Linked SDG Card'
+    when SustainableDevelopmentGoalAlignmentCard then 'Linked Transition Card'
+    else
+      raise 'Unknown scorecard type'
+    end
+  end
+
   def scorecard_path(scorecard)
     case scorecard.type
     when 'TransitionCard' then transition_card_path(scorecard)

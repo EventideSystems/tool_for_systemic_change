@@ -2,10 +2,10 @@ module InitiativesHelper
 
   def scorecard_label(initiative)
     if initiative.new_record? || initiative.scorecard.nil?
-      Scorecard.model_name.human
+      current_account.scorecard_types.map { |type| type.model_name.human }.join(' / ')
     else
       safe_join([
-        content_tag(:span, "#{Scorecard.model_name.human}", style: 'margin-right: 10px'),
+        content_tag(:span, "#{initiative.scorecard.model_name.human}", style: 'margin-right: 10px'),
         link_to(
           content_tag(
             :i,

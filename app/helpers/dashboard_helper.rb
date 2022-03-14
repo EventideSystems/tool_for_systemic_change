@@ -1,15 +1,16 @@
-module DashboardHelper
+# frozen_string_literal: true
 
-  def menu_item_tag(resources, icon, options={})
-    controller_name = '/' + (options[:controller].try(:to_s) || resources.to_s)
+module DashboardHelper
+  def menu_item_tag(resources, icon, options = {})
+    controller_name = "/#{options[:controller].try(:to_s) || resources.to_s}"
     title = options[:title] || resources.to_s.titleize
 
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
     link_class = options[:disabled] == true ? 'link-disabled' : ''
 
-    # TODO 'active' needs to be on the link (link_class), not the <li>
-    content_tag(:li, class: "nav-item " + menu_item_class) do
-      link_to({controller: controller_name, action: 'index'}, {class: "nav-link " + link_class}) do
+    # TODO: 'active' needs to be on the link (link_class), not the <li>
+    content_tag(:li, class: "nav-item #{menu_item_class}") do
+      link_to({ controller: controller_name, action: 'index' }, { class: "nav-link #{link_class}" }) do
         concat content_tag(:i, '', class: "fa fa-#{h icon} nav-icon")
         concat content_tag(:p, title)
       end
@@ -20,8 +21,8 @@ module DashboardHelper
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
     link_class = options[:disabled] == true ? 'link-disabled' : ''
 
-    content_tag(:li, class: "nav-item " + menu_item_class) do
-      link_to(sustainable_development_goal_alignment_cards_path, { class: "nav-link " + link_class }) do
+    content_tag(:li, class: "nav-item #{menu_item_class}") do
+      link_to(sustainable_development_goal_alignment_cards_path, { class: "nav-link #{link_class}" }) do
         concat image_tag('sdg_icons/sdg-logo.png', class: 'sidebar-image', style: 'width: 22px;')
         concat content_tag(:p, 'SDG Alignment Cards')
       end
@@ -42,24 +43,30 @@ module DashboardHelper
       concat content_tag(
         :li,
         link_to(safe_join([
-          content_tag(:i, '', class: 'fa fa-dashboard'),
-          ' Home'
-        ]), root_path)
+                            content_tag(:i, '', class: 'fa fa-dashboard'),
+                            ' Home'
+                          ]), root_path)
       )
       concat content_tag(:li, controller.controller_name.titleize, class: 'active')
     end
   end
+
+  def dashboard_scorecards_title
+    if current_account.scorecard_types.count > 1
+      'Card'
+    else
+      current_account.scorecard_types.first.model_name.human
+    end
+  end
+
+  def default_scorecards_path
+    case current_account.scorecard_types.first.name
+    when 'TransitionCard'
+      transition_cards_path
+    when 'SustainableDevelopmentGoalAlignmentCard'
+      sustainable_development_goal_alignment_cards_path
+    else
+      raise 'Unknown scorecard type'
+    end
+  end
 end
-
-
-# <ol class="breadcrumb">
-#   <li>
-#       <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-#     </li>
-# #   <li class="active">Dashboard</li>
-# </ol>
-#
-# <ol class="breadcrumb">
-#   <li><a href="/"><i class="fa fa-dashboard"> Home</i></a></li>
-#   <li class="active">DashboardX</li>
-# </ol>

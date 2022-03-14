@@ -268,3 +268,15 @@ div.scorecard-matrix.sdg-card th div.divider {
   border-bottom: 1px solid white;
   height: 11px;
 }
+
+div.scorecard-matrix.sdg-card .inner {
+  padding-bottom: 200px;
+}
+
+div.scorecard-matrix.sdg-card td.focus-area-cell {
+  min-width: 80px;
+  opacity: 1;
+  height: 21px;
+  border-bottom: 5px solid white !important;
+  border-top: 6px solid white !important;
+}

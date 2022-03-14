@@ -4,12 +4,12 @@
     <div class="small-box bg-color-5">
       <div class="inner">
         <h3><%= @scorecard_count %></h3>
-        <p><%= Scorecard.model_name.human.pluralize(@scorecard_count) %></p>
+        <p><%= dashboard_scorecards_title.pluralize(@scorecard_count) %></p>
       </div>
       <div class="icon">
         <i class="fa fa-check-square-o"></i>
       </div>
-      <%= link_to(transition_cards_path, {class: 'small-box-footer'}) do
+      <%= link_to(default_scorecards_path, {class: 'small-box-footer'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>

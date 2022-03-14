@@ -74,7 +74,7 @@ module ScorecardsHelper
 
     case characteristic_data['status']
     when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
-    when 'planned' then
+    when 'planned'
       "background-color: #{characteristic.focus_area.planned_color}"
     else
       if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
@@ -104,6 +104,14 @@ module ScorecardsHelper
       .pluck(:name, :id)
   end
 
+  def focus_area_cell_style(result, focus_area)
+    characteristic_ids = focus_area.characteristics.pluck(:id).map(&:to_s)
+
+    any_actual = result.values_at(*characteristic_ids).any? { |checklist_item| checklist_item['status'] == 'actual' }
+
+    any_actual ? "background-color: #{focus_area.actual_color}" : ''
+  end
+
   def scorecard_path(scorecard)
     case scorecard.type
     when 'TransitionCard' then transition_card_path(scorecard)
@@ -117,5 +125,4 @@ module ScorecardsHelper
     when 'SustainableDevelopmentGoalAlignmentCard' then copy_sustainable_development_goal_alignment_card_url(scorecard)
     end
   end
-
 end

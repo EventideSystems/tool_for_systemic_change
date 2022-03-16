@@ -56,6 +56,7 @@ class ScorecardGrid
               inner join checklist_items on events_checklist_item_activities.checklist_item_id = checklist_items.id
               inner join initiatives on checklist_items.initiative_id = initiatives.id
               where initiatives.scorecard_id = #{scorecard.id}
+              and initiatives.deleted_at is null
               and events_checklist_item_activities.occurred_at < #{snapshot_at}
               order by checklist_item_id, occurred_at desc
             )
@@ -86,6 +87,7 @@ class ScorecardGrid
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
             left join most_recent_activities on most_recent_activities.checklist_item_id = checklist_items.id
             where initiatives.scorecard_id = #{scorecard.id}
+            and initiatives.deleted_at is null
             #{subsystem_sql(subsystem_tags)}
             order by initiative
             $$,

@@ -94,7 +94,7 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       if @scorecard.save
         SynchronizeLinkedScorecard.call(@scorecard)
-        format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully created." }
+        format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
         format.html { render :new }
@@ -107,7 +107,7 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       if @scorecard.update(scorecard_params)
         SynchronizeLinkedScorecard.call(@scorecard)
-        format.html { redirect_to @scorecard, notice: "#{Scorecard.model_name.human} was successfully updated." }
+        format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
         format.html { render :edit }
@@ -117,10 +117,20 @@ class ScorecardsController < ApplicationController
   end
 
   def destroy
+    klass = @scorecard.class
+
     @scorecard.destroy
     respond_to do |format|
       format.html do
-        redirect_to transition_cards_url, notice: "#{Scorecard.model_name.human} was successfully destroyed."
+        case klass.name
+        when 'TransitionCard'
+          redirect_to transition_cards_path, notice: "#{klass.model_name.human} was successfully destroyed."
+        when 'SustainableDevelopmentGoalAlignmentCard'
+          redirect_to sustainable_development_goal_alignment_cards_path,
+                      notice: "#{klass.model_name.human} was successfully destroyed."
+        else
+          raise "Unknown scorecard type: #{klass.name}"
+        end
       end
       format.json { head :no_content }
     end

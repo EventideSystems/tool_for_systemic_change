@@ -1,0 +1,29 @@
+<%- if linked_initiatives.present? %>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Linked Initiatives</label>
+    <div class="col-sm-9">
+      <div class="form-group row pt-2">
+        <div class="col-sm-4 pr-1"><label>Initiative</label></div>
+        <div class="col"><label>This Card</label></div>
+        <div class="col"><label>Linked Card</label></div>
+        <div class="col">
+          <label class="mt-1 checkbox-inline">
+            <input type="checkbox" value="" data-action>
+          </label>
+        </div>
+      </div>
+      <% linked_initiatives.each do |initiative| %>
+        <div class="form-group row">
+          <div class="col-sm-4 pr-1"><%= initiative[:name] %></div>
+          <div class="col"><em><%= initiative[:in_source] ? 'link' : 'copy from linked card' %></em></div>
+          <div class="col"><em><%= initiative[:in_target] ? 'link' : 'copy from this card' %></em></div>
+          <div class="col">
+            <label class="mt-1 checkbox-inline">
+              <input type="checkbox" value="" class="link>
+            </label>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

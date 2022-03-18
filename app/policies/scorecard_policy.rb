@@ -80,4 +80,8 @@ class ScorecardPolicy < ApplicationPolicy
   def link_scorecards?
     record.account.allow_transition_cards? && record.account.allow_sustainable_development_goal_alignment_cards?
   end
+
+  def linked_initiatives?
+    show?
+  end
 end

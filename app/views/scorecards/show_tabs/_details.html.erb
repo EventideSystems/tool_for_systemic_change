@@ -1,4 +1,4 @@
-<div class="tab-pane" id="details-tab">
+<div class="tab-pane" id="details-tab" data-controller="linked-initiatives">
   <div class="p-3">
     <%= simple_form_for(@scorecard, role: 'form', html: { class: 'form-horizontal' } ) do |f| %>
       <%= f.error_notification %>
@@ -7,8 +7,21 @@
       <%= f.association :wicked_problem, collection: policy_scope(WickedProblem), required: true %>
       <%= f.association :community, collection: policy_scope(Community), required: true %>
       <%- if policy(@scorecard).link_scorecards? %>
-        <%= f.association :linked_scorecard, collection: collection_for_linked_scorecard(@scorecard), required: false, label: linked_scorecard_label(@scorecard) %>
+        <%=
+          f.association :linked_scorecard,
+            collection: collection_for_linked_scorecard(@scorecard),
+            required: false,
+            label: linked_scorecard_label(@scorecard),
+            input_html: { data: { action: 'linked-initiatives#changeLinkedScorecard' } }
+        %>
+        <div data-linked-initiatives-target="initiativesList">
+          <%- if @linked_initiatives.present? %>
+            <%= render partial: '/scorecards/show_tabs/linked_initiatives',
+              locals: { linked_initiatives: @linked_initiatives } %>
+          <%- end -%>
+        </div>
       <%- end %>
+
       <%= f.input :notes, as: :rich_text_area %>
       <div class="d-flex justify-content-end">
         <%- if policy(@scorecard).update? %>

@@ -33,6 +33,11 @@ class ScorecardsController < ApplicationController
                        .per_scorecard_type(@scorecard.type)
                        .order('focus_areas.position, characteristics.position')
 
+    source_scorecard = @scorecard
+    target_scorecard = @scorecard.linked_scorecard
+
+    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
+
     @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
     add_breadcrumb @scorecard.name
@@ -85,6 +90,11 @@ class ScorecardsController < ApplicationController
 
   def edit
     add_breadcrumb @scorecard.name
+
+    source_scorecard = @scorecard
+    target_scorecard = @scorecard.linked_scorecard
+
+    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
   end
 
   def create
@@ -205,7 +215,41 @@ class ScorecardsController < ApplicationController
     super
   end
 
+  def linked_initiatives
+    source_scorecard = current_account.scorecards.find(params[:id])
+    target_scorecard = current_account.scorecards.find(params[:target_id])
+
+    authorize source_scorecard, policy_class: ScorecardPolicy
+    authorize target_scorecard, policy_class: ScorecardPolicy
+
+    render partial: '/scorecards/show_tabs/linked_initiatives',
+      locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
+  end
+
   private
+
+  def build_linked_intiatives(source_scorecard, target_scorecard)
+    return [] if target_scorecard.blank?
+
+    source_initiatives = source_scorecard.initiatives.each_with_object({}) do |initiative, hash|
+      hash[initiative.name] = initiative
+    end
+
+    target_initiatives = target_scorecard.initiatives.each_with_object({}) do |initiative, hash|
+      hash[initiative.name] = initiative
+    end
+
+    all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
+
+    all_names.map do |name|
+      {
+        name: name,
+        in_source: source_initiatives[name].present?,
+        in_target: target_initiatives[name].present?,
+        linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
+      }
+    end
+  end
 
   def set_scorecard
     @scorecard = current_account.scorecards.find(params[:id])

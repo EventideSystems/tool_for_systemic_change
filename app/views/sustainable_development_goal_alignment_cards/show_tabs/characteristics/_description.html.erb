@@ -1,4 +1,4 @@
 <%- if @characteristic.description.present? -%>
-  <p><i><%= @characteristic.description %></i></p>
+  <p><i><%= sanitize @characteristic.description %></i></p>
   <hr>
 <%- end %>

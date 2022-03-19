@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get 'comment_status'
       end
     end
+    get 'linked'
   end
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags
@@ -57,6 +58,7 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'activities'
+      get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
     end
   end
 
@@ -70,6 +72,7 @@ Rails.application.routes.draw do
       get 'ecosystem_maps_organisations'
       get 'activities'
       get 'targets_network_map'
+      get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
     end
 
     resources :characteristics, only: [:show],

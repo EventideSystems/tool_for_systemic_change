@@ -35,19 +35,19 @@ class Scorecard < ApplicationRecord
   before_save :set_inverse_linked_scorecard, if: :linked_scorecard_id_changed?
 
   def set_inverse_linked_scorecard
-    if linked_scorecard_id_was.present?
-      Scorecard.find(linked_scorecard_id_was).update_column(:linked_scorecard_id, nil)
-    end
+    Scorecard.find(linked_scorecard_id_was).update_column(:linked_scorecard_id, nil) if linked_scorecard_id_was.present?
 
-    if linked_scorecard_id.present?
-      Scorecard.find(linked_scorecard_id).update_column(:linked_scorecard_id, id)
-    end
+    Scorecard.find(linked_scorecard_id).update_column(:linked_scorecard_id, id) if linked_scorecard_id.present?
 
     true
   end
 
   def description_summary
     Nokogiri::HTML(description).text
+  end
+
+  def linked?
+    linked_scorecard_id.present?
   end
 
   def merge(other_scorecard)
@@ -77,7 +77,7 @@ class Scorecard < ApplicationRecord
 
   def linked_scorecard_must_be_in_same_account
     if linked_scorecard.present? && linked_scorecard.account != account
-      errors.add(:linked_scorecard_id, "must be in the same account")
+      errors.add(:linked_scorecard_id, 'must be in the same account')
     end
   end
 
@@ -99,5 +99,4 @@ class Scorecard < ApplicationRecord
   def ensure_shared_link_id
     self.shared_link_id ||= new_shared_link_id
   end
-
 end

@@ -17,17 +17,17 @@ _Describe the value the user expects to experience:_
 
 _E.g._
 
-  _As a store owner,_
-  _I want to add items back to inventory when they are returned or exchanged,_
-  _So that I can track inventory._
+  As a store owner,
+  I want to add items back to inventory when they are returned or exchanged,
+  So that I can track inventory.
 
 ## Acceptance Critiera
 
 _Optionally add scenarios useful for verifying the expected flow:_
 
-  _Given <a state of the application>_
-  _When I <perform some action>_
-  _Then I will see <a change in the application>_
+  Given <a state of the application>
+  When I <perform some action>
+  Then I will see <a change in the application>
 
 ## Related Issues
 

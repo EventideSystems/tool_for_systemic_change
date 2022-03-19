@@ -1,6 +1,6 @@
 <%- if @organisation.description.present? || @organisation.weblink.present? -%>
   <%- if @organisation.description.present? -%>
-    <p><i><%= @organisation.description %></i></p>
+    <p><i><%= sanitize @organisation.description %></i></p>
   <%- end -%>
   <%- if @organisation.weblink.present? -%>
     <p class='wordbreak'>

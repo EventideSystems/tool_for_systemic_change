@@ -1,4 +1,4 @@
 <%- if @initiative.description.present? -%>
-  <p><i><%= @initiative.description %></i></p>
+  <p><i><%= sanitize @initiative.description %></i></p>
   <hr>
 <%- end %>

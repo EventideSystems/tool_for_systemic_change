@@ -1,0 +1,30 @@
+<%- if linked_initiatives.present? %>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Linked Initiatives</label>
+    <div class="col-sm-9">
+      <div class="form-group row pt-2">
+        <div class="col-sm-4 pr-1"><label>Initiative</label></div>
+        <div class="col-sm-2 pr-1"><label>Present In</label></div>
+        <div class="col"><label>Link Action</label></div>
+        <div class="col">
+          <label class="checkbox-inline">
+            <input type="checkbox" value="" data-action='linked-initiatives#updateAll'>
+          </label>
+          <label>Linked?</label>
+        </div>
+      </div>
+      <% linked_initiatives.each do |initiative| %>
+        <div class="form-group row">
+          <div class="col-sm-4 pr-1"><%= initiative[:name] %></div>
+          <div class="col-sm-2 pr-1"><em><%= initiative[:present_in] %></em></div>
+          <div class="col"><em><%= initiative[:action] %></em></div>
+          <div class="col">
+            <label class="mt-1 checkbox-inline">
+              <%= check_box_tag 'linked_initiatives[]', initiative[:name], initiative[:linked], class:"linked-initiative" -%>
+            </label>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

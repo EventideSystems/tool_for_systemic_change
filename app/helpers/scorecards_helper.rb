@@ -113,12 +113,13 @@ module ScorecardsHelper
   end
 
   def linked_scorecard_label(scorecard)
-    case scorecard
-    when TransitionCard then 'Linked SDG Card'
-    when SustainableDevelopmentGoalAlignmentCard then 'Linked Transition Card'
-    else
-      raise 'Unknown scorecard type'
-    end
+    'Linked ' +
+      case scorecard
+      when TransitionCard then SustainableDevelopmentGoalAlignmentCard
+      when SustainableDevelopmentGoalAlignmentCard then TransitionCard
+      else
+        raise 'Unknown scorecard type'
+      end.model_name.human
   end
 
   def scorecard_path(scorecard)

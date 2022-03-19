@@ -33,6 +33,11 @@ class ScorecardsController < ApplicationController
                        .per_scorecard_type(@scorecard.type)
                        .order('focus_areas.position, characteristics.position')
 
+    source_scorecard = @scorecard
+    target_scorecard = @scorecard.linked_scorecard
+
+    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
+
     @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
     add_breadcrumb @scorecard.name
@@ -85,6 +90,11 @@ class ScorecardsController < ApplicationController
 
   def edit
     add_breadcrumb @scorecard.name
+
+    source_scorecard = @scorecard
+    target_scorecard = @scorecard.linked_scorecard
+
+    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
   end
 
   def create
@@ -93,7 +103,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        SynchronizeLinkedScorecard.call(@scorecard)
+        SynchronizeLinkedScorecard.call(@scorecard, linked_scorecard_params)
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
@@ -106,7 +116,7 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
-        SynchronizeLinkedScorecard.call(@scorecard)
+        SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
@@ -205,7 +215,55 @@ class ScorecardsController < ApplicationController
     super
   end
 
+  def linked_initiatives
+    source_scorecard = current_account.scorecards.find(params[:id])
+    target_scorecard = current_account.scorecards.find(params[:target_id])
+
+    authorize source_scorecard, policy_class: ScorecardPolicy
+    authorize target_scorecard, policy_class: ScorecardPolicy
+
+    render partial: '/scorecards/show_tabs/linked_initiatives',
+           locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
+  end
+
   private
+
+  def build_linked_intiatives(source_scorecard, target_scorecard)
+    return [] if target_scorecard.blank?
+
+    source_initiatives = source_scorecard.initiatives.each_with_object({}) do |initiative, hash|
+      hash[initiative.name] = initiative
+    end
+
+    target_initiatives = target_scorecard.initiatives.each_with_object({}) do |initiative, hash|
+      hash[initiative.name] = initiative
+    end
+
+    all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
+
+    all_names.map do |name|
+      {
+        name: name,
+        present_in: calc_present_in(source_initiatives[name], target_initiatives[name]),
+        action: calc_link_action(source_initiatives[name], target_initiatives[name]),
+        linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
+      }
+    end
+  end
+
+  def calc_present_in(source_initiative, target_initiative)
+    return 'Both' if source_initiative.present? && target_initiative.present?
+    return 'This card' if source_initiative.present?
+
+    'Other card'
+  end
+
+  def calc_link_action(source_initiative, target_initiative)
+    return 'Link existing initatives' if source_initiative.present? && target_initiative.present?
+    return 'Copy from this card and link' if source_initiative.present?
+
+    'Copy from other card and link'
+  end
 
   def set_scorecard
     @scorecard = current_account.scorecards.find(params[:id])
@@ -214,6 +272,10 @@ class ScorecardsController < ApplicationController
 
   def set_active_tab
     @active_tab = params[:active_tab]&.to_sym || :scorecard
+  end
+
+  def linked_initiatives_params
+    params[:linked_initiatives]
   end
 
   def scorecard_params

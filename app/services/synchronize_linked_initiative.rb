@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class SynchronizeLinkedInitiative
   class << self
-    def call(source_initiative, target_initiative=nil)
+    def call(source_initiative, target_initiative = nil)
       return if source_initiative.scorecard.linked_scorecard.blank?
 
-      target_initiative = target_initiative || fetch_target_initiative(source_initiative)
+      target_initiative ||= fetch_target_initiative(source_initiative)
 
       update_initiative_attributes(source_initiative, target_initiative)
       synchronize_initiative_organisations(source_initiative, target_initiative)
@@ -52,7 +54,7 @@ class SynchronizeLinkedInitiative
     end
 
     def update_initiative_attributes(initiative_1, initiative_2)
-      if  initiative_2.new_record? || initiative_1.updated_at > initiative_2.updated_at
+      if initiative_2.new_record? || initiative_1.updated_at > initiative_2.updated_at
         source_initiative = initiative_1
         target_initiative = initiative_2
       else
@@ -60,11 +62,13 @@ class SynchronizeLinkedInitiative
         target_initiative = initiative_1
       end
 
+      source_initiative.update(linked: true)
+
       source_attributes = \
         source_initiative
-          .attributes
-          .except(*%w[id scorecard_id created_at deleted_at updated_at old_notes])
-          .select { |_, v| v.present? }
+        .attributes
+        .except(*%w[id scorecard_id created_at deleted_at updated_at old_notes linked])
+        .select { |_, v| v.present? }
 
       target_initiative.assign_attributes(source_attributes)
       target_initiative.notes = source_initiative.notes if target_initiative.notes.present?

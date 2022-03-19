@@ -103,7 +103,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        SynchronizeLinkedScorecard.call(@scorecard)
+        SynchronizeLinkedScorecard.call(@scorecard, linked_scorecard_params)
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else
@@ -116,7 +116,7 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
-        SynchronizeLinkedScorecard.call(@scorecard)
+        SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
@@ -223,7 +223,7 @@ class ScorecardsController < ApplicationController
     authorize target_scorecard, policy_class: ScorecardPolicy
 
     render partial: '/scorecards/show_tabs/linked_initiatives',
-      locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
+           locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
   end
 
   private
@@ -244,11 +244,25 @@ class ScorecardsController < ApplicationController
     all_names.map do |name|
       {
         name: name,
-        in_source: source_initiatives[name].present?,
-        in_target: target_initiatives[name].present?,
+        present_in: calc_present_in(source_initiatives[name], target_initiatives[name]),
+        action: calc_link_action(source_initiatives[name], target_initiatives[name]),
         linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
       }
     end
+  end
+
+  def calc_present_in(source_initiative, target_initiative)
+    return 'Both' if source_initiative.present? && target_initiative.present?
+    return 'This card' if source_initiative.present?
+
+    'Other card'
+  end
+
+  def calc_link_action(source_initiative, target_initiative)
+    return 'Link existing initatives' if source_initiative.present? && target_initiative.present?
+    return 'Copy from this card and link' if source_initiative.present?
+
+    'Copy from other card and link'
   end
 
   def set_scorecard
@@ -258,6 +272,10 @@ class ScorecardsController < ApplicationController
 
   def set_active_tab
     @active_tab = params[:active_tab]&.to_sym || :scorecard
+  end
+
+  def linked_initiatives_params
+    params[:linked_initiatives]
   end
 
   def scorecard_params

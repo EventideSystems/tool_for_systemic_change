@@ -15,10 +15,10 @@ _A clear and concise description of what needs to be performed._
 
 _How will we know if we've completed the task successfully? Use MUST, MUST NOT, SHOULD, MAY qualifiers for each criteria._
 
-_- [ ] MUST .._required criteria_.._
-_- [ ] MUST NOT.._required criteria_.._
-_- [ ] SHOULD .._ideal criteria, but not required_.._
-_- [ ] MAY .._optional criteria/stretch target_.._
+- [ ] MUST .._required criteria_.._
+- [ ] MUST NOT.._required criteria_.._
+- [ ] SHOULD .._ideal criteria, but not required_.._
+- [ ] MAY .._optional criteria/stretch target_.._
 
 ## Additional Notes
 

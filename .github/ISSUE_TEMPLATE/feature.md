@@ -23,9 +23,9 @@ _Detail the reason for building this feature - specifcally identify the value it
 
 _Describe one or more User Stories required to deliver this feature._
 
-  _As s <user or role>_
-  _I want <the feature provided>_
-  _So that I <benefit or value>_
+  As a <user or role>
+  I want <the feature provided>
+  So that I <benefit or value>
 
 _User Stories can be expanded as separate User Story tickets
 

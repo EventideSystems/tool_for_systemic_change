@@ -1,9 +1,10 @@
-class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
+# frozen_string_literal: true
 
+class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
   def index
     @scorecards = policy_scope(Scorecard)
-      .where(type: 'SustainableDevelopmentGoalAlignmentCard')
-      .order(sort_order).page params[:page]
+                  .where(type: 'SustainableDevelopmentGoalAlignmentCard')
+                  .order(sort_order).page params[:page]
   end
 
   def targets_network_map
@@ -26,9 +27,9 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
 
     checklist_items = \
       ChecklistItem
-        .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
-        .includes(:checklist_item_comments)
-        .select { |item| item.current_comment_status == 'actual' }
+      .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
+      .includes(:checklist_item_comments)
+      .select { |item| item.current_comment_status == 'actual' }
 
     @initiatives = checklist_items.map(&:initiative).sort_by(&:name)
 
@@ -42,7 +43,7 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
   end
 
   def content_title
-    'SDG Alignment Cards'
+    SustainableDevelopmentGoalAlignmentCard.model_name.human.pluralize
   end
 
   def scorecard_key_param

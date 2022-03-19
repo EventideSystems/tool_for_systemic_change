@@ -80,6 +80,13 @@ class Initiative < ApplicationRecord
     checklist_items
   end
 
+  def linked_initiative
+    return nil unless linked?
+    return nil unless scorecard.linked_scorecard.present?
+
+    scorecard.linked_scorecard.initiatives.find_by(name: name)
+  end
+
   def wicked_problem_name
     scorecard.try(:wicked_problem).try(:name)
   end
@@ -189,4 +196,3 @@ class Initiative < ApplicationRecord
     finished_at >= started_at
   end
 end
-

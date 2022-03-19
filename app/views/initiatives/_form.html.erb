@@ -1,14 +1,17 @@
 <%= simple_form_for(@initiative, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
   <%= f.error_notification %>
   <%= form_header(@initiative) %>
+
+  <%= linked_initiative_warning(@initiative) %>
+
   <%= f.input :name, required: true  %>
   <%= f.input :description %>
-        
-  <%= 
+
+  <%=
     f.association(
-      :scorecard, 
-      collection: policy_scope(Scorecard), 
-      required: true, 
+      :scorecard,
+      collection: policy_scope(Scorecard),
+      required: true,
       label: scorecard_label(@initiative)
     )
   %>

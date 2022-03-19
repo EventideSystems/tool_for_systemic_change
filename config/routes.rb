@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get 'comment_status'
       end
     end
+    get 'linked'
   end
   resources :initiatives_organisations
   resources :initiatives_subsystem_tags

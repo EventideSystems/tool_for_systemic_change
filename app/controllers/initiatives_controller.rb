@@ -3,7 +3,7 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
-  before_action :set_scorecards_and_types, only: [:show, :new, :edit]
+  before_action :set_scorecards_and_types, only: %i[show new edit]
 
   add_breadcrumb 'Initiatives', :initiatives_path
 
@@ -51,7 +51,7 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       if @initiative.save
 
-        ::SynchronizeLinkedInitiative.call(@initiative)
+        ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
 
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully created.' }
         format.json { render :show, status: :created, location: @initiative }
@@ -66,7 +66,7 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       if @initiative.update(initiative_params)
 
-        ::SynchronizeLinkedInitiative.call(@initiative)
+        ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.linked?
 
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully updated.' }
         format.json { render :show, status: :ok, location: @initiative }
@@ -95,6 +95,14 @@ class InitiativesController < ApplicationController
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
     render partial: 'checklist_item_form', locals: { checklist_item: @checklist_item }
+  end
+
+  def linked
+    initiative = policy_scope(Initiative).find(params[:initiative_id]).linked_initiative
+
+    authorize initiative, :show?
+
+    redirect_to initiative_path(initiative)
   end
 
   private

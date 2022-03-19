@@ -24,7 +24,7 @@ module DashboardHelper
     content_tag(:li, class: "nav-item #{menu_item_class}") do
       link_to(sustainable_development_goal_alignment_cards_path, { class: "nav-link #{link_class}" }) do
         concat image_tag('sdg_icons/sdg-logo.png', class: 'sidebar-image', style: 'width: 22px;')
-        concat content_tag(:p, 'SDG Alignment Cards')
+        concat content_tag(:p, SustainableDevelopmentGoalAlignmentCard.model_name.human.pluralize)
       end
     end
   end

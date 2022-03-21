@@ -52,6 +52,8 @@ module DashboardHelper
   end
 
   def dashboard_scorecards_title
+    return 'Card' if current_account.blank?
+
     if current_account.scorecard_types.count > 1
       'Card'
     else
@@ -60,6 +62,8 @@ module DashboardHelper
   end
 
   def default_scorecards_path
+    return '' if current_account.blank?
+
     case current_account.scorecard_types.first.name
     when 'TransitionCard'
       transition_cards_path

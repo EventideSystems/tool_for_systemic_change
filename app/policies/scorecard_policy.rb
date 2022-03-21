@@ -3,7 +3,13 @@
 class ScorecardPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      resolve_to_current_account.where(type: current_account.scorecard_types.map(&:name))
+      resolve_to_current_account.where(type: current_account_scorecard_types)
+    end
+
+    private
+
+    def current_account_scorecard_types
+      current_account&.scorecard_types&.map(&:name).presence || []
     end
   end
 

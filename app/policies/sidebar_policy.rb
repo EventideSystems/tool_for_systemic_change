@@ -10,10 +10,14 @@ SidebarPolicy = Struct.new(:user_context, :sidebar) do
   end
 
   def show_transition_cards?
+    return false if user_context.account.blank?
+
     user_context.account.allow_transition_cards?
   end
 
   def show_sustainable_development_goal_alignment_cards?
+    return false if user_context.account.blank?
+
     user_context.account.allow_sustainable_development_goal_alignment_cards?
   end
 

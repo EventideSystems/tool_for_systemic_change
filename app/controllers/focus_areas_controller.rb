@@ -51,7 +51,7 @@ class FocusAreasController < ApplicationController
   def destroy
     @focus_area.destroy
     respond_to do |format|
-      format.html { redirect_to focus_areas_url, notice: 'Focus area was successfully destroyed.' }
+      format.html { redirect_to focus_areas_url, notice: 'Focus area was successfully deleted.' }
       format.json { head :no_content }
     end
   end

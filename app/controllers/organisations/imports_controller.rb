@@ -25,9 +25,9 @@ class Organisations::ImportsController < ApplicationController
       organisations_import_params.merge(user: current_user)
     )
     authorize @organisations_import
-    
+
     respond_to do |format|
-      if @organisations_import.save && @organisations_import.process(current_account) 
+      if @organisations_import.save && @organisations_import.process(current_account)
         format.html { redirect_to organisations_path, notice: 'Organisation records successfully imported' }
         format.json { render :show, status: :created, location: @organisations_import }
       else
@@ -35,10 +35,10 @@ class Organisations::ImportsController < ApplicationController
         format.json { render json: @organisations_import.errors, status: :unprocessable_entity }
       end
     end
-    
+
     @organisations_import.destroy
     file_system = Shrine.storages[:cache]
-    file_system.clear! { |path| path.mtime < Time.now - 1.hour } 
+    file_system.clear! { |path| path.mtime < Time.now - 1.hour }
   end
 
   def update
@@ -56,7 +56,7 @@ class Organisations::ImportsController < ApplicationController
   def destroy
     @organisations_import.destroy
     respond_to do |format|
-      format.html { redirect_to organisations_imports_url, notice: 'Import was successfully destroyed.' }
+      format.html { redirect_to organisations_imports_url, notice: 'Import was successfully deleted.' }
       format.json { head :no_content }
     end
   end

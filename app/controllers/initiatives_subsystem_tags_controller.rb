@@ -56,7 +56,7 @@ class InitiativesSubsystemTagsController < ApplicationController
   def destroy
     @initiatives_subsystem_tag.destroy
     respond_to do |format|
-      format.html { redirect_to initiatives_subsystem_tags_url, notice: 'Initiatives Subsystem Tag was successfully destroyed.' }
+      format.html { redirect_to initiatives_subsystem_tags_url, notice: 'Initiatives Subsystem Tag was successfully deleted.' }
       format.json { head :no_content }
     end
   end

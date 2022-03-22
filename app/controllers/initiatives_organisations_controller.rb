@@ -56,7 +56,7 @@ class InitiativesOrganisationsController < ApplicationController
   def destroy
     @initiatives_organisation.destroy
     respond_to do |format|
-      format.html { redirect_to initiatives_organisations_url, notice: 'Initiatives organisation was successfully destroyed.' }
+      format.html { redirect_to initiatives_organisations_url, notice: 'Initiatives organisation was successfully deleted.' }
       format.json { head :no_content }
     end
   end

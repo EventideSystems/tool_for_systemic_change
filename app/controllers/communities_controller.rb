@@ -1,9 +1,9 @@
 class CommunitiesController < ApplicationController
   before_action :set_community, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
+  before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
   add_breadcrumb "Communities", :communities_path
-  
+
   def index
     @communities = policy_scope(Community).order(sort_order).page(params[:page])
   end
@@ -15,7 +15,7 @@ class CommunitiesController < ApplicationController
 
   def new
     @community = current_account.communities.build
-    authorize @community 
+    authorize @community
     add_breadcrumb "New"
   end
 
@@ -51,15 +51,15 @@ class CommunitiesController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @community.destroy
     respond_to do |format|
-      format.html { redirect_to communities_url, notice: 'Community was successfully destroyed.' }
+      format.html { redirect_to communities_url, notice: 'Community was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @community.name if @community.present?
     super

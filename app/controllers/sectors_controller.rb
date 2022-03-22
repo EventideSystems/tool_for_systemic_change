@@ -3,7 +3,7 @@ class SectorsController < ApplicationController
 
   add_breadcrumb "System"
   add_breadcrumb "Sectors", :sectors_path
-  
+
   def index
     @sectors = policy_scope(Sector).unscoped.order(sort_order).page params[:page]
   end
@@ -53,18 +53,18 @@ class SectorsController < ApplicationController
   def destroy
     @sector.destroy
     respond_to do |format|
-      format.html { redirect_to sectors_url, notice: 'Sector was successfully destroyed.' }
+      format.html { redirect_to sectors_url, notice: 'Sector was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @sector.name if @sector.present?
     super
   end
 
   private
-  
+
     def set_sector
       @sector = Sector.find(params[:id])
       authorize @sector

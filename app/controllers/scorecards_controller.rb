@@ -127,17 +127,27 @@ class ScorecardsController < ApplicationController
   end
 
   def destroy
-    klass = @scorecard.class
+    notice = "#{@scorecard.model_name.human} was successfully deleted."
+
+    initiative_ids = @scorecard.initiatives.pluck(:id)
+
+    # SMELL: Move all this to an event object
+    ChecklistItem.where(initiative_id: initiative_ids).delete_all
+    ChecklistItem.where(initiative_id: initiative_ids).delete_all
+    InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
+    InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
+
+    Initiative.where(id: initiative_ids).delete_all
 
     @scorecard.destroy
+
     respond_to do |format|
       format.html do
-        case klass.name
+        case @scorecard.class.name
         when 'TransitionCard'
-          redirect_to transition_cards_path, notice: "#{klass.model_name.human} was successfully destroyed."
+          redirect_to transition_cards_path, notice: notice
         when 'SustainableDevelopmentGoalAlignmentCard'
-          redirect_to sustainable_development_goal_alignment_cards_path,
-                      notice: "#{klass.model_name.human} was successfully destroyed."
+          redirect_to sustainable_development_goal_alignment_cards_path, notice: notice
         else
           raise "Unknown scorecard type: #{klass.name}"
         end

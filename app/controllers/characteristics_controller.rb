@@ -23,7 +23,7 @@ class CharacteristicsController < ApplicationController
   def create
     @characteristic = Characteristic.new(characteristic_params)
     authorize @characteristic
-    
+
     respond_to do |format|
       if @characteristic.save
         format.html { redirect_to characteristics_path, notice: 'Characteristic was successfully created.' }
@@ -50,7 +50,7 @@ class CharacteristicsController < ApplicationController
   def destroy
     @characteristic.destroy
     respond_to do |format|
-      format.html { redirect_to characteristics_url, notice: 'Characteristic was successfully destroyed.' }
+      format.html { redirect_to characteristics_url, notice: 'Characteristic was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -58,7 +58,7 @@ class CharacteristicsController < ApplicationController
   def description
     render layout: false
   end
-  
+
   def content_subtitle
     return @characteristic.name if @characteristic.present?
     super

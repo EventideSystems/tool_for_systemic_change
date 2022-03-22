@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module Reports
@@ -42,12 +44,12 @@ module Reports
 
             if row[:focus_area_name] != current_focus_area_name
               current_focus_area_name = row[:focus_area_name]
-              sheet.add_row ["\s\s" + row[:focus_area_name], '', '', '', '', ''], style: header_3
+              sheet.add_row ["  #{row[:focus_area_name]}", '', '', '', '', ''], style: header_3
             end
 
             sheet.add_row(
               [
-                "\s\s\s\s" + row[:characteristic_name],
+                "    #{row[:characteristic_name]}",
                 row[:checked_count_before_period],
                 row[:checked_count_during_period],
                 row[:unchecked_count_during_period],
@@ -66,7 +68,7 @@ module Reports
 
     def add_characteristic_columns_header(sheet, header_1, wrap_text)
       sheet.add_row do |row|
-        row.add_cell('Initiative Characteristics', style: header_1)
+        row.add_cell(initiative_characteristics_title, style: header_1)
         row.add_cell('Characteristics beginning of period', height: 48, style: wrap_text)
         row.add_cell('Additions', height: 48, style: wrap_text)
         row.add_cell('Removals', height: 48, style: wrap_text)
@@ -126,6 +128,13 @@ module Reports
 
     def header_3_style(package)
       package.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
+    end
+
+    def initiative_characteristics_title
+      case scorecard
+      when TransitionCard then 'Initiative Characteristics'
+      when SustainableDevelopmentGoalAlignmentCard then 'Sustainable Development Goals'
+      end
     end
 
     # TODO: Find a better name for this style

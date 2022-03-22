@@ -2,7 +2,7 @@ class FocusAreaGroupsController < ApplicationController
   before_action :set_focus_area_group, only: [:show, :edit, :update, :destroy]
 
   add_breadcrumb "System", :focus_area_groups_path
-  
+
   # GET /focus_area_groups
   # GET /focus_area_groups.json
   def index
@@ -50,11 +50,11 @@ class FocusAreaGroupsController < ApplicationController
   def destroy
     @focus_area_group.destroy
     respond_to do |format|
-      format.html { redirect_to focus_area_groups_url, notice: 'Focus area group was successfully destroyed.' }
+      format.html { redirect_to focus_area_groups_url, notice: 'Focus area group was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @focus_area_group.name if @focus_area_group.present?
     super

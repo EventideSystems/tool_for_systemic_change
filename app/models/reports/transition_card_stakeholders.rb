@@ -89,6 +89,7 @@ module Reports
                        .where(organisation_id: organisation.id)
                        .pluck(:initiative_id)
                        .uniq
+
       scorecard.initiatives.where(id: initiative_ids)
     end
 
@@ -98,6 +99,7 @@ module Reports
                          .where(initiative_id: initiative.id)
                          .pluck(:organisation_id)
                          .uniq
+
       Organisation.where(id: organisation_ids).order('lower(organisations.name)')
     end
 

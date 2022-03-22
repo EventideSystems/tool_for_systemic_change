@@ -103,7 +103,7 @@ class ScorecardsController < ApplicationController
 
     respond_to do |format|
       if @scorecard.save
-        SynchronizeLinkedScorecard.call(@scorecard, linked_scorecard_params)
+        SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully created." }
         format.json { render :show, status: :created, location: @scorecard }
       else

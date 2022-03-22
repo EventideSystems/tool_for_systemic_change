@@ -1,11 +1,11 @@
 class WickedProblemsController < ApplicationController
   before_action :authenticate_user!
-  
+
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
+  before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
   add_breadcrumb "Wicked Problems / Opportunities", :wicked_problems_path
-  
+
   def index
     @wicked_problems = policy_scope(WickedProblem).order(sort_order).page params[:page]
   end
@@ -28,7 +28,7 @@ class WickedProblemsController < ApplicationController
   def create
     @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
     authorize @wicked_problem
-    
+
     respond_to do |format|
       if @wicked_problem.save
         format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully created.' }
@@ -56,17 +56,17 @@ class WickedProblemsController < ApplicationController
 
   def destroy
     @wicked_problem.delete
-    
+
     respond_to do |format|
-      format.html { redirect_to wicked_problems_url, notice: 'Wicked problem / opportunity was successfully destroyed.' }
+      format.html { redirect_to wicked_problems_url, notice: 'Wicked problem / opportunity was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_title
     'Wicked Problems / Opportunities'
   end
-  
+
   def content_subtitle
     return @wicked_problem.name if @wicked_problem.present?
     super

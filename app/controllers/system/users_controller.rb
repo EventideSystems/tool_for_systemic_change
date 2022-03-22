@@ -1,13 +1,13 @@
 module System
   class UsersController < ApplicationController
-    
+
     include SharedUserActions
-    
+
     before_action :authenticate_user!
     before_action :set_user, only: [:show, :edit, :update, :destroy, :undelete, :resend_invitation]
 
     skip_after_action :verify_policy_scoped
-  
+
     add_breadcrumb "System"
     add_breadcrumb "Users", :system_users_path
 
@@ -34,7 +34,7 @@ module System
       @user = User.new(user_params)
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
-    
+
       if current_account.users.where(email: @user.email).exists?
         redirect_to system_users_path, alert: "A user with the email '#{user.email}' is already a member of this account."
       elsif max_users_reached?
@@ -59,9 +59,9 @@ module System
     def update
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
-    
+
       current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
-    
+
       if current_account_user
         current_account_user.update(account_role: account_role)
       elsif max_users_reached?
@@ -84,7 +84,7 @@ module System
     def destroy
       @user.destroy
       respond_to do |format|
-        format.html { redirect_to system_users_url, notice: 'User was successfully destroyed.' }
+        format.html { redirect_to system_users_url, notice: 'User was successfully deleted.' }
         format.json { head :no_content }
       end
     end
@@ -105,12 +105,12 @@ module System
       return false if current_account.max_users.zero? || current_account.max_users.blank?
       current_account.users.count >= current_account.max_users
     end
-  
+
     def set_account_role
       current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
-      @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member' 
+      @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member'
     end
-  
+
     def set_user
       @user = User.with_deleted.find(params[:id])
       authorize @user

@@ -86,7 +86,7 @@ class ChecklistItemsController < ApplicationController
   def destroy
     @checklist_item.destroy
     respond_to do |format|
-      format.html { redirect_to checklist_items_url, notice: 'Checklist item was successfully destroyed.' }
+      format.html { redirect_to checklist_items_url, notice: 'Checklist item was successfully deleted.' }
       format.json { head :no_content }
     end
   end

@@ -1,7 +1,7 @@
 class SubsystemTagsController < ApplicationController
   before_action :set_subsystem_tag, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
-  
+
   add_breadcrumb "Subsystem Tags", :subsystem_tags_path
 
   def index
@@ -10,7 +10,7 @@ class SubsystemTagsController < ApplicationController
     else
       @subsystem_tags = policy_scope(SubsystemTag).page(params[:page])
     end
-    
+
     if params[:scorecard_id].present?
       @subsystem_tags = @subsystem_tags
         .joins(:initiatives)
@@ -64,11 +64,11 @@ class SubsystemTagsController < ApplicationController
   def destroy
     @subsystem_tag.destroy
     respond_to do |format|
-      format.html { redirect_to subsystem_tags_url, notice: 'Subsystem tag was successfully destroyed.' }
+      format.html { redirect_to subsystem_tags_url, notice: 'Subsystem tag was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @subsystem_tag.name if @subsystem_tag.present?
     super

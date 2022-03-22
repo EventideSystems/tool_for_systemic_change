@@ -28,7 +28,7 @@ class VideoTutorialsController < ApplicationController
   def create
     @video_tutorial = VideoTutorial.new(video_tutorial_params)
     authorize @video_tutorial
-    
+
     respond_to do |format|
       if @video_tutorial.save
         format.html { redirect_to video_tutorials_path, notice: 'Video tutorial was successfully created.' }
@@ -59,11 +59,11 @@ class VideoTutorialsController < ApplicationController
   def destroy
     @video_tutorial.destroy
     respond_to do |format|
-      format.html { redirect_to video_tutorials_url, notice: 'Video tutorial was successfully destroyed.' }
+      format.html { redirect_to video_tutorials_url, notice: 'Video tutorial was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @video_tutorial.name if @video_tutorial.present?
     super
@@ -80,7 +80,7 @@ class VideoTutorialsController < ApplicationController
     def video_tutorial_params
       params.fetch(:video_tutorial, {}).permit(
         :name,
-        :description, 
+        :description,
         :link_url,
         :position,
         :promote_to_dashboard

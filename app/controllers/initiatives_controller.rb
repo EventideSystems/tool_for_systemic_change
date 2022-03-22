@@ -80,7 +80,7 @@ class InitiativesController < ApplicationController
   def destroy
     @initiative.destroy
     respond_to do |format|
-      format.html { redirect_to initiatives_url, notice: 'Initiative was successfully destroyed.' }
+      format.html { redirect_to initiatives_url, notice: 'Initiative was successfully deleted.' }
       format.json { head :no_content }
     end
   end

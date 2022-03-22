@@ -2,12 +2,12 @@ require 'csv'
 
 class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update] 
+  before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
   add_breadcrumb "Organisations", :organisations_path
 
   respond_to :js, :html
-  
+
   def index
     respond_to do |format|
       format.html do
@@ -15,11 +15,11 @@ class OrganisationsController < ApplicationController
       end
       format.csv do
         @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
-        send_data organisations_to_csv(@organisations), :type => Mime[:csv], :filename =>"#{export_filename}.csv" 
+        send_data organisations_to_csv(@organisations), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
       end
       format.xlsx do
         @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
-        send_data @organisations.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{export_filename}.xlsx" 
+        send_data @organisations.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{export_filename}.xlsx"
       end
     end
   end
@@ -72,11 +72,11 @@ class OrganisationsController < ApplicationController
   def destroy
     @organisation.destroy
     respond_to do |format|
-      format.html { redirect_to organisations_url, notice: 'Organisation was successfully destroyed.' }
+      format.html { redirect_to organisations_url, notice: 'Organisation was successfully deleted.' }
       format.json { head :no_content }
     end
   end
-  
+
   def content_subtitle
     return @organisation.name if @organisation.present?
     super
@@ -91,11 +91,11 @@ class OrganisationsController < ApplicationController
     def organisation_params
       params.fetch(:organisation, {}).permit(:name, :description, :weblink, :sector_id)
     end
-    
+
     def export_filename
       "organisations_#{Date.today.strftime('%Y_%m_%d')}"
     end
-    
+
     def organisations_to_csv(organisations)
       CSV.generate(force_quotes: true) do |csv|
         csv << ["Name", "Description", "Sector", "Weblink"]

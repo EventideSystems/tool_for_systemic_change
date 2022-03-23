@@ -8,8 +8,49 @@ export default class extends Controller {
     "targetsNetworkMapLabelsBtn",
     "targetsNetworkMapLegendBtn",
     "targetsNetworkMapLegendPanel",
-    "targetsNetworkMapDialog"
+    "targetsNetworkMapDialog",
+    "organisationsFilter",
+    "initiativesFilter",
   ]
+
+  connect() {
+    this.select2mount()
+
+    document.addEventListener("turbolinks:before-cache", () => {
+      this.select2unmount()
+    }, { once: true })
+  }
+
+  applyFilter(event) {
+    let context = this
+
+    let organisations = $(this.organisationsFilterTarget).val()
+    let initiatives = $(this.initiativesFilterTarget).val()
+
+    let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
+
+    debugger
+
+    if (organisations.length == 0 && initiatives.length == 0) {
+      nodes.forEach(function(node) {
+        data = d3.select(node).data()[0]
+        $(node).attr('fill', data.color)
+      })
+    } else {
+      nodes.forEach(function(node) {
+        let data = d3.select(node).data()[0]
+
+        let filterByOrganisations = $(organisations).filter(data.organisation_ids).length > 0
+        let filterByInitiatives = $(initiatives).filter(data.initiative_ids).length > 0
+
+        if (filterByOrganisations || filterByInitiatives) {
+          $(node).attr('fill', '#f00')
+        } else {
+          $(node).attr('fill', '#eee')
+        }
+      })
+    }
+  }
 
   loadActivities(event) {
     event.preventDefault()
@@ -265,6 +306,31 @@ export default class extends Controller {
       },
       error: function() { alert('Error') }
     });
+  }
+
+  select2mount() {
+    var context = this
+
+    $(this.organisationsFilterTarget).select2({
+      dropdownAutoWidth: true,
+      multiple: true,
+      placeholder: "Select Organisations",
+    }).on('select2:select select2:unselect', function (e) {
+      context.applyFilter(e)
+    });
+
+    $(this.initiativesFilterTarget).select2({
+      dropdownAutoWidth: true,
+      multiple: true,
+      placeholder: "Select Initiatives",
+    }).on('select2:select select2:unselect', function (e) {
+      context.applyFilter(e)
+    });
+  }
+
+  select2unmount() {
+    $(this.organisationsFilterTarget).select2('destroy');
+    $(this.initiativesFilterTarget).select2('destroy');
   }
 
   toggleNetworkMapLabels(event) {

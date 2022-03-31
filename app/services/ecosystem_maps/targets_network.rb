@@ -55,22 +55,22 @@ module EcosystemMaps
     # TODO: Need to check which characteristcs have checklist items with at least one
     # 'actual' comment in the same focus_area
     # <<~SQL
-    #   select * from checklist_items ci
-    #   inner join characteristics
-    #     on characteristics.id = checklist_items.characteristic_id
-    #   inner join focus_areas
-    #     on focus_areas.id = characteristics.focus_area_id
-    #     and focus_areas.id in (
-    #       select focus_area_id from focus_areas focus_areas_with_comments
-    #       inner join characteristics characteristics_with_comments
-    #         on characteristics_with_comments.focus_area_id = focus_areas_with_comments.id
-    #       inner join checklist_items checklist_items_with_comments
-    #         on checklist_items_with_comments.characteristic_id = characteristics_with_comments.id
-    #       inner join checklist_item_comments
-    #         on checklist_item_comments.checklist_item_id = checklist_items_with_comments.id
-    #         and checklist_item_comments.status = 'actual'
-    #       where focus_areas_with_comments.id = focus_areas.id
-    #     )
+    select focus_areas.name, characteristics.name from checklist_items
+    inner join characteristics
+      on characteristics.id = checklist_items.characteristic_id
+    inner join focus_areas
+      on focus_areas.id = characteristics.focus_area_id
+      and focus_areas.id in (
+        select focus_area_id from focus_areas focus_areas_with_comments
+        inner join characteristics characteristics_with_comments
+          on characteristics_with_comments.focus_area_id = focus_areas_with_comments.id
+        inner join checklist_items checklist_items_with_comments
+          on checklist_items_with_comments.characteristic_id = characteristics_with_comments.id
+        inner join checklist_item_comments
+          on checklist_item_comments.checklist_item_id = checklist_items_with_comments.id
+          and checklist_item_comments.status = 'actual'
+        where focus_areas_with_comments.id = focus_areas.id
+      )
     # SQL
 
     def targets_network_mappings

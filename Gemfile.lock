@@ -114,7 +114,7 @@ GEM
     brakeman (5.1.1)
     breadcrumbs_on_rails (3.0.1)
     builder (3.2.4)
-    bullet (6.1.4)
+    bullet (7.0.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.0.1)
@@ -147,7 +147,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     content_disposition (1.0.0)
     crass (1.0.6)
     cucumber (7.0.0)
@@ -519,7 +519,7 @@ GEM
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.1.0)
-    uniform_notifier (1.14.2)
+    uniform_notifier (1.16.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)

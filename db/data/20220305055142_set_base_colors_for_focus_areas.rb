@@ -3,7 +3,7 @@
 class SetBaseColorsForFocusAreas < ActiveRecord::Migration[6.1]
   def up
     focus_areas.each_with_index do |focus_area, index|
-      focus_area.update_column(:base_color, base_color(index))
+      focus_area.update_column(:actual_color, base_color(index))
     end
   end
 

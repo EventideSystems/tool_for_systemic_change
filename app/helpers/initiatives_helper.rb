@@ -36,6 +36,9 @@ module InitiativesHelper
   end
 
   def linked_initiative_warning(initiative)
+    return '' if initiative.blank?
+    return '' if initiative.scorecard.blank?
+
     return '' unless initiative.new_record?
     return '' unless initiative.scorecard.linked?
     return '' if initiative.linked_initiative.present?

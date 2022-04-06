@@ -39,14 +39,14 @@
         <li class="nav-item ml-1">
           <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearOrganisationsFilter" data-original-title="Clear organisations"><i class="fa fa-undo" aria-hidden="true"></i></a>
         </li>
-        <li class="nav-item ml-1">
+        <li class="d-none nav-item ml-1">
           <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
             <%- @initiatives.each do |initiative| %>
               <option value="<%= initiative.id %>"><%= initiative.name %></option>
             <%- end %>
           </select>
         </li>
-        <li class="nav-item ml-1">
+        <li class="d-none nav-item ml-1">
           <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearInitiativesFilter" data-original-title="Clear initiatives"><i class="fa fa-undo" aria-hidden="true"></i></a>
         </li>
       </ul>

@@ -13,7 +13,7 @@ export default class extends Controller {
     "initiativesFilter"
   ]
 
-  connect() {git
+  connect() {
     this.select2mount()
 
     document.addEventListener("turbolinks:before-cache", () => {
@@ -29,22 +29,20 @@ export default class extends Controller {
 
     let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
 
-    debugger
-
     if (organisations.length == 0 && initiatives.length == 0) {
       nodes.forEach(function(node) {
-        data = d3.select(node).data()[0]
+        let data = d3.select(node).data()[0]
         $(node).attr('fill', data.color)
       })
     } else {
       nodes.forEach(function(node) {
-        let data = d3.select(node).data()[0]
 
+        let data = d3.select(node).data()[0]
         let filterByOrganisations = $(organisations).filter(data.organisation_ids).length > 0
         let filterByInitiatives = $(initiatives).filter(data.initiative_ids).length > 0
 
         if (filterByOrganisations || filterByInitiatives) {
-          $(node).attr('fill', '#f00')
+          $(node).attr('fill', data.color)
         } else {
           $(node).attr('fill', '#eee')
         }

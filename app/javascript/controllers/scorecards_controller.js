@@ -22,8 +22,6 @@ export default class extends Controller {
   }
 
   applyFilter(event) {
-    let context = this
-
     let organisations = $(this.organisationsFilterTarget).val()
     let initiatives = $(this.initiativesFilterTarget).val()
 
@@ -48,6 +46,18 @@ export default class extends Controller {
         }
       })
     }
+  }
+
+  clearInitiativesFilter(event) {
+    event.preventDefault()
+    $(this.initiativesFilterTarget).val(null).trigger('change')
+    this.applyFilter(event)
+  }
+
+  clearOrganisationsFilter(event) {
+    event.preventDefault()
+    $(this.organisationsFilterTarget).val(null).trigger('change')
+    this.applyFilter(event)
   }
 
   loadActivities(event) {

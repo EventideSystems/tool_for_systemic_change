@@ -39,7 +39,7 @@
       </div>
     <% end %>
     <% if policy(@scorecard).targets_network_maps? %>
-      <div style="height: 400px" class="tab-pane <%= 'active' if @active_tab == :targets_network_map %>" id="targets-network-map"  data-scorecards-target="targetsNetworkMap">
+      <div style="height: 110%" class="tab-pane <%= 'active' if @active_tab == :targets_network_map %>" id="targets-network-map"  data-scorecards-target="targetsNetworkMap">
         <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map'%>
       </div>
     <% end %>

@@ -7,6 +7,13 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
                   .order(sort_order).page params[:page]
   end
 
+  def show
+    @initiatives = @scorecard.initiatives.order(:name)
+    @organisations = @initiatives.filter_map(&:organisations).flatten.uniq.sort_by(&:name)
+
+    super
+  end
+
   def targets_network_map
     @scorecard = current_account.scorecards.find(params[:id])
     authorize @scorecard

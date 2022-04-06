@@ -12,7 +12,7 @@
             Legend
           </a>
         </li>
-        <li class="nav-item">
+        <%# <li class="nav-item">
           <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomIn" data-target="ecosystem-maps.toggleLegend">
             <i class="fa fa-plus" aria-hidden="true"></i>
           </a>
@@ -26,18 +26,28 @@
           <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomReset">
             Reset
           </a>
-        </li>
+        </li> %>
       </ul>
-      <ul id="ecosystem-maps-nav" class="d-none nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+      <ul id="ecosystem-maps-nav" class="nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
         <li class="nav-item">
-          <a href="#tab_organisations" class="nav-link active" data-target="#tab_organisations" data-toggle="tab">
-            Organisations
-          </a>
+          <select multiple="multiple" class="form-control" name='organisations-filter[]' id="organisations-filter" style="min-width: 300px; width: auto"  data-scorecards-target="organisationsFilter">
+            <%- @organisations.each do |organisation| %>
+              <option value="<%= organisation.id %>"><%= organisation.name %></option>
+            <%- end %>
+          </select>
         </li>
-        <li class="nav-item">
-          <a href="#tab_initiatives" class="nav-link" data-target="#tab_initiatives" data-toggle="tab">
-            Initiatives
-          </a>
+        <li class="nav-item ml-1">
+          <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearOrganisationsFilter" data-original-title="Clear organisations"><i class="fa fa-undo" aria-hidden="true"></i></a>
+        </li>
+        <li class="nav-item ml-1">
+          <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
+            <%- @initiatives.each do |initiative| %>
+              <option value="<%= initiative.id %>"><%= initiative.name %></option>
+            <%- end %>
+          </select>
+        </li>
+        <li class="nav-item ml-1">
+          <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearInitiativesFilter" data-original-title="Clear initiatives"><i class="fa fa-undo" aria-hidden="true"></i></a>
         </li>
       </ul>
     </div>

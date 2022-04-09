@@ -67,7 +67,6 @@
   table {
     table-layout: fixed;
     width: 100%;
-    *margin-left: -100px; /*ie7*/
     margin-top: 30px;
     width: auto;
     overflow-y: auto;
@@ -77,7 +76,6 @@
 
   th {
       position: absolute;
-      *position: relative; /*ie7*/
       left: 0;
       width: 150px;
       z-index: 999;
@@ -272,6 +270,15 @@ div.scorecard-matrix.sdg-card th div.divider {
 div.scorecard-matrix.sdg-card .inner {
   padding-bottom: 200px;
 }
+
+div.scorecard-matrix.sdg-card table.pre-scrollable.compact {
+  width: fit-content;
+}
+
+div.scorecard-matrix.sdg-card th.compact {
+  width: 80px;
+}
+
 
 div.scorecard-matrix.sdg-card td.focus-area-cell {
   min-width: 80px;

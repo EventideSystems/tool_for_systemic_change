@@ -79,7 +79,7 @@ module EcosystemMaps
           inner join checklist_items on checklist_items.id = events_checklist_item_activities.checklist_item_id
           inner join characteristics on characteristics.id = checklist_items.characteristic_id
           inner join initiatives on initiatives.id = checklist_items.initiative_id
-          inner join initiatives_organisations
+          left join initiatives_organisations
           on initiatives_organisations.initiative_id = initiatives.id
           where events_checklist_item_activities.to_status = 'actual'
           and initiatives.scorecard_id = #{transition_card.id}

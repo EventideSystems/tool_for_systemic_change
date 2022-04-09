@@ -58,12 +58,18 @@ export default class extends Controller {
       $('td.characteristic-cell').hide()
       $(this.compactViewBtnTarget).removeClass('btn-outline-secondary')
       $(this.compactViewBtnTarget).addClass('btn-primary')
+
+      $('table.pre-scrollable').addClass('compact')
+      $('table.pre-scrollable th').addClass('compact')
     } else {
       $('#status-filter').prop('disabled', false)
       $('td.focus-area-cell').hide()
       $('td.characteristic-cell').show()
       $(this.compactViewBtnTarget).removeClass('btn-primary')
       $(this.compactViewBtnTarget).addClass('btn-outline-secondary')
+
+      $('table.pre-scrollable').removeClass('compact')
+      $('table.pre-scrollable th').removeClass('compact')
     }
   }
 }

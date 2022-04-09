@@ -46,6 +46,19 @@ export default class extends Controller {
         }
       })
     }
+
+    d3.selectAll('#target-network-map-container svg g.links line').attr('stroke', function(link) {
+      let source = d3.select(this).data()[0].source
+      let target = d3.select(this).data()[0].target
+      let sourceData = nodes[source.index]
+      let targetData = nodes[target.index]
+
+      if ($(sourceData).attr('fill') == '#eee' || $(targetData).attr('fill') == '#eee') {
+        return '#E5E5E5'
+      } else {
+        return '#aaa'
+      }
+    })
   }
 
   clearInitiativesFilter(event) {
@@ -240,12 +253,12 @@ export default class extends Controller {
         }
 
         var linkElements = svg.append("g")
-          .attr("class", "links")
-          .selectAll("line")
-          .data(links)
-          .enter().append("line")
-            .attr("stroke-width", function(d) { return d['strength'] })
-            .attr("stroke", "rgba(50, 50, 50, 0.2)")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(links)
+        .enter().append("line")
+          .attr("stroke-width", function(d) { return d['strength'] })
+          .attr("stroke", "rgba(50, 50, 50, 0.2)")
 
         var nodeElements = svg.append("g")
           .attr("class", "nodes")

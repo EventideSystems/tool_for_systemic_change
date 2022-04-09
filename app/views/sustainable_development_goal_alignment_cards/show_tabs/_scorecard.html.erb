@@ -76,12 +76,12 @@
   <div class="box-body scorecard-matrix sdg-card pl-3" data-transition-cards-target="grid">
     <div class="outer pb-4">
       <div class="inner">
-        <table class="pre-scrollable">
+        <table class="pre-scrollable compact">
           <thead>
             <tr>
               <th>&nbsp;</th>
               <% @focus_areas.each_with_index do |focus_area, index| %>
-                <th colspan="<%= focus_area.characteristics.count %>" class="legend">
+                <th colspan="<%= focus_area.characteristics.count %>" class="legend compact">
                   <div class="mr-2" data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
                     <%= focus_area_icon(focus_area) %>
                   </div>

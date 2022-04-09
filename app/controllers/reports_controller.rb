@@ -94,11 +94,11 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_activity_base_filename}.csv"
+        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_activity_base_filename(@scorecard)}.csv"
       end
       format.xlsx do
-        filename = 'transiton_card_activity'
-        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_activity_base_filename}.xlsx"
+        send_data @report.to_xlsx.read, type: Mime[:xlsx],
+                                        filename: "#{scorecard_activity_base_filename(@scorecard)}.xlsx"
       end
     end
   end
@@ -121,10 +121,10 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_comments_base_filename}.csv"
+        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_comments_base_filename(@scorecard)}.csv"
       end
       format.xlsx do
-        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename}.xlsx",
+        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename(@scorecard)}.xlsx",
                                         disposition: 'attachment'
       end
     end
@@ -139,20 +139,24 @@ class ReportsController < ApplicationController
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data @report.to_xlsx.read, type: Mime[:xlsx],
-                                    filename: "#{transition_card_stakeholders_base_filename}.xlsx"
+                                    filename: "#{transition_card_stakeholders_base_filename(@scorecard)}.xlsx"
   end
 
   private
 
-  def scorecard_activity_base_filename
-    "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_activity"
+  def scorecard_activity_base_filename(scorecard)
+    "#{report_filename_prefix(scorecard)}_Activity"
   end
 
-  def scorecard_comments_base_filename
-    "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_comments"
+  def scorecard_comments_base_filename(scorecard)
+    "#{report_filename_prefix(scorecard)}_Comments"
   end
 
-  def transition_card_stakeholders_base_filename
-    "#{Scorecard.model_name.human.downcase.gsub(/\s/, '_')}_stakeholders"
+  def transition_card_stakeholders_base_filename(scorecard)
+    "#{report_filename_prefix(scorecard)}_Stakeholders"
+  end
+
+  def report_filename_prefix(scorecard)
+    scorecard.model_name.human.delete(' ')
   end
 end

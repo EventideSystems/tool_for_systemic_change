@@ -22,8 +22,10 @@ export default class extends Controller {
   }
 
   applyFilter(event) {
+    let context = this
     let organisations = $(this.organisationsFilterTarget).val()
     let initiatives = $(this.initiativesFilterTarget).val()
+    let links = d3.selectAll('#target-network-map-container svg g.links line').data()
 
     let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
 
@@ -43,6 +45,26 @@ export default class extends Controller {
           $(node).attr('fill', data.color)
         } else {
           $(node).attr('fill', '#eee')
+        }
+      })
+    }
+
+    if (initiatives.length > 0) {
+      d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
+        if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
+          $(this).attr('fill')
+        } else {
+          let neighbors = context.getNeighbors(links, node)
+          let neighborInitiatves = neighbors.reduce(function(initiatives, node) {
+            return initiatives.concat(node.initiative_ids)
+          }, [])
+
+          let filterByInitiatives = $(initiatives).filter(neighborInitiatves).length > 0
+          if (filterByInitiatives) {
+            $(this).attr('fill', '#aaa')
+          } else {
+            $(this).attr('fill', '#eee')
+          }
         }
       })
     }
@@ -71,6 +93,19 @@ export default class extends Controller {
     event.preventDefault()
     $(this.organisationsFilterTarget).val(null).trigger('change')
     this.applyFilter(event)
+  }
+
+  getNeighbors(links, node) {
+    return links.reduce(function (neighbors, link) {
+        if (link.target.id === node.id) {
+          neighbors.push(link.source)
+        } else if (link.source.id === node.id) {
+          neighbors.push(link.target)
+        }
+        return neighbors
+      },
+      [node]
+    )
   }
 
   loadActivities(event) {
@@ -137,6 +172,12 @@ export default class extends Controller {
       $('#ecosystem-maps-modal').modal('hide');
     }
 
+
+
+    function isNeighborLink(node, link) {
+      return link.target.id === node.id || link.source.id === node.id
+    }
+
     function getNeighbors(links, node) {
       return links.reduce(function (neighbors, link) {
           if (link.target.id === node.id) {
@@ -148,10 +189,6 @@ export default class extends Controller {
         },
         [node.id]
       )
-    }
-
-    function isNeighborLink(node, link) {
-      return link.target.id === node.id || link.source.id === node.id
     }
 
     function getNodeColor(node, neighbors) {

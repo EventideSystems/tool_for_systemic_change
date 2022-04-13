@@ -69,6 +69,26 @@ export default class extends Controller {
       })
     }
 
+    if (organisations.length > 0) {
+      d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
+        if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
+          $(this).attr('fill')
+        } else {
+          let neighbors = context.getNeighbors(links, node)
+          let neighborOrganisations = neighbors.reduce(function(organisations, node) {
+            return organisations.concat(node.organisation_ids)
+          }, [])
+
+          let filterByOrganisations = $(organisations).filter(neighborOrganisations).length > 0
+          if (filterByOrganisations) {
+            $(this).attr('fill', '#aaa')
+          } else {
+            $(this).attr('fill', '#eee')
+          }
+        }
+      })
+    }
+
     d3.selectAll('#target-network-map-container svg g.links line').attr('stroke', function(link) {
       let source = d3.select(this).data()[0].source
       let target = d3.select(this).data()[0].target

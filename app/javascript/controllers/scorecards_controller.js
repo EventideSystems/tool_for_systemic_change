@@ -24,11 +24,11 @@ export default class extends Controller {
   applyFilter(event) {
     let context = this
 
-    let organisationList = $(this.organisationsFilterTarget).val()
-    let initiativeList = $(this.initiativesFilterTarget).val()
+    var organisationList = $(this.organisationsFilterTarget).val()
+    var initiativeList = $(this.initiativesFilterTarget).val()
 
-    let links = d3.selectAll('#target-network-map-container svg g.links line').data()
-    let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
+    var links = d3.selectAll('#target-network-map-container svg g.links line').data()
+    var nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
 
     if (organisationList.length == 0 && initiativeList.length == 0) {
       nodes.forEach(function(node) {
@@ -70,7 +70,6 @@ export default class extends Controller {
     }
 
     if (organisationList.length > 0) {
-      debugger
       d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
         if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
           $(this).attr('fill')

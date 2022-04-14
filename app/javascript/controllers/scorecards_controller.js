@@ -50,6 +50,7 @@ export default class extends Controller {
     }
 
     if (initiatives.length > 0) {
+      debugger
       d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
         if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
           $(this).attr('fill')
@@ -70,6 +71,7 @@ export default class extends Controller {
     }
 
     if (organisations.length > 0) {
+      debugger
       d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
         if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
           $(this).attr('fill')

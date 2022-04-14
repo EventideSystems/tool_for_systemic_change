@@ -60,8 +60,7 @@ export default class extends Controller {
             return initiatives.concat(node.initiative_ids)
           }, [])
 
-          let filterByInitiatives = $(initiativeList).filter(neighborInitiatves).length > 0
-          if (filterByInitiatives) {
+          if ($(initiativeList).filter(neighborInitiatves).length > 0) {
             $(this).attr('fill', '#aaa')
           } else {
             $(this).attr('fill', '#eee')
@@ -81,8 +80,7 @@ export default class extends Controller {
             return organisations.concat(node.organisation_ids)
           }, [])
 
-          let filterByOrganisations = $(organisationList).filter(neighborOrganisations).length > 0
-          if (filterByOrganisations) {
+          if ($(organisationList).filter(neighborOrganisations).length > 0) {
             $(this).attr('fill', '#aaa')
           } else {
             $(this).attr('fill', '#eee')

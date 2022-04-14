@@ -23,15 +23,14 @@ export default class extends Controller {
 
   applyFilter(event) {
     let context = this
-    let organisations = $(this.organisationsFilterTarget).val()
-    let initiatives = $(this.initiativesFilterTarget).val()
-    let links = d3.selectAll('#target-network-map-container svg g.links line').data()
 
+    let organisationList = $(this.organisationsFilterTarget).val()
+    let initiativeList = $(this.initiativesFilterTarget).val()
+
+    let links = d3.selectAll('#target-network-map-container svg g.links line').data()
     let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
 
-    debugger
-
-    if (organisations.length == 0 && initiatives.length == 0) {
+    if (organisationList.length == 0 && initiativeList.length == 0) {
       nodes.forEach(function(node) {
         let data = d3.select(node).data()[0]
         $(node).attr('fill', data.color)
@@ -40,8 +39,8 @@ export default class extends Controller {
       nodes.forEach(function(node) {
 
         let data = d3.select(node).data()[0]
-        let filterByOrganisations = $(organisations).filter(data.organisation_ids).length > 0
-        let filterByInitiatives = $(initiatives).filter(data.initiative_ids).length > 0
+        let filterByOrganisations = $(organisationList).filter(data.organisation_ids).length > 0
+        let filterByInitiatives = $(initiativeList).filter(data.initiative_ids).length > 0
 
         if (filterByOrganisations || filterByInitiatives) {
           $(node).attr('fill', data.color)
@@ -51,8 +50,7 @@ export default class extends Controller {
       })
     }
 
-    if (initiatives.length > 0) {
-      debugger
+    if (initiativeList.length > 0) {
       d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
         if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
           $(this).attr('fill')
@@ -62,7 +60,7 @@ export default class extends Controller {
             return initiatives.concat(node.initiative_ids)
           }, [])
 
-          let filterByInitiatives = $(initiatives).filter(neighborInitiatves).length > 0
+          let filterByInitiatives = $(initiativeList).filter(neighborInitiatves).length > 0
           if (filterByInitiatives) {
             $(this).attr('fill', '#aaa')
           } else {
@@ -72,7 +70,7 @@ export default class extends Controller {
       })
     }
 
-    if (organisations.length > 0) {
+    if (organisationList.length > 0) {
       debugger
       d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
         if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
@@ -83,7 +81,7 @@ export default class extends Controller {
             return organisations.concat(node.organisation_ids)
           }, [])
 
-          let filterByOrganisations = $(organisations).filter(neighborOrganisations).length > 0
+          let filterByOrganisations = $(organisationList).filter(neighborOrganisations).length > 0
           if (filterByOrganisations) {
             $(this).attr('fill', '#aaa')
           } else {

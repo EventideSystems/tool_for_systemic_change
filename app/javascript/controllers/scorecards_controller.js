@@ -29,6 +29,8 @@ export default class extends Controller {
 
     let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
 
+    debugger
+
     if (organisations.length == 0 && initiatives.length == 0) {
       nodes.forEach(function(node) {
         let data = d3.select(node).data()[0]

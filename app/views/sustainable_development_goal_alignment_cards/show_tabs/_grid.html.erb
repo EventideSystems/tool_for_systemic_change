@@ -1,0 +1,61 @@
+  <div class="box-body scorecard-matrix sdg-card pl-3" data-transition-cards-target="grid">
+    <div class="outer pb-4">
+      <div class="inner">
+        <table class="pre-scrollable compact">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <% @focus_areas.each_with_index do |focus_area, index| %>
+                <th colspan="<%= focus_area.characteristics.count %>" class="legend compact">
+                  <div class="mr-2" data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
+                    <%= focus_area_icon(focus_area) %>
+                  </div>
+                  <div class="divider">
+                  </div>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+            <tr>
+              <th>
+                <%=
+                  link_to_if(
+                    !(defined?(disable_links) && disable_links),
+                    result.dig('initiative', 'name'),
+                    initiative_path(id: result.dig('initiative', 'id')),
+                    class: 'truncate',
+                    data: {
+                      toggle: 'tooltip',
+                      placement: 'top',
+                      title: result.dig('initiative', 'name')
+                    }
+                  ) do
+                    tag.span(result.dig('initiative', 'name'), class: 'truncate')
+                  end
+                %>
+              </th>
+              <% @focus_areas.each_with_index do |focus_area, index|  %>
+                <td colspan="<%= focus_area.characteristics.count %>" class="focus-area-cell" style="<%= focus_area_cell_style(result, focus_area) %>">
+                </td>
+              <%- end -%>
+              <% @characteristics.each do |characteristic| %>
+                <td
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  data-container=".inner"
+                  data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
+                  title="<%= result.dig(characteristic.id.to_s, 'name') %>"
+                  class="characteristic-cell <%= cell_class(result, @focus_areas, characteristic) %>"
+                  style="display:none; <%= cell_style(result, @focus_areas, characteristic) %>"
+                >
+                </td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

@@ -61,8 +61,8 @@ $(document).on('turbolinks:load', function() {
       scorecard_name = '<em style="color:red">Missing</em>'
     }
 
-    $("#preview-transition_card-name").html(scorecard_name);
-    $("#preview-transition_card-description").html(scorecard_desc);
+    $("#preview-transition-card-name").html(scorecard_name);
+    $("#preview-transition-card-description").html(scorecard_desc);
 
     var wicked_problem_name = $("[data='wicked_problem_selector'] option:selected").text();
     var wicked_problem_id = $("[data='wicked_problem_selector']").val();

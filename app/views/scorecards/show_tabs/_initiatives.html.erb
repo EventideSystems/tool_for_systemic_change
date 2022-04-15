@@ -2,25 +2,25 @@
   <div class="row tab-content-header p-3">
     <div class="col-sm">
       <div class="float-left mt-1 mr-3">
-        <h3>Initiatives</h3>
+        <h3><%= initiatives_title(@scorecard) %></h3>
       </div>
       <div class="float-left">
-        <%= 
+        <%=
             if policy(Initiative).create?
               link_to(new_initiative_path(scorecard_id: @scorecard.id), class: 'btn btn-primary') do
                 safe_join([content_tag(:i, '', class: "fa fa-plus"), ' New Initiative'])
               end
-            end 
+            end
         %>
       </div>
-    </div> 
-  </div>   
+    </div>
+  </div>
 </div>
 
 
 <div id="accordion-container" class="m-3">
   <div id="accordion">
-    <%- @scorecard.initiatives.order(name: :asc).each_with_index do |initiative, index| -%> 
+    <%- @scorecard.initiatives.order(name: :asc).each_with_index do |initiative, index| -%>
 
       <div class="card">
         <div class="card-header" id="headingOne">
@@ -35,7 +35,7 @@
           <div class="card-body">
             <%= initiative.description.blank? ? content_tag(:em, 'No description given.') : initiative.description %>
             <div class="float-right">
-              <%= link_to 'Initiative Details', initiative_path(initiative), class: 'btn btn-primary float-right' %> 
+              <%= link_to 'Initiative Details', initiative_path(initiative), class: 'btn btn-primary float-right' %>
             </div>
           </div>
         </div>

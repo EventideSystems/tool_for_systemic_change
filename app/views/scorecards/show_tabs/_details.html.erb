@@ -7,13 +7,28 @@
       <%= f.association :wicked_problem, collection: policy_scope(WickedProblem), required: true %>
       <%= f.association :community, collection: policy_scope(Community), required: true %>
       <%- if policy(@scorecard).link_scorecards? %>
-        <%=
-          f.association :linked_scorecard,
-            collection: collection_for_linked_scorecard(@scorecard),
-            required: false,
-            label: linked_scorecard_label(@scorecard),
-            input_html: { data: { action: 'linked-initiatives#changeLinkedScorecard' } }
-        %>
+
+        <div class="form-group row string optional sustainable_development_goal_alignment_card_linked_scorecard form-group-valid">
+          <label class="col-sm-3 col-form-label string optional" for="sustainable_development_goal_alignment_card_linked_scorecard">
+            <%= linked_scorecard_label(@scorecard) %>
+          </label>
+          <div class="col-sm-<%= @scorecard.linked_scorecard_id.present? ? '7' : '9' %>">
+            <%=
+              select_tag :linked_scorecard_id,
+              options_for_select(collection_for_linked_scorecard(@scorecard), @scorecard.linked_scorecard_id),
+              class: 'form-control is-valid select optional',
+              data: { action: 'linked-initiatives#changeLinkedScorecard' }
+            %>
+          </div>
+          <%- if @scorecard.linked_scorecard_id.present? %>
+            <div class="col-sm-2">
+              <label class="btn btn-secondary">
+                <%= check_box_tag(:unlink_scorecard, true, false) %> Unlink
+              </label>
+            </div>
+          <%- end -%>
+        </div>
+
         <div data-linked-initiatives-target="initiativesList">
           <%- if @linked_initiatives.present? %>
             <%= render partial: '/scorecards/show_tabs/linked_initiatives',

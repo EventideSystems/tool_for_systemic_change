@@ -94,14 +94,14 @@ module ScorecardsHelper
   def collection_for_linked_scorecard(parent_scorecard)
     return [] if parent_scorecard.blank?
 
-    parent_scorecard
-      .account
-      .scorecards
-      .where(id: parent_scorecard.linked_scorecard_id)
-      .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
-      .where.not(type: parent_scorecard.type)
-      .order(:name)
-      .pluck(:name, :id)
+    [['', nil]] + parent_scorecard
+                  .account
+                  .scorecards
+                  .where(id: parent_scorecard.linked_scorecard_id)
+                  .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
+                  .where.not(type: parent_scorecard.type)
+                  .order(:name)
+                  .pluck(:name, :id)
   end
 
   def focus_area_cell_style(result, focus_area)

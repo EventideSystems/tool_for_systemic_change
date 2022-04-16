@@ -64,9 +64,15 @@ class InitiativesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @initiative.update(initiative_params)
+      linked_initiative = @initiative.linked_initiative
 
-        ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.linked?
+      if @initiative.update(initiative_params)
+        if params[:unlink_initiative]
+          linked_initiative.update(linked: false) if linked_initiative.present?
+          @initiative.update(linked: false)
+        elsif @initiative.linked?
+          ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
+        end
 
         format.html { redirect_to initiatives_path, notice: 'Initiative was successfully updated.' }
         format.json { render :show, status: :ok, location: @initiative }

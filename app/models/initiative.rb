@@ -28,6 +28,7 @@ class Initiative < ApplicationRecord
   after_create :create_checklist_items
 
   delegate :name, to: :scorecard, prefix: true
+  delegate :name, to: :linked_initiative, prefix: true, allow_nil: true
 
   scope :incomplete, lambda {
     joins(:checklist_items)
@@ -148,10 +149,13 @@ class Initiative < ApplicationRecord
       item_id: copied.id
     ).delete_all
 
-    original_initiative_versions = PaperTrail::Version.where(
-      item_type: 'Initiative',
-      item_id: id
-    )
+    # SMELL Not sure what's going on here, but original_initiative_versions
+    # is not being used anywhere.
+
+    # original_initiative_versions = PaperTrail::Version.where(
+    #   item_type: 'Initiative',
+    #   item_id: id
+    # )
 
     query = "
     INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)

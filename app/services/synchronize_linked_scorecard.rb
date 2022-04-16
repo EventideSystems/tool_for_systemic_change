@@ -3,7 +3,10 @@
 class SynchronizeLinkedScorecard
   class << self
     def call(source_scorecard, linked_initiative_names)
-      return if source_scorecard.linked_scorecard.blank?
+      if source_scorecard.linked_scorecard.blank?
+        unlink(source_scorecard)
+        return
+      end
 
       target_scorecard = source_scorecard.linked_scorecard
 
@@ -42,6 +45,21 @@ class SynchronizeLinkedScorecard
 
       source_scorecard.initiatives.where.not(name: linked_initiative_names).update_all(linked: false)
       target_scorecard.initiatives.where.not(name: linked_initiative_names).update_all(linked: false)
+    end
+
+    def unlink(source_scorecard)
+      target_scorecard = Scorecard.find_by(linked_scorecard_id: source_scorecard.id)
+
+      return if target_scorecard.blank?
+
+      source_scorecard.initiatives.update_all(linked: false)
+      target_scorecard.initiatives.update_all(linked: false)
+
+      source_scorecard.linked_scorecard_id = nil
+      target_scorecard.linked_scorecard_id = nil
+
+      source_scorecard.save!
+      target_scorecard.save!
     end
   end
 end

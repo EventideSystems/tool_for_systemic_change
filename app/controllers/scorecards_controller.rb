@@ -193,7 +193,13 @@ class ScorecardsController < ApplicationController
   end
 
   def merge_options
-    @other_scorecards = current_account.scorecards.where.not(id: @scorecard.id).order('lower(name)')
+    @other_scorecards = \
+      current_account
+        .scorecards
+        .where(type: @scorecard.type)
+        .where.not(id: @scorecard.id)
+        .order('lower(name)')
+
     render layout: false
   end
 
@@ -203,8 +209,12 @@ class ScorecardsController < ApplicationController
     respond_to do |format|
       if @scorecard.present?
         format.html do
-          redirect_to transition_card_path(@merged_scorecard),
-                      notice: "#{Scorecard.model_name.human} were successfully merged."
+          card_path = case @scorecard.type
+          when 'TransitionCard' then transition_card_path(@merged_scorecard)
+          when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
+          end
+
+          redirect_to card_path, notice: "#{@scorecard.model_name.human} were successfully merged."
         end
         format.json { render :show, status: :ok, location: @merged_scorecard }
       else

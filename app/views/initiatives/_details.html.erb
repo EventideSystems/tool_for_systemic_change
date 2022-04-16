@@ -4,13 +4,31 @@
     <%= form_header(@initiative) %>
     <%= f.input :name %>
     <%= f.input :description %>
+    <hr>
     <%- if current_account.scorecard_types.count > 1 %>
       <%= f.association :scorecard, collection: @scorecard_types, as: :grouped_select, group_method: :scorecards, label: scorecard_label(@initiative) %>
     <%- else %>
       <%= f.association :scorecard, collection: @scorecards, label: scorecard_label(@initiative) %>
     <%- end %>
 
-
+    <%- if @initiative.linked_initiative.present? %>
+      <div class="form-group row grouped_select optional initiative_scorecard form-group-valid">
+        <label class="col-sm-3 col-form-label grouped_select optional">
+          <span style="margin-right: 10px">Linked Initiative</span>
+          <%= link_to initiative_path(@initiative.linked_initiative), target: "_blank", rel: "nofollow" do %>
+            <i class="fa fa-external-link" aria-hidden="true"></i>
+          <% end %>
+        </label>
+        <div class="col-sm-7">
+          <%= text_field_tag :linked_initiative, @initiative.linked_initiative_name, readonly: true, class: "form-control string optional" %>
+        </div>
+        <div class="col-sm-2">
+          <label class="btn btn-secondary">
+            <%= check_box_tag(:unlink_initiative, true, false) %> Unlink
+          </label>
+        </div>
+      </div>
+    <% end %>
 
     <hr>
     <%= render 'transition_cards/form_tabs/organisations', f: f %>

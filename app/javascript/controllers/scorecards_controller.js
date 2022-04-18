@@ -21,13 +21,21 @@ export default class extends Controller {
     }, { once: true })
   }
 
+  disconnect() {
+    $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
+    $('#ecosystem-maps-modal').modal('hide');
+  }
+
   applyFilter(event) {
-    let organisations = $(this.organisationsFilterTarget).val()
-    let initiatives = $(this.initiativesFilterTarget).val()
+    let context = this
 
-    let nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
+    var organisationList = $(this.organisationsFilterTarget).val()
+    var initiativeList = $(this.initiativesFilterTarget).val()
 
-    if (organisations.length == 0 && initiatives.length == 0) {
+    var links = d3.selectAll('#target-network-map-container svg g.links line').data()
+    var nodes = d3.selectAll('#target-network-map-container svg g.nodes circle').nodes()
+
+    if (organisationList.length == 0 && initiativeList.length == 0) {
       nodes.forEach(function(node) {
         let data = d3.select(node).data()[0]
         $(node).attr('fill', data.color)
@@ -36,13 +44,51 @@ export default class extends Controller {
       nodes.forEach(function(node) {
 
         let data = d3.select(node).data()[0]
-        let filterByOrganisations = $(organisations).filter(data.organisation_ids).length > 0
-        let filterByInitiatives = $(initiatives).filter(data.initiative_ids).length > 0
+        let filterByOrganisations = $(organisationList).filter(data.organisation_ids).length > 0
+        let filterByInitiatives = $(initiativeList).filter(data.initiative_ids).length > 0
 
         if (filterByOrganisations || filterByInitiatives) {
           $(node).attr('fill', data.color)
         } else {
           $(node).attr('fill', '#eee')
+        }
+      })
+    }
+
+    if (initiativeList.length > 0) {
+      d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
+        if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
+          $(this).attr('fill')
+        } else {
+          let neighbors = context.getNeighbors(links, node)
+          let neighborInitiatves = neighbors.reduce(function(initiatives, node) {
+            return initiatives.concat(node.initiative_ids)
+          }, [])
+
+          if ($(initiativeList).filter(neighborInitiatves).length > 0) {
+            $(this).attr('fill', '#aaa')
+          } else {
+            $(this).attr('fill', '#eee')
+          }
+        }
+      })
+    }
+
+    if (organisationList.length > 0) {
+      d3.selectAll('#target-network-map-container svg g.nodes circle').each(function(node) {
+        if (!/focus\-area/.test(node.id) || $(this).attr('fill') == '#aaa' || $(this).attr('fill') != '#eee') {
+          $(this).attr('fill')
+        } else {
+          let neighbors = context.getNeighbors(links, node)
+          let neighborOrganisations = neighbors.reduce(function(organisations, node) {
+            return organisations.concat(node.organisation_ids)
+          }, [])
+
+          if ($(organisationList).filter(neighborOrganisations).length > 0) {
+            $(this).attr('fill', '#aaa')
+          } else {
+            $(this).attr('fill', '#eee')
+          }
         }
       })
     }
@@ -71,6 +117,19 @@ export default class extends Controller {
     event.preventDefault()
     $(this.organisationsFilterTarget).val(null).trigger('change')
     this.applyFilter(event)
+  }
+
+  getNeighbors(links, node) {
+    return links.reduce(function (neighbors, link) {
+        if (link.target.id === node.id) {
+          neighbors.push(link.source)
+        } else if (link.source.id === node.id) {
+          neighbors.push(link.target)
+        }
+        return neighbors
+      },
+      [node]
+    )
   }
 
   loadActivities(event) {
@@ -137,6 +196,10 @@ export default class extends Controller {
       $('#ecosystem-maps-modal').modal('hide');
     }
 
+    function isNeighborLink(node, link) {
+      return link.target.id === node.id || link.source.id === node.id
+    }
+
     function getNeighbors(links, node) {
       return links.reduce(function (neighbors, link) {
           if (link.target.id === node.id) {
@@ -148,10 +211,6 @@ export default class extends Controller {
         },
         [node.id]
       )
-    }
-
-    function isNeighborLink(node, link) {
-      return link.target.id === node.id || link.source.id === node.id
     }
 
     function getNodeColor(node, neighbors) {
@@ -347,6 +406,9 @@ export default class extends Controller {
     }).on('select2:select select2:unselect', function (e) {
       context.applyFilter(e)
     });
+
+    $(this.organisationsFilterTarget).val(null).trigger('change')
+    $(this.initiativesFilterTarget).val(null).trigger('change')
   }
 
   select2unmount() {
@@ -375,6 +437,4 @@ export default class extends Controller {
       $(this.targetsNetworkMapLegendPanelTarget).hide()
     }
   }
-
-
 }

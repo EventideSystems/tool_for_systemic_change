@@ -21,6 +21,11 @@ export default class extends Controller {
     }, { once: true })
   }
 
+  disconnect() {
+    $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
+    $('#ecosystem-maps-modal').modal('hide');
+  }
+
   applyFilter(event) {
     let context = this
 
@@ -190,8 +195,6 @@ export default class extends Controller {
       $('#ecosystem-maps-modal').modal({ backdrop: false, draggable: true });
       $('#ecosystem-maps-modal').modal('hide');
     }
-
-
 
     function isNeighborLink(node, link) {
       return link.target.id === node.id || link.source.id === node.id
@@ -403,6 +406,9 @@ export default class extends Controller {
     }).on('select2:select select2:unselect', function (e) {
       context.applyFilter(e)
     });
+
+    $(this.organisationsFilterTarget).val(null).trigger('change')
+    $(this.initiativesFilterTarget).val(null).trigger('change')
   }
 
   select2unmount() {
@@ -431,6 +437,4 @@ export default class extends Controller {
       $(this.targetsNetworkMapLegendPanelTarget).hide()
     }
   }
-
-
 }

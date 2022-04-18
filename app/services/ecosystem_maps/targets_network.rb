@@ -82,8 +82,7 @@ module EcosystemMaps
             characteristics.focus_area_id as focus_area_id,
             events_checklist_item_activities.checklist_item_id as checklist_item_id,
             events_checklist_item_activities.to_status as status,
-            initiatives.id as initiative_id,
-            initiatives_organisations.organisation_id as organisation_id
+            initiatives.id as initiative_id
           from
             events_checklist_item_activities
           inner join checklist_items
@@ -92,16 +91,16 @@ module EcosystemMaps
             on characteristics.id = checklist_items.characteristic_id
           inner join initiatives
             on initiatives.id = checklist_items.initiative_id
-          left join initiatives_organisations on initiatives_organisations.initiative_id = initiatives.id
           where initiatives.scorecard_id = #{transition_card.id}
           order by events_checklist_item_activities.checklist_item_id, events_checklist_item_activities.occurred_at desc
         )
         select
           characteristic_id,
           focus_area_id,
-          array_agg(initiative_id) as initiative_id,
+          array_agg(current_statuses.initiative_id) as initiative_id,
           array_agg(organisation_id) as organisation_id
         from current_statuses
+        left join initiatives_organisations on initiatives_organisations.initiative_id = current_statuses.initiative_id
         where status = 'actual'
         group by characteristic_id, focus_area_id
       SQL

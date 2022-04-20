@@ -43,9 +43,22 @@ export default class extends Controller {
     } else {
       nodes.forEach(function(node) {
 
+        var filterByOrganisations
+        var filterByInitiatives
+
         let data = d3.select(node).data()[0]
-        let filterByOrganisations = $(organisationList).filter(data.organisation_ids).length > 0
-        let filterByInitiatives = $(initiativeList).filter(data.initiative_ids).length > 0
+
+        if ($(organisationList).filter(['all']).length == 1) {
+          filterByOrganisations = data.organisation_ids.length > 0
+        } else {
+          filterByOrganisations = $(organisationList).filter(data.organisation_ids).length > 0
+        }
+
+        if ($(initiativeList).filter(['all']).length == 1) {
+          filterByOrganisations = data.initiative_ids.length > 0
+        } else {
+          filterByInitiatives = $(initiativeList).filter(data.initiative_ids).length > 0
+        }
 
         if (filterByOrganisations || filterByInitiatives) {
           $(node).attr('fill', data.color)
@@ -61,11 +74,21 @@ export default class extends Controller {
           $(this).attr('fill')
         } else {
           let neighbors = context.getNeighbors(links, node)
-          let neighborInitiatves = neighbors.reduce(function(initiatives, node) {
-            return initiatives.concat(node.initiative_ids)
-          }, [])
+          var highlightNeighbors
 
-          if ($(initiativeList).filter(neighborInitiatves).length > 0) {
+          if ($(initiativeList).filter(['all']).length == 1) {
+            highlightNeighbors = neighbors.some(function(neighbor) {
+              return neighbor.initiative_ids.length > 0
+            })
+          } else {
+            let neighborInitiatves = neighbors.reduce(function(initiatives, node) {
+              return initiatives.concat(node.initiative_ids)
+            }, [])
+
+            highlightNeighbors = $(initiativeList).filter(neighborInitiatves).length > 0
+          }
+
+          if (highlightNeighbors) {
             $(this).attr('fill', '#aaa')
           } else {
             $(this).attr('fill', '#eee')
@@ -80,11 +103,21 @@ export default class extends Controller {
           $(this).attr('fill')
         } else {
           let neighbors = context.getNeighbors(links, node)
-          let neighborOrganisations = neighbors.reduce(function(organisations, node) {
-            return organisations.concat(node.organisation_ids)
-          }, [])
+          var highlightNeighbors
 
-          if ($(organisationList).filter(neighborOrganisations).length > 0) {
+          if ($(organisationList).filter(['all']).length == 1) {
+            highlightNeighbors = neighbors.some(function(neighbor) {
+              return neighbor.organisation_ids.length > 0
+            })
+          } else {
+            let neighborOrganisations = neighbors.reduce(function(organisations, node) {
+              return organisations.concat(node.organisation_ids)
+            }, [])
+
+            highlightNeighbors = $(organisationList).filter(neighborOrganisations).length > 0
+          }
+
+          if (highlightNeighbors) {
             $(this).attr('fill', '#aaa')
           } else {
             $(this).attr('fill', '#eee')

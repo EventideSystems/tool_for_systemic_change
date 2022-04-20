@@ -40,7 +40,7 @@ module EcosystemMaps
           color: node.actual_color,
           organisation_ids: organisation_ids,
           initiative_ids: initiative_ids,
-          size: 10
+          size: 13
         }
       end
     end

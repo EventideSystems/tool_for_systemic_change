@@ -93,18 +93,22 @@ export default class extends Controller {
       })
     }
 
-    d3.selectAll('#target-network-map-container svg g.links line').attr('stroke', function(link) {
-      let source = d3.select(this).data()[0].source
-      let target = d3.select(this).data()[0].target
-      let sourceData = nodes[source.index]
-      let targetData = nodes[target.index]
+    if (organisationList.length == 0 && initiativeList.length == 0) {
+      d3.selectAll('#target-network-map-container svg g.links line').attr('stroke', function(link) { return 'Gainsboro' })
+    } else {
+      d3.selectAll('#target-network-map-container svg g.links line').attr('stroke', function(link) {
+        let source = d3.select(this).data()[0].source
+        let target = d3.select(this).data()[0].target
+        let sourceData = nodes[source.index]
+        let targetData = nodes[target.index]
 
-      if ($(sourceData).attr('fill') == '#eee' || $(targetData).attr('fill') == '#eee') {
-        return '#E5E5E5'
-      } else {
-        return '#aaa'
-      }
-    })
+        if ($(sourceData).attr('fill') == '#eee' || $(targetData).attr('fill') == '#eee') {
+          return '#E5E5E5'
+        } else {
+          return '#aaa'
+        }
+      })
+    }
   }
 
   clearInitiativesFilter(event) {
@@ -268,7 +272,7 @@ export default class extends Controller {
           .on("dblclick", function(event) {
             nodeElements.attr('fill', function (node) { return getNodeColor(node) })
             textElements.attr('fill', function (node) { return getTextColor(node) })
-            linkElements.attr('stroke', function (link) { return '#E5E5E5' })
+            linkElements.attr('stroke', function (link) { return 'Gainsboro' })
           })
           .on("dblclick.zoom", null)
           .on("wheel.zoom", null)
@@ -317,7 +321,7 @@ export default class extends Controller {
         .data(links)
         .enter().append("line")
           .attr("stroke-width", function(d) { return d['strength'] })
-          .attr("stroke", "rgba(50, 50, 50, 0.2)")
+          .attr("stroke", "Gainsboro")
 
         var nodeElements = svg.append("g")
           .attr("class", "nodes")
@@ -361,7 +365,7 @@ export default class extends Controller {
           .data(nodes)
           .enter().append("text")
             .text(function (node) { return  node.label })
-            .attr("font-size", 9)
+            .attr("font-size", 11)
             .attr("dx", 15)
             .attr("dy", 4)
             .attr("visibility", labelVisibility)

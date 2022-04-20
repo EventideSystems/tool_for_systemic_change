@@ -12,28 +12,11 @@
             Legend
           </a>
         </li>
-        <%# <li class="nav-item">
-          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomIn" data-target="ecosystem-maps.toggleLegend">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomOut">
-            <i class="fa fa-minus" aria-hidden="true"></i>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#" data-action="click->ecosystem-maps#zoomReset">
-            Reset
-          </a>
-        </li> %>
       </ul>
       <ul id="ecosystem-maps-nav" class="nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
         <li class="nav-item">
           <select multiple="multiple" class="form-control" name='organisations-filter[]' id="organisations-filter" style="min-width: 300px; width: auto"  data-scorecards-target="organisationsFilter">
-            <%- @organisations.each do |organisation| %>
-              <option value="<%= organisation.id %>"><%= organisation.name %></option>
-            <%- end %>
+            <%= options_for_select(@organisations.map { |o| [o.name, o.id] } << ['All', 'all'] ) %>
           </select>
         </li>
         <li class="nav-item ml-1">
@@ -41,9 +24,7 @@
         </li>
         <li class="nav-item ml-1">
           <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
-            <%- @initiatives.each do |initiative| %>
-              <option value="<%= initiative.id %>"><%= initiative.name %></option>
-            <%- end %>
+             <%= options_for_select(@initiatives.map { |o| [o.name, o.id] } << ['All', 'all'])  %>
           </select>
         </li>
         <li class="nav-item ml-1">

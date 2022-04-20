@@ -135,11 +135,4 @@ module ScorecardsHelper
     when 'SustainableDevelopmentGoalAlignmentCard' then copy_sustainable_development_goal_alignment_card_url(scorecard)
     end
   end
-
-  def initiatives_title(scorecard)
-    case scorecard.type
-    when 'TransitionCard' then "Initiatives"
-    when 'SustainableDevelopmentGoalAlignmentCard' then "Initiative Targets"
-    end
-  end
 end

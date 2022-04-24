@@ -3,7 +3,7 @@
 require 'csv'
 
 module Reports
-  class TransitionCardStakeholders
+  class TransitionCardStakeholders < Base
     attr_accessor :scorecard
 
     def initialize(scorecard)
@@ -19,13 +19,14 @@ module Reports
         header_3 = p.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
         blue_normal = p.workbook.styles.add_style fg_color: '386190', sz: 12, b: false
         wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
-        date = p.workbook.styles.add_style format_code: 'd/m/yy'
+        date = date_style(p)
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
+          sheet.add_row([DateTime.now], style: date)
+
           sheet.add_row([scorecard.model_name.human], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
           sheet.add_row(['Community', scorecard.community.name])
-          sheet.add_row(['Date generated']).add_cell(Date.today, style: date)
 
           sheet.add_row
 

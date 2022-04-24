@@ -93,12 +93,9 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv do
-        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_activity_base_filename(@scorecard)}.csv"
-      end
       format.xlsx do
         send_data @report.to_xlsx.read, type: Mime[:xlsx],
-                                        filename: "#{scorecard_activity_base_filename(@scorecard)}.xlsx"
+                                        filename: "#{scorecard_activity_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
       end
     end
   end
@@ -120,11 +117,8 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv do
-        send_data @report.to_csv, type: Mime[:csv], filename: "#{scorecard_comments_base_filename(@scorecard)}.csv"
-      end
       format.xlsx do
-        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename(@scorecard)}.xlsx",
+        send_data @report.to_xlsx.read, type: Mime[:xlsx], filename: "#{scorecard_comments_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx",
                                         disposition: 'attachment'
       end
     end
@@ -139,7 +133,7 @@ class ReportsController < ApplicationController
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data @report.to_xlsx.read, type: Mime[:xlsx],
-                                    filename: "#{transition_card_stakeholders_base_filename(@scorecard)}.xlsx"
+                                    filename: "#{transition_card_stakeholders_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
   end
 
   private
@@ -158,5 +152,9 @@ class ReportsController < ApplicationController
 
   def report_filename_prefix(scorecard)
     scorecard.model_name.human.delete(' ')
+  end
+
+  def time_stamp_suffix
+    Time.zone.now.strftime('_%Y_%m_%d')
   end
 end

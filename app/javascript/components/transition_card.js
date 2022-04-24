@@ -23,8 +23,8 @@ $(document).on('turbolinks:load', function() {
       locale: { format: 'MMMM D, YYYY' },
       singleDatePicker: true,
       showDropdowns: true,
-      minYear: 1901,
-      maxYear: parseInt(moment().format('YYYY'),10)
+      minYear: parseInt(moment().format('YYYY'),10) - 8,
+      maxYear: parseInt(moment().format('YYYY'),10) + 8
     },
     function(start, end, label) {
       var scorecardId = $(this.element).data('scorecard-id');

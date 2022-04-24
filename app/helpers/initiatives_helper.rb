@@ -23,7 +23,7 @@ module InitiativesHelper
   def initiatives_characteristics_title(initiative)
     case initiative.scorecard.type
     when 'TransitionCard' then 'Initiative Characteristics'
-    when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiative SDG Targets'
+    when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiative SDGs Targets'
     end
   end
 

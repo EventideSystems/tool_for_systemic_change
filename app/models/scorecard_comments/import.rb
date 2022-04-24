@@ -9,6 +9,8 @@ class ScorecardComments::Import < Import
 
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
+
+      next if row.compact.empty?
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]
@@ -26,13 +28,13 @@ class ScorecardComments::Import < Import
         next
       end
 
-     
+
       next if row[0].nil?
 
       # Find Initiatives
       if initiatives.empty? && row[0].downcase == 'name of initiative'
         initiative_names = row[1..-1].select(&:present?)
-        
+
         initiative_names.each_with_index do |initiative_name, index|
           initiative = find_initiative_by_name(scorecard, initiative_name)
           if initiative.nil?
@@ -66,17 +68,17 @@ class ScorecardComments::Import < Import
         row[1..-1].each_with_index do |cell, index|
           comment = cell&.strip
 
-          if comment.present?            
+          if comment.present?
             characteristic = Characteristic.find_by("characteristics.name ilike :name", name: "%#{characteristic_name}")
             initiative = initiatives[index+1]
 
             if initiative.present? && characteristic.present?
-            
+
               checklist_item = initiative
                 .checklist_items
                 .includes(:checklist_item_comments)
                 .find_by(characteristic: characteristic)
- 
+
               if checklist_item.present?
                 checklist_item.checked = true if checklist_item.checked != true
                 checklist_item.save!

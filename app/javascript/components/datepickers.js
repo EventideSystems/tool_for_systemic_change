@@ -13,8 +13,8 @@ $(document).on('turbolinks:load', function() {
         singleDatePicker: true,
         showDropdowns: true,
         drops: dropPosition,
-        minYear: 1901,
-        maxYear: parseInt(moment().format('YYYY'),10)
+        minYear: parseInt(moment().format('YYYY'),10) - 8,
+        maxYear: parseInt(moment().format('YYYY'),10) + 8
       }
     );
 

@@ -16,7 +16,7 @@
       <ul id="ecosystem-maps-nav" class="nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
         <li class="nav-item">
           <select multiple="multiple" class="form-control" name='organisations-filter[]' id="organisations-filter" style="min-width: 300px; width: auto"  data-scorecards-target="organisationsFilter">
-            <%= options_for_select(@organisations.map { |o| [o.name, o.id] } << ['All', 'all'] ) %>
+            <%= options_for_targets_network_map_items(@organisations) %>
           </select>
         </li>
         <li class="nav-item ml-1">
@@ -24,7 +24,7 @@
         </li>
         <li class="nav-item ml-1">
           <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
-             <%= options_for_select(@initiatives.map { |o| [o.name, o.id] } << ['All', 'all'])  %>
+             <%=  options_for_targets_network_map_items(@initiatives) %>
           </select>
         </li>
         <li class="nav-item ml-1">

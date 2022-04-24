@@ -28,7 +28,6 @@ class ScorecardComments::Import < Import
         next
       end
 
-
       next if row[0].nil?
 
       # Find Initiatives

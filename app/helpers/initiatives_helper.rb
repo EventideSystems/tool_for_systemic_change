@@ -20,6 +20,13 @@ module InitiativesHelper
     end
   end
 
+  def initiatives_characteristics_title(initiative)
+    case initiative.scorecard.type
+    when 'TransitionCard' then 'Initiative Characteristics'
+    when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiative SDGs Targets'
+    end
+  end
+
   def link_to_video_tutorial(video_tutorial)
     return '' if video_tutorial.blank?
 

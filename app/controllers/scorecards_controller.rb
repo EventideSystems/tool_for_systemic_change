@@ -11,6 +11,7 @@ class ScorecardsController < ApplicationController
 
   before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]
+  before_action :redirect_to_correct_controller, only: %i[show]
 
   def show
     @selected_date = params[:selected_date]
@@ -116,7 +117,13 @@ class ScorecardsController < ApplicationController
   def update
     respond_to do |format|
       if @scorecard.update(scorecard_params)
+        if params[:unlink_scorecard]
+          @scorecard.linked_scorecard = nil
+          @scorecard.update(linked_scorecard: nil)
+        end
+
         SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
+
         format.html { redirect_to @scorecard, notice: "#{@scorecard.model_name.human} was successfully updated." }
         format.json { render :show, status: :ok, location: @scorecard }
       else
@@ -264,7 +271,8 @@ class ScorecardsController < ApplicationController
     all_names.map do |name|
       {
         name: name,
-        present_in: calc_present_in(source_initiatives[name], target_initiatives[name]),
+        this_card: source_initiatives[name].present? ? 'Present' : 'Missing',
+        linked_card: target_initiatives[name].present? ? 'Present' : 'Missing',
         action: calc_link_action(source_initiatives[name], target_initiatives[name]),
         linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
       }
@@ -298,7 +306,20 @@ class ScorecardsController < ApplicationController
     params[:linked_initiatives]
   end
 
+  def redirect_to_correct_controller
+    case controller_name
+    when 'transition_cards'
+      if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard'
+        redirect_to sustainable_development_goal_alignment_card_path(@scorecard)
+      end
+    when 'sustainable_development_goal_alignment_cards'
+      redirect_to transition_card_path(@scorecard) if @scorecard.type == 'TransitionCard'
+    end
+  end
+
   def scorecard_params
+    params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
+
     params.require(scorecard_key_param).permit(
       :name,
       :description,

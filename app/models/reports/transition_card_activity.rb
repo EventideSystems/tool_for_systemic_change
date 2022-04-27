@@ -3,7 +3,7 @@
 require 'csv'
 
 module Reports
-  class TransitionCardActivity
+  class TransitionCardActivity < Base
     attr_accessor :scorecard, :date_from, :date_to
     attr_reader :initiative_totals
 
@@ -104,6 +104,8 @@ module Reports
     end
 
     def add_report_header(sheet, header_1, blue_normal, date)
+      sheet.add_row([DateTime.now], style: date)
+
       sheet
         .add_row([scorecard.model_name.human], style: header_1)
         .add_cell(scorecard.name, style: blue_normal)
@@ -111,10 +113,6 @@ module Reports
       sheet.add_row(['Date range'], b: true).tap do |row|
         row.add_cell(date_from, style: date)
         row.add_cell(date_to - 1.second, style: date)
-      end
-
-      sheet.add_row(['Report generated on']).tap do |row|
-        row.add_cell(DateTime.now, style: date)
       end
     end
 
@@ -144,10 +142,6 @@ module Reports
 
     def wrap_text_style(package)
       package.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
-    end
-
-    def date_style(package)
-      package.workbook.styles.add_style format_code: 'd/m/yy'
     end
 
     def initiative_totals

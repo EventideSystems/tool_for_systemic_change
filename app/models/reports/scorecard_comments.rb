@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'csv'
-
 module Reports
-  class ScorecardComments
+  class ScorecardComments < Base
     attr_reader :scorecard, :date, :status
 
     def initialize(scorecard, date, status)
@@ -46,12 +44,14 @@ module Reports
         header_3 = p.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
         blue_normal = p.workbook.styles.add_style fg_color: '386190', sz: 12, b: false
         wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
-        date_format = p.workbook.styles.add_style format_code: 'd/m/yy'
+        date = date_style(p)
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
+          sheet.add_row([DateTime.now], style: date)
+
           sheet.add_row([scorecard.model_name.human], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date'], b: true).tap do |row|
-            row.add_cell(date, style: date_format)
+            row.add_cell(date, style: date)
           end
           sheet.add_row(['Status'], b: true).tap do |row|
             row.add_cell(status.titleize)
@@ -105,46 +105,6 @@ module Reports
           sheet.column_widths 75.5, 10, 10
         end
       end.to_stream
-    end
-
-    def to_csv
-      current_focus_area_group = ''
-      current_focus_area = ''
-
-      padding_plus_1 = Array.new(initiatives.count + 1, '')
-      padding_plus_2 = Array.new(initiatives.count + 2, '')
-
-      CSV.generate do |csv|
-        csv << ([scorecard.model_name.human.to_s, scorecard.name] + padding_plus_1)
-        csv << (['Date', date.strftime('%d/%m/%y')] + padding_plus_1)
-        csv << (['Status', status.titleize] + padding_plus_1)
-        csv << Array.new(initiatives.count + 3, '')
-
-        csv << ([
-          '',
-          'Total initiatives',
-          'Total comments'
-        ] + initiatives.map(&:name))
-
-        results.each do |result|
-          if result[:focus_area_group] != current_focus_area_group
-            current_focus_area_group = result[:focus_area_group]
-            current_focus_area = ''
-            csv << ([result[:focus_area_group]] + padding_plus_2)
-          end
-
-          if result[:focus_area] != current_focus_area
-            current_focus_area = result[:focus_area]
-            csv << (["\t\t#{result[:focus_area]}"] + padding_plus_2)
-          end
-
-          csv << ([
-            "\t\t\t\t#{result[:characteristic]}",
-            result[:initiatives_count],
-            result[:comment_counts]
-          ] + initiatives.map.with_index { |_, index| result["initiative_#{index + 1}".to_sym] })
-        end
-      end
     end
 
     private

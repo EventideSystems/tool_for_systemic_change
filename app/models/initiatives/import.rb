@@ -20,6 +20,8 @@ module Initiatives
       data_rows.each.with_index(1) do |raw_row, row_index|
         row = sanitize_row(raw_row)
 
+        next if row.compact.empty?
+
         if name_index.nil?
           processing_errors << build_processing_errors(
             row_data: row, row_index: row_index, error_messages: ["'Name' column is missing"]

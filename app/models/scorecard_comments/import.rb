@@ -9,6 +9,8 @@ class ScorecardComments::Import < Import
 
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
+
+      next if row.compact.empty?
       # Find Scorecard
       if row_index == 1
         scorecard_name = row[1]

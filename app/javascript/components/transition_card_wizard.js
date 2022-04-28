@@ -54,8 +54,15 @@ $(document).on('turbolinks:load', function() {
 
   $('.wizard').on("leaveStep", function(e, a1, a2, a3, stepPosition) {
 
-    var scorecard_name = $('#transition_card_name').val();
-    var scorecard_desc = $('#transition_card_description').val();
+    // Ugly hack, as the ids for the "scorecard" fields are not consistent
+    // between transition card and SDGs cards forms.
+    if ($('#transition_card_name').length == 1) {
+      var scorecard_name = $('#transition_card_name').val();
+      var scorecard_desc = $('#transition_card_description').val();
+    } else {
+      var scorecard_name = $('#sustainable_development_goal_alignment_card_name').val();
+      var scorecard_desc = $('#sustainable_development_goal_alignment_card_description').val();
+    }
 
     if (scorecard_name === "") {
       scorecard_name = '<em style="color:red">Missing</em>'

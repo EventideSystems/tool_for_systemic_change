@@ -45,9 +45,9 @@
         </div>
 
         <%- print_transition_card_path = if @selected_date
-              transition_card_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
+              sustainable_development_goal_alignment_card_path(@scorecard, format: :pdf, selected_date: @selected_date, key: SecureRandom.urlsafe_base64(5))
             else
-              transition_card_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
+              sustainable_development_goal_alignment_card_path(@scorecard, format: :pdf, key: SecureRandom.urlsafe_base64(5))
             end
         %>
         <%= link_to('#', class: 'btn btn-primary', data: { toggle: "tooltip", transition_cards_target: 'compactViewBtn', action: 'click->transition-cards#toggleCompactGridView' }, title: "Compact view") do
@@ -56,16 +56,16 @@
         <%= link_to(print_transition_card_path, class: 'btn btn-primary', data: { toggle: "tooltip"}, title: "Print") do
           content_tag(:i, '', class: "fa fa-print")
         end %>
-        <%= link_to(show_shared_link_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
+        <%= link_to(show_shared_link_sustainable_development_goal_alignment_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Share") do
           content_tag(:i, '', class: "fa fa-share-alt")
         end %>
         <% if policy(:scorecard).copy_options? %>
-          <%= link_to(copy_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
+          <%= link_to(copy_options_sustainable_development_goal_alignment_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Copy") do
             content_tag(:i, '', class: "fa fa-files-o")
           end %>
         <% end %>
         <% if policy(:scorecard).merge_options? %>
-          <%= link_to(merge_options_transition_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
+          <%= link_to(merge_options_sustainable_development_goal_alignment_card_path(@scorecard), class: 'remote-link btn btn-primary', data: { toggle: "tooltip"}, title: "Merge") do
             content_tag(:i, '', class: "fa fa-file-text-o")
           end %>
         <% end %>

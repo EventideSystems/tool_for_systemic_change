@@ -8,24 +8,29 @@ class SharedController < ApplicationController
   def show
     response.headers.delete 'X-Frame-Options'
 
-    load_scorecard_and_results
+    load_scorecard_and_supporting_data
 
     if @scorecard.present?
-      @focus_areas = FocusArea.per_scorecard_type(@scorecard.type).ordered_by_group_position
-      @characteristics = Characteristic.per_scorecard_type(@scorecard.type).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
-    end
+      if params[:iframe] == 'true'
+        render 'show_iframe', layout: false
+      else
+        render layout: 'embedded'
+      end
 
-    if params[:iframe] == 'true'
-      render 'show_iframe', layout: false
     else
-      render layout: 'embedded'
+      render file: 'public/404.html', layout: 'embedded', status: :not_found
     end
   end
 
   private
 
-  def load_scorecard_and_results
+  def load_scorecard_and_supporting_data
     @scorecard = Scorecard.find_by_shared_link_id(params[:id])
-    @results = ScorecardGrid.execute(@scorecard, nil, []) if @scorecard.present?
+
+    return if @scorecard.blank?
+
+    @results = ScorecardGrid.execute(@scorecard, nil, [])
+    @focus_areas = FocusArea.per_scorecard_type(@scorecard.type).ordered_by_group_position
+    @characteristics = Characteristic.per_scorecard_type(@scorecard.type).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
   end
 end

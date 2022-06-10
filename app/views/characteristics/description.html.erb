@@ -4,10 +4,10 @@
     <span aria-hidden="true">×</span>
   </button>
 </div>
-<div class="modal-body modal-characteristic">  
-  <%= sanitize @characteristic.description %>
-  
+<div class="modal-body modal-characteristic">
+  <%= sanitized_characteristic_description(@characteristic) %>
+
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-  </div>   
+  </div>
 </div

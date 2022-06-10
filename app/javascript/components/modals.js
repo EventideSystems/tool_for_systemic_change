@@ -9,6 +9,7 @@ $(document).on('turbolinks:load', function() {
 
 $(document).on('turbolinks:load', function() {
   $('.remote-link').on('click', function(e) {
+    $("[data-toggle='tooltip']").tooltip('hide');
     var link = $(this).attr('href');
     $('#default-modal').find(".modal-content").load(link);
     $('#default-modal').modal('show');
@@ -27,7 +28,7 @@ $(document).on('turbolinks:load', function() {
   $('#ecosystem-maps-modal').on('shown.bs.modal', function () {
 
     var ecosystemMapsModal = $('#ecosystem-maps-modal');
-    
+
     var coords_x = ecosystemMapsModal.data('coords-x');
     var coords_y = ecosystemMapsModal.data('coords-y');
 
@@ -43,7 +44,7 @@ $(document).on('turbolinks:load', function() {
     var modalHeight = $(this).find('.modal-dialog').outerHeight(true);
     var modalExtent = modalTop + modalHeight;
     var maxHeight = $(window).height() + $(window).scrollTop();
-    
+
     if (modalExtent > maxHeight) {
       modalTop = (maxHeight - modalHeight - 20);
     }

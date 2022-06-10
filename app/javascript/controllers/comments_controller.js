@@ -7,6 +7,8 @@ export default class extends Controller {
   open(event) {
     event.preventDefault()
 
+    $("[data-toggle='tooltip']").tooltip('hide');
+
     let loadPath = this.element.dataset.loadPath;
 
     let formTarget = this.formTarget;

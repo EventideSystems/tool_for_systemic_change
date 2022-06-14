@@ -4,11 +4,6 @@
       safe_join([content_tag(:i, '', class: "fa fa-plus"), ' Invite User'])
     end
   %>
-  <%=
-    link_to(users_path(format: :csv), class: 'btn btn-primary' ) do
-      safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export'])
-    end
-  %>
 <% end %>
 
 <div class="box box-solid">

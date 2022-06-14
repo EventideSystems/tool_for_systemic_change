@@ -8,15 +8,7 @@ class UsersController < ApplicationController
   add_breadcrumb 'Users', :users_path
 
   def index
-    respond_to do |format|
-      format.html do |_html|
-        @users = policy_scope(User).order(sort_order).page params[:page]
-      end
-      format.csv do
-        @users = policy_scope(User).includes(accounts_users: :account).order(:name).all
-        send_data users_to_csv(@users), type: Mime[:csv], filename: 'users.csv'
-      end
-    end
+    @users = policy_scope(User).order(sort_order).page params[:page]
   end
 
   def show
@@ -119,39 +111,5 @@ class UsersController < ApplicationController
       :time_zone,
       :account_role
     )
-  end
-
-  def users_to_csv(users)
-    account_ids = policy_scope(Account).all.pluck(:id)
-
-    CSV.generate(force_quotes: true) do |csv|
-      csv << [
-        'Name',
-        'Email',
-        'Account name',
-        'Date created',
-        'Account Expiry date',
-        'Systems Role',
-        'Account Role',
-        'Last logged in date'
-      ]
-
-      users.each do |user|
-        user.accounts_users.each do |accounts_user|
-          next unless account_ids.include?(accounts_user.account_id)
-
-          csv << [
-            user.name,
-            user.email,
-            accounts_user.account.name,
-            accounts_user.account.created_at.strftime('%d/%m/%Y'),
-            accounts_user.account.expires_on&.strftime('%d/%m/%Y') || '',
-            user.system_role.titleize,
-            accounts_user.account_role.titleize,
-            user.last_sign_in_at&.strftime('%d/%m/%Y') || ''
-          ]
-        end
-      end
-    end
   end
 end

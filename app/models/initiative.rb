@@ -45,6 +45,16 @@ class Initiative < ApplicationRecord
     incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
   }
 
+  scope :transition_cards, lambda {
+    joins(:scorecard)
+      .where('scorecards.type': 'TransitionCard')
+  }
+
+  scope :sdgs_alignment_cards, lambda {
+    joins(:scorecard)
+      .where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
+  }
+
   def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil)
     checklist_items = ChecklistItem
                       .includes(

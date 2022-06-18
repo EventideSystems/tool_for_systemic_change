@@ -10,7 +10,13 @@ class InitiativesController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).page params[:page]
+        @initiatives = \
+          policy_scope(Initiative)
+          .send(scope_from_params)
+          .includes(:organisations)
+          .order(sort_order)
+          .page params[:page]
+
       end
       format.csv do
         @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).all
@@ -177,6 +183,19 @@ class InitiativesController < ApplicationController
   def set_initiative
     @initiative = Initiative.find(params[:id])
     authorize @initiative
+  end
+
+  def scope_from_params
+    if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
+      case current_account.default_scorecard_type&.name
+      when 'TransitionCard' then :transition_cards
+      when 'SustainableDevelopmentGoalAlignmentCard' then :sdgs_alignment_cards
+      else
+        raise "Unknown scorecard_type.name '#{current_account.default_scorecard_type.name}'"
+      end
+    else
+      params[:scope].to_sym
+    end
   end
 
   # SMELL: Duplication of code in reports_controller

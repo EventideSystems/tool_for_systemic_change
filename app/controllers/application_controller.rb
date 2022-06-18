@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery prepend: true
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :flash_404
 
   add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
@@ -92,6 +93,11 @@ class ApplicationController < ActionController::Base
     flash[:error] = 'Access denied.'
     # TODO: Would be nicer to have specific error messages, but for now just use "Access denied."
     # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+    redirect_to(root_path)
+  end
+
+  def flash_404(exception)
+    flash[:error] = "Resource not found in account '#{current_account.name}'"
     redirect_to(root_path)
   end
 end

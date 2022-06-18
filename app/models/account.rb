@@ -33,4 +33,10 @@ class Account < ApplicationRecord
       types << SustainableDevelopmentGoalAlignmentCard if allow_sustainable_development_goal_alignment_cards?
     end
   end
+
+  def default_scorecard_type
+    return scorecard_types.first if scorecard_types.size == 1
+
+    TransitionCard
+  end
 end

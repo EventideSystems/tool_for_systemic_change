@@ -1,5 +1,6 @@
-class ApplicationPolicy
+# frozen_string_literal: true
 
+class ApplicationPolicy
   class Scope
     attr_reader :user_context, :scope
 
@@ -25,11 +26,13 @@ class ApplicationPolicy
 
     def account_admin?(account)
       return false unless account
+
       AccountsUser.where(user: current_user, account: account).first.try(:admin?)
     end
 
     def account_member?(account)
       return false unless account
+
       AccountsUser.where(user: current_user, account: account).first.try(:member?)
     end
   end
@@ -48,7 +51,7 @@ class ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(id: record.id).exists?
   end
 
   def create?
@@ -93,11 +96,13 @@ class ApplicationPolicy
 
   def account_admin?(account)
     return false unless account
+
     AccountsUser.where(user: current_user, account: account).first.try(:admin?)
   end
 
   def account_member?(account)
     return false unless account
+
     AccountsUser.where(user: current_user, account: account).first.try(:member?)
   end
 

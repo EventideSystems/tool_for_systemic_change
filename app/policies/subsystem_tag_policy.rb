@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubsystemTagPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -8,7 +10,7 @@ class SubsystemTagPolicy < ApplicationPolicy
   def show?
     system_admin? || account_admin?(record.account) || account_member?(record.account)
   end
-  
+
   def create?
     system_admin? || account_admin?(record.account)
   end
@@ -16,7 +18,7 @@ class SubsystemTagPolicy < ApplicationPolicy
   def update?
     system_admin? || account_admin?(record.account)
   end
-  
+
   def destroy?
     system_admin? || account_admin?(record.account)
   end

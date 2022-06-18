@@ -12,18 +12,24 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def show?
-    system_admin? || account_any_role?(current_account)
+    system_admin? || (account_any_role?(current_account) && in_scope?(record))
   end
 
   def create?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (account_admin?(current_account) && in_scope?(record))
   end
 
   def update?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (account_admin?(current_account) && in_scope?(record))
   end
 
   def destroy?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (account_admin?(current_account) && in_scope?(record))
+  end
+
+  private
+
+  def in_scope?(record)
+    Pundit.policy_scope(user_context, Initiative).exists?(id: record.id)
   end
 end

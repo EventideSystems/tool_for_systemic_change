@@ -79,4 +79,10 @@ module InitiativesHelper
       scope == 'sdgs_alignment_cards' ? 'active' : ''
     end + ' nav-link'
   end
+
+  def initiative_scorecard_types
+    current_account.scorecard_types.map do |scorecard_type|
+      [scorecard_type.model_name.human.pluralize, scorecard_type.name]
+    end
+  end
 end

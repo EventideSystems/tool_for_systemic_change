@@ -5,23 +5,51 @@
       <%= form_header(@initiatives_import) %>
     </div>
     <div class='box-body'>
-      
+
       <div>
         <%= import_files_instructions_link %>
       </div>
-      
+
+      <%- if current_account.scorecard_types.count > 1 %>
+        <%= f.input :card_type, collection: initiative_scorecard_types %>
+      <%- else -%>
+        <%= f.hidden_field :card_type, value: @initiatives_import.card_type %>
+      <%- end -%>
+
       <% if @initiatives_import.import_data.present? %>
-        <%= f.input :import_file_name, readonly: true, input_html: { value: @initiatives_import.import.original_filename } %>
+        <%=
+          f.input \
+            :import_file_name,
+            readonly: true,
+            wrapper_html: {
+              class: 'row'
+            },
+            label_html: { class: 'col-sm-3 col-form-label' },
+            input_html: {
+              value: @initiatives_import.import.original_filename,
+              class: 'col-sm-9'
+            }
+          %>
         <%= f.input :import, as: :hidden, input_html: { value: @initiatives_import.import_data } %>
-      <% else %>  
-        <%= f.input :import, as: :file, required: true %>
+      <% else %>
+        <%=
+          f.input \
+            :import, as: :file,
+            required: true,
+            wrapper_html: {
+              class: 'row'
+            },
+            label_html: { class: 'col-sm-3 col-form-label' },
+            input_html: {
+              class: 'col-sm-9'
+            }
+          %>
       <% end %>
-      
     </div>
-    
-    <%= render partial: 'import/processing_errors', locals: { import: @initiatives_import, return_link: new_initiatives_import_url } %> 
+
+    <%= render partial: 'import/processing_errors', locals: { import: @initiatives_import, return_link: new_initiatives_import_url } %>
   </div>
-  
+
   <div class='box-footer'>
     <% if @initiatives_import.processing_errors.empty? %>
       <%= f.button :submit, 'Import', class: 'btn btn-primary float-right', style: 'margin-left: 15px' %>

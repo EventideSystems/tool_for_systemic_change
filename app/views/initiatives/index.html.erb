@@ -10,14 +10,14 @@
     end
   %>
   <%=
-    link_to(new_initiatives_import_path, class: 'btn btn-primary') do
+    link_to(new_initiatives_import_path(scope: params[:scope]), class: 'btn btn-primary') do
       safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import'])
     end
   %>
 <% end %>
 
 <%- if current_account.scorecard_types.size > 1 %>
-  <div id="initiatives-nav" class="nav-tabs-custom">
+  <div id="initiatives-nav" class="nav-tabs-custom" data-initiatives-target="cardTypeTab">
     <ul class="nav nav-tabs">
       <%- current_account.scorecard_types.each do |scorecard_type| %>
         <li class="nav-item">
@@ -35,3 +35,4 @@
 <%- end -%>
 
 <%= render 'table' %>
+

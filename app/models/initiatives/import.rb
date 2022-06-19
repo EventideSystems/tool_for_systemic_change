@@ -2,6 +2,9 @@
 
 module Initiatives
   class Import < Import
+
+    attr_accessor :card_type
+
     MAX_ORGANIZATION_EXPORT = 15
     MAX_SUBSYSTEM_TAG_EXPORT = 15
 
@@ -50,7 +53,7 @@ module Initiatives
           next
         end
 
-        scorecard = find_scorecard_by_name(account, row[scorecard_name_index])
+        scorecard = find_scorecard_by_name(account, card_type, row[scorecard_name_index])
 
         if scorecard.nil?
           processing_errors << build_processing_errors(
@@ -116,7 +119,9 @@ module Initiatives
 
         success = success && unknown_organisation_names.empty? && unknown_subsystem_tag_names.empty?
 
-        unless success
+        if success
+          ::SynchronizeLinkedInitiative.call(initiative) if initiative.scorecard.linked?
+        else
           error_messages = initiative.errors.full_messages || []
           unless unknown_organisation_names.empty?
             error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}."
@@ -140,8 +145,11 @@ module Initiatives
       header_row.index { |i| i&.downcase.gsub(/\s/, '_').in? candidate_column_names }
     end
 
-    def find_scorecard_by_name(account, name)
-      account.scorecards.where('lower(name) = :name', { name: name.downcase }).first
+    def find_scorecard_by_name(account, scorecard_type, name)
+      account.scorecards.where(
+        'type = :scorecard_type and lower(name) = :name',
+        { name: name.downcase, scorecard_type: scorecard_type }
+      ).first
     end
 
     def find_organisation_by_name(account, name)

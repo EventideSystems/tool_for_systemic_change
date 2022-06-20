@@ -16,7 +16,7 @@
     %>
     <%
       table.column "Linked Initiative",
-        formatter: lambda { |initiative| "View" if initiative.linked_initiative.present? },
+        data: lambda { |initiative| "View" if initiative.linked_initiative.present? },
         sortable: false,
         link_url: lambda { |initiative| initiative_path(initiative.linked_initiative) if initiative.linked_initiative.present? }
     %>

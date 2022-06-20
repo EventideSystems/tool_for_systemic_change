@@ -67,12 +67,18 @@ module Reports
     private
 
     def add_characteristic_columns_header(sheet, header_1, wrap_text)
+      col_base_name = \
+        case scorecard
+        when TransitionCard then 'Characteristics'
+        when SustainableDevelopmentGoalAlignmentCard then 'Targets'
+        end
+
       sheet.add_row do |row|
         row.add_cell(initiative_characteristics_title, style: header_1)
-        row.add_cell('Characteristics beginning of period', height: 48, style: wrap_text)
+        row.add_cell("#{col_base_name} beginning of period", height: 48, style: wrap_text)
         row.add_cell('Additions', height: 48, style: wrap_text)
         row.add_cell('Removals', height: 48, style: wrap_text)
-        row.add_cell('Characteristics end of period', height: 48, style: wrap_text)
+        row.add_cell("#{col_base_name} end of period", height: 48, style: wrap_text)
         row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
       end
     end

@@ -6,11 +6,11 @@
   border-top: 0px;
 }
 
-.table > thead > tr > th, 
-.table > tbody > tr > th, 
-.table > tfoot > tr > th, 
-.table > thead > tr > td, 
-.table > tbody > tr > td, 
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
 .table > tfoot > tr > td {
   line-height: 1.42857143;
 }
@@ -23,9 +23,9 @@
   max-width: 100px !important;
 }
 
-.table-base th:first-child {
-  width: 180px !important;
-}
+// .table-base th:first-child {
+//   width: 180px !important;
+// }
 
 .table-organisation th:first-child {
   width: auto !important;
@@ -33,7 +33,7 @@
 
 .table-base td:first-child {
   display: block;
-  width: 180px !important;
+  // width: 180px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -72,7 +72,7 @@ tfoot {
   .table-base td:first-child {
     width: 100px !important;;
   }
-  
+
   .table-base th:first-child {
     width: 100px !important;
   }

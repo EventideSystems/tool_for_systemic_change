@@ -44,6 +44,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'mandrill_mailer'
 gem 'pundit'
+gem 'pretender'
 
 # User interface related
 gem 'simple_form'

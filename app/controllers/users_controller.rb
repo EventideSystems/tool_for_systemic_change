@@ -92,6 +92,14 @@ class UsersController < ApplicationController
     super
   end
 
+  def stop_impersonating
+    stop_impersonating_user
+
+    authorize User
+    redirect_to root_path, flash: { notice: 'You are no longer impersonating another user' }
+  end
+
+
   private
 
   def set_account_role

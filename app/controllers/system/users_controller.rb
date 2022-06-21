@@ -99,6 +99,20 @@ module System
       end
     end
 
+    def impersonate
+      user = User.find(params[:id])
+      authorize user
+
+      impersonate_user(user)
+
+      redirect_to root_path, flash: { notice: user_impersonation_flash_message }
+    end
+
+    def stop_impersonating
+      stop_impersonating_user
+      redirect_to root_path, flash: { notice: 'You are no longer impersonating another user' }
+    end
+
     def content_title
       'System Users'
     end
@@ -169,6 +183,10 @@ module System
           end
         end
       end
+    end
+
+    def user_impersonation_flash_message
+      "You are now impersonating #{current_user.name}."
     end
   end
 end

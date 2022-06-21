@@ -10,7 +10,6 @@ class Initiatives::ImportsController < ApplicationController
   end
 
   def create
-    binding.pry
     @initiatives_import = current_account.initiatives_imports.build(
       initiatives_import_params.merge(user: current_user)
     )

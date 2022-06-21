@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationController < ActionController::Base
   include Pundit
 
@@ -21,10 +19,10 @@ class ApplicationController < ActionController::Base
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
-    @current_account ||= begin
+    @current_account ||= (
       account_id = session[:account_id]
       account_id.present? ? Account.where(id: account_id).first : nil
-    end
+    )
   end
 
   def current_account=(account)
@@ -34,7 +32,9 @@ class ApplicationController < ActionController::Base
   end
 
   def enable_profiler
-    Rack::MiniProfiler.authorize_request if Rails.env.development? || Rails.env.staging?
+    if Rails.env.development? || Rails.env.staging?
+      Rack::MiniProfiler.authorize_request
+    end
   end
 
   def pundit_user
@@ -52,12 +52,13 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:invite,
-                                      keys: [
-                                        :email,
-                                        :name,
-                                        :system_role,
-                                        { accounts_users_attributes: %i[account_id account_role] }
-                                      ])
+      keys:[
+        :email,
+        :name,
+        :system_role,
+        accounts_users_attributes: [:account_id, :account_role]
+      ]
+    )
   end
 
   def content_title
@@ -84,14 +85,17 @@ class ApplicationController < ActionController::Base
   private
 
   def set_session_account_id
-    self.current_account = current_user.default_account if session[:account_id].blank? && user_signed_in?
+    if session[:account_id].blank? && user_signed_in?
+      self.current_account = current_user.default_account
+    end
   end
 
   def user_not_authorized(exception)
-    policy_name = exception.policy.class.to_s.underscore
-    flash[:error] = 'Access denied.'
-    # TODO: Would be nicer to have specific error messages, but for now just use "Access denied."
-    # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-    redirect_to(root_path)
+   policy_name = exception.policy.class.to_s.underscore
+   flash[:error] = "Access denied."
+   # TODO Would be nicer to have specific error messages, but for now just use "Access denied."
+  # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
+   redirect_to(request.referrer || root_path)
   end
+
 end

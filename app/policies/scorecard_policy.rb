@@ -13,10 +13,6 @@ class ScorecardPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    system_admin? || account_any_role?(current_account)
-  end
-
   def show?
     system_admin? || account_any_role?(record.account)
   end

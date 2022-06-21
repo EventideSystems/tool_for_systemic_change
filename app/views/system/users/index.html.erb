@@ -42,6 +42,7 @@
           end
         }
     %>
+    <% table.column data: "Impersonate", :link_url => lambda { |user| impersonate_user_path(user) unless user == current_user}, link_method: :post %>
     <% table.column data: "Modify", link_action: :edit %>
     <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>

@@ -90,6 +90,8 @@ Rails.application.routes.draw do
 
   resources :sectors
   resources :users do
+    post :stop_impersonating, on: :collection
+
     member do
       get 'remove_from_account'
     end
@@ -121,6 +123,8 @@ Rails.application.routes.draw do
 
   namespace :system do
     resources :users do
+      post :impersonate, on: :member
+
       member do
         get 'undelete'
         get 'resend_invitation'

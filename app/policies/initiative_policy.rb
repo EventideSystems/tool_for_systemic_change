@@ -16,7 +16,7 @@ class InitiativePolicy < ApplicationPolicy
   end
 
   def create?
-    system_admin? || (account_admin?(current_account) && in_scope?(record))
+    system_admin? || account_admin?(current_account)
   end
 
   def update?

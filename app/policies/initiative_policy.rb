@@ -15,9 +15,8 @@ class InitiativePolicy < ApplicationPolicy
     system_admin? || (account_any_role?(current_account) && in_scope?(record))
   end
 
-  # Only account admins can create initiatives
   def create?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (account_admin?(current_account))
   end
 
   def update?

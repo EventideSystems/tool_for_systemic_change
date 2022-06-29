@@ -2,6 +2,8 @@
 
 module TargetsNetworkMapHelper
   def options_for_targets_network_map_items(items)
+    return [] if items.blank?
+
     options_for_select(
       items.map do |item|
         [item.name, item.id]

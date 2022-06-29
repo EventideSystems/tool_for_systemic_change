@@ -1,61 +1,50 @@
 
 <div class="box-body">
-  <%- if @organisations.blank? %>
-    <div class="row pt-5 pb-5">
-      <div class="col-md-4 offset-md-2">
-       <div class="alert alert-warning">
-          <p>Cannot render map.<p>
-          <p>No organisations found in any of this card's initiatives.</p>
-        </div>
-      </div>
+  <nav class="navbar-maps navbar nav-pills navbar-expand-md justify-content-md-left justify-content-start">
+    <div class="navbar-collapse collapse justify-content-left align-items-left w-100" id="collapsingNavbar2">
+      <ul class="navbar-nav nav-tabs mr-auto text-md-center text-left">
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLabels" data-scorecards-target="targetsNetworkMapLabelsBtn">
+            Labels
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLegend" data-scorecards-target="targetsNetworkMapLegendBtn">
+            Legend
+          </a>
+        </li>
+      </ul>
+      <ul id="ecosystem-maps-nav" class="nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+        <li class="nav-item">
+          <select multiple="multiple" class="form-control" name='organisations-filter[]' id="organisations-filter" style="min-width: 300px; width: auto"  data-scorecards-target="organisationsFilter">
+            <%= options_for_targets_network_map_items(@organisations) %>
+          </select>
+        </li>
+        <li class="nav-item ml-1">
+          <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearOrganisationsFilter" data-original-title="Clear organisations"><i class="fa fa-undo" aria-hidden="true"></i></a>
+        </li>
+        <li class="nav-item ml-1">
+          <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
+            <%=  options_for_targets_network_map_items(@initiatives) %>
+          </select>
+        </li>
+        <li class="nav-item ml-1">
+          <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearInitiativesFilter" data-original-title="Clear initiatives"><i class="fa fa-undo" aria-hidden="true"></i></a>
+        </li>
+      </ul>
     </div>
-  <%- else -%>
-    <nav class="navbar-maps navbar nav-pills navbar-expand-md justify-content-md-left justify-content-start">
-      <div class="navbar-collapse collapse justify-content-left align-items-left w-100" id="collapsingNavbar2">
-        <ul class="navbar-nav nav-tabs mr-auto text-md-center text-left">
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLabels" data-scorecards-target="targetsNetworkMapLabelsBtn">
-              Labels
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-action="click->scorecards#toggleNetworkMapLegend" data-scorecards-target="targetsNetworkMapLegendBtn">
-              Legend
-            </a>
-          </li>
-        </ul>
-        <ul id="ecosystem-maps-nav" class="nav nav-tabs navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
-          <li class="nav-item">
-            <select multiple="multiple" class="form-control" name='organisations-filter[]' id="organisations-filter" style="min-width: 300px; width: auto"  data-scorecards-target="organisationsFilter">
-              <%= options_for_targets_network_map_items(@organisations) %>
-            </select>
-          </li>
-          <li class="nav-item ml-1">
-            <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearOrganisationsFilter" data-original-title="Clear organisations"><i class="fa fa-undo" aria-hidden="true"></i></a>
-          </li>
-          <li class="nav-item ml-1">
-            <select multiple="multiple" class="form-control" name='initiatives-filter[]' id="initiatives-filter" style="min-width: 300px; width: auto"  data-scorecards-target="initiativesFilter">
-              <%=  options_for_targets_network_map_items(@initiatives) %>
-            </select>
-          </li>
-          <li class="nav-item ml-1">
-            <a class="btn btn-primary" data-toggle="tooltip" title="" href="#" data-action="click->scorecards#clearInitiativesFilter" data-original-title="Clear initiatives"><i class="fa fa-undo" aria-hidden="true"></i></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+  </nav>
 
-    <div style="height: 80vh" class="tab-content" id="target-network-map-container">
+  <div style="height: 80vh" class="tab-content" id="target-network-map-container">
 
+  </div>
+
+  <div style="display:none" class="legend pt-3" data-scorecards-target="targetsNetworkMapLegendPanel">
+    <%- FocusArea.per_scorecard_type('SustainableDevelopmentGoalAlignmentCard').order(:name).each do |focus_area| -%>
+      <p>
+        <span class="dot" style="background-color: <%= focus_area.actual_color.presence || '#000' %>"></span>
+        <span class="dot-label"><%= focus_area.name %></span>
+      </p>
+    <%- end %>
     </div>
-
-    <div style="display:none" class="legend pt-3" data-scorecards-target="targetsNetworkMapLegendPanel">
-      <%- FocusArea.per_scorecard_type('SustainableDevelopmentGoalAlignmentCard').order(:name).each do |focus_area| -%>
-        <p>
-          <span class="dot" style="background-color: <%= focus_area.actual_color.presence || '#000' %>"></span>
-          <span class="dot-label"><%= focus_area.name %></span>
-        </p>
-      <%- end %>
-    </div>
-  <%- end -%>
 </div>

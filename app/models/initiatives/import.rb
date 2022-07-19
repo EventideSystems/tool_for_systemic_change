@@ -2,11 +2,7 @@
 
 module Initiatives
   class Import < Import
-
     attr_accessor :card_type
-
-    MAX_ORGANIZATION_EXPORT = 15
-    MAX_SUBSYSTEM_TAG_EXPORT = 15
 
     def process(account)
       name_index             = column_index(:name)
@@ -66,8 +62,11 @@ module Initiatives
 
         unknown_organisation_names = []
 
-        1.upto(MAX_ORGANIZATION_EXPORT).each do |org_index|
+        1.upto(max_organisation_index).each do |org_index|
           organisation_name_index = header_row.index { |i| i&.downcase == "organisation #{org_index} name" }
+
+          next if organisation_name_index.nil?
+
           organisation_name = row[organisation_name_index]
 
           next if organisation_name.blank?
@@ -83,8 +82,11 @@ module Initiatives
 
         unknown_subsystem_tag_names = []
 
-        1.upto(MAX_SUBSYSTEM_TAG_EXPORT).each do |subsystem_tag_index|
+        1.upto(max_subsystem_tag_index).each do |subsystem_tag_index|
           subsystem_tag_name_index = header_row.index { |i| i&.downcase == "subsystem tag #{subsystem_tag_index} name" }
+
+          next if subsystem_tag_name_index.nil?
+
           subsystem_tag_name = subsystem_tag_name_index.present? ? row[subsystem_tag_name_index] : nil
 
           next if subsystem_tag_name.blank?
@@ -143,6 +145,22 @@ module Initiatives
     def column_index_for_scorecard_name
       candidate_column_names = %w[scorecard_name transition_card_name sdg_card_name]
       header_row.index { |i| i&.downcase.gsub(/\s/, '_').in? candidate_column_names }
+    end
+
+    def max_organisation_index
+      @max_organisation_index ||= \
+        header_row
+        .filter_map { |row| row.match(/Organisation (\d*) Name/i)&.captures&.first }
+        .map(&:to_i)
+        .max
+    end
+
+    def max_subsystem_tag_index
+      @max_subsystem_tag_index ||= \
+        header_row
+        .filter_map { |row| row.match(/Subsystem Tag (\d*) Name/i)&.captures&.first }
+        .map(&:to_i)
+        .max
     end
 
     def find_scorecard_by_name(account, scorecard_type, name)

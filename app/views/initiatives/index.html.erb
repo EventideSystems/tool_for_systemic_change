@@ -5,7 +5,14 @@
     end
   %>
   <%=
-    link_to(initiatives_path(format: :csv), class: 'btn btn-primary') do
+    link_to(
+      initiatives_path(scope: params[:scope], format: :csv),
+      class: 'btn btn-primary',
+      data: {
+        toggle: 'tooltip',
+        title: initiative_export_button_tooltip_title(params)
+      }
+    ) do
       safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export'])
     end
   %>

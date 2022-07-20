@@ -22,6 +22,18 @@ class SharedController < ApplicationController
     end
   end
 
+  # SMELL: Duplicate of code in scorecards_controller.rb
+  def targets_network_map
+    @scorecard = Scorecard.find_by_shared_link_id(params[:id])
+
+    respond_to do |format|
+      format.json do
+        data = EcosystemMaps::TargetsNetwork.new(@scorecard)
+        render json: { data: { nodes: data.nodes, links: data.links } }
+      end
+    end
+  end
+
   private
 
   def load_scorecard_and_supporting_data

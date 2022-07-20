@@ -320,6 +320,9 @@ class ScorecardsController < ApplicationController
   def scorecard_params
     params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
 
+    params[scorecard_key_param].delete(:share_ecosystem_map) unless policy(@scorecard).share_ecosystem_maps?
+    params[scorecard_key_param].delete(:share_thematic_network_map) unless policy(@scorecard).share_thematic_network_maps?
+
     params.require(scorecard_key_param).permit(
       :name,
       :description,
@@ -327,6 +330,8 @@ class ScorecardsController < ApplicationController
       :community_id,
       :notes,
       :linked_scorecard_id,
+      :share_ecosystem_map,
+      :share_thematic_network_map,
       initiatives_attributes: [
         :_destroy,
         :name,

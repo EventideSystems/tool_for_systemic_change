@@ -6,6 +6,25 @@
       <%= f.input :description %>
       <%= f.association :wicked_problem, collection: policy_scope(WickedProblem), required: true %>
       <%= f.association :community, collection: policy_scope(Community), required: true %>
+
+      <%- if policy(@scorecard).share_ecosystem_maps? %>
+        <div class="form-group row share_ecosystem_map form-group-valid">
+          <label class="col-sm-3 col-form-label" for="share_ecosystem_map">Share Ecosystem Map?</label>
+          <div class="col-sm-9 mt-1">
+            <%= f.input :share_ecosystem_map, label: false %>
+          </div>
+        </div>
+      <%- end %>
+
+      <%- if policy(@scorecard).share_thematic_network_maps? && @scorecard.is_a?(SustainableDevelopmentGoalAlignmentCard) %>
+        <div class="form-group row share_thematic_network_map form-group-valid">
+          <label class="col-sm-3 col-form-label" for="share_thematic_network_map">Share Thematic Network Map?</label>
+          <div class="col-sm-9 mt-1">
+            <%= f.input :share_thematic_network_map, label: false %>
+          </div>
+        </div>
+      <%- end %>
+
       <%- if policy(@scorecard).link_scorecards? %>
 
         <div class="form-group row string optional sustainable_development_goal_alignment_card_linked_scorecard form-group-valid">

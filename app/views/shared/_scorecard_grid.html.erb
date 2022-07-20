@@ -1,0 +1,37 @@
+<div class="container scorecard-matrix scorecard-matrix-shared" data-controller='transition-cards'>
+  <div class="row tab-content-header p-3"">
+    <div class="col">
+      <% unless @scorecard.present? %>
+        <div class="float-left">
+          <h3 data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used">
+            <%= Scorecard.model_name.human %> Missing
+          </h3>
+        </div>
+      <% else %>
+        <div class="float-left">
+          <h3 data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= @scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
+        </div>
+        <div class="float-left" style="padding-right: 5px; padding-left: 5px;">
+          <select <%= "disabled='disabled'" if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard' %> multiple="multiple" class="form-control" name='status-filter[]' id="status-filter" style="min-width: 400px; width: auto"  data-transition-cards-target="filter">
+            <%- ['Actual', 'Planned', 'No Comment', 'Gap in Effort'].each do |option| %>
+              <option value="<%= option %>" <%= 'selected' if option == 'Actual' %>><%= option %></option>
+            <%- end %>
+          </select>
+
+          <%- if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard' %>
+            <%= link_to('#', class: 'btn btn-primary', data: { toggle: "tooltip", transition_cards_target: 'compactViewBtn', action: 'click->transition-cards#toggleCompactGridView' }, title: "Compact view") do
+              content_tag(:i, '', class: "fas fa-compress-alt")
+            end %>
+          <%- end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <%- if @scorecard.type == 'TransitionCard' %>
+      <%= render partial: 'transition_cards/show_tabs/grid', locals: { disable_links: true } %>
+    <% else %>
+      <%= render partial: 'sustainable_development_goal_alignment_cards/show_tabs/grid', locals: { disable_links: true } %>
+    <%- end -%>
+  </div>
+</div>

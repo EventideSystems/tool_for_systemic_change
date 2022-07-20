@@ -119,7 +119,11 @@ class InitiativesController < ApplicationController
   private
 
   def export_filename
-    "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+    if current_account.scorecard_types.count > 1
+      "initiatives_for_#{scope_from_params}_#{Date.today.strftime('%Y_%m_%d')}"
+    else
+      "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+    end
   end
 
   def initiatives_to_csv(initiatives)

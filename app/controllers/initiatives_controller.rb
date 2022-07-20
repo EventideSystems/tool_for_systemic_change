@@ -16,10 +16,9 @@ class InitiativesController < ApplicationController
           .includes(:organisations)
           .order(sort_order)
           .page params[:page]
-
       end
       format.csv do
-        @initiatives = policy_scope(Initiative).includes(:organisations).order(sort_order).all
+        @initiatives = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order).all
         send_data initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv"
       end
     end
@@ -120,10 +119,17 @@ class InitiativesController < ApplicationController
   private
 
   def export_filename
-    "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+    if current_account.scorecard_types.count > 1
+      "initiatives_for_#{scope_from_params}_#{Date.today.strftime('%Y_%m_%d')}"
+    else
+      "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+    end
   end
 
   def initiatives_to_csv(initiatives)
+    max_organisation_index = initiatives.map(&:organisations).map(&:count).max
+    max_subsystem_tag_index = initiatives.map(&:subsystem_tags).map(&:count).max
+
     CSV.generate(force_quotes: true) do |csv|
       csv << ([
         'Name',
@@ -136,22 +142,22 @@ class InitiativesController < ApplicationController
         'Contact Phone',
         'Contact Website',
         'Contact Position'
-      ] + 1.upto(Initiatives::Import::MAX_ORGANIZATION_EXPORT).map do |index|
+      ] + 1.upto(max_organisation_index).map do |index|
         "Organisation #{index} Name"
-      end + 1.upto(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT).map do |index|
+      end + 1.upto(max_subsystem_tag_index).map do |index|
         "Subsystem Tag #{index} Name"
       end)
 
       initiatives.each do |initiative|
-        organisations = initiative.organisations.limit(Initiatives::Import::MAX_ORGANIZATION_EXPORT)
-        organisation_memo = Array.new(Initiatives::Import::MAX_ORGANIZATION_EXPORT, '')
+        organisations = initiative.organisations.limit(max_organisation_index)
+        organisation_memo = Array.new(max_organisation_index, '')
 
         organisation_names = organisations.each_with_index.each_with_object(organisation_memo) do |(org, index), memo|
           memo[index] = org.try(:name)
         end
 
-        subsystem_tags = initiative.subsystem_tags.limit(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT)
-        subsystem_tag_memo = Array.new(Initiatives::Import::MAX_SUBSYSTEM_TAG_EXPORT, '')
+        subsystem_tags = initiative.subsystem_tags.limit(max_subsystem_tag_index)
+        subsystem_tag_memo = Array.new(max_subsystem_tag_index, '')
 
         subsystem_tag_names = subsystem_tags.each_with_index.each_with_object(subsystem_tag_memo) do |(subsystem_tag, index), memo|
           memo[index] = subsystem_tag.try(:name)

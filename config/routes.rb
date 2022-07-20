@@ -86,7 +86,11 @@ Rails.application.routes.draw do
 
   resources :shared, constraints: {
     id: /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
-  }, only: [:show]
+  }, only: [:show] do
+    member do
+      get 'targets_network_map'
+    end
+  end
 
   resources :sectors
   resources :users do

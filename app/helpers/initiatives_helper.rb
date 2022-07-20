@@ -85,4 +85,26 @@ module InitiativesHelper
       [scorecard_type.model_name.human.pluralize, scorecard_type.name]
     end
   end
+
+  def initiative_export_button_tooltip_title(params)
+    if current_account.scorecard_types.count > 1
+      "Export #{initiative_tab_title(scorecard_type_from_params(params))} to CSV"
+    else
+      'Export Initiatives to CSV'
+    end
+  end
+
+  private
+
+  # SMELL: Duplicate of code in initiatives_controller.rb
+  def scorecard_type_from_params(params)
+    if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
+      current_account.default_scorecard_type
+    else
+      case params[:scope].to_sym
+      when :sdgs_alignment_cards then SustainableDevelopmentGoalAlignmentCard
+      when :transition_cards then TransitionCard
+      end
+    end
+  end
 end

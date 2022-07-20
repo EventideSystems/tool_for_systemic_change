@@ -91,6 +91,14 @@ class ScorecardPolicy < ApplicationPolicy
     record.account.allow_transition_cards? && record.account.allow_sustainable_development_goal_alignment_cards?
   end
 
+  def share_ecosystem_maps?
+    system_admin? || (current_account&.solution_ecosystem_maps? && current_account_admin?)
+  end
+
+  def share_thematic_network_maps?
+    system_admin? || (current_account&.allow_sustainable_development_goal_alignment_cards? && current_account_admin?)
+  end
+
   def linked_initiatives?
     show?
   end

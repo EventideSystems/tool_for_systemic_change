@@ -22,6 +22,24 @@ class SharedController < ApplicationController
     end
   end
 
+  def characteristic
+    @scorecard = Scorecard.find_by_shared_link_id(params[:shared_id])
+
+    @characteristic = Characteristic.find(params[:id])
+
+    checklist_items = \
+      ChecklistItem
+      .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
+      .includes(:checklist_item_comments)
+      .select { |item| item.current_comment_status == 'actual' }
+
+    @initiatives = checklist_items.map(&:initiative).sort_by(&:name)
+
+    @targets = TargetsNetworkMapping.where(characteristic: @characteristic).map(&:focus_area).uniq.sort_by(&:name)
+
+    render 'sustainable_development_goal_alignment_cards/show_tabs/characteristics/show', layout: false
+  end
+
   # SMELL: Duplicate of code in scorecards_controller.rb
   def targets_network_map
     @scorecard = Scorecard.find_by_shared_link_id(params[:id])

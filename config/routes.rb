@@ -90,6 +90,10 @@ Rails.application.routes.draw do
     member do
       get 'targets_network_map'
     end
+
+    resources :characteristics, only: [:show],
+      controller: 'shared',
+      action: 'characteristic'
   end
 
   resources :sectors

@@ -195,10 +195,10 @@ class ScorecardsController < ApplicationController
   def merge_options
     @other_scorecards = \
       current_account
-        .scorecards
-        .where(type: @scorecard.type)
-        .where.not(id: @scorecard.id)
-        .order('lower(name)')
+      .scorecards
+      .where(type: @scorecard.type)
+      .where.not(id: @scorecard.id)
+      .order('lower(name)')
 
     render layout: false
   end
@@ -210,9 +210,9 @@ class ScorecardsController < ApplicationController
       if @scorecard.present?
         format.html do
           card_path = case @scorecard.type
-          when 'TransitionCard' then transition_card_path(@merged_scorecard)
-          when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
-          end
+                      when 'TransitionCard' then transition_card_path(@merged_scorecard)
+                      when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
+                      end
 
           redirect_to card_path, notice: "#{@scorecard.model_name.human} were successfully merged."
         end
@@ -320,8 +320,10 @@ class ScorecardsController < ApplicationController
   def scorecard_params
     params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
 
-    params[scorecard_key_param].delete(:share_ecosystem_map) unless policy(@scorecard).share_ecosystem_maps?
-    params[scorecard_key_param].delete(:share_thematic_network_map) unless policy(@scorecard).share_thematic_network_maps?
+    params[scorecard_key_param].delete(:share_ecosystem_map) unless policy(Scorecard).share_ecosystem_maps?
+    unless policy(Scorecard).share_thematic_network_maps?
+      params[scorecard_key_param].delete(:share_thematic_network_map)
+    end
 
     params.require(scorecard_key_param).permit(
       :name,

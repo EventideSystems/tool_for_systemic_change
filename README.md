@@ -39,7 +39,7 @@
 | --------------- | --------------- |
 | Application Server | Ruby on Rails application, providing data entry and reporting features. Authorization and access to data is managed in this component |
 | Background Process Worker | Manages long-running workloads. NB This is a proposed component and is not currently in use |
-| Relational Database | Postgres-base relational database |
+| Relational Database | Postgresql-based relational database system |
 | Betweenness/Centrality Service | Python script used to calculate betweenness/centrality metrics between nodes in the Ecosystem Map graphs |
 | System Monitoring Service | Collects application and database performance data, reports on application errors |
 

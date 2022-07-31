@@ -52,7 +52,7 @@ There are two environments that are used to run the system: `staging` and `produ
 
 ### System Environment Configuration
 
-System configuration items are stored within environment variables in the System Configuration section of each of the respective system environments. The following environment variables are used:
+System configuration items are stored on the Heroku platform within environment variables in the System Configuration section of each of the respective `production` or `staging` system environments. The following environment variables are used:
 
 | Variable | Description |
 | --------------- | --------------- |

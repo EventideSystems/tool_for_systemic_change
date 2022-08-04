@@ -48,7 +48,6 @@ gem 'pretender'
 
 # User interface related
 gem 'simple_form'
-gem 'cocoon'
 gem 'table-for'
 gem 'kaminari'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
@@ -80,6 +79,8 @@ gem 'aws-sdk-rails'
 
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor'
+
+gem 'net-http'
 
 # Profiling related
 gem 'rack-mini-profiler'
@@ -114,7 +115,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
+  gem 'web-console'
   gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

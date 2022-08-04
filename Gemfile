@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 6.1.4.8'
+gem 'rails', '~> 7.0.2'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -74,8 +74,6 @@ gem 'scout_apm'
 
 gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
-gem 'delayed_job_active_record'
-gem 'daemons'
 gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
@@ -89,7 +87,6 @@ gem 'memory_profiler'
 gem 'stackprof'
 
 group :test do
-  gem 'cucumber-rails', :require => false
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
   gem 'rails-controller-testing'

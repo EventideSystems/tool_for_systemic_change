@@ -20,14 +20,6 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
-// Initiatives
-
-$(document).on('turbolinks:load', function() {
-  $('#initiatives').on('cocoon:after-insert', function() {
-    $(".tab-content").css("height", "auto");
-  });
-});
-
 // Preview
 
 $(document).on('turbolinks:load', function() {

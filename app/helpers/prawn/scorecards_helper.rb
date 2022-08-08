@@ -203,8 +203,13 @@ module Prawn
       end
     end
 
+    # def pdf_safe(text)
+    #   ActionView::Base.full_sanitizer.sanitize(text.force_encoding('UTF-8'), tags: []).gsub(/&amp;/, '&')
+    # end
+
     def pdf_safe(text)
-      ActionView::Base.full_sanitizer.sanitize(text.force_encoding('UTF-8'), tags: []).gsub(/&amp;/, '&')
+      fallback = { "\u014C" => "O" }
+      ActionView::Base.full_sanitizer.sanitize(text.encode('Windows-1252', fallback: fallback)).gsub(/&amp;/, '&')
     end
   end
 end

@@ -197,7 +197,7 @@ module Prawn
 
     def formatted_description(description)
       if description.present?
-        { text: description }
+        { text: pdf_safe(description) }
       else
         { text: 'No description', styles: [:italic] }
       end

@@ -5,13 +5,15 @@ class ScorecardsController < ApplicationController
                 only: %i[
                   show edit update destroy
                   show_shared_link copy copy_options merge merge_options
-                  ecosystem_maps_organisations
                   activities
                 ]
 
   before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]
   before_action :redirect_to_correct_controller, only: %i[show]
+
+  skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
+  skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
 
   def show
     @selected_date = params[:selected_date]
@@ -225,6 +227,13 @@ class ScorecardsController < ApplicationController
   end
 
   def ecosystem_maps_organisations
+    if params[:id].to_i.to_s == params[:id]
+      @scorecard = current_account.scorecards.find(params[:id])
+      authorize @scorecard
+    else
+      @scorecard = Scorecard.find_by(shared_link_id: params[:id])
+    end
+
     data = EcosystemMaps::Organisations.new(@scorecard)
 
     render json: { data: { nodes: data.nodes, links: data.links } }
@@ -350,9 +359,9 @@ class ScorecardsController < ApplicationController
         :notes,
         :type,
         { initiatives_organisations_attributes: %i[
-          _destroy
-          organisation_id
-        ],
+            _destroy
+            organisation_id
+          ],
           initiatives_subsystem_tags_attributes: %i[
             _destroy
             subsystem_tag_id

@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 6.1.4.8'
+gem 'rails', '~> 7.0.2'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
@@ -48,7 +48,6 @@ gem 'pretender'
 
 # User interface related
 gem 'simple_form'
-gem 'cocoon'
 gem 'table-for'
 gem 'kaminari'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
@@ -61,7 +60,7 @@ gem 'nested_form_fields'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'caxlsx'
-gem 'roo', '~> 2.7.0'
+gem 'roo', '~> 2.9.0'
 gem 'prawn'
 gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
@@ -74,8 +73,6 @@ gem 'scout_apm'
 
 gem 'paranoia', '~> 2.2'
 gem 'paper_trail'
-gem 'delayed_job_active_record'
-gem 'daemons'
 gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
@@ -83,13 +80,14 @@ gem 'aws-sdk-rails'
 gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor'
 
+gem 'net-http'
+
 # Profiling related
 gem 'rack-mini-profiler'
 gem 'memory_profiler'
 gem 'stackprof'
 
 group :test do
-  gem 'cucumber-rails', :require => false
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
   gem 'rails-controller-testing'
@@ -117,7 +115,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
+  gem 'web-console'
   gem 'listen'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'

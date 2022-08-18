@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_20_074445) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -23,9 +22,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.integer "sector_id"
     t.text "welcome_message"
     t.boolean "deactivated"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.date "expires_on"
     t.integer "max_users", default: 1
     t.integer "max_scorecards", default: 1
@@ -38,8 +37,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.integer "user_id"
     t.integer "account_id"
     t.integer "account_role", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id", "user_id"], name: "index_accounts_users_on_account_id_and_user_id", unique: true
     t.index ["account_id"], name: "index_accounts_users_on_account_id"
     t.index ["user_id"], name: "index_accounts_users_on_user_id"
@@ -50,8 +49,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.text "body"
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
@@ -60,7 +59,7 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -72,8 +71,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.text "metadata"
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -92,8 +91,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.text "parameters"
     t.string "recipient_type"
     t.integer "recipient_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "account_id"
     t.index ["account_id"], name: "index_activities_on_account_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
@@ -109,9 +108,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "description"
     t.integer "focus_area_id"
     t.integer "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_characteristics_on_deleted_at"
     t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id"
     t.index ["position"], name: "index_characteristics_on_position"
@@ -120,9 +119,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "checklist_item_comments", force: :cascade do |t|
     t.bigint "checklist_item_id"
     t.string "comment"
-    t.datetime "deleted_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "status", default: "actual"
     t.index ["checklist_item_id"], name: "index_checklist_item_comments_on_checklist_item_id"
   end
@@ -132,9 +131,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.text "comment"
     t.integer "characteristic_id"
     t.integer "initiative_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["characteristic_id"], name: "index_checklist_items_on_characteristic_id"
     t.index ["deleted_at"], name: "index_checklist_items_on_deleted_at"
     t.index ["initiative_id"], name: "index_checklist_items_on_initiative_id"
@@ -144,9 +143,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "name"
     t.string "description"
     t.integer "account_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_communities_on_account_id"
     t.index ["deleted_at"], name: "index_communities_on_deleted_at"
   end
@@ -154,28 +153,13 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
-  create_table "delayed_jobs", id: :serial, force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
-    t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
-    t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string "locked_by"
-    t.string "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
-  end
-
   create_table "focus_area_groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "scorecard_type", default: "TransitionCard"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["position"], name: "index_focus_area_groups_on_position"
@@ -187,9 +171,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "description"
     t.integer "focus_area_group_id"
     t.integer "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "icon_name", default: ""
     t.string "actual_color"
     t.string "planned_color"
@@ -203,8 +187,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.integer "user_id"
     t.text "import_data"
     t.integer "status", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "type"
     t.index ["account_id"], name: "index_imports_on_account_id"
     t.index ["user_id"], name: "index_imports_on_user_id"
@@ -222,9 +206,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "contact_phone"
     t.string "contact_website"
     t.string "contact_position"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "old_notes"
     t.boolean "linked", default: false
     t.index ["deleted_at"], name: "index_initiatives_on_deleted_at"
@@ -237,9 +221,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "initiatives_organisations", id: :serial, force: :cascade do |t|
     t.integer "initiative_id", null: false
     t.integer "organisation_id", null: false
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_initiatives_organisations_on_deleted_at"
     t.index ["initiative_id", "organisation_id"], name: "index_initiatives_organisations_on_initiative_organisation_id", unique: true
   end
@@ -247,9 +231,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "initiatives_subsystem_tags", id: :serial, force: :cascade do |t|
     t.integer "initiative_id", null: false
     t.integer "subsystem_tag_id", null: false
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_initiatives_subsystem_tags_on_deleted_at"
     t.index ["initiative_id", "subsystem_tag_id"], name: "idx_initiatives_subsystem_tags_initiative_and_subsystem_tag_id", unique: true
   end
@@ -260,9 +244,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.integer "account_id"
     t.integer "sector_id"
     t.string "weblink"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_organisations_on_account_id"
     t.index ["deleted_at"], name: "index_organisations_on_deleted_at"
   end
@@ -274,9 +258,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.integer "account_id"
     t.integer "wicked_problem_id"
     t.string "shared_link_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "type", default: "TransitionCard"
     t.integer "linked_scorecard_id"
     t.boolean "share_ecosystem_map", default: true
@@ -289,9 +273,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "sectors", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "color"
   end
 
@@ -299,9 +283,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "name"
     t.string "description"
     t.integer "account_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_subsystem_tags_on_account_id"
     t.index ["deleted_at"], name: "index_subsystem_tags_on_deleted_at"
   end
@@ -309,8 +293,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
   create_table "targets_network_mappings", force: :cascade do |t|
     t.bigint "focus_area_id"
     t.bigint "characteristic_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["characteristic_id"], name: "index_targets_network_mappings_on_characteristic_id"
     t.index ["focus_area_id"], name: "index_targets_network_mappings_on_focus_area_id"
   end
@@ -320,26 +304,26 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
+    t.datetime "invitation_created_at", precision: nil
+    t.datetime "invitation_sent_at", precision: nil
+    t.datetime "invitation_accepted_at", precision: nil
     t.integer "invitation_limit"
     t.string "invited_by_type"
     t.integer "invited_by_id"
     t.integer "invitations_count", default: 0
-    t.datetime "deleted_at"
+    t.datetime "deleted_at", precision: nil
     t.string "profile_picture"
     t.integer "system_role", default: 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "time_zone", default: "Adelaide"
     t.index ["email"], name: "index_users_on_email", unique: true, where: "(deleted_at IS NULL)"
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -357,7 +341,7 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "old_object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.integer "account_id"
     t.jsonb "object"
     t.index ["account_id"], name: "index_versions_on_account_id"
@@ -372,9 +356,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.text "description"
     t.boolean "promote_to_dashboard"
     t.integer "position"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_video_tutorials_on_deleted_at"
     t.index ["linked_type", "linked_id"], name: "index_video_tutorials_on_linked_type_and_linked_id"
   end
@@ -383,9 +367,9 @@ ActiveRecord::Schema.define(version: 2022_07_20_074445) do
     t.string "name"
     t.string "description"
     t.integer "account_id"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_wicked_problems_on_account_id"
     t.index ["deleted_at"], name: "index_wicked_problems_on_deleted_at"
   end

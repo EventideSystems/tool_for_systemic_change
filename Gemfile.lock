@@ -285,7 +285,7 @@ GEM
     parallel (1.22.1)
     paranoia (2.6.0)
       activerecord (>= 5.1, < 7.1)
-    parser (3.1.2.0)
+    parser (3.1.2.1)
       ast (~> 2.4.1)
     path_expander (1.1.1)
     pdf-core (0.9.0)
@@ -436,7 +436,7 @@ GEM
     scenic (1.6.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    scout_apm (5.2.0)
+    scout_apm (5.3.1)
       parser
     semantic_range (3.0.0)
     sexp_processor (4.16.1)

@@ -20,12 +20,12 @@
     </div>
     <% if @scorecard.share_ecosystem_map? %>
       <div class="tab-pane" id="ecosystem_maps">
-        <%= render 'scorecards/show_tabs/ecosystem_maps'%>
+        <%= render 'scorecards/show_tabs/ecosystem_maps', scorecard_id: @scorecard.shared_link_id %>
       </div>
     <% end %>
     <% if @scorecard.share_thematic_network_map? && @scorecard.is_a?(SustainableDevelopmentGoalAlignmentCard) %>
       <div style="height: 110%" class="tab-pane" id="targets-network-map"  data-scorecards-target="targetsNetworkMap">
-        <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map'%>
+        <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map', scorecard_id: @scorecard.shared_link_id%>
       </div>
     <% end %>
   </div>

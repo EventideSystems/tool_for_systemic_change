@@ -1,51 +1,61 @@
-class EcosystemMaps::OrganisationsController < ApplicationController
-  before_action :set_scorecard
-  after_action :verify_authorized, except: :show
+# frozen_string_literal: true
 
-  layout :false
+module EcosystemMaps
+  class OrganisationsController < ApplicationController
+    before_action :set_scorecard
+    after_action :verify_authorized, except: :show
+    skip_before_action :authenticate_user!, only: %i[show]
 
-  def show
-    @organisation = @scorecard.organisations.find(params[:id])
+    layout false
 
-    initiatives = @scorecard
-      .initiatives_organisations
-      .where(organisation: @organisation)
-      .map(&:initiative)
-      .uniq
+    def show
+      @organisation = @scorecard.organisations.find(params[:id])
 
-    @partnering_organisations = InitiativesOrganisation
-      .where(initiative: initiatives)
-      .where.not(organisation: @organisation)
-      .joins(:organisation)
-      .map(&:organisation)
-      .uniq
-    
-    @partnering_initiatives = InitiativesOrganisation
-      .where(initiative: initiatives)
-      .where(organisation: @partnering_organisations)
-      .joins(:initiative)
-      .map(&:initiative)
-      .uniq
+      initiatives = @scorecard
+                    .initiatives_organisations
+                    .where(organisation: @organisation)
+                    .map(&:initiative)
+                    .uniq
 
-    if @partnering_initiatives.present?
-      @initiatives = []
-    else
-      @initiatives = initiatives
+      @partnering_organisations = InitiativesOrganisation
+                                  .where(initiative: initiatives)
+                                  .where.not(organisation: @organisation)
+                                  .joins(:organisation)
+                                  .map(&:organisation)
+                                  .uniq
+
+      @partnering_initiatives = InitiativesOrganisation
+                                .where(initiative: initiatives)
+                                .where(organisation: @partnering_organisations)
+                                .joins(:initiative)
+                                .map(&:initiative)
+                                .uniq
+
+      @initiatives = if @partnering_initiatives.present?
+                       []
+                     else
+                       initiatives
+                     end
+
+      @connections = @partnering_organisations.count
+
+      @weighted_connections = InitiativesOrganisation
+                              .where(initiative: initiatives)
+                              .where(organisation: @partnering_organisations)
+                              .count
+
+      @betweenness = params[:betweenness].to_d.round(10)
     end
 
-    @connections = @partnering_organisations.count
+    private
 
-    @weighted_connections = InitiativesOrganisation
-      .where(initiative: initiatives)
-      .where(organisation: @partnering_organisations)
-      .count
-
-    @betweenness = params[:betweenness].to_d.round(10)
-  end
-
-  private
-
-  def set_scorecard
-    @scorecard = Scorecard.find(params[:ecosystem_map_id])
+    def set_scorecard
+      if params[:ecosystem_map_id].to_i.to_s == params[:ecosystem_map_id]
+        @scorecard = current_account.scorecards.find(params[:ecosystem_map_id])
+        authorize @scorecard
+      else
+        @scorecard = Scorecard.find_by(shared_link_id: params[:ecosystem_map_id])
+      end
+    end
   end
 end

@@ -35,12 +35,12 @@
     </div>
     <% if policy(@scorecard).ecosystem_maps? %>
       <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="ecosystem_maps">
-        <%= render 'scorecards/show_tabs/ecosystem_maps'%>
+        <%= render 'scorecards/show_tabs/ecosystem_maps', scorecard_id: @scorecard.id %>
       </div>
     <% end %>
     <% if policy(@scorecard).targets_network_maps? %>
       <div style="height: 110%" class="tab-pane <%= 'active' if @active_tab == :targets_network_map %>" id="targets-network-map"  data-scorecards-target="targetsNetworkMap">
-        <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map'%>
+        <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map', scorecard_id: @scorecard.id %>
       </div>
     <% end %>
     <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="initiatives">

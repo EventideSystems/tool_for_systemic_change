@@ -6,7 +6,8 @@ module DashboardHelper
     title = options[:title] || resources.to_s.titleize
 
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
-    link_class = options[:disabled] == true ? 'link-disabled' : ''
+
+    link_class = options[:disabled] == true || current_account.nil? ? 'disabled' : ''
 
     # TODO: 'active' needs to be on the link (link_class), not the <li>
     content_tag(:li, class: "nav-item #{menu_item_class}") do

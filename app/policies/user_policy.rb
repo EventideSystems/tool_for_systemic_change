@@ -1,18 +1,19 @@
-class UserPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if account_admin?(user_context.account)|| system_admin?
+      if account_admin?(user_context.account) || system_admin?
         scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
+      else
+        User.none
       end
     end
   end
 
   class SystemScope < Scope
     def resolve
-      if user_context.user.admin?
-        scope.with_deleted.all
-      end
+      scope.with_deleted.all if user_context.user.admin?
     end
   end
 
@@ -42,6 +43,7 @@ class UserPolicy < ApplicationPolicy
 
   def destroy?
     return false if user_context.user == record
+
     system_admin? || account_admin?(user_context.account)
   end
 
@@ -55,13 +57,15 @@ class UserPolicy < ApplicationPolicy
 
   def remove_from_account?
     return false if user_context.user == record
+
     system_admin? || account_admin?(user_context.account)
   end
 
   def max_users_not_reached?(account)
     return false unless account.present?
-    return true if account.max_users == 0 # NOTE magic number, meaning no limit
-    return account.users.count < account.max_users
+    return true if account.max_users.zero? # NOTE: magic number, meaning no limit
+
+    account.users.count < account.max_users
   end
 
   def impersonate?
@@ -77,5 +81,4 @@ class UserPolicy < ApplicationPolicy
   def record_is_current_user?
     user_context.user.id == record.id
   end
-
 end

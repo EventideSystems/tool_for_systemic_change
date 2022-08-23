@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class User < ApplicationRecord
   has_paper_trail
 
@@ -18,9 +19,14 @@ class User < ApplicationRecord
 
   attr_accessor :account_role # Virtual attribute used when inviting users
 
+  def active_for_authentication?
+    super && (admin? || default_account.present?)
+  end
+
   def status
     return 'deleted' unless deleted_at.blank?
     return 'invitation-pending' unless invitation_token.blank?
+
     'active'
   end
 

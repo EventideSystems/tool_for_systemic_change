@@ -21,6 +21,12 @@ class Account < ApplicationRecord
 
   validates :name, presence: true
 
+  scope :active, lambda {
+    where(expires_on: nil)
+      .or(Account.where(expires_on: ..Date.today))
+      .order(created_at: :asc)
+  }
+
   def accounts_users_remaining
     return :unlimited if max_users.zero?
 

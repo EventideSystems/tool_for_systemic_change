@@ -34,9 +34,8 @@ class User < ApplicationRecord
     name.presence || email
   end
 
-  # SMELL in use?
   def default_account
-    accounts_users.order(account_role: :desc).first.try(:account)
+    accounts.active.first
   end
 
   def primary_account_name

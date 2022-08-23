@@ -1,0 +1,10 @@
+<% flash.each do |type, message| %>
+    <div class="card text-white bg-info pb-3 mb-3" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="card-body flash-card-body card-text text-white">
+        <%= message.html_safe %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+

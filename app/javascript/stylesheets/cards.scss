@@ -6,7 +6,7 @@
 }
 
 .card-header {
-  
+
   border-color: $border-color;
 
   h5 .btn {
@@ -23,4 +23,8 @@
   border-top-style: solid;
   border-top-color: #d2d6de;
   box-shadow: none;
+}
+
+.flash-card-body a {
+  color: black;
 }

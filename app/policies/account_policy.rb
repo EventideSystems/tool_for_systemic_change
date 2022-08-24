@@ -1,11 +1,12 @@
-class AccountPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class AccountPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if system_admin?
         scope.all
       else
-        scope.where(id: AccountsUser.where(user: current_user).pluck(:account_id))
+        scope.active.where(id: AccountsUser.where(user: current_user).pluck(:account_id))
       end
     end
   end

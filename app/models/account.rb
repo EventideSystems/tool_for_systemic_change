@@ -23,7 +23,7 @@ class Account < ApplicationRecord
 
   scope :active, lambda {
     where(expires_on: nil)
-      .or(Account.where(expires_on: ..Date.today))
+      .or(Account.where(expires_on: Date.today..))
       .order(created_at: :asc)
   }
 

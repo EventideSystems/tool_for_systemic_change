@@ -30,12 +30,17 @@ class User < ApplicationRecord
     'active'
   end
 
+  def active_accounts
+    user_context = UserContext.new(self, nil)
+    AccountPolicy::Scope.new(user_context, Account).resolve
+  end
+
   def display_name
     name.presence || email
   end
 
   def default_account
-    accounts.active.first
+    active_accounts.first
   end
 
   def primary_account_name

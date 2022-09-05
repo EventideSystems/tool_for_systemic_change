@@ -3,10 +3,15 @@ class ChecklistItem < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
+  string_enum status: %i[no_comment actual planned more_information suggestion]
+
+  belongs_to :user
   belongs_to :initiative
   belongs_to :characteristic
 
   has_many :checklist_item_comments
+
+  has_many :checklist_item_changes, dependent: :destroy
 
   validates :initiative, presence: true
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }

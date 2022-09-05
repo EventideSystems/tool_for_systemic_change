@@ -12,6 +12,7 @@ class UpdateChecklistItemUser < ActiveRecord::Migration[7.0]
   UPDATE_CHECKLIST_ITEM_USER_SQL = <<~SQL
     with checklist_item_created as (
       select item_id, whodunnit::integer from versions
+      inner join users on users.id = whodunnit::integer
       where item_type = 'ChecklistItem'
       and event = 'create'
     )

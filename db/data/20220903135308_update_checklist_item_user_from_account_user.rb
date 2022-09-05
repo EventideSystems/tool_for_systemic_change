@@ -18,6 +18,7 @@ class UpdateChecklistItemUserFromAccountUser < ActiveRecord::Migration[7.0]
       inner join initiatives on initiatives.id = checklist_items.initiative_id
       inner join scorecards on scorecards.id = initiatives.scorecard_id
       inner join accounts_users on accounts_users.account_id = scorecards.account_id
+      inner join users on users.id = accounts_users.user_id
       where checklist_items.user_id is null
       group by checklist_items.id, accounts_users.user_id
       having count(accounts_users.user_id) = 1

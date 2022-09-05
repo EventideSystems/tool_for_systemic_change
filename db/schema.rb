@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_03_112711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -116,6 +116,19 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
     t.index ["position"], name: "index_characteristics_on_position"
   end
 
+  create_table "checklist_item_changes", force: :cascade do |t|
+    t.bigint "checklist_item_id", null: false
+    t.bigint "user_id", null: false
+    t.string "starting_status"
+    t.string "ending_status"
+    t.string "comment"
+    t.string "action"
+    t.string "activity"
+    t.datetime "created_at"
+    t.index ["checklist_item_id"], name: "index_checklist_item_changes_on_checklist_item_id"
+    t.index ["user_id"], name: "index_checklist_item_changes_on_user_id"
+  end
+
   create_table "checklist_item_comments", force: :cascade do |t|
     t.bigint "checklist_item_id"
     t.string "comment"
@@ -134,9 +147,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "status", default: "no_comment"
+    t.bigint "user_id"
     t.index ["characteristic_id"], name: "index_checklist_items_on_characteristic_id"
     t.index ["deleted_at"], name: "index_checklist_items_on_deleted_at"
     t.index ["initiative_id"], name: "index_checklist_items_on_initiative_id"
+    t.index ["user_id"], name: "index_checklist_items_on_user_id"
   end
 
   create_table "communities", id: :serial, force: :cascade do |t|
@@ -376,6 +392,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "checklist_item_changes", "checklist_items"
+  add_foreign_key "checklist_item_changes", "users"
+  add_foreign_key "checklist_items", "users"
 
   create_view "checklist_item_first_checkeds", sql_definition: <<-SQL
       SELECT checklist_items.id AS checklist_item_id,
@@ -483,6 +502,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
        JOIN checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < checklist_item_comments.id))))
     ORDER BY checklist_item_comments.id DESC, checklist_item_comments.created_at, versions.created_at;
   SQL
+  create_view "scorecard_type_characteristics", materialized: true, sql_definition: <<-SQL
+      SELECT characteristics.id,
+      characteristics.name,
+      characteristics.description,
+      characteristics.focus_area_id,
+      characteristics."position",
+      characteristics.deleted_at,
+      characteristics.created_at,
+      characteristics.updated_at,
+      focus_area_groups.scorecard_type
+     FROM ((characteristics
+       JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
+       JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+    ORDER BY focus_areas."position", characteristics."position";
+  SQL
   create_view "events_checklist_item_activities", sql_definition: <<-SQL
       SELECT events_checklist_item_first_comments.event,
       events_checklist_item_first_comments.checklist_item_id,
@@ -581,20 +615,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_04_115523) do
               NULL::text,
               NULL::text
              FROM scorecards) events_transition_card_activities_v02;
-  SQL
-  create_view "scorecard_type_characteristics", materialized: true, sql_definition: <<-SQL
-      SELECT characteristics.id,
-      characteristics.name,
-      characteristics.description,
-      characteristics.focus_area_id,
-      characteristics."position",
-      characteristics.deleted_at,
-      characteristics.created_at,
-      characteristics.updated_at,
-      focus_area_groups.scorecard_type
-     FROM ((characteristics
-       JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
-       JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
-    ORDER BY focus_areas."position", characteristics."position";
   SQL
 end

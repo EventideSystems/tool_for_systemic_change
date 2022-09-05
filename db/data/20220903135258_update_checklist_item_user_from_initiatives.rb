@@ -13,7 +13,9 @@ class UpdateChecklistItemUserFromInitiatives < ActiveRecord::Migration[7.0]
     with initiative_created as (
       select
         item_id as initiative_id,
-        whodunnit::integer from versions
+        whodunnit::integer
+      from versions
+      inner join users on users.id = whodunnit::integer
       where item_type = 'Initiative'
       and event = 'create'
     )

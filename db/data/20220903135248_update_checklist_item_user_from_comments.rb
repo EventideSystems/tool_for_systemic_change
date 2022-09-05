@@ -13,7 +13,9 @@ class UpdateChecklistItemUserFromComments < ActiveRecord::Migration[7.0]
     with checklist_item_created as (
       select distinct on (object->>'checklist_item_id')
         (object->>'checklist_item_id')::integer as item_id,
-        whodunnit::integer from versions
+        whodunnit::integer
+      from versions
+      inner join users on users.id = whodunnit::integer
       where item_type = 'ChecklistItemComment'
       and object->>'checklist_item_id' is not null
     )

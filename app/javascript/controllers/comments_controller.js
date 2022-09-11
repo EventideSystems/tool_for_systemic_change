@@ -2,7 +2,7 @@ import Rails from "@rails/ujs";
 import { Controller } from "stimulus";
 
 export default class extends Controller {
-  static targets = ["form", "characteristic", "checklistItem", "currentComment", "newComment", "missingStatusAlert", "missingCommentAlert"]
+  static targets = ["form", "characteristic", "checklistItem", "currentComment", "newComment", "missingStatusAlert", "missingCommentAlert", "badge"]
 
   open(event) {
     event.preventDefault()
@@ -32,7 +32,7 @@ export default class extends Controller {
 
     let statePath = this.element.dataset.statePath;
     let characteristicTarget = $(this.characteristicTarget)
-    let checklistItemTarget = $(this.checklistItemTarget)
+    let badgeTarget = $(this.badgeTarget)
 
     Rails.ajax({
       type: "get",
@@ -42,24 +42,25 @@ export default class extends Controller {
         characteristicTarget.removeClass('planned')
         characteristicTarget.removeClass('suggestion')
         characteristicTarget.removeClass('more_information')
+        characteristicTarget.addClass( data.status )
 
-        characteristicTarget.addClass( data.comment_status )
-        checklistItemTarget.prop('checked', data.checked)
+        badgeTarget.removeClass('no-comment')
+        badgeTarget.removeClass('actual')
+        badgeTarget.removeClass('planned')
+        badgeTarget.removeClass('suggestion')
+        badgeTarget.removeClass('more-information')
+        badgeTarget.addClass( data.status.replace('_', '-') )
+
+        $(badgeTarget).attr('data-original-title', data.humanized_status)
        },
       error: function(data) { alert('Error') }
     })
   }
 
-  // SMELL: Never called
-  onPostUpdateCommentError(event) {
-    event.preventDefault()
-  }
-
-  onPostNewCommentError(event) {
+  onPostError(event) {
     event.preventDefault()
 
     $(this.missingStatusAlertTarget).show()
-
 
     let [data, status, xhr] = event.detail;
 

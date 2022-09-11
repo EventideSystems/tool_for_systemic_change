@@ -1,154 +1,82 @@
 # frozen_string_literal: true
 
 class ChecklistItemsController < ApplicationController
-  before_action :set_initiative
-  before_action :set_checklist_item,
-                only: %i[show edit update update_comment create_comment comment_status destroy]
-  before_action :require_account_selected
 
-  # GET /checklist_items
-  # GET /checklist_items.json
-  def index
-    @checklist_items = policy_scope(ChecklistItem).where(initiative_id: @initiative.id).all
+  def show
+    @checklist_item = ChecklistItem.find(params[:id])
+    authorize @checklist_item
+
+    render json: @checklist_item.to_json(only: [:id, :status, :comment, :humanized_status])
   end
 
-  # GET /checklist_items/1
-  # GET /checklist_items/1.json
-  def show; end
+  def edit
+    @checklist_item = ChecklistItem.find(params[:id])
+    authorize @checklist_item
 
-  # GET /checklist_items/new
-  def new
-    @checklist_item = @initiative.checklist_items.build
-    authorize @intiative
+    render partial: 'form', locals: { checklist_item: @checklist_item }
   end
 
-  # GET /checklist_items/1/edit
-  def edit; end
-
-  # POST /checklist_items
-  # POST /checklist_items.json
-  def create
-    @checklist_item = @initiative.checklist_items.build(checklist_item_params)
-    authorize @intiative
-
-    respond_to do |format|
-      if @checklist_item.save
-        format.html { redirect_to @checklist_item, notice: 'Checklist item was successfully created.' }
-        format.json { render :show, status: :created, location: @checklist_item }
-      else
-        format.html { render :new }
-        format.json { render json: @checklist_item.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /checklist_items/1
-  # PATCH/PUT /checklist_items/1.json
   def update
-    respond_to do |format|
-      if @checklist_item.update(checklist_item_params)
-        format.html { redirect_to @checklist_item, notice: 'Checklist item was successfully updated.' }
-        # format.json { render :show, status: :ok, location: @checklist_item }
-        format.json { render :show, status: :ok }
-      else
-        format.html { render :edit }
-        format.json { render json: @checklist_item.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+    @checklist_item = ChecklistItem.find(params[:id])
+    authorize @checklist_item
 
-  def update_comment
-    case params[:commit]
-    when 'Update Existing' then update_existing_comment
-    when 'Save New Comment' then save_new_comment
+    @checklist_item.assign_attributes(checklist_item_params)
+
+    if @checklist_item.changed?
+      @checklist_item.checklist_item_changes.build(
+        user: current_user,
+        starting_status: @checklist_item.status_was,
+        ending_status: @checklist_item.status,
+        comment: @checklist_item.comment,
+        action: checklist_item_action(params),
+        activity: checklist_item_activity(params, @checklist_item)
+      )
     end
 
-    if @checklist_item_comment.errors.any?
-      render json: { errors: @checklist_item_comment.errors.full_messages }, status: :unprocessable_entity
+    @checklist_item.save
+
+    if @checklist_item.errors.any?
+      render json: { errors: @checklist_item.errors.full_messages }, status: :unprocessable_entity
     else
       render json: {}, status: :ok
     end
   end
 
-  def create_comment
-    return if params.dig(:checklist_item, :new_comment).blank?
-  end
-
-  def comment_status
-    render json: {
-      checked: @checklist_item.checked,
-      comment_status: @checklist_item.current_checklist_item_comment.status
-    }, status: :ok
-  end
-
-  # DELETE /checklist_items/1
-  # DELETE /checklist_items/1.json
-  def destroy
-    @checklist_item.destroy
-    respond_to do |format|
-      format.html { redirect_to checklist_items_url, notice: 'Checklist item was successfully deleted.' }
-      format.json { head :no_content }
-    end
-  end
-
-  def content_subtitle
-    return @checklist_item.name if @checklist_item.present?
-
-    super
-  end
-
   private
 
-  def update_existing_comment
-    @checklist_item_comment = @checklist_item.current_checklist_item_comment
-
-    return if params.dig(:checklist_item, :current_comment).blank?
-
-    @checklist_item.update_attribute(
-      :checked,
-      params.dig(:checklist_item, :current_comment_status).in?(%w[actual planned])
-    )
-
-    if @checklist_item_comment.blank?
-      @checklist_item_comment = @checklist_item.checklist_item_comments.create(
-        comment: params.dig(:checklist_item, :current_comment),
-        status: params.dig(:checklist_item, :current_comment_status)
-      )
-    else
-      @checklist_item_comment.update(
-        comment: params.dig(:checklist_item, :current_comment),
-        status: params.dig(:checklist_item, :current_comment_status)
-      )
+  def checklist_item_action(params)
+    case params[:commit]
+    when 'Update Existing'
+      'update_existing'
+    when 'Save New Comment'
+      'save_new_comment'
     end
   end
 
-  def save_new_comment
-    @checklist_item.update_attribute(
-      :checked,
-      params.dig(:checklist_item, :new_comment_status).in?(%w[actual planned])
-    )
-
-    @checklist_item_comment = @checklist_item.checklist_item_comments.create(
-      comment: params.dig(:checklist_item, :new_comment),
-      status: params.dig(:checklist_item, :new_comment_status)
-    )
-  end
-
-  def set_initiative
-    @initiative = current_account.initiatives.find(params[:initiative_id])
-    # authorize @intiative
-  end
-
-  def set_checklist_item
-    @checklist_item = @initiative.checklist_items.find(params[:id])
-    authorize @checklist_item
-  end
-
-  def bulk_checklist_item_params(checklist_item_params)
-    checklist_item_params.permit(:checked, :comment)
+  def checklist_item_activity(params, checklist_item)
+    if new_comments_saved_assigned_actuals?(params, checklist_item)
+      'new_comments_saved_assigned_actuals'
+    else
+      (@checklist_item.status_was != 'actual' && @checklist_item.status == 'actual') ? 'addition' : 'none'
+    end
   end
 
   def checklist_item_params
-    params.require(:checklist_item).permit(:checked, :comment)
+    params[:checklist_item][:comment] = params[:checklist_item][:new_comment] if params[:checklist_item][:new_comment].present?
+    params[:checklist_item][:status] = params[:checklist_item][:new_status] if params[:checklist_item][:new_status].present?
+
+    if params[:commit] == 'Save New Comment'
+      params[:checklist_item][:comment] = nil if params[:checklist_item][:comment].blank?
+      params[:checklist_item][:status] = nil if params[:checklist_item][:status].blank?
+    end
+
+    params.require(:checklist_item).permit(:status, :comment)
+  end
+
+  def new_comments_saved_assigned_actuals?(params, checklist_item)
+    params[:commit] == 'Save New Comment' &&
+      checklist_item.comment.present? &&
+      checklist_item.status_was == 'actual' &&
+      checklist_item.status == 'actual'
   end
 end

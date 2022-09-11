@@ -186,6 +186,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
+    fast_jsonparser (0.6.0)
     ffaker (2.21.0)
     ffi (1.15.5)
     flay (2.13.0)
@@ -535,6 +536,7 @@ DEPENDENCIES
   devise_invitable
   dotenv-rails
   factory_bot_rails
+  fast_jsonparser
   ffaker
   hashie (~> 3.4, < 3.5)
   jbuilder (~> 2.10)

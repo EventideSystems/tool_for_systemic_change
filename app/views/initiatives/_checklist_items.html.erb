@@ -44,21 +44,12 @@
                       <% checklist_items.each do |checklist_item| %>
                         <div
                             data-controller="comments"
-                            data-load-path="<%=edit_initiatives_checklist_item_path(checklist_item)%>"
-                            data-state-path="<%=comment_status_initiative_checklist_item_path(@initiative, checklist_item)%>"
+                            data-load-path="<%=edit_checklist_item_path(checklist_item)%>"
+                            data-state-path="<%=checklist_item_path(checklist_item)%>"
                         >
                           <li>
                             <label>
-                              <%=
-                                check_box_tag "checklist_item[#{checklist_item.id}]",
-                                  true, checklist_item.checked,
-                                  class: 'characteristic-checkbox',
-                                  data: {
-                                    id: checklist_item.id,
-                                    initiative_id: checklist_item.initiative_id,
-                                    comments_target: "checklistItem"
-                                  }
-                              %>
+                              <%= checklist_item_badge(checklist_item) %>
 
                               <span class="characteristic-name <%= current_comment_status_style(checklist_item) %>" data-comments-target="characteristic">
                                 <%= checklist_item.characteristic.name %>

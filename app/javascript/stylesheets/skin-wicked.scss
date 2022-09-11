@@ -47,8 +47,8 @@ hr {
   line-height: 1;
 }
 
-.content-wrapper, 
-.content-header, 
+.content-wrapper,
+.content-header,
 .content {
   background-color: white;
 }
@@ -79,10 +79,10 @@ hr {
 }
 
 // NOTE This prevents hamburger link from
-// staying 'grey' after being clicked, at 
-// least until the page is clicked 
+// staying 'grey' after being clicked, at
+// least until the page is clicked
 // elsewhere.
-// TODO Look into AdminLTE js to figure 
+// TODO Look into AdminLTE js to figure
 // out why the bug occurs
 .navbar-light .navbar-nav .nav-link:focus {
   color: white;
@@ -125,11 +125,11 @@ hr {
 // *** Toasts ***
 
 .toast {
-  position:fixed; 
-  top: 1em; 
-  right: 3em; 
+  position:fixed;
+  top: 1em;
+  right: 3em;
   width: 100%;
-  z-index:9999; 
+  z-index:9999;
 }
 
 // *** Select Tags ***
@@ -150,7 +150,7 @@ hr {
 }
 
 .select2-results__option .select2-results__option--highlighted {
-  background-color: #00b9f2 !important; 
+  background-color: #00b9f2 !important;
 }
 
 li.select2-selection__choice {
@@ -180,7 +180,7 @@ li.select2-selection__choice {
 
 .content a.nav-link {
   color: #444;
-} 
+}
 
 .content .nav-tabs .nav-link.active {
   border-top-color: #3c8dbc;
@@ -196,11 +196,11 @@ li.select2-selection__choice {
 .tab-content-header {
 
   border-bottom: thin solid #f4f4f4;
-  
+
   h3 {
     font-size: 18px;
   }
-  
+
   .form-control {
     font-size: 14px;
     height: calc(2.1rem + 2px);
@@ -235,7 +235,7 @@ li.select2-selection__choice {
   li > a {
     color: #444;
   }
-  
+
   li >a > .fa {
     margin-right: 5px;
   }
@@ -271,42 +271,61 @@ span.suggestion {
   color: $color-suggestion;
 }
 
-span.more_information {
+span.more-information {
   color: $color-more-information;
 }
 
+span.badge-checklist-item.actual {
+  background-color: $color-actual;
+}
+
+span.badge-checklist-item.planned {
+  background-color: $color-planned;
+}
+span.badge-checklist-item.suggestion {
+  background-color: $color-suggestion;
+}
+
+span.badge-checklist-item.more-information {
+  background-color: $color-more-information;
+}
+
+span.badge-checklist-item.no-comment {
+  background-color: white;
+}
+
 .form-check {
-  label[for=checklist_item_current_comment_status_actual].form-check-label {
+  label[for=checklist_item_status_actual].form-check-label {
     color: $color-actual;
   }
 
-  label[for=checklist_item_current_comment_status_planned].form-check-label {
+  label[for=checklist_item_status_planned].form-check-label {
     color: $color-planned;
   }
 
-  label[for=checklist_item_current_comment_status_suggestion].form-check-label {
+  label[for=checklist_item_status_suggestion].form-check-label {
     color: $color-suggestion;
   }
 
-  label[for=checklist_item_current_comment_status_more_information].form-check-label {
+  label[for=checklist_item_status_more_information].form-check-label {
     color: $color-more-information;
   }
 }
 
 .form-check {
-  label[for=checklist_item_new_comment_status_actual].form-check-label {
+  label[for=checklist_item_new_status_actual].form-check-label {
     color: $color-actual;
   }
 
-  label[for=checklist_item_new_comment_status_planned].form-check-label {
+  label[for=checklist_item_new_status_planned].form-check-label {
     color: $color-planned;
   }
 
-  label[for=checklist_item_new_comment_status_suggestion].form-check-label {
+  label[for=checklist_item_new_status_suggestion].form-check-label {
     color: $color-suggestion;
   }
 
-  label[for=checklist_item_new_comment_status_more_information].form-check-label {
+  label[for=checklist_item_new_status_more_information].form-check-label {
     color: $color-more-information;
   }
 }
@@ -382,7 +401,7 @@ h3.box-title {
 }
 
 
-textarea[name='checklist_item[current_comment]'] {
+textarea[name='checklist_item[comment]'] {
   height: 90px;
   width: 400px;
 }

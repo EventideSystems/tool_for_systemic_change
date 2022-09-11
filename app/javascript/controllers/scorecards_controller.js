@@ -4,6 +4,7 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   static targets = [
     "activities",
+    "changes",
     "targetsNetworkMap",
     "targetsNetworkMapLabelsBtn",
     "targetsNetworkMapLegendBtn",
@@ -180,6 +181,20 @@ export default class extends Controller {
       url: loadPath,
       success: function(data) { activitiesTarget.innerHTML = data.body.getInnerHTML() },
       error: function(data) { alert('Error') }
+    })
+  }
+
+  loadChanges(event) {
+    event.preventDefault()
+
+    let changesTarget = this.changesTarget;
+    let loadPath = window.location.pathname + '/changes';
+
+    Rails.ajax({
+      type: "get",
+      url: loadPath,
+      success: function(data) { changesTarget.innerHTML = data.body.getInnerHTML() },
+      error: () => { alert('Error'); }
     })
   }
 

@@ -57,6 +57,10 @@ class ScorecardPolicy < ApplicationPolicy
     system_admin? || account_any_role?(record.account)
   end
 
+  def changes?
+    system_admin? || account_any_role?(record.account)
+  end
+
   def activities?
     system_admin? || account_any_role?(record.account)
   end

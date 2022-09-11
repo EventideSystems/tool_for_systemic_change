@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_11_042624) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_11_074633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -629,7 +629,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_11_042624) do
      FROM initiatives
   UNION
    SELECT initiatives.scorecard_id,
-      checklist_items.created_at AS occurred_at,
+      checklist_item_changes.created_at AS occurred_at,
       initiatives.name AS initiative_name,
       characteristics.name AS characteristic_name,
       checklist_item_changes.action,

@@ -15,6 +15,7 @@ class Scorecard < ApplicationRecord
   has_many :checklist_items, through: :initiatives
   has_many :initiatives_organisations, through: :initiatives
   has_many :organisations, through: :initiatives_organisations
+  has_many :scorecard_changes
 
   has_rich_text :notes
 

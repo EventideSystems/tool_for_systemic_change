@@ -5,7 +5,7 @@ class ScorecardsController < ApplicationController
                 only: %i[
                   show edit update destroy
                   show_shared_link copy copy_options merge merge_options
-                  activities
+                  activities changes
                 ]
 
   before_action :set_active_tab, only: [:show]
@@ -245,6 +245,12 @@ class ScorecardsController < ApplicationController
     @activities = Events::TransitionCardActivity.where(transition_card_id: @scorecard.id).order(occurred_at: :desc)
 
     render partial: '/scorecards/show_tabs/activities', locals: { activities: @activities }
+  end
+
+  def changes
+    @changes = @scorecard.scorecard_changes
+
+    render partial: '/scorecards/show_tabs/changes', locals: { changes: @changes }
   end
 
   def content_subtitle

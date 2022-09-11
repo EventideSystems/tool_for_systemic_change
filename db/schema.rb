@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_03_112711) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_11_042624) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -615,5 +615,32 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_03_112711) do
               NULL::text,
               NULL::text
              FROM scorecards) events_transition_card_activities_v02;
+  SQL
+  create_view "scorecard_changes", sql_definition: <<-SQL
+      SELECT initiatives.scorecard_id,
+      initiatives.created_at AS occurred_at,
+      initiatives.name AS initiative_name,
+      ''::character varying AS characteristic_name,
+      'initiative_created'::character varying AS action,
+      ''::character varying AS activity,
+      ''::character varying AS from_value,
+      ''::character varying AS to_value,
+      ''::character varying AS comment
+     FROM initiatives
+  UNION
+   SELECT initiatives.scorecard_id,
+      checklist_items.created_at AS occurred_at,
+      initiatives.name AS initiative_name,
+      characteristics.name AS characteristic_name,
+      checklist_item_changes.action,
+      checklist_item_changes.activity,
+      checklist_item_changes.starting_status AS from_value,
+      checklist_item_changes.ending_status AS to_value,
+      checklist_item_changes.comment
+     FROM (((checklist_item_changes
+       JOIN checklist_items ON ((checklist_items.id = checklist_item_changes.checklist_item_id)))
+       JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
+       JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
+    ORDER BY 1, 2 DESC;
   SQL
 end

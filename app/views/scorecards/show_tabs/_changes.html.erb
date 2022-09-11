@@ -1,0 +1,31 @@
+<div class="tab-pane" id="details-tab">
+  <div class="p-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Actvity</th>
+          <th>Occurred at</th>
+          <th>Initiative</th>
+          <th>Characteristic</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% changes.each do |change| %>
+          <tr>
+            <td><%= change.action&.humanize %></td>
+            <td><%= change.activity&.humanize %></td>
+            <td data-toggle="tooltip" title="<%= change.occurred_at %>"><%= change_occurred_at(change) %></td>
+            <td><%= change.initiative_name.presence %></td>
+            <td><%= change.characteristic_name.presence %></td>
+            <td><%= change.from_value&.humanize %></td>
+            <td><%= change.to_value&.humanize.presence %></td>
+            <td><%= change.comment %></td>
+          </tr>
+        <%- end %>
+      </tbody>
+    </table>
+</div>

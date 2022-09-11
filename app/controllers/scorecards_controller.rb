@@ -41,7 +41,9 @@ class ScorecardsController < ApplicationController
 
     @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
 
-    @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
+    #@results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
+
+    @results = NewScorecardGrid.execute(@scorecard)
 
     add_breadcrumb @scorecard.name
 

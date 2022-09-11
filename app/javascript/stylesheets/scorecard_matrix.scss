@@ -34,6 +34,16 @@
       );
     }
 
+    .hidden {
+      background: #f8f8f8;
+      color: #f8f8f8;
+    }
+
+    .gap-in-effort {
+      background: #333333;
+      color: #333333;
+    }
+
     .text-color#{nth($color, 1)} {
       color: #{nth($color, 2)};
     }
@@ -161,14 +171,14 @@
     }
   }
 
-  .gap {
-    background: #333333;
-  }
+  // .gap {
+  //   background: #333333;
+  // }
 
-  .cell.hidden {
-    background: #f8f8f8 !important;
-    border: 1px solid white !important;
-  }
+  // .cell.hidden {
+  //   background: #f8f8f8 !important;
+  //   border: 1px solid white !important;
+  // }
 
   .legend {
     // border: 2px solid #E6E6E6;
@@ -253,11 +263,13 @@ div.scorecard-matrix.sdg-card tbody tr td.cell {
 }
 
 div.scorecard-matrix.sdg-card tbody tr td.cell.hidden {
-  background: #f8f8f8 !important;
+  background: #f8f8f8;
 }
 
-div.scorecard-matrix.sdg-card tbody tr td.cell.gap {
+div.scorecard-matrix.sdg-card tbody tr td.cell.gap-in-effort {
   opacity: .6;
+  background: #333333;
+  color: #333333;
 }
 
 div.scorecard-matrix.sdg-card th div.divider {

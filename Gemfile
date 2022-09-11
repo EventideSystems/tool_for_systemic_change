@@ -82,6 +82,8 @@ gem 'thor'
 
 gem 'net-http'
 
+gem 'fast_jsonparser'
+
 # Profiling related
 gem 'rack-mini-profiler'
 gem 'memory_profiler'

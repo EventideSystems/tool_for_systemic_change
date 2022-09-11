@@ -248,7 +248,7 @@ class ScorecardsController < ApplicationController
   end
 
   def changes
-    @changes = @scorecard.scorecard_changes
+    @changes = @scorecard.scorecard_changes.order(occurred_at: :desc)
 
     render partial: '/scorecards/show_tabs/changes', locals: { changes: @changes }
   end

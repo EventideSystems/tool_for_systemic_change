@@ -45,10 +45,6 @@ class InitiativesController < ApplicationController
     @content_subtitle = @initiative.name
   end
 
-  def edit_checklist_item_comment; end
-
-  def update_checklist_item_comment; end
-
   def create
     @initiative = Initiative.new(initiative_params)
     authorize @initiative
@@ -102,6 +98,7 @@ class InitiativesController < ApplicationController
     super
   end
 
+  # NOTE Will move this to the checklist controller, where it belongs
   def edit_checklist_item
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item

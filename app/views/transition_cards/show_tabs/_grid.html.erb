@@ -22,16 +22,16 @@
               <%=
                 link_to_if(
                   !(defined?(disable_links) && disable_links),
-                  result.dig('initiative', 'name'),
-                  initiative_path(id: result.dig('initiative', 'id')),
+                  result.dig('initiative', :name),
+                  initiative_path(id: result.dig('initiative', :id)),
                   class: 'truncate',
                   data: {
                     toggle: 'tooltip',
                     placement: 'top',
-                    title: result.dig('initiative', 'name')
+                    title: result.dig('initiative', :name)
                   }
                 ) do
-                  tag.span(result.dig('initiative', 'name'), class: 'truncate')
+                  tag.span(result.dig('initiative', :name), class: 'truncate')
                 end
               %>
             </th>
@@ -40,8 +40,8 @@
                 data-toggle="tooltip"
                 data-placement="left"
                 data-container=".inner"
-                data-status="<%= result.dig(characteristic.id.to_s, 'status') %>"
-                title="<%= result.dig(characteristic.id.to_s, 'name') %>"
+                data-status="<%= result.dig(characteristic.id.to_s, :status) %>"
+                title="<%= result.dig(characteristic.id.to_s, :name) %>"
                 class="<%= cell_class(result, @focus_areas, characteristic) %>">
                 <span>&nbsp;</span>
               </td>

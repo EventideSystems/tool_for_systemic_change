@@ -2,18 +2,73 @@
   transform: translateX(15px);
 }
 
-.scorecard-matrix {
-  $colors:
+  $color-alpha: 44;
+
+.scorecard-matrix.transition-card-matrix {
+  $transition-card-colors:
     (1 #FF0000) (2 #F7C80B) (3 #FF6D24) (4 #7993F2)
     (5 #2E74BA) (6 #009BCC) (7 #008C8C) (8 #00CCAA)
     (9 #1CB85D);
 
-  $color-alpha: 44;
+  // $color-alpha: 44;
 
-  @each $color in $colors {
-    tbody td.checked#{nth($color, 1)} {
-      border: 1px dotted #{nth($color, 2)};
+  @each $color in $transition-card-colors {
+    // tbody td.checked#{nth($color, 1)} {
+    //   border: 1px dotted #{nth($color, 2)};
+    // }
+    td.actual#{nth($color, 1)} {
+      background: #{nth($color, 2)};
+      color: #{nth($color, 2)};
     }
+
+    td.planned#{nth($color, 1)} {
+      background: #{nth($color, 2)}#{$color-alpha};
+      color: #{nth($color, 2)}#{$color-alpha};
+    }
+
+    td.no-comment#{nth($color, 1)} {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        #{nth($color, 2)} 5px,
+        #{nth($color, 2)} 10px
+      );
+    }
+
+    td.hidden {
+      background: #f8f8f8;
+      color: #f8f8f8;
+    }
+
+    td.gap-in-effort {
+      background: #333333;
+      color: #333333;
+    }
+
+    .text-color#{nth($color, 1)} {
+      color: #{nth($color, 2)};
+    }
+
+    h3 {
+      font-size: 24px;
+    }
+  }
+
+}
+
+.scorecard-matrix.sdgs-cards {
+  $sdgs-cards-colors:
+    (1 #E5243B) (2 #DDA63A) (3 #4C9F38) (4 #C5192D)
+    (5 #FF3A21) (6 #26BDE2) (7 #FCC30B) (8 #A21942)
+    (9 #FD6925) (10 #DD1367) (11 #FD9D24) (12 #BF8B2E)
+    (13 #3F7E44) (14 #0A97D9) (15 #56C02B) (16 #00689D)
+    (17 #19486A);
+
+  @each $color in $sdgs-cards-colors {
+    // tbody td.checked#{nth($color, 1)} {
+    //   border: 1px dotted #{nth($color, 2)};
+    // }
     .actual#{nth($color, 1)} {
       background: #{nth($color, 2)};
       color: #{nth($color, 2)};
@@ -28,9 +83,9 @@
       background: repeating-linear-gradient(
         45deg,
         transparent,
-        transparent 5px,
-        #{nth($color, 2)} 5px,
-        #{nth($color, 2)} 10px
+        transparent 1px,
+        #{nth($color, 2)} 2px,
+        #{nth($color, 2)} 3px
       );
     }
 
@@ -52,7 +107,9 @@
       font-size: 24px;
     }
   }
+}
 
+.scorecard-matrix {
   margin: 0;
   position: relative;
 
@@ -212,7 +269,7 @@
   }
 }
 
-.sdg-card .cell {
+.sdgs-cards .cell {
   max-width: 11px;
   min-width: 11px;
 }
@@ -250,11 +307,11 @@ div.scorecard-matrix thead {
   height: 0.7em;
 }
 
-div.sdg-card thead {
+div.sdgs-cards thead {
   height: 5.5em;
 }
 
-div.scorecard-matrix.sdg-card tbody tr td.cell {
+div.scorecard-matrix.sdgs-cards tbody tr td.cell {
   opacity: 1;
   border-bottom: 5px solid white !important;
   border-top: 6px solid white !important;
@@ -262,37 +319,37 @@ div.scorecard-matrix.sdg-card tbody tr td.cell {
   border-right: 1px solid white !important;
 }
 
-div.scorecard-matrix.sdg-card tbody tr td.cell.hidden {
+div.scorecard-matrix.sdgs-cards tbody tr td.cell.hidden {
   background: #f8f8f8;
 }
 
-div.scorecard-matrix.sdg-card tbody tr td.cell.gap-in-effort {
+div.scorecard-matrix.sdgs-cards tbody tr td.cell.gap-in-effort {
   opacity: .6;
   background: #333333;
   color: #333333;
 }
 
-div.scorecard-matrix.sdg-card th div.divider {
+div.scorecard-matrix.sdgs-cards th div.divider {
   margin-top: 85px;
   border: 2px solid #E6E6E6;
   border-bottom: 1px solid white;
   height: 11px;
 }
 
-div.scorecard-matrix.sdg-card .inner {
+div.scorecard-matrix.sdgs-cards .inner {
   padding-bottom: 200px;
 }
 
-div.scorecard-matrix.sdg-card table.pre-scrollable.compact {
+div.scorecard-matrix.sdgs-cards table.pre-scrollable.compact {
   width: fit-content;
 }
 
-div.scorecard-matrix.sdg-card th.compact {
+div.scorecard-matrix.sdgs-cards th.compact {
   width: 80px;
 }
 
 
-div.scorecard-matrix.sdg-card td.focus-area-cell {
+div.scorecard-matrix.sdgs-cards td.focus-area-cell {
   min-width: 80px;
   opacity: 1;
   height: 21px;

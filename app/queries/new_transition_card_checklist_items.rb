@@ -17,10 +17,11 @@ class NewTransitionCardChecklistItems
       ]
     end
 
+    # NOTE: Eventually we'll have to cater for "removals", but this has not been clearly
+    # defined as yet under the new "changes" model.
     def calc_final_count_at_end_of_period(data)
-      data[:checked_count_before_period] +
-        data[:checked_count_during_period] -
-        data[:unchecked_count_during_period]
+      data[:actual_count_before_period] +
+        data[:additions_count_during_period]
     end
 
     def fetch_transition_card_initiatives_totals(transition_card_id, date_from, date_to)
@@ -38,12 +39,12 @@ class NewTransitionCardChecklistItems
     end
 
     TOTAL_TRANSITION_CARD_INITIATIVES_SQL = <<~SQL
-      with checked_status_before_period as (
+      with checklist_items_actual_status_before_period as (
         select
           focus_area_group_id,
           focus_area_id,
           characteristic_id,
-          sum(case when to_status = 'checked' then 1 else 0 end) as checked_count
+          count(created_at) as actual_count
         from (
           select
             distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
@@ -51,31 +52,29 @@ class NewTransitionCardChecklistItems
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,
             initiatives.id as initiative_id,
-            events_checklist_item_checkeds.occurred_at,
-            events_checklist_item_checkeds.to_status
+            checklist_item_changes.created_at
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
           inner join checklist_items on checklist_items.characteristic_id = characteristics.id
           inner join initiatives on initiatives.id = checklist_items.initiative_id
-          left join events_checklist_item_checkeds
-            on events_checklist_item_checkeds.checklist_item_id = checklist_items.id
-            and events_checklist_item_checkeds.occurred_at < $1
-            and events_checklist_item_checkeds.to_status in ('checked', 'unchecked')
+          left join checklist_item_changes
+            on checklist_item_changes.checklist_item_id = checklist_items.id
+            and checklist_item_changes.created_at < $1
+            and checklist_item_changes.ending_status = 'actual'
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
-          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, events_checklist_item_checkeds.occurred_at asc
+          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
         ) as checked_status_before_period
         group by focus_area_group_id, focus_area_id, characteristic_id
       ),
 
-      checked_status_during_period as (
+      checklist_items_additions_during_period as (
         select
           focus_area_group_id,
           focus_area_id,
           characteristic_id,
-          sum(case when to_status = 'checked' then 1 else 0 end) as checked_count,
-          sum(case when to_status = 'unchecked' then 1 else 0 end) as unchecked_count
+          count(created_at) as additions_count
         from (
           select
             distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
@@ -83,59 +82,52 @@ class NewTransitionCardChecklistItems
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,
             initiatives.id as initiative_id,
-            events_checklist_item_checkeds.occurred_at,
-            events_checklist_item_checkeds.to_status
+            checklist_item_changes.created_at
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
           inner join checklist_items on checklist_items.characteristic_id = characteristics.id
           inner join initiatives on initiatives.id = checklist_items.initiative_id
-          left join events_checklist_item_checkeds
-            on events_checklist_item_checkeds.checklist_item_id = checklist_items.id
-            and events_checklist_item_checkeds.occurred_at >= $1
-            and events_checklist_item_checkeds.occurred_at <= $2
-            and events_checklist_item_checkeds.to_status in ('checked', 'unchecked')
+          left join checklist_item_changes
+            on checklist_item_changes.checklist_item_id = checklist_items.id
+            and checklist_item_changes.created_at >= $1
+            and checklist_item_changes.created_at <= $2
+            and checklist_item_changes.activity = 'addition'
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
-          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, events_checklist_item_checkeds.occurred_at asc
+          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
         ) as checked_status_during_period
         group by focus_area_group_id, focus_area_id, characteristic_id
       ),
 
-      new_actual_comments_during_period as (
+      new_comments_saved_actuals_during_period as (
         select
           focus_area_group_id,
           focus_area_id,
           characteristic_id,
-          sum(case when to_status = 'actual' then 1 else 0 end) as actual_count
+          count(created_at) as assigned_actuals_count
         from (
           select
+            distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
             focus_area_groups.id as focus_area_group_id,
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,
             initiatives.id as initiative_id,
-            events_checklist_item_new_comments.occurred_at,
-            events_checklist_item_new_comments.to_status
+            checklist_item_changes.created_at
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
           inner join checklist_items on checklist_items.characteristic_id = characteristics.id
           inner join initiatives on initiatives.id = checklist_items.initiative_id
-          left join events_checklist_item_new_comments
-            on events_checklist_item_new_comments.checklist_item_id = checklist_items.id
-            and events_checklist_item_new_comments.occurred_at >= $1
-            and events_checklist_item_new_comments.occurred_at <= $2
-            and events_checklist_item_new_comments.to_status = 'actual'
+          left join checklist_item_changes
+            on checklist_item_changes.checklist_item_id = checklist_items.id
+            and checklist_item_changes.created_at >= $1
+            and checklist_item_changes.created_at <= $2
+            and checklist_item_changes.activity = 'new_comments_saved_assigned_actuals'
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
-          order by
-            focus_area_groups.id,
-            focus_areas.id,
-            characteristics.id,
-            initiatives.id,
-            checklist_items.id,
-            events_checklist_item_new_comments.occurred_at asc
-        ) as comments_during_period
+          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
+        ) as checked_status_during_period
         group by focus_area_group_id, focus_area_id, characteristic_id
       )
 
@@ -143,20 +135,19 @@ class NewTransitionCardChecklistItems
         focus_area_groups.name as focus_area_group_name,
         focus_areas.name as focus_area_name,
         characteristics.name as characteristic_name,
-        checked_status_before_period.checked_count as checked_count_before_period,
-        checked_status_during_period.checked_count as checked_count_during_period,
-        checked_status_during_period.unchecked_count as unchecked_count_during_period,
-        new_actual_comments_during_period.actual_count as new_actual_comment_count_during_period
-      from checked_status_before_period
-      left join checked_status_during_period
-        on checked_status_before_period.focus_area_group_id = checked_status_during_period.focus_area_group_id
-        and checked_status_before_period.focus_area_id = checked_status_during_period.focus_area_id
-        and checked_status_before_period.characteristic_id = checked_status_during_period.characteristic_id
-      left join new_actual_comments_during_period
-        on new_actual_comments_during_period.focus_area_group_id = checked_status_during_period.focus_area_group_id
-        and new_actual_comments_during_period.focus_area_id = checked_status_during_period.focus_area_id
-        and new_actual_comments_during_period.characteristic_id = checked_status_during_period.characteristic_id
-      inner join characteristics on characteristics.id = checked_status_before_period.characteristic_id
+        checklist_items_actual_status_before_period.actual_count as actual_count_before_period,
+        checklist_items_additions_during_period.additions_count as additions_count_during_period,
+        new_comments_saved_actuals_during_period.assigned_actuals_count as assigned_actuals_count_during_period
+      from checklist_items_actual_status_before_period
+      left join checklist_items_additions_during_period
+        on checklist_items_additions_during_period.focus_area_group_id = checklist_items_actual_status_before_period.focus_area_group_id
+        and checklist_items_additions_during_period.focus_area_id = checklist_items_actual_status_before_period.focus_area_id
+        and checklist_items_additions_during_period.characteristic_id = checklist_items_actual_status_before_period.characteristic_id
+      left join new_comments_saved_actuals_during_period
+        on new_comments_saved_actuals_during_period.focus_area_group_id = checklist_items_actual_status_before_period.focus_area_group_id
+        and new_comments_saved_actuals_during_period.focus_area_id = checklist_items_actual_status_before_period.focus_area_id
+        and new_comments_saved_actuals_during_period.characteristic_id = checklist_items_actual_status_before_period.characteristic_id
+      inner join characteristics on characteristics.id = checklist_items_actual_status_before_period.characteristic_id
       inner join focus_areas on focus_areas.id = characteristics.focus_area_id
       inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
       order by focus_area_groups.position, focus_areas.position, characteristics.position

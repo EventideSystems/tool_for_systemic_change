@@ -32,6 +32,7 @@ module Reports
           add_characteristic_columns_header(sheet, header_1, wrap_text)
 
           data = NewTransitionCardChecklistItems.execute(scorecard.id, date_from, date_to)
+
           current_focus_area_group_name = ''
           current_focus_area_name = ''
 
@@ -50,11 +51,11 @@ module Reports
             sheet.add_row(
               [
                 "    #{row[:characteristic_name]}",
-                row[:checked_count_before_period],
-                row[:checked_count_during_period],
-                row[:unchecked_count_during_period],
+                row[:actual_count_before_period],
+                row[:additions_count_during_period],
+                0, # removals not implemented yet
                 row[:final_count_at_end_of_period],
-                row[:new_actual_comment_count_during_period]
+                row[:assigned_actuals_count_during_period]
               ]
             )
           end

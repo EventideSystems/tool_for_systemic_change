@@ -100,6 +100,27 @@ class ReportsController < ApplicationController
     end
   end
 
+  def new_transition_card_activity
+    authorize :report, :transition_card_activity?
+
+    @content_subtitle = "#{Scorecard.model_name.human} Activity"
+    add_breadcrumb @content_subtitle
+
+    @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
+    @date_to = Date.parse(params[:report][:date_to]).end_of_day
+    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+
+    @report = Reports::NewTransitionCardActivity.new(@scorecard, @date_from, @date_to)
+
+    respond_to do |format|
+      format.html
+      format.xlsx do
+        send_data @report.to_xlsx.read, type: Mime[:xlsx],
+                                        filename: "#{scorecard_new_activity_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
+      end
+    end
+  end
+
   def scorecard_comments
     authorize :report, :index?
 
@@ -141,6 +162,11 @@ class ReportsController < ApplicationController
   def scorecard_activity_base_filename(scorecard)
     "#{report_filename_prefix(scorecard)}_Activity"
   end
+
+  def scorecard_new_activity_base_filename(scorecard)
+    "#{report_filename_prefix(scorecard)}_New_Activity"
+  end
+
 
   def scorecard_comments_base_filename(scorecard)
     "#{report_filename_prefix(scorecard)}_Comments"

@@ -1,27 +1,26 @@
-
 # frozen_string_literal: true
+
 require 'benchmark'
 
 class NewScorecardGrid
   class << self
-
-    def execute(scorecard, snapshot_at = nil)
+    def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
       columns_data = ActiveRecord::Base.connection.execute(columns_data_sql(scorecard)).values.first.first
 
       if snapshot_at.present?
         ActiveRecord::Base
           .connection
-          .execute(historical_crosstab_sql(scorecard, snapshot_at, columns_data))
-          .map { |result|
+          .execute(historical_crosstab_sql(scorecard, snapshot_at, columns_data, subsystem_tags))
+          .map do |result|
             result.transform_values { |v| FastJsonparser.parse(v)  }
-          }
+          end
       else
         ActiveRecord::Base
           .connection
-          .execute(current_crosstab_sql(scorecard, columns_data))
-          .map { |result|
+          .execute(current_crosstab_sql(scorecard, columns_data, subsystem_tags))
+          .map do |result|
             result.transform_values { |v| FastJsonparser.parse(v)  }
-          }
+          end
       end
     end
 
@@ -43,7 +42,7 @@ class NewScorecardGrid
       SQL
     end
 
-    def current_crosstab_sql(scorecard, columns_data)
+    def current_crosstab_sql(scorecard, columns_data, subsystem_tags)
       <<~SQL
         select *
         from crosstab(
@@ -77,6 +76,7 @@ class NewScorecardGrid
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           where initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
+          #{subsystem_sql(subsystem_tags)}
           group by initiatives.id, characteristics.id, checklist_items.id, focus_area_groups.id
           order by initiative
           $$,
@@ -87,7 +87,7 @@ class NewScorecardGrid
       SQL
     end
 
-    def historical_crosstab_sql(scorecard, snapshot_at, columns_data)
+    def historical_crosstab_sql(scorecard, snapshot_at, columns_data, subsystem_tags)
       <<~SQL
         select *
         from crosstab(
@@ -138,6 +138,7 @@ class NewScorecardGrid
             ) changes on changes.checklist_item_id = checklist_items.id and rn = 1
           where initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
+          #{subsystem_sql(subsystem_tags)}
           group by
             initiatives.id,
             characteristics.id,
@@ -156,7 +157,21 @@ class NewScorecardGrid
       SQL
     end
 
-    # NOTE Copied from ScorecardGrid
+    def subsystem_sql(subsystem_tags)
+      return '' if subsystem_tags.empty?
+
+      subsystem_tags_ids = subsystem_tags.map(&:id)
+
+      <<~SQL
+        AND initiatives.id IN (
+          SELECT initiative_id
+          FROM initiatives_subsystem_tags
+          WHERE subsystem_tag_id IN (#{subsystem_tags_ids.join(',')})
+        )
+      SQL
+    end
+
+    # NOTE: Copied from ScorecardGrid
     def wrap_date(snapshot_at)
       return 'now()' if snapshot_at.blank?
 
@@ -164,5 +179,4 @@ class NewScorecardGrid
       "'#{snapshot_timestamp.utc.to_s(:db)}'"
     end
   end
-
 end

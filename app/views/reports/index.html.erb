@@ -43,7 +43,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name %></h3>
+          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name + ' (NEW)' %></h3>
         </div>
         <%= simple_form_for :report, url: new_transition_card_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
         <div class="card-body">

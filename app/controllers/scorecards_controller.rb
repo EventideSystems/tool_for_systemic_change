@@ -27,6 +27,7 @@ class ScorecardsController < ApplicationController
                      end
 
     @focus_areas = FocusArea
+                   .includes(:characteristics)
                    .joins(:focus_area_group)
                    .where(focus_area_groups: { scorecard_type: @scorecard.type })
                    .ordered_by_group_position
@@ -43,7 +44,7 @@ class ScorecardsController < ApplicationController
 
     #@results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-    @results = NewScorecardGrid.execute(@scorecard)
+    @results = NewScorecardGrid.execute(@scorecard, @parsed_selected_date)
 
     add_breadcrumb @scorecard.name
 

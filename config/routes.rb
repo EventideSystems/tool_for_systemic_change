@@ -126,6 +126,8 @@ Rails.application.routes.draw do
       post 'transition_card_activity'
       get 'new_transition_card_activity'
       post 'new_transition_card_activity'
+      post 'new_scorecard_comments'
+      get 'new_scorecard_comments'
     end
   end
 

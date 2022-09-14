@@ -81,5 +81,24 @@
     </div>
   </div>
 
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header with-border">
+        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= comments_report_name + ' (NEW)' %></h3>
+      </div>
+      <%= simple_form_for :report, url: new_scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+      <div class="card-body">
+        <p>This (new) report shows the first time comments have been recorded across initiatives.</p>
+        <%= render partial: 'scorecard_selector', locals: { f: f } %>
+        <%= f.input :date, as: :string, input_html: { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
+        <%= f.input :status, collection: options_for_comment_statuses, include_blank: false  %>
+      </div>
+      <div class="card-footer">
+        <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
 
 <div>

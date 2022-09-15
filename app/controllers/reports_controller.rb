@@ -110,7 +110,18 @@ class ReportsController < ApplicationController
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
     add_breadcrumb(@content_subtitle)
 
-    @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
+    @date_from = \
+      ActiveSupport::TimeZone[current_user.time_zone]
+        .parse(params[:report][:date_from])
+        .beginning_of_day
+        .utc
+
+    @date_to = \
+      ActiveSupport::TimeZone[current_user.time_zone]
+        .parse(params[:report][:date_to])
+        .end_of_day
+        .utc
+
     @date_to = Date.parse(params[:report][:date_to]).end_of_day
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
 

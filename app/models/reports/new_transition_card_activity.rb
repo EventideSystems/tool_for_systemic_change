@@ -9,8 +9,8 @@ module Reports
 
     def initialize(scorecard, date_from, date_to)
       @scorecard = scorecard
-      @date_from = date_from.beginning_of_day
-      @date_to = date_to.end_of_day
+      @date_from = date_from
+      @date_to = date_to
     end
 
     def to_xlsx

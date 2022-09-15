@@ -41,7 +41,7 @@ module Reports
 
           data = generate_data
 
-          FocusAreaGroup.order(:position).each do |focus_area_group|
+          FocusAreaGroup.where(scorecard_type: scorecard.type).order(:position).each do |focus_area_group|
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2])
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|

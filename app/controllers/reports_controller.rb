@@ -138,7 +138,9 @@ class ReportsController < ApplicationController
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
                  .find(params[:report][:scorecard_id])
+
     @date = params[:report][:date].in_time_zone('Australia/Adelaide').end_of_day.utc
+
     @status = params[:report][:status]
 
     @report = Reports::ScorecardComments.new(@scorecard, @date, @status)
@@ -166,7 +168,13 @@ class ReportsController < ApplicationController
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
                  .find(params[:report][:scorecard_id])
-    @date = params[:report][:date].in_time_zone('Australia/Adelaide').end_of_day.utc
+
+    @date = \
+      ActiveSupport::TimeZone[current_user.time_zone]
+        .parse(params[:report][:date])
+        .end_of_day
+        .utc
+
     @status = params[:report][:status]
 
     @report = Reports::NewScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)

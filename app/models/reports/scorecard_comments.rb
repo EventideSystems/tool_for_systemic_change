@@ -44,14 +44,14 @@ module Reports
         header_3 = p.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
         blue_normal = p.workbook.styles.add_style fg_color: '386190', sz: 12, b: false
         wrap_text = p.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
-        date = date_style(p)
+        style_for_date = date_style(p)
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row([DateTime.now], style: date)
+          sheet.add_row([DateTime.now], style: style_for_date)
 
           sheet.add_row([scorecard.model_name.human], style: header_1).add_cell(scorecard.name, style: blue_normal)
           sheet.add_row(['Date'], b: true).tap do |row|
-            row.add_cell(date, style: date)
+            row.add_cell(date, style: style_for_date)
           end
           sheet.add_row(['Status'], b: true).tap do |row|
             row.add_cell(status.titleize)

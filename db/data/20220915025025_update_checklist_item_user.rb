@@ -21,5 +21,4 @@ class UpdateChecklistItemUser < ActiveRecord::Migration[7.0]
     from checklist_item_created
     where checklist_item_created.item_id = checklist_items.id;
   SQL
-
 end

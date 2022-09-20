@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_11_074633) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_090520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -193,6 +193,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_11_074633) do
     t.string "icon_name", default: ""
     t.string "actual_color"
     t.string "planned_color"
+    t.integer "characteristics_count", default: 0
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"

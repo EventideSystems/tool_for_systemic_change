@@ -6,7 +6,7 @@ class Characteristic < ApplicationRecord
 
   default_scope { order('focus_areas.position', :position).joins(:focus_area) }
 
-  belongs_to :focus_area
+  belongs_to :focus_area, counter_cache: true
   has_one :video_tutorial, as: :linked
   has_many :checklist_items
 

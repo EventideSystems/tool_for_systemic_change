@@ -5,8 +5,8 @@
         <thead>
           <tr>
             <th>&nbsp;</th>
-            <% @focus_areas.each_with_index do |focus_area, index| %>
-              <th colspan="<%= focus_area.characteristics.count %>" class="legend compact">
+            <% @focus_areas.each do |focus_area| %>
+              <th colspan="<%= focus_area.characteristics.size %>" class="legend compact">
                 <div class="mr-2" data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
                   <%= focus_area_icon(focus_area) %>
                 </div>
@@ -38,7 +38,7 @@
             </th>
             <%# SMELL looping through @focus_areas on each row is not performant %>
             <% @focus_areas.each_with_index do |focus_area, index|  %>
-              <td colspan="<%= focus_area.characteristics.count %>" class="focus-area-cell" style="<%= focus_area_cell_style(result, focus_area) %>">
+              <td colspan="<%= focus_area.characteristics.size %>" class="focus-area-cell" style="<%= focus_area_cell_style(result, focus_area) %>">
               </td>
             <%- end -%>
             <% @characteristics.each do |characteristic| %>

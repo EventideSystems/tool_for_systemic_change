@@ -2,9 +2,9 @@
 
 module ChecklistItemsHelper
   def current_comment_status_style(checklist_item)
-    return '' if checklist_item.comment.blank?
+    return 'no-comment' if checklist_item.comment.blank?
 
-    checklist_item.status.to_s
+    checklist_item.status.to_s.dasherize
   end
 
   def comment_statuses_collection
@@ -13,11 +13,27 @@ module ChecklistItemsHelper
     end
   end
 
+  # def checklist_item_badge(checklist_item)
+  #   content_tag(
+  #     :span,
+  #     '&nbsp;&nbsp;'.html_safe,
+  #     class: "badge badge-checklist-item #{checklist_item.status.dasherize}",
+  #     data: {
+  #       comments_target: "badge",
+  #       toggle: "tooltip",
+  #       placement: "top",
+  #       title: checklist_item.status.humanize
+  #     }
+  #   )
+  # end
+
   def checklist_item_badge(checklist_item)
+    klass = checklist_item.no_comment? ? 'fa-square-o' : 'fa-check-square-o'
+
     content_tag(
-      :span,
-      '&nbsp;&nbsp;'.html_safe,
-      class: "badge badge-checklist-item #{checklist_item.status.gsub('_', '-')}",
+      :i,
+      '',
+      class: "badge-checklist-item fa #{klass} #{checklist_item.status.dasherize}",
       data: {
         comments_target: "badge",
         toggle: "tooltip",

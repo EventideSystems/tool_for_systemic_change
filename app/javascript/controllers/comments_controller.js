@@ -41,8 +41,8 @@ export default class extends Controller {
         characteristicTarget.removeClass('actual')
         characteristicTarget.removeClass('planned')
         characteristicTarget.removeClass('suggestion')
-        characteristicTarget.removeClass('more_information')
-        characteristicTarget.addClass( data.status )
+        characteristicTarget.removeClass('more-information')
+        characteristicTarget.addClass( data.status.replace('_', '-') )
 
         badgeTarget.removeClass('no-comment')
         badgeTarget.removeClass('actual')

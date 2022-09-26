@@ -236,7 +236,7 @@ class ScorecardsController < ApplicationController
   end
 
   def ecosystem_maps_organisations
-    if Integer(params[:id], 10).to_s == params[:id]
+    if params[:id].to_s == params[:id].to_i
       @scorecard = current_account.scorecards.find(params[:id])
       authorize(@scorecard)
     else
@@ -249,15 +249,9 @@ class ScorecardsController < ApplicationController
   end
 
   def activities
-    @activities = Events::TransitionCardActivity.where(transition_card_id: @scorecard.id).order(occurred_at: :desc)
+    @activities = @scorecard.scorecard_changes.order(occurred_at: :desc)
 
-    render(partial: '/scorecards/show_tabs/activities', locals: { activities: @activities })
-  end
-
-  def changes
-    @changes = @scorecard.scorecard_changes.order(occurred_at: :desc)
-
-    render(partial: '/scorecards/show_tabs/changes', locals: { changes: @changes })
+    render(partial: '/scorecards/show_tabs/activity', locals: { activities: @activities })
   end
 
   def content_subtitle

@@ -62,7 +62,7 @@ class SharedController < ApplicationController
     @initiatives = @scorecard.initiatives.order(:name)
     @organisations = @initiatives.filter_map(&:organisations).flatten.uniq.sort_by(&:name)
 
-    @results = ScorecardGrid.execute(@scorecard, nil, [])
+    @results = NewScorecardGrid.execute(@scorecard, nil, [])
     @focus_areas = FocusArea.per_scorecard_type(@scorecard.type).ordered_by_group_position
     @characteristics = Characteristic.per_scorecard_type(@scorecard.type).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
   end

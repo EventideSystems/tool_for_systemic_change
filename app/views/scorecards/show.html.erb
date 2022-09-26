@@ -23,9 +23,6 @@
       <li class="nav-item">
         <a href="#tab_6" class="nav-link <%= 'active' if @active_tab == :activity %>" data-target="#activity" data-toggle="tab" data-action="click->scorecards#loadActivities">Activity</a>
       </li>
-        <li class="nav-item">
-        <a href="#tab_7" class="nav-link <%= 'active' if @active_tab == :activity %>" data-target="#changes" data-toggle="tab" data-action="click->scorecards#loadChanges">Changes</a>
-      </li>
     <%- end -%>
   </ul>
   <div class="tab-content">
@@ -54,8 +51,6 @@
     </div>
      <% if policy(@scorecard).activity? %>
       <div class="tab-pane <%= 'active' if @active_tab == :activity %>" id="activity" data-scorecards-target="activities">
-      </div>
-      <div class="tab-pane <%= 'active' if @active_tab == :changes %>" id="changes" data-scorecards-target="changes">
       </div>
     <%- end -%>
   </div>

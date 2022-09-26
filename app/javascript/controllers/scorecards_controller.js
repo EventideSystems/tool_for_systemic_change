@@ -184,19 +184,6 @@ export default class extends Controller {
     })
   }
 
-  loadChanges(event) {
-    event.preventDefault()
-
-    let changesTarget = this.changesTarget;
-    let loadPath = window.location.pathname + '/changes';
-
-    Rails.ajax({
-      type: "get",
-      url: loadPath,
-      success: function(data) { changesTarget.innerHTML = data.body.getInnerHTML() },
-      error: () => { alert('Error'); }
-    })
-  }
 
   loadTargetsNetworkMap(event) {
     event.preventDefault()

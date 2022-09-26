@@ -28,7 +28,7 @@ module ChecklistItemsHelper
   # end
 
   def checklist_item_badge(checklist_item)
-    klass = checklist_item.no_comment? ? 'fa-square-o' : 'fa-check-square-o'
+    klass = checklist_item.no_comment? ? 'fa-square-o' : 'fa-square'
 
     content_tag(
       :i,

@@ -16,34 +16,11 @@
     </div>
   </div>
 
-  <%- if policy(:report).transition_card_activity? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name %></h3>
-        </div>
-        <%= simple_form_for :report, url: transition_card_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>This report shows the addition and removal of characteristics across initiatives over a period of time.</p>
-
-          <%= render partial: 'scorecard_selector', locals: { f: f } %>
-          <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker", datepicker_position: "bottom" }, autocomplete: "off" } %>
-          <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
-
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
     <%- if policy(:report).transition_card_activity? %>
     <div class="col-md-6">
       <div class="card">
         <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name + ' (NEW)' %></h3>
+          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name %></h3>
         </div>
         <%= simple_form_for :report, url: new_transition_card_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
         <div class="card-body">
@@ -66,25 +43,6 @@
     <div class="card">
       <div class="card-header with-border">
         <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= comments_report_name %></h3>
-      </div>
-      <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="card-body">
-        <p>This report shows the first time comments have been recorded across initiatives.</p>
-        <%= render partial: 'scorecard_selector', locals: { f: f } %>
-        <%= f.input :date, as: :string, input_html: { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
-        <%= f.input :status, collection: options_for_comment_statuses, include_blank: false  %>
-      </div>
-      <div class="card-footer">
-        <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-      </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header with-border">
-        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= comments_report_name + ' (NEW)' %></h3>
       </div>
       <%= simple_form_for :report, url: new_scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="card-body">

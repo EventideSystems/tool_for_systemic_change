@@ -53,8 +53,7 @@ module Reports
                 "    #{row[:characteristic_name]}",
                 row[:actual_count_before_period],
                 row[:additions_count_during_period],
-                0, # removals not implemented yet
-                row[:final_count_at_end_of_period],
+                row[:actual_count_after_period],
                 row[:assigned_actuals_count_during_period]
               ]
             )
@@ -78,7 +77,6 @@ module Reports
         row.add_cell(initiative_characteristics_title, style: header_1)
         row.add_cell("#{col_base_name} beginning of period", height: 48, style: wrap_text)
         row.add_cell('Additions', height: 48, style: wrap_text)
-        row.add_cell('Removals', height: 48, style: wrap_text)
         row.add_cell("#{col_base_name} end of period", height: 48, style: wrap_text)
         row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
       end

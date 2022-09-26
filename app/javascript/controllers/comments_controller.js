@@ -33,48 +33,31 @@ export default class extends Controller {
     let statePath = this.element.dataset.statePath;
     let characteristicTarget = $(this.characteristicTarget)
     let badgeTarget = $(this.badgeTarget)
+    let allStatusClasses = ['actual', 'planned', 'suggestion', 'more-information', 'no-comment']
 
     Rails.ajax({
       type: "get",
       url: statePath,
       success: function(data) {
-        characteristicTarget.removeClass('actual')
-        characteristicTarget.removeClass('planned')
-        characteristicTarget.removeClass('suggestion')
-        characteristicTarget.removeClass('more-information')
-        characteristicTarget.addClass( data.status.replace('_', '-') )
+        var status =  data.status.replace('_', '-')
 
-        badgeTarget.removeClass('no-comment')
-        badgeTarget.removeClass('actual')
-        badgeTarget.removeClass('planned')
-        badgeTarget.removeClass('suggestion')
-        badgeTarget.removeClass('more-information')
-        badgeTarget.addClass( data.status.replace('_', '-') )
+        characteristicTarget.removeClass(allStatusClasses)
+        characteristicTarget.addClass(status)
+
+        badgeTarget.removeClass(allStatusClasses)
+        badgeTarget.addClass(status)
+
+        badgeTarget.removeClass(['fa-square-o', 'fa-check-square-o'])
+
+        if (status == 'no-comment') {
+          badgeTarget.addClass('fa-square-o')
+        } else {
+          badgeTarget.addClass('fa-check-square-o')
+        }
 
         $(badgeTarget).attr('data-original-title', data.humanized_status)
        },
       error: function(data) { alert('Error') }
     })
   }
-
-  onPostError(event) {
-    event.preventDefault()
-
-    $(this.missingStatusAlertTarget).show()
-
-    let [data, status, xhr] = event.detail;
-
-    if (data.errors.includes("Status can't be blank")) {
-      $(this.missingStatusAlertTarget).show()
-    } else {
-      $(this.missingStatusAlertTarget).hide()
-    }
-
-    if (data.errors.includes("Comment can't be blank")) {
-      $(this.missingCommentAlertTarget).show()
-    } else {
-      $(this.missingCommentAlertTarget).hide()
-    }
-  }
-
 }

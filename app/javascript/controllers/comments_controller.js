@@ -47,12 +47,12 @@ export default class extends Controller {
         badgeTarget.removeClass(allStatusClasses)
         badgeTarget.addClass(status)
 
-        badgeTarget.removeClass(['fa-square-o', 'fa-check-square-o'])
+        badgeTarget.removeClass(['fa-square-o', 'fa-square'])
 
         if (status == 'no-comment') {
           badgeTarget.addClass('fa-square-o')
         } else {
-          badgeTarget.addClass('fa-check-square-o')
+          badgeTarget.addClass('fa-square')
         }
 
         $(badgeTarget).attr('data-original-title', data.humanized_status)

@@ -24,10 +24,6 @@ export default class extends Controller {
       $(this.gridTarget).find('.cell.planned').removeClass("hidden")
     }
 
-    if (selected.indexOf('No Comment') !== -1) {
-      $(this.gridTarget).find('.cell.no-comment').removeClass("hidden")
-    }
-
     if (selected.indexOf('Gap in Effort') !== -1) {
       $(this.gridTarget).find('.cell.no-comment').addClass("gap-in-effort")
       $(this.gridTarget).find('.cell.suggestion').addClass("gap-in-effort")

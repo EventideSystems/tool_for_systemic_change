@@ -275,23 +275,27 @@ span.more-information {
   color: $color-more-information;
 }
 
-span.badge-checklist-item.actual {
-  background-color: $color-actual;
+i.badge-checklist-item {
+
 }
 
-span.badge-checklist-item.planned {
-  background-color: $color-planned;
-}
-span.badge-checklist-item.suggestion {
-  background-color: $color-suggestion;
+i.badge-checklist-item.actual {
+  color: $color-actual;
 }
 
-span.badge-checklist-item.more-information {
-  background-color: $color-more-information;
+i.badge-checklist-item.planned {
+  color: $color-planned;
+}
+i.badge-checklist-item.suggestion {
+  color: $color-suggestion;
 }
 
-span.badge-checklist-item.no-comment {
-  background-color: white;
+i.badge-checklist-item.more-information {
+  color: $color-more-information;
+}
+
+i.badge-checklist-item.no-comment {
+  color: #212529;
 }
 
 .form-check {

@@ -60,7 +60,6 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'activities'
-      get 'changes'
       get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
     end
   end
@@ -74,7 +73,6 @@ Rails.application.routes.draw do
       get 'merge_options'
       get 'ecosystem_maps_organisations'
       get 'activities'
-      get 'changes'
       get 'targets_network_map'
       get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
     end

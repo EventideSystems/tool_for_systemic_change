@@ -57,7 +57,7 @@ class ChecklistItemsController < ApplicationController
     if new_comments_saved_assigned_actuals?(params, checklist_item)
       'new_comments_saved_assigned_actuals'
     else
-      (@checklist_item.status_was != 'actual' && @checklist_item.status == 'actual') ? 'addition' : 'none'
+      (checklist_item.status_was != 'actual' && checklist_item.status == 'actual') ? 'addition' : 'none'
     end
   end
 

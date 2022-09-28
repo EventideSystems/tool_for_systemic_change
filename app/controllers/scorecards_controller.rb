@@ -236,7 +236,7 @@ class ScorecardsController < ApplicationController
   end
 
   def ecosystem_maps_organisations
-    if params[:id].to_s == params[:id].to_i
+    if params[:id].to_s == params[:id].to_i.to_s
       @scorecard = current_account.scorecards.find(params[:id])
       authorize(@scorecard)
     else

@@ -37,12 +37,13 @@ class NewTransitionCardChecklistItems
     end
 
     TOTAL_TRANSITION_CARD_INITIATIVES_SQL = <<~SQL
+
       with checklist_items_actual_status_before_period as (
         select
           focus_area_group_id,
           focus_area_id,
           characteristic_id,
-          count(created_at) as actual_count
+          count(created_at) filter (where status = 'actual') as actual_count
         from (
           select
             distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
@@ -50,7 +51,8 @@ class NewTransitionCardChecklistItems
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,
             initiatives.id as initiative_id,
-            checklist_item_changes.created_at
+            checklist_item_changes.created_at,
+            checklist_item_changes.ending_status as status
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
@@ -59,10 +61,9 @@ class NewTransitionCardChecklistItems
           left join checklist_item_changes
             on checklist_item_changes.checklist_item_id = checklist_items.id
             and checklist_item_changes.created_at < $1
-            and checklist_item_changes.ending_status = 'actual'
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
-          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
+          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at desc
         ) as checked_status_before_period
         group by focus_area_group_id, focus_area_id, characteristic_id
       ),
@@ -72,7 +73,7 @@ class NewTransitionCardChecklistItems
           focus_area_group_id,
           focus_area_id,
           characteristic_id,
-          count(created_at) as actual_count
+          count(created_at) filter (where status = 'actual') as actual_count
         from (
           select
             distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
@@ -80,7 +81,8 @@ class NewTransitionCardChecklistItems
             focus_areas.id as focus_area_id,
             characteristics.id as characteristic_id,
             initiatives.id as initiative_id,
-            checklist_item_changes.created_at
+            checklist_item_changes.created_at,
+            checklist_item_changes.ending_status as status
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
@@ -89,7 +91,6 @@ class NewTransitionCardChecklistItems
           left join checklist_item_changes
             on checklist_item_changes.checklist_item_id = checklist_items.id
             and checklist_item_changes.created_at < $2
-            and checklist_item_changes.ending_status = 'actual'
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at desc

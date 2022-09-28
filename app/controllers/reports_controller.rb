@@ -104,7 +104,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  def new_transition_card_activity
+  def transition_card_activity
     authorize(:report, :transition_card_activity?)
 
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
@@ -125,7 +125,7 @@ class ReportsController < ApplicationController
     @date_to = Date.parse(params[:report][:date_to]).end_of_day
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
 
-    @report = Reports::NewTransitionCardActivity.new(@scorecard, @date_from, @date_to)
+    @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
       format.html
@@ -150,36 +150,6 @@ class ReportsController < ApplicationController
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
                  .find(params[:report][:scorecard_id])
 
-    @date = params[:report][:date].in_time_zone('Australia/Adelaide').end_of_day.utc
-
-    @status = params[:report][:status]
-
-    @report = Reports::ScorecardComments.new(@scorecard, @date, @status)
-
-    respond_to do |format|
-      format.html
-      format.xlsx do
-        send_data(
-          @report.to_xlsx.read,
-          type: Mime[:xlsx],
-          filename: "#{scorecard_comments_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx",
-          disposition: 'attachment'
-        )
-      end
-    end
-  end
-
-  def new_scorecard_comments
-    authorize(:report, :index?)
-
-    @content_subtitle = "#{Scorecard.model_name.human} Comments"
-    add_breadcrumb(@content_subtitle)
-
-    @scorecard = current_account
-                 .scorecards
-                 .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
-                 .find(params[:report][:scorecard_id])
-
     @date = \
       ActiveSupport::TimeZone[current_user.time_zone]
         .parse(params[:report][:date])
@@ -188,7 +158,7 @@ class ReportsController < ApplicationController
 
     @status = params[:report][:status]
 
-    @report = Reports::NewScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)
+    @report = Reports::ScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)
 
     respond_to do |format|
       format.html

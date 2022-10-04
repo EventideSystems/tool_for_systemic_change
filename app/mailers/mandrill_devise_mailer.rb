@@ -23,7 +23,7 @@ class MandrillDeviseMailer < Devise::Mailer
         {
           name: 'logo.png',
           filename: 'logo.png',
-          content: File.read(Rails.root.join('app/assets/images/logo-long-white-bg.png')),
+          content: File.read(Rails.root.join('app/assets/images/logo-long-white-bg-pdf.png')),
           type: 'image/png'
         }
       ],

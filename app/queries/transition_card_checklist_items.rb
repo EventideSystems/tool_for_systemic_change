@@ -68,36 +68,6 @@ class TransitionCardChecklistItems
         group by focus_area_group_id, focus_area_id, characteristic_id
       ),
 
-      checklist_items_actual_status_after_period as (
-        select
-          focus_area_group_id,
-          focus_area_id,
-          characteristic_id,
-          count(created_at) filter (where status = 'actual') as actual_count
-        from (
-          select
-            distinct on (focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id)
-            focus_area_groups.id as focus_area_group_id,
-            focus_areas.id as focus_area_id,
-            characteristics.id as characteristic_id,
-            initiatives.id as initiative_id,
-            checklist_item_changes.created_at,
-            checklist_item_changes.ending_status as status
-          from characteristics
-          inner join focus_areas on focus_areas.id = characteristics.focus_area_id
-          inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
-          inner join checklist_items on checklist_items.characteristic_id = characteristics.id
-          inner join initiatives on initiatives.id = checklist_items.initiative_id
-          left join checklist_item_changes
-            on checklist_item_changes.checklist_item_id = checklist_items.id
-            and checklist_item_changes.created_at < $2
-          where initiatives.scorecard_id = $3
-          and initiatives.deleted_at is null
-          order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at desc
-        ) as checked_status_before_period
-        group by focus_area_group_id, focus_area_id, characteristic_id
-      ),
-
       update_existing_additions as (
         select
           focus_area_group_id,
@@ -200,12 +170,12 @@ class TransitionCardChecklistItems
         checklist_items_actual_status_before_period.actual_count as actual_count_before_period,
         (new_comment_additions.additions_count + update_existing_additions.additions_count) as additions_count_during_period,
         new_comments_saved_actuals_during_period.assigned_actuals_count as assigned_actuals_count_during_period,
-        checklist_items_actual_status_after_period.actual_count as actual_count_after_period
+        (
+          checklist_items_actual_status_before_period.actual_count +
+          new_comment_additions.additions_count +
+          update_existing_additions.additions_count
+        ) as actual_count_after_period
       from checklist_items_actual_status_before_period
-      left join checklist_items_actual_status_after_period
-        on checklist_items_actual_status_after_period.focus_area_group_id = checklist_items_actual_status_before_period.focus_area_group_id
-        and checklist_items_actual_status_after_period.focus_area_id = checklist_items_actual_status_before_period.focus_area_id
-        and checklist_items_actual_status_after_period.characteristic_id = checklist_items_actual_status_before_period.characteristic_id
       left join update_existing_additions
         on update_existing_additions.focus_area_group_id = checklist_items_actual_status_before_period.focus_area_group_id
         and update_existing_additions.focus_area_id = checklist_items_actual_status_before_period.focus_area_id

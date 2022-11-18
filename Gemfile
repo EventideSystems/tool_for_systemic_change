@@ -14,7 +14,7 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma', '>= 5.3.1'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -60,7 +60,7 @@ gem 'nested_form_fields'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'caxlsx'
-gem 'roo', '~> 2.7.0'
+gem 'roo'
 gem 'prawn'
 gem 'prawn-table'
 gem 'rubyzip', '>= 1.3.0'
@@ -81,6 +81,8 @@ gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
 gem 'thor'
 
 gem 'net-http'
+
+gem 'fast_jsonparser'
 
 # Profiling related
 gem 'rack-mini-profiler'

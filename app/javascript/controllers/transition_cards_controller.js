@@ -24,12 +24,12 @@ export default class extends Controller {
       $(this.gridTarget).find('.cell.planned').removeClass("hidden")
     }
 
-    if (selected.indexOf('No Comment') !== -1) {
-      $(this.gridTarget).find('.cell.no-comment').removeClass("hidden")
-    }
-
     if (selected.indexOf('Gap in Effort') !== -1) {
-      $(this.gridTarget).find('.cell.gap').removeClass("hidden")
+      $(this.gridTarget).find('.cell.no-comment').addClass("gap-in-effort")
+      $(this.gridTarget).find('.cell.suggestion').addClass("gap-in-effort")
+      $(this.gridTarget).find('.cell.more-information').addClass("gap-in-effort")
+    } else {
+      $(this.gridTarget).find('.cell.gap-in-effort').removeClass("gap-in-effort")
     }
   }
 

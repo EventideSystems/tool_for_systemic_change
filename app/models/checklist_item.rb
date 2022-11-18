@@ -3,15 +3,25 @@ class ChecklistItem < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
+  string_enum status: %i[no_comment actual planned more_information suggestion]
+
+  belongs_to :user
   belongs_to :initiative
   belongs_to :characteristic
 
   has_many :checklist_item_comments
 
+  has_many :checklist_item_changes, dependent: :destroy
+
+  validates :status, presence: true
+  validates :status, inclusion: { in: (statuses.keys - %w[no_comment]), message: 'Please select a status' }, on: :update
+  validates :comment, presence: true
   validates :initiative, presence: true
   validates :characteristic, presence: true, uniqueness: { scope: :initiative }
 
-  attr_reader :new_comment, :new_comment_status # support creating comments
+  attr_reader :new_comment, :new_status # support creating comments
+
+  attribute :humanized_status, :string
 
   def name
     characteristic.name.presence
@@ -26,16 +36,8 @@ class ChecklistItem < ApplicationRecord
     characteristic.focus_area
   end
 
-  def current_checklist_item_comment
-    checklist_item_comments.to_a.max_by(&:created_at)
-  end
-
-  def current_comment
-    current_checklist_item_comment&.comment
-  end
-
-  def current_comment_status
-    current_checklist_item_comment&.status
+  def humanized_status
+    status.humanize
   end
 
   private

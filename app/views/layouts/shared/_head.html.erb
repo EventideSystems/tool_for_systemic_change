@@ -7,7 +7,7 @@
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  
+
   <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -25,11 +25,11 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  
+
   <% unless %w(test development).include?(Rails.env) %>
-    <script type="text/javascript"> 
-      window.$zopim||(function(d,s){var z=$zopim=function(c){ z._.push(c)},$=z.s= d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set. _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8'); $.src='https://v2.zopim.com/?5G25UhKHEYsSbhuZresIsPfPOYvdmRup';z.t=+new Date;$. type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script'); 
+    <script type="text/javascript">
+      window.$zopim||(function(d,s){var z=$zopim=function(c){ z._.push(c)},$=z.s= d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set. _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8'); $.src='https://v2.zopim.com/?5G25UhKHEYsSbhuZresIsPfPOYvdmRup';z.t=+new Date;$. type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
     </script>
   <% end %>
-  
+
 </head>

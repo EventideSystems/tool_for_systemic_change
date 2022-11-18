@@ -3,7 +3,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Event</th>
+          <th>Action</th>
+          <th>Activity</th>
           <th>Occurred at</th>
           <th>Initiative</th>
           <th>Characteristic</th>
@@ -15,13 +16,14 @@
       <tbody>
         <% activities.each do |activity| %>
           <tr>
-            <td><%= activity.event.titleize %></td>
+            <td><%= activity.action&.humanize %></td>
+            <td><%= activity.activity&.humanize %></td>
             <td data-toggle="tooltip" title="<%= activity.occurred_at %>"><%= activity_occurred_at(activity) %></td>
-            <td><%= activity.initiative_name.presence || 'NA' %></td>
-            <td><%= activity.characteristic_name.presence || 'NA' %></td>
-            <td><%= activity.from_status.presence || 'NA' %></td>
-            <td><%= activity.to_status.presence || 'NA' %></td>
-            <td><%= activity.comment.presence || 'NA' %></td>
+            <td><%= activity.initiative_name.presence %></td>
+            <td><%= activity.characteristic_name.presence %></td>
+            <td><%= activity.from_value&.humanize %></td>
+            <td><%= activity.to_value&.humanize.presence %></td>
+            <td><%= activity.comment %></td>
           </tr>
         <%- end %>
       </tbody>

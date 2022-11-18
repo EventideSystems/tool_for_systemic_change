@@ -1,0 +1,7 @@
+<div class="float-left" style="padding-right: 5px; padding-left: 5px;">
+  <select <%= local_assigns[:disabled] ? "disabled='disabled'" : ''%> multiple="multiple" class="form-control" name='status-filter[]' id="status-filter" style="min-width: 300px; width: auto"  data-transition-cards-target="filter">
+    <%- ['Actual', 'Planned', 'Gap in Effort'].each do |option| %>
+      <option value="<%= option %>" <%= 'selected' if option == 'Actual' %>><%= option %></option>
+    <%- end %>
+  </select>
+</div>

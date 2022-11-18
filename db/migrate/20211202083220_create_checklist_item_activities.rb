@@ -1,7 +1,7 @@
 class CreateChecklistItemActivities < ActiveRecord::Migration[6.1]
   def up
     connection.execute(<<~SQL)
-      CREATE OR REPLACE VIEW checklist_item_activities AS        
+      CREATE OR REPLACE VIEW checklist_item_activities AS
         select * from checklist_item_first_comment_view
         union
         select * from checklist_item_updated_comments_view

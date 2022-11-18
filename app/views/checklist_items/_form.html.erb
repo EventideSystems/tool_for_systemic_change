@@ -1,10 +1,82 @@
-<%= simple_form_for(@checklist_item) do |f| %>
-  <%= f.error_notification %>
 
-  <div class="form-inputs">
+<div id="characteristic-comment-form-<%=checklist_item.id%>" data-comments-target='form'>
+  <div class="box box-solid mb-3 characteristic-update-comment-form">
+    <div data-comments-target="currentComment" style="<%= 'display: none' if checklist_item.comment.blank? %>">
+      <%= simple_form_for(checklist_item,
+        html: {
+          class: 'form-horizontal',
+          data: {
+            action: "ajax:success->comments#onPostSuccess ajax:error->comments#onPostUpdateCommentError"
+          }
+        },
+        remote: true,
+        format: :json
+      ) do |f| %>
+        <div class="d-flex flex-row">
+          <div class='mt-1'>
+            <%= f.input :comment, as: :text, label: false %>
+          </div>
+          <div class='ml-3'>
+            <%=
+              f.input :status,
+                as: :radio_buttons,
+                collection: comment_statuses_collection,
+                label_text: false,
+                checked: checklist_item.status
+              %>
+          </div>
+        </div>
+        <%=
+          f.button :submit,
+            "Update Existing",
+            class: 'btn btn-secondary checklist-comment-update',
+            data: {
+              comments_target: "updateExistingBtn",
+              id: checklist_item.id
+            }
+        %>
+        <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
+      <% end %>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="box box-solid mb-3 characteristic-update-comment-form">
+    <div data-comments-target="newComment">
+      <%= simple_form_for(checklist_item,
+        html: {
+          class: 'form-horizontal',
+          data: { action: "ajax:success->comments#onPostSuccess ajax:error->comments#onPostError" }
+        },
+        remote: true,
+        format: :json
+      ) do |f| %>
+        <div class="d-flex flex-row">
+          <div class='mt-1'>
+            <%= f.input :new_comment, as: :text, label: false, required: true %>
+            <div class="characteristicAlert callout callout-danger" style="display: none" data-comments-target="missingCommentAlert">
+              <p>Please enter a comment</p>
+            </div>
+          </div>
+          <div class='ml-3'>
+            <%=
+              f.input :new_status,
+                as: :radio_buttons,
+                collection: comment_statuses_collection,
+                label_text: false,
+                checked: checklist_item.new_status,
+                required: true
+              %>
+            <div class="characteristicAlert callout callout-danger" style="display: none" data-comments-target="missingStatusAlert">
+              <p>Please select a status</p>
+            </div>
+          </div>
+        </div>
+        <%=
+          f.button :submit,
+            "Save New Comment",
+            class: 'btn btn-secondary checklist-comment-new'
+        %>
+        <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>

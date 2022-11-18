@@ -1,5 +1,5 @@
 class ScorecardComments::Import < Import
-  def process(account)
+  def process(current_user, account)
     scorecard = nil
     initiatives = {}
 
@@ -79,11 +79,23 @@ class ScorecardComments::Import < Import
                 .find_by(characteristic: characteristic)
 
               if checklist_item.present?
-                checklist_item.checked = true if checklist_item.checked != true
-                checklist_item.save!
-                if checklist_item.current_comment != comment
-                  checklist_item.checklist_item_comments.create(comment: comment)
+                checklist_item.assign_attributes(
+                  status: 'actual',
+                  comment: comment
+                )
+
+                if checklist_item.changed?
+                  checklist_item.checklist_item_changes.build(
+                    user: current_user,
+                    starting_status: checklist_item.status_was,
+                    ending_status: checklist_item.status,
+                    comment: checklist_item.comment,
+                    action: 'save_new_comment',
+                    activity: checklist_item_activity(checklist_item)
+                  )
                 end
+
+                checklist_item.save
               end
             else
               missing_data = []
@@ -113,6 +125,22 @@ class ScorecardComments::Import < Import
   end
 
   private
+
+  # NOTE: Similar to code in checklist_items_controller.rb
+  def checklist_item_activity(checklist_item)
+    if new_comments_saved_assigned_actuals?(checklist_item)
+      'new_comments_saved_assigned_actuals'
+    else
+      (checklist_item.status_was != 'actual' && checklist_item.status == 'actual') ? 'addition' : 'none'
+    end
+  end
+
+  # NOTE: Similar to code in checklist_items_controller.rb
+  def new_comments_saved_assigned_actuals?(checklist_item)
+    checklist_item.comment.present? &&
+    checklist_item.status_was == 'actual' &&
+    checklist_item.status == 'actual'
+  end
 
   def find_scorecard_by_name(account, name)
     account.scorecards.where("lower(name) = :name", { name: name&.downcase }).first

@@ -10,4 +10,5 @@ class ChecklistItemComment < ApplicationRecord
 
   validates :status, presence: true
   validates :comment, presence: true
+
 end

@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   resources :subsystem_tags
   namespace :initiatives do
     resources :imports, only: [:new, :create, :update]
-    resources :checklist_items, only: [:edit], controller: '/initiatives', action: 'edit_checklist_item'
   end
+
+  resources :checklist_items, only: [:show, :edit, :update]
+
   namespace :organisations do
     resources :imports, only: [:new, :create, :update]
   end

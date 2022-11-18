@@ -7,6 +7,10 @@ module ScorecardsHelper
     activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
   end
 
+  def change_occurred_at(change)
+    change.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
+  end
+
   def lookup_communities
     controller.current_account.communities.order(:name)
   end
@@ -36,33 +40,13 @@ module ScorecardsHelper
 
     characteristic_data = result[characteristic.id.to_s]
 
-    return 'cell hidden' if characteristic_data.blank?
-
-    if characteristic_data['status'].in?(ACTUAL_OR_PLANNED) && characteristic_data['comment'].present?
-      classes << [
-        "#{characteristic_data['status']}#{@focus_areas.index(characteristic.focus_area) + 1}",
-        characteristic_data['status']
-      ]
-
-      classes << 'hidden' unless characteristic_data['status'] == 'actual'
-    else
-      if characteristic_data['checked']
-        classes << [
-          "checked#{@focus_areas.index(characteristic.focus_area) + 1}",
-          'checked'
-        ]
-      end
-
-      classes << if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
-                   ['no-comment', "no-comment#{@focus_areas.index(characteristic.focus_area) + 1}"]
-                 else
-                   'gap'
-                 end
-
-      classes << 'hidden'
-    end
-
-    classes.join(' ')
+    [
+      'cell',
+      "#{characteristic_data[:status].dasherize}#{@focus_areas.index(characteristic.focus_area) + 1}",
+      characteristic_data[:status].dasherize
+    ].tap do |class_names|
+      class_names << 'hidden' unless characteristic_data[:status] == 'actual'
+    end.join(' ')
   end
 
   def cell_style(result, _focus_areas, characteristic)
@@ -72,22 +56,20 @@ module ScorecardsHelper
 
     return '' if characteristic_data.blank?
 
-    case characteristic_data['status']
+    case characteristic_data[:status]
     when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
     when 'planned'
       "background-color: #{characteristic.focus_area.planned_color}"
+    when 'no_comment'
+      "background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 1px,
+      #{characteristic.focus_area.actual_color} 2px,
+      #{characteristic.focus_area.actual_color} 3px
+      );"
     else
-      if characteristic_data['status'] == 'checked' && characteristic_data['comment'].blank?
-        "background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 1px,
-        #{characteristic.focus_area.actual_color} 2px,
-        #{characteristic.focus_area.actual_color} 3px
-        );"
-      else
-        ''
-      end
+      ''
     end
   end
 
@@ -107,7 +89,7 @@ module ScorecardsHelper
   def focus_area_cell_style(result, focus_area)
     characteristic_ids = focus_area.characteristics.pluck(:id).map(&:to_s)
 
-    any_actual = result.values_at(*characteristic_ids).any? { |checklist_item| checklist_item['status'] == 'actual' }
+    any_actual = result.values_at(*characteristic_ids).any? { |checklist_item| checklist_item[:status] == 'actual' }
 
     any_actual ? "background-color: #{focus_area.actual_color}" : ''
   end

@@ -9,8 +9,8 @@ module Reports
 
     def initialize(scorecard, date_from, date_to)
       @scorecard = scorecard
-      @date_from = date_from.beginning_of_day
-      @date_to = date_to.end_of_day
+      @date_from = date_from
+      @date_to = date_to
     end
 
     def to_xlsx
@@ -32,6 +32,7 @@ module Reports
           add_characteristic_columns_header(sheet, header_1, wrap_text)
 
           data = TransitionCardChecklistItems.execute(scorecard.id, date_from, date_to)
+
           current_focus_area_group_name = ''
           current_focus_area_name = ''
 
@@ -50,11 +51,10 @@ module Reports
             sheet.add_row(
               [
                 "    #{row[:characteristic_name]}",
-                row[:checked_count_before_period],
-                row[:checked_count_during_period],
-                row[:unchecked_count_during_period],
-                row[:final_count_at_end_of_period],
-                row[:new_actual_comment_count_during_period]
+                row[:actual_count_before_period],
+                row[:additions_count_during_period],
+                row[:actual_count_after_period],
+                row[:assigned_actuals_count_during_period]
               ]
             )
           end
@@ -77,7 +77,6 @@ module Reports
         row.add_cell(initiative_characteristics_title, style: header_1)
         row.add_cell("#{col_base_name} beginning of period", height: 48, style: wrap_text)
         row.add_cell('Additions', height: 48, style: wrap_text)
-        row.add_cell('Removals', height: 48, style: wrap_text)
         row.add_cell("#{col_base_name} end of period", height: 48, style: wrap_text)
         row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
       end

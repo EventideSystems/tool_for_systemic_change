@@ -1,4 +1,5 @@
 # frozen_string_literal: true
 
-class ScorecardTypeCharacteristic < ApplicationView
+class ScorecardTypeCharacteristic < ApplicationRecord
+  include ApplicationView
 end

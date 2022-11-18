@@ -4,14 +4,6 @@
       create_new_button(new_sustainable_development_goal_alignment_card_path)
     end
   %>
-
-  <%=
-    if policy(ScorecardComments::Import).create?
-      link_to(new_sustainable_development_goal_alignment_card_comments_import_path, class: 'btn btn-primary') do
-        safe_join([content_tag(:i, '', class: "fa fa-upload"), ' Import Comments'])
-      end
-    end
-  %>
 <% end %>
 
 <div class="box box-solid">

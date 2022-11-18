@@ -4,6 +4,7 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   static targets = [
     "activities",
+    "changes",
     "targetsNetworkMap",
     "targetsNetworkMapLabelsBtn",
     "targetsNetworkMapLegendBtn",
@@ -182,6 +183,7 @@ export default class extends Controller {
       error: function(data) { alert('Error') }
     })
   }
+
 
   loadTargetsNetworkMap(event) {
     event.preventDefault()

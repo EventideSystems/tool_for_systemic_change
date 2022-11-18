@@ -8,7 +8,7 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
   end
 
   def show
-    @initiatives = @scorecard.initiatives.order(:name)
+    @initiatives = @scorecard.initiatives.includes(:organisations).order(:name)
     @organisations = @initiatives.filter_map(&:organisations).flatten.uniq.sort_by(&:name)
 
     super

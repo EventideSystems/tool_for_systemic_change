@@ -2,7 +2,7 @@ import Rails from "@rails/ujs";
 import { Controller } from "stimulus";
 
 export default class extends Controller {
-  static targets = ["form", "characteristic", "checklistItem", "currentComment", "newComment", "missingStatusAlert", "missingCommentAlert"]
+  static targets = ["form", "characteristic", "checklistItem", "currentComment", "newComment", "missingStatusAlert", "missingCommentAlert", "badge"]
 
   open(event) {
     event.preventDefault()
@@ -32,48 +32,32 @@ export default class extends Controller {
 
     let statePath = this.element.dataset.statePath;
     let characteristicTarget = $(this.characteristicTarget)
-    let checklistItemTarget = $(this.checklistItemTarget)
+    let badgeTarget = $(this.badgeTarget)
+    let allStatusClasses = ['actual', 'planned', 'suggestion', 'more-information', 'no-comment']
 
     Rails.ajax({
       type: "get",
       url: statePath,
       success: function(data) {
-        characteristicTarget.removeClass('actual')
-        characteristicTarget.removeClass('planned')
-        characteristicTarget.removeClass('suggestion')
-        characteristicTarget.removeClass('more_information')
+        var status =  data.status.replace('_', '-')
 
-        characteristicTarget.addClass( data.comment_status )
-        checklistItemTarget.prop('checked', data.checked)
+        characteristicTarget.removeClass(allStatusClasses)
+        characteristicTarget.addClass(status)
+
+        badgeTarget.removeClass(allStatusClasses)
+        badgeTarget.addClass(status)
+
+        badgeTarget.removeClass(['fa-square-o', 'fa-square'])
+
+        if (status == 'no-comment') {
+          badgeTarget.addClass('fa-square-o')
+        } else {
+          badgeTarget.addClass('fa-square')
+        }
+
+        $(badgeTarget).attr('data-original-title', data.humanized_status)
        },
       error: function(data) { alert('Error') }
     })
   }
-
-  // SMELL: Never called
-  onPostUpdateCommentError(event) {
-    event.preventDefault()
-  }
-
-  onPostNewCommentError(event) {
-    event.preventDefault()
-
-    $(this.missingStatusAlertTarget).show()
-
-
-    let [data, status, xhr] = event.detail;
-
-    if (data.errors.includes("Status can't be blank")) {
-      $(this.missingStatusAlertTarget).show()
-    } else {
-      $(this.missingStatusAlertTarget).hide()
-    }
-
-    if (data.errors.includes("Comment can't be blank")) {
-      $(this.missingCommentAlertTarget).show()
-    } else {
-      $(this.missingCommentAlertTarget).hide()
-    }
-  }
-
 }

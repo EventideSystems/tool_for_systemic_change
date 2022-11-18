@@ -33,6 +33,7 @@ class ChecklistItemsController < ApplicationController
       )
     end
 
+    @checklist_item.user = current_user if @checklist_item.user.nil?
     @checklist_item.save
 
     if @checklist_item.errors.any?

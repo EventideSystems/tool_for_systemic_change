@@ -256,7 +256,7 @@ GEM
       coffee-rails (>= 3.2.1)
       jquery-rails
       rails (>= 3.2.0)
-    net-http (0.2.2)
+    net-http (0.3.0)
       uri
     net-imap (0.2.3)
       digest

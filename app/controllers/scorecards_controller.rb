@@ -154,8 +154,7 @@ class ScorecardsController < ApplicationController
     initiative_ids = @scorecard.initiatives.pluck(:id)
 
     # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
-    ChecklistItem.where(initiative_id: initiative_ids).delete_all
-    ChecklistItem.where(initiative_id: initiative_ids).delete_all
+    ChecklistItem.where(initiative_id: initiative_ids).destroy_all
     InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
     InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
 

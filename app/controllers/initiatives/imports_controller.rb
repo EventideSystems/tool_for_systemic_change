@@ -15,14 +15,10 @@ class Initiatives::ImportsController < ApplicationController
     )
     authorize @initiatives_import
 
-    respond_to do |format|
-      if @initiatives_import.save && @initiatives_import.process(current_account)
-        format.html { redirect_to initiatives_path, notice: 'Initiative records successfully imported.' }
-        format.json { render :show, status: :created, location: @initiatives_import }
-      else
-        format.html { render :new }
-        format.json { render json: @initiatives_import.errors, status: :unprocessable_entity }
-      end
+    if @initiatives_import.save && @initiatives_import.process(current_account)
+      redirect_to initiatives_path, notice: 'Initiative records successfully imported.'
+    else
+      render :new
     end
 
     @initiatives_import.destroy
@@ -31,14 +27,10 @@ class Initiatives::ImportsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @initiatives_import.update(initiatives_import_params)
-        format.html { redirect_to @initiatives_import, notice: 'Import was successfully updated.' }
-        format.json { render :show, status: :ok, location: @initiatives_import }
-      else
-        format.html { render :edit }
-        format.json { render json: @initiatives_import.errors, status: :unprocessable_entity }
-      end
+    if @initiatives_import.update(initiatives_import_params)
+      redirect_to @initiatives_import, notice: 'Import was successfully updated.'
+    else
+      render :edit
     end
   end
 

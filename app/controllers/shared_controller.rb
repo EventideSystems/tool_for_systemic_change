@@ -31,7 +31,7 @@ class SharedController < ApplicationController
       ChecklistItem
       .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
       .includes(:checklist_item_comments)
-      .select { |item| item.current_comment_status == 'actual' }
+      .select { |item| item.status == 'actual' }
 
     @initiatives = checklist_items.map(&:initiative).sort_by(&:name)
 

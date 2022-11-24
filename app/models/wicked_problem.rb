@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class WickedProblem < ApplicationRecord
   has_paper_trail
   acts_as_paranoid

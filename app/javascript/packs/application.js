@@ -78,6 +78,5 @@ $(window).on('load', function() {
   });
 });
 
-
 require("trix")
 require("@rails/actiontext")

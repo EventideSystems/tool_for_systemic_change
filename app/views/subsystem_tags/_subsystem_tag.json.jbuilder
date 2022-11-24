@@ -1,1 +1,0 @@
-json.extract! subsystem_tag, :id, :text

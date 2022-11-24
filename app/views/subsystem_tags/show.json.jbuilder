@@ -1,1 +1,0 @@
-json.partial! "subsystem_tags/subsystem_tag", subsystem_tag: @subsystem_tag

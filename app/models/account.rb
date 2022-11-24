@@ -21,11 +21,10 @@ class Account < ApplicationRecord
 
   validates :name, presence: true
 
-  scope :active, lambda {
-    where(expires_on: nil)
-      .or(Account.where(expires_on: Date.today..))
-      .order(created_at: :asc)
-  }
+  scope :active,
+        lambda {
+          where(expires_on: nil).or(Account.where(expires_on: Date.today..)).order(created_at: :asc)
+        }
 
   def accounts_users_remaining
     return :unlimited if max_users.zero?
@@ -34,10 +33,11 @@ class Account < ApplicationRecord
   end
 
   def scorecard_types
-    @scorecard_types ||= [].tap do |types|
-      types << TransitionCard if allow_transition_cards?
-      types << SustainableDevelopmentGoalAlignmentCard if allow_sustainable_development_goal_alignment_cards?
-    end
+    @scorecard_types ||=
+      [].tap do |types|
+        types << TransitionCard if allow_transition_cards?
+        types << SustainableDevelopmentGoalAlignmentCard if allow_sustainable_development_goal_alignment_cards?
+      end
   end
 
   def default_scorecard_type

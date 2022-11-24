@@ -1,1 +1,0 @@
-json.array! @initiatives_organisations, partial: 'initiatives_organisations/initiatives_organisation', as: :initiatives_organisation

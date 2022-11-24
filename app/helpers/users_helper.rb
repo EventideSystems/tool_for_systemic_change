@@ -3,9 +3,7 @@
 module UsersHelper
   def current_user_name
     return '' unless user_signed_in?
-    return current_user.email unless current_user.name.present?
-
-    current_user.name
+    current_user.name.presence || current_user.email
   end
 
   def current_user_membership_summary

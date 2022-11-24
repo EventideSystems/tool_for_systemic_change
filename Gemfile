@@ -27,7 +27,7 @@ gem 'jquery-rails', '>= 4.3.4'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.10'
+# gem 'jbuilder', '~> 2.10'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -57,8 +57,6 @@ gem 'trix-rails', require: 'trix'
 gem 'nested_form_fields'
 
 # Report related
-gem 'wkhtmltopdf-binary'
-gem 'wicked_pdf'
 gem 'caxlsx'
 gem 'roo'
 gem 'prawn'
@@ -76,9 +74,6 @@ gem 'paper_trail'
 gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
-
-gem 'hashie', '~> 3.4', '< 3.5' # NOTE Older version to avoid spamming the log
-gem 'thor'
 
 gem 'net-http'
 
@@ -113,6 +108,7 @@ group :development, :test do
   gem 'bullet'
   gem 'rubycritic'
   gem 'dotenv-rails'
+  gem "derailed_benchmarks"
 end
 
 group :development do

@@ -26,14 +26,10 @@ class Organisations::ImportsController < ApplicationController
     )
     authorize @organisations_import
 
-    respond_to do |format|
-      if @organisations_import.save && @organisations_import.process(current_account)
-        format.html { redirect_to organisations_path, notice: 'Organisation records successfully imported' }
-        format.json { render :show, status: :created, location: @organisations_import }
-      else
-        format.html { render :new }
-        format.json { render json: @organisations_import.errors, status: :unprocessable_entity }
-      end
+    if @organisations_import.save && @organisations_import.process(current_account)
+      redirect_to organisations_path, notice: 'Organisation records successfully imported'
+    else
+       render :new
     end
 
     @organisations_import.destroy
@@ -42,32 +38,27 @@ class Organisations::ImportsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @organisations_import.update(organisations_import_params)
-        format.html { redirect_to @organisations_import, notice: 'Records successfully updated.' }
-        format.json { render :show, status: :ok, location: @organisations_import }
-      else
-        format.html { render :edit }
-        format.json { render json: @organisations_import.errors, status: :unprocessable_entity }
-      end
+    if @organisations_import.update(organisations_import_params)
+      redirect_to @organisations_import, notice: 'Records successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @organisations_import.destroy
-    respond_to do |format|
-      format.html { redirect_to organisations_imports_url, notice: 'Import was successfully deleted.' }
-      format.json { head :no_content }
-    end
+
+    redirect_to organisations_imports_url, notice: 'Import was successfully deleted.'
   end
 
   private
-    def set_organisations_import
-      @organisations_import = Organisations::Import.find(params[:id])
-      authorize @organisations_import
-    end
 
-    def organisations_import_params
-       params.fetch(:organisations_import, {}).permit(:import)
-    end
+  def set_organisations_import
+    @organisations_import = Organisations::Import.find(params[:id])
+    authorize @organisations_import
+  end
+
+  def organisations_import_params
+      params.fetch(:organisations_import, {}).permit(:import)
+  end
 end

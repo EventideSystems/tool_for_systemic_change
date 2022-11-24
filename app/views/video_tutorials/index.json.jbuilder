@@ -1,1 +1,0 @@
-json.array! @video_tutorials, partial: 'video_tutorials/video_tutorial', as: :video_tutorial

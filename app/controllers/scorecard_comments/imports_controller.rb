@@ -11,14 +11,10 @@ class ScorecardComments::ImportsController < ApplicationController
     )
     authorize @scorecard_comments_import
 
-    respond_to do |format|
-      if @scorecard_comments_import.save && @scorecard_comments_import.process(current_user, current_account)
-        format.html { redirect_to transition_cards_path, notice: 'Transition Card Comments records successfully imported.' }
-        format.json { render :show, status: :created, location: @scorecard_comments_import }
-      else
-        format.html { render :new }
-        format.json { render json: @scorecard_comments_import.errors, status: :unprocessable_entity }
-      end
+    if @scorecard_comments_import.save && @scorecard_comments_import.process(current_user, current_account)
+      redirect_to transition_cards_path, notice: 'Transition Card Comments records successfully imported.'
+    else
+      render :new
     end
 
     @scorecard_comments_import.destroy
@@ -27,15 +23,12 @@ class ScorecardComments::ImportsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @scorecard_comments_import.update(scorecard_comments_import_params)
-        format.html { redirect_to @scorecard_comments_import, notice: 'Import was successfully updated.' }
-        format.json { render :show, status: :ok, location: @scorecard_comments_import }
-      else
-        format.html { render :edit }
-        format.json { render json: @scorecard_comments_import.errors, status: :unprocessable_entity }
-      end
+    if @scorecard_comments_import.update(scorecard_comments_import_params)
+      redirect_to @scorecard_comments_import, notice: 'Import was successfully updated.'
+    else
+      render :edit
     end
+
   end
 
   def content_title

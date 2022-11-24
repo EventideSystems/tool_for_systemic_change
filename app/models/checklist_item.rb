@@ -24,7 +24,7 @@ class ChecklistItem < ApplicationRecord
   attribute :humanized_status, :string
 
   def name
-    characteristic.name.presence
+    characteristic&.name.presence
   end
 
   def snapshot_at(timestamp)

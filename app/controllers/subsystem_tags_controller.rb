@@ -39,49 +39,40 @@ class SubsystemTagsController < ApplicationController
     respond_to do |format|
       if @subsystem_tag.save
         format.html { redirect_to subsystem_tags_path, notice: "Subsystem tag '' was successfully created." }
-        format.json { render :show, status: :created, location: @subsystem_tag }
         format.js
       else
         format.html { render :new }
-        format.json { render json: @subsystem_tag.errors, status: :unprocessable_entity }
         format.js
       end
     end
   end
 
   def update
-    respond_to do |format|
-      if @subsystem_tag.update(subsystem_tag_params)
-        format.html { redirect_to subsystem_tags_path, notice: 'Subsystem tag was successfully updated.' }
-        format.json { render :show, status: :ok, location: @subsystem_tag }
-      else
-        format.html { render :edit }
-        format.json { render json: @subsystem_tag.errors, status: :unprocessable_entity }
-      end
+    if @subsystem_tag.update(subsystem_tag_params)
+      redirect_to subsystem_tags_path, notice: 'Subsystem tag was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @subsystem_tag.destroy
-    respond_to do |format|
-      format.html { redirect_to subsystem_tags_url, notice: 'Subsystem tag was successfully deleted.' }
-      format.json { head :no_content }
-    end
+
+    redirect_to subsystem_tags_url, notice: 'Subsystem tag was successfully deleted.'
   end
 
   def content_subtitle
-    return @subsystem_tag.name if @subsystem_tag.present?
-    super
+    @subsystem_tag&.name.presence || super
   end
 
   private
 
-    def set_subsystem_tag
-      @subsystem_tag = SubsystemTag.find(params[:id])
-      authorize @subsystem_tag
-    end
+  def set_subsystem_tag
+    @subsystem_tag = SubsystemTag.find(params[:id])
+    authorize @subsystem_tag
+  end
 
-    def subsystem_tag_params
-      params.fetch(:subsystem_tag, {}).permit(:name, :description)
-    end
+  def subsystem_tag_params
+    params.fetch(:subsystem_tag, {}).permit(:name, :description)
+  end
 end

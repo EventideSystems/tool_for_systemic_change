@@ -35,14 +35,10 @@ class UsersController < ApplicationController
 
     authorize @user
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to users_path, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      redirect_to users_path, notice: 'User was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -58,14 +54,10 @@ class UsersController < ApplicationController
       @user.accounts_users.build(account: current_account, account_role: account_role)
     end
 
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update(user_params)
+      redirect_to users_path, notice: 'User was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -75,21 +67,16 @@ class UsersController < ApplicationController
                     .where.not(user: current_user)
                     .first
 
-    respond_to do |format|
-      if accounts_user.present? && accounts_user.destroy
-        format.html { redirect_to users_url, notice: 'User was successfully removed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to users_url, error: 'User could not be removed.' }
-        format.json { render status: :unprocessable_entity }
-      end
+
+    if accounts_user.present? && accounts_user.destroy
+      redirect_to users_path, notice: 'User was successfully removed.'
+    else
+      redirect_to users_path, error: 'User could not be removed.'
     end
   end
 
   def content_subtitle
-    return @user.display_name if @user.present?
-
-    super
+    @user&.display_name.presence || super
   end
 
   def stop_impersonating

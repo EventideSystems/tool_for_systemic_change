@@ -1,1 +1,0 @@
-json.array! @wicked_problems, partial: 'wicked_problems/wicked_problem', as: :wicked_problem

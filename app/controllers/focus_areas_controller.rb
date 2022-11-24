@@ -25,41 +25,28 @@ class FocusAreasController < ApplicationController
     @focus_area = FocusArea.new(focus_area_params)
     authorize @focus_area
 
-    respond_to do |format|
-      if @focus_area.save
-        format.html { redirect_to focus_areas_path, notice: 'Focus area was successfully created.' }
-        format.json { render :show, status: :created, location: @focus_area }
-      else
-        format.html { render :new }
-        format.json { render json: @focus_area.errors, status: :unprocessable_entity }
-      end
+    if @focus_area.save
+      redirect_to focus_areas_path, notice: 'Focus area was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @focus_area.update(focus_area_params)
-        format.html { redirect_to focus_areas_path, notice: 'Focus area was successfully updated.' }
-        format.json { render :show, status: :ok, location: @focus_area }
-      else
-        format.html { render :edit }
-        format.json { render json: @focus_area.errors, status: :unprocessable_entity }
-      end
+    if @focus_area.update(focus_area_params)
+      redirect_to focus_areas_path, notice: 'Focus area was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @focus_area.destroy
-    respond_to do |format|
-      format.html { redirect_to focus_areas_url, notice: 'Focus area was successfully deleted.' }
-      format.json { head :no_content }
-    end
+    redirect_to focus_areas_url, notice: 'Focus area was successfully deleted.'
   end
 
   def content_subtitle
-    return @focus_area.name if @focus_area.present?
-
-    super
+    @focus_area&.name.presence || super
   end
 
   private

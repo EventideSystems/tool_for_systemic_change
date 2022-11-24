@@ -1,1 +1,0 @@
-json.array! @focus_area_groups, partial: 'focus_area_groups/focus_area_group', as: :focus_area_group

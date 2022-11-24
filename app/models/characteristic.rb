@@ -12,31 +12,16 @@ class Characteristic < ApplicationRecord
 
   validates :position, presence: true, uniqueness: { scope: :focus_area }
   delegate :position, to: :focus_area, prefix: true
-  #accepts_nested_attributes_for :video_tutorial
 
   scope :per_scorecard_type, -> (scorecard_type) {
     joins(focus_area: :focus_area_group)
       .where('focus_area_groups_focus_areas.scorecard_type' => scorecard_type)
   }
 
-  DESCRIPTION_TEMPLATE = <<~HTML
-    <h1>Initiative Characteristics</h1>
-    <br/>
-    <em>Details go here...</em>
-    <br/>
-    <h1>Why it is important</h1>
-    <br/>
-    <em>Details go here...</em>
-    <br/>
-    <h1>Examples</h1>
-    <br/>
-    <em>Details go here...</em>
-  HTML
-
   def video_tutorial_id=(value)
     return if value.blank?
     tutorial = VideoTutorial.where(id: value).first
-    tutorial.update_attribute(:linked, self) if tutorial
+    tutorial&.update_attribute(:linked, self)
   end
 
   def video_tutorial_id

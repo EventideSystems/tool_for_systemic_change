@@ -28,49 +28,33 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
     authorize @account
 
-    respond_to do |format|
-      if @account.save
-        format.html { redirect_to accounts_path, notice: 'Account was successfully created.' }
-        format.json { render :show, status: :created, location: @account }
-      else
-        format.html { render :new }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
+    if @account.save
+      redirect_to accounts_path, notice: 'Account was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @account.update(account_params)
-        format.html { redirect_to accounts_path, notice: 'Account was successfully updated.' }
-        format.json { render :show, status: :ok, location: @account }
-      else
-        format.html { render :edit }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
+    if @account.update(account_params)
+      redirect_to accounts_path, notice: 'Account was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @account.destroy
-    respond_to do |format|
-      format.html { redirect_to accounts_url, notice: 'Account was successfully deleted.' }
-      format.json { head :no_content }
-    end
+    redirect_to accounts_url, notice: 'Account was successfully deleted.'
   end
 
   def switch
     self.current_account = @account
-    respond_to do |format|
-      format.html { redirect_to dashboard_path, notice: 'Account successfully switched.' }
-      format.json { render :show, status: :ok, location: @account }
-    end
+    redirect_to dashboard_path, notice: 'Account successfully switched.'
   end
 
   def content_subtitle
-    return @account.name if @account.present?
-
-    super
+    @account&.name.presence || super
   end
 
   private

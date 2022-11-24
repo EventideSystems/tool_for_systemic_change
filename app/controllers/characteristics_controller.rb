@@ -10,49 +10,38 @@ class CharacteristicsController < ApplicationController
   def show
   end
 
-
   def new
-    @characteristic = Characteristic.new(description: Characteristic::DESCRIPTION_TEMPLATE)
+    @characteristic = Characteristic.new(description: DESCRIPTION_TEMPLATE)
     authorize @characteristic
   end
 
   def edit
-    @characteristic.description = Characteristic::DESCRIPTION_TEMPLATE if @characteristic.description.blank?
+    @characteristic.description = DESCRIPTION_TEMPLATE if @characteristic.description.blank?
   end
 
   def create
     @characteristic = Characteristic.new(characteristic_params)
     authorize @characteristic
 
-    respond_to do |format|
-      if @characteristic.save
-        format.html { redirect_to characteristics_path, notice: 'Characteristic was successfully created.' }
-        format.json { render :show, status: :created, location: @characteristic }
-      else
-        format.html { render :new }
-        format.json { render json: @characteristic.errors, status: :unprocessable_entity }
-      end
+    if @characteristic.save
+      redirect_to characteristics_path, notice: 'Characteristic was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @characteristic.update(characteristic_params)
-        format.html { redirect_to characteristics_path, notice: 'Characteristic was successfully updated.' }
-        format.json { render :show, status: :ok, location: @characteristic }
-      else
-        format.html { render :edit }
-        format.json { render json: @characteristic.errors, status: :unprocessable_entity }
-      end
+    if @characteristic.update(characteristic_params)
+      redirect_to characteristics_path, notice: 'Characteristic was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @characteristic.destroy
-    respond_to do |format|
-      format.html { redirect_to characteristics_url, notice: 'Characteristic was successfully deleted.' }
-      format.json { head :no_content }
-    end
+
+    redirect_to characteristics_url, notice: 'Characteristic was successfully deleted.'
   end
 
   def description
@@ -60,11 +49,26 @@ class CharacteristicsController < ApplicationController
   end
 
   def content_subtitle
-    return @characteristic.name if @characteristic.present?
-    super
+    @characteristic&.name.presence || super
   end
 
   private
+
+  DESCRIPTION_TEMPLATE = <<~HTML
+    <h1>Initiative Characteristics</h1>
+    <br/>
+    <em>Details go here...</em>
+    <br/>
+    <h1>Why it is important</h1>
+    <br/>
+    <em>Details go here...</em>
+    <br/>
+    <h1>Examples</h1>
+    <br/>
+    <em>Details go here...</em>
+  HTML
+
+  private_constant :DESCRIPTION_TEMPLATE
 
   def set_characteristic
     @characteristic = Characteristic.find(params[:id])

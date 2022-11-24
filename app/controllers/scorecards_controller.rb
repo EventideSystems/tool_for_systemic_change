@@ -1,20 +1,7 @@
 # frozen_string_literal: true
 
 class ScorecardsController < ApplicationController
-  before_action :set_scorecard,
-                only: %i[
-                  show
-                  edit
-                  update
-                  destroy
-                  show_shared_link
-                  copy
-                  copy_options
-                  merge
-                  merge_options
-                  activities
-                  changes
-                ]
+  before_action :set_scorecard, except: %i[index new create]
 
   before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]
@@ -117,34 +104,26 @@ class ScorecardsController < ApplicationController
     @scorecard = current_account.scorecards.build(scorecard_params)
     authorize(@scorecard, policy_class: ScorecardPolicy)
 
-    respond_to do |format|
-      if @scorecard.save
-        SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
-        format.html { redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully created.") }
-        format.json { render(:show, status: :created, location: @scorecard) }
-      else
-        format.html { render(:new) }
-        format.json { render(json: @scorecard.errors, status: :unprocessable_entity) }
-      end
+    if @scorecard.save
+      SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
+      redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully created.")
+    else
+      render(:new)
     end
   end
 
   def update
-    respond_to do |format|
-      if @scorecard.update(scorecard_params)
-        if params[:unlink_scorecard]
-          @scorecard.linked_scorecard = nil
-          @scorecard.update(linked_scorecard: nil)
-        end
-
-        SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
-
-        format.html { redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully updated.") }
-        format.json { render(:show, status: :ok, location: @scorecard) }
-      else
-        format.html { render(:edit) }
-        format.json { render(json: @scorecard.errors, status: :unprocessable_entity) }
+    if @scorecard.update(scorecard_params)
+      if params[:unlink_scorecard]
+        @scorecard.linked_scorecard = nil
+        @scorecard.update(linked_scorecard: nil)
       end
+
+      SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
+
+      redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully updated.")
+    else
+      render(:edit)
     end
   end
 
@@ -157,23 +136,17 @@ class ScorecardsController < ApplicationController
     ChecklistItem.where(initiative_id: initiative_ids).destroy_all
     InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
     InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
-
     Initiative.where(id: initiative_ids).delete_all
 
     @scorecard.destroy
 
-    respond_to do |format|
-      format.html do
-        case @scorecard.class.name
-        when 'TransitionCard'
-          redirect_to(transition_cards_path, notice: notice)
-        when 'SustainableDevelopmentGoalAlignmentCard'
-          redirect_to(sustainable_development_goal_alignment_cards_path, notice: notice)
-        else
-          raise("Unknown scorecard type: #{klass.name}")
-        end
-      end
-      format.json { head(:no_content) }
+    case @scorecard.class.name
+    when 'TransitionCard'
+      redirect_to(transition_cards_path, notice: notice)
+    when 'SustainableDevelopmentGoalAlignmentCard'
+      redirect_to(sustainable_development_goal_alignment_cards_path, notice: notice)
+    else
+      raise("Unknown scorecard type: #{klass.name}")
     end
   end
 
@@ -192,16 +165,10 @@ class ScorecardsController < ApplicationController
     deep_copy = params[:copy] == 'deep'
 
     @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
-    respond_to do |format|
-      if @copied_scorecard.present?
-        format.html do
-          redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
-        end
-        format.json { render(:show, status: :ok, location: @copied_scorecard) }
-      else
-        format.html { render(:edit) }
-        format.json { render(json: @copied_scorecard.errors, status: :unprocessable_entity) }
-      end
+    if @copied_scorecard.present?
+      redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
+    else
+      render(:edit)
     end
   end
 
@@ -215,22 +182,17 @@ class ScorecardsController < ApplicationController
   def merge
     @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
     @merged_scorecard = @scorecard.merge(@other_scorecard)
-    respond_to do |format|
-      if @scorecard.present?
-        format.html do
-          card_path =
-            case @scorecard.type
-            when 'TransitionCard' then transition_card_path(@merged_scorecard)
-            when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
-            end
 
-          redirect_to(card_path, notice: "#{@scorecard.model_name.human} were successfully merged.")
+    if @merged_scorecard.present?
+      card_path =
+        case @scorecard.type
+        when 'TransitionCard' then transition_card_path(@merged_scorecard)
+        when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
         end
-        format.json { render(:show, status: :ok, location: @merged_scorecard) }
-      else
-        format.html { render(:edit) }
-        format.json { render(json: @merged_scorecard.errors, status: :unprocessable_entity) }
-      end
+
+      redirect_to(card_path, notice: "#{@scorecard.model_name.human} were successfully merged.")
+    else
+      format.html { render(:edit) }
     end
   end
 
@@ -254,9 +216,7 @@ class ScorecardsController < ApplicationController
   end
 
   def content_subtitle
-    return @scorecard.name if @scorecard.present?
-
-    super
+    @scorecard&.name.presence || super
   end
 
   def linked_initiatives

@@ -27,50 +27,38 @@ class SectorsController < ApplicationController
     @sector = Sector.new(sector_params)
     authorize @sector
 
-    respond_to do |format|
-      if @sector.save
-        format.html { redirect_to sectors_path, notice: 'Sector was successfully created.' }
-        format.json { render :show, status: :created, location: @sector }
-      else
-        format.html { render :new }
-        format.json { render json: @sector.errors, status: :unprocessable_entity }
-      end
+    if @sector.save
+      redirect_to sectors_path, notice: 'Sector was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @sector.update(sector_params)
-        format.html { redirect_to sectors_path, notice: 'Sector was successfully updated.' }
-        format.json { render :show, status: :ok, location: @sector }
-      else
-        format.html { render :edit }
-        format.json { render json: @sector.errors, status: :unprocessable_entity }
-      end
+    if @sector.update(sector_params)
+      redirect_to sectors_path, notice: 'Sector was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @sector.destroy
-    respond_to do |format|
-      format.html { redirect_to sectors_url, notice: 'Sector was successfully deleted.' }
-      format.json { head :no_content }
-    end
+    redirect_to sectors_url, notice: 'Sector was successfully deleted.'
   end
 
   def content_subtitle
-    return @sector.name if @sector.present?
-    super
+    @sector&.name.presence || super
   end
 
   private
 
-    def set_sector
-      @sector = Sector.find(params[:id])
-      authorize @sector
-    end
+  def set_sector
+    @sector = Sector.find(params[:id])
+    authorize @sector
+  end
 
-    def sector_params
-      params.fetch(:sector, {}).permit(:name, :description, :color)
-    end
+  def sector_params
+    params.fetch(:sector, {}).permit(:name, :description, :color)
+  end
 end

@@ -20,6 +20,8 @@ class ApplicationController < ActionController::Base
 
   add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
+  helper_method :current_account
+
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
     @current_account ||= (

@@ -16,7 +16,7 @@ module Prawn
     end
 
     def checklist_item_color_sdg_card(checklist_item)
-      case checklist_item.current_comment_status
+      case checklist_item.status
       when 'actual' then checklist_item.focus_area.actual_color.delete('#')
       when 'planned' then checklist_item.focus_area.planned_color.delete('#')
       else
@@ -25,7 +25,7 @@ module Prawn
     end
 
     def checklist_item_color_transition_card(checklist_item)
-      case checklist_item.current_comment_status
+      case checklist_item.status
       when 'actual' then focus_area_color(checklist_item.focus_area)
       when 'planned' then focus_area_desaturated_color(checklist_item.focus_area)
       else

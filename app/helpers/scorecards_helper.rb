@@ -7,10 +7,6 @@ module ScorecardsHelper
     activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
   end
 
-  def change_occurred_at(change)
-    change.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
-  end
-
   def lookup_communities
     controller.current_account.communities.order(:name)
   end
@@ -25,12 +21,6 @@ module ScorecardsHelper
 
   def lookup_wicked_problems
     controller.current_account.wicked_problems.order(:name)
-  end
-
-  def display_selected_date
-    return 'Select Date' if @selected_date.blank?
-
-    Date.parse(@selected_date).strftime('%B %-d, %Y')
   end
 
   def cell_class(result, _focus_areas, characteristic)
@@ -81,7 +71,7 @@ module ScorecardsHelper
                   .scorecards
                   .where(id: parent_scorecard.linked_scorecard_id)
                   .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
-                  .where.not(type: parent_scorecard.type)
+                  .where.not(type: parent_scorecard.type, deleted_at: nil)
                   .order(:name)
                   .pluck(:name, :id)
   end

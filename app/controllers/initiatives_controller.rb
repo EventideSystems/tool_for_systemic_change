@@ -49,53 +49,40 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(initiative_params)
     authorize @initiative
 
-    respond_to do |format|
-      if @initiative.save
+    if @initiative.save
+      ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
 
-        ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
-
-        format.html { redirect_to initiatives_path, notice: 'Initiative was successfully created.' }
-        format.json { render :show, status: :created, location: @initiative }
-      else
-        format.html { render :new }
-        format.json { render json: @initiative.errors, status: :unprocessable_entity }
-      end
+      redirect_to initiatives_path, notice: 'Initiative was successfully created.'
+    else
+      render :new
     end
+
   end
 
   def update
-    respond_to do |format|
-      linked_initiative = @initiative.linked_initiative
+    linked_initiative = @initiative.linked_initiative
 
-      if @initiative.update(initiative_params)
-        if params[:unlink_initiative]
-          linked_initiative.update(linked: false) if linked_initiative.present?
-          @initiative.update(linked: false)
-        elsif @initiative.linked?
-          ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
-        end
-
-        format.html { redirect_to initiatives_path, notice: 'Initiative was successfully updated.' }
-        format.json { render :show, status: :ok, location: @initiative }
-      else
-        format.html { render :edit }
-        format.json { render json: @initiative.errors, status: :unprocessable_entity }
+    if @initiative.update(initiative_params)
+      if params[:unlink_initiative]
+        linked_initiative.update(linked: false) if linked_initiative.present?
+        @initiative.update(linked: false)
+      elsif @initiative.linked?
+        ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
       end
+
+      redirect_to initiatives_path, notice: 'Initiative was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @initiative.destroy
-    respond_to do |format|
-      format.html { redirect_to initiatives_url, notice: 'Initiative was successfully deleted.' }
-      format.json { head :no_content }
-    end
+    redirect_to initiatives_url, notice: 'Initiative was successfully deleted.'
   end
 
   def content_subtitle
-    return @initiative.name if @initiative.present?
-
-    super
+    @initiative&.name.presence || super
   end
 
   # NOTE Will move this to the checklist controller, where it belongs

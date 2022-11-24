@@ -32,35 +32,26 @@ class WickedProblemsController < ApplicationController
     respond_to do |format|
       if @wicked_problem.save
         format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully created.' }
-        format.json { render :show, status: :created, location: @wicked_problem }
         format.js
       else
         format.html { render :new }
-        format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
         format.js
       end
     end
   end
 
   def update
-    respond_to do |format|
-      if @wicked_problem.update(wicked_problem_params)
-        format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully updated.' }
-        format.json { render :show, status: :ok, location: @wicked_problem }
-      else
-        format.html { render :edit }
-        format.json { render json: @wicked_problem.errors, status: :unprocessable_entity }
-      end
+    if @wicked_problem.update(wicked_problem_params)
+      redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     @wicked_problem.delete
 
-    respond_to do |format|
-      format.html { redirect_to wicked_problems_url, notice: 'Wicked problem / opportunity was successfully deleted.' }
-      format.json { head :no_content }
-    end
+    redirect_to wicked_problems_url, notice: 'Wicked problem / opportunity was successfully deleted.'
   end
 
   def content_title
@@ -68,18 +59,17 @@ class WickedProblemsController < ApplicationController
   end
 
   def content_subtitle
-    return @wicked_problem.name if @wicked_problem.present?
-    super
+    @wicked_problem&.name.presence || super
   end
 
   private
 
-    def set_wicked_problem
-      @wicked_problem = current_account.wicked_problems.find(params[:id])
-      authorize @wicked_problem
-    end
+  def set_wicked_problem
+    @wicked_problem = current_account.wicked_problems.find(params[:id])
+    authorize @wicked_problem
+  end
 
-    def wicked_problem_params
-      params.fetch(:wicked_problem, {}).permit(:name, :description)
-    end
+  def wicked_problem_params
+    params.fetch(:wicked_problem, {}).permit(:name, :description)
+  end
 end

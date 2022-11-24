@@ -6,26 +6,28 @@ module ReportsHelper
   end
 
   def activity_report_name
-    return 'Activity Report' if current_account.scorecard_types.count > 1
-
-    "#{current_account.scorecard_types.first.model_name.human} Activity Report"
+    multiple_scorecards_types? ? 'Activity Report' : "#{default_scorecard_type_name} Activity Report"
   end
 
   def comments_report_name
-    return 'Comments Report' if current_account.scorecard_types.count > 1
-
-    "#{current_account.scorecard_types.first.model_name.human} Comments Report"
+    multiple_scorecards_types? ? 'Comments Report' : "#{default_scorecard_type_name} Comments Report"
   end
 
   def stakeholder_report_name
-    return 'Stakeholder Report' if current_account.scorecard_types.count > 1
-
-    "#{current_account.scorecard_types.first.model_name.human} Stakeholder Report"
+    multiple_scorecards_types? ? 'Stakeholder Report' : "#{default_scorecard_type_name} Stakeholder Report"
   end
 
   def report_scorecard_label
-    return 'Select Card' if current_account.scorecard_types.count > 1
+    multiple_scorecards_types? ? 'Select Card' : default_scorecard_type_name
+  end
 
+  private
+
+  def default_scorecard_type_name
     current_account.scorecard_types.first.model_name.human
+  end
+
+  def multiple_scorecards_types?
+    current_account.scorecard_types.count > 1
   end
 end

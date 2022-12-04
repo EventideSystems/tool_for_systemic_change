@@ -68,31 +68,26 @@ module EcosystemMaps
 
     def organisations_and_intitiatives
       @organisations_and_intitiatives ||= \
-        ActiveRecord::Base.connection.execute(organisations_and_intitiatives_sql).map do |row|
+        ActiveRecord::Base.connection.execute(organisations_and_inititiatives_sql).map do |row|
           row.symbolize_keys.transform_values { |v| v.is_a?(String) ? v.gsub(/{|}|NULL/, '').split(',').compact : v }
         end
     end
 
-    def organisations_and_intitiatives_sql
+    def organisations_and_inititiatives_sql
       <<~SQL
         with current_statuses as (
           select
-            distinct on (events_checklist_item_activities.checklist_item_id)
             characteristics.id as characteristic_id,
             characteristics.focus_area_id as focus_area_id,
-            events_checklist_item_activities.checklist_item_id as checklist_item_id,
-            events_checklist_item_activities.to_status as status,
+            checklist_items.id as checklist_item_id,
+            checklist_items.status as status,
             initiatives.id as initiative_id
-          from
-            events_checklist_item_activities
-          inner join checklist_items
-            on checklist_items.id = events_checklist_item_activities.checklist_item_id
+          from checklist_items
           inner join characteristics
             on characteristics.id = checklist_items.characteristic_id
           inner join initiatives
             on initiatives.id = checklist_items.initiative_id
           where initiatives.scorecard_id = #{transition_card.id}
-          order by events_checklist_item_activities.checklist_item_id, events_checklist_item_activities.occurred_at desc
         )
         select
           characteristic_id,

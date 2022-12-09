@@ -16,6 +16,11 @@ class SubsystemTagsController < ApplicationController
         .joins(:initiatives)
         .where('initiatives.scorecard_id' => params[:scorecard_id]).distinct
     end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @subsystem_tags.map { |subsystem_tag| { id: subsystem_tag.id, text: subsystem_tag.text } } }
+    end
   end
 
   def show

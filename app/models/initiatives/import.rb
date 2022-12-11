@@ -153,6 +153,7 @@ module Initiatives
         .filter_map { |row| row.match(/Organisation (\d*) Name/i)&.captures&.first }
         .map(&:to_i)
         .max
+        .presence || 1
     end
 
     def max_subsystem_tag_index
@@ -161,6 +162,7 @@ module Initiatives
         .filter_map { |row| row.match(/Subsystem Tag (\d*) Name/i)&.captures&.first }
         .map(&:to_i)
         .max
+        .presence || 1
     end
 
     def find_scorecard_by_name(account, scorecard_type, name)

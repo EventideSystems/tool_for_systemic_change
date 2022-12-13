@@ -69,7 +69,7 @@ gem 'shrine', '>= 3.3.0'
 gem 'rollbar'
 gem 'scout_apm'
 
-gem 'paranoia', '~> 2.2'
+gem 'paranoia', '~> 2.6'
 gem 'paper_trail'
 gem 'data_migrate'
 gem 'aws-sdk-lambda'

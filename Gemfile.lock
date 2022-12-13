@@ -117,7 +117,9 @@ GEM
       rails (>= 3.0.0)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
-    bootstrap_form (2.1.1)
+    bootstrap_form (5.1.0)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     brakeman (5.4.0)
     breadcrumbs_on_rails (3.0.1)
     builder (3.2.4)
@@ -534,7 +536,7 @@ DEPENDENCIES
   aws-sdk-lambda
   aws-sdk-rails
   bootsnap
-  bootstrap_form (<= 2.1.1)
+  bootstrap_form (<= 5.1.1)
   brakeman
   breadcrumbs_on_rails (<= 3.0.1)
   bullet

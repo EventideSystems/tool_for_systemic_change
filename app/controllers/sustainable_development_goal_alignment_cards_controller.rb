@@ -33,7 +33,7 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
     @characteristic = Characteristic.find(params[:id])
 
     checklist_items = \
-      ChecklistItem
+    ChecklistItem
       .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
       .includes(:checklist_item_comments)
       .select { |item| item.status == 'actual' }

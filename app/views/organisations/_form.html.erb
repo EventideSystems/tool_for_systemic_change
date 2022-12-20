@@ -3,7 +3,7 @@
   <%= form_header(@organisation) %>
   <%= f.input :name %>
   <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-  <%= f.association :sector, collection: Sector.all %>
+  <%= f.association :sector, collection: current_account.sectors.order(:name) %>
   <%= f.input :weblink %>
   <%= render_form_button(f) %>
 <% end %>

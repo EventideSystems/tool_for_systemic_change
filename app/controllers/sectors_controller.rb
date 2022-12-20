@@ -1,11 +1,10 @@
 class SectorsController < ApplicationController
   before_action :set_sector, only: [:show, :edit, :update, :destroy]
 
-  add_breadcrumb "System"
   add_breadcrumb "Sectors", :sectors_path
 
   def index
-    @sectors = policy_scope(Sector).unscoped.order(sort_order).page params[:page]
+    @sectors = policy_scope(Sector).order(sort_order).page params[:page]
   end
 
   def show
@@ -14,7 +13,7 @@ class SectorsController < ApplicationController
   end
 
   def new
-    @sector = Sector.new
+    @sector = current_account.sectors.build
     authorize @sector
     add_breadcrumb "New"
   end
@@ -24,7 +23,7 @@ class SectorsController < ApplicationController
   end
 
   def create
-    @sector = Sector.new(sector_params)
+    @sector = current_account.sectors.build(sector_params)
     authorize @sector
 
     if @sector.save
@@ -54,7 +53,7 @@ class SectorsController < ApplicationController
   private
 
   def set_sector
-    @sector = Sector.find(params[:id])
+    @sector = current_account.sectors.find(params[:id])
     authorize @sector
   end
 

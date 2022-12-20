@@ -18,8 +18,11 @@ class Account < ApplicationRecord
   has_many :initiatives_imports, class_name: 'Initiatives::Import'
   has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import'
   has_many :subsystem_tags
+  has_many :sectors, dependent: :destroy
 
   validates :name, presence: true
+
+  after_create :create_sector_types
 
   scope :active,
         lambda {
@@ -44,5 +47,13 @@ class Account < ApplicationRecord
     return scorecard_types.first if scorecard_types.size == 1
 
     TransitionCard
+  end
+
+  private
+
+  def create_sector_types
+    Sector.system_sectors.each do |template|
+      template.dup.tap { |s| s.account = self }.save!
+    end
   end
 end

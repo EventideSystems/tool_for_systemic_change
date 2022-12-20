@@ -6,13 +6,17 @@
     <div class='box-body'>
       <%= f.input :name, readonly: true, required: false %>
       <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-      <hr> 
+      <hr>
       <%= f.input :created_at, as: :string, readonly: true %>
       <%= f.input :updated_at, as: :string, readonly: true %>
     </div>
     <%- if policy(@sector).edit? %>
       <div class='box-footer'>
-        <%= link_to 'Edit sector', edit_sector_path(@sector), class: 'btn btn-primary float-right' %> 
+        <%- if @sector.system_sector? %>
+          <%= link_to 'Edit sector', edit_system_sector_path(@sector), class: 'btn btn-primary float-right' %>
+        <%- else %>
+          <%= link_to 'Edit sector', edit_sector_path(@sector), class: 'btn btn-primary float-right' %>
+        <%- end %>
       </div>
     <%- end %>
   </div>

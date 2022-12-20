@@ -1,4 +1,4 @@
-<%= simple_form_for(@sector, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
+<%= simple_form_for((@sector.system_sector? ? [:system, @sector] : [@sector]) , role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
   <%= f.error_notification %>
   <%= form_header(@sector) %></h3>
   <%= f.input :name %>

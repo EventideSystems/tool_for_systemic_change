@@ -22,7 +22,10 @@ class SectorPolicy < ApplicationPolicy
   end
 
   def destroy?
-    system_admin? || (record_in_scope?(record) && account_admin?(current_account))
+    record.organisations.empty? &&
+    (
+      system_admin? || (record_in_scope?(record) && account_admin?(current_account))
+    )
   end
 
   private

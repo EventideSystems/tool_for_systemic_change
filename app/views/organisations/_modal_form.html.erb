@@ -10,7 +10,7 @@
       <div class="modal-body">
         <%= f.input :name %>
         <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-        <%= f.input :sector_id, collection: Sector.all, inline_label: 'Sector', required: true %>
+        <%= f.input :sector_id, collection: current_account.sectors.order(:name), inline_label: 'Sector', required: true %>
         <%= f.input :weblink %>
       </div>
       <div class="modal-footer">

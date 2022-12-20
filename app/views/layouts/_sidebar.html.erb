@@ -46,6 +46,7 @@
           <%= menu_item_tag(:communities, 'group', { disabled: disabled }) %>
           <%= menu_item_tag(:initiatives, 'lightbulb-o', { disabled: disabled }) %>
           <%= menu_item_tag(:organisations, 'sitemap', { disabled: disabled }) %>
+          <%= menu_item_tag(:sectors, 'user-tag', { disabled: disabled }) %>
 
           <%- if policy(:sidebar).show_subsystem_tags_link? %>
             <%= menu_item_tag(:subsystem_tags, 'tags', { disabled: disabled }) %>
@@ -55,7 +56,7 @@
           <%#= menu_item_tag(:networks, 'snowflake-o ', { disabled: disabled }) %>
           <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
           <%- if policy(:sidebar).show_users_link? %>
-            <%= menu_item_tag(:users, 'user-plus', { disabled: disabled }) %>
+            <%= menu_item_tag(:users, 'users', { disabled: disabled }) %>
           <%- end %>
           <%- if policy(:sidebar).show_accounts_link? %>
             <%= menu_item_tag(:accounts, 'user-plus', { disabled: disabled }) %>

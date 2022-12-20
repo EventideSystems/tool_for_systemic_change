@@ -132,6 +132,7 @@ Rails.application.routes.draw do
   get 'activities', to: 'activities#index'
 
   namespace :system do
+    resources :sectors
     resources :users do
       post :impersonate, on: :member
 

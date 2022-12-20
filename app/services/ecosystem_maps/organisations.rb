@@ -76,22 +76,6 @@ module EcosystemMaps
       {}
     end
 
-    # def build_partnering_initiative_names(organisation_id, partnering_organisation_ids)
-    #   query = <<~SQL
-    #     SELECT DISTINCT(name) FROM initiatives
-    #     INNER JOIN initiatives_organisations io1
-    #       ON io1.initiative_id = initiatives.id
-    #       AND io1.organisation_id = #{organisation_id}
-    #     INNER JOIN initiatives_organisations io2
-    #       ON io2.initiative_id = initiatives.id
-    #       AND io2.organisation_id IN (#{partnering_organisation_ids.join(',')})
-    #   SQL
-
-    #   results = ActiveRecord::Base.connection.exec_query(query).rows
-
-    #   results.flatten
-    # end
-
     def link_data
       @link_data ||= build_link_data
     end

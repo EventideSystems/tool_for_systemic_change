@@ -6,11 +6,14 @@
   <div class='box-body no-padding'>
   <%= table_for @sectors, :table_html => { :class => "table table-striped" },
                         :sortable => true,
+                        :link_namespace => Array.wrap(@sectors.first.system_sector? ? :system : nil),
                         :data_row_html => {
                           id: lambda { |sector| "sector-#{sector.id}" },
                           class: 'table-actions'
                         } do |table| %>
-    <% table.column :name, link_action: :edit, formatter: lambda { |text| truncate_text(text, 30) } %>
+    <% table.column :name, link_action: :edit, formatter: lambda { |text| truncate_text(text, 30) }
+
+    %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %> %>
     <% table.column :color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
     <% table.column data: "Modify", link_action: :edit %>

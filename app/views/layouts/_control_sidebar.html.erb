@@ -4,11 +4,11 @@
   <div class="control-sidebar-content pb-3 pl-3 pr-3">
     <h2 class="sidebar-header">SYSTEM MENU</h2>
     <ul class="nav nav-pills nav-sidebar sidebar-menu flex-column">
-      <%= menu_item_tag(:sectors, 'gears') %>
       <%= menu_item_tag(:focus_area_groups, 'gears') %>
       <%= menu_item_tag(:focus_areas, 'gears') %>
       <%= menu_item_tag(:characteristics, 'gears') %>
-      <%= menu_item_tag(:system_users, 'user-plus', { controller: 'system/users' }) %>
+      <%= menu_item_tag(:system_sectors, 'user-tag', { controller: 'system/sectors' }) %>
+      <%= menu_item_tag(:system_users, 'users', { controller: 'system/users' }) %>
     </ul>
   </div>
 </aside>

@@ -2,7 +2,7 @@
 
 class CreateSectorsForAccounts < ActiveRecord::Migration[7.0]
   def up
-    templates = Sector.templates
+    templates = Sector.system_sectors
 
     Account.all.each do |account|
       templates.each do |template|
@@ -17,7 +17,7 @@ class CreateSectorsForAccounts < ActiveRecord::Migration[7.0]
   def down
     Account.all.each do |account|
       account.sectors.each do |sector|
-        template = Sector.templates.find_by(name: sector.name)
+        template = Sector.system_sectors.find_by(name: sector.name)
 
         Organisation.where(account: account, sector: sector).update_all(sector_id: template.id)
       end

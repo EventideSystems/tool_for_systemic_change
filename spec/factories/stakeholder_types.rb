@@ -1,7 +1,5 @@
 FactoryBot.define do
-  factory :organisation do
-    stakeholder_type
-    account
+  factory :stakeholder_type do
     name { FFaker::Name.name }
   end
 end

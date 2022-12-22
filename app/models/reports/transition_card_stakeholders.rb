@@ -36,15 +36,15 @@ module Reports
 
           sheet.add_row
 
-          sheet.add_row(['Organisations', 'Total Initiatives', 'Sector', 'Initiatives'], style: header_3)
+          sheet.add_row(['Organisations', 'Total Initiatives', 'Stakeholder Type', 'Initiatives'], style: header_3)
           scorecard.unique_organisations.each do |organisation|
             name = organisation.name
             initiatives = initiatives_for_organisation(organisation)
             initiatives_names = initiatives.map(&:name)
             total_initiatives = initiatives.count
-            sector = organisation.sector&.name || ''
+            stakeholder_type = organisation.stakeholder_type&.name || ''
 
-            sheet.add_row([name, total_initiatives, sector] + initiatives_names)
+            sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)
           end
 
           sheet.add_row
@@ -62,9 +62,9 @@ module Reports
           sheet.add_row
 
           sheet.add_row(['Stakeholder Breakdown', 'Total Organisations', 'Organisations'], style: header_3)
-          Sector.all.each do |sector|
-            name = sector.name
-            organisations = organisations_for_sector(sector)
+          StakeholderType.where(account: scorecard.account).order(:name).each do |stakeholder_type|
+            name = stakeholder_type.name
+            organisations = organisations_for_stakeholder_type(stakeholder_type)
             organisations_names = organisations.map(&:name)
             total_organisations = organisations.count
 
@@ -104,8 +104,8 @@ module Reports
       Organisation.where(id: organisation_ids).order('lower(organisations.name)')
     end
 
-    def organisations_for_sector(sector)
-      scorecard.unique_organisations.select { |organisation| organisation.sector == sector }
+    def organisations_for_stakeholder_type(stakeholder_type)
+      scorecard.unique_organisations.select { |organisation| organisation.stakeholder_type == stakeholder_type }
     end
   end
 end

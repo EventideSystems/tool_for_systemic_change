@@ -98,7 +98,7 @@ Rails.application.routes.draw do
       action: 'characteristic'
   end
 
-  resources :sectors
+  resources :stakeholder_types
   resources :users do
     post :stop_impersonating, on: :collection
 
@@ -132,7 +132,7 @@ Rails.application.routes.draw do
   get 'activities', to: 'activities#index'
 
   namespace :system do
-    resources :sectors
+    resources :stakeholder_types
     resources :users do
       post :impersonate, on: :member
 

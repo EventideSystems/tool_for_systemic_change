@@ -10,7 +10,7 @@
       <div class="modal-body">
         <%= f.input :name %>
         <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-        <%= f.input :stakeholder_type, collection: current_account.stakeholder_types.order(:name), inline_label: 'Stakeholder Type', required: true %>
+        <%= f.input :stakeholder_type_id, collection: current_account.stakeholder_types.order(:name), inline_label: 'Stakeholder Type', required: true %>
         <%= f.input :weblink %>
       </div>
       <div class="modal-footer">

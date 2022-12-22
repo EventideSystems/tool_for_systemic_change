@@ -6,7 +6,7 @@
   <div class='box-body no-padding'>
   <%= table_for @stakeholder_types, :table_html => { :class => "table table-striped" },
                         :sortable => true,
-                        :link_namespace => Array.wrap(@stakeholder_types.first.template_type? ? :system : nil),
+                        :link_namespace => Array.wrap(@stakeholder_types.first.system_stakeholder_type? ? :system : nil),
                         :data_row_html => {
                           id: lambda { |stakeholder_type| "stakeholder_type-#{stakeholder_type.id}" },
                           class: 'table-actions'

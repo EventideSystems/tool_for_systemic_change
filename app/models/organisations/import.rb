@@ -20,12 +20,7 @@ module Organisations
 
         next if row.compact.empty?
 
-        if row[name_index].blank?
-          processing_errors << build_processing_errors(
-            row_data: row, row_index: row_index, error_messages: ['Row is missing name value']
-          )
-          next
-        end
+        next if row[name_index].blank?
 
         organisation = find_or_build_organisation_by_name(account, row[name_index])
         stakeholder_type = stakeholder_type_index.nil? ? nil : find_stakeholder_type_by_name(account, row[stakeholder_type_index])

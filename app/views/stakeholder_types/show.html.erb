@@ -12,7 +12,7 @@
     </div>
     <%- if policy(@stakeholder_type).edit? %>
       <div class='box-footer'>
-        <%- if @stakeholder_type.template_type? %>
+        <%- if @stakeholder_type.system_stakeholder_type? %>
           <%= link_to 'Edit Stakeholder Type', edit_system_stakeholder_type_path(@stakeholder_type), class: 'btn btn-primary float-right' %>
         <%- else %>
           <%= link_to 'Edit Stakeholder Type', edit_stakeholder_type_path(@stakeholder_type), class: 'btn btn-primary float-right' %>

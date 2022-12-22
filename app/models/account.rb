@@ -52,7 +52,7 @@ class Account < ApplicationRecord
   private
 
   def create_stakeholder_types
-    StakeholderType.template_types.each do |template|
+    StakeholderType.system_stakeholder_types.each do |template|
       template.dup.tap { |s| s.account = self }.save!
     end
   end

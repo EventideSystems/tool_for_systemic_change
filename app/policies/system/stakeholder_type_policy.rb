@@ -2,7 +2,7 @@ module System
   class StakeholderTypePolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
-        system_admin? ? scope.template_types : scope.none
+        system_admin? ? scope.system_stakeholder_types : scope.none
       end
     end
 

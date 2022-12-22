@@ -11,9 +11,9 @@ class StakeholderType < ApplicationRecord
 
   before_destroy :check_no_longer_used!, prepend: true
 
-  scope :template_types, -> { where(account_id: nil) }
+  scope :system_stakeholder_types, -> { where(account_id: nil) }
 
-  def template_type?
+  def system_stakeholder_type?
     account_id.nil?
   end
 

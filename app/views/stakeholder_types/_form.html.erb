@@ -1,4 +1,4 @@
-<%= simple_form_for((@stakeholder_type.template_type? ? [:system, @stakeholder_type] : [@stakeholder_type]) , role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
+<%= simple_form_for((@stakeholder_type.system_stakeholder_type? ? [:system, @stakeholder_type] : [@stakeholder_type]) , role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
   <%= f.error_notification %>
   <%= form_header(@stakeholder_type) %></h3>
   <%= f.input :name %>

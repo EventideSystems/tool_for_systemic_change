@@ -15,7 +15,7 @@ class OrganisationsController < ApplicationController
       end
       format.csv do
         @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
-        send_data organisations_to_csv(@organisations), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
+        send_data organisations_to_csv(@organisations, params[:include_stakeholder_list]), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
       end
       format.xlsx do
         @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
@@ -87,16 +87,38 @@ class OrganisationsController < ApplicationController
     "organisations_#{Date.today.strftime('%Y_%m_%d')}"
   end
 
-  def organisations_to_csv(organisations)
+  def organisations_to_csv(organisations, include_stakeholder_list)
+    stakeholder_types = current_account.stakeholder_types.order(name: :desc).pluck(:name)
+
     CSV.generate(force_quotes: true) do |csv|
-      csv << ["Name", "Description", "Stakeholder Type", "Weblink"]
+      header_row = ["Name", "Description", "Stakeholder Type", "Weblink"].tap do |header|
+        if include_stakeholder_list
+          header.push('')
+          header.push('Stakeholder type list - add one to each organisation')
+        end
+      end
+
+      csv << header_row
       organisations.each do |organisation|
-        csv << [
+        row_data = [
           organisation.name,
           organisation.description,
           organisation.stakeholder_type&.name,
-          organisation.weblink
-        ]
+          organisation.weblink,
+        ].tap do |row|
+          if include_stakeholder_list
+            row.push('')
+            row.push(stakeholder_types.pop)
+          end
+        end
+
+        csv << row_data
+      end
+
+      if include_stakeholder_list && stakeholder_types.present?
+        stakeholder_types.each do |stakeholder_type|
+          csv << ['', '', '', '', '', stakeholder_type]
+        end
       end
     end
   end

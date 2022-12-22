@@ -26,7 +26,7 @@ class Account < ApplicationRecord
 
   scope :active,
         lambda {
-          where(expires_on: nil).or(Account.where(expires_on: Date.today..)).order(created_at: :asc)
+          where(expires_on: nil).or(::Account.where(expires_on: Date.today..)).order(created_at: :asc)
         }
 
   def accounts_users_remaining
@@ -49,11 +49,18 @@ class Account < ApplicationRecord
     TransitionCard
   end
 
+  def custom_stakeholder_types_in_use?
+    StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != stakeholder_types.order(:name).pluck(:name)
+  end
+
   private
 
   def create_stakeholder_types
     StakeholderType.system_stakeholder_types.each do |template|
-      template.dup.tap { |s| s.account = self }.save!
+      template
+        .dup
+        .tap { |s| s.account = self }
+        .save!
     end
   end
 end

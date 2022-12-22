@@ -5,21 +5,34 @@
       <%= form_header(@organisations_import) %>
     </div>
     <div class='box-body'>
-      
+
       <div>
         <%= import_files_instructions_link %>
       </div>
-      
+
+      <% if current_account.custom_stakeholder_types_in_use? %>
+        <div class="alert alert-info" role="alert">
+          <p>NOTE: You have custom stakeholder types in use.</p>
+          <p>You may want to export your organisations with a list of available stakeholder types before importing.</p>
+          <%=
+            link_to(organisations_path(format: :csv, include_stakeholder_list: true), class: 'btn btn-primary', style: 'text-decoration: none') do
+              safe_join([content_tag(:i, '', class: "fa fa-download"), ' Export with List of Stakeholder Types'])
+            end
+          %>
+
+        </div>
+      <%- end -%>
+
       <% if @organisations_import.import_data.present? %>
         <%= f.input :import_file_name, readonly: true, input_html: { value: @organisations_import.import.original_filename } %>
         <%= f.input :import, as: :hidden, input_html: { value: @organisations_import.import_data } %>
-      <% else %>  
+      <% else %>
         <%= f.input :import, as: :file, required: true %>
       <% end %>
-    </div>    
+    </div>
     <%= render partial: 'import/processing_errors', locals: { import: @organisations_import, return_link: new_organisations_import_url } %>
   </div>
-  
+
   <div class='box-footer'>
     <% if @organisations_import.processing_errors.empty? %>
       <%= f.button :submit, 'Import', class: 'btn btn-primary float-right', style: 'margin-left: 15px' %>

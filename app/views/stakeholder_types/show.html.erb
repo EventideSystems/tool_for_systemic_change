@@ -1,7 +1,7 @@
-<%= simple_form_for(@sector, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@stakeholder_type, role: 'form', html: { class: 'form-horizontal' }) do |f| %>
   <div class='box box-primary'>
     <div class='box-header with-border'>
-      <%= form_header(@sector) %>
+      <%= form_header(@stakeholder_type) %>
     </div>
     <div class='box-body'>
       <%= f.input :name, readonly: true, required: false %>
@@ -10,12 +10,12 @@
       <%= f.input :created_at, as: :string, readonly: true %>
       <%= f.input :updated_at, as: :string, readonly: true %>
     </div>
-    <%- if policy(@sector).edit? %>
+    <%- if policy(@stakeholder_type).edit? %>
       <div class='box-footer'>
-        <%- if @sector.system_sector? %>
-          <%= link_to 'Edit sector', edit_system_sector_path(@sector), class: 'btn btn-primary float-right' %>
+        <%- if @stakeholder_type.template_type? %>
+          <%= link_to 'Edit Stakeholder Type', edit_system_stakeholder_type_path(@stakeholder_type), class: 'btn btn-primary float-right' %>
         <%- else %>
-          <%= link_to 'Edit sector', edit_sector_path(@sector), class: 'btn btn-primary float-right' %>
+          <%= link_to 'Edit Stakeholder Type', edit_stakeholder_type_path(@stakeholder_type), class: 'btn btn-primary float-right' %>
         <%- end %>
       </div>
     <%- end %>

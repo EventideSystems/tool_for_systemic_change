@@ -1,8 +1,0 @@
-<%= simple_form_for((@sector.system_sector? ? [:system, @sector] : [@sector]) , role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@sector) %></h3>
-  <%= f.input :name %>
-  <%= f.input :description , as: :string %>
-  <%= f.input :color , as: :string %>
-  <%= render_form_button(f) %>
-<% end %>

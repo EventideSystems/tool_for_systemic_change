@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_19_190613) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_20_062935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_190613) do
     t.string "name"
     t.string "description"
     t.string "weblink"
-    t.integer "sector_id"
+    t.integer "stakeholder_type_id"
     t.text "welcome_message"
     t.boolean "deactivated"
     t.datetime "deleted_at", precision: nil
@@ -259,7 +259,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_190613) do
     t.string "name"
     t.string "description"
     t.integer "account_id"
-    t.integer "sector_id"
+    t.integer "stakeholder_type_id"
     t.string "weblink"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
@@ -287,7 +287,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_190613) do
     t.index ["type"], name: "index_scorecards_on_type"
   end
 
-  create_table "sectors", id: :serial, force: :cascade do |t|
+  create_table "stakeholder_types", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "deleted_at", precision: nil
@@ -295,7 +295,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_19_190613) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "color"
     t.integer "account_id"
-    t.index ["account_id"], name: "index_sectors_on_account_id"
+    t.index ["account_id"], name: "index_stakeholder_types_on_account_id"
   end
 
   create_table "subsystem_tags", id: :serial, force: :cascade do |t|

@@ -33,7 +33,7 @@ module EcosystemMaps
         {
           id: node.id,
           label: node.name,
-          color: node.sector.color || '#000000',
+          color: node.stakeholder_type&.color || '#808080',
           betweenness: betweenness[node.id]
         }
       end

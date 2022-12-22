@@ -11,14 +11,14 @@ class OrganisationsController < ApplicationController
   def index
     respond_to do |format|
       format.html do
-        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).page params[:page]
+        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).page params[:page]
       end
       format.csv do
-        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
+        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
         send_data organisations_to_csv(@organisations), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
       end
       format.xlsx do
-        @organisations = policy_scope(Organisation).includes(:sector).order(sort_order).all
+        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
         send_data @organisations.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{export_filename}.xlsx"
       end
     end
@@ -80,7 +80,7 @@ class OrganisationsController < ApplicationController
   end
 
   def organisation_params
-    params.fetch(:organisation, {}).permit(:name, :description, :weblink, :sector_id)
+    params.fetch(:organisation, {}).permit(:name, :description, :weblink, :stakeholder_type_id)
   end
 
   def export_filename
@@ -89,12 +89,12 @@ class OrganisationsController < ApplicationController
 
   def organisations_to_csv(organisations)
     CSV.generate(force_quotes: true) do |csv|
-      csv << ["Name", "Description", "Sector", "Weblink"]
+      csv << ["Name", "Description", "Stakeholder Type", "Weblink"]
       organisations.each do |organisation|
         csv << [
           organisation.name,
           organisation.description,
-          organisation.sector.try(:name),
+          organisation.stakeholder_type&.name,
           organisation.weblink
         ]
       end

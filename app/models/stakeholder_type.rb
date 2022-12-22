@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class Sector < ApplicationRecord
+class StakeholderType < ApplicationRecord
   acts_as_paranoid
 
   validates :name, presence: true
@@ -11,9 +11,9 @@ class Sector < ApplicationRecord
 
   before_destroy :check_no_longer_used!, prepend: true
 
-  scope :system_sectors, -> { where(account_id: nil) }
+  scope :template_types, -> { where(account_id: nil) }
 
-  def system_sector?
+  def template_type?
     account_id.nil?
   end
 
@@ -21,7 +21,7 @@ class Sector < ApplicationRecord
 
   def check_no_longer_used!
     return true if organisations.empty?
-    errors.add(:base, "This sector is still in use")
+    errors.add(:base, "This stakeholder type is still in use")
     throw(:abort)
   end
 end

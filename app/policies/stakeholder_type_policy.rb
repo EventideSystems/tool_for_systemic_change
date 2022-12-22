@@ -1,4 +1,4 @@
-class SectorPolicy < ApplicationPolicy
+class StakeholderTypePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.where(account: current_account)
@@ -31,6 +31,6 @@ class SectorPolicy < ApplicationPolicy
   private
 
   def record_in_scope?(record)
-    Pundit.policy_scope(user_context, Sector).exists?(id: record.id)
+    Pundit.policy_scope(user_context, StakeholderType).exists?(id: record.id)
   end
 end

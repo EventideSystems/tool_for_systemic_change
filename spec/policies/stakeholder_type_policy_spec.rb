@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SectorPolicy do
+RSpec.describe StakeholderTypePolicy do
 
   let(:user) { User.new }
 

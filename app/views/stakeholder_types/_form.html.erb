@@ -1,0 +1,8 @@
+<%= simple_form_for((@stakeholder_type.template_type? ? [:system, @stakeholder_type] : [@stakeholder_type]) , role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
+  <%= f.error_notification %>
+  <%= form_header(@stakeholder_type) %></h3>
+  <%= f.input :name %>
+  <%= f.input :description , as: :string %>
+  <%= f.input :color , as: :string %>
+  <%= render_form_button(f) %>
+<% end %>

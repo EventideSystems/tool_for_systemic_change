@@ -6,7 +6,7 @@
       </div>
       <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
       <div class="card-body">
-        <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their sector.</p>
+        <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.</p>
         <%= render partial: 'scorecard_selector', locals: { f: f } %>
       </div>
       <div class="card-footer">

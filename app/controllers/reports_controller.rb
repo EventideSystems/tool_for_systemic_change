@@ -55,9 +55,9 @@ class ReportsController < ApplicationController
     @content_subtitle = 'Stakeholders'
     add_breadcrumb(@content_subtitle)
 
-    query = current_account.organisations.joins(:sector, initiatives: [scorecard: %i[wicked_problem community]])
+    query = current_account.organisations.joins(:stakeholder_type, initiatives: [scorecard: %i[wicked_problem community]])
 
-    query = query.where(sector_id: params[:report][:sector]) unless params[:report][:sector].blank?
+    query = query.where(stakeholder_type_id: params[:report][:stakeholder_type]) unless params[:report][:stakeholder_type].blank?
 
     unless params[:report][:wicked_problem].blank?
       query = query.where('scorecards.wicked_problem_id': params[:report][:wicked_problem])
@@ -72,8 +72,8 @@ class ReportsController < ApplicationController
       :name,
       :description,
       :created_at,
-      :sector_id,
-      'sectors.name as sector_name',
+      :stakeholder_type_id,
+      'stakeholder_types.name as stakeholder_type_name',
       'wicked_problems.name as wicked_problem_name',
       'communities.name as community_name',
       'scorecards.name as scorecard_name'

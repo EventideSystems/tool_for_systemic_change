@@ -51,10 +51,10 @@
       </div>
 
       <div class="legend pt-3">
-        <%- Sector.order(:name).each do |sector| -%>
+        <%- current_account.stakeholder_types.order(:name).each do |stakeholder_type| -%>
           <p>
-            <span class="dot" style="background-color: <%= sector.color.presence || '#000' %>"></span>
-            <span class="dot-label"><%= sector.name %></span>
+            <span class="dot" style="background-color: <%= stakeholder_type.color.presence || '#000' %>"></span>
+            <span class="dot-label"><%= stakeholder_type.name %></span>
           </p>
         <%- end %>
       </div>

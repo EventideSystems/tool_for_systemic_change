@@ -4,22 +4,22 @@ class Organisation < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :account
-  belongs_to :sector
+  belongs_to :stakeholder_type
   has_many :initiatives_organisations, dependent: :delete_all
   has_many :initiatives, through: :initiatives_organisations
 
   validates :account, presence: true
   validates :name, presence: true, uniqueness: { scope: :account_id }
-  validates :sector_id, presence: true
-  validate :sector_is_in_same_account
+  validates :stakeholder_type_id, presence: true
+  validate :stakeholder_type_is_in_same_account
 
-  delegate :name, to: :sector, prefix: true, allow_nil: true
+  delegate :name, to: :stakeholder_type, prefix: true, allow_nil: true
 
   accepts_nested_attributes_for :initiatives_organisations, reject_if: :all_blank, allow_destroy: true
 
   private
 
-  def sector_is_in_same_account
-    errors.add(:sector_id, "must be in the same account") if sector && sector.account_id != account_id
+  def stakeholder_type_is_in_same_account
+    errors.add(:stakeholder_type_id, "must be in the same account") if stakeholder_type && stakeholder_type.account != account
   end
 end

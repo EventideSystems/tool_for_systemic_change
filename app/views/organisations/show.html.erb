@@ -2,10 +2,10 @@
   <%= form_header(@organisation) %>
   <%= f.input :name, required: false, readonly: true %>
   <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-  <%= f.input :sector_name, as: :string, label: 'Sector', readonly: true %>
+  <%= f.input :stakeholder_type_name, as: :string, label: 'Stakeholder Type', readonly: true %>
   <%= f.input :weblink, readonly: true %>
-  <hr> 
+  <hr>
   <%= f.input :created_at, as: :string, readonly: true %>
   <%= f.input :updated_at, as: :string, readonly: true %>
-  <%= edit_button('Edit Organisation', edit_organisation_path(@organisation)) if policy(@organisation).edit? %> 
+  <%= edit_button('Edit Organisation', edit_organisation_path(@organisation)) if policy(@organisation).edit? %>
 <% end %>

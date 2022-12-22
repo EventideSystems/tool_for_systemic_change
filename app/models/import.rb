@@ -49,8 +49,8 @@ class Import < ApplicationRecord
 
   def build_processing_errors(row_data:, row_index:, error_messages:)
     full_messages = error_messages.map do |message|
-      if message == "Sector can't be blank"
-        'Sector is invalid'
+      if message == "Stakeholder Type can't be blank"
+        'Stakeholder Type is invalid'
       else
         message
       end

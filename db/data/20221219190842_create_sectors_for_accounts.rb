@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class CreateSectorsForAccounts < ActiveRecord::Migration[7.0]
+  class Sector < ApplicationRecord
+    scope :system_sectors, -> { where(account_id: nil) }
+  end
+
   def up
     templates = Sector.system_sectors
 

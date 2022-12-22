@@ -1,8 +1,8 @@
 module System
-  class SectorPolicy < ApplicationPolicy
+  class StakeholderTypePolicy < ApplicationPolicy
     class Scope < Scope
       def resolve
-        system_admin? ? scope.system_sectors : scope.none
+        system_admin? ? scope.template_types : scope.none
       end
     end
 

@@ -6,7 +6,7 @@ class Account < ApplicationRecord
 
   enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
 
-  belongs_to :sector, optional: true
+  belongs_to :stakeholder_type, optional: true
   has_many :accounts_users
   has_many :users, through: :accounts_users
   has_many :organisations
@@ -18,11 +18,11 @@ class Account < ApplicationRecord
   has_many :initiatives_imports, class_name: 'Initiatives::Import'
   has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import'
   has_many :subsystem_tags
-  has_many :sectors, dependent: :destroy
+  has_many :stakeholder_types, dependent: :destroy
 
   validates :name, presence: true
 
-  after_create :create_sector_types
+  after_create :create_stakeholder_types
 
   scope :active,
         lambda {
@@ -51,8 +51,8 @@ class Account < ApplicationRecord
 
   private
 
-  def create_sector_types
-    Sector.system_sectors.each do |template|
+  def create_stakeholder_types
+    StakeholderType.template_types.each do |template|
       template.dup.tap { |s| s.account = self }.save!
     end
   end

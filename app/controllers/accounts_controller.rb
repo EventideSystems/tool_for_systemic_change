@@ -69,7 +69,7 @@ class AccountsController < ApplicationController
       :name,
       :description,
       :weblink,
-      :sector_id,
+      :stakeholder_type_id,
       :welcome_message,
       :deactivated,
       :expires_on,

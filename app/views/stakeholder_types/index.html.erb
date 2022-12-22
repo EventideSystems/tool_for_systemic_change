@@ -1,14 +1,14 @@
 <% content_for :page_actions do %>
-  <%= create_new_button(new_sector_path) %>
+  <%= create_new_button(new_stakeholder_type_path) %>
 <% end %>
 
 <div class="box">
   <div class='box-body no-padding'>
-  <%= table_for @sectors, :table_html => { :class => "table table-striped" },
+  <%= table_for @stakeholder_types, :table_html => { :class => "table table-striped" },
                         :sortable => true,
-                        :link_namespace => Array.wrap(@sectors.first.system_sector? ? :system : nil),
+                        :link_namespace => Array.wrap(@stakeholder_types.first.template_type? ? :system : nil),
                         :data_row_html => {
-                          id: lambda { |sector| "sector-#{sector.id}" },
+                          id: lambda { |stakeholder_type| "stakeholder_type-#{stakeholder_type.id}" },
                           class: 'table-actions'
                         } do |table| %>
     <% table.column :name, link_action: :edit, formatter: lambda { |text| truncate_text(text, 30) }
@@ -20,7 +20,7 @@
     <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>
       <div class="float-right">
-        <%= paginate @sectors %>
+        <%= paginate @stakeholder_types %>
       </div>
     <% end %>
   <% end %>

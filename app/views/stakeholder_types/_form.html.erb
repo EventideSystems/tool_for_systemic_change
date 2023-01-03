@@ -4,5 +4,13 @@
   <%= f.input :name %>
   <%= f.input :description , as: :string %>
   <%= f.input :color , as: :string %>
-  <%= render_form_button(f) %>
+  <%- if @stakeholder_type.in_use? %>
+    <%=
+      content_tag(:div, class: 'd-flex justify-content-end action-row') do
+        concat f.button :submit, "#{f.object.new_record? ? 'Create' : 'Update'}",  class: 'btn btn-primary', data: { confirm: 'This update will be applied to all Organisations currently tagged with this Stakeholder type, do you wish to proceed?' }
+      end
+    %>
+  <%- else -%>
+    <%= render_form_button(f) %>
+  <%- end -%>
 <% end %>

@@ -1,6 +1,11 @@
 <% content_for :page_actions do %>
   <%= create_new_button(new_stakeholder_type_path) %>
+
 <% end %>
+
+<div class="float-left">
+  <p><strong>NOTE</strong> Stakeholder Types that are in use cannot be deleted</p>
+</div>
 
 <div class="box">
   <div class='box-body no-padding'>
@@ -16,8 +21,12 @@
     %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %> %>
     <% table.column :color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
+    <% table.column :in_use?, formatter: lambda { |in_use| in_use ? 'yes' : 'no' } %>
     <% table.column data: "Modify", link_action: :edit %>
-    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
+    <% table.column \
+        data:  lambda { |stakeholder_type| stakeholder_type.organisations.empty? ? "Delete" : "" },
+        link_method: :delete, link_confirm: "Are you sure?"
+    %>
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @stakeholder_types %>

@@ -13,6 +13,10 @@ class StakeholderType < ApplicationRecord
 
   scope :system_stakeholder_types, -> { where(account_id: nil) }
 
+  def in_use?
+    organisations.any?
+  end
+
   def system_stakeholder_type?
     account_id.nil?
   end

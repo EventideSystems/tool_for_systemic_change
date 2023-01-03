@@ -1,33 +1,36 @@
 # frozen_string_literal: true
 
 class CreateSectorsForAccounts < ActiveRecord::Migration[7.0]
-  class Sector < ApplicationRecord
-    scope :system_sectors, -> { where(account_id: nil) }
+  class StakeholderType < ApplicationRecord
+    belongs_to :account, optional: true
+    scope :system_stakeholder_types, -> { where(account_id: nil) }
   end
 
   def up
-    templates = Sector.system_sectors
+    templates = StakeholderType.system_stakeholder_types
 
     Account.all.each do |account|
       templates.each do |template|
-        sector = template.dup.tap { |s| s.account = account }
-        sector.save!
+        stakeholder_type = template.dup.tap { |s| s.account = account }
+        stakeholder_type.save!
 
-        Organisation.where(account: account, sector: template).update_all(sector_id: sector.id)
+        Organisation.where(account: account, stakeholder_type: template).update_all(stakeholder_type_id: stakeholder_type.id)
       end
     end
   end
 
   def down
     Account.all.each do |account|
-      account.sectors.each do |sector|
-        template = Sector.system_sectors.find_by(name: sector.name)
+      account.stakeholder_types.each do |stakeholder_type|
+        template = StakeholderType.system_stakeholder_types.find_by(name: stakeholder_type.name)
 
-        Organisation.where(account: account, sector: sector).update_all(sector_id: template.id)
+        next if template.nil?
+
+        Organisation.where(account: account, stakeholder_type: stakeholder_type).update_all(stakeholder_type_id: template.id)
       end
     end
 
-    Sector.where.not(account_id: nil).delete_all
+    StakeholderType.where.not(account_id: nil).delete_all
   end
 
 end

@@ -36,8 +36,8 @@ module ApplicationHelper
       content_tag(:strong) do
         concat "For instructions on importing files go to "
         concat link_to(
-          'www.wickedlab.com.au/help-importing-files',
-          'https://www.wickedlab.com.au/help-importing-files',
+          'www.wickedlab.co/importing-initiatives-organisations',
+          'https://www.wickedlab.co/importing-initiatives-organisations',
           target: :_blank, style: 'text-decoration: underline;'
         )
         concat "."

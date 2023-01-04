@@ -1,8 +1,8 @@
 <div data-controller='scorecards' class="mt-3 ml-3">
   <%# SMELL: Fake selectors to prevent JS error in shared view%>
   <div class="d-none">
-    <select data-scorecards-target="organisationsFilter"></select>
-    <select data-scorecards-target="initiativesFilter"></select>
+    <div data-scorecards-target="organisationsFilter"></div>
+    <div data-scorecards-target="initiativesFilter"></div>
   </div>
 
   <ul id="transition-card-nav" class="nav nav-tabs">
@@ -26,7 +26,11 @@
     </div>
     <% if @scorecard.share_ecosystem_map? %>
       <div class="tab-pane" id="ecosystem_maps">
-        <%= render 'scorecards/show_tabs/ecosystem_maps', scorecard_id: @scorecard.shared_link_id %>
+        <%=
+          render 'scorecards/show_tabs/ecosystem_maps',
+            scorecard_id: @scorecard.shared_link_id,
+            stakeholder_types: @scorecard.stakeholder_types
+        %>
       </div>
     <% end %>
     <% if @scorecard.share_thematic_network_map? && @scorecard.is_a?(SustainableDevelopmentGoalAlignmentCard) %>

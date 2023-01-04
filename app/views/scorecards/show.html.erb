@@ -35,7 +35,11 @@
     </div>
     <% if policy(@scorecard).ecosystem_maps? %>
       <div class="tab-pane <%= 'active' if @active_tab == :ecosystem_maps %>" id="ecosystem_maps">
-        <%= render 'scorecards/show_tabs/ecosystem_maps', scorecard_id: @scorecard.id %>
+        <%=
+          render 'scorecards/show_tabs/ecosystem_maps',
+            scorecard_id: @scorecard.id,
+            stakeholder_types: @scorecard.stakeholder_types
+        %>
       </div>
     <% end %>
     <% if policy(@scorecard).targets_network_maps? %>

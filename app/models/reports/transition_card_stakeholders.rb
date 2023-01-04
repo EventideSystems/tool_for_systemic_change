@@ -61,7 +61,7 @@ module Reports
 
           sheet.add_row
 
-          sheet.add_row(['Stakeholder Breakdown', 'Total Organisations', 'Organisations'], style: header_3)
+          sheet.add_row(['Stakeholder Type', 'Total Organisations', 'Organisations'], style: header_3)
           StakeholderType.where(account: scorecard.account).order(:name).each do |stakeholder_type|
             name = stakeholder_type.name
             organisations = organisations_for_stakeholder_type(stakeholder_type)

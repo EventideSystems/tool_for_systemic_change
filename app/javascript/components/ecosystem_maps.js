@@ -17,7 +17,7 @@ function showNodeDialog(nodeData, node, dataUrl) {
   $('#ecosystem-maps-modal').data('coords-x', coords.x);
   $('#ecosystem-maps-modal').data('coords-y', coords.y);
   $('#ecosystem-maps-modal').css('opacity', 0);
-  
+
   $('#ecosystem-maps-modal').find(".modal-content").load(dataUrl, function() {
     $('#ecosystem-maps-modal').modal('show');
   });
@@ -85,19 +85,19 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
 
     var width = $(mapDiv).width()
     var height = $(mapDiv).height()
-    
+
     var svg = d3.select(`${mapDiv} > svg`)
       .attr("width", width)
       .attr("height", height)
       .call(zoom)
-      .on("click", function(event) { 
+      .on("click", function(event) {
         closeNodeDialog()
       })
-      .on("dblclick", function(event) { 
+      .on("dblclick", function(event) {
         nodeElements.attr('fill', function (node) { return getNodeColor(node) })
         textElements.attr('fill', function (node) { return getTextColor(node) })
         linkElements.attr('stroke', function (link) { return '#E5E5E5' })
-      }) 
+      })
       .on("dblclick.zoom", null)
       .on("wheel.zoom", null)
 
@@ -123,7 +123,7 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
       .force('center', d3.forceCenter(width / 2.5, height / 3))
       //.force('cluster', d3.forceCluster())
       //.force("collide", collide)
-      
+
 
     var dragDrop = d3.drag().on('start', function (node) {
       node.fx = node.x
@@ -165,10 +165,10 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
         .attr("r", 6)
         .attr("fill", getNodeColor)
         .call(dragDrop)
-        .on('click', function(d) { 
+        .on('click', function(d) {
           var dataUrl = getNodeUrl(d);
           showNodeDialog(this, d, dataUrl);
-        })            
+        })
         .on('dblclick', function(d) {
           d3.event.stopPropagation();
           selectNode(d)
@@ -177,9 +177,9 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
           var text = $(`.texts text:contains("${d.label}")`)[0]
           var textElement = d3.select(text)
           textElement.attr('visibility', 'visible')
-        })                  
-        .on("mouseout", function(d) {   
-          if (!labelsVisible()) {  
+        })
+        .on("mouseout", function(d) {
+          if (!labelsVisible()) {
             var text = $(`.texts text:contains("${d.label}")`)[0]
             var textElement = d3.select(text)
             textElement.attr('visibility', 'hidden')
@@ -188,7 +188,7 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
 
     var labelVisibility = function() {
       if (labelsVisible()) {
-        return "visible" 
+        return "visible"
       } else {
         return "hidden"
       }
@@ -220,7 +220,7 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
         .attr('x2', function (link) { return link.target.x })
         .attr('y2', function (link) { return link.target.y })
     })
-  
+
     simulation.force("link").links(links)
   });
 }
@@ -239,13 +239,13 @@ function displayInitiatives() {
 
   function calcLinkStrength(nodes, links) {
     // x = links.length;
-    // y = 0.0002063777*x - 0.00345955;      
+    // y = 0.0002063777*x - 0.00345955;
     return 0.005
   }
 
-  function calcForceStrength(nodes, links) { 
+  function calcForceStrength(nodes, links) {
    // x = links.length / nodes.length
-   // y = (−282.914 * Math.pow(x, 2)) + (1409.871 * x) − 1884.819 
+   // y = (−282.914 * Math.pow(x, 2)) + (1409.871 * x) − 1884.819
     return -50
   }
 
@@ -266,16 +266,16 @@ function displayOrganisations() {
 
   function calcLinkStrength(nodes, links) {
     x = links.length;
-    y = 0.0002063777*x - 0.00345955;      
+    y = 0.0002063777*x - 0.00345955;
     return y
   }
 
   function calcForceStrength(nodes, links) { return -40 }
-  
+
   displayMap('#organisations-chart', getData, getNodeUrl, calcLinkStrength, calcForceStrength)
 }
 
-$(document).on('turbolinks:load', function() {
+$(document).on('ready turbolinks:load', function() {
   $('a[data-target="#tab_organisations"]').on('shown.bs.tab', function (e) {
     displayOrganisations();
   });

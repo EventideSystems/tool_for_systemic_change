@@ -5,7 +5,7 @@ class ScorecardComments::Import < Import
 
     focus_area_group_names = FocusAreaGroup.all.pluck(:name)
     focus_area_names = FocusArea.all.pluck(:name)
-    characteristic_names = Characteristic.all.pluck(:name).map{ |name| name.gsub(/\A\d+\.\d+\s/, '').downcase }
+    characteristic_names = Characteristic.all.pluck(:name).map { |name| name.gsub(/\A\d+\.\d+\s/, '').downcase }
 
     data_rows.each.with_index(1) do |raw_row, row_index|
       row = sanitize_row(raw_row)
@@ -95,6 +95,7 @@ class ScorecardComments::Import < Import
                   )
                 end
 
+                checklist_item.user = current_user if checklist_item.user.nil?
                 checklist_item.save
               end
             else

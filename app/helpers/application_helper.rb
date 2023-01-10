@@ -50,8 +50,8 @@ module ApplicationHelper
       content_tag(:strong) do
         concat "For instructions on importing files go to "
         concat link_to(
-          'www.wickedlab.com.au/help-importing-comments',
-          'https://www.wickedlab.com.au/help-importing-comments.html',
+          'www.wickedlab.co/importing-comments-transition-cards',
+          'https://www.wickedlab.co/importing-comments-transition-cards',
           target: :_blank, style: 'text-decoration: underline;'
         )
         concat "."

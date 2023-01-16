@@ -13,6 +13,11 @@ class WickedProblemsController < ApplicationController
   def show
     @wicked_problem.readonly!
     add_breadcrumb @wicked_problem.name
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @wicked_problem }
+    end
   end
 
   def new

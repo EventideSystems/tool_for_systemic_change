@@ -92,6 +92,7 @@ module System
       user = User.find(params[:id])
       authorize user
 
+      self.current_account = user.accounts.first
       impersonate_user(user)
 
       redirect_to root_path, flash: { notice: user_impersonation_flash_message }

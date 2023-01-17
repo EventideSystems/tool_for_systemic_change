@@ -6,7 +6,7 @@ class StakeholderTypePolicy < ApplicationPolicy
   end
 
   def index?
-    system_admin? || record_in_scope?(record)
+    true
   end
 
   def show?
@@ -14,7 +14,7 @@ class StakeholderTypePolicy < ApplicationPolicy
   end
 
   def create?
-    system_admin? || (record_in_scope?(record) && account_admin?(current_account))
+    system_admin? || account_admin?(current_account)
   end
 
   def update?

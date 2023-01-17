@@ -14,7 +14,7 @@ module AccountsHelper
   end
 
   def account_selector
-    accounts = policy_scope(Account)
+    accounts = policy_scope(Account).order(:name)
 
     if accounts.count == 1
       content_tag(:p, current_account_name)

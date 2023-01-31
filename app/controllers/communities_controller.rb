@@ -11,6 +11,11 @@ class CommunitiesController < ApplicationController
   def show
     @community.readonly!
     add_breadcrumb @community.name
+
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @community }
+    end
   end
 
   def new

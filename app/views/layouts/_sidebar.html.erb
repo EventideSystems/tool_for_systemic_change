@@ -7,6 +7,23 @@
         <%= account_selector %>
       </div>
       <%- end %>
+
+      <%= form_tag search_results_path, class: 'sidebar-form', method: :get do %>
+        <div class="input-group">
+          <%=
+            text_field_tag :query,
+              nil,
+              class: 'form-control border-0',
+              placeholder: 'Search...',
+              disabled: sidebar_disabled?
+          %>
+          <span class="input-group-btn">
+            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      <% end %>
+
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <%= menu_item_tag(:dashboard, 'dashboard') %>

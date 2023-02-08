@@ -12,19 +12,6 @@
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <%= form_tag search_results_path, class: 'search-form', method: :get do %>
-        <div class="input-group">
-          <%=
-            text_field_tag :query,
-              nil,
-              class: 'form-control border-0',
-              placeholder: 'Search...',
-              disabled: search_disabled?
-          %>
-        </div>
-      <% end %>
-    </li>
     <li class="nav-item dropdown">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -37,11 +37,6 @@ class ApplicationController < ActionController::Base
     current_account.nil?
   end
 
-  # SMELL duplicated method
-  def search_disabled?
-    sidebar_disabled?
-  end
-
   def current_account=(account)
     @current_account = nil
     session[:account_id] = account.present? ? account.id : nil

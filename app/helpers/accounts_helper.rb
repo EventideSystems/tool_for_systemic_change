@@ -1,6 +1,6 @@
+# frozen_string_literal: true
+
 module AccountsHelper
-
-
   def lookup_accounts
     policy_scope(Account).all
   end
@@ -27,8 +27,10 @@ module AccountsHelper
       }
 
       option_tags = options_for_select(
-        accounts.map do |account| [
-          account.name, switch_account_path(account)]
+        accounts.map do |account|
+          [
+            account.name, switch_account_path(account)
+          ]
         end,
         selected_path
       )
@@ -47,7 +49,7 @@ module AccountsHelper
 
   def current_account_name
     return 'No account selected' unless controller.current_account.present?
+
     controller.current_account.name
   end
-
 end

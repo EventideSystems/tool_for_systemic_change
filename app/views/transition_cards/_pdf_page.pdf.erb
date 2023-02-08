@@ -1,16 +1,16 @@
-<div class="xnobreak">  
+<div class="xnobreak">
   <div class="row">
     <div class="col-sm-8">
       <h2><%= Scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 100) %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
     </div>
     <div class="col-sm-3 float-right">
       <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-    </div>  
+    </div>
   </div>
     <div class="box-body scorecard-matrix scorecard-matrix-pdf">
       <div class="outer">
         <div class="inner" style="overflow-x: visible">
-          <table class="print-table"> 
+          <table class="print-table">
             <thead>
               <tr>
                 <th>&nbsp;</th>
@@ -32,7 +32,7 @@
                 </th>
                 <% initiative.checklist_items_ordered_by_ordered_focus_area(@parsed_selected_date).each do |checklist_item| %>
                   <% if checklist_item.characteristic.focus_area.id.in?(focus_areas.map(&:id)) %>
-                  <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL Needs to be 'relative' position %>
+                  <td data-toggle="tooltip" data-placement="left" title="<%= checklist_item.characteristic.name %>" class="cell <%= "gap" unless checklist_item.checked? %> <%= "color#{@focus_areas.index(checklist_item.characteristic.focus_area)+1}" %>"> <%# SMELL: Needs to be 'relative' position %>
                     <span>&nbsp;</span>
                   </td>
                   <% end %>
@@ -41,7 +41,7 @@
               <% end %>
             </tbody>
             <tfoot>
-              <tr class="xprint-chars"> 
+              <tr class="xprint-chars">
                 <td>
                   &nbsp;
                 </td>

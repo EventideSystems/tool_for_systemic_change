@@ -2,6 +2,10 @@ Style/Copyright:
   Enabled: false
 Documentation:
   Enabled: false
+Style/DocumentationMethod:
+  Enabled: false
+Lint/ConstantResolution:
+  Enabled: false
 AllCops:
   SuggestExtensions: false
   EnabledByDefault: true

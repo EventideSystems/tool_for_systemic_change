@@ -46,6 +46,12 @@
       <div style="height: 110%" class="tab-pane <%= 'active' if @active_tab == :targets_network_map %>" id="targets-network-map"  data-scorecards-target="targetsNetworkMap">
         <%= render 'sustainable_development_goal_alignment_cards/show_tabs/targets_network_map', scorecard_id: @scorecard.id %>
       </div>
+    <% else %>
+      <%# SMELL: Fake selectors to prevent JS error in shared view%>
+      <div class="d-none">
+        <div data-scorecards-target="organisationsFilter"></div>
+        <div data-scorecards-target="initiativesFilter"></div>
+      </div>
     <% end %>
     <div class="tab-pane <%= 'active' if @active_tab == :initiatives %>" id="initiatives">
       <%= render 'scorecards/show_tabs/initiatives'%>

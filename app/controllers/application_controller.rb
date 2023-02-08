@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
@@ -16,18 +18,28 @@ class ApplicationController < ActionController::Base
   impersonates :user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ActiveRecord::RecordNotFound, with: :flash_404
+  rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
 
   add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
-  helper_method :current_account
+  helper_method :current_account, :sidebar_disabled?, :search_disabled?
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
-    @current_account ||= (
-      account_id = session[:account_id]
-      account_id.present? ? Account.where(id: account_id).first : nil
-    )
+    @current_account ||=
+      begin
+        account_id = session[:account_id]
+        account_id.present? ? ::Account.where(id: account_id).first : nil
+      end
+  end
+
+  def sidebar_disabled?
+    current_account.nil?
+  end
+
+  # SMELL duplicated method
+  def search_disabled?
+    sidebar_disabled?
   end
 
   def current_account=(account)
@@ -37,9 +49,9 @@ class ApplicationController < ActionController::Base
   end
 
   def enable_profiler
-    if Rails.env.development? || Rails.env.staging?
-      Rack::MiniProfiler.authorize_request
-    end
+    return unless ::Rails.env.development? || ::Rails.env.staging?
+
+    ::Rack::MiniProfiler.authorize_request
   end
 
   def pundit_user
@@ -49,19 +61,17 @@ class ApplicationController < ActionController::Base
   def require_account_selected
     return if current_account.present?
 
-    redirect_back(
-      fallback_location: dashboard_path,
-      alert: 'Select an account before using this feature'
-    )
+    redirect_back(fallback_location: dashboard_path, alert: 'Select an account before using this feature')
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:invite,
-      keys:[
+    devise_parameter_sanitizer.permit(
+      :invite,
+      keys: [
         :email,
         :name,
         :system_role,
-        accounts_users_attributes: [:account_id, :account_role]
+        { accounts_users_attributes: %i[account_id account_role] }
       ]
     )
   end
@@ -94,22 +104,20 @@ class ApplicationController < ActionController::Base
   private
 
   def set_session_account_id
-    if session[:account_id].blank? && user_signed_in?
-      self.current_account = current_user.default_account
-    end
+    return unless session[:account_id].blank? && user_signed_in?
+
+    self.current_account = current_user.default_account
   end
 
-  def user_not_authorized(exception)
-   policy_name = exception.policy.class.to_s.underscore
-   flash[:error] = "Access denied."
-   # TODO Would be nicer to have specific error messages, but for now just use "Access denied."
-  # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
-   redirect_to(root_path)
-  end
-
-  def flash_404(exception)
-    flash[:error] = "Resource not found in account '#{current_account.name}'"
+  def user_not_authorized(_exception)
+    flash[:error] = 'Access denied.'
+    # TODO: Would be nicer to have specific error messages, but for now just use "Access denied."
+    # flash[:error] = t "#{policy_name}.#{exception.query}", scope: "pundit", default: :default
     redirect_to(root_path)
   end
 
+  def flash_resource_not_found(_exception)
+    flash[:error] = "Resource not found in account '#{current_account.name}'"
+    redirect_to(root_path)
+  end
 end

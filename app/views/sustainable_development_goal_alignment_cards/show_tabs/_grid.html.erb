@@ -36,7 +36,7 @@
                 end
               %>
             </th>
-            <%# SMELL looping through @focus_areas on each row is not performant %>
+            <%# SMELL: looping through @focus_areas on each row is not performant %>
             <% @focus_areas.each_with_index do |focus_area, index|  %>
               <td colspan="<%= focus_area.characteristics.size %>" class="focus-area-cell" style="<%= focus_area_cell_style(result, focus_area) %>">
               </td>

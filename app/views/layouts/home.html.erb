@@ -2,8 +2,8 @@
 <html>
   <head>
     <title><%= application_title%></title>
-    <%= csrf_meta_tags %> 
-    <%= csp_meta_tag %> 
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
     <%= javascript_pack_tag 'application' %>
     <%= stylesheet_pack_tag 'application' %>
     <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
         <nav class="navbar navbar-static-top" role="navigation">
           <%= render 'layouts/logo' %>
           <div class="navbar-custom-menu mr-3">
-            <!-- SMELL Inline styles -->
+            <!-- SMELL: Inline styles -->
             <ul class="nav navbar-nav" style="margin-top: -15px;">
               <li><%= link_to "Sign In", new_user_session_path %></li>
               <!-- <li><%#= link_to "Sign Up", new_user_registration_path %></li> -->
@@ -27,7 +27,7 @@
             <div class="home">
               <%= render partial: 'layouts/shared/flash' %>
               <%= yield %>
-            </div>  
+            </div>
         </section>
       </div>
       <%= render 'layouts/shared/footer' %>

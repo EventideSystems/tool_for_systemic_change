@@ -30,6 +30,13 @@
   background-color: #1e282c;
 }
 
+.sidebar {
+  min-height: 700px;
+  overflow: hidden;
+  width: auto;
+  height: auto;
+}
+
 .sidebar .user-panel {
   border-bottom: inherit;
 }
@@ -63,6 +70,15 @@ form.account-select {
 .skin-wicked .main-sidebar,
 .skin-wicked .left-side {
   background-color: #222d32;
+}
+
+.skin-wicked .search-form {
+
+  span.input-group-btn {
+    position: relative;
+    left: -34px;
+    top: 1px;
+  }
 }
 
 .skin-wicked .sidebar-form {

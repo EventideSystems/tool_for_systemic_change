@@ -48,8 +48,6 @@
           <%- end %>
 
           <%= menu_item_tag(:reports, 'pie-chart', { disabled: sidebar_disabled? }) %>
-          <%#= menu_item_tag(:networks, 'snowflake-o ', { disabled: sidebar_disabled? }) %>
-          <%= menu_item_tag(:activity, 'history', { controller: :activities }) %>
           <%- if policy(:sidebar).show_users_link? %>
             <%= menu_item_tag(:users, 'users', { disabled: sidebar_disabled? }) %>
           <%- end %>

@@ -216,7 +216,7 @@ GEM
       ffi (~> 1.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    hashie (3.4.6)
+    hashie (5.0.0)
     heapy (0.2.0)
       thor
     htmlentities (4.3.4)

@@ -38,16 +38,22 @@ class CommunitiesController < ApplicationController
         format.js
       else
         format.html { render :new }
-        format.js
+        format.js { render json: @community.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
     if @community.update(community_params)
-      format.html { redirect_to communities_path, notice: 'Community was successfully updated.' }
+      respond_to do |format|
+        format.html { redirect_to communities_path, notice: 'Community was successfully updated.' }
+        format.js
+      end
     else
-      format.html { render :edit }
+      respond_to do |format|
+        format.html { render :edit }
+        format.js { render json: @community.errors, status: :unprocessable_entity }
+      end
     end
   end
 

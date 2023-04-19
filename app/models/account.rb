@@ -4,6 +4,8 @@ class Account < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
+  EXPIRY_WARNING_PERIOD = 30.days
+
   enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
 
   belongs_to :stakeholder_type, optional: true
@@ -27,6 +29,11 @@ class Account < ApplicationRecord
   scope :active,
         lambda {
           where(expires_on: nil).or(::Account.where(expires_on: Date.today..)).order(created_at: :asc)
+        }
+
+  scope :expiring_soon,
+        lambda {
+          where(expires_on: Date.today..(Date.today + EXPIRY_WARNING_PERIOD)).order(created_at: :asc)
         }
 
   def accounts_users_remaining

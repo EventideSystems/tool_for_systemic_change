@@ -111,12 +111,5 @@ RSpec.configure do |config|
       Bullet.end_request
     end
   end
-  
-  config.around(:each, :run_delayed_jobs) do |example|
-    Delayed::Worker.delay_jobs = false
 
-    example.run
-
-    Delayed::Worker.delay_jobs = true
-  end
 end

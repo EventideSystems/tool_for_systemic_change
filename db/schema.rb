@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_20_062935) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_19_023536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_20_062935) do
     t.boolean "solution_ecosystem_maps"
     t.boolean "allow_transition_cards", default: true
     t.boolean "allow_sustainable_development_goal_alignment_cards", default: false
+    t.date "expiry_warning_sent_on"
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|

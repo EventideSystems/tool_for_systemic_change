@@ -102,6 +102,7 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'rubocop-performance'
   gem 'rspec-rails'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'

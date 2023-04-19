@@ -4,6 +4,7 @@
   <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
   <%= f.input :welcome_message , as: :text, input_html: { class: 'textarea' }, readonly: true %>
   <%= f.input :expires_on, as: :string, readonly: true %>
+  <%= f.input :expiry_warning_sent_on, as: :string, readonly: true %>
   <%= f.input :max_users, readonly: true %>
   <%= f.input :max_scorecards, readonly: true, label: "Max #{Scorecard.model_name.human.pluralize.downcase}" %>
   <div class="row">

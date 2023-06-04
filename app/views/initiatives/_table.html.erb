@@ -22,6 +22,9 @@
           link_url: lambda { |initiative| initiative_path(initiative.linked_initiative) if initiative.linked_initiative.present? }
       %>
     <%- end -%>
+    <%- if policy(Initiative).show_archived? -%>
+      <% table.column :archived?, sortable: false, formatter: lambda { |archived| archived ? 'Yes' : '' } %>
+    <%- end -%>
     <% table.column data: "Modify", link_action: :edit %>
     <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
     <% table.footer do %>

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module Reports
   class ScorecardComments < Base
     attr_reader :scorecard, :date, :status, :time_zone
@@ -141,6 +142,7 @@ module Reports
           and checklist_item_changes.created_at <= '#{date}'
           and checklist_item_changes.ending_status = '#{status}'
           and initiatives.scorecard_id = #{scorecard.id}
+          and (checklist_item_changes.created_at < initiatives.archived_on or initiatives.archived_on is null)
           group by characteristics.id, initiatives.id
         ),
 
@@ -184,8 +186,10 @@ module Reports
       params = { date: date }
 
       scorecard.initiatives
+                .where('archived_on > :date OR archived_on IS NULL', params)
                .where('started_at <= :date OR started_at IS NULL', params)
                .where('finished_at >= :date OR finished_at IS NULL', params)
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -2,6 +2,7 @@
 
 require 'benchmark'
 
+# rubocop:disable Metrics/ClassLength
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
@@ -76,6 +77,7 @@ class ScorecardGrid
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           where initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
+          and (initiatives.archived_on is null or initiatives.archived_on > now())
           #{subsystem_sql(subsystem_tags)}
           group by initiatives.id, characteristics.id, checklist_items.id, focus_area_groups.id
           order by initiative
@@ -138,6 +140,7 @@ class ScorecardGrid
             ) changes on changes.checklist_item_id = checklist_items.id and rn = 1
           where initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
+          and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
           #{subsystem_sql(subsystem_tags)}
           group by
             initiatives.id,
@@ -176,7 +179,8 @@ class ScorecardGrid
       return 'now()' if snapshot_at.blank?
 
       snapshot_timestamp = snapshot_at.is_a?(String) ? Time.parse(snapshot_at) : snapshot_at.to_time
-      "'#{snapshot_timestamp.utc.to_s(:db)}'"
+      "'#{snapshot_timestamp.utc.to_fs(:db)}'"
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

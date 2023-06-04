@@ -4,6 +4,8 @@ Documentation:
   Enabled: false
 Style/DocumentationMethod:
   Enabled: false
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: false
 Lint/ConstantResolution:
   Enabled: false
 AllCops:

@@ -43,14 +43,15 @@ module EcosystemMaps
 
     def build_link_data
       query = <<~SQL
-        SELECT org1.id, org2.id
-        FROM initiatives
-        INNER JOIN scorecards ON scorecards.id = initiatives.scorecard_id
-        INNER JOIN initiatives_organisations io1 ON io1.initiative_id = initiatives.id
-        INNER JOIN organisations org1 ON org1.id = io1.organisation_id
-        INNER JOIN initiatives_organisations io2 ON io2.initiative_id = initiatives.id
-        INNER JOIN organisations org2 ON org2.id = io2.organisation_id
-        WHERE org1.id <> org2.id AND initiatives.scorecard_id = #{transition_card.id};
+        select org1.id, org2.id
+        from initiatives
+        inner join scorecards on scorecards.id = initiatives.scorecard_id
+        inner join initiatives_organisations io1 on io1.initiative_id = initiatives.id
+        inner join organisations org1 on org1.id = io1.organisation_id
+        inner join initiatives_organisations io2 on io2.initiative_id = initiatives.id
+        inner join organisations org2 on org2.id = io2.organisation_id
+        where org1.id <> org2.id and initiatives.scorecard_id = #{transition_card.id};
+        and (initiatives.archived_on > now() or initiatives.archived_on is null)
       SQL
 
       results = ActiveRecord::Base.connection.exec_query(query).rows

@@ -30,6 +30,7 @@
           f.button :submit,
             "Update Existing",
             class: 'btn btn-secondary checklist-comment-update',
+            disabled: checklist_item.initiative.archived?,
             data: {
               comments_target: "updateExistingBtn",
               id: checklist_item.id
@@ -70,10 +71,12 @@
             </div>
           </div>
         </div>
+
         <%=
           f.button :submit,
             "Save New Comment",
-            class: 'btn btn-secondary checklist-comment-new'
+            class: 'btn btn-secondary checklist-comment-new',
+            disabled: checklist_item.initiative.archived?
         %>
         <button class="btn btn-default btn-checklist-comment-cancel" data-action="comments#close">Cancel</button>
       <% end %>

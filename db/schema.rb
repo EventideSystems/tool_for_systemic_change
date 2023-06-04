@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_19_023536) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_02_133626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -229,6 +229,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_19_023536) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "old_notes"
     t.boolean "linked", default: false
+    t.datetime "archived_on"
     t.index ["deleted_at"], name: "index_initiatives_on_deleted_at"
     t.index ["finished_at"], name: "index_initiatives_on_finished_at"
     t.index ["name"], name: "index_initiatives_on_name"

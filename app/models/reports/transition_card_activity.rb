@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# rubocop:disable Metrics/ClassLength
 module Reports
   class TransitionCardActivity < Base
     attr_accessor :scorecard, :date_from, :date_to
@@ -137,6 +138,8 @@ module Reports
       case scorecard
       when TransitionCard then 'Initiative Characteristics'
       when SustainableDevelopmentGoalAlignmentCard then 'Sustainable Development Goals'
+      else
+        raise "Unexpected scorecard type: #{scorecard.class}"
       end
     end
 
@@ -158,3 +161,4 @@ module Reports
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

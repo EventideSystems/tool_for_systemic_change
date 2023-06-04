@@ -50,7 +50,7 @@ module Reports
           sheet.add_row
 
           sheet.add_row(['Initiatives', 'Total Organisations', 'Organisations'], style: header_3)
-          scorecard.initiatives.each do |initiative|
+          scorecard.initiatives.not_archived.each do |initiative|
             name = initiative.name
             organisations = organisations_for_initiative(initiative)
             organisations_names = organisations.map(&:name)
@@ -91,7 +91,7 @@ module Reports
                        .pluck(:initiative_id)
                        .uniq
 
-      scorecard.initiatives.where(id: initiative_ids)
+      scorecard.initiatives.not_archived.where(id: initiative_ids)
     end
 
     def organisations_for_initiative(initiative)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class TransitionCardChecklistItems
   class << self
     def execute(transition_card_id, date_from, date_to)
@@ -61,6 +62,7 @@ class TransitionCardChecklistItems
           left join checklist_item_changes
             on checklist_item_changes.checklist_item_id = checklist_items.id
             and checklist_item_changes.created_at < $1
+            and (initiatives.archived_on is null or checklist_item_changes.created_at < initiatives.archived_on)
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at desc
@@ -93,6 +95,7 @@ class TransitionCardChecklistItems
             and checklist_item_changes.created_at <= $2
             and checklist_item_changes.activity = 'addition'
             and checklist_item_changes.action = 'update_existing'
+            and (initiatives.archived_on is null or checklist_item_changes.created_at < initiatives.archived_on)
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
@@ -125,6 +128,7 @@ class TransitionCardChecklistItems
             and checklist_item_changes.created_at <= $2
             and checklist_item_changes.activity = 'addition'
             and checklist_item_changes.action = 'save_new_comment'
+            and (initiatives.archived_on is null or checklist_item_changes.created_at < initiatives.archived_on)
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
@@ -156,6 +160,7 @@ class TransitionCardChecklistItems
             and checklist_item_changes.created_at >= $1
             and checklist_item_changes.created_at <= $2
             and checklist_item_changes.activity = 'new_comments_saved_assigned_actuals'
+            and (initiatives.archived_on is null or checklist_item_changes.created_at < initiatives.archived_on)
           where initiatives.scorecard_id = $3
           and initiatives.deleted_at is null
           order by focus_area_groups.id, focus_areas.id, characteristics.id, initiatives.id, checklist_item_changes.created_at asc
@@ -195,3 +200,4 @@ class TransitionCardChecklistItems
     SQL
   end
 end
+# rubocop:enable Metrics/ClassLength

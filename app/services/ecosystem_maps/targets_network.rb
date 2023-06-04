@@ -88,6 +88,7 @@ module EcosystemMaps
           inner join initiatives
             on initiatives.id = checklist_items.initiative_id
           where initiatives.scorecard_id = #{transition_card.id}
+          and (initiatives.archived_on > now() or initiatives.archived_on is null)
         )
         select
           characteristic_id,

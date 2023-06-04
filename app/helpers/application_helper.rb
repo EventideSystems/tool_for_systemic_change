@@ -83,6 +83,10 @@ module ApplicationHelper
     date.strftime('%B %-d, %Y')
   end
 
+  def format_date(date)
+    date.strftime('%F') unless date.blank?
+  end
+
   private
 
   def form_title_lead(resource)

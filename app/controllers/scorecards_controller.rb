@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ScorecardsController < ApplicationController
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
@@ -50,11 +51,12 @@ class ScorecardsController < ApplicationController
         @initiatives =
           if @parsed_selected_date.present?
             @scorecard.initiatives
+                      .where('archived_on > ? OR archived_on IS NULL', @parsed_selected_date)
                       .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
                       .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
                       .order(name: :asc)
           else
-            @scorecard.initiatives.order(name: :asc)
+            @scorecard.not_archived.initiatives.order(name: :asc)
           end
 
         @initiatives =
@@ -324,6 +326,7 @@ class ScorecardsController < ApplicationController
         :scorecard_id,
         :started_at,
         :finished_at,
+        :archived_on,
         :dates_confirmed,
         :contact_name,
         :contact_email,
@@ -390,3 +393,4 @@ class ScorecardsController < ApplicationController
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

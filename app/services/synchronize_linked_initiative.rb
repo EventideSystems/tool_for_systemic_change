@@ -4,8 +4,10 @@ class SynchronizeLinkedInitiative
   class << self
     def call(source_initiative, target_initiative = nil)
       return if source_initiative.scorecard.linked_scorecard.blank?
+      return if source_initiative.archived?
 
       target_initiative ||= fetch_target_initiative(source_initiative)
+      return if target_initiative.archived?
 
       update_initiative_attributes(source_initiative, target_initiative)
       synchronize_initiative_organisations(source_initiative, target_initiative)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
@@ -8,17 +9,14 @@ class InitiativesController < ApplicationController
   add_breadcrumb 'Initiatives', :initiatives_path
 
   def index
+    base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order)
+
     respond_to do |format|
       format.html do
-        @initiatives = \
-          policy_scope(Initiative)
-          .send(scope_from_params)
-          .includes(:organisations)
-          .order(sort_order)
-          .page params[:page]
+        @initiatives = base_scope.page params[:page]
       end
       format.csv do
-        @initiatives = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order).all
+        @initiatives = base_scope.all
         send_data initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv"
       end
     end
@@ -28,7 +26,6 @@ class InitiativesController < ApplicationController
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
 
     add_breadcrumb @initiative.name
-    @content_subtitle = @initiative.name
   end
 
   def new
@@ -41,8 +38,6 @@ class InitiativesController < ApplicationController
 
   def edit
     add_breadcrumb @initiative.name
-
-    @content_subtitle = @initiative.name
   end
 
   def create
@@ -82,7 +77,9 @@ class InitiativesController < ApplicationController
   end
 
   def content_subtitle
-    @initiative&.name.presence || super
+    subtitle = (@initiative&.name.presence || super)
+
+    @initiative&.archived? ? subtitle + ' [ARCHIVED]' : subtitle
   end
 
   # NOTE Will move this to the checklist controller, where it belongs
@@ -209,6 +206,7 @@ class InitiativesController < ApplicationController
       :scorecard_id,
       :started_at,
       :finished_at,
+      :archived_on,
       :dates_confirmed,
       :contact_name,
       :contact_email,
@@ -253,3 +251,4 @@ class InitiativesController < ApplicationController
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

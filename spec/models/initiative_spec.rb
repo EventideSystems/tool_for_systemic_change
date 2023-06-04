@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Initiative, type: :model do
 
   context '#checklist_items_ordered_by_ordered_focus_area' do
@@ -13,6 +14,34 @@ RSpec.describe Initiative, type: :model do
         :initiative,
         organisations:
         create_list(:organisation, 2, account: default_account, stakeholder_type: stakeholder_type))
+    end
+
+    describe '.archived?' do
+      context 'when archived_on is nil' do
+        it 'returns false' do
+          expect(initiative.archived?).to be_falsy
+        end
+      end
+
+      context 'when archived_on is in the future' do
+        before do
+          initiative.archived_on = 1.day.from_now
+        end
+
+        it 'returns false' do
+          expect(initiative.archived?).to be_falsy
+        end
+      end
+
+      context 'when archived_on is in the past' do
+        before do
+          initiative.archived_on = 1.day.ago
+        end
+
+        it 'returns true' do
+          expect(initiative.archived?).to be_truthy
+        end
+      end
     end
 
     it 'checklist item count equals characteristic count' do
@@ -204,5 +233,4 @@ RSpec.describe Initiative, type: :model do
     end
   end
 end
-
-
+# rubocop:enable Metrics/BlockLength

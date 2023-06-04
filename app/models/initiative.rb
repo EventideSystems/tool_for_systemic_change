@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class Initiative < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
@@ -33,6 +34,14 @@ class Initiative < ApplicationRecord
   scope :incomplete, lambda {
     joins(:checklist_items)
       .where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
+  }
+
+  scope :archived, lambda {
+    where.not(archived_on: nil).where('archived_on <= ?', Time.zone.now)
+  }
+
+  scope :not_archived, lambda {
+    where(archived_on: nil).or(where('archived_on > ?', Time.zone.now))
   }
 
   # SMELL Lazy way
@@ -91,6 +100,9 @@ class Initiative < ApplicationRecord
     checklist_items
   end
 
+  def archived?
+    archived_on.present? && archived_on <= Time.zone.now
+  end
   def linked_initiative
     return nil unless linked?
     return nil unless scorecard.linked_scorecard.present?
@@ -210,3 +222,4 @@ class Initiative < ApplicationRecord
     finished_at >= started_at
   end
 end
+# rubocop:enable Metrics/ClassLength

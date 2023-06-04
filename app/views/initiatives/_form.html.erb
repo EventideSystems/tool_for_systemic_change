@@ -18,8 +18,12 @@
   <hr>
   <%= render 'transition_cards/form_tabs/organisations', f: f %>
   <%= render 'transition_cards/form_tabs/subsystem_tags', f: f %>
-  <%= f.input :started_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
-  <%= f.input :finished_at, as: :string, input_html: { data: { behaviour: "datepicker" } } %>
+  <%= f.input :started_at, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.started_at) } %>
+  <%= f.input :finished_at, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.finished_at) } %>
+  <%- if policy(@initiative).archive? -%>
+    <hr>
+    <%= f.input :archived_on, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.archived_on) }%>
+  <%- end -%>
   <hr>
   <%= f.input :contact_name %>
   <%= f.input :contact_email %>

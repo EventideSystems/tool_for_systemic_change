@@ -11,15 +11,17 @@ class TotalTransitionCardInitiatives
     INITIATIVE_TOTALS_SQL = <<~SQL
       select
         count(initiatives.id) filter(
-          where created_at < $1 AND (deleted_at IS NULL OR deleted_at > $1)
+          where created_at < $1 and (deleted_at is null or deleted_at > $1)
         ) as initial,
         count(initiatives.id) filter(
-          where created_at BETWEEN $1 AND $2
+          where created_at between $1 and $2
         ) as additions,
         count(initiatives.id) filter(
-          where deleted_at BETWEEN $1 AND $2
+          where deleted_at between $1 and $2
         ) as removals
-      from initiatives where scorecard_id=$3
+      from initiatives
+      where scorecard_id=$3
+      and (initiatives.archived_on > $1 or initiatives.archived_on is null)
     SQL
 
     def bind_vars(transition_card_id, date_from, date_to)

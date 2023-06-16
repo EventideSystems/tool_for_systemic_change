@@ -270,6 +270,26 @@ span.more-information {
   color: $color-more-information;
 }
 
+span.actual > a {
+  color: $color-actual;
+}
+
+span.planned > a {
+  color: $color-planned;
+}
+
+span.suggestion > a {
+  color: $color-suggestion;
+}
+
+span.more-information > a {
+  color: $color-more-information;
+}
+
+span.no-comment > a {
+  color: #212529;
+}
+
 i.badge-checklist-item {
 
 }

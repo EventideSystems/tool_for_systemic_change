@@ -52,7 +52,18 @@
                               <%= checklist_item_badge(checklist_item) %>
 
                               <span class="characteristic-name <%= current_comment_status_style(checklist_item) %>" data-comments-target="characteristic">
-                                <%= checklist_item.characteristic.name %>
+                                <%= link_to(
+                                      '#characteristic_comment',
+                                      class: 'characteristic-comment',
+                                      data: {
+                                        action: "comments#open",
+                                        id: checklist_item.id,
+                                        initiative_id: checklist_item.initiative_id
+                                      }
+                                    )  do
+                                      checklist_item.characteristic.name
+                                    end
+                                %>
                               </span>
                               <%= link_to(
                                 '#characteristic_comment',

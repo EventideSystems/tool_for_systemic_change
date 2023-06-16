@@ -23,7 +23,7 @@
       %>
     <%- end -%>
     <%- if policy(Initiative).show_archived? -%>
-      <% table.column :archived?, sortable: false, formatter: lambda { |archived| archived ? 'Yes' : '' } %>
+      <% table.column :archived?, header: 'Archived', sortable: false, formatter: lambda { |archived| archived ? 'Yes' : '' } %>
     <%- end -%>
     <% table.column data: "Modify", link_action: :edit %>
     <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>

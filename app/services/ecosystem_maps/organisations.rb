@@ -50,7 +50,7 @@ module EcosystemMaps
         inner join organisations org1 on org1.id = io1.organisation_id
         inner join initiatives_organisations io2 on io2.initiative_id = initiatives.id
         inner join organisations org2 on org2.id = io2.organisation_id
-        where org1.id <> org2.id and initiatives.scorecard_id = #{transition_card.id};
+        where org1.id <> org2.id and initiatives.scorecard_id = #{transition_card.id}
         and (initiatives.archived_on > now() or initiatives.archived_on is null)
       SQL
 

@@ -56,7 +56,7 @@ class ScorecardsController < ApplicationController
                       .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
                       .order(name: :asc)
           else
-            @scorecard.not_archived.initiatives.order(name: :asc)
+            @scorecard.initiatives.not_archived.order(name: :asc)
           end
 
         @initiatives =

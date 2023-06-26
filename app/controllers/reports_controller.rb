@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
   skip_after_action :verify_policy_scoped
   # skip_after_action :verify_authorized
@@ -188,6 +189,18 @@ class ReportsController < ApplicationController
     )
   end
 
+  def subsystem_summary
+    authorize(:report, :subsystem_summary?)
+
+    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @report = Reports::SubsystemSummary.new(@scorecard)
+    send_data(
+      @report.to_xlsx.read,
+      type: Mime[:xlsx],
+      filename: "#{subsystem_summary_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
+    )
+  end
+
   private
 
   def scorecard_activity_base_filename(scorecard)
@@ -210,6 +223,10 @@ class ReportsController < ApplicationController
     "#{report_filename_prefix(scorecard)}_Stakeholders"
   end
 
+  def subsystem_summary_base_filename(scorecard)
+    "#{report_filename_prefix(scorecard)}_Subsystem_Summary"
+  end
+
   def report_filename_prefix(scorecard)
     scorecard.model_name.human.delete(' ')
   end
@@ -218,3 +235,4 @@ class ReportsController < ApplicationController
     Time.zone.now.strftime('_%Y_%m_%d')
   end
 end
+# rubocop:enable Metrics/ClassLength

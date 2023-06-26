@@ -122,6 +122,8 @@ Rails.application.routes.draw do
       get 'scorecard_comments'
       get 'transition_card_activity'
       post 'transition_card_activity'
+      get 'subsystem_summary'
+      post 'subsystem_summary'
     end
   end
 

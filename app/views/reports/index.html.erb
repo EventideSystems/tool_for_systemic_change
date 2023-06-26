@@ -58,5 +58,23 @@
     </div>
   </div>
 
+  <%- if policy(:report).subsystem_summary? %>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header with-border">
+          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Subsystem Summary</h3>
+        </div>
+        <%= simple_form_for :report, url: subsystem_summary_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+        <div class="card-body">
+          <p>This report shows a summary of the interactons between subsystems, organisations and initiatives.</p>
+          <%= render partial: 'scorecard_selector', locals: { f: f } %>
+        </div>
+        <div class="card-footer">
+          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 
 <div>

@@ -14,6 +14,7 @@ class SubsystemTagsController < ApplicationController
     if params[:scorecard_id].present?
       @subsystem_tags = @subsystem_tags
         .joins(:initiatives)
+        .where('initiatives.archived_on is null or initiatives.archived_on > ?', Time.zone.now)
         .where('initiatives.scorecard_id' => params[:scorecard_id]).distinct
     end
 

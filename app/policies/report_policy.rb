@@ -24,4 +24,8 @@ class ReportPolicy < ApplicationPolicy
   def transition_card_activity?
     true
   end
+
+  def subsystem_summary?
+    system_admin? || account_admin?(current_account)
+  end
 end

@@ -224,7 +224,7 @@ class ReportsController < ApplicationController
   end
 
   def subsystem_summary_base_filename(scorecard)
-    "#{report_filename_prefix(scorecard)}_Subsystem_Summary"
+    "#{report_filename_prefix(scorecard)}_Subsystems"
   end
 
   def report_filename_prefix(scorecard)

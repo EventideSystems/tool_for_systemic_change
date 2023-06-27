@@ -127,7 +127,7 @@ class InitiativesController < ApplicationController
         "Organisation #{index} Name"
       end + 1.upto(max_subsystem_tag_index).map do |index|
         "Subsystem Tag #{index} Name"
-      end)
+      end) + ['Notes']
 
       initiatives.each do |initiative|
         organisations = initiative.organisations.limit(max_organisation_index)
@@ -155,7 +155,7 @@ class InitiativesController < ApplicationController
           initiative.contact_phone,
           initiative.contact_website,
           initiative.contact_position
-        ] + organisation_names + subsystem_tag_names)
+        ] + organisation_names + subsystem_tag_names + [initiative.notes.to_plain_text.gsub(/\n/, ' ')])
       end
     end
   end

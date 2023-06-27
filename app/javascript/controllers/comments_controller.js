@@ -17,7 +17,7 @@ export default class extends Controller {
     Rails.ajax({
       type: "get",
       url: loadPath,
-      success: function(data) { formTarget.innerHTML = data.body.getInnerHTML() },
+      success: function(data) { formTarget.innerHTML = data.body.innerHTML },
       error: function(data) { alert('Error') }
     })
   }

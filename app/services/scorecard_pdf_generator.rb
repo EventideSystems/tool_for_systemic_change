@@ -2,10 +2,11 @@
 
 require 'prawn/scorecards_helper'
 
+# rubocop:disable Metrics/ClassLength
 class ScorecardPdfGenerator
   def initialize(scorecard:, initiatives:, focus_areas:)
     @scorecard = scorecard
-    @initiatives = initiatives
+    @initiatives = initiatives.includes(:subsystem_tags)
     @focus_areas = focus_areas
   end
 
@@ -152,3 +153,4 @@ class ScorecardPdfGenerator
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

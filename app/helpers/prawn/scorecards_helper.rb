@@ -4,6 +4,7 @@ require 'prawn'
 require 'prawn/table'
 
 module Prawn
+  # rubocop:disable Metrics/ModuleLength
   module ScorecardsHelper
     include ::ActionView::Helpers::TextHelper
 
@@ -38,8 +39,8 @@ module Prawn
 
       repeat(:all) do
         canvas do
-          bounding_box [bounds.left + 30, bounds.top - 20], width: bounds.width - 60 do
-            font_size 22
+          bounding_box([bounds.left + 30, bounds.top - 20], width: bounds.width - 60) do
+            font_size(22)
             pad_top(8) do
               text "#{scorecard.model_name.human}: #{truncate(scorecard.name, length: 40)}", valign: :top
             end
@@ -120,9 +121,9 @@ module Prawn
     end
 
     def legend_sdg_card(focus_areas)
-      move_down 30
+      move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
-        move_down 5
+        move_down(5)
         formatted_text [
           { text: focus_area.short_name.force_encoding('UTF-8'), styles: [:bold], color: focus_area.planned_color.delete('#') },
         ], leading: 6
@@ -135,9 +136,9 @@ module Prawn
     end
 
     def legend_transition_card(focus_areas)
-      move_down 30
+      move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
-        move_down 5
+        move_down(5)
         formatted_text [
           { text: "Focus Area #{focus_area.position}", styles: [:bold], color: focus_area_color(focus_area) },
           { text: " - #{focus_area.name.force_encoding('UTF-8')}", size: 10 }
@@ -157,7 +158,7 @@ module Prawn
            border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
                                               { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
                                                 cell[:background_color] =
-                                                  checklist_item.checked? ? checklist_item_color_sdg_card(checklist_item) : 'F8F8F8'
+                                                  checklist_item_color_sdg_card(checklist_item)
                                               end
                                             end
       end
@@ -169,14 +170,14 @@ module Prawn
            border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
                                               { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
                                                 cell[:background_color] =
-                                                  checklist_item.checked? ? checklist_item_color_transition_card(checklist_item) : 'F8F8F8'
+                                                  checklist_item_color_transition_card(checklist_item)
                                               end
                                             end
       end
     end
 
     def page_numbering
-      font_size 12
+      font_size(12)
       string = 'Page <page> of <total>'
       options = {
         at: [bounds.right - 150, 0],
@@ -208,8 +209,9 @@ module Prawn
     # end
 
     def pdf_safe(text)
-      fallback = { "\u014C" => "O" }
+      fallback = { "\u014C" => 'O' }
       ActionView::Base.full_sanitizer.sanitize(text.encode('Windows-1252', fallback: fallback)).gsub(/&amp;/, '&')
     end
   end
+  # rubocop:enable Metrics/ModuleLength
 end

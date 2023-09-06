@@ -21,7 +21,7 @@
     %>
     <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %> %>
     <% table.column :color, formatter: lambda { |color| "<span style='width:10px; background-color:#{color}'>&nbsp;&nbsp;&nbsp;</span> #{color}".html_safe } %>
-    <% table.column :in_use?, formatter: lambda { |in_use| in_use ? 'yes' : 'no' } %>
+    <% table.column :in_use?, formatter: lambda { |in_use| in_use ? 'yes' : 'no' }, sortable: false %>
     <% table.column data: "Modify", link_action: :edit %>
     <% table.column \
         data:  lambda { |stakeholder_type| stakeholder_type.organisations.empty? ? "Delete" : "" },

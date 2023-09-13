@@ -40,7 +40,7 @@ module Reports
         style: styles[:blue_normal]
       )
       sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
-      sheet.add_row(['Community', scorecard.community.name])
+      sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
 
     def add_summary(sheet, styles)
@@ -54,7 +54,7 @@ module Reports
 
     def add_initiatives_per_subsystem(sheet, styles)
       initiatives_per_subsystem = fetch_initiatives_per_subsystem
-      max_initiatives = initiatives_per_subsystem.values.map(&:count).max
+      max_initiatives = initiatives_per_subsystem.values.map(&:count).max || 0
 
       sheet.add_row(['Subsystem ', 'Total Initiatives'] + Array.new(max_initiatives, 'Initiatives'), style: styles[:h3])
       initiatives_per_subsystem.each do |subsystem, initiatives|
@@ -64,7 +64,7 @@ module Reports
 
     def add_organisations_per_subsystem(sheet, styles)
       organisations_per_subsystem = fetch_organisations_per_subsystem
-      max_organisations = organisations_per_subsystem.values.map(&:count).max
+      max_organisations = organisations_per_subsystem.values.map(&:count).max || 0
 
       sheet.add_row(
         ['Subsystem ', 'Total Organisations'] + Array.new(max_organisations, 'Organisations'),

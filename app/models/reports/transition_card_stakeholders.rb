@@ -70,7 +70,7 @@ module Reports
     def add_title(sheet, styles)
       sheet.add_row([scorecard.model_name.human], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
       sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
-      sheet.add_row(['Community', scorecard.community.name])
+      sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
 
     def add_unique_organisations(sheet, styles)

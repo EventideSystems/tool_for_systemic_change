@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'mandrill_mailer'
+# require 'mandrill_mailer'
 
 # class MandrillDeviseMailer < Devise::Mailer
 #   helper :application

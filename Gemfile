@@ -42,7 +42,8 @@ gem 'webpacker'
 # Authentication and authorisation
 gem 'devise'
 gem 'devise_invitable'
-gem 'mandrill_mailer'
+gem 'mailjet'
+# gem 'mandrill_mailer'
 gem 'pundit'
 gem 'pretender'
 

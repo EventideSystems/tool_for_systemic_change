@@ -1,8 +1,8 @@
-<p>Dear <%= user_name %>,</p>
+<p>Dear <%= @user_name %>,</p>
 
-<p>This is a reminder that your Tool for Systemic Change license will expire on: <%= expires_on %>.</p>
+<p>This is a reminder that your Tool for Systemic Change license will expire on: <%= @expires_on %>.</p>
 
-<p>License fees are annual, and pricing information is available <%= link_to 'here', root_url + 'Pricing.Summary_TC.+.SDG.pdf' %>.</p>
+<p>License fees are annual, and pricing information is available <%= link_to 'here', root_url + @pricing_pdf %>.</p>
 
 <p>If you would like to continue using the Tool please have the <em>Account Owners</em> in your organisation reply to this email and let us know:</p>
 

@@ -73,7 +73,7 @@ module EcosystemMaps
 
       data.transform_keys(&:to_i)
     rescue Exception => e
-      raise payload
+      raise payload.inspect
       {}
     end
 

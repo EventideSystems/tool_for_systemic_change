@@ -2,8 +2,6 @@ module EcosystemMaps
 
   class Organisations
 
-    class PayloadError < StandardError;
-
     attr_reader :transition_card
 
     def initialize(transition_card)
@@ -71,11 +69,11 @@ module EcosystemMaps
       )
 
       payload = JSON.parse(response.payload.read)
-      data = JSON.parse(payload['body'])
+      data = JSON.parse(payload['body'].presence || '{}')
 
       data.transform_keys(&:to_i)
     rescue Exception => e
-      raise PayloadError.new(payload.inspect)
+      raise payload
       {}
     end
 

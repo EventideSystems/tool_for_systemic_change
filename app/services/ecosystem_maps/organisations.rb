@@ -69,7 +69,7 @@ module EcosystemMaps
       )
 
       payload = JSON.parse(response.payload.read)
-      data = JSON.parse(payload['body'].presence || '{}')
+      data = JSON.parse(payload['body'])
 
       data.transform_keys(&:to_i)
     rescue Exception => e

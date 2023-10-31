@@ -2,6 +2,8 @@ module EcosystemMaps
 
   class Organisations
 
+    class PayloadError < StandardError;
+
     attr_reader :transition_card
 
     def initialize(transition_card)
@@ -73,7 +75,7 @@ module EcosystemMaps
 
       data.transform_keys(&:to_i)
     rescue Exception => e
-      raise
+      raise PayloadError.new(payload.inspect)
       {}
     end
 

@@ -62,7 +62,7 @@ module EcosystemMaps
     def build_betweenness(link_data)
       links = link_data.uniq
 
-      lambda = Aws::Lambda::Client.new(region: 'us-west-2')
+      lambda = Aws::Lambda::Client.new(region: 'us-west-2', http_read_timeout: 300)
       response = lambda.invoke(
         function_name: 'betweennessCentrality',
         payload: { 'links' => links }.to_json

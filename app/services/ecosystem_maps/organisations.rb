@@ -69,7 +69,8 @@ module EcosystemMaps
       )
 
       payload = JSON.parse(response.payload.read)
-      data = JSON.parse(payload['body'])
+      # SMELL: This is a temporary fix. Large datasets are taking too long to return and timing out.
+      data = JSON.parse(payload['body'].presence || '{}')
 
       data.transform_keys(&:to_i)
     rescue Exception => e

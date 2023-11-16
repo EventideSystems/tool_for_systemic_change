@@ -1,11 +1,49 @@
-# WickedLab
+# Tool for Systemic Change
+
+## Background
+
+Originally developed by WickedLab, the Tool for Systemic Change is a web-based application that supports the development of a shared understanding of complex problems and the development of strategies to address them. It is based on the Transition Card model developed by Dr Sharon Zivkovic, and is used by a number of organisations in Australia and internationally.
+
+The tool has been extended to support the management of problems in relation to the United Nations Sustainable Development Goals (SDGs), and to support the development of strategies to address them.
+
+The tool has been released under an open source license, and is now maintained by Eventide Systems Pty Ltd.
+
+## License & Attribution
+
+This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.
+
+Copyright © 2023 Emily Humphreys. Portions copyright Eventide Systems Pty Ltd. All rights reserved.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+If you modify this program, or any covered work, by linking or combining it with the Tool for Systemic Change, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
+
+Attribution Notice:
+
+- If you modify the software, you must place prominent notices in the modified files stating that you changed the files and the date of any change.
+
+- If you distribute the software or any derivative works in source code form, you must retain the original copyright notices, the above license notice, and provide clear attribution to Emily Humphreys and Eventide Systems Pty Ltd.
+
+- If you distribute the software or any derivative works in binary form, you must, at a minimum, reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com
+
+### Additional License Information
+
+The configuration of the Transition Card model - the original diagnostic model used by the tool - remains the intellectual property of Dr Sharon Zivkovic and may not be used without her permission.
+
+SDG logos, and the Sustainable Development Goals model, are the property of the United Nations and may not be used commercially without permission from the United Nations.
 
 ## System Architecture
 
 ### System Components
 
 ```
-                   HEROKU                              AWS LAMBDA                    SCOUT           MANDRILL 
+                   HEROKU                              AWS LAMBDA                    SCOUT           MANDRILL
 
 
  ┌────────────────────┐     ┌─────────────┐      ┌────────────────────────┐

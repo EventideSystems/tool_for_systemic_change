@@ -128,4 +128,4 @@ _TBD_
 
 ## Development
 
-Work is tracked via the [Wicked Lab App Development](https://github.com/ferrisoxide/wicked_software/projects/1) project.
+Work is tracked via the [Tool for Systemic Change](https://github.com/orgs/EventideSystems/projects/1) project.

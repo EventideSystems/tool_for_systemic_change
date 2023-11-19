@@ -41,10 +41,11 @@ yarn-debug.log*
 /lib64
 /share
 
+# Ignore credentials
 /config/credentials/development.key
 /config/credentials/staging.key
-
 /config/credentials/production.key
+/config/credentials/test.key
 
 /config/master.key
 db/seeds.db

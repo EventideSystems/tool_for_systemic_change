@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'hello@wickedlab.com.au'
+  default from: 'hello@toolforsystemicchange.com'
   layout 'mailer'
 end

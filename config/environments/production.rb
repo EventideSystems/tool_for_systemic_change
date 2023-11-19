@@ -94,5 +94,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Required by Devise
-  config.action_mailer.default_url_options = { host: 'app.wickedlab.com.au' }
+  config.action_mailer.default_url_options = { host: 'app.toolforsystemicchange.com' }
 end

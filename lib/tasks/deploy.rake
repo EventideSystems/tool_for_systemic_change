@@ -3,10 +3,10 @@
 namespace :deploy do
 
   HEROKU_STAGING_DEPLOY = <<~BASH
-    git push -f wickedlab-staging staging:master && \
-    heroku run rake db:migrate -a wickedlab-staging && \
-    heroku run rake data:migrate -a wickedlab-staging && \
-    heroku restart -a wickedlab-staging
+    git push -f tool-for-systemic-change-stg staging:master && \
+    heroku run rake db:migrate -a tool-for-systemic-change-stg && \
+    heroku run rake data:migrate -a tool-for-systemic-change-stg && \
+    heroku restart -a tool-for-systemic-change-stg
   BASH
 
   HEROKU_PRODUCTION_DEPLOY = <<~BASH

@@ -10,16 +10,16 @@ namespace :deploy do
   BASH
 
   HEROKU_PRODUCTION_DEPLOY = <<~BASH
-    git push wickedlab-production master:master && \
-    heroku run rake db:migrate -a wickedlab && \
-    heroku run rake data:migrate -a wickedlab && \
-    heroku restart -a wickedlab
+    git push -f tool-for-systemic-change-prod master:master && \
+    heroku run rake db:migrate -a tool-for-systemic-change-prod && \
+    heroku run rake data:migrate -a tool-for-systemic-change-prod && \
+    heroku restart -a tool-for-systemic-change-prod
   BASH
 
   def print_warning(deploy_environment)
     printf <<~TEXT
       \033[31m
-      WARNING! You are about to deploy to the wickedlab '#{deploy_environment}' environment.
+      WARNING! You are about to deploy to the tool-for-systemic-change '#{deploy_environment}' environment.
       \033[0m
     TEXT
   end

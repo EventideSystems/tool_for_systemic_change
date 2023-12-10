@@ -8,7 +8,7 @@ en:
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
     failure:
       already_authenticated: "You are already signed in."
-      inactive: "Your license to the Wicked Lab tool for Systemic Change has expired.<br/><br/>Please contact <a href='mailto:hello@toolforsystemicchange.com'>hello@toolforsystemicchange.com</a> to learn more about pricing and renewing your license"
+      inactive: "Your license to the Tool for Systemic Change has expired.<br/><br/>Please contact <a href='mailto:hello@toolforsystemicchange.com'>hello@toolforsystemicchange.com</a> to learn more about pricing and renewing your license"
       invalid: "Invalid %{authentication_keys} or password."
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."

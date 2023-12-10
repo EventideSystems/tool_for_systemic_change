@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-ruby '2.7.7' unless ENV['CI']
+ruby '3.1.4' unless ENV['CI']
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -44,53 +44,52 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'mailjet'
 # gem 'mandrill_mailer'
-gem 'pundit'
 gem 'pretender'
+gem 'pundit'
 
 # User interface related
+gem 'bootstrap_form', '<= 2.1.1'
+gem 'breadcrumbs_on_rails', '<= 3.0.1'
+gem 'kaminari'
+gem 'nested_form_fields'
+gem 'nokogiri_truncate_html'
 gem 'simple_form'
 gem 'table-for'
-gem 'kaminari'
-gem 'breadcrumbs_on_rails', '<= 3.0.1'
-gem 'nokogiri_truncate_html'
-gem 'bootstrap_form', '<= 2.1.1'
 gem 'trix-rails', require: 'trix'
-gem 'nested_form_fields'
 
 # Report related
 gem 'caxlsx'
-gem 'roo'
 gem 'prawn'
 gem 'prawn-table'
+gem 'roo'
 gem 'rubyzip', '>= 1.3.0'
 gem 'scenic'
 
 gem 'marcel'
-gem 'shrine', '>= 3.3.0'
-gem 'rollbar'
 gem 'scout_apm'
+gem 'shrine', '>= 3.3.0'
 
-gem 'paranoia', '~> 2.2'
-gem 'paper_trail'
-gem 'data_migrate'
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
+gem 'data_migrate'
+gem 'paper_trail'
+gem 'paranoia', '~> 2.2'
 
 gem 'net-http'
 
 gem 'fast_jsonparser'
 
 # Profiling related
-gem 'rack-mini-profiler'
 gem 'memory_profiler'
+gem 'rack-mini-profiler'
 gem 'stackprof'
 
 group :test do
   # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
   gem 'rails-controller-testing'
-  gem 'timecop'
   gem 'rspec_junit_formatter'
+  gem 'timecop'
 end
 
 group :development, :test do
@@ -98,32 +97,34 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry'
   gem 'pry-byebug'
-  # NOTE Currently errors out
+  # NOTE: Currently errors out
   # gem 'pry-coolline'
-  gem 'pry-stack_explorer'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
-  gem 'rubocop-performance'
-  gem 'rspec-rails'
+  gem 'bullet'
+  gem 'derailed_benchmarks'
+  gem 'dotenv-rails'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
-  gem 'bullet'
+  gem 'pry-stack_explorer'
+  gem 'rspec-rails'
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
   gem 'rubycritic'
-  gem 'dotenv-rails'
-  gem "derailed_benchmarks"
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console'
   gem 'listen'
+  gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'brakeman', require: false
   gem 'bundler-audit'
   gem 'ruby-prof'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+gem "matrix", "~> 0.4.2"

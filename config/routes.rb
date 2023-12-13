@@ -1,26 +1,25 @@
 Rails.application.routes.draw do
-
   resources :subsystem_tags
   namespace :initiatives do
-    resources :imports, only: [:new, :create, :update]
+    resources :imports, only: %i[new create update]
   end
 
-  resources :checklist_items, only: [:show, :edit, :update]
+  resources :checklist_items, only: %i[show edit update]
 
   namespace :organisations do
-    resources :imports, only: [:new, :create, :update]
+    resources :imports, only: %i[new create update]
   end
 
   namespace :transition_card_comments do
-    resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
+    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
   end
 
   # TODO: Fix this route once we have a proper transition_card_comments import
   namespace :sustainable_development_goal_alignment_card_comments do
-    resources :imports, only: [:new, :create, :update], controller: '/scorecard_comments/imports'
+    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
   end
 
-  devise_for :users, skip: [:registrations], :controllers => { :invitations => 'invitations' }
+  devise_for :users, skip: [:registrations], controllers: { invitations: 'invitations' }
 
   resources :accounts do
     member do
@@ -77,25 +76,26 @@ Rails.application.routes.draw do
       get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
     end
 
-    resources :characteristics, only: [:show],
-      controller: 'sustainable_development_goal_alignment_cards',
-      action: 'characteristic'
+    resources :characteristics,
+              only: [:show],
+              controller: 'sustainable_development_goal_alignment_cards',
+              action: 'characteristic'
   end
 
   resources :ecosystem_maps do
     resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
   end
 
-  resources :shared, constraints: {
-    id: /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
-  }, only: [:show] do
+  resources :shared,
+            constraints: {
+              id: /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/
+            },
+            only: [:show] do
     member do
       get 'targets_network_map'
     end
 
-    resources :characteristics, only: [:show],
-      controller: 'shared',
-      action: 'characteristic'
+    resources :characteristics, only: [:show], controller: 'shared', action: 'characteristic'
   end
 
   resources :stakeholder_types
@@ -127,11 +127,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :search_results, only: [:index, :show]
+  resources :search_results, only: %i[index show]
 
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
+  get 'contributors', to: 'home#contributors'
 
   namespace :system do
     resources :stakeholder_types
@@ -145,5 +146,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root to: "home#index"
+  root to: 'home#index'
 end

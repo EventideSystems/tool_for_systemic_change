@@ -48,7 +48,7 @@ gem 'pretender'
 gem 'pundit'
 
 # User interface related
-gem 'bootstrap_form', '<= 2.1.1'
+gem 'bootstrap_form', '<= 5.4.1'
 gem 'breadcrumbs_on_rails', '<= 3.0.1'
 gem 'kaminari'
 gem 'nested_form_fields'

@@ -303,8 +303,8 @@ GEM
       activerecord (>= 5.2)
       request_store (~> 1.1)
     parallel (1.23.0)
-    paranoia (2.6.0)
-      activerecord (>= 5.1, < 7.1)
+    paranoia (2.6.3)
+      activerecord (>= 5.1, < 7.2)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
@@ -584,7 +584,7 @@ DEPENDENCIES
   net-http
   nokogiri_truncate_html
   paper_trail
-  paranoia (~> 2.2)
+  paranoia (~> 2.6)
   pg
   prawn
   prawn-table

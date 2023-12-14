@@ -73,7 +73,7 @@ gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'
 gem 'data_migrate'
 gem 'paper_trail'
-gem 'paranoia', '~> 2.2'
+gem 'paranoia', '~> 2.6'
 
 gem 'net-http'
 

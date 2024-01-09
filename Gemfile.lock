@@ -131,7 +131,6 @@ GEM
     bundler-audit (0.9.1)
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
-    byebug (11.1.3)
     call_with_params (0.0.2)
       activesupport (>= 3.0.0)
     caxlsx (3.2.0)
@@ -163,6 +162,9 @@ GEM
     database_cleaner-core (2.0.1)
     date (3.3.4)
     dead_end (4.0.0)
+    debug (1.9.1)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     debug_inspector (1.2.0)
     derailed_benchmarks (2.1.2)
       benchmark-ips (~> 2)
@@ -229,6 +231,10 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
+    io-console (0.7.1)
+    irb (1.11.0)
+      rdoc
+      reline (>= 0.3.8)
     jmespath (1.6.2)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
@@ -324,12 +330,11 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.10.1)
-      byebug (~> 11.0)
-      pry (>= 0.13, < 0.15)
     pry-stack_explorer (0.6.1)
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
+    psych (5.1.2)
+      stringio
     public_suffix (5.0.4)
     puma (5.6.7)
       nio4r (~> 2.0)
@@ -380,11 +385,15 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rdoc (6.6.2)
+      psych (>= 4.0.0)
     reek (6.1.4)
       kwalify (~> 0.7.0)
       parser (~> 3.2.0)
       rainbow (>= 2.0, < 4.0)
     regexp_parser (2.8.3)
+    reline (0.4.1)
+      io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.1.1)
@@ -504,6 +513,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     stackprof (0.2.25)
+    stringio (3.1.0)
     table-for (3.7.0)
       rails (>= 3.0.0)
       with_template (~> 0.2.0)
@@ -562,10 +572,10 @@ DEPENDENCIES
   breadcrumbs_on_rails (<= 3.0.1)
   bullet
   bundler-audit
-  byebug
   caxlsx
   data_migrate
   database_cleaner
+  debug
   derailed_benchmarks
   devise
   devise_invitable
@@ -589,8 +599,6 @@ DEPENDENCIES
   prawn
   prawn-table
   pretender
-  pry
-  pry-byebug
   pry-stack_explorer
   puma (~> 5.6.7)
   pundit

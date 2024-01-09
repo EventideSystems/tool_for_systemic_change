@@ -93,10 +93,11 @@ group :test do
 end
 
 group :development, :test do
+  gem 'debug'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
-  gem 'pry'
-  gem 'pry-byebug'
+  # gem 'byebug', platform: :mri
+  # gem 'pry'
+  # gem 'pry-byebug'
   # NOTE: Currently errors out
   # gem 'pry-coolline'
   gem 'bullet'
@@ -127,4 +128,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem "matrix", "~> 0.4.2"
+gem 'matrix', '~> 0.4.2'

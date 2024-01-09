@@ -49,3 +49,6 @@ yarn-debug.log*
 
 /config/master.key
 db/seeds.db
+
+# Other cruft
+.vscode/

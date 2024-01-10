@@ -5,7 +5,6 @@ class CommunitiesController < ApplicationController
   add_breadcrumb 'Communities', :communities_path
 
   def index
-    binding.break
     @communities = policy_scope(Community).order(sort_order).page(params[:page])
   end
 

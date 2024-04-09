@@ -9,11 +9,16 @@ class User < ApplicationRecord
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   has_many :accounts_users
   has_many :accounts, through: :accounts_users
+  has_many :accounts_with_admin_role,
+           lambda {
+             where(accounts_users: { account_role: :admin })
+           },
+           through: :accounts_users,
+           source: :account
 
   accepts_nested_attributes_for :accounts_users, allow_destroy: true
 

@@ -56,9 +56,14 @@ class ReportsController < ApplicationController
     @content_subtitle = 'Stakeholders'
     add_breadcrumb(@content_subtitle)
 
-    query = current_account.organisations.joins(:stakeholder_type, initiatives: [scorecard: %i[wicked_problem community]])
+    query = current_account.organisations.joins(
+      :stakeholder_type,
+      initiatives: [scorecard: %i[wicked_problem community]]
+    )
 
-    query = query.where(stakeholder_type_id: params[:report][:stakeholder_type]) unless params[:report][:stakeholder_type].blank?
+    unless params[:report][:stakeholder_type].blank?
+      query = query.where(stakeholder_type_id: params[:report][:stakeholder_type])
+    end
 
     unless params[:report][:wicked_problem].blank?
       query = query.where('scorecards.wicked_problem_id': params[:report][:wicked_problem])
@@ -87,41 +92,9 @@ class ReportsController < ApplicationController
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
     add_breadcrumb(@content_subtitle)
 
-    @date_from = Date.parse(params[:report][:date_from]).beginning_of_day
-    @date_to = Date.parse(params[:report][:date_to]).end_of_day
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_from]).beginning_of_day.utc
 
-    @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
-
-    respond_to do |format|
-      format.html
-      format.xlsx do
-        send_data(
-          @report.to_xlsx.read,
-          type: Mime[:xlsx],
-          filename: "#{scorecard_activity_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
-        )
-      end
-    end
-  end
-
-  def transition_card_activity
-    authorize(:report, :transition_card_activity?)
-
-    @content_subtitle = "#{Scorecard.model_name.human} Activity"
-    add_breadcrumb(@content_subtitle)
-
-    @date_from = \
-      ActiveSupport::TimeZone[current_user.time_zone]
-        .parse(params[:report][:date_from])
-        .beginning_of_day
-        .utc
-
-    @date_to = \
-      ActiveSupport::TimeZone[current_user.time_zone]
-        .parse(params[:report][:date_to])
-        .end_of_day
-        .utc
+    @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_to]).end_of_day.utc
 
     @date_to = Date.parse(params[:report][:date_to]).end_of_day
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
@@ -151,11 +124,7 @@ class ReportsController < ApplicationController
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
                  .find(params[:report][:scorecard_id])
 
-    @date = \
-      ActiveSupport::TimeZone[current_user.time_zone]
-        .parse(params[:report][:date])
-        .end_of_day
-        .utc
+    @date = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date]).end_of_day.utc
 
     @status = params[:report][:status]
 
@@ -198,6 +167,18 @@ class ReportsController < ApplicationController
       @report.to_xlsx.read,
       type: Mime[:xlsx],
       filename: "#{subsystem_summary_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
+    )
+  end
+
+  def cross_account_percent_actual
+    authorize(:report, :cross_account_percent_actual?)
+
+    @accounts = current_user.accounts_with_admin_role
+    @report = Reports::CrossAccountPercentActual.new(@accounts)
+    send_data(
+      @report.to_xlsx.read,
+      type: Mime[:xlsx],
+      filename: "Cross_Account_Percent_Actual_#{time_stamp_suffix}.xlsx"
     )
   end
 

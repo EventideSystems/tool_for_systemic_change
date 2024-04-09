@@ -76,4 +76,22 @@
       </div>
     </div>
   <% end %>
+
+  <%- if policy(:report).cross_account_percent_actual? %>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header with-border">
+          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Cross-Account Percent Actual</h3>
+        </div>
+        <%= simple_form_for :report, url: cross_account_percent_actual_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
+        <div class="card-body">
+          <p>Actual Percentage per Transition Card for all accounts (must have admin role in each account).</p>
+        </div>
+        <div class="card-footer">
+          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 <div>

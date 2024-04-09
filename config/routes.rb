@@ -124,6 +124,8 @@ Rails.application.routes.draw do
       post 'transition_card_activity'
       get 'subsystem_summary'
       post 'subsystem_summary'
+      get 'cross_account_percent_actual'
+      post 'cross_account_percent_actual'
     end
   end
 

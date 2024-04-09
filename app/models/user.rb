@@ -13,9 +13,10 @@ class User < ApplicationRecord
 
   has_many :accounts_users
   has_many :accounts, through: :accounts_users
-  has_many :accounts_with_admin_role,
+  has_many :active_accounts_with_admin_role,
            lambda {
              where(accounts_users: { account_role: :admin })
+               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Date.today)
            },
            through: :accounts_users,
            source: :account

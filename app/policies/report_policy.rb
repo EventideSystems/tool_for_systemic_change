@@ -26,7 +26,7 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def cross_account_percent_actual?
-    user_context.user.accounts_with_admin_role.active.exists?
+    user_context.user.active_accounts_with_admin_role.exists?
   end
 
   def subsystem_summary?

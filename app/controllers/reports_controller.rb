@@ -173,7 +173,7 @@ class ReportsController < ApplicationController
   def cross_account_percent_actual
     authorize(:report, :cross_account_percent_actual?)
 
-    @accounts = current_user.accounts_with_admin_role.active
+    @accounts = current_user.active_accounts_with_admin_role
     @report = Reports::CrossAccountPercentActual.new(@accounts)
     send_data(
       @report.to_xlsx.read,

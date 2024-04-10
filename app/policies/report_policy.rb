@@ -26,10 +26,24 @@ class ReportPolicy < ApplicationPolicy
   end
 
   def cross_account_percent_actual?
-    user_context.user.active_accounts_with_admin_role.exists?
+    user_has_active_accounts_with_admin_role?
+  end
+
+  def cross_account_percent_actual_by_focus_area?
+    user_has_active_accounts_with_admin_role?
+  end
+
+  def cross_account_percent_actual_by_focus_area_tabbed?
+    user_has_active_accounts_with_admin_role?
   end
 
   def subsystem_summary?
     system_admin? || account_admin?(current_account)
+  end
+
+  private
+
+  def user_has_active_accounts_with_admin_role?
+    user_context.user.active_accounts_with_admin_role.exists?
   end
 end

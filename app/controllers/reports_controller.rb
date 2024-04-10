@@ -182,6 +182,30 @@ class ReportsController < ApplicationController
     )
   end
 
+  def cross_account_percent_actual_by_focus_area
+    authorize(:report, :cross_account_percent_actual_by_focus_area?)
+
+    @accounts = current_user.active_accounts_with_admin_role
+    @report = Reports::CrossAccountPercentActualByFocusArea.new(@accounts)
+    send_data(
+      @report.to_xlsx.read,
+      type: Mime[:xlsx],
+      filename: "Cross_Account_Percent_Actual_By_Focus_Area_#{time_stamp_suffix}.xlsx"
+    )
+  end
+
+  def cross_account_percent_actual_by_focus_area_tabbed
+    authorize(:report, :cross_account_percent_actual_by_focus_area_tabbed?)
+
+    @accounts = current_user.active_accounts_with_admin_role
+    @report = Reports::CrossAccountPercentActualByFocusAreaTabbed.new(@accounts)
+    send_data(
+      @report.to_xlsx.read,
+      type: Mime[:xlsx],
+      filename: "Cross_Account_Percent_Actual_By_Focus_Area_Tabbed_#{time_stamp_suffix}.xlsx"
+    )
+  end
+
   private
 
   def scorecard_activity_base_filename(scorecard)

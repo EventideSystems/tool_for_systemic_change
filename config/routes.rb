@@ -126,6 +126,10 @@ Rails.application.routes.draw do
       post 'subsystem_summary'
       get 'cross_account_percent_actual'
       post 'cross_account_percent_actual'
+      get 'cross_account_percent_actual_by_focus_area'
+      post 'cross_account_percent_actual_by_focus_area'
+      get 'cross_account_percent_actual_by_focus_area_tabbed'
+      post 'cross_account_percent_actual_by_focus_area_tabbed'
     end
   end
 

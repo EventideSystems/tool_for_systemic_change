@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, unless: :devise_controller?
   before_action :set_paper_trail_whodunnit
   before_action :enable_profiler
+  before_action :prepare_exception_notifier
 
   after_action :verify_authorized, except: :index, unless: :devise_controller?
   after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
@@ -97,6 +98,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def prepare_exception_notifier
+    request.env['exception_notifier.exception_data'] = { current_user: }
+  end
 
   def set_session_account_id
     return unless session[:account_id].blank? && user_signed_in?

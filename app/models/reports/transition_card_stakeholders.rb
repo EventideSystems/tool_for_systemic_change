@@ -4,11 +4,12 @@ require 'csv'
 
 module Reports
   class TransitionCardStakeholders < Base
-    attr_accessor :scorecard
+    attr_accessor :scorecard, :include_betweenness
 
-    def initialize(scorecard)
+    def initialize(scorecard, include_betweenness: false)
       super()
       @scorecard = scorecard
+      @include_betweenness = include_betweenness
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -39,8 +40,10 @@ module Reports
 
     def add_summary(sheet, styles)
       sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: styles[:h1])
-      sheet.add_row(["Total #{scorecard.model_name.human} Initiatives", total_transition_card_initiatives],
-                        style: styles[:h1])
+      sheet.add_row(
+        ["Total #{scorecard.model_name.human} Initiatives", total_transition_card_initiatives],
+        style: styles[:h1]
+      )
     end
 
     def add_initiatives(sheet, styles)
@@ -68,13 +71,31 @@ module Reports
     end
 
     def add_title(sheet, styles)
-      sheet.add_row([scorecard.model_name.human], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
+      sheet.add_row([scorecard.model_name.human], style: styles[:h1]).add_cell(
+        scorecard.name,
+        style: styles[:blue_normal]
+      )
       sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
       sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
 
     def add_unique_organisations(sheet, styles)
-      sheet.add_row(['Organisations', 'Total Initiatives', 'Stakeholder Type', 'Initiatives'], style: styles[:h3])
+      if include_betweenness
+        map = EcosystemMaps::Organisations.new(scorecard)
+        sheet.add_row(
+          [
+            'Organisations',
+            'Betweenness Centrality',
+            'Total Initiatives',
+            'Stakeholder Type',
+            'Initiatives'
+          ],
+          style: styles[:h3]
+        )
+      else
+        sheet.add_row(['Organisations', 'Total Initiatives', 'Stakeholder Type', 'Initiatives'], style: styles[:h3])
+      end
+
       scorecard.unique_organisations.each do |organisation|
         name = organisation.name
         initiatives = initiatives_for_organisation(organisation)
@@ -82,7 +103,12 @@ module Reports
         total_initiatives = initiatives.count
         stakeholder_type = organisation.stakeholder_type&.name || ''
 
-        sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)
+        if include_betweenness
+          betweenness = map.nodes.find { |node| node[:id] == organisation.id }[:betweenness] || 0.0
+          sheet.add_row([name, betweenness, total_initiatives, stakeholder_type] + initiatives_names)
+        else
+          sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)
+        end
       end
     end
 

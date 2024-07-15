@@ -8,6 +8,9 @@
       <div class="card-body">
         <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.</p>
         <%= render partial: 'scorecard_selector', locals: { f: f } %>
+        <div class="text-right">
+          <%= f.input :include_betweenness, as: :boolean, label: "Include Betweenness Centrality (experimental)" %>
+        </div>
       </div>
       <div class="card-footer">
         <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>

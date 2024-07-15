@@ -150,7 +150,8 @@ class ReportsController < ApplicationController
     add_breadcrumb(@content_subtitle)
 
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
-    @report = Reports::TransitionCardStakeholders.new(@scorecard)
+    include_betweenness = params[:report][:include_betweenness] == '1'
+    @report = Reports::TransitionCardStakeholders.new(@scorecard, include_betweenness:)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],

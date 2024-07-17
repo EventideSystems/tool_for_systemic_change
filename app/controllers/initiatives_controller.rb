@@ -13,11 +13,11 @@ class InitiativesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @initiatives = base_scope.page params[:page]
+        @initiatives = base_scope.page(params[:page])
       end
       format.csv do
         @initiatives = base_scope.all
-        send_data initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv"
+        send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
       end
     end
   end
@@ -25,33 +25,32 @@ class InitiativesController < ApplicationController
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
 
-    add_breadcrumb @initiative.name
+    add_breadcrumb(@initiative.name)
   end
 
   def new
     @scorecard = params[:scorecard_id].present? ? policy_scope(Scorecard).find(params[:scorecard_id]) : nil
     @initiative = Initiative.new(scorecard: @scorecard)
-    authorize @initiative
+    authorize(@initiative)
 
-    add_breadcrumb 'New Initiative'
+    add_breadcrumb('New Initiative')
   end
 
   def edit
-    add_breadcrumb @initiative.name
+    add_breadcrumb(@initiative.name)
   end
 
   def create
     @initiative = Initiative.new(initiative_params)
-    authorize @initiative
+    authorize(@initiative)
 
     if @initiative.save
       ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
 
-      redirect_to initiatives_path, notice: 'Initiative was successfully created.'
+      redirect_to(initiatives_path, notice: 'Initiative was successfully created.')
     else
-      render :new
+      render(:new)
     end
-
   end
 
   def update
@@ -65,36 +64,36 @@ class InitiativesController < ApplicationController
         ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
       end
 
-      redirect_to initiatives_path, notice: 'Initiative was successfully updated.'
+      redirect_to(initiative_path(@initiative), notice: 'Initiative was successfully updated.')
     else
-      render :edit
+      render(:edit)
     end
   end
 
   def destroy
     @initiative.destroy
-    redirect_to initiatives_url, notice: 'Initiative was successfully deleted.'
+    redirect_to(initiatives_url, notice: 'Initiative was successfully deleted.')
   end
 
   def content_subtitle
-    subtitle = (@initiative&.name.presence || super)
+    subtitle = @initiative&.name.presence || super
 
     @initiative&.archived? ? subtitle + ' [ARCHIVED]' : subtitle
   end
 
-  # NOTE Will move this to the checklist controller, where it belongs
+  # NOTE: Will move this to the checklist controller, where it belongs
   def edit_checklist_item
     @checklist_item = ChecklistItem.find(params[:id])
-    authorize @checklist_item
-    render partial: 'checklist_item_form', locals: { checklist_item: @checklist_item }
+    authorize(@checklist_item)
+    render(partial: 'checklist_item_form', locals: { checklist_item: @checklist_item })
   end
 
   def linked
     initiative = policy_scope(Initiative).find(params[:initiative_id]).linked_initiative
 
-    authorize initiative, :show?
+    authorize(initiative, :show?)
 
-    redirect_to initiative_path(initiative)
+    redirect_to(initiative_path(initiative))
   end
 
   private
@@ -112,7 +111,7 @@ class InitiativesController < ApplicationController
     max_subsystem_tag_index = initiatives.map(&:subsystem_tags).map(&:count).max
 
     CSV.generate(force_quotes: true) do |csv|
-      csv << ([
+      csv << (([
         'Name',
         'Description',
         "#{Scorecard.model_name.human} Name",
@@ -127,22 +126,24 @@ class InitiativesController < ApplicationController
         "Organisation #{index} Name"
       end + 1.upto(max_subsystem_tag_index).map do |index|
         "Subsystem Tag #{index} Name"
-      end) + ['Notes']
+      end) + ['Notes'])
 
       initiatives.each do |initiative|
         organisations = initiative.organisations.limit(max_organisation_index)
         organisation_memo = Array.new(max_organisation_index, '')
 
-        organisation_names = organisations.each_with_index.each_with_object(organisation_memo) do |(org, index), memo|
-          memo[index] = org.try(:name)
-        end
+        organisation_names =
+          organisations.each_with_index.each_with_object(organisation_memo) do |(org, index), memo|
+            memo[index] = org.try(:name)
+          end
 
         subsystem_tags = initiative.subsystem_tags.limit(max_subsystem_tag_index)
         subsystem_tag_memo = Array.new(max_subsystem_tag_index, '')
 
-        subsystem_tag_names = subsystem_tags.each_with_index.each_with_object(subsystem_tag_memo) do |(subsystem_tag, index), memo|
-          memo[index] = subsystem_tag.try(:name)
-        end
+        subsystem_tag_names =
+          subsystem_tags.each_with_index.each_with_object(subsystem_tag_memo) do |(subsystem_tag, index), memo|
+            memo[index] = subsystem_tag.try(:name)
+          end
 
         csv << ([
           initiative.name,
@@ -155,7 +156,7 @@ class InitiativesController < ApplicationController
           initiative.contact_phone,
           initiative.contact_website,
           initiative.contact_position
-        ] + organisation_names + subsystem_tag_names + [initiative.notes.to_plain_text.gsub(/\n/, ' ')])
+        ] + organisation_names + subsystem_tag_names + [initiative.notes.to_plain_text.gsub("\n", ' ')])
       end
     end
   end
@@ -169,7 +170,7 @@ class InitiativesController < ApplicationController
 
   def set_initiative
     @initiative = Initiative.find(params[:id])
-    authorize @initiative
+    authorize(@initiative)
   end
 
   def scope_from_params
@@ -178,7 +179,7 @@ class InitiativesController < ApplicationController
       when 'TransitionCard' then :transition_cards
       when 'SustainableDevelopmentGoalAlignmentCard' then :sdgs_alignment_cards
       else
-        raise "Unknown scorecard_type.name '#{current_account.default_scorecard_type.name}'"
+        raise("Unknown scorecard_type.name '#{current_account.default_scorecard_type.name}'")
       end
     else
       params[:scope].to_sym
@@ -191,12 +192,13 @@ class InitiativesController < ApplicationController
   def set_scorecards_and_types
     @scorecards = policy_scope(Scorecard).order(:name)
 
-    @scorecard_types = current_account.scorecard_types.map do |scorecard_type|
-      ScorecardType.new(
-        scorecard_type.model_name.human.pluralize,
-        policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
-      )
-    end
+    @scorecard_types =
+      current_account.scorecard_types.map do |scorecard_type|
+        ScorecardType.new(
+          scorecard_type.model_name.human.pluralize,
+          policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
+        )
+      end
   end
 
   def initiative_params
@@ -225,8 +227,7 @@ class InitiativesController < ApplicationController
       params[:initiatives_organisations_attributes].reject! do |_key, value|
         value[:id].blank? &&
           params[:initiatives_organisations_attributes].values.find do |attributes|
-            (value[:organisation_id] == attributes[:organisation_id]) &&
-              attributes[:id].present?
+            (value[:organisation_id] == attributes[:organisation_id]) && attributes[:id].present?
           end
       end
 
@@ -239,8 +240,7 @@ class InitiativesController < ApplicationController
       params[:initiatives_subsystem_tags_attributes].reject! do |_key, value|
         value[:id].blank? &&
           params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
-            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) &&
-              attributes[:id].present?
+            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) && attributes[:id].present?
           end
       end
 

@@ -1,7 +1,5 @@
 module EcosystemMaps
-
   class Organisations
-
     attr_reader :transition_card
 
     def initialize(transition_card)
@@ -17,8 +15,8 @@ module EcosystemMaps
       grouped_link_data.map do |(target, source), link_count|
         {
           id: target,
-          target: target,
-          source: source,
+          target:,
+          source:,
           strength: calc_strength(upper, lower, link_count)
         }
       end
@@ -56,17 +54,14 @@ module EcosystemMaps
 
       results = ActiveRecord::Base.connection.exec_query(query).rows
 
-      results.map { |result| [result.min, result.max] }
+      results.map { |result| result.minmax }
     end
 
     def build_betweenness(link_data)
       links = link_data.uniq
 
       lambda = Aws::Lambda::Client.new(region: 'us-west-2', http_read_timeout: 300)
-      response = lambda.invoke(
-        function_name: 'betweennessCentrality',
-        payload: { 'links' => links }.to_json
-      )
+      response = lambda.invoke(function_name: 'betweennessCentrality', payload: { 'links' => links }.to_json)
 
       payload = JSON.parse(response.payload.read)
       # SMELL: This is a temporary fix. Large datasets are taking too long to return and timing out.
@@ -74,7 +69,7 @@ module EcosystemMaps
 
       data.transform_keys(&:to_i)
     rescue Exception => e
-      raise payload.inspect
+      raise(payload.inspect)
       {}
     end
 
@@ -99,6 +94,5 @@ module EcosystemMaps
 
       base_strength.zero? ? 1 : base_strength
     end
-
   end
 end

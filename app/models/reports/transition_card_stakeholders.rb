@@ -4,12 +4,19 @@ require 'csv'
 
 module Reports
   class TransitionCardStakeholders < Base
-    attr_accessor :scorecard, :include_betweenness
+    attr_accessor :scorecard, :include_betweenness, :unique_organisations, :initiatives
 
     def initialize(scorecard, include_betweenness: false)
       super()
       @scorecard = scorecard
       @include_betweenness = include_betweenness
+
+      @initiatives = scorecard.initiatives.not_archived.includes(
+        :organisations,
+        initiatives_organisations: :organisation
+      )
+
+      @unique_organisations = @initiatives.flat_map(&:organisations).uniq
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -48,7 +55,7 @@ module Reports
 
     def add_initiatives(sheet, styles)
       sheet.add_row(['Initiatives', 'Total Organisations', 'Organisations'], style: styles[:h3])
-      scorecard.initiatives.not_archived.each do |initiative|
+      initiatives.each do |initiative|
         name = initiative.name
         organisations = organisations_for_initiative(initiative)
         organisations_names = organisations.map(&:name)
@@ -96,7 +103,7 @@ module Reports
         sheet.add_row(['Organisations', 'Total Initiatives', 'Stakeholder Type', 'Initiatives'], style: styles[:h3])
       end
 
-      scorecard.unique_organisations.each do |organisation|
+      unique_organisations.each do |organisation|
         name = organisation.name
         initiatives = initiatives_for_organisation(organisation)
         initiatives_names = initiatives.map(&:name)
@@ -113,7 +120,7 @@ module Reports
     end
 
     def total_partnering_organisations
-      scorecard.unique_organisations.count
+      unique_organisations.count
     end
 
     def total_transition_card_initiatives
@@ -121,27 +128,17 @@ module Reports
     end
 
     def initiatives_for_organisation(organisation)
-      initiative_ids = scorecard
-                       .initiatives_organisations
-                       .where(organisation_id: organisation.id)
-                       .pluck(:initiative_id)
-                       .uniq
-
-      scorecard.initiatives.not_archived.where(id: initiative_ids)
+      initiatives.select do |initiative|
+        initiative.organisations.include?(organisation)
+      end
     end
 
     def organisations_for_initiative(initiative)
-      organisation_ids = scorecard
-                         .initiatives_organisations
-                         .where(initiative_id: initiative.id)
-                         .pluck(:organisation_id)
-                         .uniq
-
-      Organisation.where(id: organisation_ids).order('lower(organisations.name)')
+      initiative.organisations.uniq.sort_by { |organisation| organisation.name.downcase }
     end
 
     def organisations_for_stakeholder_type(stakeholder_type)
-      scorecard.unique_organisations.select { |organisation| organisation.stakeholder_type == stakeholder_type }
+      unique_organisations.select { |organisation| organisation.stakeholder_type == stakeholder_type }
     end
   end
 end

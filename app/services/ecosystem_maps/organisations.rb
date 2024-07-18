@@ -2,25 +2,17 @@ module EcosystemMaps
   class Organisations
     attr_reader :transition_card, :unique_organisations
 
+    STRENGTH_BUCKET_SIZE = 4
+
+    STRENGTH_BUCKET_WIDTH = 100.0 / STRENGTH_BUCKET_SIZE
+
     def initialize(transition_card, unique_organisations: nil)
       @transition_card = transition_card
-      @unique_organisations = unique_organisations || transition_card.organisations.uniq
+      @unique_organisations = unique_organisations || transition_card.organisations.includes(:stakeholder_type).uniq
     end
 
     def links
-      grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)
-
-      upper = grouped_link_data.values.max
-      lower = grouped_link_data.values.min
-
-      grouped_link_data.map do |(target, source), link_count|
-        {
-          id: target,
-          target:,
-          source:,
-          strength: calc_strength(upper, lower, link_count)
-        }
-      end
+      @links ||= build_links
     end
 
     def nodes
@@ -48,7 +40,7 @@ module EcosystemMaps
 
       results = ActiveRecord::Base.connection.exec_query(query).rows
 
-      results.map { |result| result.minmax }
+      results.map(&:minmax)
     end
 
     def build_betweenness(link_data)
@@ -67,6 +59,22 @@ module EcosystemMaps
       {}
     end
 
+    def build_links
+      grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)
+
+      upper = grouped_link_data.values.max
+      lower = grouped_link_data.values.min
+
+      grouped_link_data.map do |(target, source), link_count|
+        {
+          id: target,
+          target:,
+          source:,
+          strength: calc_strength(upper, lower, link_count)
+        }
+      end
+    end
+
     def build_nodes
       betweenness = build_betweenness(link_data)
 
@@ -79,11 +87,6 @@ module EcosystemMaps
         }
       end
     end
-
-    STRENGTH_BUCKET_SIZE = 4
-    STRENGTH_BUCKET_WIDTH = 100.0 / STRENGTH_BUCKET_SIZE
-
-    private_constant :STRENGTH_BUCKET_SIZE
 
     def calc_strength(upper, lower, value)
       return 1 if upper == lower

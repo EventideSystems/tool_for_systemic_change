@@ -6,7 +6,7 @@ require 'benchmark'
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
-      columns_data = ActiveRecord::Base.connection.execute(columns_data_sql(scorecard)).values.first.first
+      columns_data = ScorecardGridColumns::DATA[scorecard.type]
 
       if snapshot_at.present?
         ActiveRecord::Base
@@ -26,22 +26,6 @@ class ScorecardGrid
     end
 
     private
-
-    def columns_data_sql(scorecard)
-      <<~SQL
-        select
-          array_to_string(
-          array['initiative JSONB'] || array(
-            select concat('"', characteristics.id::varchar, '" JSONB')
-            from characteristics
-            inner join focus_areas on characteristics.focus_area_id = focus_areas.id
-            inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
-            where focus_area_groups.scorecard_type = '#{scorecard.type}'
-            order  by focus_areas.position, characteristics.position
-          ), ', '
-        )
-      SQL
-    end
 
     def current_crosstab_sql(scorecard, columns_data, subsystem_tags)
       <<~SQL

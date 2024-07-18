@@ -1,9 +1,10 @@
 module EcosystemMaps
   class Organisations
-    attr_reader :transition_card
+    attr_reader :transition_card, :unique_organisations
 
-    def initialize(transition_card)
+    def initialize(transition_card, unique_organisations: nil)
       @transition_card = transition_card
+      @unique_organisations = unique_organisations || transition_card.organisations.uniq
     end
 
     def links
@@ -23,18 +24,11 @@ module EcosystemMaps
     end
 
     def nodes
-      nodes = transition_card.organisations.uniq
+      @nodes ||= build_nodes
+    end
 
-      betweenness = build_betweenness(link_data)
-
-      nodes.map do |node|
-        {
-          id: node.id,
-          label: node.name,
-          color: node.stakeholder_type&.color || '#808080',
-          betweenness: betweenness[node.id]
-        }
-      end
+    def link_data
+      @link_data ||= build_link_data
     end
 
     private
@@ -73,8 +67,17 @@ module EcosystemMaps
       {}
     end
 
-    def link_data
-      @link_data ||= build_link_data
+    def build_nodes
+      betweenness = build_betweenness(link_data)
+
+      unique_organisations.map do |node|
+        {
+          id: node.id,
+          label: node.name,
+          color: node.stakeholder_type&.color || '#808080',
+          betweenness: betweenness[node.id]
+        }
+      end
     end
 
     STRENGTH_BUCKET_SIZE = 4

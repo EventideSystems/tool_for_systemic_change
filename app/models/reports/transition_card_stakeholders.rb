@@ -4,7 +4,12 @@ require 'csv'
 
 module Reports
   class TransitionCardStakeholders < Base
-    attr_accessor :scorecard, :include_betweenness, :unique_organisations, :initiatives, :stakeholder_types
+    attr_accessor :scorecard,
+                  :include_betweenness,
+                  :unique_organisations,
+                  :initiatives,
+                  :stakeholder_types,
+                  :ecosystem_map
 
     def initialize(scorecard, include_betweenness: false)
       super()
@@ -15,7 +20,7 @@ module Reports
 
       @initiatives =
         scorecard.initiatives.not_archived.includes(
-          :organisations,
+          organisations: :stakeholder_type,
           initiatives_organisations: :organisation
         ).order('lower(initiatives.name)')
 
@@ -23,6 +28,10 @@ module Reports
         @initiatives.flat_map(&:organisations).uniq.sort_by do |organisation|
           organisation.name.downcase
         end
+
+      return unless include_betweenness
+
+      @ecosystem_map = EcosystemMaps::Organisations.new(scorecard, unique_organisations: @unique_organisations)
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -94,7 +103,6 @@ module Reports
 
     def add_unique_organisations(sheet, styles)
       if include_betweenness
-        map = EcosystemMaps::Organisations.new(scorecard)
         sheet.add_row(
           [
             'Organisations',
@@ -117,7 +125,7 @@ module Reports
         stakeholder_type = organisation.stakeholder_type&.name || ''
 
         if include_betweenness
-          betweenness = map.nodes.find { |node| node[:id] == organisation.id }[:betweenness] || 0.0
+          betweenness = ecosystem_map.nodes.find { |node| node[:id] == organisation.id }[:betweenness] || 0.0
           sheet.add_row([name, betweenness, total_initiatives, stakeholder_type] + initiatives_names)
         else
           sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)

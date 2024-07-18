@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_18_090605) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "tablefunc"
@@ -246,6 +246,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_090605) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["deleted_at"], name: "index_initiatives_organisations_on_deleted_at"
     t.index ["initiative_id", "organisation_id"], name: "index_initiatives_organisations_on_initiative_organisation_id", unique: true
+    t.index ["initiative_id"], name: "index_initiatives_organisations_on_initiative_id"
   end
 
   create_table "initiatives_subsystem_tags", id: :serial, force: :cascade do |t|

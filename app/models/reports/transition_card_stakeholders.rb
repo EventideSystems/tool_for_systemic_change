@@ -4,19 +4,25 @@ require 'csv'
 
 module Reports
   class TransitionCardStakeholders < Base
-    attr_accessor :scorecard, :include_betweenness, :unique_organisations, :initiatives
+    attr_accessor :scorecard, :include_betweenness, :unique_organisations, :initiatives, :stakeholder_types
 
     def initialize(scorecard, include_betweenness: false)
       super()
       @scorecard = scorecard
       @include_betweenness = include_betweenness
 
-      @initiatives = scorecard.initiatives.not_archived.includes(
-        :organisations,
-        initiatives_organisations: :organisation
-      )
+      @stakeholder_types = StakeholderType.where(account: scorecard.account).order('lower(stakeholder_types.name)')
 
-      @unique_organisations = @initiatives.flat_map(&:organisations).uniq
+      @initiatives =
+        scorecard.initiatives.not_archived.includes(
+          :organisations,
+          initiatives_organisations: :organisation
+        ).order('lower(initiatives.name)')
+
+      @unique_organisations =
+        @initiatives.flat_map(&:organisations).uniq.sort_by do |organisation|
+          organisation.name.downcase
+        end
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -67,7 +73,7 @@ module Reports
 
     def add_stakeholder_types(sheet, styles)
       sheet.add_row(['Stakeholder Type', 'Total Organisations', 'Organisations'], style: styles[:h3])
-      StakeholderType.where(account: scorecard.account).order(:name).each do |stakeholder_type|
+      stakeholder_types.each do |stakeholder_type|
         name = stakeholder_type.name
         organisations = organisations_for_stakeholder_type(stakeholder_type)
         organisations_names = organisations.map(&:name)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EcosystemMaps
   class Organisations
     attr_reader :transition_card, :unique_organisations

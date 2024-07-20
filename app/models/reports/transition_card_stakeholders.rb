@@ -32,6 +32,7 @@ module Reports
       return unless include_betweenness
 
       @ecosystem_map = EcosystemMaps::Organisations.new(scorecard, unique_organisations: @unique_organisations)
+      @connections = OrganisationConnections.execute(scorecard.id)
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -101,21 +102,27 @@ module Reports
       sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
 
+    ORGANISTION_SECTION_HEADERS = {
+      betweenness: [
+        'Organisations',
+        'Betweenness Centrality',
+        'Total Connections',
+        'Total Initiatives',
+        'Stakeholder Type',
+        'Initiatives'
+      ],
+      normal: [
+        'Organisations',
+        'Total Initiatives',
+        'Stakeholder Type',
+        'Initiatives'
+      ]
+    }.freeze
+
     def add_unique_organisations(sheet, styles)
-      if include_betweenness
-        sheet.add_row(
-          [
-            'Organisations',
-            'Betweenness Centrality',
-            'Total Initiatives',
-            'Stakeholder Type',
-            'Initiatives'
-          ],
-          style: styles[:h3]
-        )
-      else
-        sheet.add_row(['Organisations', 'Total Initiatives', 'Stakeholder Type', 'Initiatives'], style: styles[:h3])
-      end
+      organisation_section_headers = ORGANISTION_SECTION_HEADERS[include_betweenness ? :betweenness : :normal]
+
+      sheet.add_row(organisation_section_headers, style: styles[:h3])
 
       unique_organisations.each do |organisation|
         name = organisation.name
@@ -125,8 +132,11 @@ module Reports
         stakeholder_type = organisation.stakeholder_type&.name || ''
 
         if include_betweenness
-          betweenness = ecosystem_map.nodes.find { |node| node[:id] == organisation.id }[:betweenness] || 0.0
-          sheet.add_row([name, betweenness, total_initiatives, stakeholder_type] + initiatives_names)
+          node = ecosystem_map.nodes.find { |node| node[:id] == organisation.id }
+          betweenness = node[:betweenness] || 0.0
+          connections = @connections[organisation.id] || 0
+
+          sheet.add_row([name, betweenness, connections, total_initiatives, stakeholder_type] + initiatives_names)
         else
           sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)
         end

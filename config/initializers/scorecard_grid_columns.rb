@@ -11,6 +11,7 @@ module ScorecardGridColumns
           inner join focus_areas on characteristics.focus_area_id = focus_areas.id
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
           where focus_area_groups.scorecard_type = '#{scorecard_type}'
+          and focus_area_groups.deleted_at is null
           order  by focus_areas.position, characteristics.position
         ), ', '
       )

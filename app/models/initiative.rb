@@ -26,7 +26,7 @@ class Initiative < ApplicationRecord
   validates :name, presence: true
   validate :validate_finished_at_not_earlier_than_started_at
 
-  after_create :create_checklist_items
+  after_create :create_missing_checklist_items!
 
   delegate :name, to: :scorecard, prefix: true
   delegate :name, to: :linked_initiative, prefix: true, allow_nil: true
@@ -103,6 +103,7 @@ class Initiative < ApplicationRecord
   def archived?
     archived_on.present? && archived_on <= Time.zone.now
   end
+
   def linked_initiative
     return nil unless linked?
     return nil unless scorecard.linked_scorecard.present?
@@ -122,6 +123,24 @@ class Initiative < ApplicationRecord
     copied.save!
 
     copied
+  end
+
+  def create_missing_checklist_items!
+    missing_characteristic_ids = \
+      Characteristic.per_scorecard_type_for_account(scorecard.type, scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
+
+    return if missing_characteristic_ids.empty?
+
+    ChecklistItem.insert_all(
+      missing_characteristic_ids.map do |characteristic_id|
+        {
+          initiative_id: id,
+          characteristic_id: characteristic_id,
+          created_at: Time.zone.now,
+          updated_at: Time.zone.now
+        }
+      end
+    )
   end
 
   def deep_copy
@@ -148,22 +167,6 @@ class Initiative < ApplicationRecord
   end
 
   private
-
-  def create_checklist_items
-    missing_characteristic_ids = \
-      Characteristic.per_scorecard_type_for_account(scorecard.type, scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
-
-    ChecklistItem.insert_all(
-      missing_characteristic_ids.map do |characteristic_id|
-        {
-          initiative_id: id,
-          characteristic_id: characteristic_id,
-          created_at: Time.zone.now,
-          updated_at: Time.zone.now
-        }
-      end
-    )
-  end
 
   def deep_copy_paper_trail_records(copied)
     PaperTrail::Version.where(

@@ -24,6 +24,7 @@ class InitiativesController < ApplicationController
 
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
+    @initiative.create_missing_checklist_items!
 
     add_breadcrumb(@initiative.name)
   end

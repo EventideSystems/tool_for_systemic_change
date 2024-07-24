@@ -6,10 +6,12 @@ class FocusAreasController < ApplicationController
   add_breadcrumb 'System', :focus_areas_path
 
   def index
-    @focus_areas = policy_scope(FocusArea)
-                   .unscoped.joins(:focus_area_group)
-                   .order(sort_order)
-                   .page params[:page]
+    @focus_areas = \
+      policy_scope(FocusArea)
+        .joins(focus_area_group: :account)
+        .where('focus_area_groups.account': current_account)
+        .order(sort_order)
+        .page(params[:page])
   end
 
   def show; end

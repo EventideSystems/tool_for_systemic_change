@@ -18,11 +18,14 @@ class FocusArea < ApplicationRecord
 
   validates :position, presence: true, uniqueness: { scope: :focus_area_group }
 
-  delegate :scorecard_type, to: :focus_area_group
+  delegate :scorecard_type, :account, to: :focus_area_group
 
-  scope :per_scorecard_type, lambda { |scorecard_type|
+  scope :per_scorecard_type_for_account, lambda { |scorecard_type, account|
     joins(:focus_area_group)
-      .where('focus_area_groups.scorecard_type' => scorecard_type)
+      .where(
+        'focus_area_groups.scorecard_type' => scorecard_type,
+        'focus_area_groups.account_id' => account.id
+      )
   }
 
   # accepts_nested_attributes_for :video_tutorials

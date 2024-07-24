@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_24_003126) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
   enable_extension "tablefunc"
 
@@ -92,16 +93,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
     t.text "parameters"
     t.string "recipient_type"
     t.integer "recipient_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "account_id"
     t.index ["account_id"], name: "index_activities_on_account_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
-    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
-    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
-    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable"
   end
 
   create_table "characteristics", id: :serial, force: :cascade do |t|
@@ -150,9 +148,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "status", default: "no_comment"
     t.bigint "user_id"
+    t.bigint "previous_characteristic_id"
     t.index ["characteristic_id"], name: "index_checklist_items_on_characteristic_id"
     t.index ["deleted_at"], name: "index_checklist_items_on_deleted_at"
     t.index ["initiative_id"], name: "index_checklist_items_on_initiative_id"
+    t.index ["previous_characteristic_id"], name: "index_checklist_items_on_previous_characteristic_id"
     t.index ["user_id"], name: "index_checklist_items_on_user_id"
   end
 
@@ -178,6 +178,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "scorecard_type", default: "TransitionCard"
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_focus_area_groups_on_account_id"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["position"], name: "index_focus_area_groups_on_position"
     t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
@@ -187,14 +189,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
     t.string "name"
     t.string "description"
     t.integer "focus_area_group_id"
-    t.integer "position"
-    t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "position"
+    t.datetime "deleted_at", precision: nil
     t.string "icon_name", default: ""
     t.string "actual_color"
     t.string "planned_color"
-    t.integer "characteristics_count", default: 0
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
@@ -352,7 +353,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invitations_count"], name: "index_users_on_invitations_count"
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
-    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["name"], name: "index_users_on_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["system_role"], name: "index_users_on_system_role"
@@ -401,7 +401,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "checklist_item_changes", "checklist_items"
   add_foreign_key "checklist_item_changes", "users"
+  add_foreign_key "checklist_items", "characteristics", column: "previous_characteristic_id"
   add_foreign_key "checklist_items", "users"
+  add_foreign_key "focus_area_groups", "accounts"
 
   create_view "checklist_item_first_checkeds", sql_definition: <<-SQL
       SELECT checklist_items.id AS checklist_item_id,
@@ -448,29 +450,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
        LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
        JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
   SQL
-  create_view "events_checklist_item_first_comments", sql_definition: <<-SQL
-      SELECT DISTINCT ON (checklist_items.id) 'first_comment'::text AS event,
-      checklist_items.id AS checklist_item_id,
-      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
-      NULL::text AS from_status,
-      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
-     FROM ((checklist_items
-       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
-       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
-    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
-  SQL
-  create_view "events_checklist_item_updated_comments", sql_definition: <<-SQL
-      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
-      checklist_item_comments.checklist_item_id,
-      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occurred_at,
-      (versions.object ->> 'status'::text) AS from_status,
-      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
-     FROM ((versions
-       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
-       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
-  SQL
   create_view "events_checklist_item_checkeds", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_checked'::text AS event,
       checklist_items.id AS checklist_item_id,
@@ -496,6 +475,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
               ELSE 'unchecked'::text
           END))));
   SQL
+  create_view "events_checklist_item_first_comments", sql_definition: <<-SQL
+      SELECT DISTINCT ON (checklist_items.id) 'first_comment'::text AS event,
+      checklist_items.id AS checklist_item_id,
+      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
+      NULL::text AS from_status,
+      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((checklist_items
+       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+  SQL
   create_view "events_checklist_item_new_comments", sql_definition: <<-SQL
       SELECT DISTINCT ON (checklist_item_comments.id) 'new_comment'::text AS event,
       checklist_items.id AS checklist_item_id,
@@ -509,20 +500,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
        JOIN checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < checklist_item_comments.id))))
     ORDER BY checklist_item_comments.id DESC, checklist_item_comments.created_at, versions.created_at;
   SQL
-  create_view "scorecard_type_characteristics", materialized: true, sql_definition: <<-SQL
-      SELECT characteristics.id,
-      characteristics.name,
-      characteristics.description,
-      characteristics.focus_area_id,
-      characteristics."position",
-      characteristics.deleted_at,
-      characteristics.created_at,
-      characteristics.updated_at,
-      focus_area_groups.scorecard_type
-     FROM ((characteristics
-       JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
-       JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
-    ORDER BY focus_areas."position", characteristics."position";
+  create_view "events_checklist_item_updated_comments", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
+      checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occurred_at,
+      (versions.object ->> 'status'::text) AS from_status,
+      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
+       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
   SQL
   create_view "events_checklist_item_activities", sql_definition: <<-SQL
       SELECT events_checklist_item_first_comments.event,
@@ -588,12 +575,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
               scorecards.name AS transition_card_name,
               initiatives.id AS initiative_id,
               initiatives.name AS initiative_name,
-              NULL::character varying,
-              'initiative_created'::text,
-              NULL::text,
+              NULL::character varying AS "varchar",
+              'initiative_created'::text AS text,
+              NULL::text AS text,
               initiatives.created_at,
-              NULL::text,
-              NULL::text
+              NULL::text AS text,
+              NULL::text AS text
              FROM (initiatives
                JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)))
           UNION
@@ -601,26 +588,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
               scorecards.name AS transition_card_name,
               initiatives.id AS initiative_id,
               initiatives.name AS initiative_name,
-              NULL::character varying,
-              'initiative_deleted'::text,
-              NULL::text,
+              NULL::character varying AS "varchar",
+              'initiative_deleted'::text AS text,
+              NULL::text AS text,
               initiatives.deleted_at,
-              NULL::text,
-              NULL::text
+              NULL::text AS text,
+              NULL::text AS text
              FROM (initiatives
                JOIN scorecards ON ((scorecards.id = initiatives.scorecard_id)))
             WHERE (initiatives.deleted_at IS NOT NULL)
           UNION
            SELECT scorecards.id AS transition_card_id,
               scorecards.name AS transition_card_name,
-              NULL::integer,
-              NULL::character varying,
-              NULL::character varying,
-              'transition_card_created'::text,
-              NULL::text,
+              NULL::integer AS int4,
+              NULL::character varying AS "varchar",
+              NULL::character varying AS "varchar",
+              'transition_card_created'::text AS text,
+              NULL::text AS text,
               scorecards.created_at,
-              NULL::text,
-              NULL::text
+              NULL::text AS text,
+              NULL::text AS text
              FROM scorecards) events_transition_card_activities_v02;
   SQL
   create_view "scorecard_changes", sql_definition: <<-SQL
@@ -649,5 +636,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_111738) do
        JOIN characteristics ON ((characteristics.id = checklist_items.characteristic_id)))
        JOIN initiatives ON ((initiatives.id = checklist_items.initiative_id)))
     ORDER BY 1, 2 DESC;
+  SQL
+  create_view "scorecard_type_characteristics", sql_definition: <<-SQL
+      SELECT characteristics.id,
+      characteristics.name,
+      characteristics.description,
+      characteristics.focus_area_id,
+      characteristics."position",
+      characteristics.deleted_at,
+      characteristics.created_at,
+      characteristics.updated_at,
+      focus_area_groups.scorecard_type,
+      focus_area_groups.account_id
+     FROM ((characteristics
+       JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
+       JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+    ORDER BY focus_areas."position", characteristics."position";
   SQL
 end

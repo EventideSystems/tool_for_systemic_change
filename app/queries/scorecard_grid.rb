@@ -6,7 +6,7 @@ require 'benchmark'
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
-      columns_data = ScorecardGridColumns::DATA[scorecard.type]
+      columns_data = column_data(scorecard.account, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
 
       if snapshot_at.present?
         ActiveRecord::Base
@@ -60,6 +60,7 @@ class ScorecardGrid
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           where initiatives.scorecard_id = #{scorecard.id}
+          and focus_area_groups.account_id = #{scorecard.account_id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > now())
           #{subsystem_sql(subsystem_tags)}
@@ -67,7 +68,7 @@ class ScorecardGrid
           order by initiative
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}'
+            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
       SQL
@@ -123,6 +124,7 @@ class ScorecardGrid
               where changes.created_at < #{wrap_date(snapshot_at)}
             ) changes on changes.checklist_item_id = checklist_items.id and rn = 1
           where initiatives.scorecard_id = #{scorecard.id}
+          and focus_area_groups.account_id = #{scorecard.account_id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
           #{subsystem_sql(subsystem_tags)}
@@ -138,10 +140,32 @@ class ScorecardGrid
           order by initiative
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}'
+            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
       SQL
+    end
+
+    def columns_data_sql(account, scorecard_type)
+      <<~SQL
+        select
+          array_to_string(
+          array['initiative JSONB'] || array(
+            select concat('"', characteristics.id::varchar, '" JSONB')
+            from characteristics
+            inner join focus_areas on characteristics.focus_area_id = focus_areas.id
+            inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+            where focus_area_groups.scorecard_type = '#{scorecard_type}'
+            and focus_area_groups.account_id = #{account.id}
+            and focus_area_groups.deleted_at is null
+            order by focus_areas.position, characteristics.position
+          ), ', '
+        )
+      SQL
+    end
+
+    def column_data(account, scorecard_type)
+      ActiveRecord::Base.connection.execute(columns_data_sql(account, scorecard_type)).values.first.first
     end
 
     def subsystem_sql(subsystem_tags)

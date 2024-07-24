@@ -2,9 +2,12 @@ class CharacteristicsController < ApplicationController
   before_action :set_characteristic, only: [:show, :edit, :update, :destroy, :description]
 
   def index
-    @characteristics = policy_scope(Characteristic)
-      .unscoped.joins(:focus_area).order(sort_order)
-      .page params[:page]
+    @characteristics = \
+      policy_scope(Characteristic)
+        .joins(focus_area: { focus_area_group: :account })
+        .where(focus_area_groups: { accounts: { id: current_account.id } })
+        .order(sort_order)
+        .page(params[:page])
   end
 
   def show

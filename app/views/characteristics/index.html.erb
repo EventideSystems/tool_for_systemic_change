@@ -12,7 +12,9 @@
                         } do |table| %>
     <% table.column :name, link_action: :edit, formatter: lambda { |text| truncate_text(text, 30) } %>
     <% table.column :description, formatter: lambda { |text| truncate_html(text, 30) } %>
+    <% table.column :account, formatter: lambda { |account| truncate_text(account&.name || 'SYSTEM', 30) } %>
     <% table.column :focus_area_position, :order => "focus_areas.position" %>
+
     <% table.column :position %>
     <% table.column :focus_area,
         formatter: lambda { |focus_area| truncate_text(focus_area.name, 30) },

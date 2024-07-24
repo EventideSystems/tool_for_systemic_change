@@ -40,7 +40,7 @@
   </div>
 
   <div style="display:none" class="legend pt-3" data-scorecards-target="targetsNetworkMapLegendPanel">
-    <%- FocusArea.per_scorecard_type('SustainableDevelopmentGoalAlignmentCard').order(:name).each do |focus_area| -%>
+    <%- FocusArea.per_scorecard_type_for_account('SustainableDevelopmentGoalAlignmentCard', @scorecard.account).order(:name).each do |focus_area| -%>
       <p>
         <span class="dot" style="background-color: <%= focus_area.actual_color.presence || '#000' %>"></span>
         <span class="dot-label"><%= focus_area.name %></span>

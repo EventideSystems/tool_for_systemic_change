@@ -9,18 +9,23 @@ class Account < ApplicationRecord
   enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
 
   belongs_to :stakeholder_type, optional: true
+
+  # Direct associations
   has_many :accounts_users
-  has_many :users, through: :accounts_users
-  has_many :organisations
   has_many :communities
-  has_many :scorecards
-  has_many :initiatives, through: :scorecards
-  has_many :wicked_problems
-  has_many :organisations_imports, class_name: 'Organisations::Import'
+  has_many :focus_area_groups
   has_many :initiatives_imports, class_name: 'Initiatives::Import'
+  has_many :organisations
+  has_many :organisations_imports, class_name: 'Organisations::Import'
   has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import'
-  has_many :subsystem_tags
+  has_many :scorecards
   has_many :stakeholder_types, dependent: :destroy
+  has_many :subsystem_tags
+  has_many :users, through: :accounts_users
+  has_many :wicked_problems
+
+  # Through associations
+  has_many :initiatives, through: :scorecards
 
   validates :name, presence: true
 

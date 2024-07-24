@@ -27,12 +27,12 @@ class ScorecardsController < ApplicationController
     @focus_areas = FocusArea
                    .includes(:characteristics)
                    .joins(:focus_area_group)
-                   .where(focus_area_groups: { scorecard_type: @scorecard.type })
+                   .where(focus_area_groups: { scorecard_type: @scorecard.type, account_id: @scorecard.account.id })
                    .ordered_by_group_position
 
     @characteristics = Characteristic
                        .includes(focus_area: :focus_area_group)
-                       .per_scorecard_type(@scorecard.type)
+                       .per_scorecard_type_for_account(@scorecard.type, @scorecard.account)
                        .order('focus_areas.position, characteristics.position')
 
     source_scorecard = @scorecard

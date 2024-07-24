@@ -42,7 +42,7 @@ module Reports
 
           data = generate_data
 
-          FocusAreaGroup.where(scorecard_type: scorecard.type).order(:position).each do |focus_area_group|
+          FocusAreaGroup.where(scorecard_type: scorecard.type, account: scorecard.account).order(:position).each do |focus_area_group|
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2])
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|
@@ -152,6 +152,7 @@ module Reports
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
+          where focus_area_groups.account_id = #{scorecard.account_id}
           order by focus_area_groups.position, focus_areas.position, characteristics.id
         )
 

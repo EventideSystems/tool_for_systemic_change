@@ -85,7 +85,9 @@ gem 'rack-mini-profiler'
 gem 'stackprof'
 
 
-gem 'exception_notification'
+group :production, :staging do
+  gem 'exception_notification'
+end
 
 group :test do
   # database_cleaner is not required, but highly recommended

@@ -151,7 +151,7 @@ class Initiative < ApplicationRecord
 
   def create_checklist_items
     missing_characteristic_ids = \
-      Characteristic.per_scorecard_type(scorecard.type).pluck(:id) - checklist_items.map(&:characteristic_id)
+      Characteristic.per_scorecard_type_for_account(scorecard.type, scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
 
     ChecklistItem.insert_all(
       missing_characteristic_ids.map do |characteristic_id|

@@ -4,7 +4,11 @@ class FocusAreaGroupsController < ApplicationController
   add_breadcrumb "System", :focus_area_groups_path
 
   def index
-    @focus_area_groups = policy_scope(FocusAreaGroup).unscoped.order(sort_order).page params[:page]
+    @focus_area_groups = \
+      policy_scope(FocusAreaGroup)
+        .where(account: current_account)
+        .order(sort_order)
+        .page(params[:page])
   end
 
   def show

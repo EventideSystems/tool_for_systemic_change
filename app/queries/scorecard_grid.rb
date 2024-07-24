@@ -59,10 +59,14 @@ class ScorecardGrid
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
-          where initiatives.scorecard_id = #{scorecard.id}
-          and focus_area_groups.account_id = #{scorecard.account_id}
+          where checklist_items.deleted_at is null
+          and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > now())
+          and focus_area_groups.account_id = #{scorecard.account_id}
+          and focus_area_groups.deleted_at is null
+          and focus_areas.deleted_at is null
+          and characteristics.deleted_at is null
           #{subsystem_sql(subsystem_tags)}
           group by initiatives.id, characteristics.id, checklist_items.id, focus_area_groups.id
           order by initiative
@@ -123,10 +127,14 @@ class ScorecardGrid
               from checklist_item_changes changes
               where changes.created_at < #{wrap_date(snapshot_at)}
             ) changes on changes.checklist_item_id = checklist_items.id and rn = 1
-          where initiatives.scorecard_id = #{scorecard.id}
-          and focus_area_groups.account_id = #{scorecard.account_id}
+          where checklist_items.deleted_at is null
+          and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
+          and focus_area_groups.account_id = #{scorecard.account_id}
+          and focus_area_groups.deleted_at is null
+          and focus_areas.deleted_at is null
+          and characteristics.deleted_at is null
           #{subsystem_sql(subsystem_tags)}
           group by
             initiatives.id,
@@ -158,6 +166,8 @@ class ScorecardGrid
             where focus_area_groups.scorecard_type = '#{scorecard_type}'
             and focus_area_groups.account_id = #{account.id}
             and focus_area_groups.deleted_at is null
+            and focus_areas.deleted_at is null
+            and characteristics.deleted_at is null
             order by focus_areas.position, characteristics.position
           ), ', '
         )

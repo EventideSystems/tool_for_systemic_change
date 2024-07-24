@@ -42,7 +42,15 @@ class FocusAreaGroupsController < ApplicationController
   end
 
   def destroy
-    @focus_area_group.destroy
+    ActiveRecord::Base.transaction do
+      @focus_area_group.focus_areas do |focus_area|
+        focus_area.characteristics.delete_all
+        focus_area.delete
+      end
+
+      @focus_area_group.delete
+    end
+
     redirect_to focus_area_groups_url, notice: 'Focus area group was successfully deleted.'
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_24_080419) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_24_125317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -650,6 +650,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_24_080419) do
      FROM ((characteristics
        JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
        JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+    WHERE ((characteristics.deleted_at IS NULL) AND (focus_areas.deleted_at IS NULL) AND (focus_area_groups.deleted_at IS NULL))
     ORDER BY focus_areas."position", characteristics."position";
   SQL
 end

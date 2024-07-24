@@ -43,7 +43,7 @@ class CharacteristicsController < ApplicationController
   end
 
   def destroy
-    @characteristic.destroy
+    @characteristic.delete
 
     redirect_to characteristics_url, notice: 'Characteristic was successfully deleted.'
   end

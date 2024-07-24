@@ -15,7 +15,7 @@ class FocusAreaGroupsController < ApplicationController
   end
 
   def new
-    @focus_area_group = FocusAreaGroup.new
+    @focus_area_group = current_account.build_focus_area_group
     authorize @focus_area_group
   end
 
@@ -23,7 +23,7 @@ class FocusAreaGroupsController < ApplicationController
   end
 
   def create
-    @focus_area_group = FocusAreaGroup.new(focus_area_group_params)
+    @focus_area_group = current_account.build_focus_area_group(focus_area_group_params)
     authorize @focus_area_group
 
     if @focus_area_group.save

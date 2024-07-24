@@ -28,6 +28,8 @@ module ScorecardsHelper
 
     characteristic_data = result[characteristic.id.to_s]
 
+    return 'cell hidden' if characteristic_data.blank?
+
     [
       'cell',
       "#{characteristic_data[:status].dasherize}#{@focus_areas.index(characteristic.focus_area) + 1}",

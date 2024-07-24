@@ -1,5 +1,6 @@
 class CharacteristicsController < ApplicationController
   before_action :set_characteristic, only: [:show, :edit, :update, :destroy, :description]
+  before_action :set_focus_areas, only: [:new, :edit]
 
   def index
     @characteristics = \
@@ -76,6 +77,10 @@ class CharacteristicsController < ApplicationController
   def set_characteristic
     @characteristic = Characteristic.find(params[:id])
     authorize @characteristic
+  end
+
+  def set_focus_areas
+    @focus_areas = FocusArea.where(focus_area_group: current_account.focus_area_groups).order(:scorecard_type, :position)
   end
 
   def characteristic_params

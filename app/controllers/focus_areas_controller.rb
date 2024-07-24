@@ -2,6 +2,7 @@
 
 class FocusAreasController < ApplicationController
   before_action :set_focus_area, only: %i[show edit update destroy]
+  before_action :set_focus_area_groups, only: %i[new edit]
 
   add_breadcrumb 'System', :focus_areas_path
 
@@ -56,6 +57,10 @@ class FocusAreasController < ApplicationController
   def set_focus_area
     @focus_area = FocusArea.find(params[:id])
     authorize @focus_area
+  end
+
+  def set_focus_area_groups
+    @focus_area_groups = policy_scope(FocusAreaGroup).where(account: current_account)
   end
 
   def focus_area_params

@@ -3,10 +3,10 @@
   <%= form_header(@focus_area) %>
   <%= f.input :name %>
   <%= f.input :description , as: :string %>
-  <%= f.association :focus_area_group %>
+  <%= f.association :focus_area_group, collection: @focus_area_groups  %>
   <%= f.input :position %>
 
-  <%- if @focus_area.focus_area_group.scorecard_type == 'SustainableDevelopmentGoalAlignmentCard' %>
+  <%- if @focus_area.focus_area_group&.scorecard_type == 'SustainableDevelopmentGoalAlignmentCard' %>
     <%= f.input :icon_name, collection: options_for_icon_name %>
     <%= f.input :actual_color, as: :color %>
     <%= f.input :planned_color, as: :color %>

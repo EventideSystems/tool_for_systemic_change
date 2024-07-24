@@ -13,14 +13,14 @@ class ScorecardGrid
           .connection
           .execute(historical_crosstab_sql(scorecard, snapshot_at, columns_data, subsystem_tags))
           .map do |result|
-            result.transform_values { |v| FastJsonparser.parse(v)  }
+            result.transform_values { |v| v.nil? ? {} : FastJsonparser.parse(v)  }
           end
       else
         ActiveRecord::Base
           .connection
           .execute(current_crosstab_sql(scorecard, columns_data, subsystem_tags))
           .map do |result|
-            result.transform_values { |v| FastJsonparser.parse(v)  }
+            result.transform_values { |v| v.nil? ? {} : FastJsonparser.parse(v)  }
           end
       end
     end

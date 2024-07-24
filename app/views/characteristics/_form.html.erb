@@ -3,11 +3,11 @@
   <%= form_header(@characteristic) %>
   <%= f.input :name %>
   <%= f.input :description , as: :trix_editor %>
-  <%= f.association :focus_area %>
+  <%= f.association :focus_area, collection: @focus_areas %>
   <%= f.input :position %>
-  <%= f.input :video_tutorial_id, collection: VideoTutorial.all, 
-    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.' 
+  <%= f.input :video_tutorial_id, collection: VideoTutorial.all,
+    hint: 'Any video tutorial can only be assigned to one other record at a time. Link a tutorial to this record removes any other link elsewhere.'
   %>
   <%= render_form_button(f) %>
-  
+
 <% end %>

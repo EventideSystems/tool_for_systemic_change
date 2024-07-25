@@ -1,5 +1,5 @@
 class TransitionCardsController < ScorecardsController
-  add_breadcrumb TransitionCard.model_name.human.pluralize, :transition_cards_path
+  before_action :add_base_breadcrumb
 
   def index
     @scorecards = policy_scope(Scorecard).where(type: 'TransitionCard').order(sort_order).page(params[:page])
@@ -15,5 +15,11 @@ class TransitionCardsController < ScorecardsController
 
   def scorecard_class_name
     'TransitionCard'
+  end
+
+  private
+
+  def add_base_breadcrumb
+    add_breadcrumb(current_account.transition_card_model_name.pluralize, :transition_cards_path)
   end
 end

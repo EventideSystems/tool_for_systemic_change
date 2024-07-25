@@ -6,19 +6,19 @@ class SharedController < ApplicationController
   skip_after_action :verify_authorized
 
   def show
-    response.headers.delete 'X-Frame-Options'
+    response.headers.delete('X-Frame-Options')
 
     load_scorecard_and_supporting_data
 
     if @scorecard.present?
       if params[:iframe] == 'true'
-        render 'show_iframe', layout: false
+        render('show_iframe', layout: false)
       else
-        render layout: 'embedded'
+        render(layout: 'embedded')
       end
 
     else
-      render file: 'public/404.html', layout: 'embedded', status: :not_found
+      render(file: 'public/404.html', layout: 'embedded', status: :not_found)
     end
   end
 
@@ -27,7 +27,7 @@ class SharedController < ApplicationController
 
     @characteristic = Characteristic.find(params[:id])
 
-    checklist_items = \
+    checklist_items =
       ChecklistItem
       .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
       .includes(:checklist_item_comments)
@@ -37,7 +37,7 @@ class SharedController < ApplicationController
 
     @targets = TargetsNetworkMapping.where(characteristic: @characteristic).map(&:focus_area).uniq.sort_by(&:name)
 
-    render 'sustainable_development_goal_alignment_cards/show_tabs/characteristics/show', layout: false
+    render('sustainable_development_goal_alignment_cards/show_tabs/characteristics/show', layout: false)
   end
 
   # SMELL: Duplicate of code in scorecards_controller.rb
@@ -47,7 +47,7 @@ class SharedController < ApplicationController
     respond_to do |format|
       format.json do
         data = EcosystemMaps::TargetsNetwork.new(@scorecard)
-        render json: { data: { nodes: data.nodes, links: data.links } }
+        render(json: { data: { nodes: data.nodes, links: data.links } })
       end
     end
   end
@@ -63,7 +63,14 @@ class SharedController < ApplicationController
     @organisations = @initiatives.filter_map(&:organisations).flatten.uniq.sort_by(&:name)
 
     @results = ScorecardGrid.execute(@scorecard, nil, [])
-    @focus_areas = FocusArea.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).where(focus_area_group: { account_id: @scorecard.account.id }).ordered_by_group_position
-    @characteristics = Characteristic.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
+    @focus_areas = FocusArea.per_scorecard_type_for_account(
+      @scorecard.type,
+      @scorecard.account
+    ).ordered_by_group_position
+
+    @characteristics = Characteristic.per_scorecard_type_for_account(
+      @scorecard.type,
+      @scorecard.account
+    ).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
   end
 end

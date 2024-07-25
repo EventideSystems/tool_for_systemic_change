@@ -4,12 +4,12 @@
       <% unless @scorecard.present? %>
         <div class="float-left">
           <h3 data-toggle="tooltip" data-placement="bottom" title="Record has been deleted or incorrect link used">
-            <%= Scorecard.model_name.human %> Missing
+            Card Missing
           </h3>
         </div>
       <% else %>
         <div class="float-left">
-          <h3 data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= @scorecard.model_name.human %>: <%= truncate(@scorecard.name, length: 70) %></h3>
+          <h3 data-toggle="tooltip" data-placement="bottom" title="<%= @scorecard.name %>"><%= display_scorecard_model_name(@scorecard) %>: <%= truncate(@scorecard.name, length: 70) %></h3>
         </div>
         <div class="float-right">
           <%= render partial: '/scorecards/show_tabs/status_filter', locals: { disabled: @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard' } %>

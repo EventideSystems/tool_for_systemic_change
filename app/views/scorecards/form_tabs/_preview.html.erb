@@ -4,26 +4,23 @@
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="row preview-row">
-          <h4><%=
-            case @scorecard
-            when TransitionCard then @scorecard.account.transition_card_model_name
-            when SustainableDevelopmentGoalAlignmentCard then @scorecard.account.sdgs_alignment_card_model_name
-            end
-          %>
+          <h4>
+            <%= scorecard_model_name(@scorecard) %>
 
-          <%=
-            link_to(
-              content_tag(
-                :i,
-                '',
-                class: "fa fa-external-link"
-              ),
-              nil,
-              remote: true,
-              onclick: "$('.wizard').smartWizard('goToStep', 0);"
-            )
-          %>
-          <strong id='preview-transition-card-name'></strong></h4>
+            <%=
+              link_to(
+                content_tag(
+                  :i,
+                  '',
+                  class: "fa fa-external-link"
+                ),
+                nil,
+                remote: true,
+                onclick: "$('.wizard').smartWizard('goToStep', 0);"
+              )
+            %>
+            <strong id='preview-transition-card-name'></strong>
+          </h4>
         </div>
         <div class="row preview-row">
           <p id='preview-transition-card-description'></p>
@@ -94,17 +91,10 @@
       </div>
     </div>
     <div class="links row d-flex justify-content-end ml-5">
-      <%-
-        card_model_name = case @scorecard
-        when TransitionCard then @scorecard.account.transition_card_model_name
-        when SustainableDevelopmentGoalAlignmentCard then @scorecard.account.sdgs_alignment_card_model_name
-        end
-      %>
       <%=
-
         form.button(
           :submit,
-          "Create #{card_model_name}",
+          "Create #{display_scorecard_model_name(@scorecard)}",
           class: 'btn btn-primary float-right'
         )
       %>

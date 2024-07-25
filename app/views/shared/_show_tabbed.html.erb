@@ -3,7 +3,7 @@
 
   <ul id="transition-card-nav" class="nav nav-tabs">
     <li class="nav-item">
-      <a href="#tab_1" class="nav-link active" data-target="#transition_card" data-toggle="tab"><%= @scorecard.model_name.human %></a>
+      <a href="#tab_1" class="nav-link active" data-target="#transition_card" data-toggle="tab"><%= display_scorecard_model_name(@scorecard) %></a>
     </li>
     <% if @scorecard.share_ecosystem_map? %>
       <li class="nav-item">

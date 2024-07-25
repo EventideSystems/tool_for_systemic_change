@@ -6,16 +6,7 @@
           <h3><%= initiatives_characteristics_title(@initiative) %></h3>
         </div>
         <div class="float-right">
-
-          <%-
-            scorecard_model_name = case @initiative.scorecard
-            when TransitionCard
-              @initiative.scorecard.account.transition_card_model_name
-            when SustainableDevelopmentGoalAlignmentCard
-              @initiative.scorecard.account.sdgs_alignment_card_model_name
-            end
-          %>
-          <%= link_to "#{scorecard_model_name} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
+          <%= link_to "#{display_scorecard_model_name(@initiative.scorecard)} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
         </div>
       </div>
     </div>

@@ -7,6 +7,17 @@ module ScorecardsHelper
     activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
   end
 
+  def display_scorecard_model_name(scorecard)
+    return '' if scorecard&.account.blank?
+
+    case scorecard
+    when TransitionCard
+      scorecard.account.transition_card_model_name
+    when SustainableDevelopmentGoalAlignmentCard
+      scorecard.account&.sdgs_alignment_card_model_name
+    end
+  end
+
   def lookup_communities
     controller.current_account.communities.order(:name)
   end

@@ -1,20 +1,19 @@
 class ScorecardComments::ImportsController < ApplicationController
-
   def new
     @scorecard_comments_import = current_account.scorecard_comments_imports.build
-    authorize @scorecard_comments_import
+    authorize(@scorecard_comments_import)
   end
 
   def create
     @scorecard_comments_import = current_account.scorecard_comments_imports.build(
       scorecard_comments_import_params.merge(user: current_user)
     )
-    authorize @scorecard_comments_import
+    authorize(@scorecard_comments_import)
 
     if @scorecard_comments_import.save && @scorecard_comments_import.process(current_user, current_account)
-      redirect_to transition_cards_path, notice: 'Transition Card Comments records successfully imported.'
+      redirect_to(transition_cards_path, notice: 'Card Comments records successfully imported.')
     else
-      render :new
+      render(:new)
     end
 
     @scorecard_comments_import.destroy
@@ -24,15 +23,14 @@ class ScorecardComments::ImportsController < ApplicationController
 
   def update
     if @scorecard_comments_import.update(scorecard_comments_import_params)
-      redirect_to @scorecard_comments_import, notice: 'Import was successfully updated.'
+      redirect_to(@scorecard_comments_import, notice: 'Import was successfully updated.')
     else
-      render :edit
+      render(:edit)
     end
-
   end
 
   def content_title
-    'Transition Card Comments'
+    'Card Comments'
   end
 
   def content_subtitle
@@ -43,7 +41,7 @@ class ScorecardComments::ImportsController < ApplicationController
 
   def set_scorecard_comments_import
     @scorecard_comments_import = ScorecardComments::Import.find(params[:id])
-    authorize @scorecard_comments_import
+    authorize(@scorecard_comments_import)
   end
 
   def scorecard_comments_import_params

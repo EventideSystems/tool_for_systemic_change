@@ -12,8 +12,8 @@ module DashboardHelper
     # TODO: 'active' needs to be on the link (link_class), not the <li>
     content_tag(:li, class: "nav-item #{menu_item_class}") do
       link_to({ controller: controller_name, action: 'index' }, { class: "nav-link #{link_class}" }) do
-        concat content_tag(:i, '', class: "fa fa-#{h icon} nav-icon")
-        concat content_tag(:p, title)
+        concat(content_tag(:i, '', class: "fa fa-#{h(icon)} nav-icon"))
+        concat(content_tag(:p, title))
       end
     end
   end
@@ -24,31 +24,38 @@ module DashboardHelper
 
     content_tag(:li, class: "nav-item #{menu_item_class}") do
       link_to(sustainable_development_goal_alignment_cards_path, { class: "nav-link #{link_class}" }) do
-        concat image_tag('sdg_icons/sdg-logo.png', class: 'sidebar-image', style: 'width: 22px;')
-        concat content_tag(:p, SustainableDevelopmentGoalAlignmentCard.model_name.human.pluralize)
+        concat(image_tag('sdg_icons/sdg-logo.png', class: 'sidebar-image', style: 'width: 22px;'))
+        concat(content_tag(:p, current_account.sdgs_alignment_card_model_name.pluralize))
       end
     end
   end
 
   def content_title
     content_tag(:h1) do
-      concat controller.content_title
-      concat content_tag(:small, controller.content_subtitle)
-      concat yield if block_given?
+      concat(controller.content_title)
+      concat(content_tag(:small, controller.content_subtitle))
+      concat(yield) if block_given?
     end
   end
 
   def breadcrumb
     content_tag(:ol, class: 'breadcrumb') do
       # concat content_tag(:li, content_tag(:a, '', content_tag(:i, ' Home', class: 'fa fa-dashboard')))
-      concat content_tag(
-        :li,
-        link_to(safe_join([
-                            content_tag(:i, '', class: 'fa fa-dashboard'),
-                            ' Home'
-                          ]), root_path)
+      concat(
+        content_tag(
+          :li,
+          link_to(
+            safe_join(
+              [
+                content_tag(:i, '', class: 'fa fa-dashboard'),
+                ' Home'
+              ]
+            ),
+            root_path
+          )
+        )
       )
-      concat content_tag(:li, controller.controller_name.titleize, class: 'active')
+      concat(content_tag(:li, controller.controller_name.titleize, class: 'active'))
     end
   end
 
@@ -71,7 +78,7 @@ module DashboardHelper
     when 'SustainableDevelopmentGoalAlignmentCard'
       sustainable_development_goal_alignment_cards_path
     else
-      raise 'Unknown scorecard type'
+      raise('Unknown scorecard type')
     end
   end
 end

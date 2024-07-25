@@ -8,7 +8,7 @@
             <% @focus_areas.each_with_index do |focus_area, index| %>
               <th colspan="<%= focus_area.characteristics.size %>" class="legend">
                 <div data-toggle="tooltip" data-placement="top" title="<%= focus_area.name %>">
-                  <span class="text-color<%="#{index+1}"%>">Focus Area <%= index + 1 %>
+                  <span class="text-color<%="#{index+1}"%>"><%= focus_area_model_name(focus_area) %> <%= index + 1 %>
                   </span>
                 </div>
               </th>

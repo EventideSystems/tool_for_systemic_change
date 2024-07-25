@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_24_125317) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_25_085610) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -33,6 +33,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_24_125317) do
     t.boolean "allow_transition_cards", default: true
     t.boolean "allow_sustainable_development_goal_alignment_cards", default: false
     t.date "expiry_warning_sent_on"
+    t.string "transition_card_model_name", default: "Transition Card"
+    t.string "transition_card_focus_area_group_model_name", default: "Focus Area Group"
+    t.string "transition_card_focus_area_model_name", default: "Focus Area"
+    t.string "transition_card_characteristic_model_name", default: "Characteristic"
+    t.string "sdgs_alignment_card_model_name", default: "SDGs Alignment Card"
+    t.string "sdgs_alignment_card_focus_area_group_model_name", default: "Focus Area Group"
+    t.string "sdgs_alignment_card_focus_area_model_name", default: "Focus Area"
+    t.string "sdgs_alignment_card_characteristic_model_name", default: "Targets"
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|

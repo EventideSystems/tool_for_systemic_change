@@ -41,12 +41,12 @@ module Reports
             if row[:focus_area_group_name] != current_focus_area_group_name
               current_focus_area_group_name = row[:focus_area_group_name]
               current_focus_area_name = ''
-              sheet.add_row [row[:focus_area_group_name], '', '', '', '', ''], style: header_2
+              sheet.add_row([row[:focus_area_group_name], '', '', '', '', ''], style: header_2)
             end
 
             if row[:focus_area_name] != current_focus_area_name
               current_focus_area_name = row[:focus_area_name]
-              sheet.add_row ["  #{row[:focus_area_name]}", '', '', '', '', ''], style: header_3
+              sheet.add_row(["  #{row[:focus_area_name]}", '', '', '', '', ''], style: header_3)
             end
 
             sheet.add_row(
@@ -67,11 +67,22 @@ module Reports
 
     private
 
+    def scorecard_model_name
+      case scorecard
+      when TransitionCard
+        scorecard.account.transition_card_model_name
+      when SustainableDevelopmentGoalAlignmentCard
+        scorecard.account.sdgs_alignment_card_model_name
+      end
+    end
+
     def add_characteristic_columns_header(sheet, header_1, wrap_text)
-      col_base_name = \
+      col_base_name =
         case scorecard
-        when TransitionCard then 'Characteristics'
-        when SustainableDevelopmentGoalAlignmentCard then 'Targets'
+        when TransitionCard
+          scorecard.account.transition_card_characteristic_model_name.pluralize
+        when SustainableDevelopmentGoalAlignmentCard
+          scorecard.account.sdgs_alignment_card_characteristic_model_name.pluralize
         end
 
       sheet.add_row do |row|
@@ -92,14 +103,15 @@ module Reports
           'Removals',
           'Initiatives end of period'
         ],
-        height: 48, style: wrap_text
+        height: 48,
+        style: wrap_text
       )
     end
 
     def add_initiative_totals(sheet, header_1)
       sheet.add_row(
         [
-          "Total #{scorecard.model_name.human} Initiatives",
+          "Total #{scorecard_model_name} Initiatives",
           initiative_totals[:initial],
           initiative_totals[:additions],
           initiative_totals[:removals],
@@ -112,9 +124,7 @@ module Reports
     def add_report_header(sheet, header_1, blue_normal, date)
       sheet.add_row([DateTime.now], style: date)
 
-      sheet
-        .add_row([scorecard.model_name.human], style: header_1)
-        .add_cell(scorecard.name, style: blue_normal)
+      sheet.add_row([scorecard_model_name], style: header_1).add_cell(scorecard.name, style: blue_normal)
 
       sheet.add_row(['Date range'], b: true).tap do |row|
         row.add_cell(date_from, style: date)
@@ -123,15 +133,15 @@ module Reports
     end
 
     def header_1_style(package)
-      package.workbook.styles.add_style fg_color: '386190', sz: 16, b: true
+      package.workbook.styles.add_style(fg_color: '386190', sz: 16, b: true)
     end
 
     def header_2_style(package)
-      package.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true
+      package.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true)
     end
 
     def header_3_style(package)
-      package.workbook.styles.add_style bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false
+      package.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false)
     end
 
     def initiative_characteristics_title
@@ -139,17 +149,17 @@ module Reports
       when TransitionCard then 'Initiative Characteristics'
       when SustainableDevelopmentGoalAlignmentCard then 'Sustainable Development Goals'
       else
-        raise "Unexpected scorecard type: #{scorecard.class}"
+        raise("Unexpected scorecard type: #{scorecard.class}")
       end
     end
 
     # TODO: Find a better name for this style
     def blue_normal_style(package)
-      package.workbook.styles.add_style fg_color: '386190', sz: 12, b: false
+      package.workbook.styles.add_style(fg_color: '386190', sz: 12, b: false)
     end
 
     def wrap_text_style(package)
-      package.workbook.styles.add_style alignment: { horizontal: :general, vertical: :bottom, wrap_text: true }
+      package.workbook.styles.add_style(alignment: { horizontal: :general, vertical: :bottom, wrap_text: true })
     end
 
     def initiative_totals
@@ -157,7 +167,7 @@ module Reports
     end
 
     def set_column_widths(sheet)
-      sheet.column_widths 75.5, 10, 10, 10, 10, 10
+      sheet.column_widths(75.5, 10, 10, 10, 10, 10)
     end
   end
 end

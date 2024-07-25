@@ -42,7 +42,10 @@ module Reports
 
           data = generate_data
 
-          FocusAreaGroup.where(scorecard_type: scorecard.type, account: scorecard.account).order(:position).each do |focus_area_group|
+          FocusAreaGroup.where(
+            scorecard_type: scorecard.type,
+            account: scorecard.account
+          ).order(:position).each do |focus_area_group|
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2])
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|
@@ -51,7 +54,7 @@ module Reports
               focus_area.characteristics.order(:position).each do |characteristic|
                 data_row = data[characteristic.id]
 
-                initiative_comments = \
+                initiative_comments =
                   if data_row.present?
                     initiatives.map do |initiative|
                       comment_data = data_row[:comments].find { |d| d[:initiative_id] == initiative.id }
@@ -86,10 +89,19 @@ module Reports
 
     private
 
+    def scorecard_model_name
+      case scorecard
+      when TransitionCard
+        scorecard.account.transition_card_model_name
+      when SustainableDevelopmentGoalAlignmentCard
+        scorecard.account.sdgs_alignment_card_model_name
+      end
+    end
+
     def add_header(sheet, styles)
       sheet.add_row([Time.now], style: styles[:date])
 
-      sheet.add_row([scorecard.model_name.human], style: styles[:header_1]).add_cell(
+      sheet.add_row([scorecard_model_name], style: styles[:header_1]).add_cell(
         scorecard.name,
         style: styles[:blue_normal]
       )
@@ -184,10 +196,10 @@ module Reports
     end
 
     def fetch_initiatives(date)
-      params = { date: date }
+      params = { date: }
 
       scorecard.initiatives
-                .where('archived_on > :date OR archived_on IS NULL', params)
+               .where('archived_on > :date OR archived_on IS NULL', params)
                .where('started_at <= :date OR started_at IS NULL', params)
                .where('finished_at >= :date OR finished_at IS NULL', params)
     end

@@ -16,8 +16,16 @@ class ReportsController < ApplicationController
 
     @scorecard_types =
       current_account.scorecard_types.map do |scorecard_type|
+        scorecard_model_name =
+          case scorecard_type.name
+          when 'TransitionCard' then current_account.transition_card_model_name
+          when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
+          else
+            'Card'
+          end
+
         ScorecardType.new(
-          scorecard_type.model_name.human.pluralize,
+          scorecard_model_name.pluralize,
           policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
         )
       end
@@ -146,7 +154,7 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders
     authorize(:report, :index?)
 
-    @content_subtitle = 'Transition Card Stakeholder Report'
+    @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"
     add_breadcrumb(@content_subtitle)
 
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])

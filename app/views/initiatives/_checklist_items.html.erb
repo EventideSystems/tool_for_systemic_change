@@ -7,7 +7,15 @@
         </div>
         <div class="float-right">
 
-          <%= link_to "#{@initiative.scorecard.model_name.human} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
+          <%-
+            scorecard_model_name = case @initiative.scorecard
+            when TransitionCard
+              @initiative.scorecard.account.transition_card_model_name
+            when SustainableDevelopmentGoalAlignmentCard
+              @initiative.scorecard.account.sdgs_alignment_card_model_name
+            end
+          %>
+          <%= link_to "#{scorecard_model_name} Details", scorecard_path(@initiative.scorecard), class: 'btn btn-primary float-right' %>
         </div>
       </div>
     </div>

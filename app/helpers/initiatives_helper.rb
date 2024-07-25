@@ -3,20 +3,23 @@
 module InitiativesHelper
   def scorecard_label(initiative)
     if initiative.new_record? || initiative.scorecard.nil?
-      current_account.scorecard_types.map { |type| type.model_name.human }.join(' / ')
+      current_account.scorecard_types.map { |type| type.model_name.human }
+                     .join(' / ')
     else
-      safe_join([
-                  content_tag(:span, initiative.scorecard.model_name.human.to_s, style: 'margin-right: 10px'),
-                  link_to(
-                    content_tag(
-                      :i,
-                      '',
-                      class: 'fa fa-external-link'
-                    ),
-                    transition_card_path(initiative.scorecard),
-                    id: 'initiative-detail-scorecard-link'
-                  )
-                ])
+      safe_join(
+        [
+          content_tag(:span, initiative.scorecard.model_name.human.to_s, style: 'margin-right: 10px'),
+          link_to(
+            content_tag(
+              :i,
+              '',
+              class: 'fa fa-external-link'
+            ),
+            transition_card_path(initiative.scorecard),
+            id: 'initiative-detail-scorecard-link'
+          )
+        ]
+      )
     end
   end
 
@@ -59,8 +62,10 @@ module InitiativesHelper
 
   def initiative_tab_title(scorecard_type)
     case scorecard_type.name
-    when 'TransitionCard' then 'Initiatives for Transition Cards'
-    when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiatives for SDGs Alignment Cards'
+    when 'TransitionCard'
+      "Initiatives for #{current_account.transition_card_model_name.pluralize}"
+    when 'SustainableDevelopmentGoalAlignmentCard'
+      "Initiatives for #{current_account.sdgs_alignment_card_model_name.pluralize}"
     end
   end
 

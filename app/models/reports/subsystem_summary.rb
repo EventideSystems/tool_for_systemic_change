@@ -34,11 +34,17 @@ module Reports
 
     private
 
+    def scorecard_model_name
+      case scorecard
+      when TransitionCard
+        scorecard.account.transition_card_model_name
+      when SustainableDevelopmentGoalAlignmentCard
+        scorecard.account.sdgs_alignment_card_model_name
+      end
+    end
+
     def add_title(sheet, styles)
-      sheet.add_row([scorecard.model_name.human], style: styles[:h1]).add_cell(
-        scorecard.name,
-        style: styles[:blue_normal]
-      )
+      sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
       sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
       sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
@@ -47,7 +53,7 @@ module Reports
       sheet.add_row(['Total Subsystems', total_subsystems], style: styles[:h1])
       sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: styles[:h1])
       sheet.add_row(
-        ["Total #{scorecard.model_name.human} Initiatives", total_transition_card_initiatives],
+        ["Total #{scorecard_model_name} Initiatives", total_transition_card_initiatives],
         style: styles[:h1]
       )
     end

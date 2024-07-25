@@ -78,7 +78,15 @@ class AccountsController < ApplicationController
       :max_scorecards,
       :solution_ecosystem_maps,
       :allow_transition_cards,
-      :allow_sustainable_development_goal_alignment_cards
+      :allow_sustainable_development_goal_alignment_cards,
+      :transition_card_model_name,
+      :transition_card_focus_area_group_model_name,
+      :transition_card_focus_area_model_name,
+      :transition_card_characteristic_model_name,
+      :sdgs_alignment_card_model_name,
+      :sdgs_alignment_card_focus_area_group_model_name,
+      :sdgs_alignment_card_focus_area_model_name,
+      :sdgs_alignment_card_characteristic_model_name
     )
   end
   # rubocop:enable Metrics/MethodLength

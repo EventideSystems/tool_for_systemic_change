@@ -4,7 +4,13 @@
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="row preview-row">
-          <h4><%= @scorecard.model_name.human %>
+          <h4><%=
+            case @scorecard
+            when TransitionCard then @scorecard.account.transition_card_model_name
+            when SustainableDevelopmentGoalAlignmentCard then @scorecard.account.sdgs_alignment_card_model_name
+            end
+          %>
+
           <%=
             link_to(
               content_tag(
@@ -88,7 +94,20 @@
       </div>
     </div>
     <div class="links row d-flex justify-content-end ml-5">
-      <%= form.button :submit, class: 'btn btn-primary float-right' %>
+      <%-
+        card_model_name = case @scorecard
+        when TransitionCard then @scorecard.account.transition_card_model_name
+        when SustainableDevelopmentGoalAlignmentCard then @scorecard.account.sdgs_alignment_card_model_name
+        end
+      %>
+      <%=
+
+        form.button(
+          :submit,
+          "Create #{card_model_name}",
+          class: 'btn btn-primary float-right'
+        )
+      %>
     </div>
   </div>
 </div>

@@ -30,13 +30,13 @@ module Reports
           date: date_style(p)
         }
 
-        focus_areas.each do |focus_area|
-          p.workbook.add_worksheet(name: focus_area.name.truncate(MAX_SHEET_NAME_LENGTH)) do |sheet|
-            sheet.add_row([focus_area.name], style: styles[:header_1])
+        focus_area_names.each do |focus_area_name|
+          p.workbook.add_worksheet(name: focus_area_name.truncate(MAX_SHEET_NAME_LENGTH)) do |sheet|
+            sheet.add_row([focus_area_name], style: styles[:header_1])
             sheet.add_row
             add_header(sheet, styles)
 
-            data = generate_data(focus_area)
+            data = generate_data(focus_area_name)
 
             data.each do |row|
               sheet.add_row(
@@ -67,21 +67,24 @@ module Reports
       )
     end
 
-    def focus_areas
-      FocusArea
-        .joins(:focus_area_group)
-        .where(focus_area_groups: { scorecard_type: 'TransitionCard' })
-        .order('focus_areas.position')
+    def focus_area_names
+      accounts
+        .first
+        .focus_area_groups
+        .where(scorecard_type: 'TransitionCard')
+        .flat_map(&:focus_areas)
+        .sort_by { |focus_area| [focus_area.focus_area_group.position, focus_area.position] }
+        .map(&:name)
     end
 
-    def generate_data(focus_area)
+    def generate_data(focus_area_name)
       sql = <<~SQL
         with raw_percent_actual_by_focus_area as (
           select
             accounts.id as account_id,
             scorecards.id as scorecard_id,
             initiatives.id as initiative_id,
-            focus_areas.id as focus_area_id,
+            focus_areas.name as focus_area_name,
             count(checklist_items.id) as total_characteristics,
             sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,
             round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual
@@ -95,11 +98,11 @@ module Reports
             and initiatives.deleted_at is null
             and scorecards.deleted_at is null
             and scorecards.type = 'TransitionCard'
-            and focus_areas.id = #{focus_area.id}
-            group by accounts.id, scorecards.id, initiatives.id, focus_areas.id
+            and focus_areas.name = '#{focus_area_name}'
+            group by accounts.id, scorecards.id, initiatives.id, focus_areas.name
         )
 
-        select
+        select distinct on (account_name, scorecard_name, initiative_name, focus_area_name)
           accounts.name as account_name,
           scorecards.name as scorecard_name,
           scorecards.type as scorecard_type,
@@ -112,8 +115,8 @@ module Reports
         inner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id
         inner join scorecards on initiatives.scorecard_id = scorecards.id
         inner join accounts on scorecards.account_id = accounts.id
-        inner join focus_areas on raw_percent_actual_by_focus_area.focus_area_id = focus_areas.id
-        order by account_name, scorecard_name, initiative_name, focus_areas.position
+        inner join focus_areas on raw_percent_actual_by_focus_area.focus_area_name = focus_areas.name
+        order by account_name, scorecard_name, initiative_name, focus_area_name
       SQL
 
       ActiveRecord::Base.connection.execute(sql)

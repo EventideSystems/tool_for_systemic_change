@@ -45,6 +45,17 @@
       link_url: lambda { (table.current_row == current_user) ? nil : remove_from_account_user_path(table.current_row) },
       link_confirm: "Are you sure?"
     %>
+
+    <%# TODO: Convert this to a general test for whether the current user can impersonate in general %>
+    <%- if current_user.admin? %>
+      <%
+        table.column \
+          data: lambda { |user| user.id == current_user.id ? '' : 'Impersonate' },
+          link_url: lambda { |user| impersonate_system_user_path(user) if policy(user).impersonate? },
+          link_method: :post
+      %>
+    <%- end %>
+
     <% table.footer do %>
       <div class="float-right">
         <%= paginate @users %>

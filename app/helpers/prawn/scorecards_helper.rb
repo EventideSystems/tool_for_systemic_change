@@ -35,16 +35,16 @@ module Prawn
     end
 
     def page_header(scorecard)
-      img = File.join(Rails.root, 'app/assets/images/logo-long-white-bg.png')
+      img = File.join(Rails.root, 'app/assets/images/logo-pdf.png')
 
       repeat(:all) do
         canvas do
           bounding_box([bounds.left + 30, bounds.top - 20], width: bounds.width - 60) do
             font_size(22)
             pad_top(8) do
-              text "#{scorecard.model_name.human}: #{truncate(scorecard.name, length: 40)}", valign: :top
+              text("#{scorecard.model_name.human}: #{truncate(scorecard.name, length: 40)}", valign: :top)
             end
-            image img, position: :right, width: 130, vposition: :top
+            image(img, position: :right, width: 97, vposition: :top)
           end
         end
       end
@@ -52,56 +52,66 @@ module Prawn
 
     def focus_areas_header_sdgs_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.map.with_index do |focus_area, _index|
-        { content: focus_area.short_name,
+        {
+          content: focus_area.short_name,
           colspan: focus_area.characteristics.count,
           text_color: focus_area.actual_color.delete('#'),
           align: :center,
-          border_width: 0 }
+          border_width: 0
+        }
       end
     end
 
     def focus_areas_header_transition_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.map.with_index do |focus_area, _index|
-        { content: "Focus Area #{focus_area.position}",
+        {
+          content: "Focus Area #{focus_area.position}",
           colspan: focus_area.characteristics.count,
           text_color: focus_area_color(focus_area),
           align: :center,
-          border_width: 0 }
+          border_width: 0
+        }
       end
     end
 
     def spacer_sdgs_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.map.with_index do |focus_area, _index|
-        { content: '',
+        {
+          content: '',
           colspan: focus_area.characteristics.count,
           borders: %i[top left right],
           border_lines: [:dotted],
           border_color: focus_area.actual_color.delete('#'),
-          border_width: 1 }
+          border_width: 1
+        }
       end
     end
 
     def spacer_transition_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.map.with_index do |focus_area, _index|
-        { content: '',
+        {
+          content: '',
           colspan: focus_area.characteristics.count,
           borders: %i[top left right],
           border_lines: [:dotted],
           border_color: focus_area_color(focus_area),
-          border_width: 1 }
+          border_width: 1
+        }
       end
     end
 
     def legend_keys_sdgs_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.each_with_object([]) do |focus_area, memo|
                                              focus_area.characteristics.each_with_object(memo) do |characteristic, memo|
-                                               memo.push({
-                                                           content: characteristic.identifier,
-                                                           text_color: focus_area.actual_color.delete('#'),
-                                                           border_width: 0,
-                                                           align: :center,
-                                                           size: 8
-                                                         })
+                                               memo.push(
+                                                 {
+                                                   content: characteristic.identifier,
+                                                   text_color: focus_area.actual_color.delete('#'),
+                                                   border_width: 0,
+                                                   align: :center,
+                                                   size: 8
+                                                 }
+                                               )
                                              end
                                            end
     end
@@ -109,13 +119,15 @@ module Prawn
     def legend_keys_transition_card(focus_areas)
       [{ content: '', border_width: 0 }] + focus_areas.each_with_object([]) do |focus_area, memo|
                                              focus_area.characteristics.each_with_object(memo) do |characteristic, memo|
-                                               memo.push({
-                                                           content: characteristic.identifier,
-                                                           text_color: focus_area_color(focus_area),
-                                                           border_width: 0,
-                                                           align: :center,
-                                                           size: 8
-                                                         })
+                                               memo.push(
+                                                 {
+                                                   content: characteristic.identifier,
+                                                   text_color: focus_area_color(focus_area),
+                                                   border_width: 0,
+                                                   align: :center,
+                                                   size: 8
+                                                 }
+                                               )
                                              end
                                            end
     end
@@ -124,13 +136,25 @@ module Prawn
       move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
         move_down(5)
-        formatted_text [
-          { text: focus_area.short_name.force_encoding('UTF-8'), styles: [:bold], color: focus_area.planned_color.delete('#') },
-        ], leading: 6
+        formatted_text(
+          [
+            {
+              text: focus_area.short_name.force_encoding('UTF-8'),
+              styles: [:bold],
+              color: focus_area.planned_color.delete('#')
+            }
+          ],
+          leading: 6
+        )
         focus_area.characteristics.each_with_index do |characteristic, _characteristic_index|
-          formatted_text [
-            { text: characteristic.name.force_encoding('UTF-8') }
-          ], indent_paragraphs: 10, size: 8, leading: 4
+          formatted_text(
+            [
+              { text: characteristic.name.force_encoding('UTF-8') }
+            ],
+            indent_paragraphs: 10,
+            size: 8,
+            leading: 4
+          )
         end
       end
     end
@@ -139,53 +163,70 @@ module Prawn
       move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
         move_down(5)
-        formatted_text [
-          { text: "Focus Area #{focus_area.position}", styles: [:bold], color: focus_area_color(focus_area) },
-          { text: " - #{focus_area.name.force_encoding('UTF-8')}", size: 10 }
-        ], leading: 6
+        formatted_text(
+          [
+            {
+              text: "Focus Area #{focus_area.position}",
+              styles: [:bold],
+              color: focus_area_color(focus_area)
+            },
+            { text: " - #{focus_area.name.force_encoding('UTF-8')}", size: 10 }
+          ],
+          leading: 6
+        )
         focus_area.characteristics.each_with_index do |characteristic, _characteristic_index|
-          formatted_text [
-            { text: characteristic.identifier, color: focus_area_color(focus_area) },
-            { text: " - #{characteristic.name.force_encoding('UTF-8')}" }
-          ], indent_paragraphs: 10, size: 8, leading: 4
+          formatted_text(
+            [
+              { text: characteristic.identifier, color: focus_area_color(focus_area) },
+              { text: " - #{characteristic.name.force_encoding('UTF-8')}" }
+            ],
+            indent_paragraphs: 10,
+            size: 8,
+            leading: 4
+          )
         end
       end
     end
 
     def data_sdg_card(initiatives, focus_areas)
       initiatives.map do |initiative|
-        [{ content: truncate(pdf_safe(initiative.name), length: 62, escape: false), text_color: '3C8DBC',
-           border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
-                                              { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
-                                                cell[:background_color] =
-                                                  checklist_item_color_sdg_card(checklist_item)
-                                              end
-                                            end
+        [
+          {
+            content: truncate(pdf_safe(initiative.name), length: 62, escape: false),
+            text_color: '3C8DBC',
+            border_width: 0,
+            width: 300
+          }
+        ] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas:).map do |checklist_item|
+              { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
+                cell[:background_color] = checklist_item_color_sdg_card(checklist_item)
+              end
+            end
       end
     end
 
     def data_transition_card(initiatives, focus_areas)
       initiatives.map do |initiative|
-        [{ content: truncate(pdf_safe(initiative.name), length: 62, escape: false), text_color: '3C8DBC',
-           border_width: 0, width: 300 }] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas: focus_areas).map do |checklist_item|
-                                              { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
-                                                cell[:background_color] =
-                                                  checklist_item_color_transition_card(checklist_item)
-                                              end
-                                            end
+        [
+          {
+            content: truncate(pdf_safe(initiative.name), length: 62, escape: false),
+            text_color: '3C8DBC',
+            border_width: 0,
+            width: 300
+          }
+        ] + initiative.checklist_items_ordered_by_ordered_focus_area(focus_areas:).map do |checklist_item|
+              { content: ' ', border_width: 2, border_color: 'FFFFFF' }.tap do |cell|
+                cell[:background_color] = checklist_item_color_transition_card(checklist_item)
+              end
+            end
       end
     end
 
     def page_numbering
       font_size(12)
       string = 'Page <page> of <total>'
-      options = {
-        at: [bounds.right - 150, 0],
-        width: 150,
-        align: :right,
-        start_count_at: 1
-      }
-      number_pages string, options
+      options = { at: [bounds.right - 150, 0], width: 150, align: :right, start_count_at: 1 }
+      number_pages(string, options)
     end
 
     def formatted_date(date)
@@ -210,7 +251,7 @@ module Prawn
 
     def pdf_safe(text)
       fallback = { "\u014C" => 'O' }
-      ActionView::Base.full_sanitizer.sanitize(text.encode('Windows-1252', fallback: fallback)).gsub(/&amp;/, '&')
+      ActionView::Base.full_sanitizer.sanitize(text.encode('Windows-1252', fallback:)).gsub('&amp;', '&')
     end
   end
   # rubocop:enable Metrics/ModuleLength

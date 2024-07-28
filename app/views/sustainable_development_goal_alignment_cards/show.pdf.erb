@@ -18,15 +18,15 @@
       <h2><%= Scorecard.model_name.human %>: <%= @scorecard.name %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
     </div>
     <div class="col-sm-3 float-right">
-      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-    </div>  
+      <%= image_tag wicked_pdf_asset_base64('logo-pdf.png'), size: '97x40' %>
+    </div>
   </div>
   <div class="legend scorecard-matrix">
     <h3>Legend</h3>
     <hr>
     <%= render partial: 'legend', locals: { focus_areas: @focus_areas[0..3], offset: 1, cached: true } %>
     <%= render partial: 'legend', locals: { focus_areas: @focus_areas[4..-1], offset: 5, cached: true } %>
-  </div> 
+  </div>
 </div>
 
 <div class="alwaysbreak">
@@ -35,8 +35,8 @@
       <h2><%= Scorecard.model_name.human %>: <%= @scorecard.name %> <%= " - #{@parsed_selected_date.strftime('%B %-d, %Y')}" if @parsed_selected_date.present? %></h2>
     </div>
     <div class="col-sm-3 float-right">
-      <%= image_tag wicked_pdf_asset_base64('logo-long-white-bg.png'), size: '194x40' %>
-    </div>  
+      <%= image_tag wicked_pdf_asset_base64('logo-pdf.png'), size: '97x40' %>
+    </div>
   </div>
   <div>
     <h3>Initiatives</h3>

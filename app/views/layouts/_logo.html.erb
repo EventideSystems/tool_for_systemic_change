@@ -1,9 +1,8 @@
 <%= link_to root_path, class: "brand-link logo-switch" do %>
   <%# SMELL: Inline styles!!! %>
   <span class="brand-image-xl logo-xs">
-    <%= image_tag('logo.png', style: 'height:35px;margin-top:-4px;') %>
+    <%= image_tag('logo-small.png', style: 'height:42px;margin-top:0px;margin-left:auto;margin-right:auto') %>
   </span>
-  <span class="brand-image-xs logo-xl">
-    <%= image_tag('logo.png', style: 'height:35px;margin-top:-4px;margin-right:7px') %><b>Wicked</b>Lab
-  </span>
+  <span class="brand-image-xs logo-xl" style="margin-left:auto">
+    <%= image_tag('logo.png', style: 'height:42px;margin-top:-6px;margin-left:auto;margin-right:auto') %>
 <% end %>

@@ -3,7 +3,7 @@
 class ActivitiesController < ApplicationController
   before_action :authenticate_user!
 
-  add_breadcrumb 'Activities', :activities_path
+  # add_breadcrumb 'Activities', :activities_path
 
   def index
     @versions = policy_scope(PaperTrail::Version).order(sort_order).page(params[:page])

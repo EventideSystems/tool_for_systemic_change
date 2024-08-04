@@ -1,12 +1,12 @@
 class DashboardController < ApplicationController
-  
+
   skip_after_action :verify_policy_scoped
-  
+
   def index
-    add_breadcrumb "Dashboard"
-    
+    # add_breadcrumb "Dashboard"
+
     flash[:alert] = "Select an account before continuing." unless current_account.present?
-    
+
     @scorecard_count = policy_scope(Scorecard).count
     @initiative_count = policy_scope(Initiative).count
     @wicked_problem_count = policy_scope(WickedProblem).count

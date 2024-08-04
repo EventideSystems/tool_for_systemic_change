@@ -36,7 +36,7 @@ class Account < ApplicationRecord
 
   EXPIRY_WARNING_PERIOD = 30.days
 
-  enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
+  # enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
 
   belongs_to :stakeholder_type, optional: true
 

@@ -2,7 +2,7 @@ class CommunitiesController < ApplicationController
   before_action :set_community, only: %i[show edit update destroy]
   before_action :require_account_selected, only: %i[new create edit update]
 
-  add_breadcrumb 'Communities', :communities_path
+  # add_breadcrumb 'Communities', :communities_path
 
   def index
     @communities = policy_scope(Community).order(sort_order).page(params[:page])
@@ -10,7 +10,7 @@ class CommunitiesController < ApplicationController
 
   def show
     @community.readonly!
-    add_breadcrumb(@community.name)
+    # add_breadcrumb(@community.name)
 
     respond_to do |format|
       format.html { render(:show) }
@@ -21,11 +21,11 @@ class CommunitiesController < ApplicationController
   def new
     @community = current_account.communities.build
     authorize(@community)
-    add_breadcrumb('New')
+    # add_breadcrumb('New')
   end
 
   def edit
-    add_breadcrumb(@community.name)
+    # add_breadcrumb(@community.name)
   end
 
   def create

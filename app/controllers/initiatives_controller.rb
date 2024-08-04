@@ -6,7 +6,7 @@ class InitiativesController < ApplicationController
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]
 
-  add_breadcrumb 'Initiatives', :initiatives_path
+  # add_breadcrumb 'Initiatives', :initiatives_path
 
   def index
     base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order)
@@ -26,7 +26,7 @@ class InitiativesController < ApplicationController
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
 
-    add_breadcrumb(@initiative.name)
+    # add_breadcrumb(@initiative.name)
   end
 
   def new
@@ -34,11 +34,11 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize(@initiative)
 
-    add_breadcrumb('New Initiative')
+    # add_breadcrumb('New Initiative')
   end
 
   def edit
-    add_breadcrumb(@initiative.name)
+    # add_breadcrumb(@initiative.name)
   end
 
   def create

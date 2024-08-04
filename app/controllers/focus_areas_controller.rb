@@ -4,7 +4,7 @@ class FocusAreasController < ApplicationController
   before_action :set_focus_area, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: %i[new edit]
 
-  add_breadcrumb 'System', :focus_areas_path
+  # add_breadcrumb 'System', :focus_areas_path
 
   def index
     @focus_areas = \

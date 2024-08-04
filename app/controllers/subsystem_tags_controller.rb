@@ -2,7 +2,7 @@ class SubsystemTagsController < ApplicationController
   before_action :set_subsystem_tag, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
-  add_breadcrumb "Subsystem Tags", :subsystem_tags_path
+  # add_breadcrumb "Subsystem Tags", :subsystem_tags_path
 
   def index
     if params['q']
@@ -25,17 +25,17 @@ class SubsystemTagsController < ApplicationController
   end
 
   def show
-    add_breadcrumb @subsystem_tag.name
+    # add_breadcrumb @subsystem_tag.name
   end
 
   def new
     @subsystem_tag = current_account.subsystem_tags.build
     authorize @subsystem_tag
-    add_breadcrumb "New"
+    # add_breadcrumb "New"
   end
 
   def edit
-    add_breadcrumb @subsystem_tag.name
+    # add_breadcrumb @subsystem_tag.name
   end
 
   def create

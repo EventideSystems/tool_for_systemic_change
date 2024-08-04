@@ -7,8 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-node_modules
-
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -22,33 +20,23 @@ node_modules
 /private/*
 !/private/.keep
 
-.DS_Store
+
 /public/packs
 /public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
-
-# Python-related files
-/bin/activate*
-/bin/Activate*
-/bin/easy_install*
-/bin/pip*
-/bin/python*
-/lib/python*
-/pyvenv.cfg
-/lib64
-/share
 
 # Ignore credentials
 /config/credentials/development.key
 /config/credentials/staging.key
 /config/credentials/production.key
 /config/credentials/test.key
+local_secret.txt
 
 /config/master.key
 db/seeds.db
 
 # Other cruft
 .vscode/
+.DS_Store
+
+app/assets/build/
+node_modules/

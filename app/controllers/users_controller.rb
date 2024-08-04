@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update remove_from_account]
   before_action :set_account_role, only: %i[show edit]
 
-  add_breadcrumb 'Users', :users_path
+  # add_breadcrumb 'Users', :users_path
 
   def index
     @users = policy_scope(User).order(sort_order).page params[:page]
@@ -13,17 +13,17 @@ class UsersController < ApplicationController
 
   def show
     @user.readonly!
-    add_breadcrumb @user.display_name
+    # add_breadcrumb @user.display_name
   end
 
   def new
     @user = User.new
     authorize @user
-    add_breadcrumb 'New'
+    # add_breadcrumb 'New'
   end
 
   def edit
-    add_breadcrumb @user.display_name
+    # add_breadcrumb @user.display_name
   end
 
   def create

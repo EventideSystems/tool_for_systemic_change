@@ -19,7 +19,7 @@
 #  index_imports_on_user_id     (user_id)
 #
 class Import < ApplicationRecord
-  include ImportUploader[:import]
+ # include ImportUploader[:import]
 
   attr_accessor :processing_errors
 

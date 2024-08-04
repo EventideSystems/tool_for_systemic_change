@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
 
-  add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
+  # add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
   helper_method :current_account, :sidebar_disabled?, :search_disabled?
 
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   def enable_profiler
     return unless ::Rails.env.development? || ::Rails.env.staging?
 
-    ::Rack::MiniProfiler.authorize_request
+    # ::Rack::MiniProfiler.authorize_request
   end
 
   def pundit_user

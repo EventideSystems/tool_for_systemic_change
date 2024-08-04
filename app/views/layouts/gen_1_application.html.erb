@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= application_title %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application' %>
+    <%= render partial: '/layouts/shared/favicons' %>
+    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
+  </head>
+  <body class="skin-wicked sidebar-mini">
+    <div class="wrapper h-100">
+      <%= render partial: 'layouts/shared/flash' %>
+      <%= render partial: "layouts/header" %>
+      <%= render partial: "layouts/sidebar" %>
+      <div class="content-wrapper d-flex flex-column h-100">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <%= content_title do %>
+            <%= content_for :page_actions %>
+          <% end %>
+          <ol class="breadcrumb">
+            <%= render_breadcrumbs tag: :li, separator: '' %>
+          </ol>
+        </section>
+
+        <section class="content">
+          <%= yield %>
+        </section>
+      </div>
+      <%= render partial: 'layouts/footer' %>
+      <%= render partial: 'layouts/control_sidebar'%>
+      <div id="sidebar-overlay"></div>
+    </div>
+    <%= render 'layouts/modal' %>
+    <%= render 'layouts/spinner' %>
+  </body>
+</html>

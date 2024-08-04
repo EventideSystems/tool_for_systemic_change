@@ -4,8 +4,8 @@ module System
 
     skip_after_action :verify_policy_scoped, only: [:index]
 
-    add_breadcrumb "System"
-    add_breadcrumb "Stakeholder Types", :stakeholder_types_path
+    # add_breadcrumb "System"
+    # add_breadcrumb "Stakeholder Types", :stakeholder_types_path
 
     def index
       @stakeholder_types = \
@@ -19,7 +19,7 @@ module System
 
     def show
       @content_subtitle = @stakeholder_type.name
-      add_breadcrumb @stakeholder_type.name
+      # add_breadcrumb @stakeholder_type.name
 
       render 'stakeholder_types/show'
     end
@@ -27,13 +27,13 @@ module System
     def new
       @stakeholder_type = StakeholderType.new
       authorize @stakeholder_type, policy_class: System::StakeholderTypePolicy
-      add_breadcrumb "New"
+      # add_breadcrumb "New"
 
       render 'stakeholder_types/new'
     end
 
     def edit
-      add_breadcrumb @stakeholder_type.name
+      # add_breadcrumb @stakeholder_type.name
 
       render 'stakeholder_types/edit'
     end

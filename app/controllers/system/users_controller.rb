@@ -9,8 +9,8 @@ module System
 
     skip_after_action :verify_policy_scoped
 
-    add_breadcrumb 'System'
-    add_breadcrumb 'Users', :system_users_path
+    # add_breadcrumb 'System'
+    # add_breadcrumb 'Users', :system_users_path
 
     def index
       respond_to do |format|
@@ -26,17 +26,17 @@ module System
 
     def show
       @user.readonly!
-      add_breadcrumb @user.display_name
+      # add_breadcrumb @user.display_name
     end
 
     def new
       @user = User.new
       authorize @user
-      add_breadcrumb 'New'
+      # add_breadcrumb 'New'
     end
 
     def edit
-      add_breadcrumb @user.display_name
+      # add_breadcrumb @user.display_name
     end
 
     def create

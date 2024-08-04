@@ -20,6 +20,6 @@ class TransitionCardsController < ScorecardsController
   private
 
   def add_base_breadcrumb
-    add_breadcrumb(current_account.transition_card_model_name.pluralize, :transition_cards_path)
+    # add_breadcrumb(current_account.transition_card_model_name.pluralize, :transition_cards_path)
   end
 end

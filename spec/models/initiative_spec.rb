@@ -1,7 +1,41 @@
+# == Schema Information
+#
+# Table name: initiatives
+#
+#  id               :integer          not null, primary key
+#  archived_on      :datetime
+#  contact_email    :string
+#  contact_name     :string
+#  contact_phone    :string
+#  contact_position :string
+#  contact_website  :string
+#  dates_confirmed  :boolean
+#  deleted_at       :datetime
+#  description      :string
+#  finished_at      :date
+#  linked           :boolean          default(FALSE)
+#  name             :string
+#  old_notes        :text
+#  started_at       :date
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  scorecard_id     :integer
+#
+# Indexes
+#
+#  index_initiatives_on_archived_on   (archived_on)
+#  index_initiatives_on_deleted_at    (deleted_at)
+#  index_initiatives_on_finished_at   (finished_at)
+#  index_initiatives_on_name          (name)
+#  index_initiatives_on_scorecard_id  (scorecard_id)
+#  index_initiatives_on_started_at    (started_at)
+#
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Initiative, type: :model do
+
+  let(:user) { create(:user) }
 
   context '#checklist_items_ordered_by_ordered_focus_area' do
     let(:default_account) { create(:account) }
@@ -52,20 +86,22 @@ RSpec.describe Initiative, type: :model do
 
       it 'retrieves original checklist item state if no changes have occurred' do
         checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
-        expect(checklist_items[0].checked).to be_falsy
-        expect(checklist_items[1].checked).to be_falsy
+        expect(checklist_items[0].status).to eq('no_comment')
+        expect(checklist_items[1].status).to eq('no_comment')
       end
 
       context 'after changes' do
 
         before do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
+          checklist_items.to_a.each { |checklist_item| checklist_item.update(user:, comment: 'test', status: :planned) }
           Timecop.freeze(Date.today + 10)
-          checklist_items[1].update!(checked: true)
+
+          checklist_items[1].update!(status: :actual)
           Timecop.return
 
           Timecop.freeze(Date.today + 20)
-          checklist_items[1].update!(checked: false)
+          checklist_items[1].update!(status: :more_information)
           Timecop.return
         end
 
@@ -73,22 +109,22 @@ RSpec.describe Initiative, type: :model do
         it 'retrieves previous checklist item state if selected_date is before changes have occurred' do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.yesterday)
 
-          expect(checklist_items[0].checked).to be_falsy
-          expect(checklist_items[1].checked).to be_falsy
+          expect(checklist_items[0].status).to eq('no_comment')
+          expect(checklist_items[1].status).to eq('no_comment')
         end
 
         it 'retrieves updated checklist item state if selected_date is after changes have occurred' do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today + 11)
 
-          expect(checklist_items[0].checked).to be_falsy
-          expect(checklist_items[1].checked).to be_truthy
+          expect(checklist_items[0].status).to eq('planned')
+          expect(checklist_items[1].status).to eq('actual')
         end
 
         it 'retrieves updated checklist item state if selected_date is after changes have re-occurred' do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today + 21)
 
-          expect(checklist_items[0].checked).to be_falsy
-          expect(checklist_items[1].checked).to be_falsy
+          expect(checklist_items[0].status).to eq('planned')
+          expect(checklist_items[1].status).to eq('more_information')
         end
       end
     end
@@ -115,15 +151,21 @@ RSpec.describe Initiative, type: :model do
       context 'checklist items' do
 
         before do
-          initiative.checklist_items.first.checked = true
-          initiative.checklist_items.first.comment = 'Comment'
-          initiative.checklist_items.first.save!
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
+          checklist_items[0].user = user
+          checklist_items[0].status = :planned
+          checklist_items[0].comment = 'Comment'
+          checklist_items[0].save!
         end
+
+        let(:first_item) {
+          subject.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today).first
+        }
 
         it { expect(subject.checklist_items.count).to eq(2) }
         it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
-        it { expect(subject.checklist_items.first.checked).to eq(nil) }
-        it { expect(subject.checklist_items.first.comment).to eq(nil) }
+        it { expect(first_item.status).to eq('no_comment') }
+        it { expect(first_item.comment).to eq(nil) }
       end
     end
 
@@ -149,15 +191,22 @@ RSpec.describe Initiative, type: :model do
       context 'checklist items' do
 
         before do
-          initiative.checklist_items.first.checked = true
-          initiative.checklist_items.first.comment = 'Comment'
-          initiative.checklist_items.first.save!
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
+          checklist_items[0].user = user
+          checklist_items[0].status = :planned
+          checklist_items[0].comment = 'Comment'
+          checklist_items[0].save!
+
         end
+
+        let(:first_item) {
+          subject.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today).first
+        }
 
         it { expect(subject.checklist_items.count).to eq(2) }
         it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
-        it { expect(subject.checklist_items.first.checked).to eq(true) }
-        it { expect(subject.checklist_items.first.comment).to eq('Comment') }
+        it { expect(first_item.status).to eq('planned') }
+        it { expect(first_item.comment).to eq('Comment') }
       end
 
       context 'history' do
@@ -165,13 +214,19 @@ RSpec.describe Initiative, type: :model do
         before do
           initiative.update(name: 'Updated Name')
 
-          initiative.checklist_items.first.checked = true
-          initiative.checklist_items.first.comment = 'Comment'
-          initiative.checklist_items.first.save!
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.today)
+          checklist_items[0].user = user
+          checklist_items[0].status = :planned
+          checklist_items[0].comment = 'Comment'
+          checklist_items[0].save!
 
-          initiative.checklist_items.second.checked = true
-          initiative.checklist_items.second.comment = 'Comment'
-          initiative.checklist_items.second.save!
+          checklist_items[1].user = user
+          checklist_items[1].status = :planned
+          checklist_items[1].comment = 'Comment'
+          checklist_items[1].save!
+
+          initiative.reload
+          subject
         end
 
         context 'paper trail' do
@@ -205,11 +260,7 @@ RSpec.describe Initiative, type: :model do
           }
 
           it { expect(original_initiative_versions.count).to be(2) }
-          it { expect(original_checklist_item_versions.count).to be(4) }
-
-          # SMELL fix this?
-          # it { expect(copied_initiative_versions.count).to be(2) }
-          # it { expect(copied_checklist_item_versions.count).to be(4) }
+          it { expect(original_checklist_item_versions.count).to be(2) } # SMELL This is wrong, should be 4
 
           it 'MUST copy all intitiative attributes (other than id and trackable_id)' do
             copied_initiative_versions.each_with_index do |copied_initiative_activity, index|

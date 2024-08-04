@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: checklist_item_comments
+#
+#  id                :bigint           not null, primary key
+#  comment           :string
+#  deleted_at        :datetime
+#  status            :string           default("actual")
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  checklist_item_id :bigint
+#
+# Indexes
+#
+#  index_checklist_item_comments_on_checklist_item_id  (checklist_item_id)
+#
 class ChecklistItemComment < ApplicationRecord
   has_paper_trail
   acts_as_paranoid

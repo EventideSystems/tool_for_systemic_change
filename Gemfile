@@ -84,7 +84,6 @@ gem 'memory_profiler'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
-
 group :production, :staging do
   gem 'exception_notification'
 end
@@ -119,6 +118,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'annotate'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'listen'
   gem 'web-console'

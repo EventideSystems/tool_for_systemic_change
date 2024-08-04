@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: subsystem_tags
+#
+#  id          :integer          not null, primary key
+#  deleted_at  :datetime
+#  description :string
+#  name        :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  account_id  :integer
+#
+# Indexes
+#
+#  index_subsystem_tags_on_account_id  (account_id)
+#  index_subsystem_tags_on_deleted_at  (deleted_at)
+#
 require 'rails_helper'
 
 RSpec.describe SubsystemTag, type: :model do

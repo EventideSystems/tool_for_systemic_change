@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: initiatives
+#
+#  id               :integer          not null, primary key
+#  archived_on      :datetime
+#  contact_email    :string
+#  contact_name     :string
+#  contact_phone    :string
+#  contact_position :string
+#  contact_website  :string
+#  dates_confirmed  :boolean
+#  deleted_at       :datetime
+#  description      :string
+#  finished_at      :date
+#  linked           :boolean          default(FALSE)
+#  name             :string
+#  old_notes        :text
+#  started_at       :date
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  scorecard_id     :integer
+#
+# Indexes
+#
+#  index_initiatives_on_archived_on   (archived_on)
+#  index_initiatives_on_deleted_at    (deleted_at)
+#  index_initiatives_on_finished_at   (finished_at)
+#  index_initiatives_on_name          (name)
+#  index_initiatives_on_scorecard_id  (scorecard_id)
+#  index_initiatives_on_started_at    (started_at)
+#
 # rubocop:disable Metrics/ClassLength
 class Initiative < ApplicationRecord
   has_paper_trail
@@ -153,15 +185,15 @@ class Initiative < ApplicationRecord
     copied.checklist_items.delete_all
 
     query = "
-    INSERT INTO checklist_items (checked, comment, characteristic_id, initiative_id, created_at, updated_at)
-      SELECT checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
+    INSERT INTO checklist_items (user_id, status, checked, comment, characteristic_id, initiative_id, created_at, updated_at)
+      SELECT user_id, status, checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
       FROM checklist_items
       WHERE initiative_id = #{id}
     RETURNING *;
     "
     ActiveRecord::Base.connection.execute(query)
 
-    delay.deep_copy_paper_trail_records(copied)
+    deep_copy_paper_trail_records(copied)
 
     copied.reload
   end
@@ -190,6 +222,8 @@ class Initiative < ApplicationRecord
     RETURNING *;
     "
     ActiveRecord::Base.connection.execute(query)
+
+
 
     PaperTrail::Version.where(
       item_type: 'ChecklistItem',

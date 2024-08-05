@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TransitionCardsController < ScorecardsController
   before_action :add_base_breadcrumb
 
@@ -20,6 +22,8 @@ class TransitionCardsController < ScorecardsController
   private
 
   def add_base_breadcrumb
+    return '' if current_account.blank?
+
     add_breadcrumb(current_account.transition_card_model_name.pluralize, :transition_cards_path)
   end
 end

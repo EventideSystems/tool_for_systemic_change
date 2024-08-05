@@ -5,6 +5,18 @@ module ApplicationHelper
     "Tool for Systemic Change - #{Rails.env.titleize}"
   end
 
+  # Render an SVG icon from views/icons
+  # Source: https://www.writesoftwarewell.com/how-to-render-svg-icons-in-rails
+  def render_icon(icon, classes: '')
+    render "layouts/shared/icons/#{icon}", classes:
+  end
+
+  def render_sidebar_item(title:, path:, icon:, active_group:, classes: '', count: nil) # rubocop:disable Metrics/ParameterLists
+    active = active_group == controller.active_sidebar_item
+
+    render 'layouts/shared/sidebar_item', title:, path:, icon:, active:, classes:, count:
+  end
+
   def form_header(resource)
     content_tag(:h3) do
       "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"

@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
-    <title>ToolForSystemicChange</title>
+    <title><%#= breadcrumbs.map(&:name).reverse.append("Obsekio").join(" | ") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+    <%= render 'layouts/shared/flash_messages' %>
+    <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+      <%= render partial: 'layouts/shared/sidebar_mobile' %>
+      <%= render partial: 'layouts/shared/sidebar_desktop' %>
+      <div class="lg:pl-48">
+        <main class="py-2">
+          <div class="px-2">
+             <%= yield %>
+          </div>
+        </main>
+      </div>
+    </div>
   </body>
 </html>

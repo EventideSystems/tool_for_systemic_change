@@ -1,0 +1,22 @@
+
+<%
+  if active
+    options = {
+      class: "group flex gap-x-3 rounded-md bg-gray-800 p-2 text-sm font-semibold leading-6 text-white",
+      aria: { current: "page" }
+    }
+  else
+    options = { class: "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white" }
+  end
+%>
+
+<li>
+  <%= link_to path, options do %>
+    <%= render_icon icon %>
+    <%= title %>
+    <%- if count.present? %>
+      <span class="ml-auto w-9 min-w-max whitespace-nowrap rounded-full bg-gray-900 px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-white ring-1 ring-inset ring-gray-700" aria-hidden="true"><%= count %></span>
+    <%- end %>
+  <% end %>
+</li>
+

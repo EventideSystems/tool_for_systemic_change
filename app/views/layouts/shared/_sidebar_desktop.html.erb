@@ -1,0 +1,55 @@
+<!-- Static sidebar for desktop -->
+<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col">
+  <!-- Sidebar component, swap this element with another sidebar if you like -->
+  <div class="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
+    <div class="flex h-16 shrink-0 items-center">
+      <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Obsek.io">
+      <%#= render_icon :logo_text %>
+      <span class="ml-1 text-white font-extrabold text-xl">Obsekio</span>
+    </div>
+    <nav class="flex flex-1 flex-col">
+      <ul role="list" class="flex flex-1 flex-col gap-y-7">
+        <li>
+          <ul role="list" class="-mx-2 space-y-1">
+            <%= render_sidebar_item title: 'Home', path: root_path, icon: :home, active_group: :home %>
+            <%= render_sidebar_item title: 'Workspace', path: root_path, icon: :workspace, active_group: :workspace %>
+            <%= render_sidebar_item title: 'Library', path: root_path, icon: :library, active_group: :library %>
+            <%= render_sidebar_item title: 'Contacts', path: root_path, icon: :contacts, active_group: :contacts %>
+            <%= render_sidebar_item title: 'Tags', path: root_path, icon: :tags, active_group: :tags %>
+            <%= render_sidebar_item title: 'Team', path: root_path, icon: :teams, active_group: :teams %>
+            <%= render_sidebar_item title: 'Reports', path: root_path, icon: :reports, active_group: :reports %>
+          </ul>
+        </li>
+        <li class="mt-auto">
+          <%= render_dropdown_menu do %>
+            <%= dropdown_menu_trigger do %>
+              <div class="group flex gap-x-3 rounded-md -mx-2 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
+                <%= render_icon :user_profile %>
+                Your Profile
+                <%= render_icon :menu_up %>
+              </div>
+            <% end %>
+
+            <%= dropdown_menu_content do %>
+              <%=
+                dropdown_menu_item do
+                  link_to "Settings", root_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"
+                end
+              %>
+              <%=
+                dropdown_menu_item do
+                  link_to "Dark mode &checkmark;".html_safe, '', data: { controller: 'theme', theme_target: 'toggle', action: 'theme#toggle' }, class: 'block w-full'
+                end
+              %>
+              <%=
+                dropdown_menu_item do
+                  link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"
+                end
+              %>
+            <% end %>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

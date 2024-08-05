@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  include ActiveSidebarItem
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_session_account_id, unless: :devise_controller?
@@ -10,8 +11,11 @@ class ApplicationController < ActionController::Base
   before_action :enable_profiler
   before_action :prepare_exception_notifier
 
-  after_action :verify_authorized, except: :index, unless: :devise_controller?
-  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
+
+  skip_after_action :verify_policy_scoped, if: :devise_controller?
+  skip_after_action :verify_authorized, if: :devise_controller?
 
   # protect_from_forgery with: :exception
   protect_from_forgery prepend: true
@@ -24,6 +28,8 @@ class ApplicationController < ActionController::Base
   # add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 
   helper_method :current_account, :sidebar_disabled?, :search_disabled?
+
+  sidebar_item :home
 
   # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account

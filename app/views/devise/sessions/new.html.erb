@@ -1,55 +1,54 @@
-<div class="login-box">
-  <div class="login-logo">
-    <span class="logo-lg">
-      <%= image_tag('logo-devise.png', style: 'width:50%')%>
-    </span>
+<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to Obsekio</h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      Or
+      <%#= link_to "register a new account", new_user_registration_path, class: "font-medium text-yellow-600 hover:text-yellow-500" %>
+    </p>
   </div>
 
-  <%= render partial: 'layouts/shared/panel_flash' %>
-
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
-
-      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'form-horizontal' }) do |f| %>
-
-        <div class="input-group mb-3">
-          <%= f.input_field :email, required: false, autofocus: true, label: false, placeholder: 'Email', type: 'email', class: 'form-control' %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'space-y-6' }) do |f| %>
+        <div>
+          <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
+          <div class="mt-1">
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", type: 'email', required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 sm:text-sm" %>
           </div>
         </div>
 
-        <div class="input-group mb-3">
-          <%= f.input_field :password, required: false, autofocus: true, label: false, placeholder: 'Password', type: 'password', class: 'form-control' %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+        <div>
+          <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
+          <div class="mt-1">
+            <%= f.password_field :password, autocomplete: "current-password", required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-yellow-500 focus:outline-none focus:ring-yellow-500 sm:text-sm" %>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary pt-2">
-              <label class="">
-                <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
-              </label>
+        <div class="flex items-center justify-between">
+          <% if devise_mapping.rememberable? %>
+            <div class="flex items-center">
+              <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" %>
+              <%= f.label :remember_me, class: "ml-2 block text-sm text-gray-900" %>
             </div>
-          </div>
-          <div class="col-4">
-            <%= f.button :submit, "Log in", class: 'btn btn-primary btn-block' %>
-          </div>
-        </div>
-      <%- end -%>
+          <% end %>
 
-      <p class="mb-1">
-        <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-          <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-        <% end -%>
-      </p>
+          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <div class="text-sm">
+              <%= link_to "Forgot your password?", new_password_path(resource_name), class: "font-medium text-yellow-600 hover:text-yellow-500" %>
+            </div>
+          <% end %>
+        </div>
+
+        <%#= recaptcha_with_nonce(action: 'log_in') %>
+
+        <div>
+          <%= f.submit "Sign in", class: "flex w-full justify-center rounded-md border border-transparent bg-yellow-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2" %>
+        </div>
+      <% end %>
+
+      <%= render "devise/shared/links" %>
+
     </div>
   </div>
 </div>
+

@@ -47,6 +47,9 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem 'view_component'
+gem 'shadcn-ui', '~> 0.0.13'
+
 # Authentication and authorisation
 gem 'devise'
 gem 'devise_invitable'

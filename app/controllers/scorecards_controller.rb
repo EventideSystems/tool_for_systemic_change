@@ -4,7 +4,7 @@
 class ScorecardsController < ApplicationController
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
-  before_action :set_scorecard, except: %i[index new create ecosystem_maps_organisations characteristic]
+  before_action :set_scorecard, except: %i[index new create ecosystem_maps_organisations]
 
   before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]

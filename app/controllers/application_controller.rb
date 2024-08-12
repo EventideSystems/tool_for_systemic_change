@@ -3,19 +3,17 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include ActiveSidebarItem
+  include Pagy::Backend
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_session_account_id, unless: :devise_controller?
-  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :set_session_account_id
+  before_action :authenticate_user!
+
   before_action :set_paper_trail_whodunnit
   before_action :enable_profiler
   before_action :prepare_exception_notifier
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
-
-  skip_after_action :verify_policy_scoped, if: :devise_controller?
-  skip_after_action :verify_authorized, if: :devise_controller?
 
   # protect_from_forgery with: :exception
   protect_from_forgery prepend: true
@@ -31,12 +29,19 @@ class ApplicationController < ActionController::Base
 
   sidebar_item :home
 
-  # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
     @current_account ||=
       begin
         account_id = session[:account_id]
-        account_id.present? ? ::Account.where(id: account_id).first : nil
+        account = AccountPolicy::Scope.new(UserContext.new(current_user, nil), Account).scope.find(account_id)
+        if account.present?
+          account
+        else
+          # If the account is not found, set the first account as the current account
+          default_account = current_user&.default_account
+          session[:account_id] = default_account&.id
+          default_account
+        end
       end
   end
 

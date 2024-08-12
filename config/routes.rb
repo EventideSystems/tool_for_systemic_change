@@ -24,7 +24,10 @@ Rails.application.routes.draw do
     resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
   end
 
-  devise_for :users, skip: [:registrations], controllers: { invitations: 'invitations' }
+  devise_for :users, skip: [:registrations], controllers: {
+    invitations: 'invitations',
+    sessions: 'users/sessions'
+   }
 
   resources :accounts do
     member do

@@ -4,8 +4,10 @@ class CommunitiesController < ApplicationController
 
   # add_breadcrumb 'Communities', :communities_path
 
+  sidebar_item :communities
+
   def index
-    @communities = policy_scope(Community).order(sort_order).page(params[:page])
+    @pagy, @communities = pagy(policy_scope(Community).order(sort_order))
   end
 
   def show

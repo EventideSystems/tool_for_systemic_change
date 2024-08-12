@@ -1,23 +1,27 @@
-<!-- Static sidebar for desktop -->
-<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col">
-  <!-- Sidebar component, swap this element with another sidebar if you like -->
-  <div class="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
+<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col bg-zinc-900">
+  <div class="flex grow flex-col gap-y-2 overflow-y-auto px-6 pb-4">
     <div class="flex h-16 shrink-0 items-center">
-      <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=white" alt="Obsek.io">
-      <%#= render_icon :logo_text %>
-      <span class="ml-1 text-white font-extrabold text-xl">Obsekio</span>
+      <%= image_tag 'logo-small.png', class: 'h-8 w-auto', alt: "Logo for the 'Tool for Systemic Change'" %>
+      <span class="ml-1 text-white font-extrabold text-xs">Tool for Systemic Change</span>
     </div>
     <nav class="flex flex-1 flex-col">
       <ul role="list" class="flex flex-1 flex-col gap-y-7">
         <li>
           <ul role="list" class="-mx-2 space-y-1">
             <%= render_sidebar_item title: 'Home', path: root_path, icon: :home, active_group: :home %>
-            <%= render_sidebar_item title: 'Workspace', path: root_path, icon: :workspace, active_group: :workspace %>
-            <%= render_sidebar_item title: 'Library', path: root_path, icon: :library, active_group: :library %>
-            <%= render_sidebar_item title: 'Contacts', path: root_path, icon: :contacts, active_group: :contacts %>
-            <%= render_sidebar_item title: 'Tags', path: root_path, icon: :tags, active_group: :tags %>
-            <%= render_sidebar_item title: 'Team', path: root_path, icon: :teams, active_group: :teams %>
+            <%= render_sidebar_item title: 'Impact Cards', path: transition_cards_path, icon: :impact_cards, active_group: :workspace %>
+            <%= render_sidebar_item title: 'Initiatives', path: initiatives_path, icon: :initiatives, active_group: :initiatives %>
+            <%= render_sidebar_item title: 'Stakeholders', path: root_path, icon: :stakeholders, active_group: :tags %>
             <%= render_sidebar_item title: 'Reports', path: root_path, icon: :reports, active_group: :reports %>
+            <%= render_sidebar_item title: 'Team', path: root_path, icon: :teams, active_group: :teams %>
+          </ul>
+        </li>
+        <li>
+          <div class="text-xs font-semibold leading-6 text-gray-400">Your tags</div>
+          <ul role="list" class="-mx-2 mt-2 space-y-1">
+            <%= render_sidebar_item title: 'Communities', path: communities_path, icon: :tags, active_group: :communities %>
+            <%= render_sidebar_item title: 'Problems', path: wicked_problems_path, icon: :tags, active_group: :communities %>
+            <%= render_sidebar_item title: 'Subsystems', path: subsystem_tags_path, icon: :tags, active_group: :communities %>
           </ul>
         </li>
         <li class="mt-auto">
@@ -31,16 +35,36 @@
             <% end %>
 
             <%= dropdown_menu_content do %>
-              <%=
+
+             <%=
                 dropdown_menu_item do
-                  link_to "Settings", root_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"
+                  link_to "#{current_account.name} &checkmark;".html_safe, current_account, class: "block w-full text-sm"
                 end
               %>
+              <%- current_user.accounts.where.not(id: current_account.id).limit(4).each do |account| %>
+                <%= dropdown_menu_item do %>
+                  <%= link_to account.name, switch_account_path(account), class: "block w-full text-sm" %>
+                <% end %>
+              <% end %>
+
+              <%=
+                dropdown_menu_item do
+                  link_to "Other accounts...", accounts_path, class: "block w-full text-sm"
+                end
+              %>
+              <hr/>
+              <%=
+                dropdown_menu_item do
+                  link_to "Settings", root_path, class: "block w-full text-sm"
+                end
+              %>
+
               <%=
                 dropdown_menu_item do
                   link_to "Dark mode &checkmark;".html_safe, '', data: { controller: 'theme', theme_target: 'toggle', action: 'theme#toggle' }, class: 'block w-full'
                 end
               %>
+              <hr/>
               <%=
                 dropdown_menu_item do
                   link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"

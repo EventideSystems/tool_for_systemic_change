@@ -8,12 +8,14 @@ class InitiativesController < ApplicationController
 
   # add_breadcrumb 'Initiatives', :initiatives_path
 
+  sidebar_item :initiatives
+
   def index
-    base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order)
+    base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order('upper(initiatives.name) asc')
 
     respond_to do |format|
       format.html do
-        @initiatives = base_scope.page(params[:page])
+        @pagy, @initiatives = pagy(base_scope)
       end
       format.csv do
         @initiatives = base_scope.all

@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def application_title
     return 'Tool for Systemic Change' if Rails.env.production?
 
@@ -8,7 +10,7 @@ module ApplicationHelper
   # Render an SVG icon from views/icons
   # Source: https://www.writesoftwarewell.com/how-to-render-svg-icons-in-rails
   def render_icon(icon, classes: '')
-    render "layouts/shared/icons/#{icon}", classes:
+    render "icons/#{icon}", classes:
   end
 
   def render_sidebar_item(title:, path:, icon:, active_group:, classes: '', count: nil) # rubocop:disable Metrics/ParameterLists

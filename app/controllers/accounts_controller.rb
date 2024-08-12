@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   # add_breadcrumb 'Accounts', :accounts_path
 
   def index
-    @accounts = policy_scope(Account).order(sort_order).page(params[:page])
+    @pagy, @accounts = pagy(policy_scope(Account).order('upper(trim(accounts.name)) asc'))
   end
 
   def show

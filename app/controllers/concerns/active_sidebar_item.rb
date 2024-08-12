@@ -10,7 +10,7 @@ module ActiveSidebarItem
 
   class_methods do
     def sidebar_item(name)
-      @active_sidebar_item = name
+      instance_variable_set(:@active_sidebar_item, name)
     end
   end
 

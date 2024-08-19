@@ -1,24 +1,19 @@
-<% content_for :page_actions do %>
-  <%= create_new_button(new_wicked_problem_path) %>
-<% end %>
-
-<div class="box box-solid">
-  <div class='box-body no-padding'>
-  <%= table_for @wicked_problems, :table_html => { :class => "table table-striped table-base" },
-                        :sortable => true,
-                        :data_row_html => {
-                          id: lambda { |wicked_problem| "wicked_problem-#{wicked_problem.id}" },
-                          class: 'table-actions'
-                        } do |table| %>
-    <% table.column :name, link: true %>
-    <% table.column :description, formatter: lambda { |text| truncate_text(text, 200) } %>
-    <% table.column data: "Modify", link_action: :edit %>
-    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
-    <% table.footer do %>
-      <div class="float-right">
-        <%= paginate @wicked_problems %>
+<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+  <div class="mx-auto max-w-6xl">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="max-sm:w-full sm:flex-1">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Wicked Problems</h1>
       </div>
-    <% end %>
-  <% end %>
+    </div>
+    <ul class="mt-10">
+      <%= turbo_frame_tag :wicked_problems do %>
+        <%= render @wicked_problems %>
+      <% end %>
+      <%=
+        turbo_frame_tag :pagination,
+          loading: :lazy,
+          src: wicked_problems_path(format: :turbo_stream, page: @pagy.next)
+      %>
+    </ul>
   </div>
 </div>

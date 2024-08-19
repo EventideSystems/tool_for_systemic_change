@@ -1,0 +1,14 @@
+<%= turbo_stream.append :subsystem_tags do %>
+  <%= render @subsystem_tags %>
+<% end %>
+<%= turbo_stream.replace :pagination do %>
+  <% if @pagy.next.present? %>
+    <%=
+      turbo_frame_tag(
+        :pagination,
+        loading: :lazy,
+        src: subsystem_tags_path(format: :turbo_stream, page: @pagy.next)
+      )
+    %>
+  <% end %>
+<% end %>

@@ -50,6 +50,8 @@ gem "bootsnap", require: false
 gem 'view_component'
 gem 'shadcn-ui', '~> 0.0.13'
 
+gem 'fast_jsonparser'
+
 # Authentication and authorisation
 gem 'devise'
 gem 'devise_invitable'

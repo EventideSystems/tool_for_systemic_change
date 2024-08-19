@@ -1,0 +1,10 @@
+<%= turbo_stream.append :accounts do %>
+  <%= render @accounts %>
+<% end %>
+<%= turbo_stream.replace :pagination do %>
+  <% if @pagy.next.present? %>
+    <%= turbo_frame_tag :pagination,
+                loading: :lazy,
+        src: accounts_path(format: :turbo_stream, page: @pagy.next) %>
+  <% end %>
+<% end %>

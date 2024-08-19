@@ -6,7 +6,12 @@ class AccountsController < ApplicationController
   # add_breadcrumb 'Accounts', :accounts_path
 
   def index
-    @pagy, @accounts = pagy(policy_scope(Account).order('upper(trim(accounts.name)) asc'))
+    @pagy, @accounts = pagy_countless(policy_scope(Account).order('upper(trim(accounts.name)) asc'), items: 10)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

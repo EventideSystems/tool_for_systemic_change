@@ -1,0 +1,52 @@
+<li>
+  <hr
+    role="presentation"
+    class="w-full border-t border-zinc-950/10 dark:border-white/10"
+  />
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <div class="w-32 shrink-0">
+        <div class="mx-auto h-20 w-20 flex-shrink-0 rounded-lg bg-green-700 flex items-center justify-center">
+          <p class="text-4xl"><%= user.name.lstrip[0] %></p>
+        </div>
+      </div>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to user.name, edit_user_path(user) %>
+        </div>
+        <div class="text-xs/6 text-zinc-500">
+          <%= user.email %>
+        </div>
+        <div class="text-xs/6 text-zinc-600">
+          TBD
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <%= render_dropdown_menu do %>
+        <%= dropdown_menu_trigger do %>
+          <span class="text-zinc-900 dark:text-white">
+            <%= render_icon :more %>
+          </span>
+        <% end %>
+
+        <%= dropdown_menu_content do %>
+          <%=
+            dropdown_menu_item do
+              link_to "Modify", edit_user_path(user), class: "block w-full text-sm", data: { turbo: false }
+            end
+          %>
+
+          <%# TODO: Convert this to a general test for whether the current user can impersonate in general %>
+          <%- if policy(user).impersonate? %>
+            <%=
+              dropdown_menu_item do
+                button_to "Impersonate", impersonate_system_user_path(user), class: "block w-full text-sm", data: { turbo: false }
+              end
+            %>
+          <%- end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</li>

@@ -52,6 +52,11 @@ class ChecklistItem < ApplicationRecord
 
   attribute :humanized_status, :string
 
+  delegate :focus_area, to: :characteristic
+  delegate :focus_area_group, to: :focus_area
+
+  scope :grouped_by_focus_area, -> { group_by(&:focus_area_id) }
+
   def name
     characteristic&.name.presence
   end

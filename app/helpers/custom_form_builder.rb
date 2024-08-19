@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tailwind_merge'
+
 # Custom FormBuilder adding Tailwind classes to form fields.
 class CustomFormBuilder < ActionView::Helpers::FormBuilder
   BASE_COLOR_CLASSES = %w[
@@ -53,10 +55,12 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
-  def label(method, text = nil, options = {}, &block)
-    default_opts = { class: LABEL_CLASS }
+  def label(method, content_or_options = nil, options = {}, &block)
+    options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : options.delete(:class)
+    label_class = tailwind_merge(LABEL_CLASS, options_class)
+    default_opts = { class: label_class }
     merged_opts = default_opts.merge(options)
-    super(method, text, merged_opts, &block)
+    super(method, content_or_options , merged_opts, &block)
   end
 
   def select(method, choices = nil, options = {}, html_options = {}, &block)
@@ -73,6 +77,16 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
     default_opts = { class: SUBMIT_BUTTON_CLASS }
     merged_opts = default_opts.merge(options)
     super(value, merged_opts)
+  end
+
+  def text_area(method, options = {})
+    default_opts = { class: build_default_field_class(TEXT_AREA_CLASS, ERROR_BORDER_CLASS, method) }
+    merged_opts = default_opts.merge(options)
+
+    @template.content_tag(:div) do
+      @template.concat(super(method, merged_opts))
+      append_error_message(@object, method)
+    end
   end
 
   def text_field(method, options = {})
@@ -114,5 +128,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 
   def build_default_field_class(base_class, error_class, method)
     base_class + (@object.errors[method].any? ? " #{error_class}" : '')
+  end
+
+  def tailwind_merge(base_classes, override_classes)
+    TailwindMerge::Merger.new.merge([base_classes, override_classes])
   end
 end

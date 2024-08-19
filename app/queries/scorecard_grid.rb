@@ -75,6 +75,7 @@ class ScorecardGrid
             select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
+        order by initiative->>'name'
       SQL
     end
 
@@ -151,6 +152,7 @@ class ScorecardGrid
             select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
+        order by initiative->>'name'
       SQL
     end
 

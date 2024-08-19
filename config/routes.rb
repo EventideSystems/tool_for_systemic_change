@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :subsystem_tags
+
+  resources :scorecards
+
   namespace :initiatives do
     resources :imports, only: %i[new create update]
   end

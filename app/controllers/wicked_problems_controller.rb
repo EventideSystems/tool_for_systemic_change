@@ -6,8 +6,17 @@ class WickedProblemsController < ApplicationController
 
   # add_breadcrumb "Wicked Problems / Opportunities", :wicked_problems_path
 
+  sidebar_item :problems
+
   def index
-    @wicked_problems = policy_scope(WickedProblem).order(sort_order).page params[:page]
+    @pagy, @wicked_problems = pagy_countless(
+      policy_scope(WickedProblem).order('upper(trim(wicked_problems.name)) asc'), items: 10
+    )
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

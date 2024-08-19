@@ -30,19 +30,9 @@ class ApplicationController < ActionController::Base
   sidebar_item :home
 
   def current_account
-    @current_account ||=
-      begin
-        account_id = session[:account_id]
-        account = AccountPolicy::Scope.new(UserContext.new(current_user, nil), Account).scope.find(account_id)
-        if account.present?
-          account
-        else
-          # If the account is not found, set the first account as the current account
-          default_account = current_user&.default_account
-          session[:account_id] = default_account&.id
-          default_account
-        end
-      end
+    return nil if current_user.blank?
+
+    @current_account ||= fetch_account_from_session || fetch_default_account_and_set_session
   end
 
   def sidebar_disabled?
@@ -109,6 +99,21 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def fetch_account_from_session
+    return nil if session[:account_id].blank?
+
+    AccountPolicy::Scope
+      .new(UserContext.new(current_user, nil), Account)
+      .scope
+      .find_by(id: session[:account_id])
+  end
+
+  def fetch_default_account_and_set_session
+    default_account = current_user&.default_account
+    session[:account_id] = default_account&.id
+    default_account
+  end
 
   def prepare_exception_notifier
     request.env['exception_notifier.exception_data'] = { current_user: }

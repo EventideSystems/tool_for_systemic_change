@@ -4,23 +4,28 @@ class SubsystemTagsController < ApplicationController
 
   # add_breadcrumb "Subsystem Tags", :subsystem_tags_path
 
+  sidebar_item :subsystem_tags
+
   def index
     if params['q']
-      @subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
+      subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
     else
-      @subsystem_tags = policy_scope(SubsystemTag).page(params[:page])
+      subsystem_tags = policy_scope(SubsystemTag)
     end
 
     if params[:scorecard_id].present?
-      @subsystem_tags = @subsystem_tags
+      subsystem_tags = subsystem_tags
         .joins(:initiatives)
         .where('initiatives.archived_on is null or initiatives.archived_on > ?', Time.zone.now)
         .where('initiatives.scorecard_id' => params[:scorecard_id]).distinct
     end
 
+    @pagy, @subsystem_tags = pagy_countless(subsystem_tags, items: 10)
+
     respond_to do |format|
       format.html
-      format.json { render json: @subsystem_tags.map { |subsystem_tag| { id: subsystem_tag.id, text: subsystem_tag.text } } }
+      format.turbo_stream
+      format.json { render json: subsystem_tags.map { |subsystem_tag| { id: subsystem_tag.id, text: subsystem_tag.text } } }
     end
   end
 

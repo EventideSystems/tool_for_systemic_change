@@ -1,6 +1,19 @@
-<% content_for :page_actions do %>
-  <%= create_new_button(new_account_path) %>
-<% end %>
-
-
-<%= render partial: 'list', locals: { accounts: @accounts } %>
+<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+  <div class="mx-auto max-w-6xl">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="max-sm:w-full sm:flex-1">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Accounts</h1>
+      </div>
+    </div>
+    <ul class="mt-10">
+      <%= turbo_frame_tag :accounts do %>
+        <%= render @accounts %>
+      <% end %>
+      <%=
+        turbo_frame_tag :pagination,
+          loading: :lazy,
+          src: accounts_path(format: :turbo_stream, page: @pagy.next)
+      %>
+    </ul>
+  </div>
+</div>

@@ -13,6 +13,19 @@ class ScorecardsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
   skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
 
+  sidebar_item :impact_cards
+
+  def index
+    @pagy, @scorecards = pagy_countless(
+      policy_scope(Scorecard).order('upper(trim(scorecards.name)) asc'), items: 10
+    )
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
   def show
     @selected_date = params[:selected_date]
     @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
@@ -24,23 +37,23 @@ class ScorecardsController < ApplicationController
         SubsystemTag.where(account: current_account, name: params[:selected_tags])
       end
 
-    @focus_areas = FocusArea
-                   .includes(:characteristics)
-                   .joins(:focus_area_group)
-                   .where(focus_area_groups: { scorecard_type: @scorecard.type, account_id: @scorecard.account.id })
-                   .ordered_by_group_position
+    # @focus_areas = FocusArea
+    #                .includes(:characteristics)
+    #                .joins(:focus_area_group)
+    #                .where(focus_area_groups: { scorecard_type: @scorecard.type, account_id: @scorecard.account.id })
+    #                .ordered_by_group_position
 
-    @characteristics = Characteristic
-                       .includes(focus_area: :focus_area_group)
-                       .per_scorecard_type_for_account(@scorecard.type, @scorecard.account)
-                       .order('focus_areas.position, characteristics.position')
+    # @characteristics = Characteristic
+    #                    .includes(focus_area: :focus_area_group)
+    #                    .per_scorecard_type_for_account(@scorecard.type, @scorecard.account)
+    #                    .order('focus_areas.position, characteristics.position')
 
-    source_scorecard = @scorecard
-    target_scorecard = @scorecard.linked_scorecard
+    # source_scorecard = @scorecard
+    # target_scorecard = @scorecard.linked_scorecard
 
-    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
+    # @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
 
-    @results = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
+    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
     # add_breadcrumb(@scorecard.name)
 

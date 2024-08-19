@@ -9,19 +9,19 @@
         <li>
           <ul role="list" class="-mx-2 space-y-1">
             <%= render_sidebar_item title: 'Home', path: root_path, icon: :home, active_group: :home %>
-            <%= render_sidebar_item title: 'Impact Cards', path: transition_cards_path, icon: :impact_cards, active_group: :workspace %>
+            <%= render_sidebar_item title: 'Impact Cards', path: scorecards_path, icon: :impact_cards, active_group: :impact_cards %>
             <%= render_sidebar_item title: 'Initiatives', path: initiatives_path, icon: :initiatives, active_group: :initiatives %>
-            <%= render_sidebar_item title: 'Stakeholders', path: root_path, icon: :stakeholders, active_group: :tags %>
+            <%= render_sidebar_item title: 'Stakeholders', path: organisations_path, icon: :stakeholders, active_group: :stakeholders %>
             <%= render_sidebar_item title: 'Reports', path: root_path, icon: :reports, active_group: :reports %>
-            <%= render_sidebar_item title: 'Team', path: root_path, icon: :teams, active_group: :teams %>
+            <%= render_sidebar_item title: 'Team', path: users_path, icon: :teams, active_group: :teams %>
           </ul>
         </li>
         <li>
           <div class="text-xs font-semibold leading-6 text-gray-400">Your tags</div>
           <ul role="list" class="-mx-2 mt-2 space-y-1">
             <%= render_sidebar_item title: 'Communities', path: communities_path, icon: :tags, active_group: :communities %>
-            <%= render_sidebar_item title: 'Problems', path: wicked_problems_path, icon: :tags, active_group: :communities %>
-            <%= render_sidebar_item title: 'Subsystems', path: subsystem_tags_path, icon: :tags, active_group: :communities %>
+            <%= render_sidebar_item title: 'Problems', path: wicked_problems_path, icon: :tags, active_group: :problems %>
+            <%= render_sidebar_item title: 'Subsystems', path: subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
           </ul>
         </li>
         <li class="mt-auto">
@@ -35,7 +35,6 @@
             <% end %>
 
             <%= dropdown_menu_content do %>
-
              <%=
                 dropdown_menu_item do
                   link_to "#{current_account.name} &checkmark;".html_safe, current_account, class: "block w-full text-sm"

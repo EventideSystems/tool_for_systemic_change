@@ -1,66 +1,19 @@
-<% content_for :page_actions do %>
-  <%=
-    link_to(new_user_invitation_path, class: 'btn btn-primary' ) do
-      safe_join([content_tag(:i, '', class: "fa fa-plus"), ' Invite User'])
-    end
-  %>
-<% end %>
-
-<div class="box box-solid">
-  <div class='box-body no-padding'>
-  <%= table_for @users, table_html: { class: "table table-striped table-base" },
-                        sortable: true,
-                        data_row_html: {
-                          id: lambda { |user| "user-#{user.id}" },
-                          class: 'table-actions'
-                        } do |table| %>
-    <% table.column :name, link: true %>
-    <% table.column :email %>
-    <% table.column :account_role, data: lambda { user_role_in_current_account(table.current_row) }, sortable: false %>
-    <% table.column :status, sortable: false %>
-    <% table.column :created_at %>
-    <% table.column data: lambda {
-          case table.current_row.status
-          when 'deleted'
-            'Undelete'
-          when 'invitation-pending'
-            'Resend Invitation'
-          else
-            '-'
-          end
-        },
-        link_url: lambda { |user|
-          case user.status
-          when 'deleted'
-            undelete_system_user_path(user)
-          when 'invitation-pending'
-            resend_invitation_system_user_path(user)
-          else
-            nil
-          end
-        }
-    %>
-    <% table.column data: "Modify", link_action: :edit %>
-    <% table.column data: lambda { (table.current_row == current_user) ? '-' : 'Remove' },
-      link_url: lambda { (table.current_row == current_user) ? nil : remove_from_account_user_path(table.current_row) },
-      link_confirm: "Are you sure?"
-    %>
-
-    <%# TODO: Convert this to a general test for whether the current user can impersonate in general %>
-    <%- if current_user.admin? %>
-      <%
-        table.column \
-          data: lambda { |user| user.id == current_user.id ? '' : 'Impersonate' },
-          link_url: lambda { |user| impersonate_system_user_path(user) if policy(user).impersonate? },
-          link_method: :post
-      %>
-    <%- end %>
-
-    <% table.footer do %>
-      <div class="float-right">
-        <%= paginate @users %>
+<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+  <div class="mx-auto max-w-6xl">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div class="max-sm:w-full sm:flex-1">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Team</h1>
       </div>
-    <% end %>
-  <% end %>
+    </div>
+    <ul class="mt-10">
+      <%= turbo_frame_tag :users do %>
+        <%= render @users %>
+      <% end %>
+      <%=
+        turbo_frame_tag :pagination,
+          loading: :lazy,
+          src: users_path(format: :turbo_stream, page: @pagy.next)
+      %>
+    </ul>
   </div>
 </div>

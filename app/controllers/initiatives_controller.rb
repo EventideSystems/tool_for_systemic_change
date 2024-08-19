@@ -15,8 +15,13 @@ class InitiativesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @pagy, @initiatives = pagy(base_scope)
+        @pagy, @initiatives = pagy_countless(base_scope, items: 10)
       end
+
+      format.turbo_stream do
+        @pagy, @initiatives = pagy_countless(base_scope, items: 10)
+      end
+
       format.csv do
         @initiatives = base_scope.all
         send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")

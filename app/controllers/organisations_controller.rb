@@ -8,11 +8,18 @@ class OrganisationsController < ApplicationController
 
   respond_to :js, :html
 
+  sidebar_item :stakeholders
+
   def index
     respond_to do |format|
       format.html do
-        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).page params[:page]
+        @pagy, @organisations = pagy_countless(policy_scope(Organisation).includes(:stakeholder_type).order(sort_order))
       end
+
+      format.turbo_stream do
+        @pagy, @organisations = pagy_countless(policy_scope(Organisation).includes(:stakeholder_type).order(sort_order))
+      end
+
       format.csv do
         @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
         send_data organisations_to_csv(@organisations, params[:include_stakeholder_list]), :type => Mime[:csv], :filename =>"#{export_filename}.csv"

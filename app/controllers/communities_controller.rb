@@ -7,7 +7,12 @@ class CommunitiesController < ApplicationController
   sidebar_item :communities
 
   def index
-    @pagy, @communities = pagy(policy_scope(Community).order(sort_order))
+    @pagy, @communities = pagy_countless(policy_scope(Community).order('upper(trim(communities.name)) asc'), items: 10)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

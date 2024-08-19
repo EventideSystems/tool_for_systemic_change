@@ -7,8 +7,15 @@ class UsersController < ApplicationController
 
   # add_breadcrumb 'Users', :users_path
 
+  sidebar_item :teams
+
   def index
-    @users = policy_scope(User).order(sort_order).page params[:page]
+    @pagy, @users = pagy_countless(policy_scope(User).order(sort_order))
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

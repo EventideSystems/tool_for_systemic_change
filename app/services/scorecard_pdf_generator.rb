@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'prawn/scorecards_helper'
+# require 'prawn/scorecards_helper'
 
 # rubocop:disable Metrics/ClassLength
 class ScorecardPdfGenerator

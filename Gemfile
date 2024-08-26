@@ -84,9 +84,8 @@ gem 'memory_profiler'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
-group :production, :staging do
-  gem 'exception_notification'
-end
+# Monitoring relatedexception_notification
+gem 'appsignal'
 
 group :test do
   # database_cleaner is not required, but highly recommended

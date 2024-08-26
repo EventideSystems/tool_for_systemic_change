@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module EcosystemMaps
+  # This class is responsible for generating the data required to render the Thematic Network Map
+  # for a given SDGs Card.
+  #
+  # It's all a bit of a mess at present, as the TargetsNetworkMapping only points to the original shared SDGs Card
+  # model (i.e. focus area groups, areas and characteristics) and not the ones that are now duplicated across accounts.
+  #
+  # For now we'll use the original shared SDGs Card model to get the data we need and map it to the account's
+  # duplicated models. NB This requires that the account's duplicated models are in sync with the original shared
+  # SDGs Card model. If the names are ever changed, this will break.
   class TargetsNetwork
     attr_reader :transition_card, :targets_network_mappings
 
@@ -9,11 +18,14 @@ module EcosystemMaps
     end
 
     def links
-      TargetsNetworkMapping.all.map do |mapping|
+      targets_network_mapping.map do |mapping|
+        target = account_characteristics.find { |characteristic| characteristic.name == mapping.characteristic.name }
+        source = account_focus_areas.find { |focus_area| focus_area.name == mapping.focus_area.name }
+
         {
           id: mapping.id,
-          target: "characteristic-#{mapping.characteristic_id}",
-          source: "focus-area-#{mapping.focus_area_id}"
+          target: "characteristic-#{target.id}",
+          source: "focus-area-#{source.id}"
         }
       end
     end
@@ -25,49 +37,85 @@ module EcosystemMaps
 
     private
 
-    def focus_area_nodes
-      FocusArea.where(id: TargetsNetworkMapping.pluck(:focus_area_id).uniq).map do |node|
-        mappings = organisations_and_intitiatives.select do |mapping|
-          mapping[:focus_area_id] == node.id
-        end
+    def account_focus_areas
+      @account_focus_areas ||=
+        transition_card
+        .account
+        .focus_area_groups
+        .includes(focus_areas: :characteristics)
+        .where(scorecard_type: 'SustainableDevelopmentGoalAlignmentCard')
+        .flat_map(&:focus_areas)
+    end
 
-        organisation_ids = mappings.map { |hash| hash[:organisation_id] }.flatten.compact.uniq.map(&:to_s)
-        initiative_ids = mappings.map { |hash| hash[:initiative_id] }.flatten.compact.uniq.map(&:to_s)
+    def account_characteristics
+      @account_characteristics ||= account_focus_areas.flat_map(&:characteristics)
+    end
+
+    def characteristics
+      @characteristics ||=
+        targets_network_mapping.map(&:characteristic).map do |characteristic|
+          account_characteristics.find do |account_characteristic|
+            account_characteristic.name == characteristic.name
+          end
+        end.uniq.compact
+    end
+
+    def focus_areas
+      @focus_areas ||=
+        targets_network_mapping.map(&:focus_area).map do |focus_area|
+          account_focus_areas.find { |account_focus_area| account_focus_area.name == focus_area.name }
+        end.uniq.compact
+    end
+
+    def focus_area_nodes
+      focus_areas.map do |node|
+        mappings =
+          organisations_and_intitiatives.select do |mapping|
+            mapping[:focus_area_id] == node.id
+          end
+
+        organisation_ids = mappings.map { |hash| hash[:organisation_id] }
+                                   .flatten.compact.uniq.map(&:to_s)
+        initiative_ids = mappings.map { |hash| hash[:initiative_id] }
+                                 .flatten.compact.uniq.map(&:to_s)
 
         {
           id: "focus-area-#{node.id}",
           label: node.short_name,
           color: node.actual_color,
-          organisation_ids: organisation_ids,
-          initiative_ids: initiative_ids,
+          organisation_ids:,
+          initiative_ids:,
           size: 13
         }
       end
     end
 
     def characteristic_nodes
-      Characteristic.where(id: TargetsNetworkMapping.pluck(:characteristic_id).uniq).map do |node|
-        mappings = organisations_and_intitiatives.select do |mapping|
-          mapping[:characteristic_id] == node.id
-        end
+      characteristics.map do |node|
+        mappings =
+          organisations_and_intitiatives.select do |mapping|
+            mapping[:characteristic_id] == node.id
+          end
 
-        organisation_ids = mappings.map { |hash| hash[:organisation_id] }.flatten.compact.uniq.map(&:to_s)
-        initiative_ids = mappings.map { |hash| hash[:initiative_id] }.flatten.compact.uniq.map(&:to_s)
+        organisation_ids = mappings.map { |hash| hash[:organisation_id] }
+                                   .flatten.compact.uniq.map(&:to_s)
+        initiative_ids = mappings.map { |hash| hash[:initiative_id] }
+                                 .flatten.compact.uniq.map(&:to_s)
 
         {
           id: "characteristic-#{node.id}",
           label: node.short_name,
           color: node.focus_area.actual_color,
           characteristic_id: node.id,
-          organisation_ids: organisation_ids,
-          initiative_ids: initiative_ids,
+          organisation_ids:,
+          initiative_ids:,
           size: 6
         }
       end
     end
 
     def organisations_and_intitiatives
-      @organisations_and_intitiatives ||= \
+      @organisations_and_intitiatives ||=
         ActiveRecord::Base.connection.execute(organisations_and_inititiatives_sql).map do |row|
           row.symbolize_keys.transform_values { |v| v.is_a?(String) ? v.gsub(/{|}|NULL/, '').split(',').compact : v }
         end
@@ -100,6 +148,10 @@ module EcosystemMaps
         where status = 'actual'
         group by characteristic_id, focus_area_id
       SQL
+    end
+
+    def targets_network_mapping
+      @targets_network_mapping ||= TargetsNetworkMapping.includes(:focus_area, :characteristic).all
     end
   end
 end

@@ -233,9 +233,12 @@ class InitiativesController < ApplicationController
       end
 
       # Remove duplicates
-      params[:initiatives_organisations_attributes] = ActionController::Parameters.new(
-        params[:initiatives_organisations_attributes].to_h.invert.invert
-      ).permit!
+      if params[:initiatives_organisations_attributes]
+        params[:initiatives_organisations_attributes] =
+          params[:initiatives_organisations_attributes].values.uniq do |attr|
+            attr[:organisation_id]
+          end
+      end
 
       # Remove subsystem tags that are already assigned
       params[:initiatives_subsystem_tags_attributes].reject! do |_key, value|
@@ -246,9 +249,12 @@ class InitiativesController < ApplicationController
       end
 
       # Remove duplicates
-      params[:initiatives_subsystem_tags_attributes] = ActionController::Parameters.new(
-        params[:initiatives_subsystem_tags_attributes].to_h.invert.invert
-      ).permit!
+      if params[:initiatives_subsystem_tags_attributes]
+        params[:initiatives_subsystem_tags_attributes] =
+          params[:initiatives_subsystem_tags_attributes].values.uniq do |attr|
+            attr[:subsystem_tag_id]
+          end
+      end
     end
   end
 end

@@ -23,6 +23,7 @@
 
 /public/packs
 /public/packs-test
+/public/assets
 
 # Ignore credentials
 /config/credentials/development.key
@@ -33,6 +34,14 @@ local_secret.txt
 
 /config/master.key
 db/seeds.db
+
+# Ignore node_modules
+node_modules/
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+/public/uploads
 
 # Other cruft
 .vscode/

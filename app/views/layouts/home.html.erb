@@ -1,39 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-gray-900">
   <head>
-    <title><%= application_title%></title>
+    <title>Tool for Systemic Change</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <%= render partial: '/layouts/shared/favicons' %>
-    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
   </head>
-  <body class="skin-blue sidebar-mini layout-top-nav">
-    <div class="wrapper">
-      <header class="main-header">
-        <nav class="navbar navbar-static-top" role="navigation">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <!-- Your other navbar content here -->
-            </div>
-            <div class="navbar-right">
-              <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary btn-lg" %>
-            </div>
-          </div>
-        </nav>
-      </header>
-      <div class="content-wrapper">
-        <section class="content">
-            <div class="home">
-              <%= render partial: 'layouts/shared/flash' %>
-              <%= yield %>
-            </div>
-        </section>
-      </div>
-      <%= render 'layouts/shared/footer' %>
-    </div>
+
+  <body class="h-full">
+    <%= render 'layouts/shared/flash_messages' %>
+    <%= yield %>
   </body>
 </html>

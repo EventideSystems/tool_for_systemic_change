@@ -43,7 +43,7 @@ SDG logos, and the Sustainable Development Goals model, are the property of the 
 ### System Components
 
 ```
-                   HEROKU                              AWS LAMBDA                    SCOUT           MANDRILL
+                   HEROKU                              AWS LAMBDA                    APPSIGNAL       MANDRILL
 
 
  ┌────────────────────┐     ┌─────────────┐      ┌────────────────────────┐
@@ -69,8 +69,8 @@ SDG logos, and the Sustainable Development Goals model, are the property of the 
 | --------------- | --------------- |
 | Heroku | Hosting platform for the application, background process worker and database |
 | AWS Lambda | Serverless computing platform, executing smaller tasks (e.g. calculating metrics)  |
-| Scout | Monitoring and alerting platform |
-| Mandrill | Email service provider |
+| [AppSignal](https://www.appsignal.com/) | Monitoring and alerting platform |
+| Mailjet | Email service provider |
 
 #### System Component Details
 
@@ -99,14 +99,14 @@ System configuration items are stored on the Heroku platform within environment 
 | MANDRILL_USERNAME | Mandrill username used to send emails |
 | RAILS_ENV | Environment used to determine whether the system is running in the `staging` or `production` environment |
 | RAILS_MASTER_KEY | Secret key used to encrypt and decrypt data |
-| SCOUT_KEY | Scout key used to authenticate with the Scout monitoring service |
-| SCOUT_LOG_LEVEL | Log level used to determine the level of logging used by the Scout monitoring service |
+| APPSIGNAL_APP_NAME | Name of application within the AppSignal monitoring service |
+| APPSIGNAL_PUSH_API_KEY | Key used to authenticate with the AppSignal monitoring service |
 
 ### Deploying to the Application Server
 
-Code is deployed to either environment using the `heroku` CLI. Code is managed within Github, with the `staging` and `master` branches targetting the `staging` and `production` environments respectively.
+Code is deployed to either environment using the `heroku` CLI. Code is managed within Github, with the `staging` and `master` branches targeting the `staging` and `production` environments respectively.
 
-Convience tasks are provided to simplify the deployment process. Use the follow ing commands to deploy the system to the `staging` environment:
+Convenience tasks are provided to simplify the deployment process. Use the following commands to deploy the system to the `staging` environment:
 
 ```
 bundle exec rails deploy:staging

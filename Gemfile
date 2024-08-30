@@ -66,7 +66,6 @@ gem 'rubyzip', '>= 1.3.0'
 gem 'scenic'
 
 gem 'marcel'
-gem 'scout_apm'
 gem 'shrine', '>= 3.3.0'
 
 gem 'aws-sdk-lambda'

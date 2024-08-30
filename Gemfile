@@ -80,7 +80,9 @@ gem 'pagy'
 gem 'paper_trail'
 gem 'paranoia', '~> 2.2'
 
-# Monitoring relatedexception_notification
+gem 'net-http'
+
+# Monitoring related
 gem 'appsignal'
 
 group :development, :test do

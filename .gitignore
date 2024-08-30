@@ -21,6 +21,9 @@
 !/private/.keep
 
 
+/app/assets/build/
+/app/assets/builds/*
+
 /public/packs
 /public/packs-test
 /public/assets

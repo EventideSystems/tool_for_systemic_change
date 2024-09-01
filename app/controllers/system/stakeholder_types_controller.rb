@@ -1,5 +1,7 @@
 module System
   class StakeholderTypesController < ApplicationController
+    include VerifyPolicies
+
     before_action :set_stakeholder_type, only: [:show, :edit, :update, :destroy]
 
     skip_after_action :verify_policy_scoped, only: [:index]

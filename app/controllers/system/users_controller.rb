@@ -3,6 +3,7 @@
 module System
   class UsersController < ApplicationController
     include SharedUserActions
+    include VerifyPolicies
 
     before_action :authenticate_user!
     before_action :set_user, only: %i[show edit update destroy undelete resend_invitation]

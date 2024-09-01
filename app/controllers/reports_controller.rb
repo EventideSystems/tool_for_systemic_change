@@ -2,8 +2,6 @@
 
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
-  skip_after_action :verify_policy_scoped
-  # skip_after_action :verify_authorized
 
   # add_breadcrumb 'Reports', :reports_path
 

@@ -3,7 +3,7 @@
 # Ensure Pundit policies and scopes are used and verified
 # NB - this is a controller concern, so it should be included in the ApplicationController, but with
 # changes Rails defaults it will trigger errors when controllers have no index (e.g. Devise controllers)
-module VerifyPundit
+module VerifyPolicies
   extend ActiveSupport::Concern
 
   def index; end

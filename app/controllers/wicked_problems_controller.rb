@@ -1,5 +1,5 @@
 class WickedProblemsController < ApplicationController
-  before_action :authenticate_user!
+  include VerifyPolicies
 
   before_action :set_wicked_problem, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]

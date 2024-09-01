@@ -28,8 +28,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, skip: [:registrations], controllers: {
-    invitations: 'invitations',
-    sessions: 'users/sessions'
+    invitations: 'invitations'
    }
 
   resources :accounts do

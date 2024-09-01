@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ChecklistItemsController < ApplicationController
+  include VerifyPolicies
 
   def show
     @checklist_item = ChecklistItem.find(params[:id])

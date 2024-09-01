@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
-    <title>Tool for Systemic Change</title>
+    <title><%= application_title%></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="utf-8">
     <%= csrf_meta_tags %>
@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= render partial: '/layouts/shared/favicons' %>
   </head>
   <body>
     <%= render 'layouts/shared/flash_messages' %>

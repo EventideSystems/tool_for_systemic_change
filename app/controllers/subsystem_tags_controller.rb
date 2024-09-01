@@ -1,4 +1,6 @@
 class SubsystemTagsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_subsystem_tag, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
 

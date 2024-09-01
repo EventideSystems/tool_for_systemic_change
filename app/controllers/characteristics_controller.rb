@@ -1,4 +1,6 @@
 class CharacteristicsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_characteristic, only: [:show, :edit, :update, :destroy, :description]
   before_action :set_focus_areas, only: [:new, :edit]
 

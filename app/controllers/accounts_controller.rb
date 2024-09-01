@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AccountsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_account, only: %i[show edit update destroy switch]
 
   # add_breadcrumb 'Accounts', :accounts_path

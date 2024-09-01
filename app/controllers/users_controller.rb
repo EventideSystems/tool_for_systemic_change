@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  include VerifyPolicies
+
   before_action :authenticate_user!
   before_action :set_user, only: %i[show edit update remove_from_account]
   before_action :set_account_role, only: %i[show edit]

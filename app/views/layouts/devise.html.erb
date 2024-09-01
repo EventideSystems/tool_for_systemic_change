@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
     <title><%= application_title%></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
     <%= render partial: '/layouts/shared/favicons' %>
-    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
   </head>
   <body class="hold-transition login-page">
-    <div class="wrapper">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      <%= yield %>
+    <%= render 'layouts/shared/flash_messages' %>
+    <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+      <div class="lg:pl-48">
+        <main class="py-2">
+          <div class="px-2">
+             <%= yield %>
+          </div>
+        </main>
+      </div>
     </div>
   </body>
 </html>

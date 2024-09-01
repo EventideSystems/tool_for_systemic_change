@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ActivitiesController < ApplicationController
+  include VerifyPolicies
+
   before_action :authenticate_user!
 
   # add_breadcrumb 'Activities', :activities_path

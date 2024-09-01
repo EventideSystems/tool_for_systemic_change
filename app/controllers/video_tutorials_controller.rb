@@ -1,4 +1,6 @@
 class VideoTutorialsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_video_tutorial, only: [:show, :edit, :update, :destroy]
 
   def index

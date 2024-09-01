@@ -1,6 +1,8 @@
 require 'csv'
 
 class OrganisationsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
 

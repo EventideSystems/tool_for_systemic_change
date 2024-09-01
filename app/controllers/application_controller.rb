@@ -12,9 +12,6 @@ class ApplicationController < ActionController::Base
   before_action :enable_profiler
   before_action :prepare_exception_notifier
 
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
-
   # protect_from_forgery with: :exception
   protect_from_forgery prepend: true
 

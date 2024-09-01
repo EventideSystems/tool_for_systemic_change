@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/ClassLength
 class InitiativesController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]

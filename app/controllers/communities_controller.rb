@@ -1,4 +1,6 @@
 class CommunitiesController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_community, only: %i[show edit update destroy]
   before_action :require_account_selected, only: %i[new create edit update]
 

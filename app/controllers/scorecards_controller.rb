@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/ClassLength
 class ScorecardsController < ApplicationController
+  include VerifyPolicies
+
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
   before_action :set_scorecard, except: %i[index new create ecosystem_maps_organisations]

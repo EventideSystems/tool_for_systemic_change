@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FocusAreasController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_focus_area, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: %i[new edit]
 

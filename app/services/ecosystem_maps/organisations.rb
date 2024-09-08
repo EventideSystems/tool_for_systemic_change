@@ -1,7 +1,103 @@
 # frozen_string_literal: true
 
+require 'rgl/adjacency'
+require 'rgl/traversal'
+require 'rgl/dijkstra'
+require 'rgl/connected_components'
+
 module EcosystemMaps
   class Organisations
+
+    class Graph
+      def initialize
+        @graph = RGL::DirectedAdjacencyGraph.new
+      end
+
+      def add_edge(source, target)
+        @graph.add_edge(source, target)
+      end
+
+      def betweenness_centrality
+        nodes = @graph.vertices
+        centrality = Hash.new(0)
+
+        nodes.each do |s|
+          stack = []
+          paths = {}
+          sigma = Hash.new(0)
+          delta = Hash.new(0)
+          distance = Hash.new(-1)
+
+          sigma[s] = 1
+          distance[s] = 0
+          queue = [s]
+
+          while queue.any?
+            v = queue.shift
+            stack.push(v)
+            @graph.adjacent_vertices(v).each do |w|
+              if distance[w] < 0
+                queue.push(w)
+                distance[w] = distance[v] + 1
+              end
+              if distance[w] == distance[v] + 1
+                sigma[w] += sigma[v]
+                paths[w] ||= []
+                paths[w] << v
+              end
+            end
+          end
+
+          while stack.any?
+            w = stack.pop
+            if paths[w]
+              paths[w].each do |v|
+                delta[v] += (sigma[v].to_f / sigma[w]) * (1 + delta[w])
+              end
+            end
+            centrality[w] += delta[w] if w != s
+          end
+        end
+
+        debugger
+        rescale(centrality, @graph.num_vertices, true, directed: !@graph.directed?)
+      end
+
+      def rescale(betweenness, n, normalized, directed: false, k: nil, endpoints: false)
+        scale = nil
+
+        if normalized
+          if endpoints
+            if n < 2
+              scale = nil  # no normalization
+            else
+              # Scale factor should include endpoint nodes
+              scale = 1.0 / (n * (n - 1))
+            end
+          elsif n <= 2
+            scale = nil  # no normalization b=0 for all nodes
+          else
+            scale = 1.0 / ((n - 1) * (n - 2))
+          end
+        else  # rescale by 2 for undirected graphs
+          if !directed
+            scale = 0.5
+          else
+            scale = nil
+          end
+        end
+
+        if scale
+          scale *= n / k if k
+          betweenness.each do |v, value|
+            betweenness[v] *= scale
+          end
+        end
+
+        betweenness
+      end
+    end
+
     attr_reader :transition_card, :unique_organisations
 
     STRENGTH_BUCKET_SIZE = 4
@@ -55,11 +151,35 @@ module EcosystemMaps
       # SMELL: This is a temporary fix. Large datasets are taking too long to return and timing out.
       data = JSON.parse(payload['body'].presence || '{}')
 
+      graph = Graph.new
+      links.each do |(target, source)|
+        graph.add_edge(target, source)
+      end
+      graph.betweenness_centrality
+
+      debugger
+
       data.transform_keys(&:to_i)
     rescue Exception => e
       raise(payload.inspect)
       {}
     end
+
+
+    # Example usage
+    # graph = Graph.new
+    # graph.add_edge('A', 'B')
+    # graph.add_edge('B', 'C')
+    # graph.add_edge('C', 'D')
+    # graph.add_edge('D', 'E')
+    # graph.add_edge('E', 'A')
+    # graph.add_edge('A', 'C')
+    # graph.add_edge('B', 'D')
+
+    # centrality = graph.betweenness_centrality
+    # centrality.each do |node, value|
+    #   puts "Node #{node}: Betweenness Centrality = #{value}"
+    # end
 
     def build_links
       grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)

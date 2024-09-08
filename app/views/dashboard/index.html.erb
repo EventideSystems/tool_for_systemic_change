@@ -1,69 +1,66 @@
-<div class="row dashboard">
-  <div class="col-lg-3 col-xs-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 dashboard">
+  <div class="col-span-1">
     <!-- small box -->
-    <div class="small-box bg-color-5">
+    <div class="bg-teal-500 p-4 rounded-lg shadow-lg">
       <div class="inner">
-        <h3><%= @scorecard_count %></h3>
-        <p><%= dashboard_scorecards_title.pluralize(@scorecard_count) %></p>
+        <h3 class="text-3xl font-bold"><%= @scorecard_count %></h3>
+        <p class="text-lg"><%= dashboard_scorecards_title.pluralize(@scorecard_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-check-square-o"></i>
+        <i class="fa fa-check-square-o text-white text-4xl"></i>
       </div>
-      <%= link_to(default_scorecards_path, {class: 'small-box-footer'}) do
+      <%= link_to(default_scorecards_path, {class: 'block mt-4 text-white font-bold'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>
     </div>
   </div>
   <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
+  <div class="col-span-1">
     <!-- small box -->
-    <div class="small-box bg-color-6">
+    <div class="bg-green-500 p-4 rounded-lg shadow-lg">
       <div class="inner">
-        <h3><%= @initiative_count %></h3>
-
-        <p><%= 'Initiative'.pluralize(@initiative_count) %></p>
+        <h3 class="text-3xl font-bold"><%= @initiative_count %></h3>
+        <p class="text-lg"><%= 'Initiative'.pluralize(@initiative_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-lightbulb-o"></i>
+        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
       </div>
-      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
+      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>
     </div>
   </div>
   <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
+  <div class="col-span-1">
     <!-- small box -->
-    <div class="small-box bg-color-7">
+    <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
       <div class="inner">
-        <h3><%= @wicked_problem_count %></h3>
-
-        <p><%= 'Wicked Problem'.pluralize(@wicked_problem_count) %>/<%= 'Opportunity'.pluralize(@wicked_problem_count) %></p>
+        <h3 class="text-3xl font-bold"><%= @wicked_problem_count %></h3>
+        <p class="text-lg"><%= 'Problem'.pluralize(@wicked_problem_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-cubes"></i>
+        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
       </div>
-      <%= link_to(wicked_problems_path, {class: 'small-box-footer'}) do
+      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>
     </div>
   </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
-    <!-- small box -->
-    <div class="small-box bg-color-8">
-      <div class="inner">
-        <h3><%= @organisation_count %></h3>
 
-        <p><%= 'Organisation'.pluralize(@organisation_count) %></p>
+  <div class="col-span-1">
+    <!-- small box -->
+    <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
+      <div class="inner">
+        <h3 class="text-3xl font-bold"><%= @organisation_count %></h3>
+        <p class="text-lg"><%= 'Stakeholder'.pluralize(@organisation_count) %></p>
       </div>
       <div class="icon">
-        <i class="fa fa-sitemap"></i>
+        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
       </div>
-      <%= link_to(organisations_path, {class: 'small-box-footer'}) do
+      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
             safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
           end
       %>
@@ -72,7 +69,8 @@
   <!-- ./col -->
 </div>
 
-<div class="row dashboard">
+<div class="grid grid-cols-1 gap-6 dashboard">
   <%= render 'dashboard/welcome_message'%>
   <%= render 'dashboard/activities'%>
 </div>
+

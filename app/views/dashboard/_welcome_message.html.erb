@@ -1,15 +1,15 @@
-<div class="col-md-6">
-  <div class="card">
-    <div class="card-header with-border">
-      <h3 class="card-title">Hello</h3>
+<div class="w-full md:w-1/2 p-4">
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="border-b px-4 py-2">
+      <h3 class="text-lg font-semibold">Hello</h3>
     </div>
-    <div class="card-body scrollable-panel">
+    <div class="p-4 max-h-64 overflow-y-auto">
       <%= sanitize @welcome_message %>
     </div>
-    <div class="card-footer text-right">
-      <%= link_to(welcome_message_path, class: 'remote-link') do
+    <div class="border-t px-4 py-2 text-right">
+      <%= link_to(welcome_message_path, class: 'text-blue-500 hover:text-blue-700 font-semibold') do
         safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-      end %>        
+      end %>
     </div>
   </div>
 </div>

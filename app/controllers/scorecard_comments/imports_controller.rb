@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScorecardComments::ImportsController < ApplicationController
   def new
     @scorecard_comments_import = current_account.scorecard_comments_imports.build

@@ -254,6 +254,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (9.0.8)
+    pairing_heap (3.1.0)
     paper_trail (15.2.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -332,11 +333,6 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rest-client (2.1.0)
-      http-accept (>= 1.7.0, < 2.0)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
     rexml (3.3.7)
     rgl (0.6.6)
       pairing_heap (>= 0.3, < 4.0)
@@ -456,6 +452,7 @@ DEPENDENCIES
   jbuilder
   mailjet
   marcel
+  net-http
   pagy
   paper_trail
   paranoia (~> 2.2)

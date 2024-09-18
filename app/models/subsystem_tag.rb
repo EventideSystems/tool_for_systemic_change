@@ -27,4 +27,13 @@ class SubsystemTag < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :account_id }
 
   alias_attribute :text, :name
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name description] + _ransackers.keys
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
 end

@@ -1,19 +1,35 @@
-<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
-  <div class="mx-auto max-w-6xl">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div class="max-sm:w-full sm:flex-1">
-        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Subsystem Tags</h1>
+<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10" data-controller="split tags">
+
+  <div class="flex" data-split-target="split">
+    <!-- List Container -->
+    <div class="w-2/3 p-4 overflow-auto max-h-screen scrollbar-red">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <h1 class="sr-only">Subsystem Tags</h1>
+        <!-- Filter Control -->
+        <div class="w-full sm:w-auto sticky top-0 bg-white z-10">
+          <%= search_form_for @q, data: { turbo_frame: :results } do |f| %>
+            <%= f.search_field :name_or_description_cont, placeholder: 'Filter', class: "form-input w-full sm:w-auto mr-2 text-sm", oninput: 'this.form.requestSubmit()', autofocus: true, autocomplete: 'off' %>
+            <%= link_to 'Clear', subsystem_tags_path, class: "btn btn-secondary text-sm" %>
+          <% end %>
+        </div>
       </div>
+      <ul class="mt-10 text-left">
+        <%= turbo_frame_tag :results, data: { turbo_action: 'advance' } do %>
+          <div id="subsystem_tags"></div>
+          <%=
+            turbo_frame_tag :pagination,
+              loading: :lazy,
+              src: subsystem_tags_path(format: :turbo_stream, page: @pagy.next, q: params[:q]&.to_unsafe_h)
+          %>
+        <% end %>
+      </ul>
     </div>
-    <ul class="mt-10">
-      <%= turbo_frame_tag :subsystem_tags do %>
-        <%= render @subsystem_tags %>
+
+    <!-- Edit Form Container -->
+    <div class="w-1/3 p-4 overflow-auto max-h-screen" id="edit-form-container">
+      <%= turbo_frame_tag :edit_form, data: { tags_target: "editForm" } do %>
+        <%= render partial: 'form', locals: { record: @subsystem_tag } if @subsystem_tag.present? %>
       <% end %>
-      <%=
-        turbo_frame_tag :pagination,
-          loading: :lazy,
-          src: subsystem_tags_path(format: :turbo_stream, page: @pagy.next)
-      %>
-    </ul>
+    </div>
   </div>
 </div>

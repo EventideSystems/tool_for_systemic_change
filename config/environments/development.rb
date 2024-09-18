@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Required by Devise
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+
+  config.raise_errors_for_deprecations = true
 end

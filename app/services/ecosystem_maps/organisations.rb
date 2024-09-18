@@ -58,8 +58,6 @@ module EcosystemMaps
             centrality[w] += delta[w] if w != s
           end
         end
-
-        debugger
         rescale(centrality, @graph.num_vertices, true, directed: !@graph.directed?)
       end
 
@@ -156,8 +154,6 @@ module EcosystemMaps
         graph.add_edge(target, source)
       end
       graph.betweenness_centrality
-
-      debugger
 
       data.transform_keys(&:to_i)
     rescue Exception => e

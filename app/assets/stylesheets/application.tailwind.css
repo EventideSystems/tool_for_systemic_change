@@ -1,5 +1,6 @@
 @import "shadcn.css";
 @import "pagy.tailwind.css";
+@import "split.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -18,9 +18,6 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    // debugger
-    // event.preventDefault()
-
     this.toggleTarget.innerHTML = this.toggleTarget.innerHTML === 'Dark mode' ? 'Dark mode &checkmark;' : 'Dark mode';
 
     if (this.toggleTarget.innerHTML === 'Dark mode') {

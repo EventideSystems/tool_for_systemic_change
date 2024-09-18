@@ -9,26 +9,20 @@ class SubsystemTagsController < ApplicationController
   sidebar_item :subsystem_tags
 
   def index
-    if params['q']
-      subsystem_tags = policy_scope(SubsystemTag).where("name ilike :q", q: '%' + params['q'] + '%')
-    else
-      subsystem_tags = policy_scope(SubsystemTag)
-    end
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
-    if params[:scorecard_id].present?
-      subsystem_tags = subsystem_tags
-        .joins(:initiatives)
-        .where('initiatives.archived_on is null or initiatives.archived_on > ?', Time.zone.now)
-        .where('initiatives.scorecard_id' => params[:scorecard_id]).distinct
-    end
+    @q = policy_scope(SubsystemTag).order(:name).ransack(search_params[:q])
+    subsystem_tags = @q.result(distinct: true)
 
     @pagy, @subsystem_tags = pagy_countless(subsystem_tags, items: 10)
 
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-      format.json { render json: subsystem_tags.map { |subsystem_tag| { id: subsystem_tag.id, text: subsystem_tag.text } } }
-    end
+    @subsystem_tag = @subsystem_tags.first
+
+    # respond_to do |format|
+    #   format.html
+    #   format.turbo_stream
+    #   format.json { render json: @subsystem_tags.map { |subsystem_tag| { id: subsystem_tag.id, text: subsystem_tag.text } } }
+    # end
   end
 
   def show
@@ -42,7 +36,10 @@ class SubsystemTagsController < ApplicationController
   end
 
   def edit
-    # add_breadcrumb @subsystem_tag.name
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
@@ -81,7 +78,7 @@ class SubsystemTagsController < ApplicationController
   private
 
   def set_subsystem_tag
-    @subsystem_tag = SubsystemTag.find(params[:id])
+    @subsystem_tag = policy_scope(SubsystemTag).find(params[:id])
     authorize @subsystem_tag
   end
 

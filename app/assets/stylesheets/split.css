@@ -1,0 +1,30 @@
+.gutter {
+  @apply hover:bg-zinc-900 dark:hover:bg-zinc-100 hover:cursor-ew-resize mx-2;
+}
+
+/* Custom scrollbar styles for different browsers */
+[data-split-target="split"] > div:first-child {
+  /* For Firefox */
+  scrollbar-color: theme('colors.green.800') transparent; /* thumb color, track color */
+}
+
+[data-split-target="split"] > div:first-child::-webkit-scrollbar {
+  width: 16px; /* Adjust the width as needed */
+}
+
+[data-split-target="split"] > div:first-child::-webkit-scrollbar-thumb {
+  background-color: theme('colors.green.800');
+  border-radius: 8px; /* Optional: round the corners */
+}
+
+[data-split-target="split"] > div:first-child::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+}
+
+html.dark [data-split-target="split"] > div:first-child {
+  scrollbar-color: theme('colors.green.500') transparent;
+}
+
+html.dark [data-split-target="split"] > div:first-child::-webkit-scrollbar-thumb {
+  background-color: theme('colors.green.500');
+}

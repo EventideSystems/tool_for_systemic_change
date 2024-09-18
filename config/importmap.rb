@@ -9,3 +9,4 @@ pin_all_from 'app/javascript/components', under: 'components'
 pin "tailwindcss-animate" # @1.0.7
 pin "tailwindcss/plugin", to: "tailwindcss--plugin.js" # @3.4.7
 pin "hotkeys-js" # @3.13.7
+pin "split.js" # @1.6.5

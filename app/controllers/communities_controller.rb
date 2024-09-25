@@ -14,6 +14,7 @@ class CommunitiesController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream
+      format.css
     end
   end
 
@@ -34,37 +35,65 @@ class CommunitiesController < ApplicationController
   end
 
   def edit
-    # add_breadcrumb(@community.name)
-  end
-
-  def create
-    @community = current_account.communities.build(community_params)
-    authorize(@community)
-
     respond_to do |format|
-      if @community.save
-        format.html { redirect_to(communities_path, notice: 'Community was successfully created.') }
-        format.js
-      else
-        format.html { render(:new) }
-        format.js { render(json: @community.errors, status: :unprocessable_entity) }
-      end
+      format.html
+      format.turbo_stream
     end
   end
 
   def update
     if @community.update(community_params)
       respond_to do |format|
-        format.html { redirect_to(communities_path, notice: 'Community was successfully updated.') }
-        format.js
+        format.html { redirect_to @community, notice: 'Community was successfully updated.' }
+        format.turbo_stream
       end
     else
-      respond_to do |format|
-        format.html { render(:edit) }
-        format.js { render(json: @community.errors, status: :unprocessable_entity) }
-      end
+      render :edit
     end
   end
+
+  def create
+    @community = current_account.communities.build(community_params)
+    authorize(@community)
+
+    if @community.save
+      respond_to do |format|
+        format.html { redirect_to communities_path, notice: 'Community was successfully created.' }
+        format.turbo_stream
+      end
+    else
+      render :new
+    end
+  end
+
+  # def create
+  #   @community = current_account.communities.build(community_params)
+  #   authorize(@community)
+
+  #   respond_to do |format|
+  #     if @community.save
+  #       format.html { redirect_to(communities_path, notice: 'Community was successfully created.') }
+  #       format.js
+  #     else
+  #       format.html { render(:new) }
+  #       format.js { render(json: @community.errors, status: :unprocessable_entity) }
+  #     end
+  #   end
+  # end
+
+  # def update
+  #   if @community.update(community_params)
+  #     respond_to do |format|
+  #       format.html { redirect_to(communities_path, notice: 'Community was successfully updated.') }
+  #       format.js
+  #     end
+  #   else
+  #     respond_to do |format|
+  #       format.html { render(:edit) }
+  #       format.js { render(json: @community.errors, status: :unprocessable_entity) }
+  #     end
+  #   end
+  # end
 
   def destroy
     @community.destroy

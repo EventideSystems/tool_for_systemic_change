@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "edit_community_#{@community.id}" do %>
+  <%= turbo_stream.replace "edit_community_#{@community.id}" do %>
+    <%= render @community %>
+  <% end %>
+<% end %>

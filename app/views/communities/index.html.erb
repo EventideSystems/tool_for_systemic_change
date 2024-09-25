@@ -1,19 +1,37 @@
-<div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+<% content_for :stylesheet_includes do %>
+  <%= stylesheet_link_tag(communities_path(format: :css)) %>
+<% end %>
+
+<div class="grow p-6 lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-gray-200 dark:lg:bg-gray-900 dark:lg:ring-gray-700">
   <div class="mx-auto max-w-6xl">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div class="max-sm:w-full sm:flex-1">
-        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Communities</h1>
-      </div>
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4 dark:border-gray-700" data-controller="new-community">
+      <input type="text" placeholder="Search all communities" class="form-input w-64 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+      <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" data-action="click->new-community#toggleForm">New Community</button>
+
     </div>
-    <ul class="mt-10">
+
+    <!-- New Community Form -->
+    <%= turbo_frame_tag "new_community" do %>
+      <div id="new-community-form" class="hidden">
+        <%= render 'form', community: Community.new %>
+      </div>
+    <% end %>
+
+    <!-- List -->
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :communities do %>
         <%= render @communities %>
       <% end %>
+    </ul>
+
+    <!-- Pagination -->
+    <div class="mt-4 flex justify-center">
       <%=
         turbo_frame_tag :pagination,
           loading: :lazy,
           src: communities_path(format: :turbo_stream, page: @pagy.next)
       %>
-    </ul>
+    </div>
   </div>
 </div>

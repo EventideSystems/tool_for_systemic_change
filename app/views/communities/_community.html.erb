@@ -1,43 +1,20 @@
-<li>
-  <hr
-    role="presentation"
-    class="w-full border-t border-zinc-950/10 dark:border-white/10"
-  />
-  <div class="flex items-center justify-between">
-    <div class="flex gap-6 py-6">
-      <div class="w-32 shrink-0">
-        <div class="mx-auto h-20 w-20 flex-shrink-0 rounded-lg bg-green-700 flex items-center justify-center">
-          <p class="text-4xl"><%= community.name.lstrip[0] %></p>
-        </div>
-      </div>
-      <div class="space-y-1.5">
-        <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to community.name, edit_community_path(community) %>
-        </div>
-        <div class="text-xs/6 text-zinc-500">
-          <%= community.description %>
-        </div>
-        <div class="text-xs/6 text-zinc-600">
-          TBD Extra details, e.g. status, due date, etc.
-        </div>
-      </div>
-    </div>
-    <div class="flex items-center gap-4">
-      <%= render_dropdown_menu do %>
-        <%= dropdown_menu_trigger do %>
-          <span class="text-zinc-900 dark:text-white">
-            <%= render_icon :more %>
-          </span>
-        <% end %>
-
-        <%= dropdown_menu_content do %>
-          <%=
-            dropdown_menu_item do
-              link_to "Modify", edit_community_path(community), class: "block w-full text-sm", data: { turbo: false }
-            end
-          %>
-        <% end %>
-      <% end %>
+<li class="flex items-center justify-between py-4 border-b border-zinc-950/10 dark:border-white/10">
+  <div class="flex items-center gap-6 w-1/3">
+    <div class="flex-shrink-0 rounded-lg flex items-center justify-center community-<%= community.id %>">
+      <p class="p-2 text-sm"><%= community.name %></p>
     </div>
   </div>
+
+  <div class="flex flex-col space-y-1.5 w-2/3">
+    <div class="text-sm text-zinc-500">
+      <%= community.description %>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4 ml-auto">
+    <%= link_to "Edit", edit_community_path(community), class: "text-sm text-blue-500 hover:underline", data: { turbo_frame: "edit_community_#{community.id}" } %>
+    <%= link_to "Delete", community_path(community), method: :delete, data: { confirm: "Are you sure?" }, class: "text-sm text-red-500 hover:underline" %>
+  </div>
+
+  <%= turbo_frame_tag "edit_community_#{community.id}" %>
 </li>

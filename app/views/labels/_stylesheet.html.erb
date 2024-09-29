@@ -1,0 +1,6 @@
+<style>
+  <% labels.each do |label| %>
+    <%= render partial: 'label', formats: :css, locals: { label: label } %>
+  <% end %>
+</style>
+

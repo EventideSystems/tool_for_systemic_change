@@ -1,0 +1,9 @@
+<%= turbo_stream.prepend 'labels' do %>
+  <style>
+    <%= render partial: 'label', formats: :css, locals: { label: @label } %>
+  </style>
+  <%= render partial: 'labels/label', locals: { label: @label } %>
+<% end %>
+
+<%= turbo_stream.update :new_label_form do %>
+<% end %>

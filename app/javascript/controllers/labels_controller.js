@@ -14,11 +14,22 @@ export default class extends Controller {
 
     submitButton.disabled = !isFormValid
     submitButton.classList.toggle("opacity-50", !isFormValid)
+    submitButton.classList.toggle("cursor-not-allowed", !isFormValid)
   }
 
-  toggle() {
-    this.formTarget.classList.toggle("hidden")
-    this.focusNameField()
+  toggle(event) {
+    const newForm = document.querySelector('#new_wicked_problem_form > form')
+
+    if (newForm === null) {
+      // console.log("newForm is null")
+    } else {
+      if (newForm.classList.contains("hidden")) {
+        newForm.classList.remove("hidden")
+      } else {
+        newForm.classList.add("hidden")
+      }
+      event.preventDefault()
+    }
   }
 
   updatePreviewName(element) {

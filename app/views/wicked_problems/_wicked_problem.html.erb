@@ -4,20 +4,20 @@
   <%= turbo_frame_tag dom_id(wicked_problem) do %>
     <div class="flex items-center justify-between py-4 border-b border-zinc-950/10 dark:border-white/10">
       <div class="flex items-center gap-6 w-1/3">
-        <div class="flex-shrink-0 rounded-lg flex items-center justify-center wicked_problem-<%= wicked_problem.id %>">
-          <p class="p-2 text-sm"><%= wicked_problem.name %></p>
+        <div class="flex-shrink-0 rounded-lg flex items-center justify-center <%= dom_id(wicked_problem) %>">
+          <p class="p-2 text-sm"><%= highlight(wicked_problem.name, params.dig(:q, :name_or_description_cont)) %></p>
         </div>
       </div>
 
       <div class="flex flex-col space-y-1.5 w-2/3">
         <div class="text-sm text-zinc-500">
-          <%= wicked_problem.description %>
+          <%= highlight(wicked_problem.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
       </div>
 
       <div class="flex items-center gap-4 ml-auto">
         <%= link_to "Edit", edit_wicked_problem_path(wicked_problem), class: "text-sm text-blue-500 hover:underline" %>
-        <%= link_to "Delete", wicked_problem_path(wicked_problem), method: :delete, data: { confirm: "Are you sure?" }, class: "text-sm text-red-500 hover:underline" %>
+        <%= link_to "Delete", wicked_problem_path(wicked_problem), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"},  class: "text-sm text-red-500 hover:underline" %>
       </div>
     </div>
   <% end %>

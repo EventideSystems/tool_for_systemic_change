@@ -1,3 +1,5 @@
-<div class="hidden">
-  <%= render 'form', wicked_problem: @wicked_problem %>
-</div>
+<style>
+  <%= render partial: 'wicked_problem', formats: :css, locals: { wicked_problem: @wicked_problem } %>
+</style>
+
+<%= render 'form', locals: { wicked_problem: @wicked_problem } %>

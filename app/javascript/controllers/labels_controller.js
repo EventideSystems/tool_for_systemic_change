@@ -19,9 +19,6 @@ export default class extends Controller {
   toggle() {
     this.formTarget.classList.toggle("hidden")
     this.focusNameField()
-  //  debugger
-    //this.submitButtonTarget.attribute('disabled', true)
-  //  this.submitButtonTarget.classList.add("opacity-50")
   }
 
   updatePreviewName(element) {

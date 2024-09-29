@@ -1,15 +1,9 @@
-<%= turbo_stream.replace :styles do %>
-  <%= turbo_frame_tag :styles do %>
-    <%= render 'stylesheet', wicked_problems: @wicked_problems %>
-  <% end %>
-<% end %>
-
 <%= turbo_stream.prepend 'wicked_problems' do %>
+  <style>
+    <%= render partial: 'wicked_problem', formats: :css, locals: { wicked_problem: @wicked_problem } %>
+  </style>
   <%= render partial: 'wicked_problems/wicked_problem', locals: { wicked_problem: @wicked_problem } %>
 <% end %>
 
-<%= turbo_stream.replace 'new_wicked_problem_form' do %>
-  <%= turbo_frame_tag 'new_wicked_problem_form', class: 'hidden', data: { labels_target: 'form' } do %>
-    <%= render partial: 'wicked_problems/form', locals: { wicked_problem: WickedProblem.new } %>
-  <% end %>
+<%= turbo_stream.update :new_wicked_problem_form do %>
 <% end %>

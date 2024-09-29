@@ -1,33 +1,22 @@
-<%= turbo_frame_tag :styles do %>
-  <%= render 'stylesheet', wicked_problems: @wicked_problems %>
-<% end %>
-
 <div class="grow p-6 lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-gray-200 dark:lg:bg-gray-900 dark:lg:ring-gray-700 bg-zinc-900">
   <div class="mx-auto max-w-6xl" data-controller="labels">
     <!-- Header -->
-    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4 dark:border-gray-700" data-controller="new-community">
-      <input type="text" placeholder="Search all wicked problems" class="form-input w-64 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
-      <button class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" data-action="click->labels#toggle">New Wicked Problem</button>
+    <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4 dark:border-gray-700">
+      <%= search_form_for @q, data: { turbo_frame: :wicked_problems } do |f| %>
+        <%= f.search_field :name_or_description_cont, placeholder: 'Filter', class: "form-input w-64 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white", oninput: 'this.form.requestSubmit()', autofocus: true, autocomplete: 'off' %>
+      <% end %>
+      <%= link_to 'New', new_wicked_problem_path, class: "bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600",  data: { turbo_stream: true }%>
     </div>
 
-    <%= turbo_frame_tag 'new_wicked_problem_form', class: 'hidden', data: { labels_target: 'form' } do %>
-      <%= render partial: 'wicked_problems/form', locals: { wicked_problem: WickedProblem.new } %>
-    <% end %>
+    <%= turbo_frame_tag :new_wicked_problem_form %>
 
     <!-- List -->
     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :wicked_problems do %>
+        <%= render 'stylesheet', wicked_problems: @wicked_problems %>
         <%= render @wicked_problems %>
+        <div class="mt-4 flex justify-center"><%== pagy_nav(@pagy) %></div>
       <% end %>
     </ul>
-
-    <!-- Pagination -->
-    <div class="mt-4 flex justify-center">
-      <%=
-        turbo_frame_tag :pagination,
-          loading: :lazy,
-          src: wicked_problems_path(format: :turbo_stream, page: @pagy.next)
-      %>
-    </div>
   </div>
 </div>

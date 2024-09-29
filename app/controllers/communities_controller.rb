@@ -31,7 +31,11 @@ class CommunitiesController < ApplicationController
   def new
     @community = current_account.communities.build
     authorize(@community)
-    # add_breadcrumb('New')
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def edit

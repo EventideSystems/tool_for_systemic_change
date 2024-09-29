@@ -1,22 +1,5 @@
-<%= turbo_stream.replace :new_wicked_problem_form do %>
-  <%= turbo_frame_tag :new_wicked_problem_form, class: 'hidden', data: { labels_target: 'form' } do %>
-    <%= render partial: 'wicked_problems/form', locals: { wicked_problem: WickedProblem.new } %>
-  <% end %>
-<% end %>
-
-<%= turbo_stream.append :wicked_problems do %>
+<%= turbo_stream.update :wicked_problems do %>
+  <%= render 'stylesheet', wicked_problems: @wicked_problems %>
   <%= render @wicked_problems %>
+  <div class="mt-4 flex justify-center"><%== pagy_nav(@pagy) %></div>
 <% end %>
-
-<%= turbo_stream.replace :pagination do %>
-  <% if @pagy.next.present? %>
-    <%=
-      turbo_frame_tag(
-        :pagination,
-        loading: :lazy,
-        src: wicked_problems_path(format: :turbo_stream, page: @pagy.next)
-      )
-    %>
-  <% end %>
-<% end %>
-

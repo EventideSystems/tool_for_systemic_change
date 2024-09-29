@@ -9,7 +9,12 @@ class WickedProblemsController < ApplicationController
   sidebar_item :problems
 
   def index
-    @pagy, @wicked_problems = pagy_countless(policy_scope(WickedProblem).order('upper(trim(wicked_problems.name)) asc'), items: 10)
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(WickedProblem).order(:name).ransack(search_params[:q])
+    wicked_problems = @q.result(distinct: true)
+
+    @pagy, @wicked_problems = pagy(wicked_problems, limit: 10, link_extra: 'data-turbo-frame="wicked_problems"')
 
     respond_to do |format|
       format.html
@@ -31,13 +36,16 @@ class WickedProblemsController < ApplicationController
   def new
     @wicked_problem = current_account.wicked_problems.build
     authorize @wicked_problem
-    # add_breadcrumb "New"
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def edit
      # add_breadcrumb @wicked_problem.name
   end
-
 
   def create
     @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
@@ -55,21 +63,6 @@ class WickedProblemsController < ApplicationController
     end
   end
 
-  # def create
-  #   @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
-  #   authorize @wicked_problem
-
-  #   respond_to do |format|
-  #     if @wicked_problem.save
-  #       format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully created.' }
-  #       format.js
-  #     else
-  #       format.html { render :new }
-  #       format.js
-  #     end
-  #   end
-  # end
-
   def update
     if @wicked_problem.update(wicked_problem_params)
       @wicked_problems = policy_scope(WickedProblem).all
@@ -85,7 +78,10 @@ class WickedProblemsController < ApplicationController
   def destroy
     @wicked_problem.delete
 
-    redirect_to wicked_problems_url, notice: 'Wicked problem / opportunity was successfully deleted.'
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@wicked_problem) }
+      format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully deleted.' }
+    end
   end
 
   def content_title

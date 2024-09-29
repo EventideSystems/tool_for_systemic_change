@@ -15,13 +15,11 @@
   <body class="hold-transition login-page">
     <%= render 'layouts/shared/flash_messages' %>
     <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
-      <div class="lg:pl-48">
-        <main class="py-2">
-          <div class="px-2">
-             <%= yield %>
-          </div>
-        </main>
-      </div>
+      <main class="py-2">
+        <div class="px-2">
+            <%= yield %>
+        </div>
+      </main>
     </div>
   </body>
 </html>

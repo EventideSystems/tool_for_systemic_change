@@ -1,6 +1,13 @@
+<%= turbo_stream.replace :new_wicked_problem_form do %>
+  <%= turbo_frame_tag :new_wicked_problem_form, class: 'hidden', data: { labels_target: 'form' } do %>
+    <%= render partial: 'wicked_problems/form', locals: { wicked_problem: WickedProblem.new } %>
+  <% end %>
+<% end %>
+
 <%= turbo_stream.append :wicked_problems do %>
   <%= render @wicked_problems %>
 <% end %>
+
 <%= turbo_stream.replace :pagination do %>
   <% if @pagy.next.present? %>
     <%=
@@ -12,3 +19,4 @@
     %>
   <% end %>
 <% end %>
+

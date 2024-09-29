@@ -1,0 +1,16 @@
+<%#= stylesheet_link_tag wicked_problems_path(format: :css), id: 'wicked_problem_label_styles' %>
+
+<style>
+  <% wicked_problems.each do |wicked_problem| %>
+    .wicked_problem-<%= wicked_problem.id %> {
+      color: <%= wicked_problem.color %>;
+      border-top-width : 1px;
+      border-bottom-width : 1px;
+      border-left-width : 1px;
+      border-right-width : 1px;
+      border-color: <%= wicked_problem.color %>;
+      background-color: oklch(from <%= wicked_problem.color %> l c h / 0.1);
+    }
+  <% end %>
+</style>
+

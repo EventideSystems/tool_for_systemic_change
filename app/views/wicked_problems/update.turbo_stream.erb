@@ -1,0 +1,11 @@
+<%= turbo_stream.replace :styles do %>
+  <%= turbo_frame_tag :styles do %>
+    <%= render 'stylesheet', wicked_problems: @wicked_problems %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace @wicked_problem do %>
+  <%= render partial: 'wicked_problems/wicked_problem', locals: { wicked_problem: @wicked_problem } %>
+<% end %>
+
+

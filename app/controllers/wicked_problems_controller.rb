@@ -9,13 +9,12 @@ class WickedProblemsController < ApplicationController
   sidebar_item :problems
 
   def index
-    @pagy, @wicked_problems = pagy_countless(
-      policy_scope(WickedProblem).order('upper(trim(wicked_problems.name)) asc'), items: 10
-    )
+    @pagy, @wicked_problems = pagy_countless(policy_scope(WickedProblem).order('upper(trim(wicked_problems.name)) asc'), items: 10)
 
     respond_to do |format|
       format.html
       format.turbo_stream
+      format.css
     end
   end
 
@@ -39,24 +38,45 @@ class WickedProblemsController < ApplicationController
      # add_breadcrumb @wicked_problem.name
   end
 
+
   def create
     @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
     authorize @wicked_problem
 
     respond_to do |format|
       if @wicked_problem.save
+        @wicked_problems = policy_scope(WickedProblem).all
+        format.turbo_stream
         format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully created.' }
-        format.js
       else
+        format.turbo_stream { render turbo_stream: turbo_stream.update('new_wicked_problem_form', partial: 'wicked_problems/form', locals: { wicked_problem: @wicked_problem }) }
         format.html { render :new }
-        format.js
       end
     end
   end
 
+  # def create
+  #   @wicked_problem = current_account.wicked_problems.build(wicked_problem_params)
+  #   authorize @wicked_problem
+
+  #   respond_to do |format|
+  #     if @wicked_problem.save
+  #       format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully created.' }
+  #       format.js
+  #     else
+  #       format.html { render :new }
+  #       format.js
+  #     end
+  #   end
+  # end
+
   def update
     if @wicked_problem.update(wicked_problem_params)
-      redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully updated.'
+      @wicked_problems = policy_scope(WickedProblem).all
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to wicked_problems_path, notice: 'Wicked problem / opportunity was successfully updated.' }
+      end
     else
       render :edit
     end
@@ -84,6 +104,6 @@ class WickedProblemsController < ApplicationController
   end
 
   def wicked_problem_params
-    params.fetch(:wicked_problem, {}).permit(:name, :description)
+    params.fetch(:wicked_problem, {}).permit(:name, :description, :color)
   end
 end

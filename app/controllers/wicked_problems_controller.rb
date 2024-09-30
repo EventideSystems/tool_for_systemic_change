@@ -1,27 +1,7 @@
 class WickedProblemsController < LabelsController
   include VerifyPolicies
 
-  before_action :set_label, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update]
-
   sidebar_item :problems
-
-  def index
-    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
-
-    @q = policy_scope(WickedProblem).order(:name).ransack(search_params[:q])
-    wicked_problems = @q.result(distinct: true)
-
-    @pagy, @wicked_problems = pagy(wicked_problems, limit: 10, link_extra: 'data-turbo-frame="labels"')
-
-    @labels = @wicked_problems
-
-    respond_to do |format|
-      format.html { render 'labels/index', locals: { labels: @labels, label_klass: WickedProblem } }
-      format.turbo_stream { render 'labels/index', locals: { labels: @labels, label_klass: WickedProblem } }
-      format.css  { render 'labels/index', formats: [:css], locals: { labels: @labels  } }
-    end
-  end
 
   def show
     @wicked_problem.readonly!
@@ -39,13 +19,6 @@ class WickedProblemsController < LabelsController
     respond_to do |format|
       format.html { render 'labels/new' }
       format.turbo_stream { render 'labels/new' }
-    end
-  end
-
-  def edit
-    respond_to do |format|
-      format.html { render 'labels/edit' }
-      format.turbo_stream { render 'labels/edit' }
     end
   end
 
@@ -77,20 +50,10 @@ class WickedProblemsController < LabelsController
     end
   end
 
-  def destroy
-    @label.delete
-
-    respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@label) }
-      format.html { redirect_to polymorphic_path(WickedProblem), notice: 'Wicked problem / opportunity was successfully deleted.' }
-    end
-  end
-
   private
 
-  def set_label
-    @label = current_account.wicked_problems.find(params[:id])
-    authorize @label
+  def label_klass
+    WickedProblem
   end
 
   def wicked_problem_params

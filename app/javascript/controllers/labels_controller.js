@@ -18,7 +18,7 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    const newForm = document.querySelector('#new_wicked_problem_form > form')
+    const newForm = document.querySelector('#new_label_form > form')
 
     if (newForm === null) {
       // console.log("newForm is null")

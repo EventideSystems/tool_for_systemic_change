@@ -1,10 +1,13 @@
 <%= turbo_stream.replace :styles do %>
   <%= turbo_frame_tag :styles do %>
-    <%= render 'stylesheet', labels: @labels %>
+    <%= render 'labels/stylesheet', labels: @labels %>
   <% end %>
 <% end %>
 
 <%= turbo_stream.replace @label do %>
+  <style>
+    <%= render partial: 'labels/label', formats: :css, locals: { label: @label } %>
+  </style>
   <%= render partial: 'labels/label', locals: { label: @label } %>
 <% end %>
 

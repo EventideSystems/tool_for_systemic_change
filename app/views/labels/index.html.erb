@@ -8,7 +8,7 @@
       <%=
         link_to(
           'New',
-          new_label_path,
+          new_polymorphic_path(label_klass),
           class: "bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600",
           data: { turbo_stream: true, action: 'click->labels#toggle' },
 
@@ -20,8 +20,8 @@
 
     <ul class="divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :labels do %>
-        <%= render 'stylesheet', labels: @labels %>
-        <%= render @labels %>
+        <%= render 'labels/stylesheet' %>
+        <%= render partial: 'labels/label', collection: @labels %>
         <div class="mt-4 flex justify-center"><%== pagy_nav(@pagy) %></div>
       <% end %>
     </ul>

@@ -1,9 +1,0 @@
-<%= turbo_stream.append :communities do %>
-  <%= render @community %>
-<% end %>
-
-<%= turbo_stream.replace "new_community" do %>
-  <div id="new-community-form" class="hidden">
-    <%= render 'form', community: Community.new %>
-  </div>
-<% end %>

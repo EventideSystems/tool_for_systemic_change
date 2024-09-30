@@ -22,11 +22,48 @@ class LabelsController < ApplicationController
     end
   end
 
+  def new
+    @label = label_klass.build(account_id: current_account.id)
+    authorize @label
+
+    respond_to do |format|
+      format.html { render 'labels/new' }
+      format.turbo_stream { render 'labels/new' }
+    end
+  end
+
+  def create
+    @label = label_klass.build(label_params.merge(account_id: current_account.id))
+    authorize @label
+
+    respond_to do |format|
+      if @label.save
+        @labels = policy_scope(WickedProblem).all
+        format.turbo_stream { render 'labels/create', locals: { label: @label } }
+        format.html { redirect_to polymorphic_path(WickedProblem), notice: "#{label_klass.name.titleize} was successfully created." }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.update('new_label_form', partial: 'labels/form', locals: { label: @label }) }
+        format.html { render 'labels/new' }
+      end
+    end
+  end
 
   def edit
     respond_to do |format|
       format.html { render 'labels/edit' }
       format.turbo_stream { render 'labels/edit' }
+    end
+  end
+
+  def update
+    if @label.update(label_params)
+      @labels = policy_scope(label_klass).all
+      respond_to do |format|
+        format.turbo_stream { render 'labels/update', locals: { label: @label } }
+        format.html { redirect_to wicked_problems_path, notice: "#{label_klass.name.titleize} was successfully updated." }
+      end
+    else
+      render 'labels/edit'
     end
   end
 

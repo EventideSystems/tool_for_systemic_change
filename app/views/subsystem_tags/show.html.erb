@@ -1,9 +1,0 @@
-<%= simple_form_for(@subsystem_tag, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= form_header(@subsystem_tag) %>
-  <%= f.input :name, required: false, readonly: true %>
-  <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-  <hr> 
-  <%= f.input :created_at, as: :string, readonly: true %>
-  <%= f.input :updated_at, as: :string, readonly: true %>
-  <%= edit_button('Edit Subsytem Tag', edit_subsystem_tag_path(@subsystem_tag)) if policy(@subsystem_tag).edit? %>
-<% end %>

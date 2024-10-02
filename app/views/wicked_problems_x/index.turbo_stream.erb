@@ -1,5 +1,0 @@
-<%= turbo_stream.update :wicked_problems do %>
-  <%= render 'stylesheet', wicked_problems: @wicked_problems %>
-  <%= render @wicked_problems %>
-  <div class="mt-4 flex justify-center"><%== pagy_nav(@pagy) %></div>
-<% end %>

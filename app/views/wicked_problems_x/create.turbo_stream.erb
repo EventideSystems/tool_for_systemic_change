@@ -1,9 +1,0 @@
-<%= turbo_stream.prepend 'wicked_problems' do %>
-  <style>
-    <%= render partial: 'wicked_problem', formats: :css, locals: { wicked_problem: @wicked_problem } %>
-  </style>
-  <%= render partial: 'wicked_problems/wicked_problem', locals: { wicked_problem: @wicked_problem } %>
-<% end %>
-
-<%= turbo_stream.update :new_wicked_problem_form do %>
-<% end %>

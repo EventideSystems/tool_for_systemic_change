@@ -32,6 +32,8 @@ class InitiativesController < ApplicationController
   end
 
   def show
+    sidebar_item :impact_cards
+
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
 

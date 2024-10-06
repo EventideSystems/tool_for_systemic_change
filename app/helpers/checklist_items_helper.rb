@@ -24,44 +24,21 @@ module ChecklistItemsHelper
   }.freeze
   # rubocop:enable Layout/HashAlignment
 
-
-  # def checklist_list_item_grid_element(initiative, checklist_item)
-  #   # base_color = checklist_instance&.checklist&.base_color_for_state(item.state) || :gray
-  #   # background_color = BASE_CONCURRENT_CHECKLIST_LIST_ITEM_COLOR_CLASSES[base_color.to_sym] || 'bg-gray-400'
-
-  #   background_color = case checklist_item.status.to_sym
-  #                      when :actual then 'bg-blue-600'
-  #                      when :planned then 'bg-green-600'
-  #                      when :more_information then 'bg-yellow-600'
-  #                      when :suggestion then 'bg-fuchsia-600'
-  #                      else 'bg-gray-400'
-  #                      end
-
-  #   content_tag(
-  #     :div,
-  #     '',
-  #     class: "p-2 h-2 border rounded-sm #{background_color}",
-  #     title: checklist_item.name,
-  #     data: { status: checklist_item.status }
-  #   )
-  # end
+  CHECKLIST_LIST_ITEM_COLOR_CLASSES = {
+    actual: 'bg-blue-600',
+    planned: 'bg-green-600',
+    more_information: 'bg-yellow-600',
+    suggestion: 'bg-fuchsia-600',
+    other: 'bg-gray-300'
+  }.freeze
 
   def checklist_list_item_grid_element(checklist_item_data)
-    # base_color = checklist_instance&.checklist&.base_color_for_state(item.state) || :gray
-    # background_color = BASE_CONCURRENT_CHECKLIST_LIST_ITEM_COLOR_CLASSES[base_color.to_sym] || 'bg-gray-400'
-
-    background_color = case checklist_item_data[:status].to_sym
-                       when :actual then 'bg-blue-600'
-                       when :planned then 'bg-green-600'
-                       when :more_information then 'bg-yellow-600'
-                       when :suggestion then 'bg-fuchsia-600'
-                       else 'bg-gray-400'
-                       end
+    background_color = checklist_list_item_grid_element_color(checklist_item_data[:status])
 
     content_tag(
       :div,
       '',
-      class: "p-2 h-2 border rounded-sm #{background_color}",
+      class: "p-2 h-2 rounded-sm #{background_color}",
       title: checklist_item_data[:name],
       data: { status: checklist_item_data[:status] }
     )
@@ -94,5 +71,12 @@ module ChecklistItemsHelper
         title: checklist_item.status.humanize
       }
     )
+  end
+
+  private
+
+  def checklist_list_item_grid_element_color(status)
+    CHECKLIST_LIST_ITEM_COLOR_CLASSES[status.to_sym].presence ||
+      CHECKLIST_LIST_ITEM_COLOR_CLASSES[:other]
   end
 end

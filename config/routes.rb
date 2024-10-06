@@ -12,6 +12,17 @@ Rails.application.routes.draw do
     resources :imports, only: %i[new create update]
   end
 
+  namespace :labels do
+    resources :communities
+    resources :stakeholder_types
+    resources :subsystem_tags
+    resources :wicked_problems
+  end
+
+  resources :impact_cards, controller: 'scorecards' do
+    resources :initiatives, only: [:show], controller: 'impact_cards/initiatives'
+  end
+
   resources :checklist_items, only: %i[show edit update]
 
   namespace :organisations do

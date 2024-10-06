@@ -1,4 +1,4 @@
-<%= form_with(model: label, html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |f| %>
+<%= form_with(model: [:labels, label], html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |f| %>
   <div class="w-full mb-4">
     <div class="flex items-center justify-between py-4">
       <div class="flex items-center gap-6 w-1/3">
@@ -49,7 +49,7 @@
           disabled: save_disabled
         )
       %>
-      <%= link_to "Cancel", polymorphic_path(label.class), class: 'bg-red-500 text-white px-2 py-0.5 text-xs rounded-md hover:bg-red-600 flex items-center justify-center' %>
+      <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: 'bg-red-500 text-white px-2 py-0.5 text-xs rounded-md hover:bg-red-600 flex items-center justify-center' %>
     </div>
   </div>
 <% end %>

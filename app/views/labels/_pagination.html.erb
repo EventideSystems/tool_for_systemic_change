@@ -1,0 +1,3 @@
+<%- if @pagy.next.present? || @pagy.prev.present? %>
+  <div class="mt-4 flex justify-center"><%== pagy_nav(@pagy) %></div>
+<% end %>

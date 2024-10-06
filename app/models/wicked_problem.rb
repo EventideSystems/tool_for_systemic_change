@@ -19,6 +19,8 @@
 #  index_wicked_problems_on_deleted_at  (deleted_at)
 #
 class WickedProblem < ApplicationRecord
+  include SearchableLabel
+
   has_paper_trail
   acts_as_paranoid
 
@@ -27,12 +29,4 @@ class WickedProblem < ApplicationRecord
 
   validates :account, presence: true
   validates :name, presence: true, uniqueness: { scope: :account_id }
-
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[name description] + _ransackers.keys
-  end
-
-  def self.ransackable_associations(auth_object = nil)
-    []
-  end
 end

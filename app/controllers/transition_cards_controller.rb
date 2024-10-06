@@ -3,6 +3,8 @@
 class TransitionCardsController < ScorecardsController
   before_action :add_base_breadcrumb
 
+  sidebar_item :impact_cards
+
   # def index
   #   @scorecards = policy_scope(Scorecard).where(type: 'TransitionCard').order(sort_order).page(params[:page])
   # end

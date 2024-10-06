@@ -18,6 +18,8 @@
 #  index_stakeholder_types_on_account_id  (account_id)
 #
 class StakeholderType < ApplicationRecord
+  include SearchableLabel
+
   acts_as_paranoid
 
   validates :name, presence: true

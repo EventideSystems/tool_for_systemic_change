@@ -1,19 +1,19 @@
-<ul class="">
-  <% @scorecard_grid.each do |data| %>
-    <li class="py-2 flex">
-      <div class="ml-4 flex space-x-4">
-        <div class="min-w-48 max-w-48 flex items-center">
-          <h3 class="text-sm font-medium text-gray-900 dark:text-white truncate">
-            <%= link_to data.dig('initiative',:name), initiative_path(id: data.dig('initiative', :id)), title: data.dig('initiative', :name) %>
-          </h3>
-        </div>
-
-        <div class="flex flex-wrap gap-1">
+<div class="text-left">
+  <h3>2 columns grid:</h3>
+  <div class="grid grid-cols-4 gap-y-4 text-white">
+    <% @scorecard_grid.each do |data| %>
+      <div class="col-span-1">
+        <h3 class="text-sm font-medium text-gray-900 dark:text-white truncate">
+          <%= link_to data.dig('initiative', :name), initiative_path(id: data.dig('initiative', :id)), title: data.dig('initiative', :name) %>
+        </h3>
+      </div>
+      <div class="col-span-3 w-full">
+        <div class="flex flex-wrap gap-1 ml-2">
           <%- data.except('initiative').each_value do |checklist_item_data| %>
             <%= checklist_list_item_grid_element(checklist_item_data) %>
           <% end %>
         </div>
-      <div>
-    </li>
-  <% end %>
-</ul>
+      </div>
+    <% end %>
+  </div>
+</div>

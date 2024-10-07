@@ -18,7 +18,9 @@ class ApplicationController < ActionController::Base
   impersonates :user
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
+
+  # TODO: Uncomment this when we have a better way to handle this, as it currently randomly breaks things
+  # rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
 
   # add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
 

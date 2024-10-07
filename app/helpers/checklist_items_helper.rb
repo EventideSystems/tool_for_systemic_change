@@ -38,7 +38,7 @@ module ChecklistItemsHelper
     content_tag(
       :div,
       '',
-      class: "p-2 h-2 rounded-sm #{background_color}",
+      class: "p-1.5 h-2 rounded-sm #{background_color}",
       title: checklist_item_data[:name],
       data: { status: checklist_item_data[:status] }
     )

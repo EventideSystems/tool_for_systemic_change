@@ -2,6 +2,9 @@
 
 module ImpactCards
   class InitiativesController < ApplicationController
+
+    sidebar_item :impact_cards
+
     def show
       @impact_card = Scorecard.find(params[:impact_card_id])
       authorize(@impact_card, :show?)

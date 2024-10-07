@@ -29,7 +29,7 @@ module ChecklistItemsHelper
     planned: 'bg-green-600',
     more_information: 'bg-yellow-600',
     suggestion: 'bg-fuchsia-600',
-    other: 'bg-gray-300'
+    other: 'bg-gray-200 dark:bg-gray-600'
   }.freeze
 
   def checklist_list_item_grid_element(checklist_item_data)

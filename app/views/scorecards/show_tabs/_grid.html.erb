@@ -8,11 +8,12 @@
       </div>
       <div class="col-span-2 w-full mb-2 ml-2">
         <div class="flex">
-        <%- data.except('initiative').values.group_by { |value| value[:focus_area_id]}.each do |group, grouped_checklist_item_data| %>
-          <div class="flex flex-wrap gap-1 mr-3 border-l-4 pl-1" style="border-color: #<%= focus_area_color(FocusArea.find(group)) %>">
-          <%- grouped_checklist_item_data.each do |checklist_item_data| %>
-            <%= checklist_list_item_grid_element(checklist_item_data) %>
-          <% end %>
+        <%- data.except('initiative').values.group_by { |value| value[:focus_area_id]}.each do |focus_area_id, grouped_checklist_item_data| %>
+          <div class="flex flex-wrap gap-1 mr-2">
+            <%= focus_area_grid_element(FocusArea.find(focus_area_id)) %>
+            <%- grouped_checklist_item_data.each do |checklist_item_data| %>
+              <%= checklist_list_item_grid_element(checklist_item_data) %>
+            <% end %>
           </div>
         <% end %>
         </div>

@@ -1,8 +1,18 @@
 <div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
   <div class="mx-auto max-w-6xl">
-    <div class="flex flex-wrap items-end justify-between gap-4">
-      <div class="max-sm:w-full sm:flex-1">
-        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Impact Cards > <%= @scorecard.name %></h1>
+    <div class="flex items-center mt-4 mb-4">
+      <div class="w-24 shrink-0">
+        <div class="h-20 w-20 flex-shrink-0 rounded-lg bg-green-700 text-white dark:text-black flex items-center justify-center">
+          <p class="text-4xl"><%= @scorecard.name.lstrip[0].upcase %></p>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= @scorecard.name %></h1>
+          </div>
+          <div class="mt-2 text-sm/6 text-zinc-500"><%= @scorecard.description %></div>
+        </div>
       </div>
     </div>
 

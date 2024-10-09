@@ -24,13 +24,33 @@ module ChecklistItemsHelper
   }.freeze
   # rubocop:enable Layout/HashAlignment
 
+  # TODO: Move these into the models
   CHECKLIST_LIST_ITEM_COLOR_CLASSES = {
-    actual: 'bg-blue-600',
-    planned: 'bg-green-600',
-    more_information: 'bg-yellow-600',
-    suggestion: 'bg-fuchsia-600',
+    actual: 'bg-sky-600',
+    planned: 'bg-teal-500',
+    more_information: 'bg-yellow-400',
+    suggestion: 'bg-indigo-400',
     other: 'bg-gray-200 dark:bg-gray-600'
   }.freeze
+
+
+  # Original colors
+  # $color-actual: #009BCC;
+  # $color-planned: #00CCAA;
+  # $color-suggestion: #F7C80B;
+  # $color-more-information: #7993F2;
+
+  def focus_area_grid_element(focus_area)
+    content_tag(
+      :div,
+      '',
+      class: 'w-1 h-3',
+      style: "background-color: ##{focus_area_color(focus_area)}",
+      title: focus_area.name
+    )
+  end
+
+  # <div class="flex flex-wrap gap-1 mr-3 border-l-4 pl-1" style="border-color: #<%= focus_area_color(FocusArea.find(group)) %>">
 
   def checklist_list_item_grid_element(checklist_item_data)
     background_color = checklist_list_item_grid_element_color(checklist_item_data[:status])

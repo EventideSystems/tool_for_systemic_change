@@ -7,7 +7,7 @@
     </div>
     <ul class="mt-10">
       <%= turbo_frame_tag :scorecards do %>
-        <%= render @scorecards %>
+        <%= render partial: "scorecard", collection: @scorecards %>
       <% end %>
       <%=
         turbo_frame_tag :pagination,

@@ -80,7 +80,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def text_area(method, options = {})
-    default_opts = { class: build_default_field_class(TEXT_AREA_CLASS, ERROR_BORDER_CLASS, method) }
+    options_class = options.delete(:class)
+    text_area_class = tailwind_merge(TEXT_AREA_CLASS, options_class)
+
+    default_opts = { class: build_default_field_class(text_area_class, ERROR_BORDER_CLASS, method) }
     merged_opts = default_opts.merge(options)
 
     @template.content_tag(:div) do

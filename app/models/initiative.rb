@@ -100,7 +100,6 @@ class Initiative < ApplicationRecord
     checklist_items = ChecklistItem
                       .includes(
                         :initiative,
-                        :checklist_item_comments,
                         characteristic: [
                           :video_tutorial,
                           { focus_area: [

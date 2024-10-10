@@ -38,8 +38,6 @@ class ChecklistItem < ApplicationRecord
   belongs_to :initiative
   belongs_to :characteristic
 
-  has_many :checklist_item_comments
-
   has_many :checklist_item_changes, dependent: :destroy
 
   validates :status, presence: true
@@ -54,6 +52,7 @@ class ChecklistItem < ApplicationRecord
 
   delegate :focus_area, to: :characteristic
   delegate :focus_area_group, to: :focus_area
+  delegate :scorecard, to: :initiative
 
   scope :grouped_by_focus_area, -> { group_by(&:focus_area_id) }
 

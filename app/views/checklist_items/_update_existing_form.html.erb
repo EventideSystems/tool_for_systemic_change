@@ -1,0 +1,40 @@
+<%= form_with(model: checklist_item, local: true) do |form| %>
+  <%= hidden_field_tag :action, :update_existing %>
+  <div class="flex space-x-4 w-full">
+    <div class="flex-[3] w-full">
+      <%= form.text_area :comment, class: 'h-32 w-full', autofocus: true, required: true %>
+    </div>
+    <div class="flex-[1] w-full">
+      <% ChecklistItemsHelper::CHECKLIST_LIST_ITEM_RADIO_BUTTON_COLOR_CLASSES.each do |status, classes| %>
+        <div class="flex items-center space-x-2 mb-2">
+          <%=
+            form.radio_button(
+              :status,
+              status,
+              checked: checklist_item.status&.to_sym == status,
+              class: classes,
+              required: true
+            )
+          %>
+          <%= form.label :status, status.to_s.humanize, value: status %>
+        </div>
+      <% end %>
+      <%- if @checklist_item.errors[:status].present? %>
+        <div class="h-2 mt-2 mb-4 text-xs text-red-500 dark:text-red-500">
+          <%= @checklist_item.errors[:status].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="actions mt-4 flex justify-end space-x-4">
+    <%= link_to(
+      'Cancel',
+      impact_card_initiative_path(
+        impact_card_id: checklist_item.scorecard.id,
+        id: checklist_item.initiative.id
+      ),
+      class: 'btn btn-secondary'
+    ) %>
+    <%= form.submit 'Update Existing'  %>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_30_114014) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_10_091803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -136,16 +136,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_30_114014) do
     t.index ["user_id"], name: "index_checklist_item_changes_on_user_id"
   end
 
-  create_table "checklist_item_comments", force: :cascade do |t|
-    t.bigint "checklist_item_id"
-    t.string "comment"
-    t.datetime "deleted_at", precision: nil
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "status", default: "actual"
-    t.index ["checklist_item_id"], name: "index_checklist_item_comments_on_checklist_item_id"
-  end
-
   create_table "checklist_items", id: :serial, force: :cascade do |t|
     t.boolean "checked"
     t.text "comment"
@@ -176,6 +166,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_30_114014) do
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
+  create_table "deprecated_checklist_item_comments", force: :cascade do |t|
+    t.bigint "checklist_item_id"
+    t.string "comment"
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "actual"
+    t.index ["checklist_item_id"], name: "index_deprecated_checklist_item_comments_on_checklist_item_id"
   end
 
   create_table "focus_area_groups", id: :serial, force: :cascade do |t|
@@ -451,14 +451,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_30_114014) do
   SQL
   create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
-      checklist_item_comments.checklist_item_id,
-      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occuring_at,
+      deprecated_checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.updated_at) AS occuring_at,
       (versions.object ->> 'status'::text) AS from_status,
-      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+      COALESCE((next_versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
      FROM ((versions
        LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
-       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
+       JOIN deprecated_checklist_item_comments ON (((versions.item_id = deprecated_checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
   SQL
   create_view "events_checklist_item_checkeds", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_checked'::text AS event,
@@ -488,38 +488,38 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_30_114014) do
   create_view "events_checklist_item_first_comments", sql_definition: <<-SQL
       SELECT DISTINCT ON (checklist_items.id) 'first_comment'::text AS event,
       checklist_items.id AS checklist_item_id,
-      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
+      COALESCE((versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.created_at) AS occurred_at,
       NULL::text AS from_status,
-      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+      COALESCE((versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
      FROM ((checklist_items
-       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
-       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
-    ORDER BY checklist_items.id DESC, checklist_item_comments.created_at, versions.created_at;
+       JOIN deprecated_checklist_item_comments ON ((checklist_items.id = deprecated_checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((deprecated_checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+    ORDER BY checklist_items.id DESC, deprecated_checklist_item_comments.created_at, versions.created_at;
   SQL
   create_view "events_checklist_item_new_comments", sql_definition: <<-SQL
-      SELECT DISTINCT ON (checklist_item_comments.id) 'new_comment'::text AS event,
+      SELECT DISTINCT ON (deprecated_checklist_item_comments.id) 'new_comment'::text AS event,
       checklist_items.id AS checklist_item_id,
-      COALESCE((versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, checklist_item_comments.created_at) AS occurred_at,
+      COALESCE((versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((versions.object ->> 'created_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.created_at) AS occurred_at,
       NULL::text AS from_status,
-      COALESCE((versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+      COALESCE((versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
      FROM (((checklist_items
-       JOIN checklist_item_comments ON ((checklist_items.id = checklist_item_comments.checklist_item_id)))
-       LEFT JOIN versions ON (((checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
-       JOIN checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < checklist_item_comments.id))))
-    ORDER BY checklist_item_comments.id DESC, checklist_item_comments.created_at, versions.created_at;
+       JOIN deprecated_checklist_item_comments ON ((checklist_items.id = deprecated_checklist_item_comments.checklist_item_id)))
+       LEFT JOIN versions ON (((deprecated_checklist_item_comments.id = versions.item_id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text))))
+       JOIN deprecated_checklist_item_comments previous_comments ON (((checklist_items.id = previous_comments.checklist_item_id) AND (previous_comments.id < deprecated_checklist_item_comments.id))))
+    ORDER BY deprecated_checklist_item_comments.id DESC, deprecated_checklist_item_comments.created_at, versions.created_at;
   SQL
   create_view "events_checklist_item_updated_comments", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
-      checklist_item_comments.checklist_item_id,
-      COALESCE((next_versions.object ->> 'comment'::text), (checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, checklist_item_comments.updated_at) AS occurred_at,
+      deprecated_checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.updated_at) AS occurred_at,
       (versions.object ->> 'status'::text) AS from_status,
-      COALESCE((next_versions.object ->> 'status'::text), (checklist_item_comments.status)::text) AS to_status
+      COALESCE((next_versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
      FROM ((versions
        LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
-       JOIN checklist_item_comments ON (((versions.item_id = checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
+       JOIN deprecated_checklist_item_comments ON (((versions.item_id = deprecated_checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
   SQL
   create_view "events_checklist_item_activities", sql_definition: <<-SQL
       SELECT events_checklist_item_first_comments.event,

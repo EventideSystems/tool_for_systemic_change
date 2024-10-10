@@ -33,6 +33,13 @@ module ChecklistItemsHelper
     other: 'bg-gray-200 dark:bg-gray-600'
   }.freeze
 
+  CHECKLIST_LIST_ITEM_RADIO_BUTTON_COLOR_CLASSES = {
+    actual: 'text-sky-600 focus:ring-sky-600',
+    planned: 'text-teal-500 focus:ring-teal-500',
+    more_information: 'text-yellow-400 focus:ring-yellow-400',
+    suggestion: 'text-indigo-400 focus:ring-indigo-400'
+  }.freeze
+
 
   # Original colors
   # $color-actual: #009BCC;
@@ -51,6 +58,7 @@ module ChecklistItemsHelper
   end
 
   # <div class="flex flex-wrap gap-1 mr-3 border-l-4 pl-1" style="border-color: #<%= focus_area_color(FocusArea.find(group)) %>">
+
 
   def checklist_list_item_grid_element(checklist_item_data)
     background_color = checklist_list_item_grid_element_color(checklist_item_data[:status])

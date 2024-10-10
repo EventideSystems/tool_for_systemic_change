@@ -1,0 +1,13 @@
+<%= turbo_frame_tag dom_id(@checklist_item) do %>
+  <span class="w-3 h-3 mr-2 inline-block rounded-sm <%= checklist_list_item_grid_element_color(@checklist_item.status) %>"></span>
+  <%= @checklist_item.characteristic.name %>
+
+  <div class="p-3">
+    <%- if @checklist_item.comment.present? %>
+      <%= render 'update_existing_form', checklist_item: @checklist_item %>
+    <% end %>
+
+    <%= render 'save_new_comment_form', checklist_item: @checklist_item  %>
+
+  </div>
+<% end %>

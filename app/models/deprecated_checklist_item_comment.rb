@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: checklist_item_comments
+# Table name: deprecated_checklist_item_comments
 #
 #  id                :bigint           not null, primary key
 #  comment           :string
@@ -14,9 +14,9 @@
 #
 # Indexes
 #
-#  index_checklist_item_comments_on_checklist_item_id  (checklist_item_id)
+#  index_deprecated_checklist_item_comments_on_checklist_item_id  (checklist_item_id)
 #
-class ChecklistItemComment < ApplicationRecord
+class DeprecatedChecklistItemComment < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 

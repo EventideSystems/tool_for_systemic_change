@@ -1,4 +1,4 @@
-<div class="fixed inset-y-0 left-0 w-64 max-lg:hidden">
+<div class="fixed inset-y-0 left-0 w-64 max-lg:hidden bg-zinc-950">
   <div class="flex h-full min-h-0 flex-col">
     <div class="flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 mt-2.5">
       <%= image_tag 'logo-small.png', class: 'h-8 w-8', alt: "Logo for the 'Obsekio'" %>
@@ -22,7 +22,7 @@
             <%= render_sidebar_item title: 'Communities', path: labels_communities_path, icon: :tags, active_group: :communities %>
             <%= render_sidebar_item title: 'Problems / Opportunities', path: labels_wicked_problems_path, icon: :tags, active_group: :problems %>
             <%= render_sidebar_item title: 'Stakeholder Types', path: labels_stakeholder_types_path, icon: :tags, active_group: :stakeholder_types %>
-            <%= render_sidebar_item title: 'Subsystems', path: labels_subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
+            <%= render_sidebar_item title: 'Subsystem Tags', path: labels_subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
           </ul>
         </li>
         <li class="mt-auto">

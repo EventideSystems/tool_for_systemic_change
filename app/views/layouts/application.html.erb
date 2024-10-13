@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
+<html lang="en" class="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
     <title><%= application_title%></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,14 +14,13 @@
   </head>
   <body>
     <%= render 'layouts/shared/flash_messages' %>
-    <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+    <div class="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
       <%= render partial: 'layouts/shared/sidebar_mobile' %>
       <%= render partial: 'layouts/shared/sidebar_desktop' %>
-      <div class="lg:pl-48">
-        <main>
-          <%= yield %>
-        </main>
-      </div>
+      <main class="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-64 lg:pr-2 lg:pt-2">
+        <%= yield %>
+      </main>
+
     </div>
   </body>
 </html>

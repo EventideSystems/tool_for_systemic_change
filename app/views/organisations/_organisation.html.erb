@@ -5,11 +5,7 @@
   />
   <div class="flex items-center justify-between">
     <div class="flex gap-6 py-6">
-      <div class="w-32 shrink-0">
-        <div class="mx-auto h-20 w-20 flex-shrink-0 rounded-lg bg-teal-500 flex items-center justify-center">
-          <p class="text-4xl"><%= organisation.name.lstrip[0] %></p>
-        </div>
-      </div>
+      <%= render partial: 'resource_summary', locals: { name: organisation.name, background_color: 'bg-teal-500' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
           <%= link_to organisation.name, organisation_path(organisation), data: { turbo: false } %>

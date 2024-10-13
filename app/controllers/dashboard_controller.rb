@@ -13,6 +13,6 @@ class DashboardController < ApplicationController
     @organisation_count = policy_scope(Organisation).count
 
     @welcome_message = current_account.present? ? current_account.welcome_message : ''
-    @recent_versions = current_account.present? ? policy_scope(PaperTrail::Version).limit(10).order(created_at: :desc) : []
+    @recent_versions = current_account.present? ? policy_scope(PaperTrail::Version).limit(7).order(created_at: :desc) : []
   end
 end

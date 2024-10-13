@@ -4,10 +4,14 @@ module VersionsHelper
 
     item_name = version_item_name(version)
     item_type_name = version_item_type_name(version.item_type)
-    whodunnit_name = version_whodunnit_name(version.whodunnit)
-    event_past_tense = version_event_past_tense(version.event)
 
-    "#{item_type_name} '#{item_name}' #{event_past_tense} by #{whodunnit_name}"
+    "#{item_type_name} '#{item_name}'"
+  end
+
+  def version_whodunnit(version)
+    return '' unless version.present?
+
+    version_whodunnit_name(version.whodunnit)
   end
 
   def version_event_past_tense(version_event)

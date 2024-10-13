@@ -1,12 +1,13 @@
-<div class="w-full md:w-1/2 p-4">
-  <div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <div class="border-b px-4 py-2">
-      <h3 class="text-lg font-semibold">Hello</h3>
-    </div>
-    <div class="p-4 max-h-64 overflow-y-auto">
+<div class="mt-8 flex items-end justify-between">
+  <h2 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 text-black dark:text-white">Welcome</h2>
+</div>
+
+<div class="w-full">
+  <div class="text-black dark:text-white overflow-hidden">
+    <div class="max-h-64 overflow-y-auto">
       <%= sanitize @welcome_message %>
     </div>
-    <div class="border-t px-4 py-2 text-right">
+    <div class="border-t py-2 text-right">
       <%= link_to(welcome_message_path, class: 'text-blue-500 hover:text-blue-700 font-semibold') do
         safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
       end %>

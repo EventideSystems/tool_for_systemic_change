@@ -1,76 +1,58 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 dashboard">
-  <div class="col-span-1">
-    <!-- small box -->
-    <div class="bg-teal-500 p-4 rounded-lg shadow-lg">
-      <div class="inner">
-        <h3 class="text-3xl font-bold"><%= @scorecard_count %></h3>
-        <p class="text-lg"><%= dashboard_scorecards_title.pluralize(@scorecard_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-check-square-o text-white text-4xl"></i>
-      </div>
-      <%= link_to(default_scorecards_path, {class: 'block mt-4 text-white font-bold'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-span-1">
-    <!-- small box -->
-    <div class="bg-green-500 p-4 rounded-lg shadow-lg">
-      <div class="inner">
-        <h3 class="text-3xl font-bold"><%= @initiative_count %></h3>
-        <p class="text-lg"><%= 'Initiative'.pluralize(@initiative_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
-      </div>
-      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-span-1">
-    <!-- small box -->
-    <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
-      <div class="inner">
-        <h3 class="text-3xl font-bold"><%= @wicked_problem_count %></h3>
-        <p class="text-lg"><%= 'Problem'.pluralize(@wicked_problem_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
-      </div>
-      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
+<div class="mx-auto max-w-6xl">
+  <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 text-black dark:text-white">Hello, <%= current_user.name %></h1>
+
+  <div class="mt-8 flex items-end justify-between">
+    <h2 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 text-black dark:text-white">Overview</h2>
   </div>
 
-  <div class="col-span-1">
-    <!-- small box -->
-    <div class="bg-blue-500 p-4 rounded-lg shadow-lg">
-      <div class="inner">
-        <h3 class="text-3xl font-bold"><%= @organisation_count %></h3>
-        <p class="text-lg"><%= 'Stakeholder'.pluralize(@organisation_count) %></p>
+  <div class="mt-4 grid gap-8 sm:grid-cols-2 xl:grid-cols-4 text-black dark:text-white">
+    <div>
+      <hr
+        role="presentation"
+        class="w-full border-t border-2 border-cyan-600"
+      />
+      <div class="mt-6 text-lg/6 font-medium sm:text-sm/6">Impact Cards</div>
+      <div class="mt-3 text-3xl/8 font-semibold sm:text-2xl/8"><%= @scorecard_count %></div>
+      <div class="mt-3 text-sm/6 sm:text-xs/6">
+        <span class="text-zinc-500"><%= link_to('More info', scorecards_path) %></span>
       </div>
-      <div class="icon">
-        <i class="fa fa-lightbulb-o text-white text-4xl"></i>
+    </div>
+    <div>
+      <hr
+        role="presentation"
+        class="w-full border-t border-2 border-sky-600"
+      />
+      <div class="mt-6 text-lg/6 font-medium sm:text-sm/6">Initiatives</div>
+      <div class="mt-3 text-3xl/8 font-semibold sm:text-2xl/8"><%= @initiative_count %></div>
+      <div class="mt-3 text-sm/6 sm:text-xs/6">
+        <span class="text-zinc-500"><%= link_to('More info', initiatives_path) %></span>
       </div>
-      <%= link_to(initiatives_path, {class: 'block mt-4 text-white font-bold'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
+    </div>
+    <div>
+      <hr
+        role="presentation"
+        class="w-full border-t border-2 border-teal-600"
+      />
+      <div class="mt-6 text-lg/6 font-medium sm:text-sm/6">Problems / Opportunities</div>
+      <div class="mt-3 text-3xl/8 font-semibold sm:text-2xl/8"><%= @wicked_problem_count %></div>
+      <div class="mt-3 text-sm/6 sm:text-xs/6">
+        <span class="text-zinc-500"><%= link_to('More info', labels_wicked_problems_path) %></span>
+      </div>
+    </div>
+    <div>
+      <hr
+        role="presentation"
+        class="w-full border-t border-2 border-teal-500"
+      />
+      <div class="mt-6 text-lg/6 font-medium sm:text-sm/6">Stakeholders</div>
+      <div class="mt-3 text-3xl/8 font-semibold sm:text-2xl/8"><%= @organisation_count %></div>
+      <div class="mt-3 text-sm/6 sm:text-xs/6">
+        <span class="text-zinc-500"><%= link_to('More info', organisations_path) %></span>
+      </div>
     </div>
   </div>
-  <!-- ./col -->
 </div>
 
-<div class="grid grid-cols-1 gap-6 dashboard">
-  <%= render 'dashboard/welcome_message'%>
-  <%= render 'dashboard/activities'%>
-</div>
+
+<%= render 'dashboard/activities'%>
 

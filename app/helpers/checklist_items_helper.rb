@@ -52,7 +52,7 @@ module ChecklistItemsHelper
       :div,
       '',
       class: 'w-1 h-3',
-      style: "background-color: ##{focus_area_color(focus_area)}",
+      style: "background-color: #{focus_area_color(focus_area)}",
       title: focus_area.name
     )
   end

@@ -50,29 +50,29 @@ module ScorecardsHelper
     end.join(' ')
   end
 
-  def cell_style(result, _focus_areas, characteristic)
-    return '' if result.blank?
+  # def cell_style(result, _focus_areas, characteristic)
+  #   return '' if result.blank?
 
-    characteristic_data = result[characteristic.id.to_s]
+  #   characteristic_data = result[characteristic.id.to_s]
 
-    return '' if characteristic_data.blank?
+  #   return '' if characteristic_data.blank?
 
-    case characteristic_data[:status]
-    when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
-    when 'planned'
-      "background-color: #{characteristic.focus_area.planned_color}"
-    when 'no_comment'
-      "background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 1px,
-      #{characteristic.focus_area.actual_color} 2px,
-      #{characteristic.focus_area.actual_color} 3px
-      );"
-    else
-      ''
-    end
-  end
+  #   case characteristic_data[:status]
+  #   when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
+  #   when 'planned'
+  #     "background-color: #{characteristic.focus_area.planned_color}"
+  #   when 'no_comment'
+  #     "background: repeating-linear-gradient(
+  #     45deg,
+  #     transparent,
+  #     transparent 1px,
+  #     #{characteristic.focus_area.actual_color} 2px,
+  #     #{characteristic.focus_area.actual_color} 3px
+  #     );"
+  #   else
+  #     ''
+  #   end
+  # end
 
   def collection_for_linked_scorecard(parent_scorecard)
     return [] if parent_scorecard.blank?

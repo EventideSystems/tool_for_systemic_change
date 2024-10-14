@@ -1,13 +1,13 @@
 <div class="text-left">
-  <div class="grid grid-cols-3 text-white mt-4">
+  <div class="grid grid-cols-4 text-white mt-4">
     <% @scorecard_grid.each do |data| %>
       <div class="col-span-1 mb-2">
         <h3 class="text-sm font-medium text-gray-900 dark:text-white truncate">
           <%= link_to data.dig('initiative', :name), impact_card_initiative_path(impact_card_id: @scorecard.id, id: data.dig('initiative', :id)), title: data.dig('initiative', :name) %>
         </h3>
       </div>
-      <div class="col-span-2 w-full mb-2 ml-2">
-        <div class="flex flex-wrap gap-y-4">
+      <div class="col-span-3 w-full mb-2 ml-2">
+        <div class="flex flex-wrap gap-y-2">
           <%- data.except('initiative').values.group_by { |value| value[:focus_area_id] }.each do |focus_area_id, grouped_checklist_item_data| %>
             <div class="flex flex-nowrap items-center gap-1 mr-2">
               <%# TODO Move the lookup of the focus area details to @scorecard_grid %>

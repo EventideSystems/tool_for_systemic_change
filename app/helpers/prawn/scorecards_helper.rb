@@ -9,7 +9,11 @@ module Prawn
     include ::ActionView::Helpers::TextHelper
 
     def focus_area_color(focus_area)
-      %w[FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0][focus_area.position - 1]
+      if focus_area.actual_color.present?
+        return focus_area.actual_color
+      else
+        '#' + %w[FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0][focus_area.position - 1]
+      end
     end
 
     def focus_area_desaturated_color(focus_area)

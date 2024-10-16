@@ -1,22 +1,6 @@
 # frozen_string_literal: true
 
 module DashboardHelper
-  def menu_item_tag(resources, icon, options = {})
-    controller_name = "/#{options[:controller].try(:to_s) || resources.to_s}"
-    title = options[:title] || resources.to_s.titleize
-
-    menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''
-
-    link_class = options[:disabled] == true || current_account.nil? ? 'disabled' : ''
-
-    # TODO: 'active' needs to be on the link (link_class), not the <li>
-    content_tag(:li, class: "nav-item #{menu_item_class}") do
-      link_to({ controller: controller_name, action: 'index' }, { class: "nav-link #{link_class}" }) do
-        concat(content_tag(:i, '', class: "fa fa-#{h(icon)} nav-icon"))
-        concat(content_tag(:p, title))
-      end
-    end
-  end
 
   def sdg_card_menu_item(options)
     menu_item_class = controller.controller_name == controller_name.to_s ? 'active' : ''

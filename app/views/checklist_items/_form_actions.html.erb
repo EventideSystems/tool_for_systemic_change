@@ -1,0 +1,13 @@
+<div class="grid grid-cols-4 gap-4 w-full pt-2 pb-3">
+  <div class="col-span-3 flex justify-end space-x-4">
+    <%= link_to(
+      'Cancel',
+      impact_card_initiative_path(
+        impact_card_id: checklist_item.scorecard.id,
+        id: checklist_item.initiative.id
+      ),
+      class: 'rounded-md border border-gray-500 bg-white dark:bg-zinc-950 px-3 py-2 text-sm font-semibold text-zinc-950 dark:text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500'
+    ) %>
+    <%= form.submit button_title %>
+  </div>
+</div>

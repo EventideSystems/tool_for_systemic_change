@@ -12,11 +12,18 @@ class UsersController < ApplicationController
   sidebar_item :teams
 
   def index
-    @pagy, @users = pagy_countless(policy_scope(User).order(sort_order))
+    search_params = params.permit(:format, :page, q: [:name_or_email_cont])
+
+    @q = policy_scope(User).order(:name).ransack(search_params[:q])
+
+    users = @q.result(distinct: true)
+
+    @pagy, @users = pagy(users, limit: 10)
 
     respond_to do |format|
-      format.html
-      format.turbo_stream
+      format.html { render 'users/index', locals: { scorecards: @users } }
+      format.turbo_stream { render 'users/index', locals: { scorecards: @users } }
+      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 

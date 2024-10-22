@@ -34,6 +34,8 @@
 #
 # rubocop:disable Metrics/ClassLength
 class Initiative < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 

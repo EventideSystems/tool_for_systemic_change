@@ -6,8 +6,6 @@
     <%- if @checklist_item.comment.present? %>
       <%= render 'update_existing_form', checklist_item: @checklist_item %>
     <% end %>
-
     <%= render 'save_new_comment_form', checklist_item: @checklist_item  %>
-
   </div>
 <% end %>

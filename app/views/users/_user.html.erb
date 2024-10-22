@@ -12,10 +12,10 @@
       </div>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to user.name, edit_user_path(user) %>
+          <%= link_to highlight(user.name, params.dig(:q, :name_or_email_cont)), edit_user_path(user) %>
         </div>
         <div class="text-xs/6 text-zinc-500">
-          <%= user.email %>
+          <%= highlight(user.email, params.dig(:q, :name_or_email_cont)) %>
         </div>
         <div class="text-xs/6 text-zinc-600">
           TBD

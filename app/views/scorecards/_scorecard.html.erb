@@ -8,36 +8,16 @@
       <%= render partial: 'resource_summary', locals: { name: scorecard.name, background_color: 'bg-cyan-600' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to scorecard.name, scorecard_path(scorecard), data: { turbo: false }  %>
+          <%= link_to highlight(scorecard.name, params.dig(:q, :name_or_description_cont)), scorecard_path(scorecard), data: { turbo: false } %>
         </div>
         <div class="text-xs/6 text-zinc-500">
-          <%= scorecard.description %>
+          <%= highlight(scorecard.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
         <div class="text-xs/6 text-zinc-600">
-          <%= scorecard.type.humanize %>
+          <%= scorecard&.name.presence || 'MISSING' %>
         </div>
       </div>
     </div>
-    <div class="flex items-center gap-4">
-      <%= render_dropdown_menu do %>
-        <%= dropdown_menu_trigger do %>
-          <span class="text-zinc-900 dark:text-white">
-            <%= render_icon :more %>
-          </span>
-        <% end %>
-        <%= dropdown_menu_content do %>
-          <%=
-            dropdown_menu_item do
-              link_to "View", scorecard_path(scorecard), class: "block w-full text-sm", data: { turbo: false }
-            end
-          %>
-          <%=
-            dropdown_menu_item do
-              link_to "Modify", edit_scorecard_path(scorecard), class: "block w-full text-sm", data: { turbo: false }
-            end
-          %>
-        <% end %>
-      <% end %>
-    </div>
   </div>
 </li>
+

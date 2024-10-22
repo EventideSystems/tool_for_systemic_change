@@ -8,37 +8,13 @@
       <%= render partial: 'resource_summary', locals: { name: organisation.name, background_color: 'bg-teal-500' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to organisation.name, organisation_path(organisation), data: { turbo: false } %>
+          <%= link_to highlight(organisation.name, params.dig(:q, :name_or_description_cont)), organisation_path(organisation) %>
         </div>
         <div class="text-xs/6 text-zinc-500">
-          <%= organisation.description %>
-        </div>
-        <div class="text-xs/6 text-zinc-600">
-          <%= organisation.stakeholder_type_name %>
+          <%= highlight(organisation.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
       </div>
     </div>
-    <div class="flex items-center gap-4">
-      <%= render_dropdown_menu do %>
-        <%= dropdown_menu_trigger do %>
-          <span class="text-zinc-900 dark:text-white">
-            <%= render_icon :more %>
-          </span>
-        <% end %>
-
-        <%= dropdown_menu_content do %>
-          <%=
-            dropdown_menu_item do
-              link_to "View", organisation_path(organisation), class: "block w-full text-sm", data: { turbo: false }
-            end
-          %>
-          <%=
-            dropdown_menu_item do
-              link_to "Modify", edit_organisation_path(organisation), class: "block w-full text-sm", data: { turbo: false }
-            end
-          %>
-        <% end %>
-      <% end %>
-    </div>
   </div>
 </li>
+

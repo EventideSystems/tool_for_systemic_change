@@ -13,23 +13,18 @@ class OrganisationsController < ApplicationController
   sidebar_item :stakeholders
 
   def index
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Organisation).order(:name).ransack(search_params[:q])
+
+    organisations = @q.result(distinct: true)
+
+    @pagy, @organisations = pagy(organisations, limit: 10)
+
     respond_to do |format|
-      format.html do
-        @pagy, @organisations = pagy_countless(policy_scope(Organisation).includes(:stakeholder_type).order(sort_order))
-      end
-
-      format.turbo_stream do
-        @pagy, @organisations = pagy_countless(policy_scope(Organisation).includes(:stakeholder_type).order(sort_order))
-      end
-
-      format.csv do
-        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
-        send_data organisations_to_csv(@organisations, params[:include_stakeholder_list]), :type => Mime[:csv], :filename =>"#{export_filename}.csv"
-      end
-      format.xlsx do
-        @organisations = policy_scope(Organisation).includes(:stakeholder_type).order(sort_order).all
-        send_data @organisations.to_xlsx.read, :type => Mime[:xlsx], :filename =>"#{export_filename}.xlsx"
-      end
+      format.html { render 'organisations/index', locals: { organisations: @organisations } }
+      format.turbo_stream { render 'organisations/index', locals: { organisations: @organisations } }
+      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 

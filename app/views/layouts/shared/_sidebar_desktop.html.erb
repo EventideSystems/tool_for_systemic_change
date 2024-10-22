@@ -1,4 +1,4 @@
-<div class="fixed inset-y-0 left-0 w-64 max-lg:hidden bg-zinc-950">
+<div class="fixed inset-y-0 left-0 w-60 max-lg:hidden bg-zinc-950">
   <div class="flex h-full min-h-0 flex-col">
     <div class="flex items-center border-b border-zinc-950/5 p-4 dark:border-white/5 mt-2.5">
       <%= image_tag 'logo-small.png', class: 'h-7 w-7', alt: "Logo for the 'Obsekio'" %>
@@ -69,6 +69,14 @@
                 end
               %>
               <hr/>
+              <%- if current_user != true_user %>
+                <%=
+                  dropdown_menu_item do
+                    link_to "Stop impersonating", stop_impersonating_users_path, data: { turbo_method: "post" }, class: "block w-full text-sm"
+                  end
+                %>
+              <% end %>
+
               <%=
                 dropdown_menu_item do
                   link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"

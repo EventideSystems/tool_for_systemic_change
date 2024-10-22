@@ -1,17 +1,19 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
-    <div class="max-sm:w-full sm:flex-1">
+    <div class="w-full">
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Team</h1>
+      <div class="flex justify-between items-center mt-4 ">
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search team...', search_field: :name_or_email_cont } %>
+        <div>
+          <%= link_to_primary 'Invite team member', new_user_invitation_path %>
+        </div>
+      </div>
     </div>
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render partial: 'users/user', collection:  @users %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
   </div>
-  <ul class="mt-10">
-    <%= turbo_frame_tag :users do %>
-      <%= render @users %>
-    <% end %>
-    <%=
-      turbo_frame_tag :pagination,
-        loading: :lazy,
-        src: users_path(format: :turbo_stream, page: @pagy.next)
-    %>
-  </ul>
 </div>

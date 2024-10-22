@@ -19,7 +19,7 @@
 #  index_communities_on_deleted_at  (deleted_at)
 #
 class Community < ApplicationRecord
-  include SearchableLabel
+  include Searchable
 
   has_paper_trail
   acts_as_paranoid

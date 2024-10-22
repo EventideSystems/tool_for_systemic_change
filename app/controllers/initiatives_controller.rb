@@ -13,23 +13,39 @@ class InitiativesController < ApplicationController
   sidebar_item :initiatives
 
   def index
-    base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order('upper(initiatives.name) asc')
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Initiative).order(:name).ransack(search_params[:q])
+
+    initiatives = @q.result(distinct: true)
+
+    @pagy, @initiatives = pagy(initiatives, limit: 10)
 
     respond_to do |format|
-      format.html do
-        @pagy, @initiatives = pagy_countless(base_scope, items: 10)
-      end
-
-      format.turbo_stream do
-        @pagy, @initiatives = pagy_countless(base_scope, items: 10)
-      end
-
-      format.csv do
-        @initiatives = base_scope.all
-        send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
-      end
+      format.html { render 'initiatives/index', locals: { initiatives: @initiatives } }
+      format.turbo_stream { render 'initiatives/index', locals: { initiatives: @initiatives } }
+      format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
+
+  # def index
+  #   base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order('upper(initiatives.name) asc')
+
+  #   respond_to do |format|
+  #     format.html do
+  #       @pagy, @initiatives = pagy_countless(base_scope, items: 10)
+  #     end
+
+  #     format.turbo_stream do
+  #       @pagy, @initiatives = pagy_countless(base_scope, items: 10)
+  #     end
+
+  #     format.csv do
+  #       @initiatives = base_scope.all
+  #       send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
+  #     end
+  #   end
+  # end
 
   def show
     sidebar_item :impact_cards

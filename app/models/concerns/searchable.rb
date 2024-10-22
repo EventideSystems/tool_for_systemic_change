@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
-module SearchableLabel
+# Basic search module for models
+# Usage:
+# class Model < ApplicationRecord
+#   include Searchable
+# end
+# Model.ransack(params[:q]).result
+module Searchable
   extend ActiveSupport::Concern
 
   class_methods do

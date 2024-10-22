@@ -1,5 +1,5 @@
-<%= turbo_stream.update :labels do %>
+<%= turbo_stream.update :list do %>
   <%= render 'stylesheet', labels: @labels %>
   <%= render @labels %>
-  <%= render partial: 'labels/pagination' %>
+  <%= render partial: 'pagination' %>
 <% end %>

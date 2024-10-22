@@ -1,0 +1,23 @@
+<%# Just an example of the Shadcn-Rails drop down menu. We're not using this at present, but may in the future %>
+<div class="flex items-center gap-4">
+  <%= render_dropdown_menu do %>
+    <%= dropdown_menu_trigger do %>
+      <span class="text-zinc-900 dark:text-white">
+        <%= render_icon :more %>
+      </span>
+    <% end %>
+
+    <%= dropdown_menu_content do %>
+      <%=
+        dropdown_menu_item do
+          link_to "View", organisation_path(organisation), class: "block w-full text-sm", data: { turbo: false }
+        end
+      %>
+      <%=
+        dropdown_menu_item do
+          link_to "Modify", edit_organisation_path(organisation), class: "block w-full text-sm", data: { turbo: false }
+        end
+      %>
+    <% end %>
+  <% end %>
+</div>

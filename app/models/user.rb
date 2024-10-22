@@ -42,6 +42,8 @@
 #  index_users_on_system_role           (system_role)
 #
 class User < ApplicationRecord
+  include Searchable
+
   has_paper_trail
 
   enum system_role: { member: 0, admin: 1 }
@@ -65,6 +67,10 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :accounts_users, allow_destroy: true
 
   attr_accessor :account_role # Virtual attribute used when inviting users
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name email] + _ransackers.keys
+  end
 
   def active_for_authentication?
     super && (admin? || default_account.present?)

@@ -26,6 +26,8 @@
 #  index_scorecards_on_type        (type)
 #
 class Scorecard < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 

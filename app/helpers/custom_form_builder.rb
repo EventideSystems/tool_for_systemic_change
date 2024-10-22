@@ -35,12 +35,20 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       [color_name.capitalize, color_name, { class: color_class }]
     end
 
+
   # rubocop:disable Layout/LineLength
   CHECK_BOX_CLASS = 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
-  SUBMIT_BUTTON_CLASS = 'rounded-md bg-yellow-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500'
-  TEXT_FIELD_CLASS = 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm sm:leading-6'
-  TEXT_AREA_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6'
-  SELECT_FIELD_CLASS = 'mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-yellow-500 sm:text-sm sm:leading-6'
+  SUBMIT_BUTTON_CLASS = 'rounded-md bg-zinc-950 dark:bg-zinc-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500'
+
+  COMMON_FIELD_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6'
+
+  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 bg-green-400 dark:text-white dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500"
+  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS} bg-neutral-800 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600"
+  SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} mt-2 pl-3 pr-10 focus:ring-2 focus:ring-yellow-500"
+
+  # TEXT_FIELD_CLASS = 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm sm:leading-6'
+  # TEXT_AREA_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6'
+  # SELECT_FIELD_CLASS = 'mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-yellow-500 sm:text-sm sm:leading-6'
   # rubocop:enable Layout/LineLength
   ERROR_BORDER_CLASS = 'border-2 border-red-500'
   LABEL_CLASS = 'block text-sm font-medium leading-6 text-gray-900 dark:text-white'

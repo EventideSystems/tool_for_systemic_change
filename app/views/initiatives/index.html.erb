@@ -1,17 +1,19 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
-    <div class="max-sm:w-full sm:flex-1">
+    <div class="w-full">
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Initiatives</h1>
+      <div class="flex justify-between items-center mt-4 ">
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search initiatives...' } %>
+        <div>
+          <%= link_to_primary 'Create initiative', new_initiative_path %>
+        </div>
+      </div>
     </div>
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render partial: 'initiatives/initiative', collection: @initiatives %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
   </div>
-  <ul class="mt-10">
-    <%= turbo_frame_tag :initiatives do %>
-      <%= render @initiatives %>
-    <% end %>
-    <%=
-      turbo_frame_tag :pagination,
-        loading: :lazy,
-        src: initiatives_path(format: :turbo_stream, page: @pagy.next)
-    %>
-  </ul>
 </div>

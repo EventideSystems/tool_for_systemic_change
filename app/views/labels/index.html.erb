@@ -1,27 +1,19 @@
 <div class="mx-auto max-w-6xl" data-controller="labels">
   <!-- Header -->
   <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4 dark:border-gray-700">
-    <%= search_form_for [:labels, @q], data: { turbo_frame: :labels } do |f| %>
-      <%= f.search_field :name_or_description_cont, placeholder: 'Filter', class: "form-input w-64 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white", oninput: 'this.form.requestSubmit()', autofocus: true, autocomplete: 'off' %>
-    <% end %>
+    <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: 'Filter...' } %>
     <%=
-      link_to(
-        'New',
-        new_polymorphic_path([:labels, label_klass]),
-        class: "bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600",
-        data: { turbo_stream: true, action: 'click->labels#toggle' },
-
-      )
+      link_to_primary('New', new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
     %>
   </div>
 
   <%= turbo_frame_tag :new_label_form %>
 
-  <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-    <%= turbo_frame_tag :labels do %>
+  <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+    <%= turbo_frame_tag :list do %>
       <%= render 'labels/stylesheet' %>
       <%= render partial: 'labels/label', collection: @labels %>
-      <%= render partial: 'labels/pagination' %>
+      <%= render partial: 'pagination' %>
     <% end %>
   </ul>
 </div>

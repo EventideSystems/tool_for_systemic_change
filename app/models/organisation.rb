@@ -20,6 +20,8 @@
 #  index_organisations_on_deleted_at  (deleted_at)
 #
 class Organisation < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 

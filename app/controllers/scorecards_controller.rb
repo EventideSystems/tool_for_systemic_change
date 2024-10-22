@@ -18,13 +18,18 @@ class ScorecardsController < ApplicationController
   sidebar_item :impact_cards
 
   def index
-    @pagy, @scorecards = pagy_countless(
-      policy_scope(Scorecard).order('upper(trim(scorecards.name)) asc'), items: 10
-    )
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Scorecard).order(:name).ransack(search_params[:q])
+
+    scorecards = @q.result(distinct: true)
+
+    @pagy, @scorecards = pagy(scorecards, limit: 10)
 
     respond_to do |format|
-      format.html
-      format.turbo_stream
+      format.html { render 'scorecards/index', locals: { scorecards: @scorecards } }
+      format.turbo_stream { render 'scorecards/index', locals: { scorecards: @scorecards } }
+      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 

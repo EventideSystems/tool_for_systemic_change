@@ -1,5 +1,5 @@
 <div class="w-24 shrink-0">
   <div class="h-20 w-20 flex-shrink-0 rounded-lg <%= background_color %> text-white dark:text-black flex items-center justify-center">
-    <p class="text-4xl"><%= name.lstrip[0].upcase %></p>
+    <p class="text-4xl"><%= name&.lstrip[0]&.upcase || '?' %></p>
   </div>
 </div>

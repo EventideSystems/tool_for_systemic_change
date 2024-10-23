@@ -1,14 +1,4 @@
-<%= turbo_stream.append :scorecards do %>
-  <%= render partial: "scorecard", collection: @scorecards %>
-<% end %>
-<%= turbo_stream.replace :pagination do %>
-  <% if @pagy.next.present? %>
-    <%=
-      turbo_frame_tag(
-        :pagination,
-        loading: :lazy,
-        src: scorecards_path(format: :turbo_stream, page: @pagy.next)
-      )
-    %>
-  <% end %>
+<%= turbo_stream.update :list do %>
+  <%= render @scorecards %>
+  <%= render partial: 'pagination' %>
 <% end %>

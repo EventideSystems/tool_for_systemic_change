@@ -5,11 +5,7 @@
   />
   <div class="flex items-center justify-between">
     <div class="flex gap-6 py-6">
-      <div class="w-32 shrink-0">
-        <div class="mx-auto h-20 w-20 flex-shrink-0 rounded-lg bg-green-700 flex items-center justify-center">
-          <p class="text-4xl"><%= user.name.lstrip[0] %></p>
-        </div>
-      </div>
+      <%= render partial: 'resource_summary', locals: { name: user.name, background_color: 'bg-green-700' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
           <%= link_to highlight(user.name, params.dig(:q, :name_or_email_cont)), edit_user_path(user) %>
@@ -17,11 +13,11 @@
         <div class="text-xs/6 text-zinc-500">
           <%= highlight(user.email, params.dig(:q, :name_or_email_cont)) %>
         </div>
-        <div class="text-xs/6 text-zinc-600">
-          TBD
-        </div>
+        <%= role_in_current_account_badge(user) %>
       </div>
     </div>
+
+
     <div class="flex items-center gap-4">
       <%= render_dropdown_menu do %>
         <%= dropdown_menu_trigger do %>

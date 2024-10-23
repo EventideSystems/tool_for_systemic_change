@@ -1,20 +1,26 @@
 <div class="mx-auto max-w-6xl" data-controller="labels">
-  <!-- Header -->
-  <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4 dark:border-gray-700">
-    <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: 'Filter...' } %>
-    <%=
-      link_to_primary('New', new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
-    %>
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= label_klass.name.titleize.pluralize %></h1>
+      <div class="flex justify-between items-center mt-4 ">
+        <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: "Search #{label_klass.name.titleize.downcase.pluralize}..." } %>
+        <div>
+          <%=
+            link_to_primary("Create #{label_klass.name.titleize.downcase}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
+          %>
+        </div>
+      </div>
+    </div>
+
+    <%= turbo_frame_tag :new_label_form %>
+
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render 'labels/stylesheet', labels: @labels %>
+        <%= render partial: 'labels/label', collection: @labels %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
   </div>
-
-  <%= turbo_frame_tag :new_label_form %>
-
-  <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-    <%= turbo_frame_tag :list do %>
-      <%= render 'labels/stylesheet' %>
-      <%= render partial: 'labels/label', collection: @labels %>
-      <%= render partial: 'pagination' %>
-    <% end %>
-  </ul>
 </div>
 

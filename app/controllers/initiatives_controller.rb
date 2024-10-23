@@ -13,6 +13,8 @@ class InitiativesController < ApplicationController
   sidebar_item :initiatives
 
   def index
+    @subsystem_tags = current_account.subsystem_tags
+
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(Initiative).order(:name).ransack(search_params[:q])

@@ -13,6 +13,8 @@ class OrganisationsController < ApplicationController
   sidebar_item :stakeholders
 
   def index
+    @stakeholder_types = current_account.stakeholder_types
+
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(Organisation).order(:name).ransack(search_params[:q])

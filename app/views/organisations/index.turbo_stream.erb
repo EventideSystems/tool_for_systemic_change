@@ -1,14 +1,4 @@
-<%= turbo_stream.append :organisations do %>
+<%= turbo_stream.update :list do %>
   <%= render @organisations %>
-<% end %>
-<%= turbo_stream.replace :pagination do %>
-  <% if @pagy.next.present? %>
-    <%=
-      turbo_frame_tag(
-        :pagination,
-        loading: :lazy,
-        src: organisations_path(format: :turbo_stream, page: @pagy.next)
-      )
-    %>
-  <% end %>
+  <%= render partial: 'pagination' %>
 <% end %>

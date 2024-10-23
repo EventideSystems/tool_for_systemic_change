@@ -18,6 +18,9 @@ class ScorecardsController < ApplicationController
   sidebar_item :impact_cards
 
   def index
+    @communities = current_account.communities
+    @wicked_problems = current_account.wicked_problems
+
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(Scorecard).order(:name).ransack(search_params[:q])

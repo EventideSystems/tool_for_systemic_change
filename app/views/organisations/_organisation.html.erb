@@ -10,9 +10,16 @@
         <div class="text-base/6 font-semibold dark:text-white">
           <%= link_to highlight(organisation.name, params.dig(:q, :name_or_description_cont)), organisation_path(organisation) %>
         </div>
-        <div class="text-xs/6 text-zinc-500">
+        <div class="text-xs/6 text-zinc-500 min-h-4">
           <%= highlight(organisation.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
+
+        <%- if organisation.stakeholder_type.present? %>
+          <div class="inline-flex rounded-lg items-center justify-center <%= dom_id(organisation.stakeholder_type) %>" title="Stakeholder type: <%= organisation.stakeholder_type.name %>">
+            <p class="p-1 text-xs"><%= organisation.stakeholder_type.name %></p>
+          </div>
+        <%- end %>
+
       </div>
     </div>
   </div>

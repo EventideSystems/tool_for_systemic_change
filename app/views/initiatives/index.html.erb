@@ -1,3 +1,4 @@
+<%= render 'labels/stylesheet', labels: @subsystem_tags %>
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
@@ -9,7 +10,7 @@
         </div>
       </div>
     </div>
-    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
         <%= render partial: 'initiatives/initiative', collection: @initiatives %>
         <%= render partial: 'pagination' %>

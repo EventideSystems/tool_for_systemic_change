@@ -41,15 +41,15 @@
 
     <div class="flex space-x-2 mt-4">
       <%- save_disabled = (label.name.blank? || label.color.blank?) %>
+      <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: LinksHelper::SECONDARY_CLASS %>
       <%=
         f.submit(
           "Save",
           data: { labels_target: 'submitButton' },
-          class: "bg-blue-500 text-white px-2 py-0.5 text-xs rounded-md hover:bg-blue-600 flex items-center justify-center#{ ' opacity-50 cursor-not-allowed' if save_disabled }",
+          class: "#{LinksHelper::PRIMARY_CLASS}#{ ' opacity-50 cursor-not-allowed' if save_disabled }",
           disabled: save_disabled
         )
       %>
-      <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: 'bg-red-500 text-white px-2 py-0.5 text-xs rounded-md hover:bg-red-600 flex items-center justify-center' %>
     </div>
   </div>
 <% end %>

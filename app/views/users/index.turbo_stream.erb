@@ -1,14 +1,4 @@
-<%= turbo_stream.append :users do %>
+<%= turbo_stream.update :list do %>
   <%= render @users %>
-<% end %>
-<%= turbo_stream.replace :pagination do %>
-  <% if @pagy.next.present? %>
-    <%=
-      turbo_frame_tag(
-        :pagination,
-        loading: :lazy,
-        src: users_path(format: :turbo_stream, page: @pagy.next)
-      )
-    %>
-  <% end %>
+  <%= render partial: 'pagination' %>
 <% end %>

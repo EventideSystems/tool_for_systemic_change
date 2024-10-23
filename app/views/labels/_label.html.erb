@@ -16,8 +16,8 @@
       </div>
 
       <div class="flex items-center gap-4 ml-auto">
-        <%= link_to "Edit", edit_polymorphic_path([:labels, label]), class: "text-sm text-blue-500 hover:underline" %>
         <%= link_to "Delete", polymorphic_path([:labels, label]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"},  class: "text-sm text-red-500 hover:underline" %>
+        <%= link_to_primary "Edit", edit_polymorphic_path([:labels, label]) %>
       </div>
     </div>
   <% end %>

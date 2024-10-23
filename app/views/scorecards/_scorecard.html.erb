@@ -10,12 +10,24 @@
         <div class="text-base/6 font-semibold dark:text-white">
           <%= link_to highlight(scorecard.name, params.dig(:q, :name_or_description_cont)), scorecard_path(scorecard), data: { turbo: false } %>
         </div>
-        <div class="text-xs/6 text-zinc-500">
+        <div class="text-xs/6 text-zinc-500 min-h-4">
           <%= highlight(scorecard.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
-        <div class="text-xs/6 text-zinc-600">
-          <%= scorecard&.name.presence || 'MISSING' %>
-        </div>
+
+        <%- if scorecard.community.present? || scorecard.wicked_problem.present? %>
+          <div class="flex space-x-4">
+            <%- if scorecard.community.present? %>
+              <div class="inline-flex rounded-lg items-center justify-center <%= dom_id(scorecard.community) %>" title="Community: <%= scorecard.community.name %>">
+                <p class="p-1 text-xs"><%= scorecard.community.name %></p>
+              </div>
+            <%- end %>
+            <%- if scorecard.wicked_problem.present? %>
+              <div class="inline-flex rounded-lg items-center justify-center <%= dom_id(scorecard.wicked_problem) %>" title="Problems / opportunity: <%= scorecard.wicked_problem.name %>">
+                <p class="p-1 text-xs"><%= scorecard.wicked_problem.name %></p>
+              </div>
+            <%- end %>
+          </div>
+        <%- end %>
       </div>
     </div>
   </div>

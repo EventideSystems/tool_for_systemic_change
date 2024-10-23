@@ -23,9 +23,9 @@ module UsersHelper
 
     case role.to_sym
     when :admin
-      base_class += ' bg-pink-400/15 text-pink-700 group-data-[hover]:bg-pink-400/25 dark:bg-pink-400/10 dark:text-pink-400 dark:group-data-[hover]:bg-pink-400/20'
+      base_class += ' bg-pink-400 text-black'
     when :member
-      base_class += ' bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15'
+      base_class += ' bg-lime-400 text-black'
     end
 
     content_tag(:span, role, class: base_class, title: "Member since #{user.created_at.strftime('%b. %Y')}")

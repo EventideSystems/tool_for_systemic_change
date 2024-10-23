@@ -2,9 +2,9 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def application_title
-    return 'Tool for Systemic Change' if Rails.env.production?
+    return 'Obsekio' if Rails.env.production?
 
-    "Tool for Systemic Change - #{Rails.env.titleize}"
+    "Obsekio - #{Rails.env.titleize}"
   end
 
   # Render an SVG icon from views/icons

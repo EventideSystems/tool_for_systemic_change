@@ -1,4 +1,10 @@
+
+
 .<%= dom_id(label) %> {
   color: <%= label.color %>;
-  background-color: oklch(from <%= label.color %> l c h / 0.1);
+  <%- if calculate_luminance(label.color) > 0.06 %>
+    background-color: oklch(from <%= label.color %> l c h / 0.1);
+  <%- else %>
+    background-color: <%= contrasting_text_color(label.color) %>;
+  <%- end %>
 }

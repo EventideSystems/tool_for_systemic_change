@@ -45,7 +45,7 @@ export default class extends Controller {
     const value = element.currentTarget.value
     const previewColorElement = element.currentTarget.closest("form").querySelector("[data-labels-target='previewColor']")
 
-    previewColorElement.style.color = this.calculateLuminance(value) > 0.09 ? 'black' : '#e0e0e0'
+    previewColorElement.style.color = this.calculateLuminance(value) > 0.28 ? 'black' : '#e0e0e0'
     previewColorElement.style.backgroundColor = value;
   }
 

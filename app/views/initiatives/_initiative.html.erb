@@ -20,9 +20,7 @@
         <%- if initiative.subsystem_tags.present? %>
           <div class="flex space-x-4">
             <%- initiative.subsystem_tags.each do |subsystem_tag| %>
-              <div class="inline-flex rounded-lg items-center justify-center <%= dom_id(subsystem_tag) %>" title="Subsystem tag: <%= subsystem_tag.name %>">
-                <p class="p-1 text-xs"><%= subsystem_tag.name %></p>
-              </div>
+              <%= render 'label_badge', label: subsystem_tag %>
             <%- end %>
           </div>
         <%- end %>

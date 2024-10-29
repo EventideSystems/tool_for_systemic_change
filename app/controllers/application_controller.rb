@@ -56,14 +56,6 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  def content_title
-    controller_name.titleize
-  end
-
-  def content_subtitle
-    @content_subtitle || ''
-  end
-
   def info_for_paper_trail
     { account_id: current_account&.id }
   end

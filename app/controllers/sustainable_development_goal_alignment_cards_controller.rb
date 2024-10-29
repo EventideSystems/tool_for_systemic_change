@@ -49,10 +49,6 @@ class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
     'SustainableDevelopmentGoalAlignmentCard'
   end
 
-  def content_title
-    current_account.sdgs_alignment_card_model_name.pluralize
-  end
-
   def scorecard_key_param
     :sustainable_development_goal_alignment_card
   end

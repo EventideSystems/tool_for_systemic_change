@@ -50,30 +50,6 @@ module ScorecardsHelper
     end.join(' ')
   end
 
-  # def cell_style(result, _focus_areas, characteristic)
-  #   return '' if result.blank?
-
-  #   characteristic_data = result[characteristic.id.to_s]
-
-  #   return '' if characteristic_data.blank?
-
-  #   case characteristic_data[:status]
-  #   when 'actual' then "background-color: #{characteristic.focus_area.actual_color}"
-  #   when 'planned'
-  #     "background-color: #{characteristic.focus_area.planned_color}"
-  #   when 'no_comment'
-  #     "background: repeating-linear-gradient(
-  #     45deg,
-  #     transparent,
-  #     transparent 1px,
-  #     #{characteristic.focus_area.actual_color} 2px,
-  #     #{characteristic.focus_area.actual_color} 3px
-  #     );"
-  #   else
-  #     ''
-  #   end
-  # end
-
   def collection_for_linked_scorecard(parent_scorecard)
     return [] if parent_scorecard.blank?
 
@@ -103,13 +79,6 @@ module ScorecardsHelper
       else
         raise('Unknown scorecard type')
       end.model_name.human
-  end
-
-  def scorecard_path(scorecard)
-    case scorecard.type
-    when 'TransitionCard' then transition_card_path(scorecard)
-    when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(scorecard)
-    end
   end
 
   def copy_scorecard_url(scorecard)

@@ -98,14 +98,6 @@ module System
       redirect_to root_path, flash: { notice: 'You are no longer impersonating another user' }
     end
 
-    def content_title
-      'System Users'
-    end
-
-    def content_subtitle
-      @user&.display_name.presence || super
-    end
-
     private
 
     # SMELL: This is a duplicate of the code in the InvitationsContoller class.

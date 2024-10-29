@@ -47,18 +47,15 @@ module ChecklistItemsHelper
   # $color-suggestion: #F7C80B;
   # $color-more-information: #7993F2;
 
-  def focus_area_grid_element(focus_area)
+  def focus_area_grid_element(focus_area_data)
     content_tag(
       :div,
       '',
       class: 'w-1 h-3',
-      style: "background-color: #{focus_area_color(focus_area)}",
-      title: focus_area.name
+      style: "background-color: #{focus_area_data[:focus_area_color]}",
+      title: focus_area_data[:focus_area_name]
     )
   end
-
-  # <div class="flex flex-wrap gap-1 mr-3 border-l-4 pl-1" style="border-color: #<%= focus_area_color(FocusArea.find(group)) %>">
-
 
   def checklist_list_item_grid_element(checklist_item_data)
     background_color = checklist_list_item_grid_element_color(checklist_item_data[:status])
@@ -76,13 +73,6 @@ module ChecklistItemsHelper
     return 'no-comment' if checklist_item.comment.blank?
 
     checklist_item.status.to_s.dasherize
-  end
-
-  def comment_statuses_collection
-    @comment_statuses_collection ||=
-      ChecklistItemComment.statuses.keys.map do |key|
-        [I18n.t("activerecord.attributes.checklist_item_comment/status.#{key}"), key]
-      end
   end
 
   def checklist_item_badge(checklist_item)

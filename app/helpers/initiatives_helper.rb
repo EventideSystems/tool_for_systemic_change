@@ -61,42 +61,9 @@ module InitiativesHelper
     end
   end
 
-  def initiative_tab_title(scorecard_type)
-    case scorecard_type.name
-    when 'TransitionCard'
-      "Initiatives for #{current_account.transition_card_model_name.pluralize}"
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      "Initiatives for #{current_account.sdgs_alignment_card_model_name.pluralize}"
-    end
-  end
-
-  def initiative_scope(scorecard_type)
-    case scorecard_type.name
-    when 'TransitionCard' then :transition_cards
-    when 'SustainableDevelopmentGoalAlignmentCard' then :sdgs_alignment_cards
-    end
-  end
-
-  def initiative_tab_class(scorecard_type, scope)
-    case scorecard_type.name
-    when 'TransitionCard'
-      scope.blank? || scope == 'transition_cards' ? 'active' : ''
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      scope == 'sdgs_alignment_cards' ? 'active' : ''
-    end + ' nav-link'
-  end
-
   def initiative_scorecard_types
     current_account.scorecard_types.map do |scorecard_type|
       [scorecard_type.model_name.human.pluralize, scorecard_type.name]
-    end
-  end
-
-  def initiative_export_button_tooltip_title(params)
-    if current_account.scorecard_types.count > 1
-      "Export #{initiative_tab_title(scorecard_type_from_params(params))} to CSV"
-    else
-      'Export Initiatives to CSV'
     end
   end
 

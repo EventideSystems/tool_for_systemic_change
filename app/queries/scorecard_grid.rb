@@ -44,6 +44,8 @@ class ScorecardGrid
             -- Value column
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
+              'focus_area_name', focus_areas.name,
+              'focus_area_color', focus_areas.actual_color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -68,7 +70,13 @@ class ScorecardGrid
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
           #{subsystem_sql(subsystem_tags)}
-          group by initiatives.id, characteristics.id, checklist_items.id, focus_area_groups.id
+          group by
+            initiatives.id,
+            characteristics.id,
+            checklist_items.id,
+            focus_area_groups.id,
+            focus_areas.name,
+            focus_areas.actual_color
           order by initiative
           $$,
           $$
@@ -96,6 +104,8 @@ class ScorecardGrid
             -- Value column
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
+              'focus_area_name', focus_areas.name,
+              'focus_area_color', focus_areas.actual_color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -142,6 +152,8 @@ class ScorecardGrid
             characteristics.id,
             checklist_items.id,
             focus_area_groups.id,
+            focus_areas.name,
+            focus_areas.actual_color,
             changes.comment,
             checklist_items_at_snap_shot.comment,
             changes.ending_status,

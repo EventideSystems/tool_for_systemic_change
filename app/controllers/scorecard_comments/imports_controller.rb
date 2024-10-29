@@ -31,14 +31,6 @@ class ScorecardComments::ImportsController < ApplicationController
     end
   end
 
-  def content_title
-    'Card Comments'
-  end
-
-  def content_subtitle
-    'Import'
-  end
-
   private
 
   def set_scorecard_comments_import

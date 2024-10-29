@@ -65,7 +65,6 @@ class ScorecardsController < ApplicationController
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-    # add_breadcrumb(@scorecard.name)
 
     respond_to do |format|
       format.html
@@ -115,11 +114,9 @@ class ScorecardsController < ApplicationController
 
     @scorecard.initiatives.build
 
-    # add_breadcrumb('New')
   end
 
   def edit
-    # add_breadcrumb(@scorecard.name)
 
     source_scorecard = @scorecard
     target_scorecard = @scorecard.linked_scorecard

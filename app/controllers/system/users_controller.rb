@@ -10,10 +10,7 @@ module System
 
     skip_after_action :verify_policy_scoped
 
-    # add_breadcrumb 'System'
-    # add_breadcrumb 'Users', :system_users_path
-
-    def index
+            def index
       respond_to do |format|
         format.html do |_html|
           @users = UserPolicy::SystemScope.new(pundit_user, User.all).resolve.page params[:page]
@@ -27,18 +24,15 @@ module System
 
     def show
       @user.readonly!
-      # add_breadcrumb @user.display_name
-    end
+          end
 
     def new
       @user = User.new
       authorize @user
-      # add_breadcrumb 'New'
-    end
+          end
 
     def edit
-      # add_breadcrumb @user.display_name
-    end
+          end
 
     def create
       @user = User.new(user_params)

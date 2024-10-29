@@ -2,10 +2,7 @@ class Organisations::ImportsController < ApplicationController
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
   before_action :set_organisations_import, only: [:show, :edit, :update, :destroy]
 
-  # add_breadcrumb "Organisations", :organisations_path
-  # add_breadcrumb "Import"
-
-  def index
+      def index
     @organisations_imports = Organisations::Import.all
   end
 

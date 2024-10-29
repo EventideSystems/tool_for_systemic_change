@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   before_action :set_paper_trail_whodunnit
-  before_action :enable_profiler
-  before_action :prepare_exception_notifier
 
   # protect_from_forgery with: :exception
   protect_from_forgery prepend: true
@@ -20,10 +18,6 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
 
-  # add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
-
-  helper_method :current_account, :sidebar_disabled?, :search_disabled?
-
   sidebar_item :home
 
   def current_account
@@ -32,20 +26,12 @@ class ApplicationController < ActionController::Base
     @current_account ||= fetch_account_from_session || fetch_default_account_and_set_session
   end
 
-  def sidebar_disabled?
-    current_account.nil?
-  end
+  helper_method :current_account
 
   def current_account=(account)
     @current_account = nil
     session[:account_id] = account.present? ? account.id : nil
     current_account
-  end
-
-  def enable_profiler
-    return unless ::Rails.env.development? || ::Rails.env.staging?
-
-    # ::Rack::MiniProfiler.authorize_request
   end
 
   def pundit_user
@@ -110,10 +96,6 @@ class ApplicationController < ActionController::Base
     default_account = current_user&.default_account
     session[:account_id] = default_account&.id
     default_account
-  end
-
-  def prepare_exception_notifier
-    request.env['exception_notifier.exception_data'] = { current_user: }
   end
 
   def set_session_account_id

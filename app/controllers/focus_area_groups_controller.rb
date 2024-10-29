@@ -3,9 +3,7 @@ class FocusAreaGroupsController < ApplicationController
 
   before_action :set_focus_area_group, only: [:show, :edit, :update, :destroy]
 
-  # add_breadcrumb "System", :focus_area_groups_path
-
-  def index
+    def index
     @focus_area_groups = \
       policy_scope(FocusAreaGroup)
         .where(account: current_account)

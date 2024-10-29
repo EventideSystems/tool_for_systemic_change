@@ -6,9 +6,7 @@ class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
-  # add_breadcrumb "Organisations", :organisations_path
-
-  respond_to :js, :html
+    respond_to :js, :html
 
   sidebar_item :stakeholders
 
@@ -33,17 +31,14 @@ class OrganisationsController < ApplicationController
   def show
     @organisation.readonly!
     render 'show'
-    # add_breadcrumb @organisation.name
   end
 
   def new
     @organisation = current_account.organisations.build
     authorize @organisation
-    # add_breadcrumb "New"
   end
 
   def edit
-    # add_breadcrumb @organisation.name
   end
 
   def create

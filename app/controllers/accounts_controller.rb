@@ -5,8 +5,6 @@ class AccountsController < ApplicationController
 
   before_action :set_account, only: %i[show edit update destroy switch]
 
-  # add_breadcrumb 'Accounts', :accounts_path
-
   def index
     @pagy, @accounts = pagy_countless(policy_scope(Account).order('upper(trim(accounts.name)) asc'), items: 10)
 
@@ -18,17 +16,14 @@ class AccountsController < ApplicationController
 
   def show
     @account.readonly!
-    # add_breadcrumb(@account.name)
   end
 
   def new
     @account = Account.new(expires_on: Date.today + 1.year)
     authorize(@account)
-    # add_breadcrumb('New')
   end
 
   def edit
-    # add_breadcrumb(@account.name)
   end
 
   def create

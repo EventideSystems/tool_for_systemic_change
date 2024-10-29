@@ -6,10 +6,7 @@ module System
 
     skip_after_action :verify_policy_scoped, only: [:index]
 
-    # add_breadcrumb "System"
-    # add_breadcrumb "Stakeholder Types", :stakeholder_types_path
-
-    def index
+            def index
       @stakeholder_types = \
         System::StakeholderTypePolicy::Scope.new(pundit_user, StakeholderType)
           .resolve
@@ -21,23 +18,17 @@ module System
 
     def show
       @content_subtitle = @stakeholder_type.name
-      # add_breadcrumb @stakeholder_type.name
-
-      render 'stakeholder_types/show'
+            render 'stakeholder_types/show'
     end
 
     def new
       @stakeholder_type = StakeholderType.new
       authorize @stakeholder_type, policy_class: System::StakeholderTypePolicy
-      # add_breadcrumb "New"
-
-      render 'stakeholder_types/new'
+            render 'stakeholder_types/new'
     end
 
     def edit
-      # add_breadcrumb @stakeholder_type.name
-
-      render 'stakeholder_types/edit'
+            render 'stakeholder_types/edit'
     end
 
     def create

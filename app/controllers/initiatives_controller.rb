@@ -8,9 +8,7 @@ class InitiativesController < ApplicationController
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]
 
-  # add_breadcrumb 'Initiatives', :initiatives_path
-
-  sidebar_item :initiatives
+    sidebar_item :initiatives
 
   def index
     @subsystem_tags = current_account.subsystem_tags
@@ -30,32 +28,12 @@ class InitiativesController < ApplicationController
     end
   end
 
-  # def index
-  #   base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order('upper(initiatives.name) asc')
-
-  #   respond_to do |format|
-  #     format.html do
-  #       @pagy, @initiatives = pagy_countless(base_scope, items: 10)
-  #     end
-
-  #     format.turbo_stream do
-  #       @pagy, @initiatives = pagy_countless(base_scope, items: 10)
-  #     end
-
-  #     format.csv do
-  #       @initiatives = base_scope.all
-  #       send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
-  #     end
-  #   end
-  # end
-
   def show
     sidebar_item :impact_cards
 
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
 
-    # add_breadcrumb(@initiative.name)
   end
 
   def new
@@ -63,11 +41,9 @@ class InitiativesController < ApplicationController
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize(@initiative)
 
-    # add_breadcrumb('New Initiative')
   end
 
   def edit
-    # add_breadcrumb(@initiative.name)
   end
 
   def create

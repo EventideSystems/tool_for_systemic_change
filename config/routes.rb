@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :subsystem_tags
-
   resources :scorecards
 
   namespace :initiatives do
@@ -54,7 +52,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :communities
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
@@ -119,7 +116,6 @@ Rails.application.routes.draw do
     resources :characteristics, only: [:show], controller: 'shared', action: 'characteristic'
   end
 
-  resources :stakeholder_types
   resources :users do
     post :stop_impersonating, on: :collection
 
@@ -127,10 +123,6 @@ Rails.application.routes.draw do
       get 'remove_from_account'
     end
   end
-
-  resources :video_tutorials
-  resource :welcome_message, only: [:show]
-  resources :wicked_problems
 
   resources :reports, only: [:index] do
     collection do
@@ -153,8 +145,6 @@ Rails.application.routes.draw do
       post 'cross_account_percent_actual_by_focus_area_tabbed'
     end
   end
-
-  resources :search_results, only: %i[index show]
 
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'

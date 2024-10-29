@@ -7,9 +7,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update remove_from_account]
   before_action :set_account_role, only: %i[show edit]
 
-  # add_breadcrumb 'Users', :users_path
-
-  sidebar_item :teams
+    sidebar_item :teams
 
   def index
     search_params = params.permit(:format, :page, q: [:name_or_email_cont])
@@ -29,18 +27,15 @@ class UsersController < ApplicationController
 
   def show
     @user.readonly!
-    # add_breadcrumb @user.display_name
-  end
+      end
 
   def new
     @user = User.new
     authorize @user
-    # add_breadcrumb 'New'
-  end
+      end
 
   def edit
-    # add_breadcrumb @user.display_name
-  end
+      end
 
   def create
     @user = User.new(user_params)

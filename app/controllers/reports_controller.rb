@@ -3,9 +3,7 @@
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
 
-  # add_breadcrumb 'Reports', :reports_path
-
-  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
+    ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 
   def index
     authorize(:report, :index?)
@@ -33,7 +31,6 @@ class ReportsController < ApplicationController
     authorize(:report, :index?) # SMELL Incorrect policy check. Need to fix.
 
     @content_subtitle = 'Initiatives'
-    # add_breadcrumb(@content_subtitle)
 
     query = policy_scope(Initiative).joins(scorecard: %i[community wicked_problem])
 
@@ -60,7 +57,6 @@ class ReportsController < ApplicationController
     authorize(:report, :index?)
 
     @content_subtitle = 'Stakeholders'
-    # add_breadcrumb(@content_subtitle)
 
     query = current_account.organisations.joins(
       :stakeholder_type,
@@ -96,7 +92,6 @@ class ReportsController < ApplicationController
     authorize(:report, :transition_card_activity?)
 
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
-    # add_breadcrumb(@content_subtitle)
 
     @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_from]).beginning_of_day.utc
 
@@ -123,7 +118,6 @@ class ReportsController < ApplicationController
     authorize(:report, :index?)
 
     @content_subtitle = "#{Scorecard.model_name.human} Comments"
-    # add_breadcrumb(@content_subtitle)
 
     @scorecard = current_account
                  .scorecards
@@ -153,7 +147,6 @@ class ReportsController < ApplicationController
     authorize(:report, :index?)
 
     @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"
-    # add_breadcrumb(@content_subtitle)
 
     @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
     include_betweenness = params[:report][:include_betweenness] == '1'

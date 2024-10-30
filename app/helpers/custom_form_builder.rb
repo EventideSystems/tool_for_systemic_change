@@ -42,9 +42,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
 
   COMMON_FIELD_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6'
 
-  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 bg-green-400 dark:text-white dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500"
-  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500"
-  SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} mt-2 pl-3 pr-10 focus:ring-2 focus:ring-yellow-500"
+  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 dark:text-white dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500"
+  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS}  bg-white/5 bg-opacity-5 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500"
+
+  SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} mt-2 pl-3 pr-10 focus:ring-2 focus:ring-blue-500"
 
   # TEXT_FIELD_CLASS = 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm sm:leading-6'
   # TEXT_AREA_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6'
@@ -62,6 +63,17 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       append_error_message(@object, method)
     end
   end
+
+  def date_field(method, options = {})
+    default_opts = { class: build_default_field_class(TEXT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
+    merged_opts = default_opts.merge(options)
+
+    @template.content_tag(:div) do
+      @template.concat(super(method, merged_opts))
+      append_error_message(@object, method)
+    end
+  end
+
 
   def label(method, content_or_options = nil, options = {}, &block)
     options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : options.delete(:class)

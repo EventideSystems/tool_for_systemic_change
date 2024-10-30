@@ -5,15 +5,15 @@
     <div class="w-full">
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Impact Cards</h1>
       <div class="flex justify-between items-center mt-4 ">
-        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search impact cards...' } %>
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search impact cards...', options: { url: impact_cards_path } } %>
         <div>
-          <%= link_to_primary 'Create impact card', new_scorecard_path %>
+          <%= link_to_primary 'Create impact card', new_impact_card_path %>
         </div>
       </div>
     </div>
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
-        <%= render partial: 'scorecards/scorecard', collection:  @scorecards %>
+        <%= render partial: 'impact_cards/impact_card', collection:  @impact_cards %>
         <%= render partial: 'pagination' %>
       <% end %>
     </ul>

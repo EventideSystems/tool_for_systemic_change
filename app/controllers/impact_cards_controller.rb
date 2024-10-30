@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
-class ScorecardsController < ApplicationController
+class ImpactCardsController < ApplicationController
   include VerifyPolicies
 
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
@@ -25,13 +25,13 @@ class ScorecardsController < ApplicationController
 
     @q = policy_scope(Scorecard).order(:name).ransack(search_params[:q])
 
-    scorecards = @q.result(distinct: true)
+    impact_cards = @q.result(distinct: true)
 
-    @pagy, @scorecards = pagy(scorecards, limit: 10)
+    @pagy, @impact_cards = pagy(impact_cards, limit: 10)
 
     respond_to do |format|
-      format.html { render 'scorecards/index', locals: { scorecards: @scorecards } }
-      format.turbo_stream { render 'scorecards/index', locals: { scorecards: @scorecards } }
+      format.html { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
+      format.turbo_stream { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
       # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
@@ -109,11 +109,11 @@ class ScorecardsController < ApplicationController
   end
 
   def new
-    @scorecard = current_account.scorecards.build(type: scorecard_class_name)
-    authorize(@scorecard, policy_class: ScorecardPolicy)
+    @impact_card = current_account.scorecards.build
 
-    @scorecard.initiatives.build
+    authorize(@impact_card, policy_class: ScorecardPolicy)
 
+    @impact_card.initiatives.build
   end
 
   def edit

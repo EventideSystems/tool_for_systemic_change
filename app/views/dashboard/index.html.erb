@@ -6,7 +6,7 @@
   </div>
 
   <div class="mt-4 grid gap-8 sm:grid-cols-2 xl:grid-cols-4 text-black dark:text-white">
-    <%= render partial: 'card', locals: { title: 'Impact Cards', count: @scorecard_count, link: scorecards_path, border_color: 'border-cyan-600' } %>
+    <%= render partial: 'card', locals: { title: 'Impact Cards', count: @scorecard_count, link: impact_cards_path, border_color: 'border-cyan-600' } %>
     <%= render partial: 'card', locals: { title: 'Initiatives', count: @initiative_count, link: initiatives_path, border_color: 'border-sky-600' } %>
     <%= render partial: 'card', locals: { title: 'Problems / Opportunities', count: @wicked_problem_count, link: labels_wicked_problems_path, border_color: 'border-teal-600' } %>
     <%= render partial: 'card', locals: { title: 'Stakeholders', count: @organisation_count, link: organisations_path, border_color: 'border-teal-500' } %>

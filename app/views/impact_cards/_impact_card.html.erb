@@ -1,0 +1,27 @@
+<li>
+  <hr
+    role="presentation"
+    class="w-full border-t border-zinc-950/10 dark:border-white/10"
+  />
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <%= render partial: 'resource_summary', locals: { name: impact_card.name, background_color: 'bg-cyan-600' } %>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to highlight(impact_card.name, params.dig(:q, :name_or_description_cont)), impact_card_path(impact_card), data: { turbo: false } %>
+        </div>
+        <div class="text-xs/6 text-zinc-500 min-h-4">
+          <%= highlight(impact_card.description, params.dig(:q, :name_or_description_cont)) %>
+        </div>
+
+        <%- if impact_card.community.present? || impact_card.wicked_problem.present? %>
+          <div class="flex space-x-4">
+            <%= render 'label_badge', label: impact_card.community %>
+            <%= render 'label_badge', label: impact_card.wicked_problem %>
+          </div>
+        <%- end %>
+      </div>
+    </div>
+  </div>
+</li>
+

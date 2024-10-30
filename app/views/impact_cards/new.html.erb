@@ -1,0 +1,189 @@
+<div class="mx-auto max-w-6xl">
+  <%= form_with model: @impact_card, url: impact_cards_path, scope: :impact_card, class: 'mx-auto max-w-4xl' do |form| %>
+    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">New Impact Card - Initial Setup</h1>
+    <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+    <div class="space-y-12">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Overview</h2>
+          <p class="mt-1 text-sm/6 text-gray-600">General settings for your new card.</p>
+        </div>
+
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <div class="sm:col-span-4">
+            <%= form.label :name, 'Title' %>
+            <div class="mt-2">
+              <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                <%= form.text_field :name, placeholder: 'Impact card title', class: "block flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-full">
+            <%= form.label :description %>
+            <div class="mt-2">
+              <%= form.text_area :description, rows: 3, placeholder: '', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
+            </div>
+            <p class="mt-3 text-sm/6 text-gray-600">Write a few sentences about your new card (optional).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Data Collection</h2>
+          <p class="mt-1 text-sm/6 text-gray-600">Choose a data model for tracking activity.</p>
+        </div>
+
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <div class="sm:col-span-4">
+            <%= form.label :type, 'Data model' %>
+            <div class="mt-2">
+              <%= form.select :type, [TransitionCard, SustainableDevelopmentGoalAlignmentCard].map { |type| [type.name.titleize, type.name] } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= form.fields_for :initiatives do |initiatives_form| %>
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+          <div>
+            <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">First Initiative</h2>
+            <p class="mt-1 text-sm/6 text-gray-600">Create your first initiatve. Note, there will an opportunity to create more initiatives later.</p>
+          </div>
+
+          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div class="sm:col-span-4">
+              <%= initiatives_form.label :name %>
+              <div class="mt-2">
+                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <%= initiatives_form.text_field :name, placeholder: 'Initiative name', class: "block flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6" %>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-span-full">
+              <%= initiatives_form.label :description %>
+              <div class="mt-2">
+                <%= initiatives_form.text_area :description, rows: 3, placeholder: 'Initiative description', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+          <div>
+            <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">Contact Details</h3>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Enter a main contact responsible for this intitiaive.</p>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">(optional)</p>
+          </div>
+
+          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :contact_name %>
+              <div class="mt-2">
+                <%= initiatives_form.text_field :contact_name %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :contact_email %>
+              <div class="mt-2">
+                <%= initiatives_form.text_field :contact_email %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :contact_website %>
+              <div class="mt-2">
+                <%= initiatives_form.text_field :contact_website %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :contact_position %>
+              <div class="mt-2">
+                <%= initiatives_form.text_field :contact_position %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+          <div>
+            <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Applicable Date Range</h3>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Optional</p>
+          </div>
+
+          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :started_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :started_at %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :finished_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :finished_at %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+          <div>
+            <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify the organisations or individuals who have an interest in this initiative.</p>
+          </div>
+
+          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :started_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :started_at %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :finished_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :finished_at %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+          <div>
+            <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify cross-cutting subsystem tags that will apply to this initiative.</p>
+          </div>
+
+          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :started_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :started_at %>
+              </div>
+            </div>
+
+            <div class="sm:col-span-3">
+              <%= initiatives_form.label :finished_at %>
+              <div class="mt-2">
+                <%= initiatives_form.date_field :finished_at %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
+      <%= form.submit 'Save' %>
+    </div>
+  <%- end %>
+</div>

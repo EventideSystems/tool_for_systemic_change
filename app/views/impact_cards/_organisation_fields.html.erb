@@ -1,0 +1,8 @@
+<template id="organisation_template">
+  <div class="sm:col-span-6">
+    <%= form.label :organisation_id %>
+    <div class="mt-2">
+      <%= form.collection_select :organisation_id, policy_scope(Organisation), :id, :name, { include_blank: 'Select an organisation' }, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6', name: "initiative[initiatives_organisations_attributes][__INDEX__][organisation_id]" %>
+    </div>
+  </div>
+</template>

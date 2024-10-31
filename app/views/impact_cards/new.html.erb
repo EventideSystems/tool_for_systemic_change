@@ -6,7 +6,7 @@
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
         <div>
           <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Overview</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">General settings for your new card.</p>
+          <p class="mt-1 text-sm/6 text-gray-600">General settings for your card.</p>
         </div>
 
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -24,7 +24,7 @@
             <div class="mt-2">
               <%= form.text_area :description, rows: 3, placeholder: '', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
             </div>
-            <p class="mt-3 text-sm/6 text-gray-600">Write a few sentences about your new card (optional).</p>
+            <p class="mt-3 text-sm/6 text-gray-600">Write a brief description of your new card (optional).</p>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
         <div>
           <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Data Collection</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">Choose a data model for tracking activity.</p>
+          <p class="mt-1 text-sm/6 text-gray-600">Choose a data model to track activity.</p>
         </div>
 
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -49,7 +49,7 @@
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
           <div>
             <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">First Initiative</h2>
-            <p class="mt-1 text-sm/6 text-gray-600">Create your first initiatve. Note, there will an opportunity to create more initiatives later.</p>
+            <p class="mt-1 text-sm/6 text-gray-600">Create your first initiative. You can add more later.</p>
           </div>
 
           <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -74,8 +74,7 @@
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
           <div>
             <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">Contact Details</h3>
-            <p class="mt-1 text-sm/6 text-gray-600 text-right">Enter a main contact responsible for this intitiaive.</p>
-            <p class="mt-1 text-sm/6 text-gray-600 text-right">(optional)</p>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Enter the main contact for this initiative (optional).</p>
           </div>
 
           <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -135,31 +134,26 @@
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
           <div>
             <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
-            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify the organisations or individuals who have an interest in this initiative.</p>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify who might be interested in this initiative.</p>
           </div>
 
-          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-            <div class="sm:col-span-3">
-              <%= initiatives_form.label :started_at %>
-              <div class="mt-2">
-                <%= initiatives_form.date_field :started_at %>
+          <%= initiatives_form.fields_for :initiatives_organisations do |initiatives_organisations_form| %>
+            <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+              <div class="sm:col-span-6">
+                <%= initiatives_organisations_form.label :organisation_id %>
+                <div class="mt-2">
+                  <%= initiatives_organisations_form.collection_select :organisation_id,  policy_scope(Organisation), :id, :name, { include_blank: 'Select an organisation' }, class: 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6' %>
+                </div>
               </div>
             </div>
-
-            <div class="sm:col-span-3">
-              <%= initiatives_form.label :finished_at %>
-              <div class="mt-2">
-                <%= initiatives_form.date_field :finished_at %>
-              </div>
-            </div>
-          </div>
+          <% end %>
         </div>
 
 
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
           <div>
             <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
-            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify cross-cutting subsystem tags that will apply to this initiative.</p>
+            <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
           </div>
 
           <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">

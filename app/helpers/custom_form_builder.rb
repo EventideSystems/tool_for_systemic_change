@@ -35,7 +35,6 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
       [color_name.capitalize, color_name, { class: color_class }]
     end
 
-
   # rubocop:disable Layout/LineLength
   CHECK_BOX_CLASS = 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
   SUBMIT_BUTTON_CLASS = 'rounded-md bg-zinc-950 dark:bg-zinc-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500'
@@ -74,13 +73,12 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
-
   def label(method, content_or_options = nil, options = {}, &block)
     options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : options.delete(:class)
     label_class = tailwind_merge(LABEL_CLASS, options_class)
     default_opts = { class: label_class }
     merged_opts = default_opts.merge(options)
-    super(method, content_or_options , merged_opts, &block)
+    super(method, content_or_options, merged_opts, &block)
   end
 
   def select(method, choices = nil, options = {}, html_options = {}, &block)

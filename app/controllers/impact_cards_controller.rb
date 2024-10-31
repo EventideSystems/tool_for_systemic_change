@@ -65,7 +65,6 @@ class ImpactCardsController < ApplicationController
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-
     respond_to do |format|
       format.html
       format.pdf do
@@ -113,11 +112,10 @@ class ImpactCardsController < ApplicationController
 
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
-    @impact_card.initiatives.build
+    @impact_card.initiatives.build.initiatives_organisations.build
   end
 
   def edit
-
     source_scorecard = @scorecard
     target_scorecard = @scorecard.linked_scorecard
 
@@ -262,13 +260,13 @@ class ImpactCardsController < ApplicationController
     return [] if target_scorecard.blank?
 
     source_initiatives =
-      source_scorecard.initiatives.each_with_object({}) do |initiative, hash|
-        hash[initiative.name] = initiative
+      source_scorecard.initiatives.index_by do |initiative|
+        initiative.name
       end
 
     target_initiatives =
-      target_scorecard.initiatives.each_with_object({}) do |initiative, hash|
-        hash[initiative.name] = initiative
+      target_scorecard.initiatives.index_by do |initiative|
+        initiative.name
       end
 
     all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
@@ -369,7 +367,7 @@ class ImpactCardsController < ApplicationController
     ).tap do |params| # NOTE: Dupe of code in initiatives controller
       params[:type] = scorecard_class_name
 
-      unless params[:initiatives_attributes].blank?
+      if params[:initiatives_attributes].present?
         params[:initiatives_attributes].each do |initiative_key, _|
           next unless params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).present?
 
@@ -388,7 +386,7 @@ class ImpactCardsController < ApplicationController
         end
       end
 
-      unless params[:initiatives_attributes].blank?
+      if params[:initiatives_attributes].present?
         params[:initiatives_attributes].each do |initiative_key, _|
           next unless params.dig(
             :initiatives_attributes,

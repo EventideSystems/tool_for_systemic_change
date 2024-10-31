@@ -95,6 +95,13 @@ group :development, :test do
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'rspec-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-capybara'
+  gem 'rubocop-factory_bot', require: false
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails'
 end
 
 group :development do

@@ -6,7 +6,7 @@ class OrganisationsController < ApplicationController
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
   before_action :require_account_selected, only: [:new, :create, :edit, :update]
 
-    respond_to :js, :html
+  respond_to :js, :html
 
   sidebar_item :stakeholders
 

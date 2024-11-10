@@ -7,6 +7,10 @@ module ApplicationHelper
     "Obsekio - #{Rails.env.titleize}"
   end
 
+  def turbo_id_for(obj)
+    obj.persisted? ? obj.id : obj.hash
+  end
+
   # Render an SVG icon from views/icons
   # Source: https://www.writesoftwarewell.com/how-to-render-svg-icons-in-rails
   def render_icon(icon, classes: '')

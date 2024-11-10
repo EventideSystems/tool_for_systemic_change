@@ -1,0 +1,8 @@
+<%= turbo_stream.append :initiatives_organisations do %>
+  <%=
+    render(
+      partial: "initiatives_organisations/initiatives_organisation",
+      locals: { initiatives_organisation: @initiatives_organisation }
+    )
+  %>
+<% end %>

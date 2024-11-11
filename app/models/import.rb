@@ -19,11 +19,11 @@
 #  index_imports_on_user_id     (user_id)
 #
 class Import < ApplicationRecord
- # include ImportUploader[:import]
+  # include ImportUploader[:import]
 
   attr_accessor :processing_errors
 
-  enum status: %i[pending processed]
+  enum status: { pending: 0, processed: 1 }
 
   belongs_to :account
   belongs_to :user
@@ -66,7 +66,7 @@ class Import < ApplicationRecord
   end
 
   def build_processing_errors(row_data:, row_index:, error_messages:)
-    full_messages = error_messages.map do |message|
+    error_messages.map do |message|
       if message == "Stakeholder Type can't be blank"
         'Stakeholder Type is invalid'
       else

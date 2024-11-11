@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class OrganisationsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_organisation, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update]
+  before_action :set_organisation, only: %i[show edit update destroy]
+  before_action :require_account_selected, only: %i[new create edit update]
 
   respond_to :js, :html
 
@@ -38,8 +40,7 @@ class OrganisationsController < ApplicationController
     authorize @organisation
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @organisation = current_account.organisations.build(organisation_params)
@@ -48,11 +49,10 @@ class OrganisationsController < ApplicationController
     respond_to do |format|
       if @organisation.save
         format.html { redirect_to organisations_path, notice: 'Organisation was successfully created.' }
-        format.js
       else
         format.html { render :new }
-        format.js
       end
+      format.js
     end
   end
 
@@ -85,14 +85,14 @@ class OrganisationsController < ApplicationController
   end
 
   def export_filename
-    "organisations_#{Date.today.strftime('%Y_%m_%d')}"
+    "organisations_#{Time.zone.today.strftime('%Y_%m_%d')}"
   end
 
   def organisations_to_csv(organisations, include_stakeholder_list)
     stakeholder_types = current_account.stakeholder_types.order(name: :desc).pluck(:name)
 
     CSV.generate(force_quotes: true) do |csv|
-      header_row = ["Name", "Description", "Stakeholder Type", "Weblink"].tap do |header|
+      header_row = ['Name', 'Description', 'Stakeholder Type', 'Weblink'].tap do |header|
         if include_stakeholder_list
           header.push('')
           header.push('Stakeholder type list - add one to each organisation')
@@ -105,7 +105,7 @@ class OrganisationsController < ApplicationController
           organisation.name,
           organisation.description,
           organisation.stakeholder_type&.name,
-          organisation.weblink,
+          organisation.weblink
         ].tap do |row|
           if include_stakeholder_list
             row.push('')

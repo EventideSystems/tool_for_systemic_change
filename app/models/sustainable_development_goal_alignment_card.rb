@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: scorecards
@@ -24,5 +26,4 @@
 #  index_scorecards_on_type        (type)
 #
 class SustainableDevelopmentGoalAlignmentCard < Scorecard
-
 end

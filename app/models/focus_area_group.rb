@@ -41,8 +41,9 @@ class FocusAreaGroup < ApplicationRecord
 
   def video_tutorial_id=(value)
     return if value.blank?
+
     tutorial = VideoTutorial.where(id: value).first
-    tutorial.update_attribute(:linked, self) if tutorial
+    tutorial&.update_attribute(:linked, self)
   end
 
   def video_tutorial_id

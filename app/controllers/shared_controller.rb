@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SharedController < ApplicationController
-
   def show
     response.headers.delete('X-Frame-Options')
 
@@ -20,7 +19,7 @@ class SharedController < ApplicationController
   end
 
   def characteristic
-    @scorecard = Scorecard.find_by_shared_link_id(params[:shared_id])
+    @scorecard = Scorecard.find_by(shared_link_id: params[:shared_id])
 
     @characteristic = Characteristic.find(params[:id])
 
@@ -39,7 +38,7 @@ class SharedController < ApplicationController
 
   # SMELL: Duplicate of code in scorecards_controller.rb
   def targets_network_map
-    @scorecard = Scorecard.find_by_shared_link_id(params[:id])
+    @scorecard = Scorecard.find_by(shared_link_id: params[:id])
 
     respond_to do |format|
       format.json do
@@ -52,7 +51,7 @@ class SharedController < ApplicationController
   private
 
   def load_scorecard_and_supporting_data
-    @scorecard = Scorecard.find_by_shared_link_id(params[:id])
+    @scorecard = Scorecard.find_by(shared_link_id: params[:id])
 
     return if @scorecard.blank?
 

@@ -3,10 +3,9 @@
 class InitiativePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      case
-      when current_account && (system_admin? || account_admin?(current_account))
+      if current_account && (system_admin? || account_admin?(current_account))
         scope.joins(:scorecard).where('scorecards.account_id': current_account.id)
-      when current_account && account_member?(current_account)
+      elsif current_account && account_member?(current_account)
         scope.joins(:scorecard).not_archived.where('scorecards.account_id': current_account.id)
       else
         scope.joins(:scorecard).none

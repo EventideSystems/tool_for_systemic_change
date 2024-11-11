@@ -42,6 +42,9 @@ class Organisation < ApplicationRecord
   private
 
   def stakeholder_type_is_in_same_account
-    errors.add(:stakeholder_type_id, "must be in the same account") if stakeholder_type && stakeholder_type.account != account
+    return unless stakeholder_type && stakeholder_type.account != account
+
+    errors.add(:stakeholder_type_id,
+               'must be in the same account')
   end
 end

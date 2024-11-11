@@ -62,12 +62,11 @@ class ChecklistItem < ApplicationRecord
 
   def snapshot_at(timestamp)
     return self if timestamp.nil?
+
     paper_trail.version_at(timestamp) || raw_clone
   end
 
-  def focus_area
-    characteristic.focus_area
-  end
+  delegate :focus_area, to: :characteristic
 
   def humanized_status
     status.humanize
@@ -76,10 +75,9 @@ class ChecklistItem < ApplicationRecord
   private
 
   def raw_clone
-    raw_clone = self.clone
+    raw_clone = clone
     raw_clone.checked = nil
     raw_clone.readonly!
     raw_clone
   end
-
 end

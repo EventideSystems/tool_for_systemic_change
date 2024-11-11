@@ -85,7 +85,7 @@ class Initiative < ApplicationRecord
 
   scope :overdue, lambda {
     finished_at = Initiative.arel_table[:finished_at]
-    incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
+    incomplete.where(finished_at.lt(Time.zone.today)).where(dates_confirmed: true)
   }
 
   scope :transition_cards, lambda {
@@ -139,7 +139,7 @@ class Initiative < ApplicationRecord
 
   def linked_initiative
     return nil unless linked?
-    return nil unless scorecard.linked_scorecard.present?
+    return nil if scorecard.linked_scorecard.blank?
 
     scorecard.linked_scorecard.initiatives.find_by(name: name)
   end
@@ -160,7 +160,8 @@ class Initiative < ApplicationRecord
 
   def create_missing_checklist_items!
     missing_characteristic_ids = \
-      Characteristic.per_scorecard_type_for_account(scorecard.type, scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
+      Characteristic.per_scorecard_type_for_account(scorecard.type,
+                                                    scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?
 
@@ -223,8 +224,6 @@ class Initiative < ApplicationRecord
     RETURNING *;
     "
     ActiveRecord::Base.connection.execute(query)
-
-
 
     PaperTrail::Version.where(
       item_type: 'ChecklistItem',

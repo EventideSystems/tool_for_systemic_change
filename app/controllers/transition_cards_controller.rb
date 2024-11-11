@@ -10,5 +10,4 @@ class TransitionCardsController < ScorecardsController
   def scorecard_class_name
     'TransitionCard'
   end
-
 end

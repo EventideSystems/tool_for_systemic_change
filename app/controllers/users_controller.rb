@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update remove_from_account]
   before_action :set_account_role, only: %i[show edit]
 
-    sidebar_item :teams
+  sidebar_item :teams
 
   def index
     search_params = params.permit(:format, :page, q: [:name_or_email_cont])
@@ -27,15 +27,14 @@ class UsersController < ApplicationController
 
   def show
     @user.readonly!
-      end
+  end
 
   def new
     @user = User.new
     authorize @user
-      end
+  end
 
-  def edit
-      end
+  def edit; end
 
   def create
     @user = User.new(user_params)
@@ -57,7 +56,7 @@ class UsersController < ApplicationController
     user_params.delete(:system_role) unless policy(User).invite_with_system_role?
     account_role = user_params.delete(:account_role)
 
-    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+    current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
 
     if current_account_user
       current_account_user.update(account_role: account_role)
@@ -78,7 +77,6 @@ class UsersController < ApplicationController
                     .where.not(user: current_user)
                     .first
 
-
     if accounts_user.present? && accounts_user.destroy
       redirect_to users_path, notice: 'User was successfully removed.'
     else
@@ -97,11 +95,10 @@ class UsersController < ApplicationController
     redirect_to root_path, flash: { notice: 'You are no longer impersonating another user' }
   end
 
-
   private
 
   def set_account_role
-    current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+    current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
     @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member'
   end
 

@@ -210,7 +210,7 @@ class ScorecardGrid
     def wrap_date(snapshot_at)
       return 'now()' if snapshot_at.blank?
 
-      snapshot_timestamp = snapshot_at.is_a?(String) ? Time.parse(snapshot_at) : snapshot_at.to_time
+      snapshot_timestamp = snapshot_at.is_a?(String) ? Time.zone.parse(snapshot_at) : snapshot_at.to_time
       "'#{snapshot_timestamp.utc.to_fs(:db)}'"
     end
   end

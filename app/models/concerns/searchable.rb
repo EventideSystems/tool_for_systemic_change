@@ -14,7 +14,7 @@ module Searchable
       %w[name description] + _ransackers.keys
     end
 
-    def ransackable_associations(auth_object = nil)
+    def ransackable_associations(_auth_object = nil)
       []
     end
   end

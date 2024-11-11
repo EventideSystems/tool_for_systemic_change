@@ -1,26 +1,26 @@
+# frozen_string_literal: true
+
 class FocusAreaGroupsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_focus_area_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_focus_area_group, only: %i[show edit update destroy]
 
-    def index
+  def index
     @focus_area_groups = \
       policy_scope(FocusAreaGroup)
-        .where(account: current_account)
-        .order(sort_order)
-        .page(params[:page])
+      .where(account: current_account)
+      .order(sort_order)
+      .page(params[:page])
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @focus_area_group = current_account.build_focus_area_group
     authorize @focus_area_group
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @focus_area_group = current_account.build_focus_area_group(focus_area_group_params)

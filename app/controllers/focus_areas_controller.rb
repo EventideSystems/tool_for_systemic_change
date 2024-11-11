@@ -6,13 +6,13 @@ class FocusAreasController < ApplicationController
   before_action :set_focus_area, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: %i[new edit]
 
-    def index
+  def index
     @focus_areas = \
       policy_scope(FocusArea)
-        .joins(focus_area_group: :account)
-        .where('focus_area_groups.account': current_account)
-        .order(sort_order)
-        .page(params[:page])
+      .joins(focus_area_group: :account)
+      .where('focus_area_groups.account': current_account)
+      .order(sort_order)
+      .page(params[:page])
   end
 
   def show; end

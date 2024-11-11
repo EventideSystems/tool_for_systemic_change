@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class VideoTutorialsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_video_tutorial, only: [:show, :edit, :update, :destroy]
+  before_action :set_video_tutorial, only: %i[show edit update destroy]
 
   def index
     @video_tutorials = policy_scope(VideoTutorial).order(sort_order).page params[:page]
@@ -16,8 +18,7 @@ class VideoTutorialsController < ApplicationController
     authorize @video_tutorial
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @video_tutorial = VideoTutorial.new(video_tutorial_params)

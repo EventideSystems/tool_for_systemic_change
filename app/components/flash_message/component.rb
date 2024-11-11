@@ -3,7 +3,7 @@
 module FlashMessage
   # Simple flash message component
   class Component < ViewComponent::Base
-   include Components::ToastHelper
+    include Components::ToastHelper
 
     attr_reader :type, :message
 

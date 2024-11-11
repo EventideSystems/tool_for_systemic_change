@@ -45,7 +45,8 @@ class StakeholderType < ApplicationRecord
 
   def check_no_longer_used!
     return true if organisations.empty?
-    errors.add(:base, "This stakeholder type is still in use")
+
+    errors.add(:base, 'This stakeholder type is still in use')
     throw(:abort)
   end
 end

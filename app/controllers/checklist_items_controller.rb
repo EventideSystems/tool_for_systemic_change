@@ -7,7 +7,7 @@ class ChecklistItemsController < ApplicationController
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
 
-    render json: @checklist_item.to_json(only: [:id, :status, :comment, :humanized_status])
+    render json: @checklist_item.to_json(only: %i[id status comment humanized_status])
   end
 
   def edit
@@ -52,13 +52,19 @@ class ChecklistItemsController < ApplicationController
     if new_comments_saved_assigned_actuals?(params, checklist_item)
       'new_comments_saved_assigned_actuals'
     else
-      (checklist_item.status_was != 'actual' && checklist_item.status == 'actual') ? 'addition' : 'none'
+      checklist_item.status_was != 'actual' && checklist_item.status == 'actual' ? 'addition' : 'none'
     end
   end
 
   def checklist_item_params
-    params[:checklist_item][:comment] = params[:checklist_item][:new_comment] if params[:checklist_item][:new_comment].present?
-    params[:checklist_item][:status] = params[:checklist_item][:new_status] if params[:checklist_item][:new_status].present?
+    if params[:checklist_item][:new_comment].present?
+      params[:checklist_item][:comment] =
+        params[:checklist_item][:new_comment]
+    end
+    if params[:checklist_item][:new_status].present?
+      params[:checklist_item][:status] =
+        params[:checklist_item][:new_status]
+    end
 
     if params[:action] == 'save_new_comment'
       params[:checklist_item][:comment] = nil if params[:checklist_item][:comment].blank?

@@ -30,7 +30,9 @@
 #
 require 'rails_helper'
 
-RSpec.describe(ChecklistItem) do # rubocop:disable Metrics/BlockLength
+RSpec.describe(ChecklistItem) do
+  subject { checklist_item }
+
   let(:user) { create(:user) }
   let(:characteristic) { create(:characteristic) }
   let(:initiative) { create(:initiative) }
@@ -40,33 +42,32 @@ RSpec.describe(ChecklistItem) do # rubocop:disable Metrics/BlockLength
 
   before { initiative.checklist_items << checklist_item }
 
-  subject { checklist_item }
-
   describe '#snapshot_at' do
     context 'without changes' do
-      it { expect(subject.snapshot_at(Time.now)).to(eq(subject)) }
+      it { expect(subject.snapshot_at(Time.zone.now)).to(eq(subject)) }
     end
 
     context 'with changes' do
       before do
-        Timecop.freeze(Date.today + 10.days)
+        Timecop.freeze(Time.zone.today + 10.days)
         subject.update(status: :actual)
         Timecop.return
 
-        Timecop.freeze(Date.today + 20.days)
+        Timecop.freeze(Time.zone.today + 20.days)
         subject.update(status: :more_information)
         Timecop.return
       end
 
       it 'expects original status to be planned' do
-        expect(subject.snapshot_at(Time.now).status).to(eq('planned'))
+        expect(subject.snapshot_at(Time.zone.now).status).to(eq('planned'))
       end
 
       it 'expects first checked state to be true' do
-        expect(subject.snapshot_at(Date.today + 11).status).to(eq('actual'))
+        expect(subject.snapshot_at(Time.zone.today + 11).status).to(eq('actual'))
       end
+
       it 'expects first checked state to be true' do
-        expect(subject.snapshot_at(Date.today + 21).status).to(eq('more_information'))
+        expect(subject.snapshot_at(Time.zone.today + 21).status).to(eq('more_information'))
       end
     end
   end

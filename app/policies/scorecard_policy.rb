@@ -66,7 +66,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   def max_scorecards_not_reached?(account)
-    return false unless account.present?
+    return false if account.blank?
     return true if account.max_scorecards.zero? # NOTE: magic number, meaning no limit
 
     account.scorecards.count < account.max_scorecards

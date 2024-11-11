@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   include Pagy::Frontend
 
@@ -43,7 +45,7 @@ module ApplicationHelper
 
   # SMELL: Defer to CSS for this in future
   def truncate_html(text, length = 25)
-    return '' unless text.present?
+    return '' if text.blank?
 
     strip_tags(text.gsub('<br>', ' ').gsub(%r{</h\d>}, ' ')).truncate(length)
   end
@@ -57,7 +59,7 @@ module ApplicationHelper
             'www.wickedlab.co/importing-initiatives-organisations',
             'https://www.wickedlab.co/importing-initiatives-organisations',
             target: :_blank,
-            style: 'text-decoration: underline;'
+            style: 'text-decoration: underline;', rel: :noopener
           )
         )
         concat('.')
@@ -74,7 +76,7 @@ module ApplicationHelper
             'www.wickedlab.co/importing-comments-transition-cards',
             'https://www.wickedlab.co/importing-comments-transition-cards',
             target: :_blank,
-            style: 'text-decoration: underline;'
+            style: 'text-decoration: underline;', rel: :noopener
           )
         )
         concat('.')
@@ -91,7 +93,7 @@ module ApplicationHelper
   # TODO: Rename this
   def render_form_button(form)
     content_tag(:div, class: 'd-flex justify-content-end action-row') do
-      concat(form.button(:submit, "#{form.object.new_record? ? 'Create' : 'Update'}", class: 'btn btn-primary'))
+      concat(form.button(:submit, (form.object.new_record? ? 'Create' : 'Update').to_s, class: 'btn btn-primary'))
     end
   end
 
@@ -108,7 +110,7 @@ module ApplicationHelper
   end
 
   def format_date(date)
-    date.strftime('%F') unless date.blank?
+    date.strftime('%F') if date.present?
   end
 
   private

@@ -12,8 +12,6 @@ Rails.application.routes.draw do
     resources :imports, only: %i[new create update]
   end
 
-  resources :initiatives_organisations
-
   namespace :labels do
     resources :communities
     resources :stakeholder_types

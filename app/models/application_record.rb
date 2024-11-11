@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+
+# Base class for all database-backed models
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 

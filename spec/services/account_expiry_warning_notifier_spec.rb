@@ -28,7 +28,7 @@ RSpec.describe(AccountExpiryWarningNotifier) do
     let(:expiry_warning_sent_on) { nil }
 
     it 'does not send an email' do
-      expect(AccountMailer).to_not(receive(:expiry_warning))
+      expect(AccountMailer).not_to(receive(:expiry_warning))
       expect { service_call }
         .not_to(change { account.reload.expiry_warning_sent_on })
     end
@@ -53,18 +53,18 @@ RSpec.describe(AccountExpiryWarningNotifier) do
     let(:expiry_warning_sent_on) { 30.days.from_now }
 
     it 'does not send an email' do
-      expect(AccountMailer).to_not(receive(:expiry_warning))
+      expect(AccountMailer).not_to(receive(:expiry_warning))
       expect { service_call }
         .not_to(change { account.reload.expiry_warning_sent_on })
     end
   end
 
   context 'when account has already expired' do
-    let(:expires_on) { 1.days.ago }
+    let(:expires_on) { 1.day.ago }
     let(:expiry_warning_sent_on) { nil }
 
     it 'does not send an email' do
-      expect(AccountMailer).to_not(receive(:expiry_warning))
+      expect(AccountMailer).not_to(receive(:expiry_warning))
       expect { service_call }
         .not_to(change { account.reload.expiry_warning_sent_on })
     end

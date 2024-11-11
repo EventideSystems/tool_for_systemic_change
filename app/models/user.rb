@@ -59,7 +59,7 @@ class User < ApplicationRecord
   has_many :active_accounts_with_admin_role,
            lambda {
              where(accounts_users: { account_role: :admin })
-               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Date.today)
+               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Time.zone.today)
            },
            through: :accounts_users,
            source: :account
@@ -77,8 +77,8 @@ class User < ApplicationRecord
   end
 
   def status
-    return 'deleted' unless deleted_at.blank?
-    return 'invitation-pending' unless invitation_token.blank?
+    return 'deleted' if deleted_at.present?
+    return 'invitation-pending' if invitation_token.present?
 
     'active'
   end

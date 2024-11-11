@@ -33,7 +33,7 @@ class VideoTutorial < ApplicationRecord
 
   # TODO: Validation based on video link format
   def linked_name
-    return '' unless linked.present?
+    return '' if linked.blank?
 
     linked.name
   end

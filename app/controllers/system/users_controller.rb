@@ -10,7 +10,7 @@ module System
 
     skip_after_action :verify_policy_scoped
 
-            def index
+    def index
       respond_to do |format|
         format.html do |_html|
           @users = UserPolicy::SystemScope.new(pundit_user, User.all).resolve.page params[:page]
@@ -24,15 +24,14 @@ module System
 
     def show
       @user.readonly!
-          end
+    end
 
     def new
       @user = User.new
       authorize @user
-          end
+    end
 
-    def edit
-          end
+    def edit; end
 
     def create
       @user = User.new(user_params)
@@ -61,7 +60,7 @@ module System
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
 
-      current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+      current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
 
       if current_account_user
         current_account_user.update(account_role: account_role)
@@ -108,7 +107,7 @@ module System
     end
 
     def set_account_role
-      current_account_user = @user.accounts_users.find_by_account_id(current_account.id)
+      current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
       @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member'
     end
 

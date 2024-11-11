@@ -2,7 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe(ChecklistItemPolicy) do # rubocop:disable Metrics/BlockLength
+RSpec.describe(ChecklistItemPolicy) do
+  subject { described_class }
+
   let(:account) { create(:account) }
   let(:system_admin_user) { create(:admin_user) }
   let(:account_admin_user) { create(:user) }
@@ -14,8 +16,6 @@ RSpec.describe(ChecklistItemPolicy) do # rubocop:disable Metrics/BlockLength
     account.accounts_users.create(user: account_admin_user, account_role: :admin)
     account.accounts_users.create(user: account_member_user, account_role: :member)
   end
-
-  subject { described_class }
 
   permissions '.scope' do
     pending "add some examples to (or delete) #{__FILE__}"

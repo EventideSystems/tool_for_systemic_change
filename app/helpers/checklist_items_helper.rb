@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module ChecklistItemsHelper
-
   # rubocop:disable Layout/HashAlignment
   BASE_CONCURRENT_CHECKLIST_LIST_ITEM_COLOR_CLASSES = {
     red:     'bg-red-600',
@@ -39,7 +38,6 @@ module ChecklistItemsHelper
     more_information: 'text-yellow-400 focus:ring-yellow-400',
     suggestion: 'text-indigo-400 focus:ring-indigo-400'
   }.freeze
-
 
   # Original colors
   # $color-actual: #009BCC;

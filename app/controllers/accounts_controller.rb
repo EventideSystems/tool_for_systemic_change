@@ -19,12 +19,11 @@ class AccountsController < ApplicationController
   end
 
   def new
-    @account = Account.new(expires_on: Date.today + 1.year)
+    @account = Account.new(expires_on: Time.zone.today + 1.year)
     authorize(@account)
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @account = Account.new(account_params)

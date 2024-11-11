@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module InitiativesHelper
-
   def scorecard_label(initiative)
     if initiative.new_record? || initiative.scorecard.nil?
       current_account.scorecard_types.map { |type| type.model_name.human }

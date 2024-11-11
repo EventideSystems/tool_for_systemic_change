@@ -4,8 +4,8 @@
 class LabelsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_label, only: [:show, :edit, :update, :destroy]
-  before_action :require_account_selected, only: [:new, :create, :edit, :update] # Still in use?
+  before_action :set_label, only: %i[show edit update destroy]
+  before_action :require_account_selected, only: %i[new create edit update] # Still in use?
 
   def index
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
@@ -18,7 +18,7 @@ class LabelsController < ApplicationController
     respond_to do |format|
       format.html { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.turbo_stream { render 'labels/index', locals: { labels: @labels, label_klass: } }
-      format.css  { render 'labels/index', formats: [:css], locals: { labels: @labels  } }
+      format.css  { render 'labels/index', formats: [:css], locals: { labels: @labels } }
     end
   end
 
@@ -40,9 +40,13 @@ class LabelsController < ApplicationController
       if @label.save
         @labels = policy_scope(WickedProblem).all
         format.turbo_stream { render 'labels/create', locals: { label: @label } }
-        format.html { redirect_to polymorphic_path(WickedProblem), notice: "#{label_klass.name.titleize} was successfully created." }
+        format.html do
+          redirect_to polymorphic_path(WickedProblem), notice: "#{label_klass.name.titleize} was successfully created."
+        end
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.update('new_label_form', partial: 'labels/form', locals: { label: @label }) }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update('new_label_form', partial: 'labels/form', locals: { label: @label })
+        end
         format.html { render 'labels/new' }
       end
     end
@@ -60,7 +64,9 @@ class LabelsController < ApplicationController
       @labels = policy_scope(label_klass).all
       respond_to do |format|
         format.turbo_stream { render 'labels/update', locals: { label: @label } }
-        format.html { redirect_to wicked_problems_path, notice: "#{label_klass.name.titleize} was successfully updated." }
+        format.html do
+          redirect_to wicked_problems_path, notice: "#{label_klass.name.titleize} was successfully updated."
+        end
       end
     else
       render 'labels/edit'
@@ -86,5 +92,4 @@ class LabelsController < ApplicationController
   def label_klass
     # implement in subclass
   end
-
 end

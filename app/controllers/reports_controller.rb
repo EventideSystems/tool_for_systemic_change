@@ -2,8 +2,7 @@
 
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
-
-    ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
+  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 
   def index
     authorize(:report, :index?)
@@ -63,17 +62,15 @@ class ReportsController < ApplicationController
       initiatives: [scorecard: %i[wicked_problem community]]
     )
 
-    unless params[:report][:stakeholder_type].blank?
+    if params[:report][:stakeholder_type].present?
       query = query.where(stakeholder_type_id: params[:report][:stakeholder_type])
     end
 
-    unless params[:report][:wicked_problem].blank?
+    if params[:report][:wicked_problem].present?
       query = query.where('scorecards.wicked_problem_id': params[:report][:wicked_problem])
     end
 
-    unless params[:report][:community].blank?
-      query = query.where('scorecards.community_id': params[:report][:community])
-    end
+    query = query.where('scorecards.community_id': params[:report][:community]) if params[:report][:community].present?
 
     @results = query.select(
       :id,

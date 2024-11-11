@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DashboardController < ApplicationController
   before_action :require_account, only: :index
 
@@ -15,6 +17,6 @@ class DashboardController < ApplicationController
   private
 
   def require_account
-    flash[:alert] = "Select an account before continuing." unless current_account.present?
+    flash[:alert] = 'Select an account before continuing.' if current_account.blank?
   end
 end

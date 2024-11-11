@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: characteristics
@@ -19,7 +21,7 @@
 #
 FactoryBot.define do
   sequence(:characteristic_position) { |n| n }
-  
+
   factory :characteristic do
     name { FFaker::Name.name }
     focus_area

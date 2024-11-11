@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe(ScorecardCopier) do
+  subject(:copied) { described_class.new(scorecard, 'new name', deep_copy: deep_copy?).perform }
+
   let(:user) { create(:user) }
   let(:default_account) { create(:account) }
   let!(:characteristic) { create(:characteristic) }
@@ -15,9 +19,7 @@ RSpec.describe(ScorecardCopier) do
     initiative.save!
   end
 
-  subject(:copied) { ScorecardCopier.new(scorecard, 'new name', deep_copy: deep_copy?).perform }
-
-  context '#copied' do
+  describe '#copied' do
     let(:deep_copy?) { false }
     let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
     let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
@@ -31,14 +33,14 @@ RSpec.describe(ScorecardCopier) do
     it { expect(copied.name).to(eq('new name')) }
 
     it { expect(copied.description).to(eq(scorecard.description)) }
-    it { expect(copied.shared_link_id).to_not(be_blank) }
-    it { expect(copied.shared_link_id).to_not(eq(scorecard.shared_link_id)) }
+    it { expect(copied.shared_link_id).not_to(be_blank) }
+    it { expect(copied.shared_link_id).not_to(eq(scorecard.shared_link_id)) }
 
     it { expect(copied.wicked_problem).to(eq(scorecard.wicked_problem)) }
     it { expect(copied.community).to(eq(scorecard.community)) }
 
     it { expect(copied.initiatives.count).to(eq(scorecard.initiatives.count)) }
-    it { expect(copied.initiatives).to_not(eq(scorecard.initiatives)) }
+    it { expect(copied.initiatives).not_to(eq(scorecard.initiatives)) }
 
     it do
       copied_first_initiative.reload
@@ -46,27 +48,26 @@ RSpec.describe(ScorecardCopier) do
     end
   end
 
-  context '#deep_copied', :run_delayed_jobs do
+  describe '#deep_copied', :run_delayed_jobs do
     let(:deep_copy?) { true }
+
+    let(:copied_first_checklist_item) do
+      copied_first_initiative.checklist_items.where(characteristic_id: scorcard_first_checklist_item.characteristic_id).first
+    end
+    let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
+    let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
+    let(:scorcard_first_initiative) { scorecard.initiatives.first }
 
     it { expect(copied.name).to(eq('new name')) }
     it { expect(copied.description).to(eq(scorecard.description)) }
-    it { expect(copied.shared_link_id).to_not(be_blank) }
-    it { expect(copied.shared_link_id).to_not(eq(scorecard.shared_link_id)) }
+    it { expect(copied.shared_link_id).not_to(be_blank) }
+    it { expect(copied.shared_link_id).not_to(eq(scorecard.shared_link_id)) }
 
     it { expect(copied.wicked_problem).to(eq(scorecard.wicked_problem)) }
     it { expect(copied.community).to(eq(scorecard.community)) }
 
     it { expect(copied.initiatives.count).to(eq(scorecard.initiatives.count)) }
-    it { expect(copied.initiatives).to_not(eq(scorecard.initiatives)) }
-
-    let(:scorcard_first_initiative) { scorecard.initiatives.first }
-    let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
-
-    let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
-    let(:copied_first_checklist_item) do
-      copied_first_initiative.checklist_items.where(characteristic_id: scorcard_first_checklist_item.characteristic_id).first
-    end
+    it { expect(copied.initiatives).not_to(eq(scorecard.initiatives)) }
 
     context 'initiatives' do
       before do

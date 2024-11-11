@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SustainableDevelopmentGoalAlignmentCardsController < ScorecardsController
+class SustainableDevelopmentGoalAlignmentCardsController < ImpactCardsController
   def index
     @scorecards = policy_scope(Scorecard)
                   .where(type: 'SustainableDevelopmentGoalAlignmentCard')

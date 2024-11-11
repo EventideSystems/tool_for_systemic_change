@@ -32,11 +32,11 @@ class SynchronizeLinkedScorecard
       missing_from_source = target_initiative_names - source_initiative_names
       missing_from_target = source_initiative_names - target_initiative_names
 
-      target_scorecard.initiatives.not_archived.where(name: missing_from_source).each do |initiative|
+      target_scorecard.initiatives.not_archived.where(name: missing_from_source).find_each do |initiative|
         source_scorecard.initiatives << initiative.dup
       end
 
-      source_scorecard.initiatives.not_archived.where(name: missing_from_target).each do |initiative|
+      source_scorecard.initiatives.not_archived.where(name: missing_from_target).find_each do |initiative|
         target_scorecard.initiatives << initiative.dup
       end
 

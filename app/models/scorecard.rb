@@ -106,9 +106,9 @@ class Scorecard < ApplicationRecord
   private
 
   def linked_scorecard_must_be_in_same_account
-    if linked_scorecard.present? && linked_scorecard.account != account
-      errors.add(:linked_scorecard_id, 'must be in the same account')
-    end
+    return unless linked_scorecard.present? && linked_scorecard.account != account
+
+    errors.add(:linked_scorecard_id, 'must be in the same account')
   end
 
   def non_clashing_initiative_name(name, existing_names)

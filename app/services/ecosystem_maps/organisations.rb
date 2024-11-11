@@ -7,7 +7,6 @@ require 'rgl/connected_components'
 
 module EcosystemMaps
   class Organisations
-
     class Graph
       def initialize
         @graph = RGL::DirectedAdjacencyGraph.new
@@ -36,24 +35,22 @@ module EcosystemMaps
             v = queue.shift
             stack.push(v)
             @graph.adjacent_vertices(v).each do |w|
-              if distance[w] < 0
+              if (distance[w]).negative?
                 queue.push(w)
                 distance[w] = distance[v] + 1
               end
-              if distance[w] == distance[v] + 1
-                sigma[w] += sigma[v]
-                paths[w] ||= []
-                paths[w] << v
-              end
+              next unless distance[w] == distance[v] + 1
+
+              sigma[w] += sigma[v]
+              paths[w] ||= []
+              paths[w] << v
             end
           end
 
           while stack.any?
             w = stack.pop
-            if paths[w]
-              paths[w].each do |v|
-                delta[v] += (sigma[v].to_f / sigma[w]) * (1 + delta[w])
-              end
+            paths[w]&.each do |v|
+              delta[v] += (sigma[v].to_f / sigma[w]) * (1 + delta[w])
             end
             centrality[w] += delta[w] if w != s
           end
@@ -62,32 +59,26 @@ module EcosystemMaps
       end
 
       def rescale(betweenness, n, normalized, directed: false, k: nil, endpoints: false)
-        scale = nil
-
-        if normalized
-          if endpoints
-            if n < 2
-              scale = nil  # no normalization
-            else
-              # Scale factor should include endpoint nodes
-              scale = 1.0 / (n * (n - 1))
-            end
-          elsif n <= 2
-            scale = nil  # no normalization b=0 for all nodes
-          else
-            scale = 1.0 / ((n - 1) * (n - 2))
-          end
-        else  # rescale by 2 for undirected graphs
-          if !directed
-            scale = 0.5
-          else
-            scale = nil
-          end
-        end
+        scale = if normalized
+                  if endpoints
+                    if n < 2
+                      nil # no normalization
+                    else
+                      # Scale factor should include endpoint nodes
+                      1.0 / (n * (n - 1))
+                    end
+                  elsif n <= 2
+                    nil # no normalization b=0 for all nodes
+                  else
+                    1.0 / ((n - 1) * (n - 2))
+                  end
+                else # rescale by 2 for undirected graphs
+                  (0.5 unless directed)
+                end
 
         if scale
           scale *= n / k if k
-          betweenness.each do |v, value|
+          betweenness.each_key do |v|
             betweenness[v] *= scale
           end
         end
@@ -156,11 +147,10 @@ module EcosystemMaps
       graph.betweenness_centrality
 
       data.transform_keys(&:to_i)
-    rescue Exception => e
+    rescue Exception
       raise(payload.inspect)
       {}
     end
-
 
     # Example usage
     # graph = Graph.new
@@ -213,7 +203,7 @@ module EcosystemMaps
       value_in_range = value - lower
 
       base_strength = (
-        ((value_in_range.to_f / range.to_f) * 100) / STRENGTH_BUCKET_WIDTH
+        ((value_in_range.to_f / range) * 100) / STRENGTH_BUCKET_WIDTH
       ).round
 
       base_strength.zero? ? 1 : base_strength

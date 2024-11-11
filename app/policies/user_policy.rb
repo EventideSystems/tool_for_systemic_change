@@ -62,7 +62,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def max_users_not_reached?(account)
-    return false unless account.present?
+    return false if account.blank?
     return true if account.max_users.zero? # NOTE: magic number, meaning no limit
 
     account.users.count < account.max_users

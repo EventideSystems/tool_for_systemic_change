@@ -18,7 +18,7 @@ module Reports
         p.workbook.styles.fonts.first.name = 'Calibri'
         styles = default_styles(p)
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row([Time.now], style: styles[:date])
+          sheet.add_row([Time.zone.now], style: styles[:date])
           add_title(sheet, styles)
           sheet.add_row
           add_summary(sheet, styles)

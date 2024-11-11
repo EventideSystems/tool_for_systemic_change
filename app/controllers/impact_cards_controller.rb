@@ -256,14 +256,10 @@ class ImpactCardsController < ApplicationController
     return [] if target_scorecard.blank?
 
     source_initiatives =
-      source_scorecard.initiatives.index_by do |initiative|
-        initiative.name
-      end
+      source_scorecard.initiatives.index_by(&:name)
 
     target_initiatives =
-      target_scorecard.initiatives.index_by do |initiative|
-        initiative.name
-      end
+      target_scorecard.initiatives.index_by(&:name)
 
     all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
 
@@ -401,8 +397,8 @@ class ImpactCardsController < ApplicationController
       params[:type] = scorecard_class_name
 
       if params[:initiatives_attributes].present?
-        params[:initiatives_attributes].each do |initiative_key, _|
-          next unless params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).present?
+        params[:initiatives_attributes].each_key do |initiative_key|
+          next if params.dig(:initiatives_attribute, initiative_key, :initiatives_organisations_attributes).blank?
 
           params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].reject! do |key, value|
             value[:_destroy] != '1' && (
@@ -420,12 +416,12 @@ class ImpactCardsController < ApplicationController
       end
 
       if params[:initiatives_attributes].present?
-        params[:initiatives_attributes].each do |initiative_key, _|
-          next unless params.dig(
+        params[:initiatives_attributes].each_key do |initiative_key|
+          next if params.dig(
             :initiatives_attributes,
             initiative_key,
             :initiatives_subsystem_tags_attributes
-          ).present?
+          ).blank?
 
           params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
             value[:_destroy] != '1' && (

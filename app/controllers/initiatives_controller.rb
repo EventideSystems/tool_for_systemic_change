@@ -8,7 +8,7 @@ class InitiativesController < ApplicationController
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]
 
-    sidebar_item :initiatives
+  sidebar_item :initiatives
 
   def index
     @subsystem_tags = current_account.subsystem_tags
@@ -24,7 +24,7 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       format.html { render 'initiatives/index', locals: { initiatives: @initiatives } }
       format.turbo_stream { render 'initiatives/index', locals: { initiatives: @initiatives } }
-      format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
+      format.csv { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 
@@ -33,18 +33,15 @@ class InitiativesController < ApplicationController
 
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
-
   end
 
   def new
     @scorecard = params[:scorecard_id].present? ? policy_scope(Scorecard).find(params[:scorecard_id]) : nil
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize(@initiative)
-
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @initiative = Initiative.new(initiative_params)
@@ -84,7 +81,7 @@ class InitiativesController < ApplicationController
   def content_subtitle
     subtitle = @initiative&.name.presence || super
 
-    @initiative&.archived? ? subtitle + ' [ARCHIVED]' : subtitle
+    @initiative&.archived? ? "#{subtitle} [ARCHIVED]" : subtitle
   end
 
   # NOTE: Will move this to the checklist controller, where it belongs
@@ -106,9 +103,9 @@ class InitiativesController < ApplicationController
 
   def export_filename
     if current_account.scorecard_types.count > 1
-      "initiatives_for_#{scope_from_params}_#{Date.today.strftime('%Y_%m_%d')}"
+      "initiatives_for_#{scope_from_params}_#{Time.zone.today.strftime('%Y_%m_%d')}"
     else
-      "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+      "initiatives_#{Time.zone.today.strftime('%Y_%m_%d')}"
     end
   end
 

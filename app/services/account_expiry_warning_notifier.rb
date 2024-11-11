@@ -20,7 +20,7 @@ class AccountExpiryWarningNotifier
         .where(expiry_warning_sent_on: nil)
         .where('expires_on <= ?', EXPIRY_WARNING_PERIOD.from_now)
         .where('expires_on > ?', EXPIRY_WARNING_PERIOD.ago)
-        .where('expires_on > ?', Date.today)
+        .where('expires_on > ?', Time.zone.today)
         .find_each do |account|
           account.users.find_each do |user|
             send_email(account, user)

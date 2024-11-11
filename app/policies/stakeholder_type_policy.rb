@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StakeholderTypePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -23,9 +25,9 @@ class StakeholderTypePolicy < ApplicationPolicy
 
   def destroy?
     record.organisations.empty? &&
-    (
-      system_admin? || (record_in_scope?(record) && account_admin?(current_account))
-    )
+      (
+        system_admin? || (record_in_scope?(record) && account_admin?(current_account))
+      )
   end
 
   private

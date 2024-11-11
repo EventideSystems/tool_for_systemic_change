@@ -68,7 +68,7 @@ module Reports
                         .join('; ')
                     end
                   else
-                    initiative_comments = initiatives.map { '' }
+                    initiatives.map { '' }
                   end
 
                 sheet.add_row(
@@ -99,7 +99,7 @@ module Reports
     end
 
     def add_header(sheet, styles)
-      sheet.add_row([Time.now], style: styles[:date])
+      sheet.add_row([Time.zone.now], style: styles[:date])
 
       sheet.add_row([scorecard_model_name], style: styles[:header_1]).add_cell(
         scorecard.name,

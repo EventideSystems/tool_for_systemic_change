@@ -5,12 +5,12 @@ class ActivitiesController < ApplicationController
 
   before_action :authenticate_user!
 
-    def index
+  def index
     @versions = policy_scope(PaperTrail::Version).order(sort_order).page(params[:page])
   end
 
   def sort_order
-    return { created_at: :desc } unless params[:order].present?
+    return { created_at: :desc } if params[:order].blank?
 
     super
   end

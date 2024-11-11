@@ -2,7 +2,6 @@
 
 module ImpactCards
   class InitiativesController < ApplicationController
-
     sidebar_item :impact_cards
 
     def show
@@ -13,8 +12,8 @@ module ImpactCards
       authorize(@initiative, :edit?)
 
       @focus_areas_groups = FocusAreaGroup
-        .where(scorecard_type: @impact_card.type, account_id: @impact_card.account_id)
-        .order(:position)
+                            .where(scorecard_type: @impact_card.type, account_id: @impact_card.account_id)
+                            .order(:position)
 
       @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     end

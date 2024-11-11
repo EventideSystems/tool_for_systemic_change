@@ -41,18 +41,18 @@ class Account < ApplicationRecord
   belongs_to :stakeholder_type, optional: true
 
   # Direct associations
-  has_many :accounts_users
-  has_many :communities
-  has_many :focus_area_groups
-  has_many :initiatives_imports, class_name: 'Initiatives::Import'
-  has_many :organisations
-  has_many :organisations_imports, class_name: 'Organisations::Import'
-  has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import'
-  has_many :scorecards
+  has_many :accounts_users, dependent: :destroy
+  has_many :communities, dependent: :destroy
+  has_many :focus_area_groups, dependent: :destroy
+  has_many :initiatives_imports, class_name: 'Initiatives::Import', dependent: :destroy
+  has_many :organisations, dependent: :destroy
+  has_many :organisations_imports, class_name: 'Organisations::Import', dependent: :destroy
+  has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import', dependent: :destroy
+  has_many :scorecards, dependent: :destroy
   has_many :stakeholder_types, dependent: :destroy
-  has_many :subsystem_tags
+  has_many :subsystem_tags, dependent: :destroy
   has_many :users, through: :accounts_users
-  has_many :wicked_problems
+  has_many :wicked_problems, dependent: :destroy
 
   # Through associations
   has_many :initiatives, through: :scorecards
@@ -63,12 +63,12 @@ class Account < ApplicationRecord
 
   scope :active,
         lambda {
-          where(expires_on: nil).or(::Account.where(expires_on: Date.today..)).order(created_at: :asc)
+          where(expires_on: nil).or(::Account.where(expires_on: Time.zone.today..)).order(created_at: :asc)
         }
 
   scope :expiring_soon,
         lambda {
-          where(expires_on: Date.today..(Date.today + EXPIRY_WARNING_PERIOD)).order(created_at: :asc)
+          where(expires_on: Time.zone.today..(Time.zone.today + EXPIRY_WARNING_PERIOD)).order(created_at: :asc)
         }
 
   def accounts_users_remaining
@@ -97,45 +97,5 @@ class Account < ApplicationRecord
 
   private
 
-  def setup_account
-    create_stakeholder_types
-    create_focus_area_groups
-  end
-
-  def create_stakeholder_types
-    StakeholderType.system_stakeholder_types.each do |template|
-      template
-        .dup
-        .tap { |s| s.account = self }
-        .save!
-    end
-  end
-
-  def create_focus_area_groups
-    FocusAreaGroup.where(account: nil).find_each do |focus_area_group|
-      new_focus_area_group = \
-        FocusAreaGroup
-          .create(
-            focus_area_group
-              .attributes.except('id', 'created_at', 'updated_at')
-              .merge('account_id' => id)
-            )
-
-      focus_area_group.focus_areas.each do |focus_area|
-        new_focus_area = \
-          new_focus_area_group
-            .focus_areas
-            .build(focus_area.attributes.except('id', 'focus_area_group_id', 'created_at', 'updated_at'))
-
-        focus_area.characteristics.each do |characteristic|
-          new_characteristic = \
-            new_focus_area
-              .characteristics
-              .build(characteristic.attributes.except('id', 'focus_area_id', 'created_at', 'updated_at'))
-        end
-
-        new_focus_area_group.save!
-      end
-    end
-  end
+  def setup_account = SetupAccount.call(account: self)
 end

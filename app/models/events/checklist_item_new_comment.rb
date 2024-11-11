@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: events_checklist_item_new_comments
@@ -9,7 +11,8 @@
 #  to_status         :text
 #  checklist_item_id :integer
 
-
 # TODO: Check that this ever gets used.
-class Events::ChecklistItemNewComment < View
+module Events
+  class ChecklistItemNewComment < View
+  end
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 namespace :deploy do
-
   HEROKU_STAGING_DEPLOY = <<~BASH
     git push -f tool-for-systemic-change-stg staging:master && \
     heroku run rake db:migrate -a tool-for-systemic-change-stg && \
@@ -29,11 +28,11 @@ namespace :deploy do
   end
 
   def confirmed?
-    STDIN.gets.strip.upcase == 'YES'
+    $stdin.gets.strip.upcase == 'YES'
   end
 
-  desc "deploy to staging environment"
-  task :staging do
+  desc 'deploy to staging environment'
+  task staging: :environment do
     print_warning('staging')
     print_confirmation('staging')
     if confirmed?
@@ -43,8 +42,8 @@ namespace :deploy do
     end
   end
 
-  desc "deploy to production environment"
-  task :production do
+  desc 'deploy to production environment'
+  task production: :environment do
     print_warning('PRODUCTION')
     print_confirmation('PRODUCTION')
     if confirmed?

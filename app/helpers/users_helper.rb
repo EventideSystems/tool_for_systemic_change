@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module UsersHelper
-
   def role_in_current_account_badge(user)
     role = role_in_current_account(user)
     return '' if role.blank?

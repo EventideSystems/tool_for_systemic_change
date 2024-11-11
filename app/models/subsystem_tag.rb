@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: subsystem_tags
@@ -30,5 +32,4 @@ class SubsystemTag < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :account_id }
 
   alias_attribute :text, :name # TODO: Check if this is still required?
-
 end

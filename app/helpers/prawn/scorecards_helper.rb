@@ -9,11 +9,9 @@ module Prawn
     include ::ActionView::Helpers::TextHelper
 
     def focus_area_color(focus_area)
-      if focus_area.actual_color.present?
-        return focus_area.actual_color
-      else
-        '#' + %w[FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0][focus_area.position - 1]
-      end
+      return focus_area.actual_color if focus_area.actual_color.present?
+
+      "##{%w[FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0][focus_area.position - 1]}"
     end
 
     def focus_area_desaturated_color(focus_area)
@@ -39,7 +37,7 @@ module Prawn
     end
 
     def page_header(scorecard)
-      img = File.join(Rails.root, 'app/assets/images/logo-pdf.png')
+      img = Rails.root.join('app/assets/images/logo-pdf.png').to_s
 
       repeat(:all) do
         canvas do

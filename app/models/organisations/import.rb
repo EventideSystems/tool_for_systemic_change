@@ -41,7 +41,12 @@ module Organisations
         next if row[name_index].blank?
 
         organisation = find_or_build_organisation_by_name(account, row[name_index])
-        stakeholder_type = stakeholder_type_index.nil? ? nil : find_stakeholder_type_by_name(account, row[stakeholder_type_index])
+        stakeholder_type = if stakeholder_type_index.nil?
+                             nil
+                           else
+                             find_stakeholder_type_by_name(account,
+                                                           row[stakeholder_type_index])
+                           end
 
         if stakeholder_type.nil?
           processing_errors << build_processing_errors(
@@ -54,8 +59,8 @@ module Organisations
           {}.tap do |attributes|
             attributes[:name]        = row[name_index]
             attributes[:description] = row[description_index] if description_index && row[description_index].present?
-            attributes[:stakeholder_type]      = stakeholder_type
-            attributes[:weblink]     = row[weblink_index] if weblink_index && row[weblink_index].present?
+            attributes[:stakeholder_type] = stakeholder_type
+            attributes[:weblink] = row[weblink_index] if weblink_index && row[weblink_index].present?
           end
         )
 

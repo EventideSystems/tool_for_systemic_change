@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: events_transition_card_activities
@@ -13,5 +15,7 @@
 #  initiative_id        :integer
 #  transition_card_id   :integer
 #
-class Events::TransitionCardActivity < View
+module Events
+  class TransitionCardActivity < View
+  end
 end

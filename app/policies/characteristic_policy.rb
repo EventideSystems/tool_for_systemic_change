@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class CharacteristicPolicy < ApplicationPolicy
-  class Scope < Scope
+class CharacteristicPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope
     end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for presenting accounts - soon to be deprecated and replaced with 'workspaces'
 module AccountsHelper
   def lookup_accounts
     policy_scope(Account).all

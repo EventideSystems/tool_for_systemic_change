@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for FocusAreaGroups
 class FocusAreaGroupsController < ApplicationController
   include VerifyPolicies
 

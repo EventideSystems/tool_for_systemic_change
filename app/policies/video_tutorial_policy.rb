@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class VideoTutorialPolicy < ApplicationPolicy
-  class Scope < Scope
+class VideoTutorialPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope.all
     end

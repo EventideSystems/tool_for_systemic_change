@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class StakeholderTypePolicy < ApplicationPolicy
-  class Scope < Scope
+class StakeholderTypePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope.where(account: current_account)
     end

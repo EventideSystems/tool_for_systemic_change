@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Organisations
+  # Imports for Organisations (aka 'stakeholders')
   class ImportsController < ApplicationController
     before_action :require_account_selected, only: %i[new create edit update]
     before_action :set_organisations_import, only: %i[show edit update destroy]
@@ -18,7 +19,7 @@ module Organisations
 
     def edit; end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @organisations_import = current_account.organisations_imports.build(
         organisations_import_params.merge(user: current_user)
       )

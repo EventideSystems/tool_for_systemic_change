@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module System
-  class StakeholderTypePolicy < ApplicationPolicy
-    class Scope < Scope
+  class StakeholderTypePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+    class Scope < Scope # rubocop:disable Style/Documentation
       def resolve
         system_admin? ? scope.system_stakeholder_types : scope.none
       end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for managing users
 class UsersController < ApplicationController
   include VerifyPolicies
 
@@ -21,7 +22,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { render 'users/index', locals: { scorecards: @users } }
       format.turbo_stream { render 'users/index', locals: { scorecards: @users } }
-      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     user_params.delete(:system_role) unless policy(User).invite_with_system_role?
     account_role = user_params.delete(:account_role)
 

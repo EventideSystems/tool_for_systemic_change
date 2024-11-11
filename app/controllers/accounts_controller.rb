@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for Accounts
 class AccountsController < ApplicationController
   include VerifyPolicies
 

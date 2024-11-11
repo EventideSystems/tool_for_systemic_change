@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+# Controller for managing User Invitations
 class InvitationsController < Devise::InvitationsController
   layout 'application', only: [:new] # NOTE: Defaults to 'devise' layout for other actions
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
     params[:user].delete(:system_role) unless policy(User).invite_with_system_role?
     account_role = params[:user].delete(:account_role)
 

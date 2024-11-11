@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for labels, specifically for calculating luminance of a hex color. Probably should be renamed to ColorHelper.
 module LabelsHelper
   def hex_to_rgb(hex)
     hex = hex.gsub('#', '')
@@ -9,7 +10,7 @@ module LabelsHelper
     [r, g, b]
   end
 
-  def calculate_luminance(hex_color)
+  def calculate_luminance(hex_color) # rubocop:disable Metrics/AbcSize
     r, g, b = hex_to_rgb(hex_color)
 
     # Convert RGB to sRGB

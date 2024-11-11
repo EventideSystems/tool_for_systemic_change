@@ -3,7 +3,7 @@
 require 'tailwind_merge'
 
 # Custom FormBuilder adding Tailwind classes to form fields.
-class CustomFormBuilder < ActionView::Helpers::FormBuilder
+class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Metrics/ClassLength
   BASE_COLOR_CLASSES = %w[
     bg-red-500
     bg-orange-500

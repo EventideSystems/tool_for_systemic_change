@@ -4,10 +4,10 @@
 class LabelsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_label, only: %i[show edit update destroy]
+  before_action :set_label, only: %i[edit update destroy]
   before_action :require_account_selected, only: %i[new create edit update] # Still in use?
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(label_klass).order(:name).ransack(search_params[:q])
@@ -32,7 +32,7 @@ class LabelsController < ApplicationController
     end
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @label = label_klass.build(label_params.merge(account_id: current_account.id))
     authorize @label
 
@@ -59,7 +59,7 @@ class LabelsController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength
     if @label.update(label_params)
       @labels = policy_scope(label_klass).all
       respond_to do |format|

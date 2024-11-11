@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
 module System
-  class UsersController < ApplicationController
+  # Controller for managing users, only accessible by system admins
+  class UsersController < ApplicationController # rubocop:disable Metrics/ClassLength
     include SharedUserActions
     include VerifyPolicies
 
     before_action :authenticate_user!
-    before_action :set_user, only: %i[show edit update destroy undelete resend_invitation]
+    before_action :set_user, only: %i[show edit update destroy undelete resend_invitation] # rubocop:disable Rails/LexicallyScopedActionFilter
 
     skip_after_action :verify_policy_scoped
 
-    def index
+    def index # rubocop:disable Metrics/AbcSize
       respond_to do |format|
         format.html do |_html|
           @users = UserPolicy::SystemScope.new(pundit_user, User.all).resolve.page params[:page]
@@ -33,7 +34,7 @@ module System
 
     def edit; end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @user = User.new(user_params)
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
@@ -56,7 +57,7 @@ module System
       end
     end
 
-    def update
+    def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       user_params.delete(:system_role) unless policy(User).invite_with_system_role?
       account_role = user_params.delete(:account_role)
 
@@ -125,7 +126,7 @@ module System
       )
     end
 
-    def users_to_csv(users)
+    def users_to_csv(users) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
       account_ids = policy_scope(Account).all.pluck(:id)
 
       CSV.generate(force_quotes: true) do |csv|

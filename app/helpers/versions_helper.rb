@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Support for accessing version information for records (based on PaperTrail)
 module VersionsHelper
   def version_summary(version)
     return '' if version.blank?

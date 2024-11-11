@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ScorecardPolicy < ApplicationPolicy
-  class Scope < Scope
+class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       resolve_to_current_account.where(type: current_account_scorecard_types)
     end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for ChecklistItems
 class ChecklistItemsController < ApplicationController
   include VerifyPolicies
 
@@ -15,7 +16,7 @@ class ChecklistItemsController < ApplicationController
     authorize @checklist_item
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
 
@@ -56,7 +57,7 @@ class ChecklistItemsController < ApplicationController
     end
   end
 
-  def checklist_item_params
+  def checklist_item_params # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     if params[:checklist_item][:new_comment].present?
       params[:checklist_item][:comment] =
         params[:checklist_item][:new_comment]

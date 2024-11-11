@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class AccountPolicy < ApplicationPolicy
-  class Scope < Scope
+class AccountPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       if system_admin?
         scope.all

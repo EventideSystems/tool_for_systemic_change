@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ImpactCards
+  # Controller for Initiatives, nested under ImpactCards
   class InitiativesController < ApplicationController
     sidebar_item :impact_cards
 

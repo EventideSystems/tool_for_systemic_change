@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for FocusAreas
 class FocusAreasController < ApplicationController
   include VerifyPolicies
 
@@ -67,7 +68,7 @@ class FocusAreasController < ApplicationController
     @focus_area_groups = policy_scope(FocusAreaGroup).where(account: current_account)
   end
 
-  def focus_area_params
+  def focus_area_params # rubocop:disable Metrics/MethodLength
     params
       .fetch(:focus_area, {})
       .permit(

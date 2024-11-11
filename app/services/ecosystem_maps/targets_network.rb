@@ -10,7 +10,7 @@ module EcosystemMaps
   # For now we'll use the original shared SDGs Card model to get the data we need and map it to the account's
   # duplicated models. NB This requires that the account's duplicated models are in sync with the original shared
   # SDGs Card model. If the names are ever changed, this will break.
-  class TargetsNetwork
+  class TargetsNetwork # rubocop:disable Metrics/ClassLength
     attr_reader :transition_card, :targets_network_mappings
 
     def initialize(transition_card)
@@ -67,7 +67,7 @@ module EcosystemMaps
         end.uniq.compact
     end
 
-    def focus_area_nodes
+    def focus_area_nodes # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       focus_areas.map do |node|
         mappings =
           organisations_and_intitiatives.select do |mapping|
@@ -90,7 +90,7 @@ module EcosystemMaps
       end
     end
 
-    def characteristic_nodes
+    def characteristic_nodes # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       characteristics.map do |node|
         mappings =
           organisations_and_intitiatives.select do |mapping|

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+# Controller for managing shared impact cards
 class SharedController < ApplicationController
-  def show
+  def show # rubocop:disable Metrics/MethodLength
     response.headers.delete('X-Frame-Options')
 
     load_scorecard_and_supporting_data
@@ -18,7 +19,7 @@ class SharedController < ApplicationController
     end
   end
 
-  def characteristic
+  def characteristic # rubocop:disable Metrics/AbcSize
     @scorecard = Scorecard.find_by(shared_link_id: params[:shared_id])
 
     @characteristic = Characteristic.find(params[:id])
@@ -50,7 +51,7 @@ class SharedController < ApplicationController
 
   private
 
-  def load_scorecard_and_supporting_data
+  def load_scorecard_and_supporting_data # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @scorecard = Scorecard.find_by(shared_link_id: params[:id])
 
     return if @scorecard.blank?

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Common actions for user controllers. Can probably be refactored once move to a single user controller (eliminating
+# the System::UsersController)
 module SharedUserActions
   extend ActiveSupport::Concern
 

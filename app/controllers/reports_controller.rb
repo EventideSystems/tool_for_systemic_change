@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
+# Controller for managing reports
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
   ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
 
     @scorecards = policy_scope(Scorecard).order(:name)
@@ -26,7 +27,7 @@ class ReportsController < ApplicationController
       end
   end
 
-  def initiatives
+  def initiatives # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?) # SMELL Incorrect policy check. Need to fix.
 
     @content_subtitle = 'Initiatives'
@@ -52,7 +53,7 @@ class ReportsController < ApplicationController
     ).distinct.page(params[:page])
   end
 
-  def stakeholders
+  def stakeholders # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
 
     @content_subtitle = 'Stakeholders'
@@ -85,7 +86,7 @@ class ReportsController < ApplicationController
     ).distinct.page(params[:page])
   end
 
-  def transition_card_activity
+  def transition_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :transition_card_activity?)
 
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
@@ -111,7 +112,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  def scorecard_comments
+  def scorecard_comments # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
 
     @content_subtitle = "#{Scorecard.model_name.human} Comments"
@@ -140,7 +141,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_stakeholders
+  def transition_card_stakeholders # rubocop:disable Metrics/AbcSize
     authorize(:report, :index?)
 
     @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"

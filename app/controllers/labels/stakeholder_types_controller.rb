@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Labels
+  # Controller for managing Stakeholder Types as labels
   class StakeholderTypesController < LabelsController
     sidebar_item :stakeholder_types
 

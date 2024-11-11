@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for Reports
 module ReportsHelper
   def options_for_comment_statuses
     ChecklistItemComment.statuses.keys.map { |status| [status.titleize, status] }

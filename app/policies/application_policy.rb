@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ApplicationPolicy
-  class Scope
+class ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope # rubocop:disable Style/Documentation
     attr_reader :user_context, :scope
 
     delegate :user, :account, to: :user_context, prefix: :current

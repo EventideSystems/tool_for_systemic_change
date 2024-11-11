@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Labels
+  # Controller for managing Subsystem Tags as labels
   class SubsystemTagsController < LabelsController
     sidebar_item :subsystem_tags
 

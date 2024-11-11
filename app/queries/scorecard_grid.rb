@@ -2,10 +2,11 @@
 
 require 'benchmark'
 
+# This class is responsible for generating the data required to render the Impact Card Grid
 # rubocop:disable Metrics/ClassLength
 class ScorecardGrid
   class << self
-    def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
+    def execute(scorecard, snapshot_at = nil, subsystem_tags = []) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       columns_data = column_data(scorecard.account, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
 
       if snapshot_at.present?

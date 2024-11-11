@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 module ScorecardComments
+  # Imports for Scorecard Comments
   class ImportsController < ApplicationController
     def new
       @scorecard_comments_import = current_account.scorecard_comments_imports.build
       authorize(@scorecard_comments_import)
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @scorecard_comments_import = current_account.scorecard_comments_imports.build(
         scorecard_comments_import_params.merge(user: current_user)
       )

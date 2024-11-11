@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-# require 'prawn/scorecards_helper'
-
-# rubocop:disable Metrics/ClassLength
-class ScorecardPdfGenerator
+# ScorecardPdfGenerator generates a PDF for a scorecard
+class ScorecardPdfGenerator # rubocop:disable Metrics/ClassLength
   def initialize(scorecard:, initiatives:, focus_areas:)
     @scorecard = scorecard
     @initiatives = initiatives.includes(:subsystem_tags)
     @focus_areas = focus_areas
   end
 
-  def perform
+  def perform # rubocop:disable Metrics/MethodLength
     ::Prawn::Document.extensions << Prawn::ScorecardsHelper
 
     Prawn::Document.new(page_size: 'A4', page_layout: :landscape, top_margin: 60) do |pdf|
@@ -34,7 +32,7 @@ class ScorecardPdfGenerator
 
   attr_reader :scorecard, :initiatives, :focus_areas
 
-  def generate_date_sdgs_card(pdf)
+  def generate_date_sdgs_card(pdf) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     initiatives.each_slice(18) do |grouped_initiatives|
       [
         focus_areas[0..2],
@@ -63,7 +61,7 @@ class ScorecardPdfGenerator
     pdf.start_new_page if initiatives.count <= 7
   end
 
-  def generate_data_transition_card(pdf)
+  def generate_data_transition_card(pdf) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     initiatives.each_slice(18) do |grouped_initiatives|
       [focus_areas[0..3], focus_areas[4..8]].each do |grouped_focus_areas|
         pdf.table(
@@ -86,7 +84,7 @@ class ScorecardPdfGenerator
     pdf.start_new_page if initiatives.count <= 7
   end
 
-  def generate_legend_sdgs_card(pdf)
+  def generate_legend_sdgs_card(pdf) # rubocop:disable Metrics/MethodLength
     pdf.text 'Legend', size: 16
 
     pdf.stroke do
@@ -104,7 +102,7 @@ class ScorecardPdfGenerator
     pdf.start_new_page
   end
 
-  def generate_legend_transition_card(pdf)
+  def generate_legend_transition_card(pdf) # rubocop:disable Metrics/MethodLength
     pdf.text 'Legend', size: 16
 
     pdf.stroke do
@@ -126,7 +124,7 @@ class ScorecardPdfGenerator
     pdf.start_new_page
   end
 
-  def generate_initiatives(pdf)
+  def generate_initiatives(pdf) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     pdf.text 'Initiatives', size: 16
 
     pdf.stroke do
@@ -153,4 +151,3 @@ class ScorecardPdfGenerator
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for presenting checklist items
 module ChecklistItemsHelper
   # rubocop:disable Layout/HashAlignment
   BASE_CONCURRENT_CHECKLIST_LIST_ITEM_COLOR_CLASSES = {
@@ -73,7 +74,7 @@ module ChecklistItemsHelper
     checklist_item.status.to_s.dasherize
   end
 
-  def checklist_item_badge(checklist_item)
+  def checklist_item_badge(checklist_item) # rubocop:disable Metrics/MethodLength
     klass = checklist_item.no_comment? ? 'fa-square-o' : 'fa-square'
 
     content_tag(

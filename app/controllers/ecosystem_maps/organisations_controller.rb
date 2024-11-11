@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module EcosystemMaps
+  # Controller for Organisations used by EcosystemMaps
   class OrganisationsController < ApplicationController
     before_action :set_scorecard
     after_action :verify_authorized, except: :show
@@ -8,7 +9,7 @@ module EcosystemMaps
 
     layout false
 
-    def show
+    def show # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @organisation = @scorecard.organisations.find(params[:id])
 
       initiatives = @scorecard

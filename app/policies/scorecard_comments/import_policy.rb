@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ScorecardComments
-  class ImportPolicy < ApplicationPolicy
-    class Scope < Scope
+  class ImportPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+    class Scope < Scope # rubocop:disable Style/Documentation
       def resolve
         if current_account
           scope.joins(:scorecard).where('scorecards.account_id': current_account.id)

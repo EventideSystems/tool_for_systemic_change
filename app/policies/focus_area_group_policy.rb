@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class FocusAreaGroupPolicy < ApplicationPolicy
-  class Scope < Scope
+class FocusAreaGroupPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope
     end

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Initiatives
+  # Imports for Initiatives
   class ImportsController < ApplicationController
-    before_action :require_account_selected, only: %i[new create edit update]
-    before_action :set_initiatives_import, only: %i[show edit update destroy]
+    before_action :require_account_selected, only: %i[new create edit update] # rubocop:disable Rails/LexicallyScopedActionFilter
+    before_action :set_initiatives_import, only: %i[show edit update destroy] # rubocop:disable Rails/LexicallyScopedActionFilter
 
     def new
       @initiatives_import = current_account.initiatives_imports.build(
@@ -12,7 +13,7 @@ module Initiatives
       authorize @initiatives_import
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @initiatives_import = current_account.initiatives_imports.build(
         initiatives_import_params.merge(user: current_user)
       )

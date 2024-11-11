@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module System
+  # Controller for managing stakeholder types - only accessible by system admins and soon to be deprecated
   class StakeholderTypesController < ApplicationController
     include VerifyPolicies
 

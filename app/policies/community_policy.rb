@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class CommunityPolicy < ApplicationPolicy
-  class Scope < Scope
+class CommunityPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       resolve_to_current_account
     end

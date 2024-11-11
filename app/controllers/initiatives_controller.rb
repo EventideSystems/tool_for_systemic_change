@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for the Initiative model
 # rubocop:disable Metrics/ClassLength
 class InitiativesController < ApplicationController
   include VerifyPolicies
@@ -10,7 +11,7 @@ class InitiativesController < ApplicationController
 
   sidebar_item :initiatives
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     @subsystem_tags = current_account.subsystem_tags
 
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
@@ -56,7 +57,7 @@ class InitiativesController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength
     linked_initiative = @initiative.linked_initiative
 
     if @initiative.update(initiative_params)
@@ -109,11 +110,11 @@ class InitiativesController < ApplicationController
     end
   end
 
-  def initiatives_to_csv(initiatives)
+  def initiatives_to_csv(initiatives) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     max_organisation_index = initiatives.map(&:organisations).map(&:count).max
     max_subsystem_tag_index = initiatives.map(&:subsystem_tags).map(&:count).max
 
-    CSV.generate(force_quotes: true) do |csv|
+    CSV.generate(force_quotes: true) do |csv| # rubocop:disable Metrics/BlockLength
       csv << (([
         'Name',
         'Description',
@@ -165,10 +166,11 @@ class InitiativesController < ApplicationController
   end
 
   def set_focus_area_groups
-    @focus_areas_groups = FocusAreaGroup
-                          .includes(:video_tutorial, focus_areas: :video_tutorial)
-                          .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
-                          .order(:position)
+    @focus_areas_groups = \
+      FocusAreaGroup
+      .includes(:video_tutorial, focus_areas: :video_tutorial)
+      .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
+      .order(:position)
   end
 
   def set_initiative
@@ -176,7 +178,7 @@ class InitiativesController < ApplicationController
     authorize(@initiative)
   end
 
-  def scope_from_params
+  def scope_from_params # rubocop:disable Metrics/AbcSize
     if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
       case current_account.default_scorecard_type&.name
       when 'TransitionCard' then :transition_cards
@@ -204,7 +206,7 @@ class InitiativesController < ApplicationController
       end
   end
 
-  def initiative_params
+  def initiative_params # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     params.fetch(:initiative, {}).permit(
       :name,
       :description,

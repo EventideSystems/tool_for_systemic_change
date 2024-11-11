@@ -2,6 +2,7 @@
 
 require 'csv'
 
+# Controller for managing organisations (aka 'stakeholders')
 class OrganisationsController < ApplicationController
   include VerifyPolicies
 
@@ -26,7 +27,6 @@ class OrganisationsController < ApplicationController
     respond_to do |format|
       format.html { render 'organisations/index', locals: { organisations: @organisations } }
       format.turbo_stream { render 'organisations/index', locals: { organisations: @organisations } }
-      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 
@@ -88,10 +88,10 @@ class OrganisationsController < ApplicationController
     "organisations_#{Time.zone.today.strftime('%Y_%m_%d')}"
   end
 
-  def organisations_to_csv(organisations, include_stakeholder_list)
+  def organisations_to_csv(organisations, include_stakeholder_list) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
     stakeholder_types = current_account.stakeholder_types.order(name: :desc).pluck(:name)
 
-    CSV.generate(force_quotes: true) do |csv|
+    CSV.generate(force_quotes: true) do |csv| # rubocop:disable Metrics/BlockLength
       header_row = ['Name', 'Description', 'Stakeholder Type', 'Weblink'].tap do |header|
         if include_stakeholder_list
           header.push('')

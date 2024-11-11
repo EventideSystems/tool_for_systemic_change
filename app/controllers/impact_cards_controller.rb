@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for the ImpactCard model (TransitionCard and SustainableDevelopmentGoalAlignmentCard)
 # rubocop:disable Metrics/ClassLength
 class ImpactCardsController < ApplicationController
   include VerifyPolicies
@@ -17,7 +18,7 @@ class ImpactCardsController < ApplicationController
 
   sidebar_item :impact_cards
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     @communities = current_account.communities
     @wicked_problems = current_account.wicked_problems
 
@@ -32,11 +33,10 @@ class ImpactCardsController < ApplicationController
     respond_to do |format|
       format.html { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
       format.turbo_stream { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
-      # format.csv  { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 
-  def show
+  def show # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
     @selected_date = params[:selected_date]
     @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
 
@@ -65,9 +65,9 @@ class ImpactCardsController < ApplicationController
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
 
-    respond_to do |format|
+    respond_to do |format| # rubocop:disable Metrics/BlockLength
       format.html
-      format.pdf do
+      format.pdf do # rubocop:disable Metrics/BlockLength
         # TODO: Convert PDF to use transition card summary data
         @initiatives =
           if @parsed_selected_date.present?
@@ -149,7 +149,7 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def destroy
+  def destroy # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     notice = "#{@scorecard.model_name.human} was successfully deleted."
 
     initiative_ids = @scorecard.initiatives.pluck(:id)
@@ -201,15 +201,17 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  def merge
+  def merge # rubocop:disable Metrics/MethodLength
     @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
     @merged_scorecard = @scorecard.merge(@other_scorecard)
 
     if @merged_scorecard.present?
       card_path =
         case @scorecard.type
-        when 'TransitionCard' then transition_card_path(@merged_scorecard)
-        when 'SustainableDevelopmentGoalAlignmentCard' then sustainable_development_goal_alignment_card_path(@merged_scorecard)
+        when 'TransitionCard'
+          transition_card_path(@merged_scorecard)
+        when 'SustainableDevelopmentGoalAlignmentCard'
+          sustainable_development_goal_alignment_card_path(@merged_scorecard)
         end
 
       redirect_to(card_path, notice: "#{@scorecard.model_name.human} were successfully merged.")
@@ -218,7 +220,7 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def ecosystem_maps_organisations
+  def ecosystem_maps_organisations # rubocop:disable Metrics/AbcSize
     if params[:id].to_s == params[:id].to_i.to_s
       @scorecard = current_account.scorecards.find(params[:id])
       authorize(@scorecard)
@@ -252,7 +254,7 @@ class ImpactCardsController < ApplicationController
 
   private
 
-  def build_linked_intiatives(source_scorecard, target_scorecard)
+  def build_linked_intiatives(source_scorecard, target_scorecard) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
     return [] if target_scorecard.blank?
 
     source_initiatives =
@@ -312,7 +314,7 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def impact_card_params
+  def impact_card_params # rubocop:disable Metrics/MethodLength
     params.require(:impact_card).permit(
       :type,
       :name,
@@ -351,7 +353,7 @@ class ImpactCardsController < ApplicationController
     )
   end
 
-  def scorecard_params
+  def scorecard_params # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
 
     params[scorecard_key_param].delete(:share_ecosystem_map) unless policy(Scorecard).share_ecosystem_maps?
@@ -359,7 +361,7 @@ class ImpactCardsController < ApplicationController
       params[scorecard_key_param].delete(:share_thematic_network_map)
     end
 
-    params.require(impact_card_param).permit(
+    params.require(impact_card_param).permit( # rubocop:disable Metrics/BlockLength
       :name,
       :description,
       :notes,
@@ -404,7 +406,7 @@ class ImpactCardsController < ApplicationController
             value[:_destroy] != '1' && (
               value[:organisation_id].blank? || (
                 value[:id].blank? &&
-                params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value|
+                params[:initiatives_attributes][initiative_key][:initiatives_organisations_attributes].to_h.any? do |selected_key, selected_value| # rubocop:disable Layout/LineLength
                   selected_key != key &&
                   selected_value[:_destroy] != '1' &&
                   selected_value[:organisation_id] == value[:organisation_id]
@@ -423,11 +425,11 @@ class ImpactCardsController < ApplicationController
             :initiatives_subsystem_tags_attributes
           ).blank?
 
-          params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value|
+          params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].reject! do |key, value| # rubocop:disable Layout/LineLength
             value[:_destroy] != '1' && (
               value[:subsystem_tag_id].blank? || (
                 value[:id].blank? &&
-                params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value|
+                params[:initiatives_attributes][initiative_key][:initiatives_subsystem_tags_attributes].to_h.any? do |selected_key, selected_value| # rubocop:disable Layout/LineLength
                   selected_key != key &&
                   selected_value[:_destroy] != '1' &&
                   selected_value[:subsystem_tag_id] == value[:subsystem_tag_id]

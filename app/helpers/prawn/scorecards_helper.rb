@@ -4,6 +4,7 @@ require 'prawn'
 require 'prawn/table'
 
 module Prawn
+  # Support for PDF generation via Prawn
   # rubocop:disable Metrics/ModuleLength
   module ScorecardsHelper
     include ::ActionView::Helpers::TextHelper
@@ -36,7 +37,7 @@ module Prawn
       end
     end
 
-    def page_header(scorecard)
+    def page_header(scorecard) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       img = Rails.root.join('app/assets/images/logo-pdf.png').to_s
 
       repeat(:all) do
@@ -102,39 +103,41 @@ module Prawn
       end
     end
 
-    def legend_keys_sdgs_card(focus_areas)
-      [{ content: '', border_width: 0 }] + focus_areas.each_with_object([]) do |focus_area, memo|
-                                             focus_area.characteristics.each_with_object(memo) do |characteristic, memo|
-                                               memo.push(
-                                                 {
-                                                   content: characteristic.identifier,
-                                                   text_color: focus_area.actual_color.delete('#'),
-                                                   border_width: 0,
-                                                   align: :center,
-                                                   size: 8
-                                                 }
-                                               )
-                                             end
-                                           end
+    def legend_keys_sdgs_card(focus_areas) # rubocop:disable Metrics/MethodLength
+      [{ content: '', border_width: 0 }] +
+        focus_areas.each_with_object([]) do |focus_area, memo|
+          focus_area.characteristics.each_with_object(memo) do |characteristic, focus_area_memo|
+            focus_area_memo.push(
+              {
+                content: characteristic.identifier,
+                text_color: focus_area.actual_color.delete('#'),
+                border_width: 0,
+                align: :center,
+                size: 8
+              }
+            )
+          end
+        end
     end
 
-    def legend_keys_transition_card(focus_areas)
-      [{ content: '', border_width: 0 }] + focus_areas.each_with_object([]) do |focus_area, memo|
-                                             focus_area.characteristics.each_with_object(memo) do |characteristic, memo|
-                                               memo.push(
-                                                 {
-                                                   content: characteristic.identifier,
-                                                   text_color: focus_area_color(focus_area),
-                                                   border_width: 0,
-                                                   align: :center,
-                                                   size: 8
-                                                 }
-                                               )
-                                             end
-                                           end
+    def legend_keys_transition_card(focus_areas) # rubocop:disable Metrics/MethodLength
+      [{ content: '', border_width: 0 }] +
+        focus_areas.each_with_object([]) do |focus_area, memo|
+          focus_area.characteristics.each_with_object(memo) do |characteristic, focus_area_memo|
+            focus_area_memo.push(
+              {
+                content: characteristic.identifier,
+                text_color: focus_area_color(focus_area),
+                border_width: 0,
+                align: :center,
+                size: 8
+              }
+            )
+          end
+        end
     end
 
-    def legend_sdg_card(focus_areas)
+    def legend_sdg_card(focus_areas) # rubocop:disable Metrics/MethodLength
       move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
         move_down(5)
@@ -161,7 +164,7 @@ module Prawn
       end
     end
 
-    def legend_transition_card(focus_areas)
+    def legend_transition_card(focus_areas) # rubocop:disable Metrics/MethodLength
       move_down(30)
       focus_areas.each_with_index do |focus_area, _focus_area_index|
         move_down(5)
@@ -190,7 +193,7 @@ module Prawn
       end
     end
 
-    def data_sdg_card(initiatives, focus_areas)
+    def data_sdg_card(initiatives, focus_areas) # rubocop:disable Metrics/MethodLength
       initiatives.map do |initiative|
         [
           {
@@ -207,7 +210,7 @@ module Prawn
       end
     end
 
-    def data_transition_card(initiatives, focus_areas)
+    def data_transition_card(initiatives, focus_areas) # rubocop:disable Metrics/MethodLength
       initiatives.map do |initiative|
         [
           {
@@ -246,10 +249,6 @@ module Prawn
         { text: 'No description', styles: [:italic] }
       end
     end
-
-    # def pdf_safe(text)
-    #   ActionView::Base.full_sanitizer.sanitize(text.force_encoding('UTF-8'), tags: []).gsub(/&amp;/, '&')
-    # end
 
     def pdf_safe(text)
       fallback = { "\u014C" => 'O' }

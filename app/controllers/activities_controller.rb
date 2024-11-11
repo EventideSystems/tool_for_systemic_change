@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for Activities
 class ActivitiesController < ApplicationController
   include VerifyPolicies
 

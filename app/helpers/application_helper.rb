@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# General helper methods for the application
 module ApplicationHelper
   include Pagy::Frontend
 
@@ -50,7 +51,7 @@ module ApplicationHelper
     strip_tags(text.gsub('<br>', ' ').gsub(%r{</h\d>}, ' ')).truncate(length)
   end
 
-  def import_files_instructions_link
+  def import_files_instructions_link # rubocop:disable Metrics/MethodLength
     content_tag(:p, class: 'text-light-blue') do
       content_tag(:strong) do
         concat('For instructions on importing files go to ')
@@ -67,7 +68,7 @@ module ApplicationHelper
     end
   end
 
-  def import_comments_instructions_link
+  def import_comments_instructions_link # rubocop:disable Metrics/MethodLength
     content_tag(:p, class: 'text-light-blue') do
       content_tag(:strong) do
         concat('For instructions on importing files go to ')

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper for scorecards, to be renamed to ImpactCardsHelper
 module ScorecardsHelper
   ACTUAL_OR_PLANNED = %w[actual planned].freeze
 
@@ -34,7 +35,7 @@ module ScorecardsHelper
     controller.current_account.wicked_problems.order(:name)
   end
 
-  def cell_class(result, _focus_areas, characteristic)
+  def cell_class(result, focus_areas, characteristic)
     return 'cell hidden' if result.blank?
 
     characteristic_data = result[characteristic.id.to_s]
@@ -43,7 +44,7 @@ module ScorecardsHelper
 
     [
       'cell',
-      "#{characteristic_data[:status].dasherize}#{@focus_areas.index(characteristic.focus_area) + 1}",
+      "#{characteristic_data[:status].dasherize}#{focus_areas.index(characteristic.focus_area) + 1}",
       characteristic_data[:status].dasherize
     ].tap do |class_names|
       class_names << 'hidden' unless characteristic_data[:status] == 'actual'
@@ -72,7 +73,7 @@ module ScorecardsHelper
   end
 
   def linked_scorecard_label(scorecard)
-    'Linked ' +
+    'Linked ' + # rubocop:disable Style/StringConcatenation
       case scorecard
       when TransitionCard then SustainableDevelopmentGoalAlignmentCard
       when SustainableDevelopmentGoalAlignmentCard then TransitionCard
@@ -83,7 +84,7 @@ module ScorecardsHelper
 
   def copy_scorecard_url(scorecard)
     case scorecard.type
-    when 'TransitionCard' then copy_transition_card_url(@scorecard)
+    when 'TransitionCard' then copy_transition_card_url(scorecard)
     when 'SustainableDevelopmentGoalAlignmentCard' then copy_sustainable_development_goal_alignment_card_url(scorecard)
     end
   end

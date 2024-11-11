@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for managing SDGs cards - to be deprecated in favour of ImpactCardsController
 class SustainableDevelopmentGoalAlignmentCardsController < ImpactCardsController
   def index
     @scorecards = policy_scope(Scorecard)
@@ -26,7 +27,7 @@ class SustainableDevelopmentGoalAlignmentCardsController < ImpactCardsController
     end
   end
 
-  def characteristic
+  def characteristic # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @scorecard = current_account.scorecards.find(params[:sustainable_development_goal_alignment_card_id])
     authorize(@scorecard)
 

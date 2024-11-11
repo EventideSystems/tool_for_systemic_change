@@ -28,7 +28,7 @@ class SetupAccount
     end
   end
 
-  def create_focus_area_groups
+  def create_focus_area_groups # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     FocusAreaGroup.where(account: nil).find_each do |focus_area_group|
       new_focus_area_group = \
         FocusAreaGroup

@@ -2,7 +2,7 @@
 
 module PaperTrail
   class VersionPolicy < ApplicationPolicy
-    class Scope < Scope
+    class Scope < Scope # rubocop:disable Style/Documentation
       def resolve
         if system_admin? || account_admin?(current_account)
           visible_items_query(scope.where(account_id: current_account.id))

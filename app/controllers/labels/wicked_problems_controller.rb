@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Labels
+  # Controller for managing Wicked Problems as labels
   class WickedProblemsController < LabelsController
     sidebar_item :problems
 

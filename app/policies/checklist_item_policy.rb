@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ChecklistItemPolicy < ApplicationPolicy
-  class Scope < Scope
+class ChecklistItemPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope.joins(initiative: :scorecard).where('scorecards.account_id': current_account.id)
     end

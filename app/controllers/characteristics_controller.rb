@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Controller for Characteristics
 class CharacteristicsController < ApplicationController
   include VerifyPolicies
 

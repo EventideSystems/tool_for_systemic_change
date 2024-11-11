@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+# Helper methods for presenting initiative data
 module InitiativesHelper
-  def scorecard_label(initiative)
+  def scorecard_label(initiative) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     if initiative.new_record? || initiative.scorecard.nil?
       current_account.scorecard_types.map { |type| type.model_name.human }
                      .join(' / ')
@@ -30,7 +31,7 @@ module InitiativesHelper
     end
   end
 
-  def link_to_video_tutorial(video_tutorial)
+  def link_to_video_tutorial(video_tutorial) # rubocop:disable Metrics/MethodLength
     return '' if video_tutorial.blank?
 
     link_to(

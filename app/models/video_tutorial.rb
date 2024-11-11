@@ -43,7 +43,7 @@ class VideoTutorial < ApplicationRecord
   end
 
   def iframe(height = 380, width = 570)
-    build_vimeo_iframe(vimeo_id_from_link(link_url), height, width)
+    build_vimeo_iframe(vimeo_id_from_link(link_url), height, width).html_safe # rubocop:disable Rails/OutputSafety
   end
 
   private
@@ -55,7 +55,19 @@ class VideoTutorial < ApplicationRecord
     matches[matches.length - 1] || matches[0]
   end
 
-  def build_vimeo_iframe(video_id, height, width)
-    "<iframe src=\"https://player.vimeo.com/video#{video_id}\" width=\"#{width}\" height=\"#{height}\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>".html_safe
+  def build_vimeo_iframe(video_id, height, width) # rubocop:disable Metrics/MethodLength
+    return '' if video_id.blank?
+
+    <<~HTML
+      <iframe
+        src="https://player.vimeo.com/video#{video_id}"
+        width="#{width}"
+        height="#{height}"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+      </iframe>
+    HTML
   end
 end

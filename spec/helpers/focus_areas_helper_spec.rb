@@ -5,8 +5,8 @@ require 'rails_helper'
 
 RSpec.describe(FocusAreasHelper, type: :helper) do
   describe '#focus_area_model_name' do
-    let(:account) { double('Account') }
-    let(:focus_area) { double('FocusArea', account:, model_name: double('ModelName', human: 'FocusArea')) }
+    let(:account) { double('Account') } # rubocop:disable RSpec/VerifiedDoubles
+    let(:focus_area) { double('FocusArea', account:, model_name: double('ModelName', human: 'FocusArea')) } # rubocop:disable RSpec/VerifiedDoubles
 
     context 'when scorecard_type is TransitionCard' do
       before do
@@ -21,8 +21,15 @@ RSpec.describe(FocusAreasHelper, type: :helper) do
 
     context 'when scorecard_type is SustainableDevelopmentGoalAlignmentCard' do
       before do
-        allow(focus_area).to(receive(:scorecard_type).and_return('SustainableDevelopmentGoalAlignmentCard'))
-        allow(account).to(receive(:sdgs_alignment_card_focus_area_model_name).and_return('SDGs Alignment Card Model Name'))
+        allow(focus_area).to(
+          receive(:scorecard_type)
+          .and_return('SustainableDevelopmentGoalAlignmentCard')
+        )
+
+        allow(account).to(
+          receive(:sdgs_alignment_card_focus_area_model_name)
+            .and_return('SDGs Alignment Card Model Name')
+        )
       end
 
       it 'returns the SDGs alignment card focus area model name' do
@@ -41,7 +48,7 @@ RSpec.describe(FocusAreasHelper, type: :helper) do
     end
 
     context 'when account is nil' do
-      let(:focus_area) { double('FocusArea', account: nil, model_name: double('ModelName', human: 'FocusArea')) }
+      let(:focus_area) { double('FocusArea', account: nil, model_name: double('ModelName', human: 'FocusArea')) } # rubocop:disable RSpec/VerifiedDoubles
 
       before do
         allow(focus_area).to(receive(:scorecard_type).and_return('TransitionCard'))

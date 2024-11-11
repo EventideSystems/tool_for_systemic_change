@@ -54,7 +54,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :accounts_users
+  has_many :accounts_users, dependent: :destroy
   has_many :accounts, through: :accounts_users
   has_many :active_accounts_with_admin_role,
            lambda {

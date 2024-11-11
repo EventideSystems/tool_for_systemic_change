@@ -2,9 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe(ChecklistItemPolicy) do
-  subject { described_class }
-
+RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedHelpers
+  let(:policy) { described_class }
   let(:account) { create(:account) }
   let(:system_admin_user) { create(:admin_user) }
   let(:account_admin_user) { create(:user) }
@@ -32,15 +31,15 @@ RSpec.describe(ChecklistItemPolicy) do
   %i[show? update?].each do |action|
     permissions(action) do
       it 'grants update if user is a system admin' do
-        expect(subject).to(permit(UserContext.new(system_admin_user, account), ChecklistItem.new(initiative:)))
+        expect(policy).to(permit(UserContext.new(system_admin_user, account), ChecklistItem.new(initiative:)))
       end
 
       it 'grants update if user is an account admin' do
-        expect(subject).to(permit(UserContext.new(account_admin_user, account), ChecklistItem.new(initiative:)))
+        expect(policy).to(permit(UserContext.new(account_admin_user, account), ChecklistItem.new(initiative:)))
       end
 
       it 'grants update if user is an account member' do
-        expect(subject).to(permit(UserContext.new(account_member_user, account), ChecklistItem.new(initiative:)))
+        expect(policy).to(permit(UserContext.new(account_member_user, account), ChecklistItem.new(initiative:)))
       end
     end
   end

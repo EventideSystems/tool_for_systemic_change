@@ -34,10 +34,12 @@ require 'rails_helper'
 
 RSpec.describe Account, type: :model do
   describe 'create account' do
+    # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let!(:stakeholder_type_1) { create(:stakeholder_type, name: 'StakeholderType 1', account_id: nil) }
     let!(:stakeholder_type_2) { create(:stakeholder_type, name: 'StakeholderType 2', account_id: nil) }
+    # rubocop:enable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
 
-    it 'creates stakeholder_types for the account' do
+    it 'creates stakeholder_types for the account' do # rubocop:disable RSpec/MultipleExpectations
       account = described_class.create(name: 'Test Account')
 
       expect(account.stakeholder_types.count).to eq(2)

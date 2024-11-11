@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(ScorecardCopier) do
+RSpec.describe(ScorecardCopier) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   subject(:copied) { described_class.new(scorecard, 'new name', deep_copy: deep_copy?).perform }
 
   let(:user) { create(:user) }
@@ -19,7 +19,7 @@ RSpec.describe(ScorecardCopier) do
     initiative.save!
   end
 
-  describe '#copied' do
+  describe '#copied' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:deep_copy?) { false }
     let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
     let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
@@ -48,11 +48,13 @@ RSpec.describe(ScorecardCopier) do
     end
   end
 
-  describe '#deep_copied', :run_delayed_jobs do
+  describe '#deep_copied', :run_delayed_jobs do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:deep_copy?) { true }
 
     let(:copied_first_checklist_item) do
-      copied_first_initiative.checklist_items.where(characteristic_id: scorcard_first_checklist_item.characteristic_id).first
+      copied_first_initiative
+        .checklist_items
+        .find_by(characteristic_id: scorcard_first_checklist_item.characteristic_id)
     end
     let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
     let(:scorcard_first_checklist_item) { scorcard_first_initiative.checklist_items.first }
@@ -69,7 +71,7 @@ RSpec.describe(ScorecardCopier) do
     it { expect(copied.initiatives.count).to(eq(scorecard.initiatives.count)) }
     it { expect(copied.initiatives).not_to(eq(scorecard.initiatives)) }
 
-    context 'initiatives' do
+    context 'with initiatives' do # rubocop:disable RSpec/MultipleMemoizedHelpers
       before do
         scorcard_first_checklist_item.status = :actual
         scorcard_first_checklist_item.comment = 'Comment'
@@ -82,12 +84,12 @@ RSpec.describe(ScorecardCopier) do
       end
     end
 
-    context 'history' do
+    context 'with history' do # rubocop:disable RSpec/MultipleMemoizedHelpers
       before do
         scorecard.update(name: 'Updated Name')
       end
 
-      context 'paper trail' do
+      context 'with paper trail' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         let(:original_scorecard_versions) do
           PaperTrail::Version.where(item_type: 'Scorecard', item_id: scorecard.id)
         end

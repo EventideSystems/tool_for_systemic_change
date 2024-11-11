@@ -2,7 +2,6 @@
 
 # Set up new account
 class SetupAccount
-
   attr_reader :account
 
   def self.call(account:)

@@ -31,7 +31,8 @@ class Organisation < ApplicationRecord
   has_many :initiatives, through: :initiatives_organisations
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation in the database schema
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :stakeholder_type_id, presence: true
   validate :stakeholder_type_is_in_same_account
 

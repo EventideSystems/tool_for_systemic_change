@@ -44,7 +44,8 @@ class ChecklistItem < ApplicationRecord
   validates :status, inclusion: { in: (statuses.keys - %w[no_comment]), message: 'Please select a status' }, on: :update
   validates :comment, presence: true
   validates :initiative, presence: true
-  validates :characteristic, presence: true, uniqueness: { scope: :initiative }
+  # TODO: Add scoped characteristic validation to database schema
+  validates :characteristic, presence: true, uniqueness: { scope: :initiative } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   attr_reader :new_comment, :new_status # support creating comments
 

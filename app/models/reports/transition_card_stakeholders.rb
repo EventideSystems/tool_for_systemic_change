@@ -3,7 +3,8 @@
 require 'csv'
 
 module Reports
-  class TransitionCardStakeholders < Base
+  # This class is responsible for generating a report for the stakeholders of an impact card
+  class TransitionCardStakeholders < Base # rubocop:disable Metrics/ClassLength
     attr_accessor :scorecard,
                   :include_betweenness,
                   :unique_organisations,
@@ -11,7 +12,7 @@ module Reports
                   :stakeholder_types,
                   :ecosystem_map
 
-    def initialize(scorecard, include_betweenness: false)
+    def initialize(scorecard, include_betweenness: false) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       super()
       @scorecard = scorecard
       @include_betweenness = include_betweenness
@@ -125,7 +126,7 @@ module Reports
       ]
     }.freeze
 
-    def add_unique_organisations(sheet, styles)
+    def add_unique_organisations(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       organisation_section_headers = ORGANISTION_SECTION_HEADERS[include_betweenness ? :betweenness : :normal]
 
       sheet.add_row(organisation_section_headers, style: styles[:h3])
@@ -138,7 +139,7 @@ module Reports
         stakeholder_type = organisation.stakeholder_type&.name || ''
 
         if include_betweenness
-          node = ecosystem_map.nodes.find { |node| node[:id] == organisation.id }
+          node = ecosystem_map.nodes.find { |candidate_node| candidate_node[:id] == organisation.id }
           betweenness = node[:betweenness] || 0.0
           connections = @connections[organisation.id] || 0
 

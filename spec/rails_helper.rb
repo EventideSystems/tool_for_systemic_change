@@ -11,7 +11,6 @@ require 'factory_bot_rails'
 require 'devise'
 require 'support/devise_support'
 require 'support/custom_matchers'
-require 'support/shared'
 require 'pundit/rspec'
 require 'timecop'
 

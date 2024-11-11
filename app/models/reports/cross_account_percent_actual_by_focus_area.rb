@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Reports
+  # This class is responsible for generating a report of the percent of actual characteristics by focus area
   class CrossAccountPercentActualByFocusArea < Base
     attr_reader :accounts
 
@@ -9,10 +10,11 @@ module Reports
       super()
     end
 
-    def to_xlsx
-      Axlsx::Package.new do |p|
+    def to_xlsx # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      Axlsx::Package.new do |p| # rubocop:disable Metrics/BlockLength
         p.workbook.styles.fonts.first.name = 'Calibri'
 
+        # rubocop:disable Naming/VariableNumber
         styles = {
           header_1: p.workbook.styles.add_style(fg_color: '386190', sz: 16, b: true),
           header_2: p.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true),
@@ -27,6 +29,7 @@ module Reports
           ),
           date: date_style(p)
         }
+        # rubocop:enable Naming/VariableNumber
 
         p.workbook.add_worksheet(name: 'Report') do |sheet|
           add_header(sheet, styles)
@@ -58,11 +61,11 @@ module Reports
     def add_header(sheet, styles)
       sheet.add_row(
         ['Account', 'Transition Card', 'Initiative', 'Focus Area', 'Actual', 'Target', 'Percent Actual'],
-        style: styles[:header_1]
+        style: styles[:header_1] # rubocop:disable Naming/VariableNumber
       )
     end
 
-    def generate_data
+    def generate_data # rubocop:disable Metrics/MethodLength
       sql = <<~SQL
         with raw_percent_actual_by_focus_area as (
           select

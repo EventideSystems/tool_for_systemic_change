@@ -38,10 +38,10 @@ require 'rails_helper'
 RSpec.describe Initiative, type: :model do
   let(:user) { create(:user) }
 
-  describe '#checklist_items_ordered_by_ordered_focus_area' do
+  describe '#checklist_items_ordered_by_ordered_focus_area' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:default_account) { create(:account) }
-    let!(:characteristic_1) { create(:characteristic) }
-    let!(:characteristic_2) { create(:characteristic) }
+    let!(:characteristic_1) { create(:characteristic) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
+    let!(:characteristic_2) { create(:characteristic) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
 
     let!(:initiative) do
@@ -52,14 +52,14 @@ RSpec.describe Initiative, type: :model do
       )
     end
 
-    describe '.archived?' do
-      context 'when archived_on is nil' do
+    describe '.archived?' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      context 'when archived_on is nil' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         it 'returns false' do
           expect(initiative).not_to be_archived
         end
       end
 
-      context 'when archived_on is in the future' do
+      context 'when archived_on is in the future' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         before do
           initiative.archived_on = 1.day.from_now
         end
@@ -69,7 +69,7 @@ RSpec.describe Initiative, type: :model do
         end
       end
 
-      context 'when archived_on is in the past' do
+      context 'when archived_on is in the past' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         before do
           initiative.archived_on = 1.day.ago
         end
@@ -84,14 +84,14 @@ RSpec.describe Initiative, type: :model do
       expect(initiative.checklist_items_ordered_by_ordered_focus_area.count).to be(2)
     end
 
-    context 'with selected_date' do
-      it 'retrieves original checklist item state if no changes have occurred' do
+    context 'with selected_date' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      it 'retrieves original checklist item state if no changes have occurred' do # rubocop:disable RSpec/MultipleExpectations
         checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today)
         expect(checklist_items[0].status).to eq('no_comment')
         expect(checklist_items[1].status).to eq('no_comment')
       end
 
-      context 'after changes' do
+      context 'after changes' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups,RSpec/ContextWording
         before do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today)
           checklist_items.to_a.each { |checklist_item| checklist_item.update(user:, comment: 'test', status: :planned) }
@@ -105,22 +105,26 @@ RSpec.describe Initiative, type: :model do
           Timecop.return
         end
 
-        it 'retrieves previous checklist item state if selected_date is before changes have occurred' do
+        it 'retrieves previous checklist item state if selected_date is before changes have occurred' do # rubocop:disable RSpec/MultipleExpectations
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.yesterday)
 
           expect(checklist_items[0].status).to eq('no_comment')
           expect(checklist_items[1].status).to eq('no_comment')
         end
 
-        it 'retrieves updated checklist item state if selected_date is after changes have occurred' do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today + 11)
+        it 'retrieves updated checklist item state if selected_date is after changes have occurred' do # rubocop:disable RSpec/MultipleExpectations
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(
+            selected_date: Time.zone.today + 11
+          )
 
           expect(checklist_items[0].status).to eq('planned')
           expect(checklist_items[1].status).to eq('actual')
         end
 
-        it 'retrieves updated checklist item state if selected_date is after changes have re-occurred' do
-          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today + 21)
+        it 'retrieves updated checklist item state if selected_date is after changes have re-occurred' do # rubocop:disable RSpec/MultipleExpectations
+          checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(
+            selected_date: Time.zone.today + 21
+          )
 
           expect(checklist_items[0].status).to eq('planned')
           expect(checklist_items[1].status).to eq('more_information')
@@ -128,26 +132,26 @@ RSpec.describe Initiative, type: :model do
       end
     end
 
-    describe '#copy' do
-      subject { initiative.copy }
+    describe '#copy' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:copy) { initiative.copy }
 
-      it { expect(subject.name).to             eq(initiative.name) }
-      it { expect(subject.description).to      eq(initiative.description) }
-      it { expect(subject.scorecard_id).to     eq(initiative.scorecard_id) }
-      it { expect(subject.started_at).to       eq(initiative.started_at) }
-      it { expect(subject.finished_at).to      eq(initiative.finished_at) }
-      it { expect(subject.dates_confirmed).to  eq(initiative.dates_confirmed) }
-      it { expect(subject.contact_name).to     eq(initiative.contact_name) }
-      it { expect(subject.contact_email).to    eq(initiative.contact_email) }
-      it { expect(subject.contact_phone).to    eq(initiative.contact_phone) }
-      it { expect(subject.contact_website).to  eq(initiative.contact_website) }
-      it { expect(subject.contact_position).to eq(initiative.contact_position) }
+      it { expect(copy.name).to             eq(initiative.name) }
+      it { expect(copy.description).to      eq(initiative.description) }
+      it { expect(copy.scorecard_id).to     eq(initiative.scorecard_id) }
+      it { expect(copy.started_at).to       eq(initiative.started_at) }
+      it { expect(copy.finished_at).to      eq(initiative.finished_at) }
+      it { expect(copy.dates_confirmed).to  eq(initiative.dates_confirmed) }
+      it { expect(copy.contact_name).to     eq(initiative.contact_name) }
+      it { expect(copy.contact_email).to    eq(initiative.contact_email) }
+      it { expect(copy.contact_phone).to    eq(initiative.contact_phone) }
+      it { expect(copy.contact_website).to  eq(initiative.contact_website) }
+      it { expect(copy.contact_position).to eq(initiative.contact_position) }
 
-      context 'organisations' do
-        it { expect(subject.organisations.count).to eq(2) }
+      context 'with organisations' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
+        it { expect(copy.organisations.count).to eq(2) }
       end
 
-      context 'checklist items' do
+      context 'with checklist items' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         before do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today)
           checklist_items[0].user = user
@@ -157,36 +161,36 @@ RSpec.describe Initiative, type: :model do
         end
 
         let(:first_item) do
-          subject.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today).first
+          copy.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today).first
         end
 
-        it { expect(subject.checklist_items.count).to eq(2) }
-        it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
+        it { expect(copy.checklist_items.count).to eq(2) }
+        it { expect(copy.checklist_items.count).to eq(initiative.checklist_items.count) }
         it { expect(first_item.status).to eq('no_comment') }
         it { expect(first_item.comment).to be_nil }
       end
     end
 
-    describe '#deep_copy' do
-      subject { initiative.deep_copy }
+    describe '#deep_copy' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:deep_copy) { initiative.deep_copy }
 
-      it { expect(subject.name).to             eq(initiative.name) }
-      it { expect(subject.description).to      eq(initiative.description) }
-      it { expect(subject.scorecard_id).to     eq(initiative.scorecard_id) }
-      it { expect(subject.started_at).to       eq(initiative.started_at) }
-      it { expect(subject.finished_at).to      eq(initiative.finished_at) }
-      it { expect(subject.dates_confirmed).to  eq(initiative.dates_confirmed) }
-      it { expect(subject.contact_name).to     eq(initiative.contact_name) }
-      it { expect(subject.contact_email).to    eq(initiative.contact_email) }
-      it { expect(subject.contact_phone).to    eq(initiative.contact_phone) }
-      it { expect(subject.contact_website).to  eq(initiative.contact_website) }
-      it { expect(subject.contact_position).to eq(initiative.contact_position) }
+      it { expect(deep_copy.name).to             eq(initiative.name) }
+      it { expect(deep_copy.description).to      eq(initiative.description) }
+      it { expect(deep_copy.scorecard_id).to     eq(initiative.scorecard_id) }
+      it { expect(deep_copy.started_at).to       eq(initiative.started_at) }
+      it { expect(deep_copy.finished_at).to      eq(initiative.finished_at) }
+      it { expect(deep_copy.dates_confirmed).to  eq(initiative.dates_confirmed) }
+      it { expect(deep_copy.contact_name).to     eq(initiative.contact_name) }
+      it { expect(deep_copy.contact_email).to    eq(initiative.contact_email) }
+      it { expect(deep_copy.contact_phone).to    eq(initiative.contact_phone) }
+      it { expect(deep_copy.contact_website).to  eq(initiative.contact_website) }
+      it { expect(deep_copy.contact_position).to eq(initiative.contact_position) }
 
-      context 'organisations' do
-        it { expect(subject.organisations.count).to eq(2) }
+      context 'with organisations' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
+        it { expect(deep_copy.organisations.count).to eq(2) }
       end
 
-      context 'checklist items' do
+      context 'with checklist items' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         before do
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today)
           checklist_items[0].user = user
@@ -196,16 +200,16 @@ RSpec.describe Initiative, type: :model do
         end
 
         let(:first_item) do
-          subject.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today).first
+          deep_copy.checklist_items_ordered_by_ordered_focus_area(selected_date: Time.zone.today).first
         end
 
-        it { expect(subject.checklist_items.count).to eq(2) }
-        it { expect(subject.checklist_items.count).to eq(initiative.checklist_items.count) }
+        it { expect(deep_copy.checklist_items.count).to eq(2) }
+        it { expect(deep_copy.checklist_items.count).to eq(initiative.checklist_items.count) }
         it { expect(first_item.status).to eq('planned') }
         it { expect(first_item.comment).to eq('Comment') }
       end
 
-      context 'history' do
+      context 'with history' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         before do
           initiative.update(name: 'Updated Name')
 
@@ -221,10 +225,11 @@ RSpec.describe Initiative, type: :model do
           checklist_items[1].save!
 
           initiative.reload
-          subject
+
+          deep_copy
         end
 
-        context 'paper trail' do
+        context 'with paper trail' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
           let(:original_initiative_versions) do
             PaperTrail::Version.where(
               item_type: 'Initiative',

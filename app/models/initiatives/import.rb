@@ -19,10 +19,11 @@
 #  index_imports_on_user_id     (user_id)
 #
 module Initiatives
-  class Import < Import
+  # Class for importing initiativs
+  class Import < Import # rubocop:disable Metrics/ClassLength
     attr_accessor :card_type
 
-    def process(account)
+    def process(account) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       name_index             = column_index(:name)
       description_index      = column_index(:description)
       scorecard_name_index   = column_index_for_scorecard_name
@@ -34,7 +35,7 @@ module Initiatives
       contact_website_index  = column_index(:contact_website)
       contact_position_index = column_index(:contact_position)
 
-      data_rows.each.with_index(1) do |raw_row, row_index|
+      data_rows.each.with_index(1) do |raw_row, row_index| # rubocop:disable Metrics/BlockLength
         row = sanitize_row(raw_row)
 
         next if row.compact.empty?

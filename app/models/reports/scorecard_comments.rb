@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/ClassLength
 module Reports
+  # This class is responsible for generating a report of comments made on an impact card
   class ScorecardComments < Base
     attr_reader :scorecard, :date, :status, :time_zone
 
@@ -10,18 +11,20 @@ module Reports
       @date = date
       @status = status
       @time_zone = time_zone
+      super()
     end
 
     def initiatives
       @initiatives ||= fetch_initiatives(date)
     end
 
-    def to_xlsx
-      padding_plus_2 = Array.new(initiatives.count + 2, '')
+    def to_xlsx # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+      padding_plus_2 = Array.new(initiatives.count + 2, '') # rubocop:disable Naming/VariableNumber
 
-      Axlsx::Package.new do |p|
+      Axlsx::Package.new do |p| # rubocop:disable Metrics/BlockLength
         p.workbook.styles.fonts.first.name = 'Calibri'
 
+        # rubocop:disable Naming/VariableNumber
         styles = {
           header_1: p.workbook.styles.add_style(fg_color: '386190', sz: 16, b: true),
           header_2: p.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true),
@@ -36,20 +39,21 @@ module Reports
           ),
           date: date_style(p)
         }
+        # rubocop:enable Naming/VariableNumber
 
-        p.workbook.add_worksheet(name: 'Report') do |sheet|
+        p.workbook.add_worksheet(name: 'Report') do |sheet| # rubocop:disable Metrics/BlockLength
           add_header(sheet, styles)
 
           data = generate_data
 
-          FocusAreaGroup.where(
+          FocusAreaGroup.where( # rubocop:disable Metrics/BlockLength
             scorecard_type: scorecard.type,
             account: scorecard.account
           ).order(:position).each do |focus_area_group|
-            sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2])
+            sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2]) # rubocop:disable Naming/VariableNumber
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|
-              sheet.add_row(["  #{focus_area.name}"] + padding_plus_2, style: styles[:header_3])
+              sheet.add_row(["  #{focus_area.name}"] + padding_plus_2, style: styles[:header_3]) # rubocop:disable Naming/VariableNumber
 
               focus_area.characteristics.order(:position).each do |characteristic|
                 data_row = data[characteristic.id]
@@ -98,10 +102,10 @@ module Reports
       end
     end
 
-    def add_header(sheet, styles)
+    def add_header(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       sheet.add_row([Time.zone.now], style: styles[:date])
 
-      sheet.add_row([scorecard_model_name], style: styles[:header_1]).add_cell(
+      sheet.add_row([scorecard_model_name], style: styles[:header_1]).add_cell( # rubocop:disable Naming/VariableNumber
         scorecard.name,
         style: styles[:blue_normal]
       )
@@ -121,7 +125,7 @@ module Reports
       Time.parse("#{date_str} +00:00").in_time_zone(time_zone).strftime('%Y-%m-%d %H:%M %Z')
     end
 
-    def generate_data
+    def generate_data # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       sql = <<~SQL
         with comments_with_timestamp as (
           select

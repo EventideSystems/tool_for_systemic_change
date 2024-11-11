@@ -28,7 +28,6 @@
 require 'rails_helper'
 
 RSpec.describe Scorecard, type: :model do
-  let!(:characteristic) { create(:characteristic) }
   let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
 
   describe '#merge' do

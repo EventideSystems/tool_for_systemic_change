@@ -28,5 +28,6 @@ class WickedProblem < ApplicationRecord
   has_many :scorecards, dependent: :restrict_with_error
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation to datbase schema
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 end

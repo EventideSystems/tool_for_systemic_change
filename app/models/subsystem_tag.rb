@@ -29,7 +29,8 @@ class SubsystemTag < ApplicationRecord
   has_many :initiatives, through: :initiatives_subsystem_tags
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation to database schema
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   alias_attribute :text, :name # TODO: Check if this is still required?
 end

@@ -26,6 +26,8 @@
 #  fk_rails_...  (account_id => accounts.id)
 #
 class FocusAreaGroup < ApplicationRecord
+  include HasVideoTutorial
+
   acts_as_paranoid
 
   default_scope { order(:position) }
@@ -35,18 +37,6 @@ class FocusAreaGroup < ApplicationRecord
   belongs_to :account, optional: true
 
   has_many :focus_areas, dependent: :restrict_with_error
-  has_one :video_tutorial, as: :linked
 
   validates :position, presence: true
-
-  def video_tutorial_id=(value)
-    return if value.blank?
-
-    tutorial = VideoTutorial.where(id: value).first
-    tutorial&.update_attribute(:linked, self)
-  end
-
-  def video_tutorial_id
-    video_tutorial.try(:id)
-  end
 end

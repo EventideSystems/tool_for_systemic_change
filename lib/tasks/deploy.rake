@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-namespace :deploy do
-  HEROKU_STAGING_DEPLOY = <<~BASH
-    git push -f tool-for-systemic-change-stg staging:master && \
-    heroku run rake db:migrate -a tool-for-systemic-change-stg && \
-    heroku run rake data:migrate -a tool-for-systemic-change-stg && \
-    heroku restart -a tool-for-systemic-change-stg
-  BASH
+HEROKU_STAGING_DEPLOY = <<~BASH
+  git push -f tool-for-systemic-change-stg staging:master && \
+  heroku run rake db:migrate -a tool-for-systemic-change-stg && \
+  heroku run rake data:migrate -a tool-for-systemic-change-stg && \
+  heroku restart -a tool-for-systemic-change-stg
+BASH
 
-  HEROKU_PRODUCTION_DEPLOY = <<~BASH
-    git push -f tool-for-systemic-change-prod master:master && \
-    heroku run rake db:migrate -a tool-for-systemic-change-prod && \
-    heroku run rake data:migrate -a tool-for-systemic-change-prod && \
-    heroku restart -a tool-for-systemic-change-prod
-  BASH
+HEROKU_PRODUCTION_DEPLOY = <<~BASH
+  git push -f tool-for-systemic-change-prod master:master && \
+  heroku run rake db:migrate -a tool-for-systemic-change-prod && \
+  heroku run rake data:migrate -a tool-for-systemic-change-prod && \
+  heroku restart -a tool-for-systemic-change-prod
+BASH
 
+namespace :deploy do # rubocop:disable Metrics/BlockLength
   def print_warning(deploy_environment)
     printf <<~TEXT
       \033[31m

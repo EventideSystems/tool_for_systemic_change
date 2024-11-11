@@ -28,17 +28,17 @@ RSpec.describe Organisation, type: :model do
       let(:stakeholder_type) { create(:stakeholder_type, account: account) }
       let(:organisation) { build(:organisation, account: account, stakeholder_type: stakeholder_type) }
 
+      before { organisation.valid? }
+
       it 'is valid' do
         expect(organisation).to be_valid
       end
 
-      context 'when stakeholder_type is not in the same account' do
+      context 'when stakeholder_type is not in the same account' do # rubocop:disable RSpec/NestedGroups
         let(:stakeholder_type) { create(:stakeholder_type) }
 
-        it 'is invalid' do
-          expect(organisation).not_to be_valid
-          expect(organisation.errors.full_messages).to include('Stakeholder type must be in the same account')
-        end
+        it { expect(organisation).not_to be_valid }
+        it { expect(organisation.errors.full_messages).to include('Stakeholder type must be in the same account') }
       end
     end
   end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Holds the user and account context for the current request
 class UserContext
   attr_reader :user, :account
 

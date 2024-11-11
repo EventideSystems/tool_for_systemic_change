@@ -25,8 +25,9 @@ class Community < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :account
-  has_many :scorecards
+  has_many :scorecards, dependent: :nullify
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation to database, or remove this model completely
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 end

@@ -4,28 +4,29 @@ require 'csv'
 
 # rubocop:disable Metrics/ClassLength
 module Reports
+  # This class is responsible for generating the Transition Card Activity report
   class TransitionCardActivity < Base
     attr_accessor :scorecard, :date_from, :date_to
-    attr_reader :initiative_totals
 
     def initialize(scorecard, date_from, date_to)
       @scorecard = scorecard
       @date_from = date_from
       @date_to = date_to
+      super()
     end
 
-    def to_xlsx
-      Axlsx::Package.new do |p|
+    def to_xlsx # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      Axlsx::Package.new do |p| # rubocop:disable Metrics/BlockLength
         p.workbook.styles.fonts.first.name = 'Calibri'
 
-        header_1 = header_1_style(p)
-        header_2 = header_2_style(p)
-        header_3 = header_3_style(p)
+        header_1 = header_1_style(p) # rubocop:disable Naming/VariableNumber
+        header_2 = header_2_style(p) # rubocop:disable Naming/VariableNumber
+        header_3 = header_3_style(p) # rubocop:disable Naming/VariableNumber
         blue_normal = blue_normal_style(p)
         wrap_text = wrap_text_style(p)
         date = date_style(p)
 
-        p.workbook.add_worksheet(name: 'Report') do |sheet|
+        p.workbook.add_worksheet(name: 'Report') do |sheet| # rubocop:disable Metrics/BlockLength
           add_report_header(sheet, header_1, blue_normal, date)
           sheet.add_row
           add_initiative_columns_header(sheet, wrap_text)
@@ -76,7 +77,7 @@ module Reports
       end
     end
 
-    def add_characteristic_columns_header(sheet, header_1, wrap_text)
+    def add_characteristic_columns_header(sheet, header_1, wrap_text) # rubocop:disable Metrics/MethodLength,Naming/VariableNumber
       col_base_name =
         case scorecard
         when TransitionCard
@@ -94,7 +95,7 @@ module Reports
       end
     end
 
-    def add_initiative_columns_header(sheet, wrap_text)
+    def add_initiative_columns_header(sheet, wrap_text) # rubocop:disable Metrics/MethodLength
       sheet.add_row(
         [
           '',
@@ -108,7 +109,7 @@ module Reports
       )
     end
 
-    def add_initiative_totals(sheet, header_1)
+    def add_initiative_totals(sheet, header_1) # rubocop:disable Naming/VariableNumber
       sheet.add_row(
         [
           "Total #{scorecard_model_name} Initiatives",
@@ -121,7 +122,7 @@ module Reports
       )
     end
 
-    def add_report_header(sheet, header_1, blue_normal, date)
+    def add_report_header(sheet, header_1, blue_normal, date) # rubocop:disable Naming/VariableNumber
       sheet.add_row([DateTime.now], style: date)
 
       sheet.add_row([scorecard_model_name], style: header_1).add_cell(scorecard.name, style: blue_normal)
@@ -166,7 +167,7 @@ module Reports
       @initiative_totals ||= TotalTransitionCardInitiatives.execute(scorecard.id, date_from, date_to)
     end
 
-    def set_column_widths(sheet)
+    def set_column_widths(sheet) # rubocop:disable Naming/AccessorMethodName
       sheet.column_widths(75.5, 10, 10, 10, 10, 10)
     end
   end

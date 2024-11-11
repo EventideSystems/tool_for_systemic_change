@@ -3,6 +3,7 @@
 require 'csv'
 
 module Reports
+  # This class is responsible for generating the Subsystem Summary report
   class SubsystemSummary < Base
     attr_accessor :scorecard
 

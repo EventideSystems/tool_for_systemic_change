@@ -25,9 +25,7 @@ class StakeholderType < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :account, optional: true
-
-  has_many :accounts
-  has_many :organisations
+  has_many :organisations, dependent: :nullify
 
   before_destroy :check_no_longer_used!, prepend: true
 

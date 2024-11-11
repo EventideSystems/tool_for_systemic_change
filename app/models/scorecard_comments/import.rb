@@ -19,8 +19,12 @@
 #  index_imports_on_user_id     (user_id)
 #
 module ScorecardComments
-  class Import < Import
-    def process(current_user, account)
+  # Import class for importing comments for checklist items
+  #
+  # NOTE: This, like other imports, is a bit of a mess. We should refactor this to be more modular and easier to read.
+  # We can probably look at moving the logic into an ETL class or something similar.
+  class Import < Import # rubocop:disable Metrics/ClassLength
+    def process(current_user, account) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       scorecard = nil
       initiatives = {}
 
@@ -28,7 +32,7 @@ module ScorecardComments
       focus_area_names = FocusArea.all.pluck(:name)
       characteristic_names = Characteristic.all.pluck(:name).map { |name| name.gsub(/\A\d+\.\d+\s/, '').downcase }
 
-      data_rows.each.with_index(1) do |raw_row, row_index|
+      data_rows.each.with_index(1) do |raw_row, row_index| # rubocop:disable Metrics/BlockLength
         row = sanitize_row(raw_row)
 
         next if row.compact.empty?
@@ -86,7 +90,7 @@ module ScorecardComments
 
           characteristic_name = row[0].strip
 
-          row[1..].each_with_index do |cell, index|
+          row[1..].each_with_index do |cell, index| # rubocop:disable Metrics/BlockLength
             comment = cell&.strip
 
             next if comment.blank?
@@ -107,7 +111,7 @@ module ScorecardComments
                   comment: comment
                 )
 
-                if checklist_item.changed?
+                if checklist_item.changed? # rubocop:disable Metrics/BlockNesting
                   checklist_item.checklist_item_changes.build(
                     user: current_user,
                     starting_status: checklist_item.status_was,

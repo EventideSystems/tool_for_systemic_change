@@ -98,7 +98,7 @@ class Initiative < ApplicationRecord
       .where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
   }
 
-  def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil)
+  def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     checklist_items = ChecklistItem
                       .includes(
                         :initiative,
@@ -158,14 +158,17 @@ class Initiative < ApplicationRecord
     copied
   end
 
-  def create_missing_checklist_items!
-    missing_characteristic_ids = \
-      Characteristic.per_scorecard_type_for_account(scorecard.type,
-                                                    scorecard.account).pluck(:id) - checklist_items.map(&:characteristic_id)
+  # TODO: Move to a service object
+  def create_missing_checklist_items! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    missing_characteristic_ids = Characteristic
+                                 .per_scorecard_type_for_account(
+                                   scorecard.type,
+                                   scorecard.account
+                                 ).pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?
 
-    ChecklistItem.insert_all(
+    ChecklistItem.insert_all( # rubocop:disable Rails/SkipsModelValidations
       missing_characteristic_ids.map do |characteristic_id|
         {
           initiative_id: id,
@@ -177,7 +180,8 @@ class Initiative < ApplicationRecord
     )
   end
 
-  def deep_copy
+  # TODO: Move to a service object
+  def deep_copy # rubocop:disable Metrics/MethodLength
     copied = dup
     organisations.each do |organisation|
       copied.initiatives_organisations.build(organisation: organisation)
@@ -187,7 +191,16 @@ class Initiative < ApplicationRecord
     copied.checklist_items.delete_all
 
     query = "
-    INSERT INTO checklist_items (user_id, status, checked, comment, characteristic_id, initiative_id, created_at, updated_at)
+    INSERT INTO checklist_items (
+        user_id,
+        status,
+        checked,
+        comment,
+        characteristic_id,
+        initiative_id,
+        created_at,
+        updated_at
+      )
       SELECT user_id, status, checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
       FROM checklist_items
       WHERE initiative_id = #{id}
@@ -202,7 +215,8 @@ class Initiative < ApplicationRecord
 
   private
 
-  def deep_copy_paper_trail_records(copied)
+  # TODO: Move to a service object
+  def deep_copy_paper_trail_records(copied) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     PaperTrail::Version.where(
       item_type: 'Initiative',
       item_id: copied.id

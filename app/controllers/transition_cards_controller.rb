@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TransitionCardsController < ScorecardsController
+class TransitionCardsController < ImpactCardsController
   sidebar_item :impact_cards
 
   def scorecard_key_param

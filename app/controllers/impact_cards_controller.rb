@@ -113,6 +113,7 @@ class ImpactCardsController < ApplicationController
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
     @impact_card.initiatives.build.initiatives_organisations.build
+    @impact_card.initiatives.first.initiatives_subsystem_tags.build
   end
 
   def edit
@@ -123,12 +124,11 @@ class ImpactCardsController < ApplicationController
   end
 
   def create
-    @scorecard = current_account.scorecards.build(scorecard_params)
-    authorize(@scorecard, policy_class: ScorecardPolicy)
+    @impact_card = current_account.scorecards.build(impact_card_params)
+    authorize(@impact_card, policy_class: ScorecardPolicy)
 
-    if @scorecard.save
-      SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
-      redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully created.")
+    if @impact_card.save
+      redirect_to(impact_card_path(@impact_card), notice: "#{@impact_card.model_name.human} was successfully created.")
     else
       render(:new)
     end
@@ -237,10 +237,6 @@ class ImpactCardsController < ApplicationController
     render(partial: '/scorecards/show_tabs/activity', locals: { activities: @activities })
   end
 
-  def content_subtitle
-    @scorecard&.name.presence || super
-  end
-
   def linked_initiatives
     source_scorecard = current_account.scorecards.find(params[:id])
     target_scorecard = current_account.scorecards.find(params[:target_id])
@@ -320,6 +316,45 @@ class ImpactCardsController < ApplicationController
     end
   end
 
+  def impact_card_params
+    params.require(:impact_card).permit(
+      :type,
+      :name,
+      :description,
+      :notes,
+      :linked_scorecard_id,
+      :share_ecosystem_map,
+      :share_thematic_network_map,
+      initiatives_attributes: [
+        :_destroy,
+        :name,
+        :description,
+        :scorecard_id,
+        :started_at,
+        :finished_at,
+        :archived_on,
+        :dates_confirmed,
+        :contact_name,
+        :contact_email,
+        :contact_phone,
+        :contact_website,
+        :contact_position,
+        :notes,
+        :type,
+        {
+          initiatives_organisations_attributes: %i[
+            _destroy
+            organisation_id
+          ],
+          initiatives_subsystem_tags_attributes: %i[
+            _destroy
+            subsystem_tag_id
+          ]
+        }
+      ]
+    )
+  end
+
   def scorecard_params
     params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
 
@@ -328,11 +363,9 @@ class ImpactCardsController < ApplicationController
       params[scorecard_key_param].delete(:share_thematic_network_map)
     end
 
-    params.require(scorecard_key_param).permit(
+    params.require(impact_card_param).permit(
       :name,
       :description,
-      :wicked_problem_id,
-      :community_id,
       :notes,
       :linked_scorecard_id,
       :share_ecosystem_map,

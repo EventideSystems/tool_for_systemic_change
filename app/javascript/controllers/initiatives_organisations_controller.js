@@ -1,15 +1,17 @@
 import { Controller } from "@hotwired/stimulus"
 
+// NOTE: This is very similar to initiaves_subsystem_tags_controller.js and can probably be refactored
+// to remove the duplication
 export default class extends Controller {
-  static targets = ["initiativesSubsystemTags"]
+  static targets = ["initiativesOrganisations"]
 
   connect() {
-    this.index = this.initiativesSubsystemTagsTarget.children.length
+    this.index = this.initiativesOrganisationsTarget.children.length
   }
 
   addTag(event) {
     event.preventDefault()
-    const template = document.getElementById("subsystem_tag_template")
+    const template = document.getElementById("organisation_template")
     const clone = template.content.cloneNode(true)
 
     clone.querySelectorAll("select").forEach((input) => {
@@ -17,7 +19,7 @@ export default class extends Controller {
       input.id = input.id.replace(/__INDEX__/g, this.index)
     })
 
-    this.initiativesSubsystemTagsTarget.appendChild(clone)
+    this.initiativesOrganisationsTarget.appendChild(clone)
     this.index++
   }
 

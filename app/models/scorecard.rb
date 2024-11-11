@@ -33,9 +33,9 @@ class Scorecard < ApplicationRecord
 
   after_initialize :ensure_shared_link_id, if: :new_record?
 
-  belongs_to :community
+  belongs_to :community, optional: true
   belongs_to :account
-  belongs_to :wicked_problem
+  belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
 
   has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy
@@ -59,8 +59,6 @@ class Scorecard < ApplicationRecord
 
   validates :account, presence: true
   validates :name, presence: true
-  validates :community, presence: true
-  validates :wicked_problem, presence: true
   validates :shared_link_id, uniqueness: true
   validate :linked_scorecard_must_be_in_same_account
 

@@ -19,7 +19,8 @@
                     :name,
                     placeholder: 'Impact card title',
                     autofocus: true,
-                    class: "block flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6"
+                    class: "block flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6",
+                    required: true
                   )
                 %>
               </div>
@@ -143,15 +144,24 @@
             <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
             <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify who might be interested in this initiative.</p>
           </div>
+          <div id="initiatives-organisations" data-controller="initiatives-organisations">
+            <%= render 'organisation_fields' %>
+            <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" data-initiatives-organisations-target="initiativesOrganisations">
+              <%= initiatives_form.fields_for :initiatives_organisations do |initiatives_organisations_form| %>
+                <div class="sm:col-span-6">
+                  <div class="flex items-center space-x-4 mt-2">
+                    <%= initiatives_organisations_form.collection_select :organisation_id, policy_scope(Organisation), :id, :name, { include_blank: 'Select a stakeholder' }, class: 'block w-full sm:w-96 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6' %>
+                    <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-organisations#removeTag' } %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
 
-          <div id="initiatives_organisations" class="mb-2">
-            <%= render @impact_card.initiatives.first.initiatives_organisations %>
+            <div class="sm:col-span-6 mt-3">
+              <%= link_to 'Add Stakeholder', '#', id: 'add-organisation', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-organisations#addTag' } %>
+            </div>
           </div>
 
-
-          <div class="mb-2">
-            <%= link_to "Add a Stakeholder", new_initiatives_organisation_path, data: { turbo_stream: true }, class: "p-2 rounded-md bg-blue-300 hover:bg-blue-400" %>
-          </div>
         </div>
 
 
@@ -160,16 +170,14 @@
             <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
             <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
           </div>
-
-          <%= render 'subsystem_tag_fields', form: form %>
-
           <div id="initiatives-subsystem-tags" data-controller="initiatives-subsystem-tags">
+            <%= render 'subsystem_tag_fields' %>
             <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
-              <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
+              <%= initiatives_form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
                 <div class="sm:col-span-6">
-                  <%= initiatives_subsystem_tags_form.label :subsystem_tag_id %>
                   <div class="flex items-center space-x-4 mt-2">
-                    <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' }, class: 'block w-full sm:w-96 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6' %>                    <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
+                    <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' }, class: 'block w-full sm:w-96 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6' %>
+                    <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
                   </div>
                 </div>
               <% end %>

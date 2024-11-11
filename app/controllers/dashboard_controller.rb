@@ -22,6 +22,6 @@ class DashboardController < ApplicationController
   end
 
   def recent_activity
-    PaperTrail::Version.where(account: current_account).order(created_at: :desc).limit(7)
+    policy_scope(PaperTrail::Version).limit(7).order(created_at: :desc)
   end
 end

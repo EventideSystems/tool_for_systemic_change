@@ -23,6 +23,6 @@ export default class extends Controller {
 
   removeTag(event) {
     event.preventDefault()
-    event.target.closest('.sm\\:col-span-6').remove()
+    event.target.closest('.flex').remove()
   }
 }

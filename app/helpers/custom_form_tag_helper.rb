@@ -31,6 +31,14 @@ module CustomFormTagHelper
     # end
   end
 
+  def custom_select_tag(name, option_tags = nil, options = {})
+    default_opts = { class: "#{CustomFormBuilder::SELECT_FIELD_CLASS} mt-2" }
+
+    content_tag(:div) do
+      select_tag(name, option_tags, default_opts.merge(options))
+    end
+  end
+
   private
 
   def base_color_select_class(selected)

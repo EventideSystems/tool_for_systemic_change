@@ -39,12 +39,13 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   CHECK_BOX_CLASS = 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
   SUBMIT_BUTTON_CLASS = 'rounded-md bg-zinc-950 dark:bg-zinc-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500'
 
-  COMMON_FIELD_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6'
+  COMMON_FIELD_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6'
 
-  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 dark:text-white dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
-  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS}  bg-white/5 bg-opacity-5 dark:text-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
+  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
 
-  SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} mt-2 pl-3 pr-10 focus:ring-2 focus:ring-blue-500".freeze
+  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS}  bg-white/5 bg-opacity-5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
+
+  SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} block w-full rounded-md border-0 bg-white/5 py-1.5 shadow-sm ring-1 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 [&_*]:text-black".freeze
 
   # TEXT_FIELD_CLASS = 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm sm:leading-6'
   # TEXT_AREA_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6'
@@ -59,6 +60,16 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
     @template.content_tag(:div) do
       @template.concat(super(method, merged_opts, checked_value, unchecked_value))
+      append_error_message(@object, method)
+    end
+  end
+
+  def collection_select(method, collection, value_method, text_method, options = {}, html_options = {}) # rubocop:disable Metrics/ParameterLists
+    default_html_options = { class: build_default_field_class(SELECT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
+    merged_html_options = default_html_options.merge(html_options)
+
+    @template.content_tag(:div) do
+      @template.concat(super(method, collection, value_method, text_method, options, merged_html_options))
       append_error_message(@object, method)
     end
   end
@@ -111,7 +122,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   end
 
   def text_field(method, options = {})
-    default_opts = { class: build_default_field_class(TEXT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
+    options_class = options.delete(:class)
+    text_field_class = tailwind_merge(TEXT_AREA_CLASS, options_class)
+
+    default_opts = { class: build_default_field_class(text_field_class, ERROR_BORDER_CLASS, method) }
     merged_opts = default_opts.merge(options)
 
     @template.content_tag(:div) do

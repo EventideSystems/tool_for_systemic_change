@@ -1,9 +1,83 @@
-<%= simple_form_for(@organisation, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@organisation) %>
-  <%= f.input :name %>
-  <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-  <%= f.association :stakeholder_type, collection: current_account.stakeholder_types.order(:name) %>
-  <%= f.input :weblink %>
-  <%= render_form_button(f) %>
-<% end %>
+<div class="mx-auto max-w-6xl">
+  <%= form_for(@organisation, html: { class: 'mx-auto max-w-4xl', role: 'form' }) do |form| %>
+    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= @organisation.persisted? ? @organisation.name : 'New Stakeholder' %></h1>
+    <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+    <div class="space-y-12">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Overview</h2>
+          <p class="mt-1 text-sm/6 text-gray-600">General settings this stakeholder.</p>
+        </div>
+
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <div class="sm:col-span-4">
+            <%= form.label :name %>
+            <div class="mt-2">
+              <%=
+                form.text_field(
+                  :name,
+                  placeholder: 'Stakeholder name',
+                  autofocus: true,
+                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6",
+                  required: true
+                )
+              %>
+            </div>
+          </div>
+
+          <div class="col-span-full">
+            <%= form.label :description %>
+            <div class="mt-2">
+              <%= form.text_area :description, rows: 3, placeholder: '', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
+            </div>
+            <p class="mt-3 text-sm/6 text-gray-600">A brief description of the stakeholder (optional).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Stakeholder Type</h2>
+          <p class="mt-1 text-sm/6 text-gray-600">Select a category for the stakeholder.</p>
+        </div>
+
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <div class="sm:col-span-4">
+            <%= form.label :stakeholder_type_id %>
+            <div class="mt-2">
+              <%= form.collection_select :stakeholder_type_id, current_account.stakeholder_types.order(:name), :id, :name, {}%>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Contact details</h2>
+          <p class="mt-1 text-sm/6 text-gray-600">(optional)</p>
+        </div>
+
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <div class="sm:col-span-4">
+            <%= form.label :weblink %>
+            <div class="mt-2">
+              <%=
+                form.text_field(
+                  :weblink,
+                  placeholder: 'Website URL',
+                  autofocus: true,
+                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6",
+                  required: true
+                )
+              %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 flex items-center justify-end gap-x-6">
+        <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
+        <%= form.submit 'Save' %>
+      </div>
+    </div>
+  <% end %>
+</div>

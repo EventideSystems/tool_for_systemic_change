@@ -48,17 +48,16 @@ class OrganisationsController < ApplicationController
 
     respond_to do |format|
       if @organisation.save
-        format.html { redirect_to organisations_path, notice: 'Organisation was successfully created.' }
+        format.html { redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.' }
       else
         format.html { render :new }
       end
-      format.js
     end
   end
 
   def update
     if @organisation.update(organisation_params)
-      redirect_to organisations_path, notice: 'Organisation was successfully updated.'
+      redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully updated.'
     else
       render :edit
     end
@@ -66,7 +65,7 @@ class OrganisationsController < ApplicationController
 
   def destroy
     @organisation.destroy
-    redirect_to organisations_url, notice: 'Organisation was successfully deleted.'
+    redirect_to organisations_url, notice: 'Stakeholder was successfully deleted.'
   end
 
   def content_subtitle

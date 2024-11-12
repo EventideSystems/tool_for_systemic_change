@@ -23,65 +23,8 @@ class ReportsController < ApplicationController
     end
   end
 
-  def initiatives # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    authorize(:report, :index?) # SMELL Incorrect policy check. Need to fix.
-
-    @content_subtitle = 'Initiatives'
-
-    query = policy_scope(Initiative).joins(scorecard: %i[community wicked_problem])
-
-    wicked_problem_ids = params[:wicked_problems].reject { |e| e.to_s.empty? }
-    community_ids = params[:communities].reject { |e| e.to_s.empty? }
-
-    query = query.where('scorecards.wicked_problem_id': wicked_problem_ids) if wicked_problem_ids
-
-    query = query.where('scorecards.community_id': community_ids) if community_ids
-
-    @results = query.select(
-      :id,
-      :name,
-      :description,
-      :created_at,
-      :scorecard_id,
-      'wicked_problems.name as wicked_problem_name',
-      'communities.name as community_name',
-      'scorecards.name as scorecard_name'
-    ).distinct.page(params[:page])
-  end
-
-  def stakeholders # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    authorize(:report, :index?)
-
-    @content_subtitle = 'Stakeholders'
-
-    query = current_account.organisations.joins(
-      :stakeholder_type,
-      initiatives: [scorecard: %i[wicked_problem community]]
-    )
-
-    query = query.where(stakeholder_type_id: params[:stakeholder_type]) if params[:stakeholder_type].present?
-
-    query = query.where('scorecards.wicked_problem_id': params[:wicked_problem]) if params[:wicked_problem].present?
-
-    query = query.where('scorecards.community_id': params[:community]) if params[:community].present?
-
-    @results = query.select(
-      :id,
-      :name,
-      :description,
-      :created_at,
-      :stakeholder_type_id,
-      'stakeholder_types.name as stakeholder_type_name',
-      'wicked_problems.name as wicked_problem_name',
-      'communities.name as community_name',
-      'scorecards.name as scorecard_name'
-    ).distinct.page(params[:page])
-  end
-
   def transition_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :transition_card_activity?)
-
-    @content_subtitle = "#{Scorecard.model_name.human} Activity"
 
     @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_from]).beginning_of_day.utc
 
@@ -93,7 +36,6 @@ class ReportsController < ApplicationController
     @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
-      format.html
       format.xlsx do
         send_data(
           @report.to_xlsx.read,
@@ -107,8 +49,6 @@ class ReportsController < ApplicationController
   def scorecard_comments # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
 
-    @content_subtitle = "#{Scorecard.model_name.human} Comments"
-
     @scorecard = current_account
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
@@ -121,7 +61,6 @@ class ReportsController < ApplicationController
     @report = Reports::ScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)
 
     respond_to do |format|
-      format.html
       format.xlsx do
         send_data(
           @report.to_xlsx.read,
@@ -136,8 +75,6 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders
     authorize(:report, :index?)
 
-    # SMELL: Is @content_subtitle used?
-    @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"
     @scorecard = current_account.scorecards.find(params[:scorecard_id])
     @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data(

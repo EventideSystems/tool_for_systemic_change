@@ -41,7 +41,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   COMMON_FIELD_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6'
 
-  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
+  TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 placeholder:text-gray-400 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
 
   TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS}  bg-white/5 bg-opacity-5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
 

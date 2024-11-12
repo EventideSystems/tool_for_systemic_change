@@ -18,6 +18,7 @@ export default class extends Controller {
     })
 
     this.initiativesSubsystemTagsTarget.appendChild(clone)
+
     this.index++
   }
 

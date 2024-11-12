@@ -3,28 +3,24 @@
 # Controller for managing reports
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
-  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
+  sidebar_item :reports
 
-  def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def index # rubocop:disable Metrics/MethodLength
     authorize(:report, :index?)
 
     @scorecards = policy_scope(Scorecard).order(:name)
-
-    @scorecard_types =
-      current_account.scorecard_types.map do |scorecard_type|
-        scorecard_model_name =
-          case scorecard_type.name
-          when 'TransitionCard' then current_account.transition_card_model_name
-          when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
-          else
-            'Card'
-          end
-
-        ScorecardType.new(
-          scorecard_model_name.pluralize,
-          policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
-        )
+    @grouped_scorecards = @scorecards.group_by(&:type).transform_keys do |key|
+      case key
+      when 'TransitionCard' then current_account.transition_card_model_name
+      when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
+      else
+        'Impact Card'
       end
+    end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
+      scorecards.map do |scorecard|
+        [scorecard.name, scorecard.id]
+      end
+    end
   end
 
   def initiatives # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -34,8 +30,8 @@ class ReportsController < ApplicationController
 
     query = policy_scope(Initiative).joins(scorecard: %i[community wicked_problem])
 
-    wicked_problem_ids = params[:report][:wicked_problems].reject { |e| e.to_s.empty? }
-    community_ids = params[:report][:communities].reject { |e| e.to_s.empty? }
+    wicked_problem_ids = params[:wicked_problems].reject { |e| e.to_s.empty? }
+    community_ids = params[:communities].reject { |e| e.to_s.empty? }
 
     query = query.where('scorecards.wicked_problem_id': wicked_problem_ids) if wicked_problem_ids
 
@@ -63,15 +59,11 @@ class ReportsController < ApplicationController
       initiatives: [scorecard: %i[wicked_problem community]]
     )
 
-    if params[:report][:stakeholder_type].present?
-      query = query.where(stakeholder_type_id: params[:report][:stakeholder_type])
-    end
+    query = query.where(stakeholder_type_id: params[:stakeholder_type]) if params[:stakeholder_type].present?
 
-    if params[:report][:wicked_problem].present?
-      query = query.where('scorecards.wicked_problem_id': params[:report][:wicked_problem])
-    end
+    query = query.where('scorecards.wicked_problem_id': params[:wicked_problem]) if params[:wicked_problem].present?
 
-    query = query.where('scorecards.community_id': params[:report][:community]) if params[:report][:community].present?
+    query = query.where('scorecards.community_id': params[:community]) if params[:community].present?
 
     @results = query.select(
       :id,
@@ -91,12 +83,12 @@ class ReportsController < ApplicationController
 
     @content_subtitle = "#{Scorecard.model_name.human} Activity"
 
-    @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_from]).beginning_of_day.utc
+    @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_from]).beginning_of_day.utc
 
-    @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_to]).end_of_day.utc
+    @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_to]).end_of_day.utc
 
-    @date_to = Date.parse(params[:report][:date_to]).end_of_day
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @date_to = Date.parse(params[:date_to]).end_of_day
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
 
     @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
 
@@ -120,11 +112,11 @@ class ReportsController < ApplicationController
     @scorecard = current_account
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
-                 .find(params[:report][:scorecard_id])
+                 .find(params[:scorecard_id])
 
-    @date = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date]).end_of_day.utc
+    @date = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date]).end_of_day.utc
 
-    @status = params[:report][:status]
+    @status = params[:status]
 
     @report = Reports::ScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)
 
@@ -141,14 +133,13 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_stakeholders # rubocop:disable Metrics/AbcSize
+  def transition_card_stakeholders
     authorize(:report, :index?)
 
+    # SMELL: Is @content_subtitle used?
     @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"
-
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
-    include_betweenness = params[:report][:include_betweenness] == '1'
-    @report = Reports::TransitionCardStakeholders.new(@scorecard, include_betweenness:)
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
+    @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
@@ -159,7 +150,7 @@ class ReportsController < ApplicationController
   def subsystem_summary
     authorize(:report, :subsystem_summary?)
 
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
     @report = Reports::SubsystemSummary.new(@scorecard)
     send_data(
       @report.to_xlsx.read,

@@ -12,6 +12,14 @@ module CustomFormTagHelper
     end
   end
 
+  def custom_date_field_tag(name, value = nil, options = {})
+    default_opts = { class: "#{CustomFormBuilder::TEXT_FIELD_CLASS} mt-2" }
+
+    content_tag(:div) do
+      date_field_tag(name, value, default_opts.merge(options))
+    end
+  end
+
   def custom_label_tag(name = nil, content_or_options = nil, options = {}, &block)
     default_opts = { class: "#{CustomFormBuilder::LABEL_CLASS} mt-2" }
     label_tag(name, content_or_options, default_opts.merge(options), &block)

@@ -6,19 +6,15 @@ module Reports
   # This class is responsible for generating a report for the stakeholders of an impact card
   class TransitionCardStakeholders < Base # rubocop:disable Metrics/ClassLength
     attr_accessor :scorecard,
-                  :include_betweenness,
                   :unique_organisations,
                   :initiatives,
                   :stakeholder_types,
                   :ecosystem_map
 
-    def initialize(scorecard, include_betweenness: false) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    def initialize(scorecard) # rubocop:disable Metrics/MethodLength
       super()
       @scorecard = scorecard
-      @include_betweenness = include_betweenness
-
       @stakeholder_types = StakeholderType.where(account: scorecard.account).order('lower(stakeholder_types.name)')
-
       @initiatives =
         scorecard.initiatives.not_archived.includes(
           organisations: :stakeholder_type,
@@ -29,8 +25,6 @@ module Reports
         @initiatives.flat_map(&:organisations).uniq.sort_by do |organisation|
           organisation.name.downcase
         end
-
-      return unless include_betweenness
 
       @ecosystem_map = EcosystemMaps::Organisations.new(scorecard, unique_organisations: @unique_organisations)
       @connections = OrganisationConnections.execute(scorecard.id)
@@ -105,31 +99,21 @@ module Reports
 
     def add_title(sheet, styles)
       sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
-      sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
+      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
+      sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end
 
-    ORGANISTION_SECTION_HEADERS = {
-      betweenness: [
-        'Organisations',
-        'Betweenness Centrality',
-        'Total Connections',
-        'Total Initiatives',
-        'Stakeholder Type',
-        'Initiatives'
-      ],
-      normal: [
-        'Organisations',
-        'Total Initiatives',
-        'Stakeholder Type',
-        'Initiatives'
-      ]
-    }.freeze
+    ORGANISTION_SECTION_HEADERS = [
+      'Organisations',
+      'Betweenness Centrality',
+      'Total Connections',
+      'Total Initiatives',
+      'Stakeholder Type',
+      'Initiatives'
+    ].freeze
 
-    def add_unique_organisations(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-      organisation_section_headers = ORGANISTION_SECTION_HEADERS[include_betweenness ? :betweenness : :normal]
-
-      sheet.add_row(organisation_section_headers, style: styles[:h3])
+    def add_unique_organisations(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
+      sheet.add_row(ORGANISTION_SECTION_HEADERS, style: styles[:h3])
 
       unique_organisations.each do |organisation|
         name = organisation.name
@@ -138,15 +122,11 @@ module Reports
         total_initiatives = initiatives.count
         stakeholder_type = organisation.stakeholder_type&.name || ''
 
-        if include_betweenness
-          node = ecosystem_map.nodes.find { |candidate_node| candidate_node[:id] == organisation.id }
-          betweenness = node[:betweenness] || 0.0
-          connections = @connections[organisation.id] || 0
+        node = ecosystem_map.nodes.find { |candidate_node| candidate_node[:id] == organisation.id }
+        betweenness = node[:betweenness] || 0.0
+        connections = @connections[organisation.id] || 0
 
-          sheet.add_row([name, betweenness, connections, total_initiatives, stakeholder_type] + initiatives_names)
-        else
-          sheet.add_row([name, total_initiatives, stakeholder_type] + initiatives_names)
-        end
+        sheet.add_row([name, betweenness, connections, total_initiatives, stakeholder_type] + initiatives_names)
       end
     end
 

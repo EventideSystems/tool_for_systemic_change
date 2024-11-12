@@ -1,136 +1,91 @@
-<div class="row reports">
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header with-border">
-        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= stakeholder_report_name %></h3>
-      </div>
-      <%= simple_form_for :report, url: transition_card_stakeholders_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="card-body">
-        <p>This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.</p>
-        <%= render partial: 'scorecard_selector', locals: { f: f } %>
-        <div class="text-right">
-          <%= f.input :include_betweenness, as: :boolean, label: "Include Betweenness Centrality (experimental)" %>
-        </div>
-      </div>
-      <div class="card-footer">
-        <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-      </div>
-      <% end %>
-    </div>
-  </div>
+<div class="flex flex-wrap justify-left space-x-4">
+  <%=
+    render(
+      'form',
+      name: stakeholder_report_name,
+      path: transition_card_stakeholders_reports_path(format: :xlsx),
+      description: 'This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.'
+    ) do |f|
+  %>
+    <%= render partial: 'scorecard_selector', locals: { f: f } %>
+  <% end %>
 
   <%- if policy(:report).subsystem_summary? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Subsystem Report</h3>
-        </div>
-        <%= simple_form_for :report, url: subsystem_summary_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>This report shows a summary of the interactons between subsystems, organisations and initiatives.</p>
-          <%= render partial: 'scorecard_selector', locals: { f: f } %>
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
-      </div>
+    <%=
+      render(
+        'form',
+        name: 'Subsystem Report',
+        path: subsystem_summary_reports_path(format: :xlsx),
+        description: 'This report shows a summary of the interactons between subsystems, organisations and initiatives.'
+      ) do |f|
+    %>
+      <%= render partial: 'scorecard_selector', locals: { f: f } %>
+    <% end %>
+  <% end %>
+
+
+  <%=
+    render(
+      'form',
+      name: comments_report_name,
+      path: scorecard_comments_reports_path(format: :xlsx),
+      description: 'This report shows the first time comments have been recorded across initiatives.'
+    ) do |f|
+  %>
+    <%= render partial: 'scorecard_selector', locals: { f: f } %>
+    <div class="flex space-x-4">
+      <%= custom_date_field_tag :date %>
+      <%= custom_select_tag :status, options_for_select(options_for_comment_statuses), include_blank: false  %>
     </div>
   <% end %>
 
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header with-border">
-        <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= comments_report_name %></h3>
-      </div>
-      <%= simple_form_for :report, url: scorecard_comments_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-      <div class="card-body">
-        <p>This report shows the first time comments have been recorded across initiatives.</p>
-        <%= render partial: 'scorecard_selector', locals: { f: f } %>
-        <%= f.input :date, as: :string, input_html: { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
-        <%= f.input :status, collection: options_for_comment_statuses, include_blank: false  %>
-      </div>
-      <div class="card-footer">
-        <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-      </div>
-      <% end %>
-    </div>
-  </div>
-
   <%- if policy(:report).transition_card_activity? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> <%= activity_report_name %></h3>
-        </div>
-        <%= simple_form_for :report, url: transition_card_activity_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>This report shows the addition and removal of characteristics across initiatives over a period of time.</p>
-
-          <%= render partial: 'scorecard_selector', locals: { f: f } %>
-          <%= f.input :date_from, :as => :string, :input_html => { data: { behaviour: "datepicker", datepicker_position: "bottom" }, autocomplete: "off" } %>
-          <%= f.input :date_to, :as => :string, :input_html => { data: { behaviour: "datepicker" }, autocomplete: "off" } %>
-
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
+    <%=
+      render(
+        'form',
+        name: activity_report_name,
+        path: transition_card_activity_reports_path(format: :xlsx),
+        description: 'This report shows the addition and removal of characteristics across initiatives over a period of time.'
+      ) do |f|
+    %>
+      <%= render partial: 'scorecard_selector', locals: { f: f } %>
+      <div class="flex space-x-4">
+        <%= custom_date_field_tag :date_from, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" %>
+        <%= custom_date_field_tag :date_to, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 
   <%- if policy(:report).cross_account_percent_actual? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Cross-Account Percent Actual</h3>
-        </div>
-        <%= simple_form_for :report, url: cross_account_percent_actual_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>Actual Percentage per Transition Card for all accounts (must have admin role in each account).</p>
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
-      </div>
-    </div>
+    <%=
+      render(
+        'form',
+        name: 'Cross-Account Percent Actual',
+        path: cross_account_percent_actual_reports_path(format: :xlsx),
+        description: 'Actual Percentage per Transition Card for all accounts (must have admin role in each account).'
+      )
+    %>
   <% end %>
 
   <%- if policy(:report).cross_account_percent_actual_by_focus_area? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Cross-Account Percent Actual Per Focus Area</h3>
-        </div>
-        <%= simple_form_for :report, url: cross_account_percent_actual_by_focus_area_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>Actual Percentage per Transition Card per Focus Area for all accounts (must have admin role in each account).</p>
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
-      </div>
-    </div>
+    <%=
+      render(
+        'form',
+        name: 'Cross-Account Percent Actual Per Focus Area',
+        path: cross_account_percent_actual_reports_path(format: :xlsx),
+        description: 'Actual Percentage per Transition Card per Focus Area for all accounts (must have admin role in each account).'
+      )
+    %>
   <% end %>
 
-    <%- if policy(:report).cross_account_percent_actual_by_focus_area_tabbed? %>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header with-border">
-          <h3 class="card-title"><i class="fa fa-pie-chart fa-report report-icon"></i> Cross-Account Percent Actual Per Focus Area (Tabbed)</h3>
-        </div>
-        <%= simple_form_for :report, url: cross_account_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx), role: 'form', html: { class: 'form-horizontal' } do |f| %>
-        <div class="card-body">
-          <p>Actual Percentage per Transition Card all accounts, grouped by Focus Area in separate tabs (must have admin role in each account).</p>
-        </div>
-        <div class="card-footer">
-          <%= button_tag('Download', type: 'submit', class: "btn btn-primary float-right") %>
-        </div>
-        <% end %>
-      </div>
-    </div>
+  <%- if policy(:report).cross_account_percent_actual_by_focus_area_tabbed? %>
+    <%=
+      render(
+        'form',
+        name: 'Cross-Account Percent Actual Per Focus Area (Tabbed)',
+        path: cross_account_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx),
+        description: 'Actual Percentage per Transition Card all accounts, grouped by Focus Area in separate tabs (must have admin role in each account).'
+      )
+    %>
   <% end %>
 <div>

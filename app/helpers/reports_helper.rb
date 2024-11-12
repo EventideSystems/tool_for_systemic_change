@@ -3,7 +3,7 @@
 # Helper for Reports
 module ReportsHelper
   def options_for_comment_statuses
-    ChecklistItemComment.statuses.keys.map { |status| [status.titleize, status] }
+    ChecklistItemsHelper::CHECKLIST_LIST_ITEM_COLOR_CLASSES.keys.map { |status| [status.to_s.titleize, status] }
   end
 
   def activity_report_name

@@ -13,4 +13,18 @@ module AccountsHelper
   def lookup_system_roles
     User.system_roles.keys
   end
+
+  def max_users(account)
+    "Max users: #{account.max_users.zero? ? 'unlimited' : account.max_users}"
+  end
+
+  def max_impact_cards(account)
+    "Max impact cards: #{account.max_users.zero? ? 'unlimited' : account.max_scorecards}"
+  end
+
+  def expires_on(account)
+    return 'Never expires' if account.expires_on.blank?
+
+    "Expires on: #{account.expires_on}"
+  end
 end

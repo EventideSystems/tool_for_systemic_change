@@ -31,12 +31,12 @@
 #  stakeholder_type_id                                :integer
 #
 class Account < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
   EXPIRY_WARNING_PERIOD = 30.days
-
-  # enum subcription_type: { standard: 0, twelve_month_single_scorecard: 1 }
 
   belongs_to :stakeholder_type, optional: true
 

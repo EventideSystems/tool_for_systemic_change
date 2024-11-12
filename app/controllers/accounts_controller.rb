@@ -7,11 +7,17 @@ class AccountsController < ApplicationController
   before_action :set_account, only: %i[show edit update destroy switch]
 
   def index
-    @pagy, @accounts = pagy_countless(policy_scope(Account).order('upper(trim(accounts.name)) asc'), items: 10)
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Account).order(:name).ransack(search_params[:q])
+
+    accounts = @q.result(distinct: true)
+
+    @pagy, @accounts = pagy(accounts, limit: 10)
 
     respond_to do |format|
-      format.html
-      format.turbo_stream
+      format.html { render 'accounts/index', locals: { accounts: @accounts } }
+      format.turbo_stream { render 'accounts/index', locals: { accounts: @accounts } }
     end
   end
 

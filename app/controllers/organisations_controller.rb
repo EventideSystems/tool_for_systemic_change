@@ -48,7 +48,9 @@ class OrganisationsController < ApplicationController
 
     respond_to do |format|
       if @organisation.save
-        format.html { redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.' }
+        format.html do
+          redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.'
+        end
       else
         format.html { render :new }
       end

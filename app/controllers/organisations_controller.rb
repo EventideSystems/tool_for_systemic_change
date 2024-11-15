@@ -46,14 +46,10 @@ class OrganisationsController < ApplicationController
     @organisation = current_account.organisations.build(organisation_params)
     authorize @organisation
 
-    respond_to do |format|
-      if @organisation.save
-        format.html do
-          redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.'
-        end
-      else
-        format.html { render :new }
-      end
+    if @organisation.save
+      redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.'
+    else
+      render :new
     end
   end
 

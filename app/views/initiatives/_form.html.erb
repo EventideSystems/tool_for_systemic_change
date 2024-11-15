@@ -1,34 +1,137 @@
-<%= simple_form_for(@initiative, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@initiative) %>
+<div class="mx-auto max-w-6xl">
+  <%= form_with model: @initiative do |form| %>
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">First Initiative</h2>
+        <p class="mt-1 text-sm/6 text-gray-600">Create your first initiative. You can add more later.</p>
+      </div>
 
-  <%= linked_initiative_warning(@initiative) %>
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+        <div class="sm:col-span-4">
+          <%= form.label :name %>
+          <div class="mt-2">
+            <%= form.text_field :name, placeholder: 'Initiative name', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
+          </div>
+        </div>
 
-  <%= f.input :name, required: true  %>
-  <%= f.input :description %>
+        <div class="col-span-full">
+          <%= form.label :description %>
+          <div class="mt-2">
+            <%= form.text_area :description, rows: 3, placeholder: 'Initiative description', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <%=
-    f.association(
-      :scorecard,
-      collection: policy_scope(Scorecard),
-      required: true,
-      label: scorecard_label(@initiative)
-    )
-  %>
-  <hr>
-  <%= render 'transition_cards/form_tabs/organisations', f: f %>
-  <%= render 'transition_cards/form_tabs/subsystem_tags', f: f %>
-  <%= f.input :started_at, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.started_at) } %>
-  <%= f.input :finished_at, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.finished_at) } %>
-  <%- if policy(@initiative).archive? -%>
-    <hr>
-    <%= f.input :archived_on, as: :string, input_html: { data: { behaviour: "datepicker" }, value: format_date(f.object.archived_on) }%>
-  <%- end -%>
-  <hr>
-  <%= f.input :contact_name %>
-  <%= f.input :contact_email %>
-  <%= f.input :contact_website %>
-  <%= f.input :contact_position %>
-  <%= f.input :notes, as: :rich_text_area %>
-  <%= render_form_button(f) %>
-<% end %>
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">Contact Details</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Enter the main contact for this initiative (optional).</p>
+      </div>
+
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+        <div class="sm:col-span-3">
+          <%= form.label :contact_name %>
+          <div class="mt-2">
+            <%= form.text_field :contact_name %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :contact_email %>
+          <div class="mt-2">
+            <%= form.text_field :contact_email %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :contact_website %>
+          <div class="mt-2">
+            <%= form.text_field :contact_website %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :contact_position %>
+          <div class="mt-2">
+            <%= form.text_field :contact_position %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Applicable Date Range</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Optional</p>
+      </div>
+
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+        <div class="sm:col-span-3">
+          <%= form.label :started_at %>
+          <div class="mt-2">
+            <%= form.date_field :started_at %>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <%= form.label :finished_at %>
+          <div class="mt-2">
+            <%= form.date_field :finished_at %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify who might be interested in this initiative.</p>
+      </div>
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-organisations" data-controller="initiatives-organisations">
+        <%= render 'organisation_fields' %>
+        <div class="sm:col-span-6" data-initiatives-organisations-target="initiativesOrganisations">
+          <%= form.fields_for :initiatives_organisations do |initiatives_organisations_form| %>
+            <div class="flex items-center space-x-4 mt-3">
+              <%= initiatives_organisations_form.collection_select :organisation_id, policy_scope(Organisation), :id, :name, { include_blank: 'Select a stakeholder' } %>
+              <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-organisations#removeTag' } %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="sm:col-span-6 mt-2">
+          <%= link_to 'Add Stakeholder', '#', id: 'add-organisation', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-organisations#addTag' } %>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
+      </div>
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-subsystem-tags" data-controller="initiatives-subsystem-tags">
+        <%= render 'subsystem_tag_fields' %>
+        <div class="sm:col-span-6" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
+          <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
+            <div class="flex items-center space-x-4 mt-3">
+              <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
+              <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="sm:col-span-6 mt-2">
+          <%= link_to 'Add Subsystem Tag', '#', id: 'add-subsystem-tag', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-subsystem-tags#addTag' } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
+      <%= form.submit 'Save' %>
+    </div>
+
+  <% end %>
+</div>

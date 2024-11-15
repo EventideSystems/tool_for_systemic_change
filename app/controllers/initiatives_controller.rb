@@ -42,7 +42,10 @@ class InitiativesController < ApplicationController
     authorize(@initiative)
   end
 
-  def edit; end
+  def edit
+    @initiative.initiatives_organisations.build if @initiative.initiatives_organisations.empty?
+    @initiative.initiatives_subsystem_tags.build if @initiative.initiatives_subsystem_tags.empty?
+  end
 
   def create
     @initiative = Initiative.new(initiative_params)
@@ -61,6 +64,9 @@ class InitiativesController < ApplicationController
     linked_initiative = @initiative.linked_initiative
 
     if @initiative.update(initiative_params)
+      update_stakeholders!(@initiative, initiatives_organisations_params)
+      update_subsystem_tags!(@initiative, initiatives_subsystem_tags_params)
+
       if params[:unlink_initiative]
         linked_initiative.update(linked: false) if linked_initiative.present?
         @initiative.update(linked: false)
@@ -68,7 +74,9 @@ class InitiativesController < ApplicationController
         ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
       end
 
-      redirect_to(initiative_path(@initiative), notice: 'Initiative was successfully updated.')
+      # TODO: Put some smarts in here to redirect to the impact cards page if the user was on the impact cards page
+      #      when they clicked the edit button, and to the initiative show page if they were on the initiatives page
+      redirect_to(initiatives_path, notice: 'Initiative was successfully updated.')
     else
       render(:edit)
     end
@@ -76,13 +84,7 @@ class InitiativesController < ApplicationController
 
   def destroy
     @initiative.destroy
-    redirect_to(initiatives_url, notice: 'Initiative was successfully deleted.')
-  end
-
-  def content_subtitle
-    subtitle = @initiative&.name.presence || super
-
-    @initiative&.archived? ? "#{subtitle} [ARCHIVED]" : subtitle
+    redirect_to(initiatives_path, notice: 'Initiative was successfully deleted.')
   end
 
   # NOTE: Will move this to the checklist controller, where it belongs
@@ -206,7 +208,27 @@ class InitiativesController < ApplicationController
       end
   end
 
-  def initiative_params # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+  def initiatives_organisations_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_organisations_attributes: %i[
+          organisation_id
+        ]
+      }
+    )
+  end
+
+  def initiatives_subsystem_tags_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_subsystem_tags_attributes: %i[
+          subsystem_tag_id
+        ]
+      }
+    )
+  end
+
+  def initiative_params # rubocop:disable Metrics/MethodLength
     params.fetch(:initiative, {}).permit(
       :name,
       :description,
@@ -220,45 +242,23 @@ class InitiativesController < ApplicationController
       :contact_phone,
       :contact_website,
       :contact_position,
-      :notes,
-      initiatives_organisations_attributes: %i[
-        organisation_id id _destroy
-      ],
-      initiatives_subsystem_tags_attributes: %i[
-        subsystem_tag_id id _destroy
-      ]
-    ).tap do |params|
-      # Remove organisations that are already assigned
-      params[:initiatives_organisations_attributes].reject! do |_key, value|
-        value[:id].blank? &&
-          params[:initiatives_organisations_attributes].values.find do |attributes|
-            (value[:organisation_id] == attributes[:organisation_id]) && attributes[:id].present?
-          end
-      end
+      :notes
+    )
+  end
 
-      # Remove duplicates
-      if params[:initiatives_organisations_attributes]
-        params[:initiatives_organisations_attributes] =
-          params[:initiatives_organisations_attributes].values.uniq do |attr|
-            attr[:organisation_id]
-          end
-      end
+  def update_stakeholders!(initiative, params)
+    initiative.initiatives_organisations.destroy_all
 
-      # Remove subsystem tags that are already assigned
-      params[:initiatives_subsystem_tags_attributes].reject! do |_key, value|
-        value[:id].blank? &&
-          params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
-            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) && attributes[:id].present?
-          end
-      end
+    params[:initiatives_organisations_attributes].each_value do |organisation_params|
+      initiative.initiatives_organisations.create(organisation_params)
+    end
+  end
 
-      # Remove duplicates
-      if params[:initiatives_subsystem_tags_attributes]
-        params[:initiatives_subsystem_tags_attributes] =
-          params[:initiatives_subsystem_tags_attributes].values.uniq do |attr|
-            attr[:subsystem_tag_id]
-          end
-      end
+  def update_subsystem_tags!(initiative, params)
+    initiative.initiatives_subsystem_tags.destroy_all
+
+    params[:initiatives_subsystem_tags_attributes].each_value do |subsystem_tag_params|
+      initiative.initiatives_subsystem_tags.create(subsystem_tag_params)
     end
   end
 end

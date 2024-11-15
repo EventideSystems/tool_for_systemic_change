@@ -327,10 +327,8 @@ class ImpactCardsController < ApplicationController
         :_destroy,
         :name,
         :description,
-        :scorecard_id,
         :started_at,
         :finished_at,
-        :archived_on,
         :dates_confirmed,
         :contact_name,
         :contact_email,
@@ -338,18 +336,15 @@ class ImpactCardsController < ApplicationController
         :contact_website,
         :contact_position,
         :notes,
-        :type,
         {
           initiatives_organisations_attributes: %i[
-            _destroy
             organisation_id
           ],
           initiatives_subsystem_tags_attributes: %i[
-            _destroy
             subsystem_tag_id
           ]
         }
-      ]
+      ] # TODO: Remove duplicated initiatives_organisations_attributes / initiatives_subsystem_tags_attributes
     )
   end
 

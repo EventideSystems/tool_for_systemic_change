@@ -1,0 +1,12 @@
+<template id="organisation_template">
+  <div class="flex items-center space-x-4 mt-2">
+    <%=
+      custom_select_tag(
+        'initiative[initiatives_organisations_attributes][__INDEX__][organisation_id]',
+        options_from_collection_for_select(policy_scope(Organisation), :id, :name),
+        include_blank: 'Select a stakeholder'
+      )
+    %>
+    <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-organisations#removeTag' } %>
+  </div>
+</template>

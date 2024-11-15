@@ -21,10 +21,10 @@ module FlashMessage
     end
 
     COLOR_CLASSES = {
-      success: 'text-green-800 bg-green-500 dark:bg-gray-800 dark:text-green-400',
+      success: 'bg-green-50 text-green-800',
       error: 'text-red-800 bg-red-500 dark:bg-gray-800 dark:text-red-400',
       warning: 'text-yellow-800 bg-yellow-500 dark:bg-gray-800 dark:text-yellow-300',
-      notice: 'text-blue-800 bg-blue-500 dark:bg-gray-800 dark:text-blue-400',
+      notice: 'bg-green-500 text-green-800',
       default: 'bg-gray-50 dark:bg-gray-800',
       alert: 'text-red-800 bg-red-500 dark:bg-gray-800 dark:text-red-400'
     }.freeze

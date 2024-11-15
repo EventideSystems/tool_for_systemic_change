@@ -1,4 +1,4 @@
-
+// TODO: This file is not being used. Remove it.
 $(document).on('turbolinks:load', function() {
 
   $('[data-behaviour~=datepicker]').each(function(){

@@ -5,8 +5,6 @@ module InitiativeChildRecords
   extend ActiveSupport::Concern
 
   def update_stakeholders!(initiative, params)
-    return if initiative.blank?
-
     organisation_ids = params[:initiatives_organisations_attributes].values.map do |org|
       org[:organisation_id]
     end.map(&:to_i).uniq
@@ -23,8 +21,6 @@ module InitiativeChildRecords
   end
 
   def update_subsystem_tags!(initiative, params)
-    return if initiative.blank?
-
     subsystem_tag_ids = params[:initiatives_subsystem_tags_attributes].values.map do |org|
       org[:subsystem_tag_id]
     end.map(&:to_i).uniq

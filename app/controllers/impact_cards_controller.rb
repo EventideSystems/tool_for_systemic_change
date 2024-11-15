@@ -124,12 +124,11 @@ class ImpactCardsController < ApplicationController
     @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
   end
 
-  def create
+  def create # rubocop:disable Metrics/AbcSize
     @impact_card = current_account.scorecards.build(impact_card_params)
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
     if @impact_card.save
-      debugger
       update_stakeholders!(@impact_card.initiatives.first, initiatives_organisations_params)
       update_subsystem_tags!(@impact_card.initiatives.first, initiatives_subsystem_tags_params)
 
@@ -296,17 +295,13 @@ class ImpactCardsController < ApplicationController
   end
 
   def initiatives_organisations_params
-    pppp = params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
+    params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
       {
         initiatives_organisations_attributes: %i[
           organisation_id
         ]
       }
     )
-
-    debugger
-
-    pppp
   end
 
   def initiatives_subsystem_tags_params

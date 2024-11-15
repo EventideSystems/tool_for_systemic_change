@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_with model: @initiative, class: 'mx-auto max-w-4xl' do |form| %>
+  <%= form_with model: @initiative, class: 'mx-auto max-w-4xl', data: { turbo: false } do |form| %>
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
       <div>
         <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">First Initiative</h2>

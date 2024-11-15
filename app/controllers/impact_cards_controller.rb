@@ -4,6 +4,7 @@
 # rubocop:disable Metrics/ClassLength
 class ImpactCardsController < ApplicationController
   include VerifyPolicies
+  include InitiativeChildRecords
 
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
@@ -128,6 +129,10 @@ class ImpactCardsController < ApplicationController
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
     if @impact_card.save
+      debugger
+      update_stakeholders!(@impact_card.initiatives.first, initiatives_organisations_params)
+      update_subsystem_tags!(@impact_card.initiatives.first, initiatives_subsystem_tags_params)
+
       redirect_to(impact_card_path(@impact_card), notice: "#{@impact_card.model_name.human} was successfully created.")
     else
       render(:new)
@@ -290,6 +295,30 @@ class ImpactCardsController < ApplicationController
     'Copy from other card and link'
   end
 
+  def initiatives_organisations_params
+    pppp = params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
+      {
+        initiatives_organisations_attributes: %i[
+          organisation_id
+        ]
+      }
+    )
+
+    debugger
+
+    pppp
+  end
+
+  def initiatives_subsystem_tags_params
+    params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
+      {
+        initiatives_subsystem_tags_attributes: %i[
+          subsystem_tag_id
+        ]
+      }
+    )
+  end
+
   def set_scorecard
     @scorecard = current_account.scorecards.find(params[:id])
     authorize(@scorecard, policy_class: ScorecardPolicy)
@@ -323,27 +352,19 @@ class ImpactCardsController < ApplicationController
       :linked_scorecard_id,
       :share_ecosystem_map,
       :share_thematic_network_map,
-      initiatives_attributes: [
-        :_destroy,
-        :name,
-        :description,
-        :started_at,
-        :finished_at,
-        :dates_confirmed,
-        :contact_name,
-        :contact_email,
-        :contact_phone,
-        :contact_website,
-        :contact_position,
-        :notes,
-        {
-          initiatives_organisations_attributes: %i[
-            organisation_id
-          ],
-          initiatives_subsystem_tags_attributes: %i[
-            subsystem_tag_id
-          ]
-        }
+      initiatives_attributes: %i[
+        _destroy
+        name
+        description
+        started_at
+        finished_at
+        dates_confirmed
+        contact_name
+        contact_email
+        contact_phone
+        contact_website
+        contact_position
+        notes
       ] # TODO: Remove duplicated initiatives_organisations_attributes / initiatives_subsystem_tags_attributes
     )
   end

@@ -5,34 +5,48 @@ module InitiativeChildRecords
   extend ActiveSupport::Concern
 
   def update_stakeholders!(initiative, params)
-    organisation_ids = params[:initiatives_organisations_attributes].values.map do |org|
-      org[:organisation_id]
-    end.map(&:to_i).uniq
-
-    current_organisation_ids = initiative.organisation_ids
-
-    deleteable_organisation_ids = current_organisation_ids - organisation_ids
-    createable_organisation_ids = organisation_ids - current_organisation_ids
-
-    initiative.initiatives_organisations.where(organisation_id: deleteable_organisation_ids).destroy_all
-    createable_organisation_ids.each do |organisation_id|
-      initiative.initiatives_organisations.create(organisation_id: organisation_id)
-    end
+    update_child_records!(
+      initiative,
+      params[:initiatives_organisations_attributes],
+      :organisation_id,
+      initiative.organisation_ids,
+      initiative.initiatives_organisations
+    )
   end
 
   def update_subsystem_tags!(initiative, params)
-    subsystem_tag_ids = params[:initiatives_subsystem_tags_attributes].values.map do |org|
-      org[:subsystem_tag_id]
-    end.map(&:to_i).uniq
+    update_child_records!(
+      initiative,
+      params[:initiatives_subsystem_tags_attributes],
+      :subsystem_tag_id,
+      initiative.subsystem_tag_ids,
+      initiative.initiatives_subsystem_tags
+    )
+  end
 
-    current_subsystem_tag_ids = initiative.subsystem_tag_ids
+  private
 
-    deleteable_subsystem_tag_ids = current_subsystem_tag_ids - subsystem_tag_ids
-    createable_subsystem_tag_ids = subsystem_tag_ids - current_subsystem_tag_ids
+  def deletable_and_creatable_ids(attributes, id_key, current_ids)
+    new_ids = attributes.values.map { |attr| attr[id_key] }.map(&:to_i).uniq
 
-    initiative.initiatives_subsystem_tags.where(subsystem_tag_id: deleteable_subsystem_tag_ids).destroy_all
-    createable_subsystem_tag_ids.each do |subsystem_tag_id|
-      initiative.initiatives_subsystem_tags.create(subsystem_tag_id: subsystem_tag_id)
+    deletable_ids = current_ids - new_ids
+    creatable_ids = new_ids - current_ids
+
+    [deletable_ids, creatable_ids]
+  end
+
+  def update_child_records!(initiative, attributes, id_key, current_ids, association)
+    return if attributes.blank?
+
+    deletable_ids, creatable_ids = deletable_and_creatable_ids(attributes, id_key, current_ids)
+
+    association.where(id_key => deletable_ids).destroy_all
+    creatable_ids.each do |new_id|
+      association.create(id_key => new_id)
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Failed to create #{id_key}: #{e.message}"
     end
+
+    Rails.logger.info "Updated #{id_key.to_s.pluralize} for initiative #{initiative.id}: added #{creatable_ids}, removed #{deletable_ids}" # rubocop:disable Layout/LineLength
   end
 end

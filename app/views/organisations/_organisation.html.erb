@@ -8,7 +8,7 @@
       <%= render partial: 'resource_summary', locals: { name: organisation.name, background_color: 'bg-teal-500' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to highlight(organisation.name, params.dig(:q, :name_or_description_cont)), edit_organisation_path(organisation), data: { turbo: false } %>
+          <%= link_to highlight(organisation.name, params.dig(:q, :name_or_description_cont)), organisation_path(organisation), data: { turbo: false } %>
         </div>
         <div class="text-xs/6 text-zinc-500 min-h-4">
           <%= highlight(organisation.description, params.dig(:q, :name_or_description_cont)) %>

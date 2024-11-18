@@ -2,6 +2,18 @@
 
 # Helper methods for presenting initiative data
 module InitiativesHelper
+  def applicable_date_range(initiative)
+    return '' if initiative.started_at.blank? && initiative.finished_at.blank?
+
+    start_date = initiative.started_at&.strftime('%b %Y')
+    end_date = initiative.finished_at&.strftime('%b %Y')
+
+    return "Starts at #{start_date}" if end_date.blank?
+    return "Ends at #{end_date}" if start_date.blank?
+
+    safe_join([start_date, end_date], ' to ')
+  end
+
   def scorecard_label(initiative) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     if initiative.new_record? || initiative.scorecard.nil?
       current_account.scorecard_types.map { |type| type.model_name.human }
@@ -29,6 +41,12 @@ module InitiativesHelper
     when 'TransitionCard' then 'Initiative Characteristics'
     when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiative SDGs Targets'
     end
+  end
+
+  def mail_to_contact_email(initiative)
+    return '' if initiative&.contact_email.blank?
+
+    mail_to initiative.contact_email, initiative.contact_email, class: 'text-blue-500 hover:text-blue-700 underline'
   end
 
   def link_to_video_tutorial(video_tutorial) # rubocop:disable Metrics/MethodLength

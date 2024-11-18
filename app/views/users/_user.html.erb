@@ -8,7 +8,7 @@
       <%= render partial: 'resource_summary', locals: { name: user.name, background_color: 'bg-green-700' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to highlight(user.name, params.dig(:q, :name_or_email_cont)), edit_user_path(user) %>
+          <%= link_to highlight(user.name, params.dig(:q, :name_or_email_cont)), user_path(user), data: { turbo: false } %>
         </div>
         <div class="text-xs/6 text-zinc-500">
           <%= highlight(user.email, params.dig(:q, :name_or_email_cont)) %>

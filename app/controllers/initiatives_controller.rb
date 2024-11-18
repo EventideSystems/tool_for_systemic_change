@@ -9,12 +9,11 @@ class InitiativesController < ApplicationController
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]
+  before_action :set_subsystem_tags, only: %i[index show]
 
   sidebar_item :initiatives
 
   def index # rubocop:disable Metrics/AbcSize
-    @subsystem_tags = current_account.subsystem_tags
-
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(Initiative).order(:name).ransack(search_params[:q])
@@ -31,8 +30,6 @@ class InitiativesController < ApplicationController
   end
 
   def show
-    sidebar_item :impact_cards
-
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
   end
@@ -77,7 +74,7 @@ class InitiativesController < ApplicationController
 
       # TODO: Put some smarts in here to redirect to the impact cards page if the user was on the impact cards page
       #      when they clicked the edit button, and to the initiative show page if they were on the initiatives page
-      redirect_to(initiatives_path, notice: 'Initiative was successfully updated.')
+      redirect_to(initiative_path(@initiative), notice: 'Initiative was successfully updated.')
     else
       render(:edit)
     end
@@ -207,6 +204,10 @@ class InitiativesController < ApplicationController
           policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
         )
       end
+  end
+
+  def set_subsystem_tags
+    @subsystem_tags = current_account.subsystem_tags
   end
 
   def initiatives_organisations_params

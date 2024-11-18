@@ -1,11 +1,45 @@
-<%= simple_form_for(@organisation, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= form_header(@organisation) %>
-  <%= f.input :name, required: false, readonly: true %>
-  <%= f.input :description , as: :text, input_html: { class: 'textarea' }, readonly: true %>
-  <%= f.input :stakeholder_type_name, as: :string, label: 'Stakeholder Type', readonly: true %>
-  <%= f.input :weblink, readonly: true %>
-  <hr>
-  <%= f.input :created_at, as: :string, readonly: true %>
-  <%= f.input :updated_at, as: :string, readonly: true %>
-  <%= edit_button('Edit Organisation', edit_organisation_path(@organisation)) if policy(@organisation).edit? %>
-<% end %>
+<%= render 'labels/stylesheet', labels: @stakeholder_types %>
+
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Stakeholder Details</h1>
+
+      <div class="flex justify-between items-center mt-4">
+        <div class="flex gap-6 py-6">
+        <%= render partial: 'resource_summary', locals: { name: @organisation.name, background_color: 'bg-teal-500' } %>
+          <div class="space-y-1.5">
+            <div class="text-base/6 font-semibold dark:text-white">
+              <%= @organisation.name %>
+            </div>
+
+            <%- if @organisation.stakeholder_type.present? %>
+              <div class="flex space-x-4">
+                <%= render 'label_badge', label: @organisation.stakeholder_type %>
+              </div>
+            <%- end %>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="flex justify-end items-center mb-4">
+            <%= link_to_primary 'Edit', edit_organisation_path(@organisation), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto max-w-6xl">
+      <div class="mt-1 border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm/6 font-medium text-gray-900">Description</dt>
+            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @organisation.description %></dd>
+          </div>
+          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm/6 font-medium text-gray-900">Website</dt>
+            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= link_to_external_url(@organisation.weblink) %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

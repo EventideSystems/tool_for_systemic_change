@@ -1,5 +1,7 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_with model: @initiative, class: 'mx-auto max-w-4xl', data: { turbo: false } do |form| %>
+  <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Edit Initiative</h1>
+
+  <%= form_with model: @initiative, class: 'mx-auto max-w-6xl', data: { turbo: false } do |form| %>
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
       <div>
         <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">General Settings</h2>
@@ -19,6 +21,28 @@
           <div class="mt-2">
             <%= form.text_area :description, rows: 3, placeholder: 'Initiative description', class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6" %>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
+      </div>
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-subsystem-tags" data-controller="initiatives-subsystem-tags">
+        <%= render 'subsystem_tag_fields' %>
+        <div class="sm:col-span-6" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
+          <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
+            <div class="flex items-center space-x-4 mt-3">
+              <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
+              <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="sm:col-span-6 mt-2">
+          <%= link_to 'Add Subsystem Tag', '#', id: 'add-subsystem-tag', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-subsystem-tags#addTag' } %>
         </div>
       </div>
     </div>
@@ -106,27 +130,7 @@
     </div>
 
 
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-      <div>
-        <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
-        <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
-      </div>
-      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-subsystem-tags" data-controller="initiatives-subsystem-tags">
-        <%= render 'subsystem_tag_fields' %>
-        <div class="sm:col-span-6" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
-          <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
-            <div class="flex items-center space-x-4 mt-3">
-              <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
-              <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
-            </div>
-          <% end %>
-        </div>
 
-        <div class="sm:col-span-6 mt-2">
-          <%= link_to 'Add Subsystem Tag', '#', id: 'add-subsystem-tag', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-subsystem-tags#addTag' } %>
-        </div>
-      </div>
-    </div>
 
     <div class="mt-6 flex items-center justify-end gap-x-6">
       <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>

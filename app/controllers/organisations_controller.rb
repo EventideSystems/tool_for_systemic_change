@@ -8,6 +8,7 @@ class OrganisationsController < ApplicationController
 
   before_action :set_organisation, only: %i[show edit update destroy]
   before_action :require_account_selected, only: %i[new create edit update]
+  before_action :set_stakeholder_types, only: %i[index show]
 
   respond_to :js, :html
 
@@ -55,7 +56,7 @@ class OrganisationsController < ApplicationController
 
   def update
     if @organisation.update(organisation_params)
-      redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully updated.'
+      redirect_to organisation_path(@organisation), notice: 'Stakeholder was successfully updated.'
     else
       render :edit
     end
@@ -75,6 +76,10 @@ class OrganisationsController < ApplicationController
   def set_organisation
     @organisation = current_account.organisations.find(params[:id])
     authorize @organisation
+  end
+
+  def set_stakeholder_types
+    @stakeholder_types = current_account.stakeholder_types
   end
 
   def organisation_params

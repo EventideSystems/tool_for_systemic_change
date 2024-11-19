@@ -129,11 +129,12 @@
       </div>
     </div>
 
-
-
-
     <div class="mt-6 flex items-center justify-end gap-x-6">
-      <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
+      <%- if @initiative.persisted? %>
+        <%= link_to 'Cancel', initiative_path(@initiative), class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
+      <% else %>
+        <%= link_to 'Cancel', initiatives_path, class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
+      <% end %>
       <%= form.submit 'Save' %>
     </div>
 

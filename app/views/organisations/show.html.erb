@@ -3,8 +3,7 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Stakeholder Details</h1>
-
+      <%= page_header_tag 'Stakeholder Details' %>
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
         <%= render partial: 'resource_summary', locals: { name: @organisation.name, background_color: 'bg-teal-500' } %>
@@ -27,17 +26,18 @@
         </div>
       </div>
     </div>
-    <div class="mx-auto max-w-6xl">
+    <div class="mx-auto max-w-6xl w-full">
       <div class="mt-1 border-t border-gray-100">
-        <dl class="divide-y divide-gray-100">
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Description</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @organisation.description %></dd>
+        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
+          <div class="flex items-center space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Description</dt>
+            <dd class="text-sm/6 text-gray-700"><%= @organisation.description %></dd>
           </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Website</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= link_to_external_url(@organisation.weblink) %></dd>
+          <div class="flex items-center space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Website</dt>
+            <dd class="text-sm/6 text-gray-700"><%= link_to_external_url(@organisation.weblink) %></dd>
           </div>
+          <!-- Add more attributes here as needed -->
         </dl>
       </div>
     </div>

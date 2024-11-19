@@ -5,7 +5,7 @@
     <div class="w-full">
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Initiative Details</h1>
 
-      <div class="flex justify-between items-center mt-4">
+      <div class="flex justify-between items-start mt-4">
         <div class="flex gap-6 py-6">
         <%= render partial: 'resource_summary', locals: { name: @initiative.name, background_color: 'bg-sky-600' } %>
           <div class="space-y-1.5">
@@ -26,21 +26,23 @@
           </div>
         </div>
         <div class="relative">
-          <div class="flex justify-end items-center mb-4">
-            <%= link_to_primary 'Edit', edit_initiative_path(@initiative), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+          <div class="flex justify-end items-start mb-4">
+            <%= link_to_primary 'Edit', edit_initiative_path(@initiative), class: 'inline-flex items-start px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
           </div>
         </div>
       </div>
     </div>
-    <div class="mx-auto max-w-6xl">
+
+
+    <div class="mx-auto max-w-6xl w-full">
       <div class="mt-1 border-t border-gray-100">
-        <dl class="divide-y divide-gray-100">
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Description</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @initiative.description %></dd>
+        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
+          <div class="flex items-start space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Description</dt>
+            <dd class="text-sm/6 text-gray-700"><%= @initiative.description %></dd>
           </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Contact Details</dt>
+          <div class="flex items-start space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Contact Details</dt>
             <dd class="text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
               <dl class="grid grid-cols-1 sm:grid-cols-2">
                 <div class="pb-6 sm:col-span-1 sm:px-0">
@@ -62,18 +64,18 @@
               </dl>
             </dd>
           </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Applicable Date Range</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= applicable_date_range(@initiative) %></dd>
+          <div class="flex items-start space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Applicable Date Range</dt>
+            <dd class="text-sm/6 text-gray-700"><%= applicable_date_range(@initiative) %></dd>
           </div>
 
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Stakeholders</dt>
+          <div class="flex items-start space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Stakeholders</dt>
             <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
                 <%- @initiative.organisations.each do |stakeholder| %>
-                <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
-                  <div class="flex w-0 flex-1 items-center">
+                <li class="flex items-start justify-between py-4 pl-4 pr-5 text-sm/6">
+                  <div class="flex w-0 flex-1 items-start">
                     <%= stakeholder.name %>
                   </div>
                   <div class="ml-4 shrink-0">
@@ -87,5 +89,6 @@
         </dl>
       </div>
     </div>
+
   </div>
 </div>

@@ -2,7 +2,7 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Stakeholders</h1>
+      <%= page_header_tag 'Stakeholders' %>
       <div class="flex justify-between items-center mt-4 ">
         <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search stakeholders...' } %>
         <div>

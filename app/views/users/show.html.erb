@@ -5,7 +5,7 @@
 
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
-        <%= render partial: 'resource_summary', locals: { name: @user.name, background_color: 'bg-green-700' } %>
+          <%= render partial: 'resource_summary', locals: { name: @user.name, background_color: 'bg-green-700' } %>
           <div class="space-y-1.5">
             <div class="text-base/6 font-semibold dark:text-white">
               <%= @user.name %>
@@ -22,17 +22,19 @@
         </div>
       </div>
     </div>
-    <div class="mx-auto max-w-6xl">
+
+    <div class="mx-auto max-w-6xl w-full">
       <div class="mt-1 border-t border-gray-100">
-        <dl class="divide-y divide-gray-100">
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Email</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @user.email %></dd>
+        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
+          <div class="flex items-center space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Email</dt>
+            <dd class="text-sm/6 text-gray-700"><%= @user.email %></dd>
           </div>
-          <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt class="text-sm/6 font-medium text-gray-900">Time zone</dt>
-            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0"><%=  @user.time_zone %></dd>
+          <div class="flex items-center space-x-4">
+            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Time zone</dt>
+            <dd class="text-sm/6 text-gray-700"><%= @user.time_zone %></dd>
           </div>
+          <!-- Add more attributes here as needed -->
         </dl>
       </div>
     </div>

@@ -1,43 +1,22 @@
-<div class="login-box">
-  <div class="login-logo">
-    <span class="logo-lg">
-      <%= image_tag('logo-devise.png', style: 'width:50%')%>
-    </span>
-  </div>
-
-  <%= render partial: 'layouts/shared/flash_messages' %>
-
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg"><%= t 'devise.invitations.edit.header' %></p>
-      <%= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put, class: 'form-horizontal' } do |f| %>
-        <%= devise_error_messages! %>
-        <%= f.hidden_field :invitation_token %>
-
-        <div class="input-group mb-3">
-          <%= f.input_field :password, required: false, autofocus: true, label: false, placeholder: 'New password', type: 'password', class: 'form-control' %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="input-group mb-3">
-          <%= f.input_field :password_confirmation, required: false, autofocus: true, label: false, placeholder: 'Password confirmation', type: 'password', class: 'form-control' %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col text-center">
-            <%= f.button :submit, t("devise.invitations.edit.submit_button"), class: 'btn btn-primary btn-block' %>
-          </div>
-        </div>
-      <% end %>
+<%= render layout: "layouts/devise_page", locals: { title: t('devise.invitations.edit.header') } do %>
+  <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { class: 'space-y-6' }, data: { turbo: false }) do |f| %>
+    <%= f.hidden_field :invitation_token %>
+    <div>
+      <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
+      <div class="mt-1">
+        <%= f.password_field :password, required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm" %>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div>
+      <%= f.label :password_confirmation, class: 'block text-sm font-medium text-gray-700' %>
+      <div class="mt-1">
+        <%= f.password_field :password_confirmation, required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit  t("devise.invitations.edit.submit_button"), class: "flex w-full justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" %>
+    </div>
+  <% end %>
+<% end %>

@@ -26,6 +26,10 @@ module ApplicationHelper
     render 'layouts/shared/sidebar_item', title:, path:, icon:, active:, classes:, count:
   end
 
+  def page_header_tag(title)
+    content_tag :h1, title, class: 'text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white'
+  end
+
   def form_header(resource)
     content_tag(:h3) do
       "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"

@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_for(@organisation, html: { class: 'mx-auto max-w-4xl', role: 'form' }) do |form| %>
+  <%= form_for(@organisation, html: { class: 'mx-auto max-w-6xl', role: 'form' }) do |form| %>
     <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= @organisation.persisted? ? @organisation.name : 'New Stakeholder' %></h1>
     <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
     <div class="space-y-12">
@@ -74,7 +74,11 @@
         </div>
       </div>
       <div class="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
+        <%- if @organisation.persisted? %>
+          <%= link_to 'Cancel', organisation_path(@organisation), class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
+        <% else %>
+          <%= link_to 'Cancel', organisations_path, class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
+        <% end %>
         <%= form.submit 'Save' %>
       </div>
     </div>

@@ -66,7 +66,9 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :accounts_users, allow_destroy: true
 
-  attr_accessor :account_role # Virtual attribute used when inviting users
+  # Virtual attributes used when inviting or updating users
+  attr_accessor :account_role
+  attr_accessor :system_role
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name email] + _ransackers.keys
@@ -76,6 +78,7 @@ class User < ApplicationRecord
     super && (admin? || default_account.present?)
   end
 
+  # TODO: Consider converting this to symbols.
   def status
     return 'deleted' if deleted_at.present?
     return 'invitation-pending' if invitation_token.present?
@@ -88,6 +91,8 @@ class User < ApplicationRecord
     AccountPolicy::Scope.new(user_context, Account).resolve
   end
 
+  # Returns the user's display name, which is their name if present, otherwise their email.
+  # TODO: Consider stripping out the email domain and only showing the username.
   def display_name
     name.presence || email
   end

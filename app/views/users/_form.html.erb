@@ -1,19 +1,68 @@
-<%= simple_form_for(@user, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@user) %>
-  <%= f.input :email %>
-  <%= f.input :name %>
-  <%= f.input :time_zone, as: :select, collection: options_for_timezone_select, include_blank: false %>
-  <hr>
-  <%= 
-    f.input :account_role, 
-      collection: lookup_account_roles, 
-      include_blank: false
-  %>
-  <hr> 
-  <%= f.input :created_at, as: :string, readonly: true %>
-  <%= f.input :updated_at, as: :string, readonly: true %>
-  <%= f.input :last_sign_in_at, as: :string, readonly: true %>
-  <%= render_form_button(f) %>
-<% end %>
+<div class="mx-auto max-w-6xl">
+  <%= form_for(user, html: { role: 'form' }) do |form| %>
+    <%= render 'form_header', record: user %>
+    <%= render 'form_body' do %>
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Overview', subtitle: 'General settings this user.' %>
+        <%= render 'section_body' do %>
+          <div class="sm:col-span-4">
+            <%= form.label :name %>
+            <div class="mt-2">
+              <%=
+                form.text_field(
+                  :name,
+                  placeholder: 'User name',
+                  autofocus: true,
+                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6",
+                  required: true
+                )
+              %>
+            </div>
+          </div>
+
+          <div class="sm:col-span-4">
+            <%= form.label :email, 'Email (read only)' %>
+            <div class="mt-2">
+              <%= form.text_field :email, disabled: true, read_only: true %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Other Settings', subtitle: 'Select a category for the stakeholder.' %>
+        <%= render 'section_body' do %>
+          <div class="sm:col-span-4">
+            <%= form.label :time_zone %>
+            <div class="mt-2">
+              <%= form.select :time_zone, options_for_timezone_select %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Role', subtitle: 'Access levels for this user.' %>
+        <%= render 'section_body' do %>
+          <%- if policy(User).invite_with_system_role? %>
+            <div class="sm:col-span-4">
+              <%= form.label :system_role %>
+              <div class="mt-2">
+                <%= form.select :system_role, options_for_select(User.system_roles.keys.map { |key| [key.capitalize, key]}, User.system_roles.keys.first) %>
+              </div>
+            </div>
+          <%- end %>
+
+          <div class="sm:col-span-4">
+            <%= form.label :account_role %>
+            <div class="mt-2">
+              <%= form.select :account_role, options_for_select(AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, AccountsUser.account_roles.keys.first) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <%= render 'form_buttons', form:, cancel_path: user.persisted? ? user_path(user) : users_path %>
+    <% end %>
+  <% end %>
+</div>
 

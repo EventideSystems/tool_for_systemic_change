@@ -129,6 +129,20 @@
       </div>
     </div>
 
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div>
+        <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">Notes</h3>
+        <p class="mt-1 text-sm/6 text-gray-600 text-right">Any additional details (optional).</p>
+      </div>
+
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+        <div class="sm:col-span-3">
+          <%= form.label :notes %>
+          <div class="mt-2">
+            <%= form.text_area :notes %>
+          </div>
+        </div>
+
     <div class="mt-6 flex items-center justify-end gap-x-6">
       <%- if @initiative.persisted? %>
         <%= link_to 'Cancel', initiative_path(@initiative), class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>

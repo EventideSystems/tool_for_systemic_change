@@ -5,12 +5,12 @@
   />
   <div class="flex items-center justify-between">
     <div class="flex gap-6 py-6">
-      <%= render partial: 'resource_summary', locals: { name: user.name, background_color: 'bg-green-700' } %>
+      <%= render partial: 'resource_summary', locals: { name: user.display_name, background_color: 'bg-green-700' } %>
       <div class="space-y-1.5">
         <div class="text-base/6 font-semibold dark:text-white">
-          <%= link_to highlight(user.name, params.dig(:q, :name_or_email_cont)), user_path(user), data: { turbo: false } %>
+          <%= link_to highlight(user.display_name, params.dig(:q, :name_or_email_cont)), user_path(user), data: { turbo: false } %>
         </div>
-        <div class="text-xs/6 text-zinc-500">
+        <div class="text-xs/6 text-zinc-500 dark:text-zinc-100">
           <%= highlight(user.email, params.dig(:q, :name_or_email_cont)) %>
         </div>
         <%= role_in_current_account_badge(user) %>
@@ -37,7 +37,23 @@
           <%- if policy(user).impersonate? %>
             <%=
               dropdown_menu_item do
-                button_to "Impersonate", impersonate_system_user_path(user), class: "block w-full text-sm", data: { turbo: false }
+                button_to "Impersonate", impersonate_user_path(user), class: "block w-full text-sm", data: { turbo: false }
+              end
+            %>
+          <%- end %>
+
+          <%- if user.status == 'deleted' && policy(user).undelete? %>
+            <%=
+              dropdown_menu_item do
+                button_to "Undelete", undelete_user_path(user), class: "block w-full text-sm", data: { turbo: false }
+              end
+            %>
+          <%- end %>
+
+          <%- if user.status == 'invitation-pending' && policy(user).resend_invitation? %>
+            <%=
+              dropdown_menu_item do
+                link_to "Resend invitation", resend_invitation_user_path(user), class: "block w-full text-sm", data: { turbo: false }
               end
             %>
           <%- end %>

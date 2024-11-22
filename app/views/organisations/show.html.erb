@@ -11,7 +11,9 @@
             <div class="text-base/6 font-semibold dark:text-white">
               <%= @organisation.name %>
             </div>
-
+            <div class="text-xs/6 text-zinc-500 min-h-4">
+              <%= @organisation.description %>
+            </div>
             <%- if @organisation.stakeholder_type.present? %>
               <div class="flex space-x-4">
                 <%= render 'label_badge', label: @organisation.stakeholder_type %>
@@ -26,20 +28,17 @@
         </div>
       </div>
     </div>
-    <div class="mx-auto max-w-6xl w-full">
-      <div class="mt-1 border-t border-gray-100">
-        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
-          <div class="flex items-center space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Description</dt>
-            <dd class="text-sm/6 text-gray-700"><%= @organisation.description %></dd>
-          </div>
-          <div class="flex items-center space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Website</dt>
-            <dd class="text-sm/6 text-gray-700"><%= link_to_external_url(@organisation.weblink) %></dd>
-          </div>
-          <!-- Add more attributes here as needed -->
-        </dl>
-      </div>
-    </div>
   </div>
+  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+  <%= render 'section' do %>
+    <%= render 'section_header', title: 'Contact Details' %>
+      <%= render 'section_body' do %>
+      <div class="sm:col-span-4">
+        <%= label_tag :weblink %>
+        <div class="mt-2">
+          <%= link_to_external_url(@organisation.weblink) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>

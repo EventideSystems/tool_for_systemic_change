@@ -1,15 +1,10 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_for(@organisation, html: { class: 'mx-auto max-w-6xl', role: 'form' }) do |form| %>
-    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= @organisation.persisted? ? @organisation.name : 'New Stakeholder' %></h1>
-    <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-    <div class="space-y-12">
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Overview</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">General settings this stakeholder.</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+  <%= form_for(@organisation, html: { role: 'form' }) do |form| %>
+    <%= render 'form_header', record: @organisation %>
+    <%= render 'form_body' do %>
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Overview', subtitle: 'General settings this stakeholder.' %>
+        <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :name %>
             <div class="mt-2">
@@ -32,32 +27,24 @@
             </div>
             <p class="mt-3 text-sm/6 text-gray-600">A brief description of the stakeholder (optional).</p>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Stakeholder Type</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">Select a category for the stakeholder.</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Stakeholder Type', subtitle: 'Select a category for the stakeholder.' %>
+        <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :stakeholder_type_id %>
             <div class="mt-2">
               <%= form.collection_select :stakeholder_type_id, current_account.stakeholder_types.order(:name), :id, :name, {}%>
             </div>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Contact details</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">(optional)</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Contact details', subtitle: '(optional)' %>
+         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :weblink %>
             <div class="mt-2">
@@ -71,16 +58,9 @@
               %>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="mt-6 flex items-center justify-end gap-x-6">
-        <%- if @organisation.persisted? %>
-          <%= link_to 'Cancel', organisation_path(@organisation), class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
-        <% else %>
-          <%= link_to 'Cancel', organisations_path, class: "text-sm/6 font-semibold text-gray-900 dark:text-white" %>
         <% end %>
-        <%= form.submit 'Save' %>
-      </div>
-    </div>
+      <% end %>
+      <%= render 'form_buttons', form:, cancel_path: @organisation.persisted? ? organisation_path(@organisation) : organisations_path %>
+    <% end %>
   <% end %>
 </div>

@@ -13,13 +13,13 @@ class InvitationsController < Devise::InvitationsController
     if user
       if current_account.users.include?(user)
         redirect_to users_path, alert: "A user with the email '#{user.email}' is already a member of this account."
-      elsif max_users_reached?
+      elsif current_account.max_users_reached?
         redirect_to users_path, alert: 'You have reached the maximum number of users for this account.'
       else
         AccountsUser.create!(user: user, account: current_account, account_role: account_role)
         redirect_to users_path, notice: 'User was successfully invited.'
       end
-    elsif max_users_reached?
+    elsif current_account.max_users_reached?
       redirect_to users_path, alert: 'You have reached the maximum number of users for this account.'
     else
       super do |resource|
@@ -34,13 +34,5 @@ class InvitationsController < Devise::InvitationsController
     self.resource = resource_class.new
     authorize resource
     render :new
-  end
-
-  private
-
-  def max_users_reached?
-    return false if current_account.max_users.zero? || current_account.max_users.blank?
-
-    current_account.users.count >= current_account.max_users
   end
 end

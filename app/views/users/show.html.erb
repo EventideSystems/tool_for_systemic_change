@@ -5,10 +5,13 @@
 
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
-          <%= render partial: 'resource_summary', locals: { name: @user.name, background_color: 'bg-green-700' } %>
+          <%= render partial: 'resource_summary', locals: { name: @user.display_name, background_color: 'bg-green-700' } %>
           <div class="space-y-1.5">
             <div class="text-base/6 font-semibold dark:text-white">
-              <%= @user.name %>
+              <%= @user.display_name %>
+            </div>
+            <div class="text-xs/6 text-zinc-500 dark:text-zinc-100">
+              <%= @user.email %>
             </div>
             <div class="flex space-x-4">
               <%= role_in_current_account_badge(@user) %>
@@ -22,21 +25,17 @@
         </div>
       </div>
     </div>
-
-    <div class="mx-auto max-w-6xl w-full">
-      <div class="mt-1 border-t border-gray-100">
-        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
-          <div class="flex items-center space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Email</dt>
-            <dd class="text-sm/6 text-gray-700"><%= @user.email %></dd>
-          </div>
-          <div class="flex items-center space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-32">Time zone</dt>
-            <dd class="text-sm/6 text-gray-700"><%= @user.time_zone %></dd>
-          </div>
-          <!-- Add more attributes here as needed -->
-        </dl>
-      </div>
-    </div>
   </div>
+  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+  <%= render 'section' do %>
+    <%= render 'section_header', title: 'Settings' %>
+      <%= render 'section_body' do %>
+      <div class="sm:col-span-4">
+        <%= label_tag :time_zone %>
+        <div class="mt-2">
+          <%= display_time_zone(@user.time_zone) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
 </div>

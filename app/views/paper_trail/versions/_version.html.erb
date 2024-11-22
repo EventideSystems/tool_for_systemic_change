@@ -1,0 +1,6 @@
+<tr>
+  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-black dark:text-white sm:pl-0"><%= version.created_at %></td>
+  <td class="whitespace-nowrap px-3 py-4 text-sm text-zinc-900 dark:text-gray-300"><%= version_item_type_name(version.item_type) %></td>
+  <td class="whitespace-nowrap px-3 py-4 text-sm text-zinc-900 dark:text-gray-300"><%= version_event_past_tense(version.event) %></td>
+  <td class="whitespace-nowrap px-3 py-4 text-sm text-zinc-900 dark:text-gray-300"><%= version_whodunnit_name(version.whodunnit) %></td>
+</tr>

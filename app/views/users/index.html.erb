@@ -11,7 +11,7 @@
     </div>
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
-        <%= render partial: 'users/user', collection:  @users %>
+        <%= render @users %>
         <%= render partial: 'pagination' %>
       <% end %>
     </ul>

@@ -13,7 +13,7 @@
     </div>
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
-        <%= render partial: 'impact_cards/impact_card', collection:  @impact_cards %>
+        <%= render @impact_cards %>
         <%= render partial: 'pagination' %>
       <% end %>
     </ul>

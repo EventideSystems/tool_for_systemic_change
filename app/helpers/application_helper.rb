@@ -30,11 +30,11 @@ module ApplicationHelper
     content_tag :h1, title, class: 'text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white'
   end
 
-  def form_header(resource)
-    content_tag(:h3) do
-      "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"
-    end
-  end
+  # def form_header(resource)
+  #   content_tag(:h3) do
+  #     "#{form_title_lead(resource)}#{resource.class.model_name.human.titleize}"
+  #   end
+  # end
 
   # SMELL: Defer to CSS for this in future
   def truncate_text(text, length = 50)

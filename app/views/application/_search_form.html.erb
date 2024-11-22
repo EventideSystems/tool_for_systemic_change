@@ -1,5 +1,6 @@
 <div>
   <%= search_form_for record, { data: { turbo_frame: :list } }.merge(defined?(options) ? options : {}) do |f| %>
+    <%= f.label (local_assigns[:search_field].present? ? search_field : :name_or_description_cont), 'Search', class: 'sr-only text-black dark:text-white'  %>
     <%=
       f.search_field(
         (local_assigns[:search_field].present? ? search_field : :name_or_description_cont),

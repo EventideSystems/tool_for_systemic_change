@@ -77,6 +77,12 @@ class Account < ApplicationRecord
     max_users - accounts_users.count
   end
 
+  def max_users_reached?
+    return false if max_users.zero? || max_users.blank?
+
+    users.count >= max_users
+  end
+
   def scorecard_types
     @scorecard_types ||=
       [].tap do |types|

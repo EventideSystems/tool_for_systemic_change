@@ -117,7 +117,11 @@ Rails.application.routes.draw do
   resources :users do
     post :stop_impersonating, on: :collection
 
+    post :impersonate, on: :member
+
     member do
+      get 'undelete'
+      get 'resend_invitation'
       get 'remove_from_account'
     end
   end
@@ -151,14 +155,6 @@ Rails.application.routes.draw do
 
   namespace :system do
     resources :stakeholder_types
-    resources :users do
-      post :impersonate, on: :member
-
-      member do
-        get 'undelete'
-        get 'resend_invitation'
-      end
-    end
   end
 
   root to: 'home#index'

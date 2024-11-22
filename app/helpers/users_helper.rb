@@ -28,7 +28,7 @@ module UsersHelper
   def display_time_zone(time_zone)
     return '' if time_zone.blank?
 
-    time_zone + ' ' + ActiveSupport::TimeZone[time_zone].formatted_offset
+    "#{time_zone} #{ActiveSupport::TimeZone[time_zone].formatted_offset}"
   end
 
   private

@@ -1,6 +1,6 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_for(@organisation, html: { role: 'form' }) do |form| %>
-    <%= render 'form_header', record: @organisation %>
+  <%= form_for(organisation, html: { role: 'form' }) do |form| %>
+    <%= render 'form_header', record: organisation %>
     <%= render 'form_body' do %>
       <%= render 'section' do %>
         <%= render 'section_header', title: 'Overview', subtitle: 'General settings this stakeholder.' %>
@@ -60,7 +60,7 @@
           </div>
         <% end %>
       <% end %>
-      <%= render 'form_buttons', form:, cancel_path: @organisation.persisted? ? organisation_path(@organisation) : organisations_path %>
+      <%= render 'form_buttons', form:, cancel_path: organisation.persisted? ? organisation_path(organisation) : organisations_path %>
     <% end %>
   <% end %>
 </div>

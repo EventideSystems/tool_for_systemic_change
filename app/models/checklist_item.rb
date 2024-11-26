@@ -38,7 +38,7 @@ class ChecklistItem < ApplicationRecord
   belongs_to :initiative
   belongs_to :characteristic
 
-  has_many :checklist_item_comments
+  has_many :checklist_item_comments # TODO: deprecated, remove this
 
   has_many :checklist_item_changes, dependent: :destroy
 

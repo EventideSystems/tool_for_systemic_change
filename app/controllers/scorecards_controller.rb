@@ -166,9 +166,13 @@ class ScorecardsController < ApplicationController
 
   def copy
     new_name = params[:new_name]
-    deep_copy = params[:copy] == 'deep'
 
-    @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
+    if params[:copy] == 'deep'
+      @copied_scorecard = ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
+    else
+      @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
+    end
+
     if @copied_scorecard.present?
       redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
     else

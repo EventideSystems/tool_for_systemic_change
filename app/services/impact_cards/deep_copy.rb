@@ -57,8 +57,12 @@ module ImpactCards
       end
     end
 
+    # NOTE: We are using Initiative.where(scorecard: source_impact_card) to as the source of the initiatives to copy as
+    # source_impact_card.initiatives will return the list ordered by name, which is not guaranteed to be the order in
+    # which they appear in the grid. We need to maintain the order of the initiatives in the grid, otherwise we may
+    # confuse users.
     def copy_initiatives(source_impact_card, target_impact_card)
-      source_impact_card.initiatives.each do |initiative|
+      Initiative.where(scorecard: source_impact_card).each do |initiative|
         initiative.dup.tap do |new_initiative|
           new_initiative.scorecard = target_impact_card
           new_initiative.subsystem_tags = target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name))

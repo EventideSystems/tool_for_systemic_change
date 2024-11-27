@@ -65,38 +65,41 @@ class Initiative < ApplicationRecord
   delegate :name, to: :scorecard, prefix: true
   delegate :name, to: :linked_initiative, prefix: true, allow_nil: true
 
-  scope :incomplete, lambda {
-    joins(:checklist_items)
-      .where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
-  }
+  scope :incomplete,
+        lambda {
+          joins(:checklist_items).where('checklist_items.checked is NULL or checklist_items.checked = false').distinct
+        }
 
-  scope :archived, lambda {
-    where.not(archived_on: nil).where('archived_on <= ?', Time.zone.now)
-  }
+  scope :archived,
+        lambda {
+          where.not(archived_on: nil).where('archived_on <= ?', Time.zone.now)
+        }
 
-  scope :not_archived, lambda {
-    where(archived_on: nil).or(where('archived_on > ?', Time.zone.now))
-  }
+  scope :not_archived,
+        lambda {
+          where(archived_on: nil).or(where('archived_on > ?', Time.zone.now))
+        }
 
   # SMELL Lazy way
-  scope :complete, lambda {
-    where.not(id: Initiative.incomplete.pluck(:id))
-  }
+  scope :complete,
+        lambda {
+          where.not(id: Initiative.incomplete.pluck(:id))
+        }
 
   scope :overdue, lambda {
     finished_at = Initiative.arel_table[:finished_at]
     incomplete.where(finished_at.lt(Time.zone.today)).where(dates_confirmed: true)
   }
 
-  scope :transition_cards, lambda {
-    joins(:scorecard)
-      .where('scorecards.type': 'TransitionCard')
-  }
+  scope :transition_cards,
+        lambda {
+          joins(:scorecard).where('scorecards.type': 'TransitionCard')
+        }
 
-  scope :sdgs_alignment_cards, lambda {
-    joins(:scorecard)
-      .where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
-  }
+  scope :sdgs_alignment_cards,
+        lambda {
+          joins(:scorecard).where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
+        }
 
   def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     checklist_items = ChecklistItem
@@ -104,10 +107,12 @@ class Initiative < ApplicationRecord
                         :initiative,
                         characteristic: [
                           :video_tutorial,
-                          { focus_area: [
-                            :video_tutorial,
-                            { focus_area_group: :video_tutorial }
-                          ] }
+                          {
+                            focus_area: [
+                              :video_tutorial,
+                              { focus_area_group: :video_tutorial }
+                            ]
+                          }
                         ]
                       ).where(
                         'checklist_items.initiative_id' => id,
@@ -119,15 +124,17 @@ class Initiative < ApplicationRecord
                       ).all
 
     if focus_areas.present?
-      checklist_items = checklist_items.select do |checklist_item|
-        checklist_item.focus_area.id.in?(focus_areas.map(&:id))
-      end
+      checklist_items =
+        checklist_items.select do |checklist_item|
+          checklist_item.focus_area.id.in?(focus_areas.map(&:id))
+        end
     end
 
     if selected_date.present?
-      checklist_items = checklist_items.map do |checklist_item|
-        checklist_item.snapshot_at(selected_date.end_of_day)
-      end
+      checklist_items =
+        checklist_items.map do |checklist_item|
+          checklist_item.snapshot_at(selected_date.end_of_day)
+        end
     end
 
     checklist_items
@@ -141,7 +148,7 @@ class Initiative < ApplicationRecord
     return nil unless linked?
     return nil if scorecard.linked_scorecard.blank?
 
-    scorecard.linked_scorecard.initiatives.find_by(name: name)
+    scorecard.linked_scorecard.initiatives.find_by(name:)
   end
 
   def wicked_problem_name
@@ -151,7 +158,7 @@ class Initiative < ApplicationRecord
   def copy
     copied = dup
     organisations.each do |organisation|
-      copied.initiatives_organisations.build(organisation: organisation)
+      copied.initiatives_organisations.build(organisation:)
     end
     copied.save!
 
@@ -172,7 +179,7 @@ class Initiative < ApplicationRecord
       missing_characteristic_ids.map do |characteristic_id|
         {
           initiative_id: id,
-          characteristic_id: characteristic_id,
+          characteristic_id:,
           created_at: Time.zone.now,
           updated_at: Time.zone.now
         }
@@ -180,88 +187,7 @@ class Initiative < ApplicationRecord
     )
   end
 
-  # TODO: Move to a service object
-  def deep_copy # rubocop:disable Metrics/MethodLength
-    copied = dup
-    organisations.each do |organisation|
-      copied.initiatives_organisations.build(organisation: organisation)
-    end
-
-    copied.save!
-    copied.checklist_items.delete_all
-
-    query = "
-    INSERT INTO checklist_items (
-        user_id,
-        status,
-        checked,
-        comment,
-        characteristic_id,
-        initiative_id,
-        created_at,
-        updated_at
-      )
-      SELECT user_id, status, checked, comment, characteristic_id, '#{copied.id}', created_at, updated_at
-      FROM checklist_items
-      WHERE initiative_id = #{id}
-    RETURNING *;
-    "
-    ActiveRecord::Base.connection.execute(query)
-
-    deep_copy_paper_trail_records(copied)
-
-    copied.reload
-  end
-
   private
-
-  # TODO: Move to a service object
-  def deep_copy_paper_trail_records(copied) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    PaperTrail::Version.where(
-      item_type: 'Initiative',
-      item_id: copied.id
-    ).delete_all
-
-    # SMELL Not sure what's going on here, but original_initiative_versions
-    # is not being used anywhere.
-
-    # original_initiative_versions = PaperTrail::Version.where(
-    #   item_type: 'Initiative',
-    #   item_id: id
-    # )
-
-    query = "
-    INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)
-      SELECT item_type, '#{copied.id}', event, whodunnit, object, created_at
-      FROM versions
-      WHERE item_type = 'Initiative' AND item_id = #{id}
-    RETURNING *;
-    "
-    ActiveRecord::Base.connection.execute(query)
-
-    PaperTrail::Version.where(
-      item_type: 'ChecklistItem',
-      item_id: copied.checklist_items.map(&:id)
-    ).delete_all
-
-    original_checklist_item_versions = PaperTrail::Version.where(
-      item_type: 'ChecklistItem',
-      item_id: checklist_items.map(&:id)
-    )
-
-    original_checklist_item_versions.each do |version|
-      copied_version = version.dup
-
-      item_id = ChecklistItem.where(
-        initiative_id: copied.id,
-        characteristic_id: version.item.characteristic.id
-      ).first.id
-
-      copied_version.item_id = item_id
-      copied_version.created_at = version.created_at
-      copied_version.save!
-    end
-  end
 
   def validate_finished_at_not_earlier_than_started_at
     errors.add(:finished_at, "can't be earlier than started at date") unless finished_at_not_earlier_than_started_at

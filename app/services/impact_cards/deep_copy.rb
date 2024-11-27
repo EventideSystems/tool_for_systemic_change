@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module ImpactCards
+  # rubocop:disable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength
   class DeepCopy
     attr_accessor :impact_card, :new_name, :target_account
 
@@ -34,17 +37,17 @@ module ImpactCards
     def assert_valid_target_account!
       return if target_account == impact_card.account
 
-      impact_card.account.focus_area_groups.where(scorecard_type: impact_card.type).each do |focus_area_group|
+      impact_card.account.focus_area_groups.where(scorecard_type: impact_card.type).find_each do |focus_area_group|
         target_group = find_target_focus_area_group(focus_area_group.name, impact_card.type)
 
-        unless target_group.present?
+        if target_group.blank?
           raise(ArgumentError, "Missing focus area group '#{focus_area_group.name}' in target account")
         end
 
         focus_area_group.focus_areas.each do |focus_area|
           target_area = target_group.focus_areas.find_by(name: focus_area.name)
 
-          raise(ArgumentError, "Missing focus area '#{focus_area.name}' in target account") unless target_area.present?
+          raise(ArgumentError, "Missing focus area '#{focus_area.name}' in target account") if target_area.blank?
 
           focus_area.characteristics.each do |characteristic|
             target_characteristic = target_area.characteristics.find_by(name: characteristic.name)
@@ -62,10 +65,10 @@ module ImpactCards
     # which they appear in the grid. We need to maintain the order of the initiatives in the grid, otherwise we may
     # confuse users.
     def copy_initiatives(source_impact_card, target_impact_card)
-      Initiative.where(scorecard: source_impact_card).each do |initiative|
+      Initiative.where(scorecard: source_impact_card).find_each do |initiative|
         initiative.dup.tap do |new_initiative|
           new_initiative.scorecard = target_impact_card
-          new_initiative.subsystem_tags = target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name))
+          new_initiative.subsystem_tags = target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name)) # rubocop:disable Layout/LineLength
           new_initiative.organisations = target_account.organisations.where(name: initiative.organisations.pluck(:name))
           new_initiative.save!
           new_initiative.reload
@@ -144,4 +147,5 @@ module ImpactCards
       target_account.focus_area_groups.find_by(name:, scorecard_type:)
     end
   end
+  # rubocop:enable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength
 end

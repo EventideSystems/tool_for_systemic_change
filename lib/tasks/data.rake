@@ -3,7 +3,7 @@
 namespace :data do
   namespace :migrate do
     desc 'Reset data migrations in current branch down to master'
-    task :down_to_master do
+    task down_to_master: :environment do
       `git diff master | grep  '+++ b/db/data/\d*'`
         .split("\n")
         .map { |line| line.split('/').last.split('_').first }

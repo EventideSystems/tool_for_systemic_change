@@ -5,7 +5,7 @@ namespace :impact_cards do
   task deep_copy: :environment do
     puts 'Deep copying impact card...'
 
-    if ENV['IMPACT_CARD_ID'].nil? # rubocop:disable Style/MissingElse
+    if ENV['IMPACT_CARD_ID'].nil?
       puts 'IMPACT_CARD_ID is required'
       puts 'Usage: rake impact_cards:deep_copy IMPACT_CARD_ID=1 [NEW_NAME="New name"] [TARGET_ACCOUNT_ID=1]'
       exit(1)
@@ -13,7 +13,7 @@ namespace :impact_cards do
 
     impact_card = Scorecard.find(ENV.fetch('IMPACT_CARD_ID', nil))
 
-    if impact_card.nil? # rubocop:disable Style/MissingElse
+    if impact_card.nil?
       puts "Impact card not found: #{ENV.fetch('IMPACT_CARD_ID', nil)}"
       exit(1)
     end

@@ -186,14 +186,14 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  def copy
+  def copy # rubocop:disable Metrics/MethodLength
     new_name = params[:new_name]
 
-    if params[:copy] == 'deep'
-      @copied_scorecard = ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
-    else
-      @copied_scorecard = ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
-    end
+    @copied_scorecard = if params[:copy] == 'deep'
+                          ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
+                        else
+                          ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
+                        end
 
     if @copied_scorecard.present?
       redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")

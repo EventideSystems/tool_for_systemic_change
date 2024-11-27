@@ -8,7 +8,7 @@ namespace :accounts do
 
   desc 'List accounts'
   task list: :environment do
-    Account.all.each do |account|
+    Account.all.find_each do |account|
       puts "#{account.id}: #{account.name}"
     end
   end

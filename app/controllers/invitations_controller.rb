@@ -5,8 +5,8 @@ class InvitationsController < Devise::InvitationsController
   layout 'application', only: [:new] # NOTE: Defaults to 'devise' layout for other actions
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
-    params[:user].delete(:system_role) unless policy(User).invite_with_system_role?
-    account_role = params[:user].delete(:account_role)
+    params[:user].delete(:initial_system_role) unless policy(User).invite_with_system_role?
+    account_role = params[:user].delete(:initial_account_role)
 
     user = User.find_by(email: params[:user][:email])
 

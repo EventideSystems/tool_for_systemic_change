@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:policy) { described_class }
   let(:account) { create(:account) }
-  let(:system_admin_user) { create(:admin_user) }
+  let(:system_admin_user) { create(:user, :system_admin) }
   let(:account_admin_user) { create(:user) }
   let(:account_member_user) { create(:user) }
   let(:scorecard) { create(:scorecard, account:) }
@@ -14,6 +14,7 @@ RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedH
   before do
     account.accounts_users.create(user: account_admin_user, account_role: :admin)
     account.accounts_users.create(user: account_member_user, account_role: :member)
+    system_admin_user.update!(system_role: :admin)
   end
 
   permissions '.scope' do
@@ -30,15 +31,15 @@ RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedH
 
   %i[show? update?].each do |action|
     permissions(action) do
-      it 'grants update if user is a system admin' do
+      it "grants #{action} if user is a system admin" do
         expect(policy).to(permit(UserContext.new(system_admin_user, account), ChecklistItem.new(initiative:)))
       end
 
-      it 'grants update if user is an account admin' do
+      it "grants #{action} if user is an account admin" do
         expect(policy).to(permit(UserContext.new(account_admin_user, account), ChecklistItem.new(initiative:)))
       end
 
-      it 'grants update if user is an account member' do
+      it "grants #{action} if user is an account member" do
         expect(policy).to(permit(UserContext.new(account_member_user, account), ChecklistItem.new(initiative:)))
       end
     end

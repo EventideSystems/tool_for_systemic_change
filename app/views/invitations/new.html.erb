@@ -17,14 +17,14 @@
 
     <%- if policy(User).invite_with_system_role? %>
       <div>
-        <%= f.label :system_role %>
-        <%= f.select :system_role, options_for_select(User.system_roles.keys.map { |key| [key.capitalize, key]}, User.system_roles.keys.first) %>
+        <%= f.label :initial_system_role %>
+        <%= f.select :initial_system_role, options_for_select(User.system_roles.keys.map { |key| [key.capitalize, key]}, User.system_roles.keys.first) %>
       </div>
     <%- end %>
 
     <div>
-      <%= f.label :account_role %>
-      <%= f.select :account_role, options_for_select(AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, AccountsUser.account_roles.keys.first) %>
+      <%= f.label :initial_account_role %>
+      <%= f.select :initial_account_role, options_for_select(AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, AccountsUser.account_roles.keys.first) %>
     </div>
 
     <div>

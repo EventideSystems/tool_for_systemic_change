@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ImpactCards::DeepCopy, type: :service do
+RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:account) { create(:account) }
   let(:target_account) { create(:account) }
   let(:impact_card) { create(:scorecard, account: account, type: 'TransitionCard') }
@@ -85,25 +85,26 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do
       initiative.organisations << stakeholders[0..3]
       initiative.save!
     end
-
   end
 
-  describe '.call' do
-    subject { described_class.call(impact_card: impact_card, new_name: new_name, target_account: target_account) }
+  describe '.call' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    let(:execute_call) do
+      described_class.call(impact_card: impact_card, new_name: new_name, target_account: target_account)
+    end
 
-    it 'creates a new impact card with the specified name' do
-      expect { subject }.to change { Scorecard.count }.by(1)
+    it 'creates a new impact card with the specified name' do # rubocop:disable RSpec/MultipleExpectations
+      expect { execute_call }.to change(Scorecard, :count).by(1)
       new_impact_card = Scorecard.last
       expect(new_impact_card.name).to eq(new_name)
       expect(new_impact_card.account).to eq(target_account)
     end
 
     it 'copies subsystem tags to the target account' do
-      expect { subject }.to change { target_account.subsystem_tags.count }.by(3)
+      expect { execute_call }.to change { target_account.subsystem_tags.count }.by(3)
     end
 
-    it 'copies subsystem tags to the new impact card' do
-      subject
+    it 'copies subsystem tags to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      execute_call
       new_impact_card = Scorecard.last
       expect(new_impact_card.subsystem_tags.count).to eq(impact_card.subsystem_tags.count)
       new_impact_card.subsystem_tags.each do |new_subsystem_tag|
@@ -112,15 +113,15 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do
     end
 
     it 'copies stakeholder types to the target account' do
-      expect { subject }.to change { target_account.stakeholder_types.count }.by(4)
+      expect { execute_call }.to change { target_account.stakeholder_types.count }.by(4)
     end
 
     it 'copies stakeholders to the target account' do
-      expect { subject }.to change { target_account.organisations.count }.by(4)
+      expect { execute_call }.to change { target_account.organisations.count }.by(4)
     end
 
-    it 'copies stakeholders to the new impact card' do
-      subject
+    it 'copies stakeholders to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      execute_call
       new_impact_card = Scorecard.last
       expect(new_impact_card.organisations.count).to eq(impact_card.organisations.count)
       new_impact_card.organisations.each do |new_stakeholder|
@@ -128,8 +129,8 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do
       end
     end
 
-    it 'copies initiatives to the new impact card' do
-      subject
+    it 'copies initiatives to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      execute_call
       new_impact_card = Scorecard.last
       expect(new_impact_card.initiatives.count).to eq(impact_card.initiatives.count)
       new_impact_card.initiatives.each do |new_initiative|
@@ -137,8 +138,8 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do
       end
     end
 
-    describe 'checklist items' do
-      let(:source_checklist_item) {  initiatives.first.checklist_items.first }
+    describe 'checklist items' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:source_checklist_item) { initiatives.first.checklist_items.first }
       let(:target_checklist_item) do
         new_impact_card
           .initiatives
@@ -149,16 +150,16 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do
       let(:first_change) { target_checklist_item.checklist_item_changes.first }
       let(:second_change) { target_checklist_item.checklist_item_changes.second }
 
-      it 'copies checklist item status and comments to the new impact card' do
-        subject
+      it 'copies checklist item status and comments to the new impact card' do # rubocop:disable RSpec/MultipleExpectations
+        execute_call
 
         expect(target_checklist_item.status).to eq('actual')
         expect(target_checklist_item.comment).to eq('This is the updated comment')
         expect(target_checklist_item.updated_at).to eq(source_checklist_item.updated_at)
       end
 
-      it 'copies checklist item changes to the new impact card' do
-        subject
+      it 'copies checklist item changes to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+        execute_call
 
         expect(target_checklist_item.checklist_item_changes.count).to eq(2)
 

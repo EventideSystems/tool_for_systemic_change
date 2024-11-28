@@ -104,7 +104,7 @@ module Reports
 
     def add_title(sheet, styles)
       sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem.name])
+      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'MISSING DATA'])
       sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
     end
 

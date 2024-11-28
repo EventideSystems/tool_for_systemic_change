@@ -88,10 +88,11 @@ module ImpactCards
                 item.characteristic.name == checklist_item.characteristic.name
               end
 
-            new_checklist_item.update!(
+            # SMELL: Relaxing validations here as there are cases where the checklist items are not valid (old data)
+            new_checklist_item.update_columns(
               status: checklist_item.status,
               comment: checklist_item.comment,
-              user: checklist_item.user,
+              user_id: checklist_item.user_id,
               created_at: checklist_item.created_at,
               updated_at: checklist_item.updated_at
             )

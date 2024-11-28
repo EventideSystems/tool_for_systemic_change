@@ -15,12 +15,16 @@ module ImpactCards
     def call
       assert_valid_target_account!
 
+      copy_wicked_problem
+      copy_community
       copy_subsystem_tags
       copy_stakeholders
 
       impact_card.dup.tap do |new_impact_card|
         new_impact_card.name = new_name
         new_impact_card.shared_link_id = impact_card.new_shared_link_id
+        new_impact_card.wicked_problem = target_account.wicked_problems.find_by(name: impact_card.wicked_problem&.name)
+        new_impact_card.community = target_account.communities.find_by(name: impact_card.community&.name)
         new_impact_card.account = target_account
         new_impact_card.save!
 
@@ -104,7 +108,7 @@ module ImpactCards
     end
 
     def copy_stakeholders
-      return true if target_account == impact_card.account
+      return if target_account == impact_card.account
 
       impact_card.organisations.uniq.each do |organisation|
         next if target_account.organisations.find_by(name: organisation.name)
@@ -120,12 +124,38 @@ module ImpactCards
     end
 
     def copy_subsystem_tags
-      return true if target_account == impact_card.account
+      return if target_account == impact_card.account
 
       impact_card.subsystem_tags.uniq.each do |tag|
         next if target_account.subsystem_tags.find_by(name: tag.name)
 
         target_account.subsystem_tags.create!(name: tag.name)
+      end
+    end
+
+    def copy_wicked_problem
+      return if target_account == impact_card.account
+
+      wicked_problem = impact_card.wicked_problem
+
+      return if target_account.wicked_problems.find_by(name: wicked_problem.name)
+
+      wicked_problem.dup.tap do |new_wicked_problem|
+        new_wicked_problem.account = target_account
+        new_wicked_problem.save!
+      end
+    end
+
+    def copy_community
+      return if target_account == impact_card.account
+
+      community = impact_card.community
+
+      return if target_account.communities.find_by(name: community.name)
+
+      community.dup.tap do |new_community|
+        new_community.account = target_account
+        new_community.save!
       end
     end
 

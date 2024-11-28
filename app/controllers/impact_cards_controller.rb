@@ -168,9 +168,9 @@ class ImpactCardsController < ApplicationController
 
     case @scorecard.class.name
     when 'TransitionCard'
-      redirect_to(transition_cards_path, notice: notice)
+      redirect_to(transition_cards_path, notice:)
     when 'SustainableDevelopmentGoalAlignmentCard'
-      redirect_to(sustainable_development_goal_alignment_cards_path, notice: notice)
+      redirect_to(sustainable_development_goal_alignment_cards_path, notice:)
     else
       raise("Unknown scorecard type: #{klass.name}")
     end
@@ -189,11 +189,12 @@ class ImpactCardsController < ApplicationController
   def copy # rubocop:disable Metrics/MethodLength
     new_name = params[:new_name]
 
-    @copied_scorecard = if params[:copy] == 'deep'
-                          ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
-                        else
-                          ScorecardCopier.new(@scorecard, new_name, deep_copy: deep_copy).perform
-                        end
+    @copied_scorecard =
+      if params[:copy] == 'deep'
+        ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
+      else
+        ScorecardCopier.new(@scorecard, new_name, deep_copy:).perform
+      end
 
     if @copied_scorecard.present?
       redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
@@ -203,7 +204,7 @@ class ImpactCardsController < ApplicationController
   end
 
   def merge_options
-    @other_scorecards = \
+    @other_scorecards =
       current_account.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
 
     render(layout: false)
@@ -211,7 +212,13 @@ class ImpactCardsController < ApplicationController
 
   def merge # rubocop:disable Metrics/MethodLength
     @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
-    @merged_scorecard = @scorecard.merge(@other_scorecard)
+
+    @merged_scorecard =
+      if params[:merge] == 'deep'
+        ImpactCards::DeepMerge.call(impact_card: @scorecard, other_impact_card: @other_scorecard)
+      else
+        @scorecard.merge(@other_scorecard)
+      end
 
     if @merged_scorecard.present?
       card_path =
@@ -275,7 +282,7 @@ class ImpactCardsController < ApplicationController
 
     all_names.map do |name|
       {
-        name: name,
+        name:,
         this_card: source_initiatives[name].present? ? 'Present' : 'Missing',
         linked_card: target_initiatives[name].present? ? 'Present' : 'Missing',
         action: calc_link_action(source_initiatives[name], target_initiatives[name]),

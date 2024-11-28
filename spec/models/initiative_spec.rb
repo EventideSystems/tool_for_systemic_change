@@ -35,7 +35,7 @@
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe Initiative, type: :model do
+RSpec.describe(Initiative, type: :model) do
   let(:user) { create(:user) }
 
   describe '#checklist_items_ordered_by_ordered_focus_area' do # rubocop:disable RSpec/MultipleMemoizedHelpers
@@ -45,17 +45,14 @@ RSpec.describe Initiative, type: :model do
     let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
 
     let!(:initiative) do
-      create(
-        :initiative,
-        organisations:
-        create_list(:organisation, 2, account: default_account, stakeholder_type: stakeholder_type)
-      )
+      create(:initiative, organisations: create_list(:organisation, 2, account: default_account, stakeholder_type:))
     end
 
     describe '.archived?' do # rubocop:disable RSpec/MultipleMemoizedHelpers
       context 'when archived_on is nil' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         it 'returns false' do
           expect(initiative).not_to be_archived
+          expect(initiative.archived?).to(be_falsy)
         end
       end
 
@@ -66,6 +63,7 @@ RSpec.describe Initiative, type: :model do
 
         it 'returns false' do
           expect(initiative).not_to be_archived
+          expect(initiative.archived?).to(be_falsy)
         end
       end
 
@@ -76,12 +74,13 @@ RSpec.describe Initiative, type: :model do
 
         it 'returns true' do
           expect(initiative).to be_archived
+          expect(initiative.archived?).to(be_truthy)
         end
       end
     end
 
     it 'checklist item count equals characteristic count' do
-      expect(initiative.checklist_items_ordered_by_ordered_focus_area.count).to be(2)
+      expect(initiative.checklist_items_ordered_by_ordered_focus_area.count).to(be(2))
     end
 
     context 'with selected_date' do # rubocop:disable RSpec/MultipleMemoizedHelpers
@@ -108,8 +107,8 @@ RSpec.describe Initiative, type: :model do
         it 'retrieves previous checklist item state if selected_date is before changes have occurred' do # rubocop:disable RSpec/MultipleExpectations
           checklist_items = initiative.checklist_items_ordered_by_ordered_focus_area(selected_date: Date.yesterday)
 
-          expect(checklist_items[0].status).to eq('no_comment')
-          expect(checklist_items[1].status).to eq('no_comment')
+          expect(checklist_items[0].status).to(eq('no_comment'))
+          expect(checklist_items[1].status).to(eq('no_comment'))
         end
 
         it 'retrieves updated checklist item state if selected_date is after changes have occurred' do # rubocop:disable RSpec/MultipleExpectations
@@ -117,8 +116,8 @@ RSpec.describe Initiative, type: :model do
             selected_date: Time.zone.today + 11
           )
 
-          expect(checklist_items[0].status).to eq('planned')
-          expect(checklist_items[1].status).to eq('actual')
+          expect(checklist_items[0].status).to(eq('planned'))
+          expect(checklist_items[1].status).to(eq('actual'))
         end
 
         it 'retrieves updated checklist item state if selected_date is after changes have re-occurred' do # rubocop:disable RSpec/MultipleExpectations
@@ -126,8 +125,8 @@ RSpec.describe Initiative, type: :model do
             selected_date: Time.zone.today + 21
           )
 
-          expect(checklist_items[0].status).to eq('planned')
-          expect(checklist_items[1].status).to eq('more_information')
+          expect(checklist_items[0].status).to(eq('planned'))
+          expect(checklist_items[1].status).to(eq('more_information'))
         end
       end
     end

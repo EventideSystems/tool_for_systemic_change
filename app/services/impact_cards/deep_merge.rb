@@ -145,12 +145,14 @@ module ImpactCards
     end
 
     def merge_stakeholders(initiative, other_initiative)
-      initiative.organisations << (other_initiative.organisations - initiative.organisations)
+      stakeholders = (other_initiative.organisations - initiative.organisations).uniq { |org| org.name.strip }
+      initiative.organisations << stakeholders
       initiative.save!
     end
 
     def merge_subsystem_tags(initiative, other_initiative)
-      initiative.subsystem_tags << (other_initiative.subsystem_tags - initiative.subsystem_tags)
+      subsystem_tags = (other_initiative.subsystem_tags - initiative.subsystem_tags).uniq { |tag| tag.name.strip }
+      initiative.subsystem_tags << subsystem_tags
       initiative.save!
     end
   end

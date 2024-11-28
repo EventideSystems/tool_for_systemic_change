@@ -18,20 +18,22 @@ module ImpactCards
     def call
       assert_valid_target_account!
 
-      copy_wicked_problem
-      copy_community
-      copy_subsystem_tags
-      copy_stakeholders
+      ActiveRecord::Base.transaction do
+        copy_wicked_problem
+        copy_community
+        copy_subsystem_tags
+        copy_stakeholders
 
-      impact_card.dup.tap do |new_impact_card|
-        new_impact_card.name = new_name
-        new_impact_card.shared_link_id = impact_card.new_shared_link_id
-        new_impact_card.wicked_problem = target_account.wicked_problems.find_by(name: impact_card.wicked_problem&.name)
-        new_impact_card.community = target_account.communities.find_by(name: impact_card.community&.name)
-        new_impact_card.account = target_account
-        new_impact_card.save!
+        impact_card.dup.tap do |new_impact_card|
+          new_impact_card.name = new_name
+          new_impact_card.shared_link_id = impact_card.new_shared_link_id
+          new_impact_card.wicked_problem = target_account.wicked_problems.find_by(name: impact_card.wicked_problem&.name)
+          new_impact_card.community = target_account.communities.find_by(name: impact_card.community&.name)
+          new_impact_card.account = target_account
+          new_impact_card.save!
 
-        copy_initiatives(impact_card, new_impact_card)
+          copy_initiatives(impact_card, new_impact_card)
+        end
       end
     end
 
@@ -72,8 +74,8 @@ module ImpactCards
       Initiative.where(scorecard: source_impact_card).find_each do |initiative|
         initiative.dup.tap do |new_initiative|
           new_initiative.scorecard = target_impact_card
-          new_initiative.subsystem_tags = target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name)) # rubocop:disable Layout/LineLength
-          new_initiative.organisations = target_account.organisations.where(name: initiative.organisations.pluck(:name))
+          new_initiative.subsystem_tags = fetch_subsystem_tags(initiative)
+          new_initiative.organisations = fetch_stakeholders(initiative)
           new_initiative.save!
           new_initiative.reload
 
@@ -114,11 +116,12 @@ module ImpactCards
       return if target_account == impact_card.account
 
       impact_card.organisations.uniq.each do |organisation|
-        next if target_account.organisations.find_by(name: organisation.name)
+        next if target_account.organisations.find_by(name: [organisation.name, organisation.name.strip])
 
         stakeholder_type = fetch_stakeholder_type(organisation.stakeholder_type)
 
         organisation.dup.tap do |new_organisation|
+          new_organisation.name = organisation.name.strip
           new_organisation.account = target_account
           new_organisation.stakeholder_type = stakeholder_type
           new_organisation.save!
@@ -130,9 +133,9 @@ module ImpactCards
       return if target_account == impact_card.account
 
       impact_card.subsystem_tags.uniq.each do |tag|
-        next if target_account.subsystem_tags.find_by(name: tag.name)
+        next if target_account.subsystem_tags.find_by(name: [tag.name, tag.name.strip])
 
-        target_account.subsystem_tags.create!(name: tag.name)
+        target_account.subsystem_tags.create!(name: tag.name.strip)
       end
     end
 
@@ -171,6 +174,14 @@ module ImpactCards
         new_stakeholder_type.account = target_account
         new_stakeholder_type.save!
       end
+    end
+
+    def fetch_stakeholders(initiative)
+      target_account.organisations.where(name: initiative.organisations.pluck(:name).map(&:strip))
+    end
+
+    def fetch_subsystem_tags(initiative)
+      target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name).map(&:strip))
     end
 
     def find_target_focus_area_group(name, scorecard_type)

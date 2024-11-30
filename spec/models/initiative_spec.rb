@@ -52,7 +52,6 @@ RSpec.describe(Initiative, type: :model) do
       context 'when archived_on is nil' do # rubocop:disable RSpec/MultipleMemoizedHelpers,RSpec/NestedGroups
         it 'returns false' do
           expect(initiative).not_to be_archived
-          expect(initiative.archived?).to(be_falsy)
         end
       end
 
@@ -63,7 +62,6 @@ RSpec.describe(Initiative, type: :model) do
 
         it 'returns false' do
           expect(initiative).not_to be_archived
-          expect(initiative.archived?).to(be_falsy)
         end
       end
 
@@ -74,7 +72,6 @@ RSpec.describe(Initiative, type: :model) do
 
         it 'returns true' do
           expect(initiative).to be_archived
-          expect(initiative.archived?).to(be_truthy)
         end
       end
     end

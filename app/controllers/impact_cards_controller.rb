@@ -210,29 +210,17 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  def merge # rubocop:disable Metrics/MethodLength
+  def merge
     @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
+    authorize(@other_scorecard, policy_class: ScorecardPolicy).merge?
 
-    @merged_scorecard =
-      if params[:merge] == 'deep'
-        ImpactCards::DeepMerge.call(impact_card: @scorecard, other_impact_card: @other_scorecard)
-      else
-        @scorecard.merge(@other_scorecard)
-      end
+    notice = if merge_cards(@scorecard, @other_scorecard, deep: params[:merge] == 'deep')
+               'Cards were successfully merged.'
+             else
+               'Merge failed.'
+             end
 
-    if @merged_scorecard.present?
-      card_path =
-        case @scorecard.type
-        when 'TransitionCard'
-          transition_card_path(@merged_scorecard)
-        when 'SustainableDevelopmentGoalAlignmentCard'
-          sustainable_development_goal_alignment_card_path(@merged_scorecard)
-        end
-
-      redirect_to(card_path, notice: "#{@scorecard.model_name.human} were successfully merged.")
-    else
-      format.html { render(:edit) }
-    end
+    redirect_to impact_card_path(@scorecard), notice: notice
   end
 
   def ecosystem_maps_organisations # rubocop:disable Metrics/AbcSize
@@ -323,6 +311,14 @@ class ImpactCardsController < ApplicationController
         ]
       }
     )
+  end
+
+  def merge_cards(impact_card, other_impact_card, deep: false)
+    if deep
+      ImpactCards::DeepMerge.call(impact_card:, other_impact_card:)
+    else
+      impact_card.merge(other_impact_card)
+    end
   end
 
   def set_scorecard

@@ -27,8 +27,8 @@ module ImpactCards
         impact_card.dup.tap do |new_impact_card|
           new_impact_card.name = new_name
           new_impact_card.shared_link_id = impact_card.new_shared_link_id
-          new_impact_card.wicked_problem = target_account.wicked_problems.find_by(name: impact_card.wicked_problem&.name)
-          new_impact_card.community = target_account.communities.find_by(name: impact_card.community&.name)
+          new_impact_card.wicked_problem = find_matching_wicked_problem(impact_card.wicked_problem)
+          new_impact_card.community = find_matching_community(impact_card.community)
           new_impact_card.account = target_account
           new_impact_card.save!
 
@@ -89,7 +89,7 @@ module ImpactCards
               end
 
             # SMELL: Relaxing validations here as there are cases where the checklist items are not valid (old data)
-            new_checklist_item.update_columns(
+            new_checklist_item.update_columns( # rubocop:disable Rails/SkipsModelValidations
               status: checklist_item.status,
               comment: checklist_item.comment,
               user_id: checklist_item.user_id,
@@ -183,6 +183,19 @@ module ImpactCards
 
     def fetch_subsystem_tags(initiative)
       target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name).map(&:strip))
+    end
+
+    # Find a community in the target account that matches the source community
+    def find_matching_community(community)
+      return nil if community.blank?
+
+      target_account.communities.find_by(name: community.name)
+    end
+
+    def find_matching_wicked_problem(wicked_problem)
+      return nil if wicked_problem.blank?
+
+      target_account.wicked_problems.find_by(name: wicked_problem.name)
     end
 
     def find_target_focus_area_group(name, scorecard_type)

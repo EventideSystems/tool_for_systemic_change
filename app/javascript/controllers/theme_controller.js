@@ -9,25 +9,31 @@ export default class extends Controller {
       localStorage.setItem('color-theme', 'dark');
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
+      window.document.documentElement.style.colorScheme = 'dark'
     } else {
       this.toggleTarget.innerHTML = 'Dark mode';
       localStorage.setItem('color-theme', 'light');
       document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
+      window.document.documentElement.style.colorScheme = 'light'
     }
+
+
   }
 
-  toggle(event) {
+  toggle() {
     this.toggleTarget.innerHTML = this.toggleTarget.innerHTML === 'Dark mode' ? 'Dark mode &checkmark;' : 'Dark mode';
 
     if (this.toggleTarget.innerHTML === 'Dark mode') {
       localStorage.setItem('color-theme', 'light');
       document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
+      window.document.documentElement.style.colorScheme = "light"
     } else {
       localStorage.setItem('color-theme', 'dark');
       document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
+      window.document.documentElement.style.colorScheme = "dark"
     }
   }
 }

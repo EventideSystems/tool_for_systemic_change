@@ -1,4 +1,26 @@
 <div class="text-left">
+  <div class="flex justify-between items-center mb-4">
+    <%= form_with url: impact_card_path(@scorecard), method: :get do |form| %>
+    <div class="flex space-x-4">
+      <div>
+        <%= form.label :date, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%= custom_date_field_tag :date, @date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: { action: "change->form#submit" } %>
+      </div>
+      <div>
+        <%= form.label :subsystem_tags, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%#= render 'multi_select', form: form, label: "Subsystem Tags", options: @subsystem_tags.pluck(:name) %>
+      </div>
+      <div>
+        <%= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%= custom_select_tag :stakeholders, options_for_select(["All stakeholders"] + @stakeholders.pluck(:name), [@stakeholders.second.name, @stakeholders.third.name]) %>
+      </div>
+    </div>
+    <% end %>
+    <div>
+      <%= link_to 'Print', '#', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', onclick: 'window.print()' %>
+    </div>
+  </div>
+
   <div class="grid grid-cols-4 text-white mt-4">
     <% @scorecard_grid.each do |data| %>
       <div class="col-span-1 mb-2">
@@ -22,5 +44,3 @@
     <% end %>
   </div>
 </div>
-
-

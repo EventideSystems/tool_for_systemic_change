@@ -275,7 +275,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pdf-core (0.10.0)
-    pg (1.5.8)
+    pg (1.5.9)
     prawn (2.5.0)
       matrix (~> 0.4)
       pdf-core (~> 0.10.0)
@@ -505,7 +505,7 @@ DEPENDENCIES
   pagy
   paper_trail
   paranoia (~> 2.2)
-  pg (~> 1.1)
+  pg (~> 1.5)
   prawn
   prawn-table
   pretender

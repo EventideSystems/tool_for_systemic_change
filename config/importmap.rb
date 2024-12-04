@@ -12,3 +12,4 @@ pin "split.js" # @1.6.5
 
 
 pin "tailwindcss/plugin", to: "tailwindcss--plugin.js" # @3.4.13
+pin "@preline/select", to: "@preline--select.js" # @2.5.1

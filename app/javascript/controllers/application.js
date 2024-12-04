@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+import '@preline/select'
 
 const application = Application.start()
 
@@ -11,8 +12,11 @@ function startFrontController(event) {
   new FrontController().start()
 }
 
-// Ensure native controls use the correct color theme
-function updateColorTheme() {
+function updateControls() {
+  // Initialize custom select elements
+  HSSelect.autoInit()
+
+  // Ensure native controls use the correct color theme
   // Retrieve the color theme from localStorage
   let colorTheme = localStorage.getItem('color-theme');
 
@@ -26,8 +30,8 @@ function updateColorTheme() {
   document.documentElement.style.colorScheme = colorTheme;
 }
 
-document.addEventListener("turbo:load", updateColorTheme)
-document.addEventListener("DOMContentLoaded", updateColorTheme)
+document.addEventListener("turbo:load", updateControls)
+document.addEventListener("DOMContentLoaded", updateControls)
 
 export { application }
 

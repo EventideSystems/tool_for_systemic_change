@@ -10,7 +10,7 @@ module.exports = {
     './app/javascript/**/*.js',
     './app/views/**/*.{erb,html}',
     './app/components/**/*.{rb,erb}',
-    './vendor/javascript/tailwindcss-animate.js',
+    './vendor/javascript/**/*.js'
   ],
   theme: {
     extend: {
@@ -23,7 +23,7 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
-    require('@tailwindcss/container-queries')
+    require('@tailwindcss/container-queries'),
   ],
   ...shadcnConfig,
 }

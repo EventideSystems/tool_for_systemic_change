@@ -24,6 +24,7 @@
 #
 class FocusArea < ApplicationRecord
   acts_as_paranoid
+  include HasVideoTutorial
 
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
@@ -32,13 +33,11 @@ class FocusArea < ApplicationRecord
       .order('focus_area_groups.position', 'focus_areas.position')
   }
 
-  attr_accessor :video_tutorial_id
+  belongs_to :focus_area_group, inverse_of: :focus_areas
+  has_many :characteristics, -> { order(position: :desc) }, dependent: :restrict_with_error, inverse_of: :focus_area
 
-  belongs_to :focus_area_group
-  has_many :characteristics, -> { order(position: :desc) }, dependent: :restrict_with_error
-  has_one :video_tutorial, as: :linked
-
-  validates :position, presence: true, uniqueness: { scope: :focus_area_group }
+  # TODO: Add validations to the database schema
+  validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   delegate :scorecard_type, :account, to: :focus_area_group
 
@@ -49,19 +48,6 @@ class FocusArea < ApplicationRecord
         'focus_area_groups.account_id' => account.id
       )
   }
-
-  # accepts_nested_attributes_for :video_tutorials
-
-  def video_tutorial_id=(value)
-    return if value.blank?
-
-    tutorial = VideoTutorial.where(id: value).first
-    tutorial&.update_attribute(:linked, self)
-  end
-
-  def video_tutorial_id
-    video_tutorial.try(:id)
-  end
 
   def short_name
     name.match(/(Goal\s\d*)\.*./)[1] || name

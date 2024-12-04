@@ -1,40 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
-    <title><%= application_title %></title>
+    <title><%= application_title%></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'application' %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
     <%= render partial: '/layouts/shared/favicons' %>
-    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
   </head>
-  <body class="skin-wicked sidebar-mini">
-    <div class="wrapper h-100">
-      <%= render partial: 'layouts/shared/flash' %>
-      <%= render partial: "layouts/header" %>
-      <%= render partial: "layouts/sidebar" %>
-      <div class="content-wrapper d-flex flex-column h-100">
+  <body>
+    <%= render 'layouts/shared/flash_messages' %>
+    <div class="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+      <%#= render partial: 'layouts/shared/sidebar_mobile' %>
+      <%= render partial: 'layouts/shared/sidebar_desktop' %>
+      <main class="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-60 m-3">
+        <div class="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 dark:bg-zinc-900 lg:ring-zinc-950/5 dark:lg:ring-white/10">
 
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <%= content_title do %>
-            <%= content_for :page_actions %>
-          <% end %>
-          <ol class="breadcrumb">
-            <%= render_breadcrumbs tag: :li, separator: '' %>
-          </ol>
-        </section>
-
-        <section class="content">
           <%= yield %>
-        </section>
-      </div>
-      <%= render partial: 'layouts/footer' %>
-      <%= render partial: 'layouts/control_sidebar'%>
-      <div id="sidebar-overlay"></div>
+        </div>
+      </main>
+
     </div>
-    <%= render 'layouts/modal' %>
-    <%= render 'layouts/spinner' %>
   </body>
 </html>

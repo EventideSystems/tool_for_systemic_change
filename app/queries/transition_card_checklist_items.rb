@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Query to fetch the total number of checklist items for a transition card, optionally given a date range
 # rubocop:disable Metrics/ClassLength
 class TransitionCardChecklistItems
   class << self

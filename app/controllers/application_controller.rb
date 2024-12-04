@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
+# Base controller for the application
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  include ActiveSidebarItem
+  include Pagy::Backend
 
-  before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_session_account_id, unless: :devise_controller?
-  before_action :authenticate_user!, unless: :devise_controller?
+  before_action :set_session_account_id
+  before_action :authenticate_user!
+
   before_action :set_paper_trail_whodunnit
-  before_action :enable_profiler
-  before_action :prepare_exception_notifier
-
-  after_action :verify_authorized, except: :index, unless: :devise_controller?
-  after_action :verify_policy_scoped, only: :index, unless: :devise_controller?
 
   # protect_from_forgery with: :exception
   protect_from_forgery prepend: true
@@ -21,33 +19,20 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :flash_resource_not_found
 
-  add_breadcrumb "<i class='fa fa-dashboard'></i> Home".html_safe, :root_path
+  sidebar_item :home
 
-  helper_method :current_account, :sidebar_disabled?, :search_disabled?
-
-  # SMELL Need to ensure that account is restricted to accounts available to current user
   def current_account
-    @current_account ||=
-      begin
-        account_id = session[:account_id]
-        account_id.present? ? ::Account.where(id: account_id).first : nil
-      end
+    return nil if current_user.blank?
+
+    @current_account ||= fetch_account_from_session || fetch_default_account_and_set_session
   end
 
-  def sidebar_disabled?
-    current_account.nil?
-  end
+  helper_method :current_account
 
   def current_account=(account)
     @current_account = nil
     session[:account_id] = account.present? ? account.id : nil
     current_account
-  end
-
-  def enable_profiler
-    return unless ::Rails.env.development? || ::Rails.env.staging?
-
-    ::Rack::MiniProfiler.authorize_request
   end
 
   def pundit_user
@@ -72,14 +57,6 @@ class ApplicationController < ActionController::Base
     )
   end
 
-  def content_title
-    controller_name.titleize
-  end
-
-  def content_subtitle
-    @content_subtitle || ''
-  end
-
   def info_for_paper_trail
     { account_id: current_account&.id }
   end
@@ -91,7 +68,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def sort_order
-    return { name: :asc } unless params[:order].present?
+    return { name: :asc } if params[:order].blank?
 
     sort_mode = params[:sort_mode].blank? ? :asc : params[:sort_mode].to_sym
     { params[:order].to_sym => sort_mode }
@@ -99,8 +76,19 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def prepare_exception_notifier
-    request.env['exception_notifier.exception_data'] = { current_user: }
+  def fetch_account_from_session
+    return nil if session[:account_id].blank?
+
+    AccountPolicy::Scope
+      .new(UserContext.new(current_user, nil), Account)
+      .scope
+      .find_by(id: session[:account_id])
+  end
+
+  def fetch_default_account_and_set_session
+    default_account = current_user&.default_account
+    session[:account_id] = default_account&.id
+    default_account
   end
 
   def set_session_account_id

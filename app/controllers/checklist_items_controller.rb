@@ -1,72 +1,73 @@
 # frozen_string_literal: true
 
+# Controller for ChecklistItems
 class ChecklistItemsController < ApplicationController
+  include VerifyPolicies
 
   def show
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
 
-    render json: @checklist_item.to_json(only: [:id, :status, :comment, :humanized_status])
+    render json: @checklist_item.to_json(only: %i[id status comment humanized_status])
   end
 
   def edit
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
-
-    render partial: 'form', locals: { checklist_item: @checklist_item }
   end
 
-  def update
+  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
 
     @checklist_item.assign_attributes(checklist_item_params)
 
-    if @checklist_item.changed?
-      @checklist_item.checklist_item_changes.build(
-        user: current_user,
-        starting_status: @checklist_item.status_was,
-        ending_status: @checklist_item.status,
-        comment: @checklist_item.comment,
-        action: checklist_item_action(params),
-        activity: checklist_item_activity(params, @checklist_item)
-      )
-    end
+    build_checklist_item_changes(params, @checklist_item) if @checklist_item.changed?
 
     @checklist_item.user = current_user if @checklist_item.user.nil?
-    @checklist_item.save
 
-    if @checklist_item.errors.any?
-      render json: { errors: @checklist_item.errors.full_messages }, status: :unprocessable_entity
+    if @checklist_item.save
+      respond_to do |format|
+        format.html { redirect_to impact_card_initiative_path(@checklist_item.scorecard, @checklist_item.initiative) }
+        format.turbo_stream
+      end
     else
-      render json: {}, status: :ok
+      render 'edit'
     end
   end
 
   private
 
-  def checklist_item_action(params)
-    case params[:commit]
-    when 'Update Existing'
-      'update_existing'
-    when 'Save New Comment'
-      'save_new_comment'
-    end
+  def build_checklist_item_changes(params, checklist_item)
+    checklist_item.checklist_item_changes.build(
+      user: current_user,
+      starting_status: checklist_item.status_was,
+      ending_status: checklist_item.status,
+      comment: checklist_item.comment,
+      action: params[:action],
+      activity: checklist_item_activity(params, checklist_item)
+    )
   end
 
   def checklist_item_activity(params, checklist_item)
     if new_comments_saved_assigned_actuals?(params, checklist_item)
       'new_comments_saved_assigned_actuals'
     else
-      (checklist_item.status_was != 'actual' && checklist_item.status == 'actual') ? 'addition' : 'none'
+      checklist_item.status_was != 'actual' && checklist_item.status == 'actual' ? 'addition' : 'none'
     end
   end
 
-  def checklist_item_params
-    params[:checklist_item][:comment] = params[:checklist_item][:new_comment] if params[:checklist_item][:new_comment].present?
-    params[:checklist_item][:status] = params[:checklist_item][:new_status] if params[:checklist_item][:new_status].present?
+  def checklist_item_params # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    if params[:checklist_item][:new_comment].present?
+      params[:checklist_item][:comment] =
+        params[:checklist_item][:new_comment]
+    end
+    if params[:checklist_item][:new_status].present?
+      params[:checklist_item][:status] =
+        params[:checklist_item][:new_status]
+    end
 
-    if params[:commit] == 'Save New Comment'
+    if params[:action] == 'save_new_comment'
       params[:checklist_item][:comment] = nil if params[:checklist_item][:comment].blank?
       params[:checklist_item][:status] = nil if params[:checklist_item][:status].blank?
     end
@@ -75,7 +76,7 @@ class ChecklistItemsController < ApplicationController
   end
 
   def new_comments_saved_assigned_actuals?(params, checklist_item)
-    params[:commit] == 'Save New Comment' &&
+    params[:action] == 'save_new_comment' &&
       checklist_item.comment.present? &&
       checklist_item.status_was == 'actual' &&
       checklist_item.status == 'actual'

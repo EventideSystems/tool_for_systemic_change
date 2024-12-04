@@ -1,19 +1,29 @@
-<div class="box box-solid">
-  <div class='box-body no-padding'>
-  <%= table_for @versions, :table_html => { :class => "table table-striped" },
-                        :sortable => true,
-                        :data_row_html => {
-                          id: lambda { |version| "version-#{version.id}" }
-                        } do |table| %>
-    <% table.column :created_at, header: "Time" %>
-    <% table.column :item_type, header: "Record Type", formatter: lambda { |item_type| version_item_type_name(item_type) } %>
-    <% table.column :event, header: "Action" , formatter: lambda { |event| version_event_past_tense(event) } %>
-    <% table.column :whodunnit, header: "User", formatter: lambda { |whodunnit| version_whodunnit_name(whodunnit) }, :sortable => false %>
-    <% table.footer do %>
-      <div class="float-right">
-        <%= paginate @versions %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Activities</h1>
+    </div>
+    <div class="mt-8 flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-700">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-black dark:text-white sm:pl-0">Time</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:text-gray-300">Record Type</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:text-gray-300">Action</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-zinc-900 dark:text-gray-300">User</th>
+              </tr>
+            </thead>
+            <%= turbo_frame_tag :table do %>
+              <tbody class="divide-y divide-gray-800">
+                <%= render @versions %>
+              </tbody>
+              <%= render partial: 'pagination' %>
+            <% end %>
+          </table>
+        </div>
       </div>
-    <% end %>
-  <% end %>
+    </div>
   </div>
 </div>

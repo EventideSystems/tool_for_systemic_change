@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-class ScorecardCopier
+# This service is used to copy a scorecard and its related initiatives, checklist items, and checklist item comments.
+class ScorecardCopier # rubocop:disable Metrics/ClassLength
   def initialize(source, target_name, deep_copy: false)
     @source = source
     @target_name = target_name
     @deep_copy = deep_copy
   end
 
-  def perform
+  def perform # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     target = source.dup
 
     ActiveRecord::Base.transaction do
@@ -47,10 +48,39 @@ class ScorecardCopier
 
   attr_reader :source, :target_name, :deep_copy
 
-  def copy_initiatives(source_scorecard_id, target_scorecard_id)
+  def copy_initiatives(source_scorecard_id, target_scorecard_id) # rubocop:disable Metrics/MethodLength
     insert_query = "
-    INSERT INTO initiatives (name, description, scorecard_id, started_at, finished_at, dates_confirmed, contact_name, contact_email, contact_phone, contact_website, contact_position, deleted_at, created_at, updated_at)
-      SELECT name, description, #{target_scorecard_id}, started_at, finished_at, dates_confirmed, contact_name, contact_email, contact_phone, contact_website, contact_position, deleted_at, created_at, updated_at
+    INSERT INTO initiatives (
+        name,
+        description,
+        scorecard_id,
+        started_at,
+        finished_at,
+        dates_confirmed,
+        contact_name,
+        contact_email,
+        contact_phone,
+        contact_website,
+        contact_position,
+        deleted_at,
+        created_at,
+        updated_at
+      )
+      SELECT
+        name,
+        description,
+        #{target_scorecard_id},
+        started_at,
+        finished_at,
+        dates_confirmed,
+        contact_name,
+        contact_email,
+        contact_phone,
+        contact_website,
+        contact_position,
+        deleted_at,
+        created_at,
+        updated_at
       FROM initiatives
       WHERE scorecard_id = #{source_scorecard_id}
       ORDER BY id
@@ -70,7 +100,7 @@ class ScorecardCopier
     [source_ids, target_ids]
   end
 
-  def copy_initiative_organisations(source_initiative_ids, target_initiative_ids)
+  def copy_initiative_organisations(source_initiative_ids, target_initiative_ids) # rubocop:disable Metrics/MethodLength
     case_fragment = build_case_fragment(
       'initiatives_organisations.initiative_id',
       source_initiative_ids,
@@ -89,7 +119,7 @@ class ScorecardCopier
     ActiveRecord::Base.connection.execute(insert_query)
   end
 
-  def copy_checklist_items(source_initiative_ids, target_initiative_ids)
+  def copy_checklist_items(source_initiative_ids, target_initiative_ids) # rubocop:disable Metrics/MethodLength
     case_fragment = build_case_fragment(
       'checklist_items.initiative_id',
       source_initiative_ids,
@@ -98,7 +128,12 @@ class ScorecardCopier
 
     insert_query = "
     INSERT INTO checklist_items (checked, comment, characteristic_id, initiative_id, created_at, updated_at)
-      SELECT #{deep_copy ? 'checked, comment' : 'NULL, NULL'}, characteristic_id, #{case_fragment}, created_at, updated_at
+      SELECT
+        #{deep_copy ? 'checked, comment' : 'NULL, NULL'},
+        characteristic_id,
+        #{case_fragment},
+        created_at,
+        updated_at
       FROM checklist_items
       WHERE initiative_id IN (#{source_initiative_ids.join(',')})
       ORDER BY id
@@ -118,7 +153,7 @@ class ScorecardCopier
     [source_ids, target_ids]
   end
 
-  def copy_checklist_item_comments(source_checklist_items_ids, target_checklist_items_ids)
+  def copy_checklist_item_comments(source_checklist_items_ids, target_checklist_items_ids) # rubocop:disable Metrics/MethodLength
     case_fragment = build_case_fragment(
       'checklist_item_comments.checklist_item_id',
       source_checklist_items_ids,
@@ -147,7 +182,7 @@ class ScorecardCopier
     [source_ids, target_ids]
   end
 
-  def copy_paper_trail_records(item_type, source_ids, target_ids)
+  def copy_paper_trail_records(item_type, source_ids, target_ids) # rubocop:disable Metrics/MethodLength
     return if source_ids.empty? || target_ids.empty?
 
     case_fragment = build_case_fragment(
@@ -177,7 +212,7 @@ class ScorecardCopier
     case_fragment
   end
 
-  def deep_copy_paper_trail_records(source, target)
+  def deep_copy_paper_trail_records(source, target) # rubocop:disable Metrics/MethodLength
     PaperTrail::Version.where(
       item_type: 'Scorecard',
       item_id: target.id

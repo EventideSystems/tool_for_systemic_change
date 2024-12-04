@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Accounts
-  class Copy
+  class Copy # rubocop:disable Style/Documentation
     attr_reader :account, :new_name
 
     def self.call(account:, new_name: nil)

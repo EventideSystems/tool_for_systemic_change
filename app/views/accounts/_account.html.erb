@@ -1,0 +1,41 @@
+<li>
+  <hr role="presentation" class="w-full border-t border-zinc-950/10 dark:border-white/10"/>
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <%= render partial: 'resource_summary', locals: { name: account.name, background_color: 'bg-green-700' } %>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to highlight(account.name, params.dig(:q, :name_or_description_cont)), edit_account_path(account) %>
+        </div>
+        <div class="text-xs/6 text-zinc-500">
+          <%= highlight(account.description, params.dig(:q, :name_or_description_cont)) %>
+        </div>
+        <div class="text-xs/6 text-zinc-600">
+          <%= max_users(account) %>; <%= max_users(account) %>; <%= expires_on(account) %>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <%= render_dropdown_menu do %>
+        <%= dropdown_menu_trigger do %>
+          <span class="text-zinc-900 dark:text-white">
+            <%= render_icon :more %>
+          </span>
+        <% end %>
+
+        <%= dropdown_menu_content do %>
+          <%=
+            dropdown_menu_item do
+              link_to "Modify", edit_account_path(account), class: "block w-full text-sm", data: { turbo: false }
+            end
+          %>
+          <%=
+            dropdown_menu_item do
+              link_to "Switch to", switch_account_path(account), class: "block w-full text-sm", data: { turbo: false }
+            end
+          %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</li>

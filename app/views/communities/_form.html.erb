@@ -1,8 +1,0 @@
-<%= simple_form_for(@community, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@community) %> 
-  <%= f.input :name %>
-  <%= f.input :description , as: :text, input_html: { class: 'textarea' } %>
-  <%= render_form_button(f) %>
-<% end %>
-

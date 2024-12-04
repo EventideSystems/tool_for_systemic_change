@@ -18,14 +18,14 @@
 #  index_stakeholder_types_on_account_id  (account_id)
 #
 class StakeholderType < ApplicationRecord
+  include Searchable
+
   acts_as_paranoid
 
   validates :name, presence: true
 
   belongs_to :account, optional: true
-
-  has_many :accounts
-  has_many :organisations
+  has_many :organisations, dependent: :nullify
 
   before_destroy :check_no_longer_used!, prepend: true
 
@@ -43,7 +43,8 @@ class StakeholderType < ApplicationRecord
 
   def check_no_longer_used!
     return true if organisations.empty?
-    errors.add(:base, "This stakeholder type is still in use")
+
+    errors.add(:base, 'This stakeholder type is still in use')
     throw(:abort)
   end
 end

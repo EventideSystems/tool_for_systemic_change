@@ -1,0 +1,5 @@
+<%= turbo_stream.replace @checklist_item do %>
+  <%= turbo_frame_tag dom_id(@checklist_item) do %>
+    <%= render 'link', checklist_item: @checklist_item %>
+  <% end %>
+<% end %>

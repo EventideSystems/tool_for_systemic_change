@@ -34,6 +34,8 @@
 #
 # rubocop:disable Metrics/ClassLength
 class Initiative < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
@@ -84,11 +86,10 @@ class Initiative < ApplicationRecord
           where.not(id: Initiative.incomplete.pluck(:id))
         }
 
-  scope :overdue,
-        lambda {
-          finished_at = Initiative.arel_table[:finished_at]
-          incomplete.where(finished_at.lt(Date.today)).where(dates_confirmed: true)
-        }
+  scope :overdue, lambda {
+    finished_at = Initiative.arel_table[:finished_at]
+    incomplete.where(finished_at.lt(Time.zone.today)).where(dates_confirmed: true)
+  }
 
   scope :transition_cards,
         lambda {
@@ -100,11 +101,10 @@ class Initiative < ApplicationRecord
           joins(:scorecard).where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
         }
 
-  def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil)
+  def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     checklist_items = ChecklistItem
                       .includes(
                         :initiative,
-                        :checklist_item_comments,
                         characteristic: [
                           :video_tutorial,
                           {
@@ -145,8 +145,8 @@ class Initiative < ApplicationRecord
   end
 
   def linked_initiative
-    return unless linked?
-    return unless scorecard.linked_scorecard.present?
+    return nil unless linked?
+    return nil if scorecard.linked_scorecard.blank?
 
     scorecard.linked_scorecard.initiatives.find_by(name:)
   end
@@ -165,16 +165,17 @@ class Initiative < ApplicationRecord
     copied
   end
 
-  def create_missing_checklist_items!
-    missing_characteristic_ids =
-      Characteristic.per_scorecard_type_for_account(
-        scorecard.type,
-        scorecard.account
-      ).pluck(:id) - checklist_items.map(&:characteristic_id)
+  # TODO: Move to a service object
+  def create_missing_checklist_items! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    missing_characteristic_ids = Characteristic
+                                 .per_scorecard_type_for_account(
+                                   scorecard.type,
+                                   scorecard.account
+                                 ).pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?
 
-    ChecklistItem.insert_all(
+    ChecklistItem.insert_all( # rubocop:disable Rails/SkipsModelValidations
       missing_characteristic_ids.map do |characteristic_id|
         {
           initiative_id: id,

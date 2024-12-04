@@ -1,7 +1,22 @@
 Rails.application.routes.draw do
-  resources :subsystem_tags
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  resources :impact_cards do
+    resources :initiatives, only: [:show], controller: 'impact_cards/initiatives'
+  end
+
   namespace :initiatives do
     resources :imports, only: %i[new create update]
+  end
+
+  namespace :labels do
+    resources :communities
+    resources :stakeholder_types
+    resources :subsystem_tags
+    resources :wicked_problems
   end
 
   resources :checklist_items, only: %i[show edit update]
@@ -19,7 +34,9 @@ Rails.application.routes.draw do
     resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
   end
 
-  devise_for :users, skip: [:registrations], controllers: { invitations: 'invitations' }
+  devise_for :users, controllers: {
+    invitations: 'invitations'
+   }
 
   resources :accounts do
     member do
@@ -33,7 +50,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :communities
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
@@ -98,18 +114,17 @@ Rails.application.routes.draw do
     resources :characteristics, only: [:show], controller: 'shared', action: 'characteristic'
   end
 
-  resources :stakeholder_types
   resources :users do
     post :stop_impersonating, on: :collection
 
+    post :impersonate, on: :member
+
     member do
+      get 'undelete'
+      get 'resend_invitation'
       get 'remove_from_account'
     end
   end
-
-  resources :video_tutorials
-  resource :welcome_message, only: [:show]
-  resources :wicked_problems
 
   resources :reports, only: [:index] do
     collection do
@@ -133,8 +148,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :search_results, only: %i[index show]
-
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
@@ -142,14 +155,6 @@ Rails.application.routes.draw do
 
   namespace :system do
     resources :stakeholder_types
-    resources :users do
-      post :impersonate, on: :member
-
-      member do
-        get 'undelete'
-        get 'resend_invitation'
-      end
-    end
   end
 
   root to: 'home#index'

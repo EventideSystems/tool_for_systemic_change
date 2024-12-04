@@ -26,5 +26,4 @@
 #  index_scorecards_on_type        (type)
 #
 class TransitionCard < Scorecard
-
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+
+# Base class for all database-backed models
 class ApplicationRecord < ActiveRecord::Base
-  self.abstract_class = true
+  primary_abstract_class
 
   class << self
     # Public: Create string-based enum

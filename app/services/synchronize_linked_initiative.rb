@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Synchronise the attributes of a source initiative with a target initiative
 class SynchronizeLinkedInitiative
   class << self
     def call(source_initiative, target_initiative = nil)
@@ -28,9 +29,11 @@ class SynchronizeLinkedInitiative
     def fetch_target_initiative(source_initiative)
       target_scorecard = source_initiative.scorecard.linked_scorecard
 
-      target_scorecard.initiatives.find_by(name: source_initiative.name) || build_new_initiative(source_initiative).tap do |initiative|
-        target_scorecard.initiatives << initiative
-      end
+      target_scorecard
+        .initiatives
+        .find_by(name: source_initiative.name) || build_new_initiative(source_initiative).tap do |initiative|
+                                                    target_scorecard.initiatives << initiative
+                                                  end
     end
 
     def synchronize_initiative_organisations(source_initiative, target_initiative)
@@ -55,7 +58,7 @@ class SynchronizeLinkedInitiative
       target_initiative.subsystem_tags << missing_from_target if missing_from_target.present?
     end
 
-    def update_initiative_attributes(initiative_1, initiative_2)
+    def update_initiative_attributes(initiative_1, initiative_2) # rubocop:disable Naming/VariableNumber,Metrics/MethodLength
       if initiative_2.new_record? || initiative_1.updated_at > initiative_2.updated_at
         source_initiative = initiative_1
         target_initiative = initiative_2

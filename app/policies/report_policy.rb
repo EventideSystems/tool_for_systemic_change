@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReportPolicy < ApplicationPolicy
+class ReportPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   def index?
     true
   end

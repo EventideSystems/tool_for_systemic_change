@@ -1,0 +1,13 @@
+<div class="flex items-center space-x-2">
+  <span class="w-3 h-3 inline-block rounded-sm <%= checklist_list_item_grid_element_color(checklist_item.status) %>"></span>
+  <%=
+    link_to(
+      edit_checklist_item_path(checklist_item),
+      data: { turbo_frame: dom_id(checklist_item) },
+      class: 'flex items-center space-x-2 text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800'
+    ) do %>
+      <%= checklist_item.characteristic.name %>
+      <%= render_icon(:chat) if checklist_item.comment.present? %>
+  <% end %>
+</div>
+

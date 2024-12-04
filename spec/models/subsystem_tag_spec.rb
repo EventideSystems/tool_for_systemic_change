@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: subsystem_tags
 #
 #  id          :integer          not null, primary key
+#  color       :string           default("#14b8a6"), not null
 #  deleted_at  :datetime
 #  description :string
 #  name        :string

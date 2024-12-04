@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
 module Reports
+  # Base class for reports
   class Base
     private
+
+    DEFAULT_ALIGNMENT = { horizontal: :general, vertical: :bottom, wrap_text: true }.freeze
 
     def default_styles(package)
       header_styles(package).merge(
         {
           blue_normal: package.workbook.styles.add_style(fg_color: '386190', sz: 12, b: false),
           wrap_text: package.workbook.styles.add_style(
-            alignment: {
-              horizontal: :general,
-              vertical: :bottom,
-              wrap_text: true
-            }
+            alignment: DEFAULT_ALIGNMENT
           ),
           date: date_style(package)
         }

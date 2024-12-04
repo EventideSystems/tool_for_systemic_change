@@ -1,44 +1,48 @@
 # frozen_string_literal: true
 
+# Controller for the Initiative model
 # rubocop:disable Metrics/ClassLength
 class InitiativesController < ApplicationController
+  include VerifyPolicies
+  include InitiativeChildRecords
+
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
   before_action :set_scorecards_and_types, only: %i[show new edit]
+  before_action :set_subsystem_tags, only: %i[index show]
 
-  add_breadcrumb 'Initiatives', :initiatives_path
+  sidebar_item :initiatives
 
-  def index
-    base_scope = policy_scope(Initiative).send(scope_from_params).includes(:organisations).order(sort_order)
+  def index # rubocop:disable Metrics/AbcSize
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Initiative).order(:name).ransack(search_params[:q])
+
+    initiatives = @q.result(distinct: true)
+
+    @pagy, @initiatives = pagy(initiatives, limit: 10)
 
     respond_to do |format|
-      format.html do
-        @initiatives = base_scope.page(params[:page])
-      end
-      format.csv do
-        @initiatives = base_scope.all
-        send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
-      end
+      format.html { render 'initiatives/index', locals: { initiatives: @initiatives } }
+      format.turbo_stream { render 'initiatives/index', locals: { initiatives: @initiatives } }
+      format.csv { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
     end
   end
 
   def show
     @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     @initiative.create_missing_checklist_items!
-
-    add_breadcrumb(@initiative.name)
   end
 
   def new
     @scorecard = params[:scorecard_id].present? ? policy_scope(Scorecard).find(params[:scorecard_id]) : nil
     @initiative = Initiative.new(scorecard: @scorecard)
     authorize(@initiative)
-
-    add_breadcrumb('New Initiative')
   end
 
   def edit
-    add_breadcrumb(@initiative.name)
+    @initiative.initiatives_organisations.build if @initiative.initiatives_organisations.empty?
+    @initiative.initiatives_subsystem_tags.build if @initiative.initiatives_subsystem_tags.empty?
   end
 
   def create
@@ -54,10 +58,13 @@ class InitiativesController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     linked_initiative = @initiative.linked_initiative
 
     if @initiative.update(initiative_params)
+      update_stakeholders!(@initiative, initiatives_organisations_params)
+      update_subsystem_tags!(@initiative, initiatives_subsystem_tags_params)
+
       if params[:unlink_initiative]
         linked_initiative.update(linked: false) if linked_initiative.present?
         @initiative.update(linked: false)
@@ -65,6 +72,8 @@ class InitiativesController < ApplicationController
         ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
       end
 
+      # TODO: Put some smarts in here to redirect to the impact cards page if the user was on the impact cards page
+      #      when they clicked the edit button, and to the initiative show page if they were on the initiatives page
       redirect_to(initiative_path(@initiative), notice: 'Initiative was successfully updated.')
     else
       render(:edit)
@@ -73,13 +82,7 @@ class InitiativesController < ApplicationController
 
   def destroy
     @initiative.destroy
-    redirect_to(initiatives_url, notice: 'Initiative was successfully deleted.')
-  end
-
-  def content_subtitle
-    subtitle = @initiative&.name.presence || super
-
-    @initiative&.archived? ? subtitle + ' [ARCHIVED]' : subtitle
+    redirect_to(initiatives_path, notice: 'Initiative was successfully deleted.')
   end
 
   # NOTE: Will move this to the checklist controller, where it belongs
@@ -101,17 +104,17 @@ class InitiativesController < ApplicationController
 
   def export_filename
     if current_account.scorecard_types.count > 1
-      "initiatives_for_#{scope_from_params}_#{Date.today.strftime('%Y_%m_%d')}"
+      "initiatives_for_#{scope_from_params}_#{Time.zone.today.strftime('%Y_%m_%d')}"
     else
-      "initiatives_#{Date.today.strftime('%Y_%m_%d')}"
+      "initiatives_#{Time.zone.today.strftime('%Y_%m_%d')}"
     end
   end
 
-  def initiatives_to_csv(initiatives)
+  def initiatives_to_csv(initiatives) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     max_organisation_index = initiatives.map(&:organisations).map(&:count).max
     max_subsystem_tag_index = initiatives.map(&:subsystem_tags).map(&:count).max
 
-    CSV.generate(force_quotes: true) do |csv|
+    CSV.generate(force_quotes: true) do |csv| # rubocop:disable Metrics/BlockLength
       csv << (([
         'Name',
         'Description',
@@ -163,10 +166,11 @@ class InitiativesController < ApplicationController
   end
 
   def set_focus_area_groups
-    @focus_areas_groups = FocusAreaGroup
-                          .includes(:video_tutorial, focus_areas: :video_tutorial)
-                          .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
-                          .order(:position)
+    @focus_areas_groups = \
+      FocusAreaGroup
+      .includes(:video_tutorial, focus_areas: :video_tutorial)
+      .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
+      .order(:position)
   end
 
   def set_initiative
@@ -174,7 +178,7 @@ class InitiativesController < ApplicationController
     authorize(@initiative)
   end
 
-  def scope_from_params
+  def scope_from_params # rubocop:disable Metrics/AbcSize
     if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
       case current_account.default_scorecard_type&.name
       when 'TransitionCard' then :transition_cards
@@ -202,7 +206,31 @@ class InitiativesController < ApplicationController
       end
   end
 
-  def initiative_params
+  def set_subsystem_tags
+    @subsystem_tags = current_account.subsystem_tags
+  end
+
+  def initiatives_organisations_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_organisations_attributes: %i[
+          organisation_id
+        ]
+      }
+    )
+  end
+
+  def initiatives_subsystem_tags_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_subsystem_tags_attributes: %i[
+          subsystem_tag_id
+        ]
+      }
+    )
+  end
+
+  def initiative_params # rubocop:disable Metrics/MethodLength
     params.fetch(:initiative, {}).permit(
       :name,
       :description,
@@ -216,46 +244,8 @@ class InitiativesController < ApplicationController
       :contact_phone,
       :contact_website,
       :contact_position,
-      :notes,
-      initiatives_organisations_attributes: %i[
-        organisation_id id _destroy
-      ],
-      initiatives_subsystem_tags_attributes: %i[
-        subsystem_tag_id id _destroy
-      ]
-    ).tap do |params|
-      # Remove organisations that are already assigned
-      params[:initiatives_organisations_attributes].reject! do |_key, value|
-        value[:id].blank? &&
-          params[:initiatives_organisations_attributes].values.find do |attributes|
-            (value[:organisation_id] == attributes[:organisation_id]) && attributes[:id].present?
-          end
-      end
-
-      # Remove duplicates
-      if params[:initiatives_organisations_attributes]
-        params[:initiatives_organisations_attributes] =
-          params[:initiatives_organisations_attributes].values.uniq do |attr|
-            attr[:organisation_id]
-          end
-      end
-
-      # Remove subsystem tags that are already assigned
-      params[:initiatives_subsystem_tags_attributes].reject! do |_key, value|
-        value[:id].blank? &&
-          params[:initiatives_subsystem_tags_attributes].values.find do |attributes|
-            (value[:subsystem_tag_id] == attributes[:subsystem_tag_id]) && attributes[:id].present?
-          end
-      end
-
-      # Remove duplicates
-      if params[:initiatives_subsystem_tags_attributes]
-        params[:initiatives_subsystem_tags_attributes] =
-          params[:initiatives_subsystem_tags_attributes].values.uniq do |attr|
-            attr[:subsystem_tag_id]
-          end
-      end
-    end
+      :notes
+    )
   end
 end
 # rubocop:enable Metrics/ClassLength

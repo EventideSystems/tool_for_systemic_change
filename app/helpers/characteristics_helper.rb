@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Helper methods for presenting characteristics
 module CharacteristicsHelper
   def sanitized_characteristic_description(characteristic)
     sanitize(

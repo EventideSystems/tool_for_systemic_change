@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: subsystem_tags
 #
 #  id          :integer          not null, primary key
+#  color       :string           default("#14b8a6"), not null
 #  deleted_at  :datetime
 #  description :string
 #  name        :string
@@ -16,6 +19,8 @@
 #  index_subsystem_tags_on_deleted_at  (deleted_at)
 #
 class SubsystemTag < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
@@ -24,7 +29,8 @@ class SubsystemTag < ApplicationRecord
   has_many :initiatives, through: :initiatives_subsystem_tags
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation to database schema
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  alias_attribute :text, :name
+  alias_attribute :text, :name # TODO: Check if this is still required?
 end

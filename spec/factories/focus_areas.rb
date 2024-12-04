@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: focus_areas
@@ -22,7 +24,7 @@
 #
 FactoryBot.define do
   sequence(:focus_area_position) { |n| n }
-  
+
   factory :focus_area do
     name { FFaker::Name.name }
     focus_area_group

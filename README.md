@@ -1,5 +1,10 @@
 # Tool for Systemic Change
 
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+![check](https://github.com/EventideSystems/tool_for_systemic_change/actions/workflows/check.yml/badge.svg)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rubystyle.guide)
+
 ## Background
 
 Originally developed by WickedLab, the Tool for Systemic Change is a web-based application that supports the development of a shared understanding of complex problems and the development of strategies to address them. It is based on the Transition Card model developed by Dr Sharon Zivkovic, and is used by a number of organisations in Australia and internationally.

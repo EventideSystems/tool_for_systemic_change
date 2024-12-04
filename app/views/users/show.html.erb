@@ -1,14 +1,41 @@
-<%= simple_form_for(@user, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= form_header(@user) %>
-  <%= f.input :email, required: false, readonly: true %>
-  <%= f.input :name, readonly: true %>
-  <%= f.input :time_zone, readonly: true %>
-  <hr>
-  <%= f.input :system_role, as: :string, readonly: true %>
-  <%= f.input :account_role, as: :string, readonly: true %>
-  <hr> 
-  <%= f.input :created_at, as: :string, readonly: true %>
-  <%= f.input :updated_at, as: :string, readonly: true %>
-  <%= f.input :last_sign_in_at, as: :string, readonly: true %>
-  <%= edit_button('Edit User', edit_user_path(@user)) if policy(@user).edit? %> 
-<% end %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Team Member Details</h1>
+
+      <div class="flex justify-between items-center mt-4">
+        <div class="flex gap-6 py-6">
+          <%= render partial: 'resource_summary', locals: { name: @user.display_name, background_color: 'bg-green-700' } %>
+          <div class="space-y-1.5">
+            <div class="text-base/6 font-semibold dark:text-white">
+              <%= @user.display_name %>
+            </div>
+            <div class="text-xs/6 text-zinc-500 dark:text-zinc-100">
+              <%= @user.email %>
+            </div>
+            <div class="flex space-x-4">
+              <%= role_in_current_account_badge(@user) %>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="flex justify-end items-center mb-4">
+            <%= link_to_primary 'Edit', edit_user_path(@user), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+  <%= render 'section' do %>
+    <%= render 'section_header', title: 'Settings' %>
+      <%= render 'section_body' do %>
+      <div class="sm:col-span-4">
+        <%= label_tag :time_zone %>
+        <div class="mt-2">
+          <%= display_time_zone(@user.time_zone) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

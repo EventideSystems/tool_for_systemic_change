@@ -26,23 +26,27 @@
 #  index_scorecards_on_type        (type)
 #
 class Scorecard < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
   after_initialize :ensure_shared_link_id, if: :new_record?
 
-  belongs_to :community
+  belongs_to :community, optional: true
   belongs_to :account
-  belongs_to :wicked_problem
+  belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
 
-  has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy
+  has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy, inverse_of: :scorecard
+  has_many :initiatives_organisations, through: :initiatives
+  has_many :checklists, through: :initiatives
   has_many :checklist_items, through: :initiatives
   has_many :initiatives_organisations, through: :initiatives
   has_many :subsystem_tags, through: :initiatives
 
   has_many :organisations, through: :initiatives_organisations
-  has_many :scorecard_changes
+  has_many :scorecard_changes, dependent: :destroy
 
   has_rich_text :notes
 
@@ -57,23 +61,17 @@ class Scorecard < ApplicationRecord
 
   validates :account, presence: true
   validates :name, presence: true
-  validates :community, presence: true
-  validates :wicked_problem, presence: true
-  validates :shared_link_id, uniqueness: true
+  # TODO: Add validation to datbase schema
+  validates :shared_link_id, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validate :linked_scorecard_must_be_in_same_account
 
   before_save :set_inverse_linked_scorecard, if: :linked_scorecard_id_changed?
 
   def set_inverse_linked_scorecard
-    Scorecard.find(linked_scorecard_id_was).update_column(:linked_scorecard_id, nil) if linked_scorecard_id_was.present?
-
-    Scorecard.find(linked_scorecard_id).update_column(:linked_scorecard_id, id) if linked_scorecard_id.present?
+    Scorecard.find(linked_scorecard_id_was).update(linked_scorecard_id: nil) if linked_scorecard_id_was.present?
+    Scorecard.find(linked_scorecard_id).update(linked_scorecard_id: id) if linked_scorecard_id.present?
 
     true
-  end
-
-  def description_summary
-    Nokogiri::HTML(description).text
   end
 
   def linked?
@@ -106,9 +104,9 @@ class Scorecard < ApplicationRecord
   private
 
   def linked_scorecard_must_be_in_same_account
-    if linked_scorecard.present? && linked_scorecard.account != account
-      errors.add(:linked_scorecard_id, 'must be in the same account')
-    end
+    return unless linked_scorecard.present? && linked_scorecard.account != account
+
+    errors.add(:linked_scorecard_id, 'must be in the same account')
   end
 
   def non_clashing_initiative_name(name, existing_names)

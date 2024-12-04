@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class UserPolicy < ApplicationPolicy
-  class Scope < Scope
+class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       if account_admin?(user_context.account) || system_admin?
         scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
@@ -11,7 +11,7 @@ class UserPolicy < ApplicationPolicy
     end
   end
 
-  class SystemScope < Scope
+  class SystemScope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope.with_deleted.all if user_context.user.admin?
     end
@@ -62,7 +62,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def max_users_not_reached?(account)
-    return false unless account.present?
+    return false if account.blank?
     return true if account.max_users.zero? # NOTE: magic number, meaning no limit
 
     account.users.count < account.max_users

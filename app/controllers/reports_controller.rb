@@ -1,116 +1,41 @@
 # frozen_string_literal: true
 
+# Controller for managing reports
 # rubocop:disable Metrics/ClassLength
 class ReportsController < ApplicationController
-  skip_after_action :verify_policy_scoped
-  # skip_after_action :verify_authorized
+  sidebar_item :reports
 
-  add_breadcrumb 'Reports', :reports_path
-
-  ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
-
-  def index
+  def index # rubocop:disable Metrics/MethodLength
     authorize(:report, :index?)
 
     @scorecards = policy_scope(Scorecard).order(:name)
-
-    @scorecard_types =
-      current_account.scorecard_types.map do |scorecard_type|
-        scorecard_model_name =
-          case scorecard_type.name
-          when 'TransitionCard' then current_account.transition_card_model_name
-          when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
-          else
-            'Card'
-          end
-
-        ScorecardType.new(
-          scorecard_model_name.pluralize,
-          policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
-        )
+    @grouped_scorecards = @scorecards.group_by(&:type).transform_keys do |key|
+      case key
+      when 'TransitionCard' then current_account.transition_card_model_name
+      when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
+      else
+        'Impact Card'
       end
+    end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
+      scorecards.map do |scorecard|
+        [scorecard.name, scorecard.id]
+      end
+    end
   end
 
-  def initiatives
-    authorize(:report, :index?) # SMELL Incorrect policy check. Need to fix.
-
-    @content_subtitle = 'Initiatives'
-    add_breadcrumb(@content_subtitle)
-
-    query = policy_scope(Initiative).joins(scorecard: %i[community wicked_problem])
-
-    wicked_problem_ids = params[:report][:wicked_problems].reject { |e| e.to_s.empty? }
-    community_ids = params[:report][:communities].reject { |e| e.to_s.empty? }
-
-    query = query.where('scorecards.wicked_problem_id': wicked_problem_ids) if wicked_problem_ids
-
-    query = query.where('scorecards.community_id': community_ids) if community_ids
-
-    @results = query.select(
-      :id,
-      :name,
-      :description,
-      :created_at,
-      :scorecard_id,
-      'wicked_problems.name as wicked_problem_name',
-      'communities.name as community_name',
-      'scorecards.name as scorecard_name'
-    ).distinct.page(params[:page])
-  end
-
-  def stakeholders
-    authorize(:report, :index?)
-
-    @content_subtitle = 'Stakeholders'
-    add_breadcrumb(@content_subtitle)
-
-    query = current_account.organisations.joins(
-      :stakeholder_type,
-      initiatives: [scorecard: %i[wicked_problem community]]
-    )
-
-    unless params[:report][:stakeholder_type].blank?
-      query = query.where(stakeholder_type_id: params[:report][:stakeholder_type])
-    end
-
-    unless params[:report][:wicked_problem].blank?
-      query = query.where('scorecards.wicked_problem_id': params[:report][:wicked_problem])
-    end
-
-    unless params[:report][:community].blank?
-      query = query.where('scorecards.community_id': params[:report][:community])
-    end
-
-    @results = query.select(
-      :id,
-      :name,
-      :description,
-      :created_at,
-      :stakeholder_type_id,
-      'stakeholder_types.name as stakeholder_type_name',
-      'wicked_problems.name as wicked_problem_name',
-      'communities.name as community_name',
-      'scorecards.name as scorecard_name'
-    ).distinct.page(params[:page])
-  end
-
-  def transition_card_activity
+  def transition_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :transition_card_activity?)
 
-    @content_subtitle = "#{Scorecard.model_name.human} Activity"
-    add_breadcrumb(@content_subtitle)
+    @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_from]).beginning_of_day.utc
 
-    @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_from]).beginning_of_day.utc
+    @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_to]).end_of_day.utc
 
-    @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date_to]).end_of_day.utc
-
-    @date_to = Date.parse(params[:report][:date_to]).end_of_day
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @date_to = Date.parse(params[:date_to]).end_of_day
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
 
     @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
-      format.html
       format.xlsx do
         send_data(
           @report.to_xlsx.read,
@@ -121,25 +46,21 @@ class ReportsController < ApplicationController
     end
   end
 
-  def scorecard_comments
+  def scorecard_comments # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
-
-    @content_subtitle = "#{Scorecard.model_name.human} Comments"
-    add_breadcrumb(@content_subtitle)
 
     @scorecard = current_account
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
-                 .find(params[:report][:scorecard_id])
+                 .find(params[:scorecard_id])
 
-    @date = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:report][:date]).end_of_day.utc
+    @date = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date]).end_of_day.utc
 
-    @status = params[:report][:status]
+    @status = params[:status]
 
     @report = Reports::ScorecardComments.new(@scorecard, @date, @status, current_user.time_zone)
 
     respond_to do |format|
-      format.html
       format.xlsx do
         send_data(
           @report.to_xlsx.read,
@@ -154,12 +75,8 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders
     authorize(:report, :index?)
 
-    @content_subtitle = "#{current_account.transition_card_model_name} Stakeholder Report"
-    add_breadcrumb(@content_subtitle)
-
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
-    include_betweenness = params[:report][:include_betweenness] == '1'
-    @report = Reports::TransitionCardStakeholders.new(@scorecard, include_betweenness:)
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
+    @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
@@ -170,7 +87,7 @@ class ReportsController < ApplicationController
   def subsystem_summary
     authorize(:report, :subsystem_summary?)
 
-    @scorecard = current_account.scorecards.find(params[:report][:scorecard_id])
+    @scorecard = current_account.scorecards.find(params[:scorecard_id])
     @report = Reports::SubsystemSummary.new(@scorecard)
     send_data(
       @report.to_xlsx.read,

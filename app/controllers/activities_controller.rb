@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
+# Controller for Activities
 class ActivitiesController < ApplicationController
-  before_action :authenticate_user!
+  include VerifyPolicies
 
-  add_breadcrumb 'Activities', :activities_path
+  sidebar_item :home
 
   def index
-    @versions = policy_scope(PaperTrail::Version).order(sort_order).page(params[:page])
-  end
+    versions = policy_scope(PaperTrail::Version).order(created_at: :desc)
 
-  def sort_order
-    return { created_at: :desc } unless params[:order].present?
+    @pagy, @versions = pagy(versions, limit: 10)
 
-    super
+    respond_to do |format|
+      format.html { render 'activities/index', locals: { versions: @versions } }
+      format.turbo_stream { render 'activities/index', locals: { versions: @versions } }
+    end
   end
 end

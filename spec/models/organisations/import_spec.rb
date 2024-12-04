@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: imports
@@ -17,9 +19,3 @@
 #  index_imports_on_user_id     (user_id)
 #
 require 'rails_helper'
-
-RSpec.describe Organisations::Import, type: :model do
-  context '#process' do
-    
-  end
-end

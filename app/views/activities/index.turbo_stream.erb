@@ -1,0 +1,6 @@
+<%= turbo_stream.update :table do %>
+  <tbody class="divide-y divide-gray-800">
+    <%= render @versions %>
+  </tbody>
+  <%= render partial: 'pagination' %>
+<% end %>

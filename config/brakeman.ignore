@@ -1,0 +1,259 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "1797ef6f9e67e3a9c8346ccd237a3843f33de5a511a4a4da417d62adcd3af5b1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 202,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    INSERT INTO versions (item_type, item_id, event, whodunnit, object, created_at)\\n      SELECT item_type, #{build_case_fragment(\"versions.item_id\", source_ids, target_ids)}, event, whodunnit, object, created_at\\n      FROM versions\\n      WHERE item_type = '#{item_type}' AND item_id IN (#{source_ids.join(\",\")})\\n    RETURNING id;\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_paper_trail_records"
+      },
+      "user_input": "build_case_fragment(\"versions.item_id\", source_ids, target_ids)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "1e3a6840dbdd30495c1e89d1614571092be0fc0443d8c7be6c47e29df650dd5a",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 151,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    INSERT INTO checklist_items (checked, comment, characteristic_id, initiative_id, created_at, updated_at)\\n      SELECT\\n        #{deep_copy ? (\"checked, comment\") : (\"NULL, NULL\")},\\n        characteristic_id,\\n        #{build_case_fragment(\"checklist_items.initiative_id\", source_initiative_ids, target_initiative_ids)},\\n        created_at,\\n        updated_at\\n      FROM checklist_items\\n      WHERE initiative_id IN (#{source_initiative_ids.join(\",\")})\\n      ORDER BY id\\n    RETURNING id;\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_checklist_items"
+      },
+      "user_input": "build_case_fragment(\"checklist_items.initiative_id\", source_initiative_ids, target_initiative_ids)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "2451873eb53be313d3d0196daf0034eb5e4d52f84c29dec5899fa6d4984e369e",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 150,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    SELECT id\\n    FROM checklist_items\\n    WHERE initiative_id IN (#{source_initiative_ids.join(\",\")})\\n    ORDER BY id\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_checklist_items"
+      },
+      "user_input": "source_initiative_ids.join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "34599c3b31785e21d3dc806da139f58f505287b30a4b8f6a9ef65c08d8f814b1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 180,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    INSERT INTO checklist_item_comments (comment, status, checklist_item_id, deleted_at, created_at, updated_at)\\n      SELECT comment, status, #{build_case_fragment(\"checklist_item_comments.checklist_item_id\", source_checklist_items_ids, target_checklist_items_ids)}, deleted_at, created_at, updated_at\\n      FROM checklist_item_comments\\n      WHERE checklist_item_id IN (#{source_checklist_items_ids.join(\",\")})\\n      ORDER BY id\\n    RETURNING id;\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_checklist_item_comments"
+      },
+      "user_input": "build_case_fragment(\"checklist_item_comments.checklist_item_id\", source_checklist_items_ids, target_checklist_items_ids)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "462f255df80e460a8f5d34eeb91398d4a73f2026503339ec679217f3204a8e8c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/cross_account_percent_actual.rb",
+      "line": 103,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual as (\\n  select\\n    accounts.id as account_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join accounts on scorecards.account_id = accounts.id\\n    where accounts.id in (#{accounts.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by accounts.id, scorecards.id, initiatives.id\\n)\\n\\nselect\\n  accounts.name as account_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  raw_percent_actual.total_characteristics,\\n  raw_percent_actual.actual_characteristics,\\n  raw_percent_actual.percent_actual\\nfrom raw_percent_actual\\ninner join initiatives on raw_percent_actual.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join accounts on scorecards.account_id = accounts.id\\norder by account_name, scorecard_name, initiative_name\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::CrossAccountPercentActual",
+        "method": "generate_data"
+      },
+      "user_input": "accounts.pluck(:id).join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "51df2818466aca8494b684b02c86009a01a37d432509377a5dc04074030244e1",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/cross_account_percent_actual_by_focus_area.rb",
+      "line": 109,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    accounts.id as account_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.id as focus_area_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join accounts on scorecards.account_id = accounts.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where accounts.id in (#{accounts.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by accounts.id, scorecards.id, initiatives.id, focus_areas.id\\n)\\n\\nselect\\n  accounts.name as account_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join accounts on scorecards.account_id = accounts.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_id = focus_areas.id\\norder by account_name, scorecard_name, initiative_name, focus_areas.position\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::CrossAccountPercentActualByFocusArea",
+        "method": "generate_data"
+      },
+      "user_input": "accounts.pluck(:id).join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "6d11f4f7bcaf801f4ae4711c3a291166dc349f4236c750361eb7fadb80e40b3f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 119,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    INSERT INTO initiatives_organisations (initiative_id, organisation_id, deleted_at, created_at, updated_at)\\n      SELECT #{build_case_fragment(\"initiatives_organisations.initiative_id\", source_initiative_ids, target_initiative_ids)}, organisation_id, deleted_at, created_at, updated_at\\n      FROM initiatives_organisations\\n      WHERE initiative_id IN (#{source_initiative_ids.join(\",\")})\\n      ORDER BY id\\n    RETURNING id;\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_initiative_organisations"
+      },
+      "user_input": "build_case_fragment(\"initiatives_organisations.initiative_id\", source_initiative_ids, target_initiative_ids)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "71742c4682961497188714e6648eee9c261d10038dd4201a42c82653140fb2ac",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/cross_account_percent_actual_by_focus_area_tabbed.rb",
+      "line": 125,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    accounts.id as account_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.name as focus_area_name,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join accounts on scorecards.account_id = accounts.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where accounts.id in (#{accounts.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    and focus_areas.name = '#{focus_area_name}'\\n    group by accounts.id, scorecards.id, initiatives.id, focus_areas.name\\n)\\n\\nselect distinct on (account_name, scorecard_name, initiative_name, focus_area_name)\\n  accounts.name as account_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join accounts on scorecards.account_id = accounts.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_name = focus_areas.name\\norder by account_name, scorecard_name, initiative_name, focus_area_name\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::CrossAccountPercentActualByFocusAreaTabbed",
+        "method": "generate_data"
+      },
+      "user_input": "accounts.pluck(:id).join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "8c313a953ade73f84d93a687a43fba81cc8b0e37020879664e5a506dfa487f32",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 179,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    SELECT id\\n    FROM checklist_item_comments\\n    WHERE checklist_item_id IN (#{source_checklist_items_ids.join(\",\")})\\n    ORDER BY id\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_checklist_item_comments"
+      },
+      "user_input": "source_checklist_items_ids.join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "df7e3649b39ea01be607c53e0d68954f780ec31dd0e5f955576ab178aa0578e0",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/scorecard_comments.rb",
+      "line": 192,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with comments_with_timestamp as (\\n  select\\n    characteristics.id as characteristic_id,\\n    initiatives.id as initiative_id,\\n    json_strip_nulls(\\n      json_agg(\\n        json_build_object(\\n          'comment', checklist_item_changes.comment,\\n          'date', checklist_item_changes.created_at\\n        )\\n      )\\n    ) AS comments,\\n    count(checklist_item_changes.comment) as comment_count\\n  from checklist_item_changes\\n  inner join checklist_items on checklist_items.id = checklist_item_changes.checklist_item_id\\n  inner join characteristics on characteristics.id = checklist_items.characteristic_id\\n  inner join initiatives on initiatives.id = checklist_items.initiative_id\\n  left join lateral (\\n    select\\n      distinct on (previous_changes.checklist_item_id)\\n      previous_changes.id,\\n      previous_changes.comment\\n    from checklist_item_changes previous_changes\\n      where previous_changes.checklist_item_id = checklist_item_changes.checklist_item_id\\n      and previous_changes.created_at < checklist_item_changes.created_at\\n      order by previous_changes.checklist_item_id, previous_changes.created_at desc\\n  ) previous_changes on true\\n  where checklist_item_changes.comment <> coalesce(previous_changes.comment, '')\\n  and checklist_item_changes.created_at <= '#{date}'\\n  and checklist_item_changes.ending_status = '#{status}'\\n  and initiatives.scorecard_id = #{scorecard.id}\\n  and (checklist_item_changes.created_at < initiatives.archived_on or initiatives.archived_on is null)\\n  group by characteristics.id, initiatives.id\\n),\\n\\ncharacteristics_ordered_by_position as (\\n  select\\n    characteristics.*\\n  from characteristics\\n  inner join focus_areas on focus_areas.id = characteristics.focus_area_id\\n  inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id\\n  where focus_area_groups.account_id = #{scorecard.account_id}\\n  order by focus_area_groups.position, focus_areas.position, characteristics.id\\n)\\n\\nselect\\n  characteristics.id as characteristic_id,\\n  json_strip_nulls(\\n    json_agg(\\n      json_build_object(\\n        'initiative_id', initiative_id,\\n        'comments', comments,\\n        'comment_count', comment_count\\n      )\\n    )\\n  ) as comments,\\n  count(initiative_id) as initiative_count\\nfrom characteristics\\ninner join comments_with_timestamp on comments_with_timestamp.characteristic_id = characteristics.id\\ngroup by characteristics.id\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::ScorecardComments",
+        "method": "generate_data"
+      },
+      "user_input": "date",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "e8b648ed6d9f59d608f0830311679dfc7ddc557853512387434d92e3a3ffa95c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/scorecard_copier.rb",
+      "line": 98,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"\\n    INSERT INTO initiatives (\\n        name,\\n        description,\\n        scorecard_id,\\n        started_at,\\n        finished_at,\\n        dates_confirmed,\\n        contact_name,\\n        contact_email,\\n        contact_phone,\\n        contact_website,\\n        contact_position,\\n        deleted_at,\\n        created_at,\\n        updated_at\\n      )\\n      SELECT\\n        name,\\n        description,\\n        #{target_scorecard_id},\\n        started_at,\\n        finished_at,\\n        dates_confirmed,\\n        contact_name,\\n        contact_email,\\n        contact_phone,\\n        contact_website,\\n        contact_position,\\n        deleted_at,\\n        created_at,\\n        updated_at\\n      FROM initiatives\\n      WHERE scorecard_id = #{source_scorecard_id}\\n      ORDER BY id\\n    RETURNING id;\\n    \")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ScorecardCopier",
+        "method": "copy_initiatives"
+      },
+      "user_input": "target_scorecard_id",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    }
+  ],
+  "updated": "2024-11-11 22:17:33 +1030",
+  "brakeman_version": "6.2.2"
+}

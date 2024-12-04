@@ -1,0 +1,91 @@
+<div class="fixed inset-y-0 left-0 w-60 max-lg:hidden bg-zinc-950">
+  <div class="flex h-full min-h-0 flex-col">
+    <div class="flex items-center border-b border-zinc-950/5 p-4 dark:border-white/5 mt-2.5">
+      <%= image_tag 'logo-small.png', class: 'h-7 w-7', alt: "Logo for the 'Obsekio'" %>
+      <span class="ml-2 text-white font-extrabold text-lg">Obsekio</span>
+    </div>
+    <nav class="flex h-full min-h-0 flex-col">
+      <ul role="list" class="flex flex-1 flex-col overflow-y-auto p-4">
+        <li>
+          <ul role="list" class="-mx-2 space-y-1">
+            <%= render_sidebar_item title: 'Home', path: root_path, icon: :home, active_group: :home %>
+            <%= render_sidebar_item title: 'Impact Cards', path: impact_cards_path, icon: :impact_cards, active_group: :impact_cards %>
+            <%= render_sidebar_item title: 'Initiatives', path: initiatives_path, icon: :initiatives, active_group: :initiatives %>
+            <%= render_sidebar_item title: 'Stakeholders', path: organisations_path, icon: :stakeholders, active_group: :stakeholders %>
+            <%= render_sidebar_item title: 'Reports', path: reports_path, icon: :reports, active_group: :reports %>
+            <%= render_sidebar_item title: 'Team', path: users_path, icon: :teams, active_group: :teams %>
+          </ul>
+        </li>
+        <li>
+          <div class="text-xs font-semibold leading-6 text-gray-400 mt-8">Labels</div>
+          <ul role="list" class="-mx-2 mt-2 space-y-1">
+            <%= render_sidebar_item title: 'Communities', path: labels_communities_path, icon: :tags, active_group: :communities %>
+            <%= render_sidebar_item title: 'Problems / Opportunities', path: labels_wicked_problems_path, icon: :tags, active_group: :problems %>
+            <%= render_sidebar_item title: 'Stakeholder Types', path: labels_stakeholder_types_path, icon: :tags, active_group: :stakeholder_types %>
+            <%= render_sidebar_item title: 'Subsystem Tags', path: labels_subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
+          </ul>
+        </li>
+        <li class="mt-auto">
+          <%= render_dropdown_menu do %>
+            <%= dropdown_menu_trigger do %>
+              <div class="group flex justify-between gap-x-3 rounded-md -mx-2 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
+                <div class="flex items-center">
+                  <%= render_icon :user_profile %>
+                  <span class="ml-2">Your Profile</span>
+                </div>
+                <div class="ml-auto flex items-center">
+                  <%= render_icon :menu_up %>
+                </div>
+              </div>
+            <% end %>
+
+            <%= dropdown_menu_content do %>
+             <%=
+                dropdown_menu_item do
+                  link_to "#{current_account.name} &checkmark;".html_safe, current_account, class: "block w-full text-sm"
+                end
+              %>
+              <%- current_user.accounts.where.not(id: current_account.id).limit(4).each do |account| %>
+                <%= dropdown_menu_item do %>
+                  <%= link_to account.name, switch_account_path(account), class: "block w-full text-sm" %>
+                <% end %>
+              <% end %>
+
+              <%=
+                dropdown_menu_item do
+                  link_to "Other accounts...", accounts_path, class: "block w-full text-sm"
+                end
+              %>
+              <hr/>
+              <%=
+                dropdown_menu_item do
+                  link_to "Settings", root_path, class: "block w-full text-sm"
+                end
+              %>
+
+              <%=
+                dropdown_menu_item do
+                  link_to "Dark mode &checkmark;".html_safe, '', data: { controller: 'theme', theme_target: 'toggle', action: 'theme#toggle' }, class: 'block w-full'
+                end
+              %>
+              <hr/>
+              <%- if current_user != true_user %>
+                <%=
+                  dropdown_menu_item do
+                    link_to "Stop impersonating", stop_impersonating_users_path, data: { turbo_method: "post" }, class: "block w-full text-sm"
+                  end
+                %>
+              <% end %>
+
+              <%=
+                dropdown_menu_item do
+                  link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete }, class: "block w-full text-sm font-semibold"
+                end
+              %>
+            <% end %>
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

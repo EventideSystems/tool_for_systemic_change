@@ -23,7 +23,7 @@
     <% if @scorecard.share_ecosystem_map? %>
       <div class="tab-pane" id="ecosystem_maps">
         <%=
-          render 'scorecards/show_tabs/ecosystem_maps',
+          render 'impact_cards/show_tabs/ecosystem_maps',
             scorecard_id: @scorecard.shared_link_id,
             stakeholder_types: @scorecard.stakeholder_types
         %>

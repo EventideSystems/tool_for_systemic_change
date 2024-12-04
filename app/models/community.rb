@@ -5,6 +5,7 @@
 # Table name: communities
 #
 #  id          :integer          not null, primary key
+#  color       :string           default("#14b8a6"), not null
 #  deleted_at  :datetime
 #  description :string
 #  name        :string
@@ -18,12 +19,15 @@
 #  index_communities_on_deleted_at  (deleted_at)
 #
 class Community < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
   belongs_to :account
-  has_many :scorecards
-  
+  has_many :scorecards, dependent: :nullify
+
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation to database, or remove this model completely
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 end

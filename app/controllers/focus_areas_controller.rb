@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
+# Controller for FocusAreas
 class FocusAreasController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_focus_area, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: %i[new edit]
-
-  add_breadcrumb 'System', :focus_areas_path
 
   def index
     @focus_areas = \
       policy_scope(FocusArea)
-        .joins(focus_area_group: :account)
-        .where('focus_area_groups.account': current_account)
-        .order(sort_order)
-        .page(params[:page])
+      .joins(focus_area_group: :account)
+      .where('focus_area_groups.account': current_account)
+      .order(sort_order)
+      .page(params[:page])
   end
 
   def show; end
@@ -67,7 +68,7 @@ class FocusAreasController < ApplicationController
     @focus_area_groups = policy_scope(FocusAreaGroup).where(account: current_account)
   end
 
-  def focus_area_params
+  def focus_area_params # rubocop:disable Metrics/MethodLength
     params
       .fetch(:focus_area, {})
       .permit(

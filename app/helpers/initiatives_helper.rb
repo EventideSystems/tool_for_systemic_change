@@ -1,7 +1,20 @@
 # frozen_string_literal: true
 
+# Helper methods for presenting initiative data
 module InitiativesHelper
-  def scorecard_label(initiative)
+  def applicable_date_range(initiative)
+    return '' if initiative.started_at.blank? && initiative.finished_at.blank?
+
+    start_date = initiative.started_at&.strftime('%b %Y')
+    end_date = initiative.finished_at&.strftime('%b %Y')
+
+    return "Starts at #{start_date}" if end_date.blank?
+    return "Ends at #{end_date}" if start_date.blank?
+
+    safe_join([start_date, end_date], ' to ')
+  end
+
+  def scorecard_label(initiative) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     if initiative.new_record? || initiative.scorecard.nil?
       current_account.scorecard_types.map { |type| type.model_name.human }
                      .join(' / ')
@@ -30,7 +43,13 @@ module InitiativesHelper
     end
   end
 
-  def link_to_video_tutorial(video_tutorial)
+  def mail_to_contact_email(initiative)
+    return '' if initiative&.contact_email.blank?
+
+    mail_to initiative.contact_email, initiative.contact_email, class: 'text-blue-500 hover:text-blue-700 underline'
+  end
+
+  def link_to_video_tutorial(video_tutorial) # rubocop:disable Metrics/MethodLength
     return '' if video_tutorial.blank?
 
     link_to(
@@ -60,42 +79,9 @@ module InitiativesHelper
     end
   end
 
-  def initiative_tab_title(scorecard_type)
-    case scorecard_type.name
-    when 'TransitionCard'
-      "Initiatives for #{current_account.transition_card_model_name.pluralize}"
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      "Initiatives for #{current_account.sdgs_alignment_card_model_name.pluralize}"
-    end
-  end
-
-  def initiative_scope(scorecard_type)
-    case scorecard_type.name
-    when 'TransitionCard' then :transition_cards
-    when 'SustainableDevelopmentGoalAlignmentCard' then :sdgs_alignment_cards
-    end
-  end
-
-  def initiative_tab_class(scorecard_type, scope)
-    case scorecard_type.name
-    when 'TransitionCard'
-      scope.blank? || scope == 'transition_cards' ? 'active' : ''
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      scope == 'sdgs_alignment_cards' ? 'active' : ''
-    end + ' nav-link'
-  end
-
   def initiative_scorecard_types
     current_account.scorecard_types.map do |scorecard_type|
       [scorecard_type.model_name.human.pluralize, scorecard_type.name]
-    end
-  end
-
-  def initiative_export_button_tooltip_title(params)
-    if current_account.scorecard_types.count > 1
-      "Export #{initiative_tab_title(scorecard_type_from_params(params))} to CSV"
-    else
-      'Export Initiatives to CSV'
     end
   end
 

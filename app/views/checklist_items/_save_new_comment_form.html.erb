@@ -1,0 +1,13 @@
+<%= form_with(model: checklist_item, local: true) do |form| %>
+  <%= hidden_field_tag :action, :save_new_comment %>
+  <div class="grid grid-cols-4 gap-4 w-full">
+    <div class="col-span-3">
+      <%= form.text_area :new_comment, class: 'h-32 w-full', placeholder: 'Add new comment', autofocus: true, required: true %>
+    </div>
+    <div class="col-span-1">
+      <%= render partial: 'form_status_fields', locals: { form: form, checklist_item: checklist_item, status_field: :new_status } %>
+    </div>
+  </div>
+  <%= render partial: 'form_actions', locals: { form: form, button_title: 'Save New Comment', checklist_item: checklist_item } %>
+<% end %>
+

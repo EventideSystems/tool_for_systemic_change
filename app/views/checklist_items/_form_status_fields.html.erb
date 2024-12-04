@@ -1,0 +1,14 @@
+<% ChecklistItemsHelper::CHECKLIST_LIST_ITEM_RADIO_BUTTON_COLOR_CLASSES.each do |status, classes| %>
+  <div class="flex items-center space-x-2 mb-2">
+    <%=
+      form.radio_button(
+        status_field,
+        status,
+        checked: checklist_item.attributes[status_field.to_s]&.to_sym == status,
+        class: classes,
+        required: true
+      )
+    %>
+    <%= form.label :status, status.to_s.humanize, value: status %>
+  </div>
+<% end %>

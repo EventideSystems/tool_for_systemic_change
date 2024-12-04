@@ -1,28 +1,36 @@
 # frozen_string_literal: true
 
+# Controller for Accounts
 class AccountsController < ApplicationController
+  include VerifyPolicies
+
   before_action :set_account, only: %i[show edit update destroy switch]
 
-  add_breadcrumb 'Accounts', :accounts_path
-
   def index
-    @accounts = policy_scope(Account).order(sort_order).page(params[:page])
+    search_params = params.permit(:format, :page, q: [:name_or_description_cont])
+
+    @q = policy_scope(Account).order(:name).ransack(search_params[:q])
+
+    accounts = @q.result(distinct: true)
+
+    @pagy, @accounts = pagy(accounts, limit: 10)
+
+    respond_to do |format|
+      format.html { render 'accounts/index', locals: { accounts: @accounts } }
+      format.turbo_stream { render 'accounts/index', locals: { accounts: @accounts } }
+    end
   end
 
   def show
     @account.readonly!
-    add_breadcrumb(@account.name)
   end
 
   def new
-    @account = Account.new(expires_on: Date.today + 1.year)
+    @account = Account.new(expires_on: Time.zone.today + 1.year)
     authorize(@account)
-    add_breadcrumb('New')
   end
 
-  def edit
-    add_breadcrumb(@account.name)
-  end
+  def edit; end
 
   def create
     @account = Account.new(account_params)

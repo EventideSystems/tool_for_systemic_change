@@ -1,40 +1,36 @@
+# frozen_string_literal: true
+
 module System
+  # Controller for managing stakeholder types - only accessible by system admins and soon to be deprecated
   class StakeholderTypesController < ApplicationController
-    before_action :set_stakeholder_type, only: [:show, :edit, :update, :destroy]
+    include VerifyPolicies
+
+    before_action :set_stakeholder_type, only: %i[show edit update destroy]
 
     skip_after_action :verify_policy_scoped, only: [:index]
-
-    add_breadcrumb "System"
-    add_breadcrumb "Stakeholder Types", :stakeholder_types_path
 
     def index
       @stakeholder_types = \
         System::StakeholderTypePolicy::Scope.new(pundit_user, StakeholderType)
-          .resolve
-          .order(sort_order)
-          .page params[:page]
+                                            .resolve
+                                            .order(sort_order)
+                                            .page params[:page]
 
       render 'stakeholder_types/index'
     end
 
     def show
       @content_subtitle = @stakeholder_type.name
-      add_breadcrumb @stakeholder_type.name
-
       render 'stakeholder_types/show'
     end
 
     def new
       @stakeholder_type = StakeholderType.new
       authorize @stakeholder_type, policy_class: System::StakeholderTypePolicy
-      add_breadcrumb "New"
-
       render 'stakeholder_types/new'
     end
 
     def edit
-      add_breadcrumb @stakeholder_type.name
-
       render 'stakeholder_types/edit'
     end
 
@@ -50,7 +46,6 @@ module System
     end
 
     def update
-
       if @stakeholder_type.update(stakeholder_type_params)
         redirect_to system_stakeholder_types_path, notice: 'Stakeholder Type was successfully updated.'
       else

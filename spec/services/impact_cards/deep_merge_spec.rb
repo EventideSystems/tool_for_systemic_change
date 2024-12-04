@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metrics/BlockLength
+RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:user) { create(:user) }
   let(:account) { create(:account) }
 
@@ -78,7 +80,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
     )
   end
 
-  let!(:non_clashing_checklist_item) do
+  let(:non_clashing_checklist_item) do
     create(
       :checklist_item,
       characteristic:,
@@ -91,6 +93,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
   let(:service) { described_class.new(impact_card:, other_impact_card:) }
 
   before do
+    non_clashing_checklist_item # Create non-clashing checklist item
+
     clashing_initiative.organisations << [organisation]
     clashing_initiative.subsystem_tags << [subsystem_tag]
     clashing_initiative.save!
@@ -100,8 +104,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
     other_clashing_initiative.save!
   end
 
-  describe 'merging clashing initiatives' do
-    it 'merges clashing initiatives' do
+  describe 'merging clashing initiatives' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    it 'merges clashing initiatives' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
       service.call
 
       clashing_initiative.reload
@@ -131,7 +135,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
       expect(clashing_initiative.subsystem_tags).to(eq([subsystem_tag, other_subsystem_tag]))
     end
 
-    it 'preserves contact information regardless of the update order of the initiatives' do
+    it 'preserves contact information regardless of the update order of the initiatives' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
       clashing_initiative.update!(
         contact_name: 'Contact Name',
         contact_email: 'Contact Email',
@@ -160,7 +164,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
     end
   end
 
-  describe 'merging "new_comments_saved_assigned_actuals" when previous change ended as "actual"' do
+  describe 'merging "new_comments_saved_assigned_actuals" when previous change ended as "actual"' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let!(:additional_other_checklist_item_change) do
       create(
         :checklist_item_change,
@@ -175,7 +179,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
       )
     end
 
-    it 'maintains "new_comments_saved_assigned_actuals" activity' do
+    it 'maintains "new_comments_saved_assigned_actuals" activity' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
       service.call
 
       clashing_initiative.checklist_items.reload
@@ -187,8 +191,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
     end
   end
 
-  describe 'merging "new_comments_saved_assigned_actuals" when previous change ended as "planned"' do # rubocop:disable Metrics/BlockLength
-    let!(:other_checklist_item_change) do
+  describe 'merging "new_comments_saved_assigned_actuals" when previous change ended as "planned"' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    let!(:other_checklist_item_change) do # rubocop:disable RSpec/LetSetup
       create(
         :checklist_item_change,
         checklist_item: other_checklist_item,
@@ -225,8 +229,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable Metr
     end
   end
 
-  describe 'merging non clashing initiatives' do
-    it 'retargets non-clashing initiatives to the impact card' do
+  describe 'merging non clashing initiatives' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    it 'retargets non-clashing initiatives to the impact card' do # rubocop:disable RSpec/MultipleExpectations
       service.call
 
       expect(impact_card.initiatives.pluck(:name)).to(include('Non-Clashing Initiative'))

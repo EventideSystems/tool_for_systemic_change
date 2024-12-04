@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module EcosystemMaps
+  # This class is responsible for generating the data required to render the Organisations Network Map
+  # for a given impact card.
   class Organisations
     attr_reader :transition_card, :unique_organisations
 
@@ -27,7 +29,7 @@ module EcosystemMaps
 
     private
 
-    def build_link_data
+    def build_link_data # rubocop:disable Metrics/MethodLength
       query = <<~SQL
         select org1.id, org2.id
         from initiatives
@@ -56,12 +58,11 @@ module EcosystemMaps
       data = JSON.parse(payload['body'].presence || '{}')
 
       data.transform_keys(&:to_i)
-    rescue Exception => e
+    rescue Exception # rubocop:disable Lint/RescueException
       raise(payload.inspect)
-      {}
     end
 
-    def build_links
+    def build_links # rubocop:disable Metrics/MethodLength
       grouped_link_data = link_data.group_by(&:itself).transform_values(&:count)
 
       upper = grouped_link_data.values.max
@@ -97,7 +98,7 @@ module EcosystemMaps
       value_in_range = value - lower
 
       base_strength = (
-        ((value_in_range.to_f / range.to_f) * 100) / STRENGTH_BUCKET_WIDTH
+        ((value_in_range.to_f / range) * 100) / STRENGTH_BUCKET_WIDTH
       ).round
 
       base_strength.zero? ? 1 : base_strength

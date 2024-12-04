@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-class InitiativePolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      case
-      when current_account && (system_admin? || account_admin?(current_account))
+class InitiativePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
+    def resolve # rubocop:disable Metrics/AbcSize
+      if current_account && (system_admin? || account_admin?(current_account))
         scope.joins(:scorecard).where('scorecards.account_id': current_account.id)
-      when current_account && account_member?(current_account)
+      elsif current_account && account_member?(current_account)
         scope.joins(:scorecard).not_archived.where('scorecards.account_id': current_account.id)
       else
         scope.joins(:scorecard).none

@@ -1,5 +1,10 @@
+# frozen_string_literal: true
+
+# Controller for managing video tutorials. Soon to be deprecated.
 class VideoTutorialsController < ApplicationController
-  before_action :set_video_tutorial, only: [:show, :edit, :update, :destroy]
+  include VerifyPolicies
+
+  before_action :set_video_tutorial, only: %i[show edit update destroy]
 
   def index
     @video_tutorials = policy_scope(VideoTutorial).order(sort_order).page params[:page]
@@ -14,8 +19,7 @@ class VideoTutorialsController < ApplicationController
     authorize @video_tutorial
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @video_tutorial = VideoTutorial.new(video_tutorial_params)
@@ -24,10 +28,8 @@ class VideoTutorialsController < ApplicationController
     respond_to do |format|
       if @video_tutorial.save
         format.html { redirect_to video_tutorials_path, notice: 'Video tutorial was successfully created.' }
-        format.json { render :show, status: :created, location: @video_tutorial }
       else
         format.html { render :new }
-        format.json { render json: @video_tutorial.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -36,10 +38,8 @@ class VideoTutorialsController < ApplicationController
     respond_to do |format|
       if @video_tutorial.update(video_tutorial_params)
         format.html { redirect_to video_tutorials_path, notice: 'Video tutorial was successfully updated.' }
-        format.json { render :show, status: :ok, location: @video_tutorial }
       else
         format.html { render :edit }
-        format.json { render json: @video_tutorial.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -48,12 +48,7 @@ class VideoTutorialsController < ApplicationController
     @video_tutorial.destroy
     respond_to do |format|
       format.html { redirect_to video_tutorials_url, notice: 'Video tutorial was successfully deleted.' }
-      format.json { head :no_content }
     end
-  end
-
-  def content_subtitle
-    @video_tutorial&.name.presence || super
   end
 
   private

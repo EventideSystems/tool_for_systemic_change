@@ -2,10 +2,11 @@
 
 require 'benchmark'
 
+# This class is responsible for generating the data required to render the Impact Card Grid
 # rubocop:disable Metrics/ClassLength
 class ScorecardGrid
   class << self
-    def execute(scorecard, snapshot_at = nil, subsystem_tags = [])
+    def execute(scorecard, snapshot_at = nil, subsystem_tags = []) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       columns_data = column_data(scorecard.account, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
 
       if snapshot_at.present?
@@ -44,6 +45,8 @@ class ScorecardGrid
             -- Value column
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
+              'focus_area_name', focus_areas.name,
+              'focus_area_color', focus_areas.actual_color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -68,13 +71,20 @@ class ScorecardGrid
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
           #{subsystem_sql(subsystem_tags)}
-          group by initiatives.id, characteristics.id, checklist_items.id, focus_area_groups.id
+          group by
+            initiatives.id,
+            characteristics.id,
+            checklist_items.id,
+            focus_area_groups.id,
+            focus_areas.name,
+            focus_areas.actual_color
           order by initiative
           $$,
           $$
             select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
+        order by initiative->>'name'
       SQL
     end
 
@@ -95,6 +105,8 @@ class ScorecardGrid
             -- Value column
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
+              'focus_area_name', focus_areas.name,
+              'focus_area_color', focus_areas.actual_color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -141,6 +153,8 @@ class ScorecardGrid
             characteristics.id,
             checklist_items.id,
             focus_area_groups.id,
+            focus_areas.name,
+            focus_areas.actual_color,
             changes.comment,
             checklist_items_at_snap_shot.comment,
             changes.ending_status,
@@ -151,6 +165,7 @@ class ScorecardGrid
             select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
           $$
         ) as data(#{columns_data})
+        order by initiative->>'name'
       SQL
     end
 
@@ -196,7 +211,7 @@ class ScorecardGrid
     def wrap_date(snapshot_at)
       return 'now()' if snapshot_at.blank?
 
-      snapshot_timestamp = snapshot_at.is_a?(String) ? Time.parse(snapshot_at) : snapshot_at.to_time
+      snapshot_timestamp = snapshot_at.is_a?(String) ? Time.zone.parse(snapshot_at) : snapshot_at.to_time
       "'#{snapshot_timestamp.utc.to_fs(:db)}'"
     end
   end

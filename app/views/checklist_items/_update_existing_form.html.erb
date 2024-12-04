@@ -1,0 +1,12 @@
+<%= form_with(model: checklist_item, local: true) do |form| %>
+  <%= hidden_field_tag :action, :update_existing %>
+  <div class="grid grid-cols-4 gap-4 w-full">
+    <div class="col-span-3">
+      <%= form.text_area :comment, class: 'h-32 w-full', placeholder: 'Update existing comment', required: true %>
+    </div>
+    <div class="col-span-1">
+      <%= render partial: 'form_status_fields', locals: { form: form, checklist_item: checklist_item, status_field: :status } %>
+    </div>
+  </div>
+  <%= render partial: 'form_actions', locals: { form: form, button_title: 'Update Existing', checklist_item: checklist_item } %>
+<% end %>

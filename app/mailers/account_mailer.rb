@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Mailer for account-related notifications.
 class AccountMailer < ApplicationMailer
   def expiry_warning(account, user)
     @user_name = user.name.presence || 'Tool for Systemic Change User'

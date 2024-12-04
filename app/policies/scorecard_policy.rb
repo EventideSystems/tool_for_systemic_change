@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ScorecardPolicy < ApplicationPolicy
-  class Scope < Scope
+class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       resolve_to_current_account.where(type: current_account_scorecard_types)
     end
@@ -66,7 +66,7 @@ class ScorecardPolicy < ApplicationPolicy
   end
 
   def max_scorecards_not_reached?(account)
-    return false unless account.present?
+    return false if account.blank?
     return true if account.max_scorecards.zero? # NOTE: magic number, meaning no limit
 
     account.scorecards.count < account.max_scorecards

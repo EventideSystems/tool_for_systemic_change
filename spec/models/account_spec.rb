@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: accounts
@@ -31,18 +33,19 @@
 require 'rails_helper'
 
 RSpec.describe Account, type: :model do
-
   describe 'create account' do
+    # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let!(:stakeholder_type_1) { create(:stakeholder_type, name: 'StakeholderType 1', account_id: nil) }
     let!(:stakeholder_type_2) { create(:stakeholder_type, name: 'StakeholderType 2', account_id: nil) }
+    # rubocop:enable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
 
-    it 'should create stakeholder_types for the account' do
-      account = Account.create(name: 'Test Account')
+    it 'creates stakeholder_types for the account' do # rubocop:disable RSpec/MultipleExpectations
+      account = described_class.create(name: 'Test Account')
 
       expect(account.stakeholder_types.count).to eq(2)
       expect(StakeholderType.count).to eq(4)
       expect(account.stakeholder_types.first.name).to eq('StakeholderType 1')
-      expect(account.stakeholder_types.first.id).to_not eq(stakeholder_type_1.id)
+      expect(account.stakeholder_types.first.id).not_to eq(stakeholder_type_1.id)
     end
   end
 end

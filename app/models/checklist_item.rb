@@ -38,19 +38,24 @@ class ChecklistItem < ApplicationRecord
   belongs_to :initiative
   belongs_to :characteristic
 
-  has_many :checklist_item_comments # TODO: deprecated, remove this
-
   has_many :checklist_item_changes, dependent: :destroy
 
   validates :status, presence: true
   validates :status, inclusion: { in: (statuses.keys - %w[no_comment]), message: 'Please select a status' }, on: :update
   validates :comment, presence: true
   validates :initiative, presence: true
-  validates :characteristic, presence: true, uniqueness: { scope: :initiative }
+  # TODO: Add scoped characteristic validation to database schema
+  validates :characteristic, presence: true, uniqueness: { scope: :initiative } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   attr_reader :new_comment, :new_status # support creating comments
 
   attribute :humanized_status, :string
+
+  delegate :focus_area, to: :characteristic
+  delegate :focus_area_group, to: :focus_area
+  delegate :scorecard, to: :initiative
+
+  scope :grouped_by_focus_area, -> { group_by(&:focus_area_id) }
 
   def name
     characteristic&.name.presence
@@ -58,12 +63,11 @@ class ChecklistItem < ApplicationRecord
 
   def snapshot_at(timestamp)
     return self if timestamp.nil?
+
     paper_trail.version_at(timestamp) || raw_clone
   end
 
-  def focus_area
-    characteristic.focus_area
-  end
+  delegate :focus_area, to: :characteristic
 
   def humanized_status
     status.humanize
@@ -72,10 +76,9 @@ class ChecklistItem < ApplicationRecord
   private
 
   def raw_clone
-    raw_clone = self.clone
+    raw_clone = clone
     raw_clone.checked = nil
     raw_clone.readonly!
     raw_clone
   end
-
 end

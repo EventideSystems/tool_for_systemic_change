@@ -28,6 +28,7 @@ en:
         suggestion: Suggestion / idea
         more_information: More information
     models:
-      transition_card: Transition Card
+      transition_card: Impact Card
       sustainable_development_goal_alignment_card: SDGs Alignment Card
       wicked_problem: Wicked Problem / Opportunity
+      organisation: Stakeholder

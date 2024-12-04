@@ -42,6 +42,8 @@
 #  index_users_on_system_role           (system_role)
 #
 class User < ApplicationRecord
+  include Searchable
+
   has_paper_trail
 
   enum system_role: { member: 0, admin: 1 }
@@ -52,27 +54,34 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :accounts_users
+  has_many :accounts_users, dependent: :destroy
   has_many :accounts, through: :accounts_users
   has_many :active_accounts_with_admin_role,
            lambda {
              where(accounts_users: { account_role: :admin })
-               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Date.today)
+               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Time.zone.today)
            },
            through: :accounts_users,
            source: :account
 
   accepts_nested_attributes_for :accounts_users, allow_destroy: true
 
-  attr_accessor :account_role # Virtual attribute used when inviting users
+  # Virtual attributes used when inviting or updating users
+  attr_accessor :initial_account_role
+  attr_accessor :initial_system_role
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[name email] + _ransackers.keys
+  end
 
   def active_for_authentication?
     super && (admin? || default_account.present?)
   end
 
+  # TODO: Consider converting this to symbols.
   def status
-    return 'deleted' unless deleted_at.blank?
-    return 'invitation-pending' unless invitation_token.blank?
+    return 'deleted' if deleted_at.present?
+    return 'invitation-pending' if invitation_token.present?
 
     'active'
   end
@@ -82,6 +91,8 @@ class User < ApplicationRecord
     AccountPolicy::Scope.new(user_context, Account).resolve
   end
 
+  # Returns the user's display name, which is their name if present, otherwise their email.
+  # TODO: Consider stripping out the email domain and only showing the username.
   def display_name
     name.presence || email
   end

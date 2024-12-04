@@ -30,7 +30,9 @@
 #
 require 'rails_helper'
 
-RSpec.describe(ChecklistItem) do # rubocop:disable Metrics/BlockLength
+RSpec.describe(ChecklistItem) do
+  subject { checklist_item }
+
   let(:user) { create(:user) }
   let(:characteristic) { create(:characteristic) }
   let(:initiative) { create(:initiative) }
@@ -40,33 +42,34 @@ RSpec.describe(ChecklistItem) do # rubocop:disable Metrics/BlockLength
 
   before { initiative.checklist_items << checklist_item }
 
-  subject { checklist_item }
-
   describe '#snapshot_at' do
+    let(:snapshot) { subject.snapshot_at(Time.zone.now) }
+
     context 'without changes' do
-      it { expect(subject.snapshot_at(Time.now)).to(eq(subject)) }
+      it { expect(snapshot).to eq(checklist_item) }
     end
 
     context 'with changes' do
       before do
-        Timecop.freeze(Date.today + 10.days)
-        subject.update(status: :actual)
+        Timecop.freeze(Time.zone.today + 10.days)
+        checklist_item.update(status: :actual)
         Timecop.return
 
-        Timecop.freeze(Date.today + 20.days)
-        subject.update(status: :more_information)
+        Timecop.freeze(Time.zone.today + 20.days)
+        checklist_item.update(status: :more_information)
         Timecop.return
       end
 
       it 'expects original status to be planned' do
-        expect(subject.snapshot_at(Time.now).status).to(eq('planned'))
+        expect(snapshot.status).to(eq('planned'))
       end
 
-      it 'expects first checked state to be true' do
-        expect(subject.snapshot_at(Date.today + 11).status).to(eq('actual'))
+      it 'expects first checked state 11 days from now to be true' do
+        expect(checklist_item.snapshot_at(Time.zone.today + 11).status).to(eq('actual'))
       end
-      it 'expects first checked state to be true' do
-        expect(subject.snapshot_at(Date.today + 21).status).to(eq('more_information'))
+
+      it 'expects first checked state 21 days from now to be true' do
+        expect(checklist_item.snapshot_at(Time.zone.today + 21).status).to(eq('more_information'))
       end
     end
   end

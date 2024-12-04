@@ -1,13 +1,15 @@
-Style/Copyright:
-  Enabled: false
-Documentation:
-  Enabled: false
-Style/DocumentationMethod:
-  Enabled: false
-Style/DisableCopsWithinSourceCodeDirective:
-  Enabled: false
-Lint/ConstantResolution:
-  Enabled: false
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-rspec_rails
 AllCops:
-  SuggestExtensions: false
-  EnabledByDefault: true
+  NewCops: disable
+  TargetRubyVersion: 3.3
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{bundle,rails,rake,importmap,setup}'
+    - 'lib/tasks/cucumber.rake'

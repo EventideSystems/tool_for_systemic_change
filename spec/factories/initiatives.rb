@@ -38,8 +38,8 @@ FactoryBot.define do
 
     name { FFaker::Name.name }
     description { FFaker::Lorem.paragraph }
-    started_at { Date.today - 1 }
-    finished_at { Date.today + 1 }
+    started_at { Time.zone.today - 1 }
+    finished_at { Time.zone.today + 1 }
     dates_confirmed { true }
     contact_name { FFaker::Name.name }
     contact_email { FFaker::Internet.email }

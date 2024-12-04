@@ -18,12 +18,14 @@
 #  index_imports_on_account_id  (account_id)
 #  index_imports_on_user_id     (user_id)
 #
+
+# Old Import model.This will be replaced in the future with an ETL process.
 class Import < ApplicationRecord
-  include ImportUploader[:import]
+  # include ImportUploader[:import]
 
   attr_accessor :processing_errors
 
-  enum status: %i[pending processed]
+  enum status: { pending: 0, processed: 1 }
 
   belongs_to :account
   belongs_to :user
@@ -31,7 +33,7 @@ class Import < ApplicationRecord
   validates :account, presence: true
   validates :user, presence: true
 
-  def processing_errors
+  def processing_errors # rubocop:disable Lint/DuplicateMethods
     @processing_errors ||= []
   end
 
@@ -66,7 +68,7 @@ class Import < ApplicationRecord
   end
 
   def build_processing_errors(row_data:, row_index:, error_messages:)
-    full_messages = error_messages.map do |message|
+    error_messages.map do |message|
       if message == "Stakeholder Type can't be blank"
         'Stakeholder Type is invalid'
       else
@@ -109,24 +111,25 @@ class Import < ApplicationRecord
     ::CSV.parse(import.read)
   end
 
-  def import_xlsx_rows
-    xlsx = ::Roo::Spreadsheet.open(import.to_io)
+  def import_xlsx_rows # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    [].tap do |xlsx_rows|
+      spreadsheet.each_row_streaming do |row|
+        next if row.last.nil?
 
-    xlsx_rows = []
-    xlsx.each_row_streaming do |row|
-      next if row.last.nil?
+        col_count = row.last.coordinate.column
+        row_array = Array.new(col_count)
 
-      col_count = row.last.coordinate.column
-      row_array = Array.new(col_count)
+        row.each do |cell|
+          col_index = cell.coordinate.column - 1
+          row_array[col_index] = cell.cell_value
+        end
 
-      row.each do |cell|
-        col_index = cell.coordinate.column - 1
-        row_array[col_index] = cell.cell_value
+        xlsx_rows << row_array
       end
-
-      xlsx_rows << row_array
     end
+  end
 
-    xlsx_rows
+  def spreadsheet
+    @spreadsheet ||= Roo::Spreadsheet.open(import.to_io)
   end
 end

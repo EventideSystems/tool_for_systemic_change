@@ -47,7 +47,7 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     password { 'example' }
     password_confirmation { 'example' }
-    system_role { :member }
+    system_role { 'member' }
 
     transient do
       default_account { nil }
@@ -61,8 +61,12 @@ FactoryBot.define do
     #   end
     # end
 
-    factory :admin_user do
-      system_role { :admin }
+    trait :system_admin do
+      system_role { 'admin' }
     end
+
+    # factory :admin_user do
+    #   system_role { :admin }
+    # end
   end
 end

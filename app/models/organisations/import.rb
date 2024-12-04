@@ -19,8 +19,9 @@
 #  index_imports_on_user_id     (user_id)
 #
 module Organisations
+  # Class for importing organisations
   class Import < Import
-    def process(account)
+    def process(account) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       name_index              = column_index(:name)
       description_index       = column_index(:description)
       stakeholder_type_index  = column_index(:stakeholder_type) || column_index(:sector)
@@ -33,7 +34,7 @@ module Organisations
         return false
       end
 
-      data_rows.each.with_index(1) do |raw_row, row_index|
+      data_rows.each.with_index(1) do |raw_row, row_index| # rubocop:disable Metrics/BlockLength
         row = sanitize_row(raw_row)
 
         next if row.compact.empty?
@@ -41,7 +42,12 @@ module Organisations
         next if row[name_index].blank?
 
         organisation = find_or_build_organisation_by_name(account, row[name_index])
-        stakeholder_type = stakeholder_type_index.nil? ? nil : find_stakeholder_type_by_name(account, row[stakeholder_type_index])
+        stakeholder_type = if stakeholder_type_index.nil?
+                             nil
+                           else
+                             find_stakeholder_type_by_name(account,
+                                                           row[stakeholder_type_index])
+                           end
 
         if stakeholder_type.nil?
           processing_errors << build_processing_errors(
@@ -54,8 +60,8 @@ module Organisations
           {}.tap do |attributes|
             attributes[:name]        = row[name_index]
             attributes[:description] = row[description_index] if description_index && row[description_index].present?
-            attributes[:stakeholder_type]      = stakeholder_type
-            attributes[:weblink]     = row[weblink_index] if weblink_index && row[weblink_index].present?
+            attributes[:stakeholder_type] = stakeholder_type
+            attributes[:weblink] = row[weblink_index] if weblink_index && row[weblink_index].present?
           end
         )
 

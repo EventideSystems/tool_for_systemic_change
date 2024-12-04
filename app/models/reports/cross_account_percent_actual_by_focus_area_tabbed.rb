@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Reports
-  class CrossAccountPercentActualByFocusAreaTabbed < Base
+  # This class is responsible for generating a report of the percent of actual characteristics by focus area (tabbed)
+  class CrossAccountPercentActualByFocusAreaTabbed < Base # rubocop:disable Metrics/ClassLength
     attr_reader :accounts
 
     MAX_SHEET_NAME_LENGTH = 27
@@ -11,10 +12,11 @@ module Reports
       super()
     end
 
-    def to_xlsx
-      Axlsx::Package.new do |p|
+    def to_xlsx # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      Axlsx::Package.new do |p| # rubocop:disable Metrics/BlockLength
         p.workbook.styles.fonts.first.name = 'Calibri'
 
+        # rubocop:disable Naming/VariableNumber
         styles = {
           header_1: p.workbook.styles.add_style(fg_color: '386190', sz: 16, b: true),
           header_2: p.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: true),
@@ -29,10 +31,11 @@ module Reports
           ),
           date: date_style(p)
         }
+        # rubocop:enable Naming/VariableNumber
 
         focus_area_names.each do |focus_area_name|
           p.workbook.add_worksheet(name: focus_area_name.truncate(MAX_SHEET_NAME_LENGTH)) do |sheet|
-            sheet.add_row([focus_area_name], style: styles[:header_1])
+            sheet.add_row([focus_area_name], style: styles[:header_1]) # rubocop:disable Naming/VariableNumber
             sheet.add_row
             add_header(sheet, styles)
 
@@ -63,7 +66,7 @@ module Reports
     def add_header(sheet, styles)
       sheet.add_row(
         ['Account', 'Transition Card', 'Initiative', 'Actual', 'Target', 'Percent Actual'],
-        style: styles[:header_2]
+        style: styles[:header_2] # rubocop:disable Naming/VariableNumber
       )
     end
 
@@ -77,7 +80,7 @@ module Reports
         .map(&:name)
     end
 
-    def generate_data(focus_area_name)
+    def generate_data(focus_area_name) # rubocop:disable Metrics/MethodLength
       sql = <<~SQL
         with raw_percent_actual_by_focus_area as (
           select
@@ -123,5 +126,3 @@ module Reports
     end
   end
 end
-
-# account_name	scorecard_name	scorecard_type	initiative_name	focus_area_name	total_characteristics	actual_characteristics	percent_actual

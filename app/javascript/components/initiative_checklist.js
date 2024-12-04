@@ -1,3 +1,4 @@
+/// TODO: This file is not being used. Remove it.
 $(document).on('turbolinks:load', function() {
   $(document).on('click', '.characteristic-checkbox', function() {
     $.ajax({

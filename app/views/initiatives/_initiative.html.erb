@@ -1,0 +1,32 @@
+<li>
+  <hr
+    role="presentation"
+    class="w-full border-t border-zinc-950/10 dark:border-white/10"
+  />
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <%= render partial: 'resource_summary', locals: { name: initiative.name, background_color: 'bg-sky-600' } %>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to highlight(initiative.name, params.dig(:q, :name_or_description_cont)), initiative_path(initiative), data: { turbo: false } %>
+        </div>
+        <div class="text-xs/6 text-zinc-500">
+          <%= highlight(initiative.description, params.dig(:q, :name_or_description_cont)) %>
+        </div>
+        <div class="text-xs/6 text-zinc-600">
+          <%= initiative.scorecard&.name.presence || 'MISSING' %>
+        </div>
+
+        <%- if initiative.subsystem_tags.present? %>
+          <div class="flex space-x-4">
+            <%- initiative.subsystem_tags.each do |subsystem_tag| %>
+              <%= render 'label_badge', label: subsystem_tag %>
+            <%- end %>
+          </div>
+        <%- end %>
+      </div>
+    </div>
+  </div>
+</li>
+
+

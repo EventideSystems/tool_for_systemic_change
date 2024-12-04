@@ -3,6 +3,7 @@
 require 'csv'
 
 module Reports
+  # This class is responsible for generating the Subsystem Summary report
   class SubsystemSummary < Base
     attr_accessor :scorecard
 
@@ -18,7 +19,7 @@ module Reports
         p.workbook.styles.fonts.first.name = 'Calibri'
         styles = default_styles(p)
         p.workbook.add_worksheet(name: 'Report') do |sheet|
-          sheet.add_row([Time.now], style: styles[:date])
+          sheet.add_row([Time.zone.now], style: styles[:date])
           add_title(sheet, styles)
           sheet.add_row
           add_summary(sheet, styles)
@@ -45,8 +46,8 @@ module Reports
 
     def add_title(sheet, styles)
       sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'MISSING DATA'])
-      sheet.add_row(['Community', scorecard.community&.name || 'MISSING DATA'])
+      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
+      sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end
 
     def add_summary(sheet, styles)

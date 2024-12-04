@@ -1,78 +1,16 @@
-<div class="row dashboard">
-  <div class="col-lg-3 col-xs-6">
-    <!-- small box -->
-    <div class="small-box bg-color-5">
-      <div class="inner">
-        <h3><%= @scorecard_count %></h3>
-        <p><%= dashboard_scorecards_title.pluralize(@scorecard_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-check-square-o"></i>
-      </div>
-      <%= link_to(default_scorecards_path, {class: 'small-box-footer'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
-  </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
-    <!-- small box -->
-    <div class="small-box bg-color-6">
-      <div class="inner">
-        <h3><%= @initiative_count %></h3>
+<div class="mx-auto max-w-6xl">
+  <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 text-black dark:text-white">Hello, <%= current_user.name %></h1>
 
-        <p><%= 'Initiative'.pluralize(@initiative_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-lightbulb-o"></i>
-      </div>
-      <%= link_to(initiatives_path, {class: 'small-box-footer'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
+  <div class="mt-8 flex items-end justify-between">
+    <h2 class="text-base/7 font-semibold text-zinc-950 sm:text-sm/6 text-black dark:text-white">Overview</h2>
   </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
-    <!-- small box -->
-    <div class="small-box bg-color-7">
-      <div class="inner">
-        <h3><%= @wicked_problem_count %></h3>
 
-        <p><%= 'Wicked Problem'.pluralize(@wicked_problem_count) %>/<%= 'Opportunity'.pluralize(@wicked_problem_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-cubes"></i>
-      </div>
-      <%= link_to(wicked_problems_path, {class: 'small-box-footer'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
+  <div class="mt-4 grid gap-8 sm:grid-cols-2 xl:grid-cols-4 text-black dark:text-white">
+    <%= render partial: 'card', locals: { title: 'Impact Cards', count: @scorecard_count, link: impact_cards_path, border_color: 'border-cyan-600' } %>
+    <%= render partial: 'card', locals: { title: 'Initiatives', count: @initiative_count, link: initiatives_path, border_color: 'border-sky-600' } %>
+    <%= render partial: 'card', locals: { title: 'Problems / Opportunities', count: @wicked_problem_count, link: labels_wicked_problems_path, border_color: 'border-teal-600' } %>
+    <%= render partial: 'card', locals: { title: 'Stakeholders', count: @organisation_count, link: organisations_path, border_color: 'border-teal-500' } %>
   </div>
-  <!-- ./col -->
-  <div class="col-lg-3 col-xs-6">
-    <!-- small box -->
-    <div class="small-box bg-color-8">
-      <div class="inner">
-        <h3><%= @organisation_count %></h3>
-
-        <p><%= 'Organisation'.pluralize(@organisation_count) %></p>
-      </div>
-      <div class="icon">
-        <i class="fa fa-sitemap"></i>
-      </div>
-      <%= link_to(organisations_path, {class: 'small-box-footer'}) do
-            safe_join(['More info ', content_tag(:i, '', class: "fa fa-arrow-circle-right")])
-          end
-      %>
-    </div>
-  </div>
-  <!-- ./col -->
-</div>
-
-<div class="row dashboard">
-  <%= render 'dashboard/welcome_message'%>
   <%= render 'dashboard/activities'%>
 </div>
+

@@ -1,5 +1,7 @@
-class StakeholderTypePolicy < ApplicationPolicy
-  class Scope < Scope
+# frozen_string_literal: true
+
+class StakeholderTypePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
+  class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       scope.where(account: current_account)
     end
@@ -23,9 +25,9 @@ class StakeholderTypePolicy < ApplicationPolicy
 
   def destroy?
     record.organisations.empty? &&
-    (
-      system_admin? || (record_in_scope?(record) && account_admin?(current_account))
-    )
+      (
+        system_admin? || (record_in_scope?(record) && account_admin?(current_account))
+      )
   end
 
   private

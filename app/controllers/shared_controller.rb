@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
+# Controller for managing shared impact cards
 class SharedController < ApplicationController
-  skip_before_action :authenticate_user!
-  skip_after_action :verify_policy_scoped
-  skip_after_action :verify_authorized
-
-  def show
+  def show # rubocop:disable Metrics/MethodLength
     response.headers.delete('X-Frame-Options')
 
     load_scorecard_and_supporting_data
@@ -22,8 +19,8 @@ class SharedController < ApplicationController
     end
   end
 
-  def characteristic
-    @scorecard = Scorecard.find_by_shared_link_id(params[:shared_id])
+  def characteristic # rubocop:disable Metrics/AbcSize
+    @scorecard = Scorecard.find_by(shared_link_id: params[:shared_id])
 
     @characteristic = Characteristic.find(params[:id])
 
@@ -42,7 +39,7 @@ class SharedController < ApplicationController
 
   # SMELL: Duplicate of code in scorecards_controller.rb
   def targets_network_map
-    @scorecard = Scorecard.find_by_shared_link_id(params[:id])
+    @scorecard = Scorecard.find_by(shared_link_id: params[:id])
 
     respond_to do |format|
       format.json do
@@ -54,8 +51,8 @@ class SharedController < ApplicationController
 
   private
 
-  def load_scorecard_and_supporting_data
-    @scorecard = Scorecard.find_by_shared_link_id(params[:id])
+  def load_scorecard_and_supporting_data # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    @scorecard = Scorecard.find_by(shared_link_id: params[:id])
 
     return if @scorecard.blank?
 

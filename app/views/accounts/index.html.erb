@@ -1,24 +1,19 @@
-<% content_for :page_actions do %>
-  <%= create_new_button(new_account_path) %>
-<% end %>
-
-<div class="box box-solid">
-  <div class='box-body no-padding'>
-  <%= table_for @accounts, :table_html => { :class => "table table-striped table-base" },
-                        :sortable => true,
-                        :data_row_html => {
-                          id: lambda { |account| "account-#{account.id}" },
-                          class: 'table-actions'
-                        } do |table| %>
-    <% table.column :name, link: true, formatter: lambda { |text| truncate_text(text, 30) } %> %>
-    <% table.column :description, formatter: lambda { |text| truncate_text(text, 100) } %>
-    <% table.column data: "Modify", link_action: :edit %>
-    <% table.column data: "Delete", link_method: :delete, link_confirm: "Are you sure?" %>
-    <% table.footer do %>
-      <div class="float-right">
-        <%= paginate @accounts %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Accounts</h1>
+      <div class="flex justify-between items-center mt-4 ">
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search accounts...' } %>
+        <div>
+          <%= link_to_primary 'Create account', new_account_path %>
+        </div>
       </div>
-    <% end %>
-  <% end %>
+    </div>
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render partial: 'accounts/account', collection: @accounts %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
   </div>
 </div>

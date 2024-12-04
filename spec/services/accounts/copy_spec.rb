@@ -13,16 +13,16 @@ RSpec.describe(Accounts::Copy, type: :service) do
   end
 
   describe '.call' do
-    subject { described_class.call(account:, new_name:) }
+    let(:execute_call) { described_class.call(account:, new_name:) }
 
-    it 'creates a new account with the specified name' do
-      expect { subject }.to(change { Account.count }.by(1))
+    it 'creates a new account with the specified name' do # rubocop:disable RSpec/MultipleExpectations
+      expect { execute_call }.to(change(Account, :count).by(1))
       new_account = Account.last
       expect(new_account.name).to(eq(new_name))
     end
 
-    it 'copies stakeholder types to the new account' do
-      subject
+    it 'copies stakeholder types to the new account' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      execute_call
       new_account = Account.last
       expect(new_account.stakeholder_types.count).to(eq(account.stakeholder_types.count))
       new_account.stakeholder_types.each do |new_stakeholder_type|
@@ -30,8 +30,8 @@ RSpec.describe(Accounts::Copy, type: :service) do
       end
     end
 
-    it 'copies focus area groups to the new account' do
-      subject
+    it 'copies focus area groups to the new account' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      execute_call
       new_account = Account.last
       expect(new_account.focus_area_groups.count).to(eq(account.focus_area_groups.count))
       new_account.focus_area_groups.each do |new_focus_area_group|

@@ -20,6 +20,8 @@
 #  index_organisations_on_deleted_at  (deleted_at)
 #
 class Organisation < ApplicationRecord
+  include Searchable
+
   has_paper_trail
   acts_as_paranoid
 
@@ -29,7 +31,8 @@ class Organisation < ApplicationRecord
   has_many :initiatives, through: :initiatives_organisations
 
   validates :account, presence: true
-  validates :name, presence: true, uniqueness: { scope: :account_id }
+  # TODO: Add validation in the database schema
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :stakeholder_type_id, presence: true
   validate :stakeholder_type_is_in_same_account
 
@@ -40,6 +43,9 @@ class Organisation < ApplicationRecord
   private
 
   def stakeholder_type_is_in_same_account
-    errors.add(:stakeholder_type_id, "must be in the same account") if stakeholder_type && stakeholder_type.account != account
+    return unless stakeholder_type && stakeholder_type.account != account
+
+    errors.add(:stakeholder_type_id,
+               'must be in the same account')
   end
 end

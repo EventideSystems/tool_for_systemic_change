@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Notify users when their account is about to expire.
 class AccountExpiryWarningNotifier
   class << self
     def call
@@ -15,12 +16,12 @@ class AccountExpiryWarningNotifier
       AccountMailer.expiry_warning(account, user).deliver
     end
 
-    def send_notifications_for_expiring_accounts
+    def send_notifications_for_expiring_accounts # rubocop:disable Metrics/MethodLength
       Account
         .where(expiry_warning_sent_on: nil)
         .where('expires_on <= ?', EXPIRY_WARNING_PERIOD.from_now)
         .where('expires_on > ?', EXPIRY_WARNING_PERIOD.ago)
-        .where('expires_on > ?', Date.today)
+        .where('expires_on > ?', Time.zone.today)
         .find_each do |account|
           account.users.find_each do |user|
             send_email(account, user)
@@ -34,7 +35,7 @@ class AccountExpiryWarningNotifier
         .where.not(expiry_warning_sent_on: nil)
         .where.not(expires_on: nil)
         .where('expires_on > ?', EXPIRY_WARNING_PERIOD.from_now)
-        .update_all(expiry_warning_sent_on: nil)
+        .update_all(expiry_warning_sent_on: nil) # rubocop:disable Rails/SkipsModelValidations
     end
   end
 end

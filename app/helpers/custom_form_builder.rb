@@ -50,7 +50,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   # TEXT_FIELD_CLASS = 'block w-full rounded-md border-0 bg-white/5 py-1.5 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-yellow-500 sm:text-sm sm:leading-6'
   # TEXT_AREA_CLASS = 'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6'
   # SELECT_FIELD_CLASS = 'mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-yellow-500 sm:text-sm sm:leading-6'
-  # rubocop:enable Layout/LineLength
+
   ERROR_BORDER_CLASS = 'border-2 border-red-500'
   LABEL_CLASS = 'block text-sm font-medium leading-6 text-gray-900 dark:text-white'
 
@@ -69,6 +69,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     optionTemplate: '<div class="flex justify-between items-center w-full"><span data-title></span><span data-icon class="hidden hs-selected:block"><svg class="shrink-0 size-3.5 text-blue-600 dark:text-blue-500 " xmlns="http:.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></div>',
     extraMarkup: '<div class="absolute top-1/2 end-3 -translate-y-1/2"><svg class="shrink-0 size-3.5 text-gray-500 dark:text-neutral-500 " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div>'
   }.freeze
+  # rubocop:enable Layout/LineLength
 
   def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
     default_opts = { class: build_default_field_class(CHECK_BOX_CLASS, ERROR_BORDER_CLASS, method) }

@@ -194,7 +194,7 @@ class ScorecardGrid
     end
 
     def subsystem_sql(subsystem_tags)
-      return '' if subsystem_tags.empty?
+      return '' if subsystem_tags.blank?
 
       subsystem_tags_ids = subsystem_tags.map(&:id)
 

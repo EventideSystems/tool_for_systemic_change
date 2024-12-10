@@ -1,21 +1,37 @@
-<div class="text-left">
+<div class="text-left" data-controller="grid">
   <div class="flex justify-between items-center mb-4">
 
-    <%= form_with url: impact_card_path(@scorecard), method: :get do |form| %>
+    <%= form_with url: impact_card_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
     <div class="flex space-x-4">
       <div>
-
-
         <%= form.label :date, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%= custom_date_field_tag :date, @date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: { action: "change->form#submit" } %>
+        <%= custom_date_field_tag :date, @date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: { grid_target: "date" }  %>
       </div>
       <div>
         <%= form.label :subsystem_tags, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%= form.multi_select :test, @subsystem_tags.pluck(:name), placeholder: 'Select subsytem tags...' %>
+        <%=
+          form.multi_select(
+            :subsystem_tags,
+            options_for_select(@subsystem_tags.pluck(:name), @selected_subsystem_tags.pluck(:name)),
+            { placeholder: 'Select subsytem tags...' },
+            { include_hidden: false, data: { grid_target: "subsystemTags" } }
+          )
+        %>
       </div>
       <div>
-        <%= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
+        <%= form.label :statuses, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%=
+          form.multi_select(
+            :statuses,
+            options_for_select(@statuses, @selected_statuses),
+            { placeholder: 'Select statuses...' },
+            { include_hidden: false, data: { grid_target: "statuses" } }
+          )
+        %>
+      </div>
+      <div>
+        <%#= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%#= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
       </div>
     </div>
     <% end %>
@@ -24,7 +40,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-4 text-white mt-4">
+  <div class="grid grid-cols-4 text-white mt-4" data-grid-target="grid">
     <% @scorecard_grid.each do |data| %>
       <div class="col-span-1 mb-2">
         <h3 class="text-sm font-medium text-gray-900 dark:text-white truncate">

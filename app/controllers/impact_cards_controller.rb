@@ -38,21 +38,24 @@ class ImpactCardsController < ApplicationController
   end
 
   def show # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
-    @selected_date = params[:selected_date]
-    @parsed_selected_date = @selected_date.blank? ? nil : Date.parse(@selected_date)
+    @date = params[:date]
+    @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
     # TODO: Restrict to only show tags that are used by the scorecard
     @subsystem_tags = @scorecard.subsystem_tags.order(:name).uniq
     @stakeholders = @scorecard.organisations.order(:name).uniq
+    @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
 
-    @selected_tags =
-      if params[:selected_tags].blank?
-        []
+    @selected_statuses = params[:statuses]
+
+    @selected_subsystem_tags =
+      if params[:subsystem_tags].blank?
+        SubsystemTag.none
       else
-        SubsystemTag.where(account: current_account, name: params[:selected_tags])
+        SubsystemTag.where(account: current_account, name: params[:subsystem_tags].compact)
       end
 
-    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_selected_date, @selected_tags)
+    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date, @selected_subsystem_tags)
 
     respond_to do |format| # rubocop:disable Metrics/BlockLength
       format.html
@@ -70,8 +73,8 @@ class ImpactCardsController < ApplicationController
           end
 
         @initiatives =
-          if @selected_tags.present?
-            tag_ids = @selected_tags.map(&:id)
+          if @selected_subsystem_tags.present?
+            tag_ids = @selected_subsystem_tags.map(&:id)
             @initiatives
               .distinct
               .joins(:initiatives_subsystem_tags)

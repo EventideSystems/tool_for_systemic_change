@@ -111,12 +111,11 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   def multi_select(method, choices = nil, options = {}, html_options = {}, &block)
     placeholder = options.delete(:placeholder) || 'Select multiple options...'
-    hs_select_options = { placeholder: }
-
-    hs_select = MULTI_SELECT_DEFAULT_HS_SELECT.merge(hs_select_options).to_json
+    hs_select = MULTI_SELECT_DEFAULT_HS_SELECT.merge(placeholder:).to_json
 
     options.merge!(multiple: true)
-    html_options.merge!(data: { multi_select_target: 'select', hs_select: }, class: 'hidden')
+    data_options = html_options.delete(:data) || {}
+    html_options.merge!(data: data_options.merge({ multi_select_target: 'select', hs_select: }), class: 'hidden')
 
     @template.content_tag(:div, data: { controller: 'multi-select' }) do
       @template.concat(ActionView::Helpers::Tags::Select.new(

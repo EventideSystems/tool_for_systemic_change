@@ -108,13 +108,13 @@ function displayMap(mapDiv, mapData, getNodeUrl, calcLinkStrength, calcForceStre
       //.strength(function (link) { return 0.009 })
       .strength(calcLinkStrength(nodes, links))
 
-    var collide = d3.bboxCollide(function (d,i) {
-        var topLeft = [d.y-3, d.x-3]
-        var bottomRight = [d.y+4, d.x+100]
-        return [topLeft, bottomRight]
-      })
-      .strength(0.01)
-      .iterations(50)
+    // var collide = d3.bboxCollide(function (d,i) {
+    //     var topLeft = [d.y-3, d.x-3]
+    //     var bottomRight = [d.y+4, d.x+100]
+    //     return [topLeft, bottomRight]
+    //   })
+    //   .strength(0.01)
+    //   .iterations(50)
 
     var simulation = d3
       .forceSimulation()

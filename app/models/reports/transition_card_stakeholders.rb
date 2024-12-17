@@ -11,7 +11,7 @@ module Reports
                   :stakeholder_types,
                   :ecosystem_map
 
-    def initialize(scorecard) # rubocop:disable Metrics/MethodLength
+    def initialize(scorecard)
       super()
       @scorecard = scorecard
       @stakeholder_types = StakeholderType.where(account: scorecard.account).order('lower(stakeholder_types.name)')
@@ -21,12 +21,7 @@ module Reports
           initiatives_organisations: :organisation
         ).order('lower(initiatives.name)')
 
-      @unique_organisations =
-        @initiatives.flat_map(&:organisations).uniq.sort_by do |organisation|
-          organisation.name.downcase
-        end
-
-      @ecosystem_map = EcosystemMaps::Organisations.new(scorecard, unique_organisations: @unique_organisations)
+      @ecosystem_map = Insights::StakeholderNetwork.new(scorecard)
       @connections = OrganisationConnections.execute(scorecard.id)
     end
 

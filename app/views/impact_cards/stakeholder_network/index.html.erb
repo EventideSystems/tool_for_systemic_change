@@ -1,6 +1,4 @@
-<div class="mx-auto max-w-6xl">
-  <%= link_to 'Graph', impact_card_stakeholder_network_index_path(@scorecard), class: 'text-green-500' %>
-
+<div class="mx-auto max-w-6xl" data-controller="stakeholder-network">
   <div class="flex items-center mt-4 mb-4">
     <%= render partial: 'resource_summary', locals: { name: @scorecard.name, background_color: 'bg-cyan-600' } %>
     <div class="flex-1">
@@ -13,7 +11,6 @@
     </div>
   </div>
 
-
   <div role="menubar" class="flex h-10 items-center space-x-1 rounded-md border bg-background p-1" tabindex="0" data-orientation="horizontal" style="outline: none;">
   <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground text-accent-foreground" tabindex="-1">Grid
   </button>
@@ -25,9 +22,19 @@
   </button>
   </div>
 
-
-  <div>
-    <%= render 'impact_cards/grid' %>
+  <div data-stakeholder-network-target="graph">
+    <div class="nodes">
+      <%- @graph.nodes.each do |node| %>
+        <div class="node" data-id="<%= node[:id] %>" data-label="<%= node[:label] %>" data-color="<%= node[:color] %>" data-betweenness="<%= node[:betweenness] %>"></div>
+      <%- end %>
+    </div>
+    <div class="links">
+      <%- @graph.links.each do |link| %>
+        <div class="link" data-id="<%= link[:id] %>" data-target="<%= link[:target] %>" data-source="<%= link[:source] %>" data-strength="<%= link[:strength] %>"></div>
+      <%- end %>
+    </div>
   </div>
+
+  <div class="grid grid-cols-4 text-white mt-4" data-stakeholder-network-target="map"></div>
 
 </div>

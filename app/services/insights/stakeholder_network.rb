@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
-module EcosystemMaps
+module Insights
   # This class is responsible for generating the data required to render the Organisations Network Map
   # for a given impact card.
-  class Organisations
+  class StakeholderNetwork
     attr_reader :transition_card, :unique_organisations
 
     STRENGTH_BUCKET_SIZE = 4
 
     STRENGTH_BUCKET_WIDTH = 100.0 / STRENGTH_BUCKET_SIZE
 
-    def initialize(transition_card, unique_organisations: nil)
+    def initialize(transition_card)
       @transition_card = transition_card
-      @unique_organisations = unique_organisations || transition_card.organisations.includes(:stakeholder_type).uniq
+      @unique_organisations = transition_card.organisations.includes(:stakeholder_type).uniq.sort_by do |organisation|
+        organisation.name.downcase
+      end
     end
 
     def links

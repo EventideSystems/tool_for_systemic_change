@@ -5,7 +5,7 @@ module ImpactCards
   class StakeholderNetworkController < ApplicationController
     sidebar_item :impact_cards
 
-    def index
+    def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @scorecard = Scorecard.find(params[:impact_card_id])
       authorize(@scorecard, :show?)
 

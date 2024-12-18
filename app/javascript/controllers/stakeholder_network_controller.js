@@ -3,22 +3,55 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph"]
+  static targets = ["map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton"]
 
   connect() {
-    const data = this.getData();
+    const data = this.getData()
     this.drawGraph(data)
+
+    this.stakeholderTypesTarget.addEventListener("change", this.updateStakeholderTypes.bind(this))
+    this.toggleLabelsButtonTarget.addEventListener("click", this.toggleLabels.bind(this))
+
+    this.updateLabelsVisibility = this.updateLabelsVisibility.bind(this)
+    this.updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
+
+    this.updateStakeholderTypes({ target: this.stakeholderTypesTarget })
+    this.updateLabelsVisibility()
   }
 
   drawGraph(data) {
+    const width = this.mapTarget.offsetWidth
+    const height = this.mapTarget.offsetHeight
 
-    const width = 960
-    const height = 960
+    let getNeighbors = this.getNeighbors
+    let getLinkClass = this.getLinkClass
+    let getNodeColor = this.getNodeColor
+    let getTextClass = this.getTextClass
+
+    let querySelectorIncludesText = this.querySelectorIncludesText.bind(this)
+    let updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
+
+    let stakeholderTypesTarget = this.stakeholderTypesTarget
 
     var linkForce = d3
       .forceLink()
       .id(function (link) { return link.id })
       .strength(this.calcLinkStrength(data.links))
+
+    var dragDrop = d3.drag().on('start', function (node) {
+        node.fx = node.x
+        node.fy = node.y
+      }).on('drag', function (event, node) {
+        simulation.alphaTarget(0.7).restart()
+        node.fx = event.x
+        node.fy = event.y
+      }).on('end', function (event, node) {
+        if (!event.active) {
+          simulation.alphaTarget(0)
+        }
+        node.fx = null
+        node.fy = null
+      })
 
     var simulation = d3
       .forceSimulation()
@@ -30,14 +63,12 @@ export default class extends Controller {
       .attr("width", width)
       .attr("height", height);
 
-
     var linkElements = svg.append("g")
-      .attr("class", "links")
+      .attr("class", "links stroke-zinc-400 dark:stroke-zinc-400")
       .selectAll("line")
       .data(data.links)
       .enter().append("line")
-        .attr("stroke-width", function(d) { return d['strength'] })
-        .attr("stroke", "rgba(50, 50, 50, 0.2)")
+        .attr("stroke-width", function(d) { return d.strength })
 
     var nodeElements = svg.append("g")
       .attr("class", "nodes")
@@ -46,17 +77,49 @@ export default class extends Controller {
       .enter().append("circle")
         .attr("r", 6)
         .attr("fill", this.getNodeColor)
+        .call(dragDrop)
+        .on('click', function(event, node) {
+          // var dataUrl = getNodeUrl(d);
+          // showNodeDialog(this, d, dataUrl);
+        })
+        .on('dblclick', function(event, node) {
+          event.stopPropagation();
+          var neighbors = getNeighbors(data.links, node)
+
+          // we modify the styles to highlight selected nodes
+          nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+          textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
+          linkElements.attr('class', function (link) { return getLinkClass(link, node) })
+
+          updateStakeholderTypes({ target: stakeholderTypesTarget })
+        })
+        .on("mouseover", function(event, node) {
+          var text = querySelectorIncludesText('.texts text', node.label)
+          var textElement = d3.select(text)
+          textElement.attr('visibility', 'visible')
+        })
+        .on("mouseout", function(event, node) {
+          // if (!this.labelsVisible()) {
+          //   var text = $(`.texts text:contains("${d.label}")`)[0]
+          //   var textElement = d3.select(text)
+          //   textElement.attr('visibility', 'hidden')
+          // }
+
+          var text = querySelectorIncludesText('.texts text', node.label)
+          var textElement = d3.select(text)
+          textElement.attr('visibility', 'hidden')
+        });
 
     var textElements = svg.append("g")
-      .attr("class", "texts")
+      .attr("class", "texts stroke-zinc-950 dark:stroke-white")
       .selectAll("text")
       .data(data.nodes)
       .enter().append("text")
         .text(function (node) { return  node.label })
-        .attr("font-size", 9)
+        .attr("font-size", 12)
         .attr("dx", 15)
         .attr("dy", 4)
-        .attr("visibility", true)
+        .attr("visibility", 'hidden')
 
     var r = 7
 
@@ -81,9 +144,9 @@ export default class extends Controller {
 
   getData() {
     const nodesElement = this.graphTarget.querySelector('.nodes')
-    const linksElement = this.graphTarget.querySelector('.links')
-
     const nodeElements = nodesElement.querySelectorAll('.node')
+
+    const linksElement = this.graphTarget.querySelector('.links')
     const linkElements = linksElement.querySelectorAll('.link')
 
     const nodesData = Array.from(nodeElements).map(node => {
@@ -92,6 +155,7 @@ export default class extends Controller {
         label: node.getAttribute('data-label'),
         color: node.getAttribute('data-color'),
         betweenness: node.getAttribute('data-betweenness'),
+        stakeholderType: node.getAttribute('data-stakeholder-type'),
       }
     })
 
@@ -107,12 +171,51 @@ export default class extends Controller {
     return { nodes: nodesData, links: linksData };
   }
 
-  getNodeColor(node, neighbors) {
-    if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-      return node.level === 1 ? '#499BC4' : '#49C472'
-    }
+  querySelectorIncludesText(selector, text) {
+    return Array.from(document.querySelectorAll(selector))
+      .find(el => el.textContent.includes(text));
+  }
 
-    return  node.color;
+
+  getNeighbors(links, node) {
+    return links.reduce(function (neighbors, link) {
+        if (link.target.id === node.id) {
+          neighbors.push(link.source.id)
+        } else if (link.source.id === node.id) {
+          neighbors.push(link.target.id)
+        }
+        return neighbors
+      },
+      [node.id]
+    )
+  }
+
+  getLinkClass(link, node) {
+    if (link.target.id === node.id || link.source.id === node.id) {
+      return 'links stroke-green-300 dark:stroke-green-300'
+    } else {
+      return 'links stroke-zinc-400 dark:stroke-zinc-400'
+    }
+  }
+
+  getNodeColor(node, neighbors) {
+    if (Array.isArray(neighbors) && neighbors.includes(node.id)) {
+      return '#49C472'
+    } else  {
+      return node.color
+    }
+  }
+
+  getTextClass(node, neighbors) {
+    if (Array.isArray(neighbors) && neighbors.includes(node.id)) {
+      return 'texts stroke-green-300 dark:stroke-green-300'
+    } else {
+      return 'texts stroke-zinc-400 dark:stroke-zinc-400'
+    }
+  }
+
+  labelsVisible() {
+    this.toggleLabelsButtonTarget.classList.contains('active')
   }
 
   calcForceStrength(nodes, links) { return -40 }
@@ -121,6 +224,79 @@ export default class extends Controller {
     var x = links.length;
     var y = 0.0002063777*x - 0.00345955;
     return y
+  }
+
+  toggleLabels(event) {
+    if (typeof event.stopPropagation === 'function') {
+      event.stopPropagation()
+    }
+
+    const url = new URL(window.location)
+    const showLabels = url.searchParams.get('show_labels') == 'true'
+
+    if (showLabels) {
+      url.searchParams.delete('show_labels')
+    } else {
+      url.searchParams.append('show_labels', 'true')
+    }
+
+    window.history.replaceState({}, '', url)
+
+    this.updateLabelsVisibility()
+  }
+
+  updateLabelsVisibility() {
+    const textElements = this.mapTarget.querySelectorAll('.texts text')
+
+    const url = new URL(window.location)
+    const showLabels = url.searchParams.get('show_labels') == 'true'
+
+    if (showLabels) {
+      this.toggleLabelsButtonTarget.innerHTML = 'Hide names'
+
+      textElements.forEach(element => {
+        element.setAttribute('visibility', 'visible')
+      })
+    } else {
+      this.toggleLabelsButtonTarget.innerHTML = 'Show names'
+
+      textElements.forEach(element => {
+        element.setAttribute('visibility', 'hidden')
+      })
+    }
+  }
+
+  updateStakeholderTypes(event) {
+    const selected = event.target.selectedOptions
+    const stakeholderTypes = Array.from(selected).map(({ value }) => value)
+
+    const url = new URL(window.location)
+    url.searchParams.delete('stakeholder_types[]')
+
+    if (stakeholderTypes && stakeholderTypes.length > 0) {
+      stakeholderTypes.forEach(stakeholderType => {
+        url.searchParams.append('stakeholder_types[]', stakeholderType)
+      })
+    }
+
+    window.history.replaceState({}, '', url)
+
+    const svgElement = this.mapTarget.querySelector('svg')
+    const nodeElement = svgElement.querySelector('.nodes')
+    const nodeElements = nodeElement.querySelectorAll('circle')
+
+    nodeElements.forEach(element => {
+      const elementData = d3.select(element).datum();
+      const stakeholderType = elementData.stakeholderType
+      const color = elementData.color
+
+      if (stakeholderTypes === undefined || stakeholderTypes.length == 0 || stakeholderTypes.includes(stakeholderType)) {
+        d3.select(element).attr('fill', color)
+      } else {
+        console.log('nope')
+        d3.select(element).attr('fill', 'gray')
+      }
+    })
   }
 
 }

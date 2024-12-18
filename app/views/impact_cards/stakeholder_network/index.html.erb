@@ -1,4 +1,6 @@
 <div class="mx-auto max-w-6xl" data-controller="stakeholder-network">
+
+
   <div class="flex items-center mt-4 mb-4">
     <%= render partial: 'resource_summary', locals: { name: @scorecard.name, background_color: 'bg-cyan-600' } %>
     <div class="flex-1">
@@ -22,10 +24,36 @@
   </button>
   </div>
 
+  <div class="flex justify-between items-center mb-4">
+
+    <%= form_with url: impact_card_stakeholder_network_index_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
+      <div class="flex space-x-4">
+        <div>
+          <%= form.label :stakeholder_types, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%=
+            form.multi_select(
+              :stakeholder_types,
+              options_for_select(@stakeholder_types.pluck(:name), @selected_stakeholder_types.pluck(:name)),
+              { placeholder: 'Select stakeholder types...' },
+              { include_hidden: false, data: { stakeholder_network_target: "stakeholderTypes" } }
+            )
+          %>
+        </div>
+        <div>
+          <%#= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%#= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
+        </div>
+      </div>
+    <% end %>
+    <div>
+      <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="inline-flex px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-stakeholder-network-target="toggleLabelsButton">Labels</button>
+    </div>
+  </div>
+
   <div data-stakeholder-network-target="graph">
     <div class="nodes">
       <%- @graph.nodes.each do |node| %>
-        <div class="node" data-id="<%= node[:id] %>" data-label="<%= node[:label] %>" data-color="<%= node[:color] %>" data-betweenness="<%= node[:betweenness] %>"></div>
+        <div class="node" data-id="<%= node[:id] %>" data-label="<%= node[:label] %>" data-color="<%= node[:color] %>" data-betweenness="<%= node[:betweenness] %>" data-stakeholder-type="<%= node[:stakeholder_type] %>"></div>
       <%- end %>
     </div>
     <div class="links">
@@ -35,6 +63,6 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-4 text-white mt-4" data-stakeholder-network-target="map"></div>
+  <div class="min-h-screen" data-stakeholder-network-target="map"></div>
 
 </div>

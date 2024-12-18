@@ -88,7 +88,8 @@ module Insights
           id: node.id,
           label: node.name,
           color: node.stakeholder_type&.color || '#808080',
-          betweenness: betweenness[node.id]
+          betweenness: betweenness[node.id],
+          stakeholder_type: node.stakeholder_type&.name
         }
       end
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EcosystemMaps
+module Insights
   # This class is responsible for generating the data required to render the Thematic Network Map
   # for a given SDGs Card.
   #

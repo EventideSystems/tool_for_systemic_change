@@ -222,7 +222,7 @@ class ImpactCardsController < ApplicationController
       @scorecard = Scorecard.find_by(shared_link_id: params[:id])
     end
 
-    data = EcosystemMaps::Organisations.new(@scorecard)
+    data = Insights::StakeholderNetwork.new(@scorecard)
 
     render(json: { data: { nodes: data.nodes, links: data.links } })
   end

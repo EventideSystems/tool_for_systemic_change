@@ -1,4 +1,6 @@
 <div class="mx-auto max-w-6xl">
+  <%= link_to 'Graph', impact_card_stakeholder_network_index_path(@scorecard), class: 'text-green-500' %>
+
   <div class="flex items-center mt-4 mb-4">
     <%= render partial: 'resource_summary', locals: { name: @scorecard.name, background_color: 'bg-cyan-600' } %>
     <div class="flex-1">
@@ -10,6 +12,7 @@
       </div>
     </div>
   </div>
+
 
   <div role="menubar" class="flex h-10 items-center space-x-1 rounded-md border bg-background p-1" tabindex="0" data-orientation="horizontal" style="outline: none;">
   <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground text-accent-foreground" tabindex="-1">Grid
@@ -24,7 +27,7 @@
 
 
   <div>
-    <%= render 'impact_cards/show_tabs/grid' %>
+    <%= render 'impact_cards/grid' %>
   </div>
 
 </div>

@@ -1,0 +1,68 @@
+<div class="mx-auto max-w-6xl" data-controller="stakeholder-network">
+
+
+  <div class="flex items-center mt-4 mb-4">
+    <%= render partial: 'resource_summary', locals: { name: @scorecard.name, background_color: 'bg-cyan-600' } %>
+    <div class="flex-1">
+      <div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= @scorecard.name %></h1>
+        </div>
+        <div class="mt-2 text-sm/6 text-zinc-500"><%= @scorecard.description %></div>
+      </div>
+    </div>
+  </div>
+
+  <div role="menubar" class="flex h-10 items-center space-x-1 rounded-md border bg-background p-1" tabindex="0" data-orientation="horizontal" style="outline: none;">
+  <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground text-accent-foreground" tabindex="-1">Grid
+  </button>
+  <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground" tabindex="-1" data-orientation="horizontal">Insights
+  </button>
+  <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground" tabindex="0" data-orientation="horizontal">Details
+  </button>
+  <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground" tabindex="-1" data-orientation="horizontal">Activity
+  </button>
+  </div>
+
+  <div class="flex justify-between items-center mb-4">
+
+    <%= form_with url: impact_card_stakeholder_network_index_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
+      <div class="flex space-x-4">
+        <div>
+          <%= form.label :stakeholder_types, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%=
+            form.multi_select(
+              :stakeholder_types,
+              options_for_select(@stakeholder_types.pluck(:name), @selected_stakeholder_types.pluck(:name)),
+              { placeholder: 'Select stakeholder types...' },
+              { include_hidden: false, data: { stakeholder_network_target: "stakeholderTypes" } }
+            )
+          %>
+        </div>
+        <div>
+          <%#= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%#= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
+        </div>
+      </div>
+    <% end %>
+    <div>
+      <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="inline-flex px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-stakeholder-network-target="toggleLabelsButton">Labels</button>
+    </div>
+  </div>
+
+  <div data-stakeholder-network-target="graph">
+    <div class="nodes">
+      <%- @graph.nodes.each do |node| %>
+        <div class="node" data-id="<%= node[:id] %>" data-label="<%= node[:label] %>" data-color="<%= node[:color] %>" data-betweenness="<%= node[:betweenness] %>" data-stakeholder-type="<%= node[:stakeholder_type] %>"></div>
+      <%- end %>
+    </div>
+    <div class="links">
+      <%- @graph.links.each do |link| %>
+        <div class="link" data-id="<%= link[:id] %>" data-target="<%= link[:target] %>" data-source="<%= link[:source] %>" data-strength="<%= link[:strength] %>"></div>
+      <%- end %>
+    </div>
+  </div>
+
+  <div class="min-h-screen" data-stakeholder-network-target="map"></div>
+
+</div>

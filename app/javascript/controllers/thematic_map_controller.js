@@ -61,6 +61,7 @@ export default class extends Controller {
       .force('link', linkForce)
       .force('charge', d3.forceManyBody().strength(this.calcForceStrength(data.nodes, data.links)))
       .force('center', d3.forceCenter(width / 2.5, height / 3))
+      .force('collide', d3.forceCollide(function (event, node) { return getNodeSize(node) + 10 }))
 
     const svg = d3.create("svg")
       .attr("width", width)
@@ -78,7 +79,7 @@ export default class extends Controller {
       .selectAll("circle")
       .data(data.nodes)
       .enter().append("circle")
-        .attr("r", 6)
+        .attr("r", getNodeSize)
         .attr("fill", this.getNodeColor)
         .call(dragDrop)
         .on('click', function(event, node) {

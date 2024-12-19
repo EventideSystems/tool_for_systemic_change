@@ -4,7 +4,7 @@ module Insights
   # This class is responsible for generating the data required to render the Organisations Network Map
   # for a given impact card.
   class StakeholderNetwork
-    attr_reader :transition_card, :unique_organisations
+    attr_reader :transition_card
 
     STRENGTH_BUCKET_SIZE = 4
 
@@ -12,9 +12,6 @@ module Insights
 
     def initialize(transition_card)
       @transition_card = transition_card
-      @unique_organisations = transition_card.organisations.includes(:stakeholder_type).uniq.sort_by do |organisation|
-        organisation.name.downcase
-      end
     end
 
     def links
@@ -29,7 +26,43 @@ module Insights
       @link_data ||= build_link_data
     end
 
+    def partnering_initiatives
+      @partnering_initiatives ||= build_partnering_initiatives
+    end
+
+    def unique_organisations
+      @unique_organisations ||= build_unique_organisations
+    end
+
     private
+
+    def build_unique_organisations
+      transition_card.organisations.includes(:stakeholder_type).uniq.sort_by do |organisation|
+        organisation.name.downcase
+      end
+    end
+
+    # TODO: Move this to a database view
+    def build_partnering_initiatives # rubocop:disable Metrics/MethodLength
+      query = <<~SQL
+        select distinct org1.id as organisation_id, initiatives.id as initiative_id, initiatives.name as initiative_name
+        from initiatives
+        inner join scorecards on scorecards.id = initiatives.scorecard_id
+        inner join initiatives_organisations io1 on io1.initiative_id = initiatives.id
+        inner join organisations org1 on org1.id = io1.organisation_id
+        inner join initiatives_organisations io2 on io2.initiative_id = initiatives.id
+        inner join organisations org2 on org2.id = io2.organisation_id
+        where org1.id <> org2.id and initiatives.scorecard_id = #{transition_card.id}
+        and (initiatives.archived_on > now() or initiatives.archived_on is null)
+        order by org1.id, initiatives.name
+      SQL
+
+      results = ActiveRecord::Base.connection.exec_query(query).rows
+
+      results.group_by { |result| result[0] }.transform_values do |initiatives|
+        initiatives.map { |initiative| { id: initiative[1], name: initiative[2] } }
+      end
+    end
 
     def build_link_data # rubocop:disable Metrics/MethodLength
       query = <<~SQL
@@ -46,7 +79,7 @@ module Insights
 
       results = ActiveRecord::Base.connection.exec_query(query).rows
 
-      results.map(&:minmax)
+      results.map(&:minmax) # consistent ordering of the link data
     end
 
     def build_betweenness(link_data)
@@ -84,12 +117,15 @@ module Insights
       betweenness = build_betweenness(link_data)
 
       unique_organisations.map do |node|
+        initiatives = partnering_initiatives[node.id]&.map { |initiative| initiative[:name] } || []
+
         {
           id: node.id,
           label: node.name,
           color: node.stakeholder_type&.color || '#808080',
           betweenness: betweenness[node.id],
-          stakeholder_type: node.stakeholder_type&.name
+          stakeholder_type: node.stakeholder_type&.name,
+          partnering_initiatives: initiatives
         }
       end
     end

@@ -3,19 +3,15 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent"]
+  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent"]
 
   connect() {
     const data = this.getData()
     this.drawGraph(data)
 
-    this.stakeholderTypesTarget.addEventListener("change", this.updateStakeholderTypes.bind(this))
     this.toggleLabelsButtonTarget.addEventListener("click", this.toggleLabels.bind(this))
 
     this.updateLabelsVisibility = this.updateLabelsVisibility.bind(this)
-    this.updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
-
-    this.updateStakeholderTypes({ target: this.stakeholderTypesTarget })
     this.updateLabelsVisibility()
   }
 
@@ -27,6 +23,7 @@ export default class extends Controller {
     let getLinkClass = this.getLinkClass
     let getNodeColor = this.getNodeColor
     let getTextClass = this.getTextClass
+    let getNodeSize = this.getNodeSize // NOTE: This function looks a bit redundant
 
     let graphTarget = this.graphTarget
     let dialogTarget = this.dialogTarget
@@ -35,9 +32,9 @@ export default class extends Controller {
     let dialogContentTarget = this.dialogContentTarget
 
     let querySelectorIncludesText = this.querySelectorIncludesText.bind(this)
-    let updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
+    // let updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
 
-    let stakeholderTypesTarget = this.stakeholderTypesTarget
+    // let stakeholderTypesTarget = this.stakeholderTypesTarget
 
     var linkForce = d3
       .forceLink()
@@ -85,42 +82,42 @@ export default class extends Controller {
         .attr("fill", this.getNodeColor)
         .call(dragDrop)
         .on('click', function(event, node) {
-          event.stopPropagation();
+          // event.stopPropagation();
 
-          dialogTitleTarget.innerHTML = node.label + ' - ' + node.stakeholderType
-          dialogTitleColorTarget.style.backgroundColor = node.color
+          // dialogTitleTarget.innerHTML = node.label + ' - ' + node.stakeholderType
+          // dialogTitleColorTarget.style.backgroundColor = node.color
 
-          const connections = data.links.filter(link => link.source.id == node.id || link.target.id == node.id)
-          const connectionNames = connections.map(link => { return link.source.id == node.id ? link.target.label : link.source.label })
-          const connectionNamesContent = connectionNames.map(name => {
-            return `<li>${name}</li>`
-          }).join('')
+          // const connections = data.links.filter(link => link.source.id == node.id || link.target.id == node.id)
+          // const connectionNames = connections.map(link => { return link.source.id == node.id ? link.target.label : link.source.label })
+          // const connectionNamesContent = connectionNames.map(name => {
+          //   return `<li>${name}</li>`
+          // }).join('')
 
-          const partneringInitiativesContent = node.partneringInitiatives.map(initiative => {
-            return `<li>${initiative}</li>`
-          }).join('')
+          // const partneringInitiativesContent = node.partneringInitiatives.map(initiative => {
+          //   return `<li>${initiative}</li>`
+          // }).join('')
 
-          const content = `
-            <div class="p-4">
-              <h3 class="text-lg font-semibold">Partnering Initiatives</h3>
-              <ul class="list-disc">
-                ${partneringInitiativesContent}
-              </ul>
+          // const content = `
+          //   <div class="p-4">
+          //     <h3 class="text-lg font-semibold">Partnering Initiatives</h3>
+          //     <ul class="list-disc">
+          //       ${partneringInitiativesContent}
+          //     </ul>
 
-              <h3 class="text-lg font-semibold">Partnering Stakeholders</h3>
-              <ul class="list-disc">
-                ${connectionNamesContent}
-              </ul>
+          //     <h3 class="text-lg font-semibold">Partnering Stakeholders</h3>
+          //     <ul class="list-disc">
+          //       ${connectionNamesContent}
+          //     </ul>
 
-              <h3 class="text-lg font-semibold">Metrics</h3>
-              <ul class="list-disc">
-                <li>Connections: ${connections.length}</li>
-                <li>Betweenness: ${node.betweenness}</li>
-              </ul>
-            </div>
-          `
-          dialogContentTarget.innerHTML = content
-          dialogTarget.showModal();
+          //     <h3 class="text-lg font-semibold">Metrics</h3>
+          //     <ul class="list-disc">
+          //       <li>Connections: ${connections.length}</li>
+          //       <li>Betweenness: ${node.betweenness}</li>
+          //     </ul>
+          //   </div>
+          // `
+          // dialogContentTarget.innerHTML = content
+          // dialogTarget.showModal();
         })
         .on('dblclick', function(event, node) {
           event.stopPropagation();
@@ -181,6 +178,7 @@ export default class extends Controller {
     this.mapTarget.append(svg.node())
   }
 
+
   getData() {
     const nodesElement = this.graphTarget.querySelector('.nodes')
     const nodeElements = nodesElement.querySelectorAll('.node')
@@ -189,16 +187,15 @@ export default class extends Controller {
     const linkElements = linksElement.querySelectorAll('.link')
 
     const nodesData = Array.from(nodeElements).map(node => {
-      const partneringInitiativesString = node.getAttribute('data-partnering-initiatives')
-      const partneringInitiatives = partneringInitiativesString.split(',').map(initiative => initiative.trim())
 
       return {
         id: node.getAttribute('data-id'),
         label: node.getAttribute('data-label'),
         color: node.getAttribute('data-color'),
-        betweenness: node.getAttribute('data-betweenness'),
-        stakeholderType: node.getAttribute('data-stakeholder-type'),
-        partneringInitiatives: partneringInitiatives,
+        size: node.getAttribute('data-size'),
+        characteristicId: node.getAttribute('data-characteristic-id'),
+        organisationIds: node.getAttribute('data-organisation-ids'),
+        initiativeIds: node.getAttribute('data-initiative_ids')
       }
     })
 
@@ -207,7 +204,6 @@ export default class extends Controller {
         id: node.getAttribute('data-id'),
         target: node.getAttribute('data-target'),
         source: node.getAttribute('data-source'),
-        strength: node.getAttribute('data-strength'),
       }
     })
 
@@ -249,6 +245,12 @@ export default class extends Controller {
     }
   }
 
+  getNodeSize(node) {
+    var nodeSize = node.size
+
+    return nodeSize;
+  }
+
   getTextClass(node, neighbors) {
     if (Array.isArray(neighbors) && neighbors.includes(node.id)) {
       return 'texts stroke-green-300 dark:stroke-green-300'
@@ -257,7 +259,7 @@ export default class extends Controller {
     }
   }
 
-  calcForceStrength(nodes, links) { return -40 }
+  calcForceStrength(nodes, links) { return -50 }
 
   calcLinkStrength(links) {
     var x = links.length;
@@ -303,39 +305,6 @@ export default class extends Controller {
         element.setAttribute('visibility', 'hidden')
       })
     }
-  }
-
-  updateStakeholderTypes(event) {
-    const selected = event.target.selectedOptions
-    const stakeholderTypes = Array.from(selected).map(({ value }) => value)
-
-    const url = new URL(window.location)
-    url.searchParams.delete('stakeholder_types[]')
-
-    if (stakeholderTypes && stakeholderTypes.length > 0) {
-      stakeholderTypes.forEach(stakeholderType => {
-        url.searchParams.append('stakeholder_types[]', stakeholderType)
-      })
-    }
-
-    window.history.replaceState({}, '', url)
-
-    const svgElement = this.mapTarget.querySelector('svg')
-    const nodeElement = svgElement.querySelector('.nodes')
-    const nodeElements = nodeElement.querySelectorAll('circle')
-
-    nodeElements.forEach(element => {
-      const elementData = d3.select(element).datum();
-      const stakeholderType = elementData.stakeholderType
-      const color = elementData.color
-
-      if (stakeholderTypes === undefined || stakeholderTypes.length == 0 || stakeholderTypes.includes(stakeholderType)) {
-        d3.select(element).attr('fill', color)
-      } else {
-        console.log('nope')
-        d3.select(element).attr('fill', 'gray')
-      }
-    })
   }
 
 }

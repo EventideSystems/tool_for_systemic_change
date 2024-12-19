@@ -1,5 +1,6 @@
 <div class="mx-auto max-w-6xl">
   <%= link_to 'Graph', impact_card_stakeholder_network_index_path(@scorecard), class: 'text-green-500' %>
+  <%= link_to 'Thematic Map', impact_card_thematic_map_index_path(@scorecard), class: 'text-green-500' %>
 
   <div class="flex items-center mt-4 mb-4">
     <%= render partial: 'resource_summary', locals: { name: @scorecard.name, background_color: 'bg-cyan-600' } %>

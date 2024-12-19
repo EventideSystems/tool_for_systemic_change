@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-6xl" data-controller="stakeholder-network">
+<div class="mx-auto max-w-6xl" data-controller="thematic-map">
 
 
   <div class="flex items-center mt-4 mb-4">
@@ -46,11 +46,11 @@
       </div>
     <% end %>
     <div>
-      <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="inline-flex px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-stakeholder-network-target="toggleLabelsButton">Labels</button>
+      <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="inline-flex px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-thematic-map-target="toggleLabelsButton">Labels</button>
     </div>
   </div>
 
-  <div data-stakeholder-network-target="graph">
+  <div data-thematic-map-target="graph" class="sr-only">
     <div class="nodes">
       <%- @graph.nodes.each do |node| %>
         <div
@@ -58,9 +58,10 @@
           data-id="<%= node[:id] %>"
           data-label="<%= node[:label] %>"
           data-color="<%= node[:color] %>"
-          data-betweenness="<%= node[:betweenness] %>"
-          data-stakeholder-type="<%= node[:stakeholder_type] %>"
-          data-partnering-initiatives="<%= node[:partnering_initiatives].join(',') %>"
+          data-characteristic-id="<%= node[:characteristic_id] %>"
+          data-organisation-ids="<%= node[:organisation_ids] %>"
+          data-initiative-ids="<%= node[:initiative_ids] %>"
+          data-size="<%= node[:size] %>"
         ></div>
       <%- end %>
     </div>
@@ -71,30 +72,29 @@
           data-id="<%= link[:id] %>"
           data-target="<%= link[:target] %>"
           data-source="<%= link[:source] %>"
-          data-strength="<%= link[:strength] %>"
         ></div>
       <%- end %>
     </div>
   </div>
 
   <div id="dialog-wrapper">
-    <dialog id="dialog" data-stakeholder-network-target="dialog" class="rounded-md bg-white px-4 pb-4 pt-5 text-left shadow-xl text-green-400">
+    <dialog id="dialog" data-thematic-map-target="dialog" class="rounded-md bg-white px-4 pb-4 pt-5 text-left shadow-xl text-green-400">
       <div class="flex justify-between">
         <div class="flex items-center space-x-2">
-          <div class="h-4 w-4 rounded-full" data-stakeholder-network-target="dialogTitleColor"></div>
-          <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-stakeholder-network-target="dialogTitle"></h2>
+          <div class="h-4 w-4 rounded-full" data-thematic-map-target="dialogTitleColor"></div>
+          <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-thematic-map-target="dialogTitle"></h2>
         </div>
-        <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-stakeholder-network-target="dialogTitle"></h2>
-        <button data-stakeholder-network-target="closeDialog" class="text-zinc-500 dark:text-white hover:text-zinc-700 dark:hover:text-white" aria-label="Close dialog">
+        <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-thematic-map-target="dialogTitle"></h2>
+        <button data-thematic-map-target="closeDialog" class="text-zinc-500 dark:text-white hover:text-zinc-700 dark:hover:text-white" aria-label="Close dialog">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
-      <div class="mt-4" data-stakeholder-network-target="dialogContent"></div>
+      <div class="mt-4" data-thematic-map-target="dialogContent"></div>
     </dialog>
   </div>
 
-  <div class="min-h-screen" data-stakeholder-network-target="map"></div>
+  <div class="min-h-screen" data-thematic-map-target="map"></div>
 
 </div>

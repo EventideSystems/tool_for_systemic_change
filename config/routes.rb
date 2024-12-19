@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :impact_cards do
     resources :initiatives, only: [:show], controller: 'impact_cards/initiatives'
     resources :stakeholder_network, only: [:index], controller: 'impact_cards/stakeholder_network'
+    resources :thematic_map, only: [:index], controller: 'impact_cards/thematic_map'
   end
 
   namespace :initiatives do

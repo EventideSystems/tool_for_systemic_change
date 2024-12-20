@@ -29,20 +29,28 @@
     <%= form_with url: impact_card_stakeholder_network_index_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
       <div class="flex space-x-4">
         <div>
-          <%= form.label :stakeholder_types, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
           <%=
             form.multi_select(
-              :stakeholder_types,
-              options_for_select(@stakeholder_types.pluck(:name), @selected_stakeholder_types.pluck(:name)),
-              { placeholder: 'Select stakeholder types...' },
-              { include_hidden: false, data: { stakeholder_network_target: "stakeholderTypes" } }
+              :stakeholders,
+              options_for_select(@stakeholders.pluck(:name), @selected_stakeholders.pluck(:name)),
+              { placeholder: 'Select stakeholders...' },
+              { include_hidden: false, data: { thematic_map_target: "stakeholders" } }
             )
           %>
         </div>
         <div>
-          <%#= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-          <%#= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
+          <%= form.label :initiatives, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+          <%=
+            form.multi_select(
+              :initiatives,
+              options_for_select(@initiatives.pluck(:name), @selected_initiatives.pluck(:name)),
+              { placeholder: 'Select initiatives...' },
+              { include_hidden: false, data: { thematic_map_target: "initiatives" } }
+            )
+          %>
         </div>
+
       </div>
     <% end %>
     <div>
@@ -59,7 +67,7 @@
           data-label="<%= node[:label] %>"
           data-color="<%= node[:color] %>"
           data-characteristic-id="<%= node[:characteristic_id] %>"
-          data-organisation-ids="<%= node[:organisation_ids] %>"
+          data-stakeholders="<%=  node[:stakeholders].join(',') %>"
           data-initiative-ids="<%= node[:initiative_ids] %>"
           data-size="<%= node[:size] %>"
         ></div>

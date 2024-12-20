@@ -11,14 +11,22 @@ module ImpactCards
 
       @graph = Insights::TargetsNetwork.new(@scorecard)
 
-      @stakeholder_types = @scorecard.stakeholder_types.order(:name).uniq
       @show_labels = params[:show_labels].in?(%w[true 1])
 
-      @selected_stakeholder_types =
-        if params[:stakeholder_types].blank?
-          StakeholderType.none
+      @stakeholders = @scorecard.organisations.order(:name).uniq
+      @selected_stakeholders =
+        if params[:stakeholders].blank?
+          Organisation.none
         else
-          StakeholderType.where(account: current_account, name: params[:stakeholder_types].compact)
+          Organisation.where(account: current_account, name: params[:stakeholders].compact)
+        end
+
+      @initiatives = @scorecard.initiatives.order(:name).uniq
+      @selected_initiatives =
+        if params[:initiatives].blank?
+          Initiative.none
+        else
+          scorecard.initiatives.where(name: params[:initiatives].compact)
         end
     end
   end

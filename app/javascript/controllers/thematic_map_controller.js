@@ -3,15 +3,19 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent"]
+  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders"]
 
   connect() {
     const data = this.getData()
     this.drawGraph(data)
 
     this.toggleLabelsButtonTarget.addEventListener("click", this.toggleLabels.bind(this))
+    this.stakeholdersTarget.addEventListener("change", this.updateStakeholders.bind(this))
 
     this.updateLabelsVisibility = this.updateLabelsVisibility.bind(this)
+    this.updateStakeholders = this.updateStakeholders.bind(this)
+
+    this.updateStakeholders({ target: this.stakeholdersTarget })
     this.updateLabelsVisibility()
   }
 
@@ -260,12 +264,10 @@ export default class extends Controller {
     }
   }
 
-  calcForceStrength(nodes, links) { return -50 }
+  calcForceStrength(nodes, links) { return -40 }
 
   calcLinkStrength(links) {
-    var x = links.length;
-    var y = 0.0002063777*x - 0.00345955;
-    return y
+    return 0.38
   }
 
   toggleLabels(event) {
@@ -308,4 +310,38 @@ export default class extends Controller {
     }
   }
 
+  updateStakeholders(event) {
+    const selected = event.target.selectedOptions
+    const selected_stakeholders = Array.from(selected).map(({ value }) => value)
+
+    const url = new URL(window.location)
+    url.searchParams.delete('stakeholders[]')
+
+    if (selected_stakeholders && selected_stakeholders.length > 0) {
+      selected_stakeholders.forEach(stakeholder => {
+        url.searchParams.append('stakeholders[]', stakeholder)
+      })
+    }
+
+    window.history.replaceState({}, '', url)
+
+    const svgElement = this.mapTarget.querySelector('svg')
+    const nodeElement = svgElement.querySelector('.nodes')
+    const nodeElements = nodeElement.querySelectorAll('circle')
+
+    // nodeElements.forEach(element => {
+    //   const elementData = d3.select(element).datum();
+    //   const stakholder = elementData.organisationIds
+    //   const color = elementData.color
+
+    //   debugger
+
+    //   if (stakholder === undefined || stakholder.length == 0 || selected_stakeholders.includes(stakeholderType)) {
+    //     d3.select(element).attr('fill', color)
+    //   } else {
+    //     console.log('nope')
+    //     d3.select(element).attr('fill', 'gray')
+    //   }
+    // })
+  }
 }

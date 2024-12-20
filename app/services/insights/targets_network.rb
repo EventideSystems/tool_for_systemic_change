@@ -74,17 +74,23 @@ module Insights
             mapping[:focus_area_id] == node.id
           end
 
+        # TODO: Move this into the SQL query
         organisation_ids = mappings.map { |hash| hash[:organisation_id] }
                                    .flatten.compact.uniq.map(&:to_s)
+
+        stakeholders = Organisation.where(id: organisation_ids).order(:name).pluck(:name)
+
         initiative_ids = mappings.map { |hash| hash[:initiative_id] }
                                  .flatten.compact.uniq.map(&:to_s)
+
+        initiatives = Initiative.where(id: initiative_ids).order(:name).pluck(:name)
 
         {
           id: "focus-area-#{node.id}",
           label: node.short_name,
           color: node.actual_color,
-          organisation_ids:,
-          initiative_ids:,
+          stakeholders:,
+          initiatives:,
           size: 13
         }
       end
@@ -97,18 +103,24 @@ module Insights
             mapping[:characteristic_id] == node.id
           end
 
+        # TODO: Move this into the SQL query
         organisation_ids = mappings.map { |hash| hash[:organisation_id] }
                                    .flatten.compact.uniq.map(&:to_s)
+
+        stakeholders = Organisation.where(id: organisation_ids).order(:name).pluck(:name)
+
         initiative_ids = mappings.map { |hash| hash[:initiative_id] }
                                  .flatten.compact.uniq.map(&:to_s)
+
+        initiatives = Initiative.where(id: initiative_ids).order(:name).pluck(:name)
 
         {
           id: "characteristic-#{node.id}",
           label: node.short_name,
           color: node.focus_area.actual_color,
           characteristic_id: node.id,
-          organisation_ids:,
-          initiative_ids:,
+          stakeholders:,
+          initiatives:,
           size: 6
         }
       end

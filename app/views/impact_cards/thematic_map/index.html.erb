@@ -67,8 +67,8 @@
           data-label="<%= node[:label] %>"
           data-color="<%= node[:color] %>"
           data-characteristic-id="<%= node[:characteristic_id] %>"
-          data-stakeholders="<%=  node[:stakeholders].join(',') %>"
-          data-initiative-ids="<%= node[:initiative_ids] %>"
+          data-stakeholders="<%= node[:stakeholders] %>"
+          data-initiatives="<%= node[:initiatives] %>"
           data-size="<%= node[:size] %>"
         ></div>
       <%- end %>

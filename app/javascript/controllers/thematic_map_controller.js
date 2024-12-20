@@ -3,19 +3,20 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders"]
+  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders", "initiatives"]
 
   connect() {
     const data = this.getData()
     this.drawGraph(data)
 
     this.toggleLabelsButtonTarget.addEventListener("click", this.toggleLabels.bind(this))
-    this.stakeholdersTarget.addEventListener("change", this.updateStakeholders.bind(this))
+    this.stakeholdersTarget.addEventListener("change", this.updateFilters.bind(this))
+    this.initiativesTarget.addEventListener("change", this.updateFilters.bind(this))
 
     this.updateLabelsVisibility = this.updateLabelsVisibility.bind(this)
-    this.updateStakeholders = this.updateStakeholders.bind(this)
+    this.updateFilters = this.updateFilters.bind(this)
 
-    this.updateStakeholders({ target: this.stakeholdersTarget })
+    this.updateFilters()
     this.updateLabelsVisibility()
   }
 
@@ -193,14 +194,20 @@ export default class extends Controller {
 
     const nodesData = Array.from(nodeElements).map(node => {
 
+      const stakeholdersString = node.getAttribute('data-stakeholders') || '[]'
+      const stakeholders = JSON.parse(stakeholdersString)
+
+      const initiativesString = node.getAttribute('data-initiatives') || '[]'
+      const initiatives = JSON.parse(initiativesString)
+
       return {
         id: node.getAttribute('data-id'),
         label: node.getAttribute('data-label'),
         color: node.getAttribute('data-color'),
         size: node.getAttribute('data-size'),
         characteristicId: node.getAttribute('data-characteristic-id'),
-        organisationIds: node.getAttribute('data-organisation-ids'),
-        initiativeIds: node.getAttribute('data-initiative_ids')
+        stakeholders: stakeholders,
+        initiatives: initiatives
       }
     })
 
@@ -310,16 +317,23 @@ export default class extends Controller {
     }
   }
 
-  updateStakeholders(event) {
-    const selected = event.target.selectedOptions
-    const selected_stakeholders = Array.from(selected).map(({ value }) => value)
+  updateFilters(event) {
+    const selectedStakeholders = Array.from(this.stakeholdersTarget.selectedOptions).map(({ value }) => value)
+    const selectedInitiatives = Array.from(this.initiativesTarget.selectedOptions).map(({ value }) => value)
 
     const url = new URL(window.location)
     url.searchParams.delete('stakeholders[]')
+    url.searchParams.delete('initiatives[]')
 
-    if (selected_stakeholders && selected_stakeholders.length > 0) {
-      selected_stakeholders.forEach(stakeholder => {
+    if (selectedStakeholders && selectedStakeholders.length > 0) {
+      selectedStakeholders.forEach(stakeholder => {
         url.searchParams.append('stakeholders[]', stakeholder)
+      })
+    }
+
+    if (selectedInitiatives && selectedInitiatives.length > 0) {
+      selectedInitiatives.forEach(initiative => {
+        url.searchParams.append('initiatives[]', initiative)
       })
     }
 
@@ -329,19 +343,21 @@ export default class extends Controller {
     const nodeElement = svgElement.querySelector('.nodes')
     const nodeElements = nodeElement.querySelectorAll('circle')
 
-    // nodeElements.forEach(element => {
-    //   const elementData = d3.select(element).datum();
-    //   const stakholder = elementData.organisationIds
-    //   const color = elementData.color
+    nodeElements.forEach(element => {
+      const elementData = d3.select(element).datum();
+      const stakeholders = elementData.stakeholders
+      const initiatives = elementData.initiatives
+      const color = elementData.color
 
-    //   debugger
+      const intersectStakeholders = selectedStakeholders.some(stakeholder => stakeholders.includes(stakeholder))
+      const intersectsInitiatives = selectedInitiatives.some(initiative => initiatives.includes(initiative))
 
-    //   if (stakholder === undefined || stakholder.length == 0 || selected_stakeholders.includes(stakeholderType)) {
-    //     d3.select(element).attr('fill', color)
-    //   } else {
-    //     console.log('nope')
-    //     d3.select(element).attr('fill', 'gray')
-    //   }
-    // })
+      if ((selectedStakeholders.length === 0 && selectedInitiatives.length === 0 ) || (intersectStakeholders || intersectsInitiatives)) {
+        d3.select(element).attr('fill', color)
+      } else {
+        console.log('nope')
+        d3.select(element).attr('fill', 'gray')
+      }
+    })
   }
 }

@@ -13,7 +13,7 @@ module ImpactCards
 
       @show_labels = params[:show_labels].in?(%w[true 1])
 
-      @stakeholders = @scorecard.organisations.order(:name).uniq
+      @stakeholders = @scorecard.organisations.order(Arel.sql('trim(organisations.name)')).uniq
       @selected_stakeholders =
         if params[:stakeholders].blank?
           Organisation.none
@@ -26,7 +26,7 @@ module ImpactCards
         if params[:initiatives].blank?
           Initiative.none
         else
-          scorecard.initiatives.where(name: params[:initiatives].compact)
+          @scorecard.initiatives.where(name: params[:initiatives].compact)
         end
     end
   end

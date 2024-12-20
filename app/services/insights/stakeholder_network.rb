@@ -3,7 +3,7 @@
 module Insights
   # This class is responsible for generating the data required to render the Organisations Network Map
   # for a given impact card.
-  class StakeholderNetwork
+  class StakeholderNetwork # rubocop:disable Metrics/ClassLength
     attr_reader :transition_card
 
     STRENGTH_BUCKET_SIZE = 4
@@ -113,7 +113,7 @@ module Insights
       end
     end
 
-    def build_nodes
+    def build_nodes # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
       betweenness = build_betweenness(link_data)
 
       unique_organisations.map do |node|

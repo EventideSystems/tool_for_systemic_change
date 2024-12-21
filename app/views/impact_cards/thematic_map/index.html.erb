@@ -70,7 +70,11 @@
           data-stakeholders="<%= node[:stakeholders] %>"
           data-initiatives="<%= node[:initiatives] %>"
           data-size="<%= node[:size] %>"
-        ></div>
+        >
+          <div class="description">
+            <%== node[:description] %>
+          </div>
+        </div>
       <%- end %>
     </div>
     <div class="links">
@@ -102,7 +106,6 @@
       <div class="mt-4" data-thematic-map-target="dialogContent"></div>
     </dialog>
   </div>
-
   <div class="min-h-screen" data-thematic-map-target="map"></div>
 
 </div>

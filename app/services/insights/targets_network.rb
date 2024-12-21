@@ -91,6 +91,7 @@ module Insights
           color: node.actual_color,
           stakeholders:,
           initiatives:,
+          description: nil,
           size: 13
         }
       end
@@ -114,6 +115,8 @@ module Insights
 
         initiatives = Initiative.where(id: initiative_ids).order(:name).pluck(:name)
 
+        description = Characteristic.find(node.id).description
+
         {
           id: "characteristic-#{node.id}",
           label: node.short_name,
@@ -121,6 +124,7 @@ module Insights
           characteristic_id: node.id,
           stakeholders:,
           initiatives:,
+          description:,
           size: 6
         }
       end

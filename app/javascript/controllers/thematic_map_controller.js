@@ -3,7 +3,7 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders", "initiatives"]
+  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogContent", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders", "initiatives"]
 
   connect() {
     const data = this.getData()
@@ -88,42 +88,18 @@ export default class extends Controller {
         .attr("fill", this.getNodeColor)
         .call(dragDrop)
         .on('click', function(event, node) {
-          // event.stopPropagation();
+          event.stopPropagation();
 
-          // dialogTitleTarget.innerHTML = node.label + ' - ' + node.stakeholderType
-          // dialogTitleColorTarget.style.backgroundColor = node.color
+          const nodeElement = document.querySelector(`[data-id='${node.id}']`);
+          const nodeDescription = nodeElement.querySelector('.description').innerHTML
 
-          // const connections = data.links.filter(link => link.source.id == node.id || link.target.id == node.id)
-          // const connectionNames = connections.map(link => { return link.source.id == node.id ? link.target.label : link.source.label })
-          // const connectionNamesContent = connectionNames.map(name => {
-          //   return `<li>${name}</li>`
-          // }).join('')
+          if (nodeDescription.trim().length) {
+            dialogContentTarget.innerHTML = nodeDescription
+            dialogTitleTarget.innerHTML = node.label
+            dialogTitleColorTarget.style.backgroundColor = node.color
 
-          // const partneringInitiativesContent = node.partneringInitiatives.map(initiative => {
-          //   return `<li>${initiative}</li>`
-          // }).join('')
-
-          // const content = `
-          //   <div class="p-4">
-          //     <h3 class="text-lg font-semibold">Partnering Initiatives</h3>
-          //     <ul class="list-disc">
-          //       ${partneringInitiativesContent}
-          //     </ul>
-
-          //     <h3 class="text-lg font-semibold">Partnering Stakeholders</h3>
-          //     <ul class="list-disc">
-          //       ${connectionNamesContent}
-          //     </ul>
-
-          //     <h3 class="text-lg font-semibold">Metrics</h3>
-          //     <ul class="list-disc">
-          //       <li>Connections: ${connections.length}</li>
-          //       <li>Betweenness: ${node.betweenness}</li>
-          //     </ul>
-          //   </div>
-          // `
-          // dialogContentTarget.innerHTML = content
-          // dialogTarget.showModal();
+            dialogTarget.showModal()
+          }
         })
         .on('dblclick', function(event, node) {
           event.stopPropagation();

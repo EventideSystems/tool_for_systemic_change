@@ -25,7 +25,7 @@ class Import < ApplicationRecord
 
   attr_accessor :processing_errors
 
-  enum status: { pending: 0, processed: 1 }
+  enum :status, pending: 0, processed: 1
 
   belongs_to :account
   belongs_to :user

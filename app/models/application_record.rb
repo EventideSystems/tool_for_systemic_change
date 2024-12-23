@@ -6,9 +6,11 @@ class ApplicationRecord < ActiveRecord::Base
 
   class << self
     # Public: Create string-based enum
+    # TODO: Change this to follow the same pattern as the integer enum in Rails 8 (e.g.
+    #   string_enum :status, %i[actual planned more_information suggestion]
     def string_enum(definitions)
       definitions.each do |name, values|
-        enum name => string_enum_values(values)
+        enum name, string_enum_values(values)
       end
     end
 

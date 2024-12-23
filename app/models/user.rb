@@ -46,7 +46,7 @@ class User < ApplicationRecord
 
   has_paper_trail
 
-  enum system_role: { member: 0, admin: 1 }
+  enum :system_role, member: 0, admin: 1
 
   acts_as_paranoid
 

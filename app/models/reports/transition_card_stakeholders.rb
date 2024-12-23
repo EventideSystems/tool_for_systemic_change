@@ -23,6 +23,7 @@ module Reports
 
       @ecosystem_map = Insights::StakeholderNetwork.new(scorecard)
       @connections = OrganisationConnections.execute(scorecard.id)
+      @unique_organisations = @scorecard.unique_organisations
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -126,7 +127,7 @@ module Reports
     end
 
     def total_partnering_organisations
-      unique_organisations.count
+      unique_organisations&.count || 0
     end
 
     def total_transition_card_initiatives

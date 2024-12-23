@@ -83,7 +83,7 @@ module Reports
     end
 
     def total_partnering_organisations
-      scorecard.unique_organisations.count
+      scorecard.unique_organisations&.count || 0
     end
 
     def total_transition_card_initiatives

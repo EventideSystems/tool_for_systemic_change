@@ -81,7 +81,7 @@ gem 'data_migrate'
 
 gem 'pagy'
 gem 'paper_trail'
-gem 'paranoia', '~> 2.2'
+gem 'paranoia'
 gem 'ransack'
 
 gem 'net-http'

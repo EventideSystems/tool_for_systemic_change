@@ -43,7 +43,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   TEXT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 placeholder:text-gray-400 dark:ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
 
-  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS}  bg-white/5 bg-opacity-5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
+  TEXT_AREA_CLASS = "#{COMMON_FIELD_CLASS} bg-white/5 bg-opacity-5 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500".freeze
 
   SELECT_FIELD_CLASS = "#{COMMON_FIELD_CLASS} block w-full rounded-md border-0 bg-white/5 shadow-sm ring-1 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 [&_*]:text-black".freeze
 
@@ -101,34 +101,19 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     end
   end
 
-  # block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
-
   def email_field(method, options = {})
-    default_opts = { class: build_default_field_class(TEXT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
-    merged_opts = default_opts.merge(options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, merged_opts))
-      append_error_message(@object, method)
-    end
+    wrap_field(method) { super(method, merged_options(method:, options:)) }
   end
 
   def label(method, content_or_options = nil, options = nil, &block)
-    if options.nil?
-      options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : ''
-      options = { class: tailwind_merge(LABEL_CLASS, options_class) }
-      super(method, content_or_options, options, &block)
-    else
-      label_class_from_content = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : nil
-      label_class_from_options = options.is_a?(Hash) ? options.delete(:class) : nil
-      options_class = label_class_from_content || label_class_from_options
+    label_class_from_content = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : nil
+    label_class_from_options = options.is_a?(Hash) ? options.delete(:class) : nil
+    label_class = label_class_from_content || label_class_from_options
 
-      label_class = tailwind_merge(LABEL_CLASS, options_class)
+    tailwind_options = { class: tailwind_merge(LABEL_CLASS, label_class) }
+    merged_options = options.is_a?(Hash) ? options.merge(tailwind_options) : tailwind_options
 
-      default_opts = { class: label_class }
-      merged_opts = default_opts.merge(options)
-      super(method, content_or_options, merged_opts, &block)
-    end
+    super(method, content_or_options, merged_options, &block)
   end
 
   def multi_select(method, choices = nil, options = {}, html_options = {}, &block)
@@ -163,29 +148,11 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   end
 
   def text_area(method, options = {})
-    options_class = options.delete(:class)
-    text_area_class = tailwind_merge(TEXT_AREA_CLASS, options_class)
-
-    default_opts = { class: build_default_field_class(text_area_class, ERROR_BORDER_CLASS, method) }
-    merged_opts = default_opts.merge(options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, merged_opts))
-      append_error_message(@object, method)
-    end
+    wrap_field(method) { super(method, merged_options(method:, options:, default_class: TEXT_AREA_CLASS)) }
   end
 
   def text_field(method, options = {})
-    options_class = options.delete(:class)
-    text_field_class = tailwind_merge(TEXT_AREA_CLASS, options_class)
-
-    default_opts = { class: build_default_field_class(text_field_class, ERROR_BORDER_CLASS, method) }
-    merged_opts = default_opts.merge(options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, merged_opts))
-      append_error_message(@object, method)
-    end
+    wrap_field(method) { super(method, merged_options(method:, options:, default_class: TEXT_AREA_CLASS)) }
   end
 
   def base_color_select(method, options = {}, html_options = {}, &block)
@@ -221,7 +188,22 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     base_class + (@object.errors[method].any? ? " #{error_class}" : '')
   end
 
+  def merged_options(method:, options: {}, default_class: TEXT_FIELD_CLASS, error_class: ERROR_BORDER_CLASS)
+    options_class = options.delete(:class)
+    text_field_class = tailwind_merge(default_class, options_class)
+
+    default_opts = { class: build_default_field_class(text_field_class, error_class, method) }
+    default_opts.merge(options)
+  end
+
   def tailwind_merge(base_classes, override_classes)
     TailwindMerge::Merger.new.merge([base_classes, override_classes])
+  end
+
+  def wrap_field(method, &block)
+    @template.content_tag(:div) do
+      @template.concat(block.call)
+      append_error_message(@object, method)
+    end
   end
 end

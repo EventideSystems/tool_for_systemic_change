@@ -39,6 +39,7 @@ module ToolForSystemicChange
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    config.active_support.to_time_preserves_timezone = :zone
 
     # NOTE: Future feature, encryption for Active Record
     # config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']

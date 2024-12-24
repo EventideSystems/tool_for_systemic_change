@@ -2,9 +2,9 @@
 <%= render layout: "layouts/devise_page", locals: { title: "Sign in" } do %>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'space-y-6' }, data: { turbo: false }) do |f| %>
     <div>
-      <%= f.label :email, class: 'block text-sm font-medium text-gray-700' %>
+      <%= f.label :email, class: 'text-gray-700 dark:text-red-700' %>
       <div class="mt-1">
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", type: 'email', required: true, class: "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", type: 'email', required: true %>
       </div>
     </div>
 

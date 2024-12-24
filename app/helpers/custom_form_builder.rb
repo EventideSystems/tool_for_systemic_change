@@ -101,12 +101,34 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     end
   end
 
-  def label(method, content_or_options = nil, options = {}, &block)
-    options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : options.delete(:class)
-    label_class = tailwind_merge(LABEL_CLASS, options_class)
-    default_opts = { class: label_class }
+  # block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
+
+  def email_field(method, options = {})
+    default_opts = { class: build_default_field_class(TEXT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
     merged_opts = default_opts.merge(options)
-    super(method, content_or_options, merged_opts, &block)
+
+    @template.content_tag(:div) do
+      @template.concat(super(method, merged_opts))
+      append_error_message(@object, method)
+    end
+  end
+
+  def label(method, content_or_options = nil, options = nil, &block)
+    if options.nil?
+      options_class = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : ''
+      options = { class: tailwind_merge(LABEL_CLASS, options_class) }
+      super(method, content_or_options, options, &block)
+    else
+      label_class_from_content = content_or_options.is_a?(Hash) ? content_or_options.delete(:class) : nil
+      label_class_from_options = options.is_a?(Hash) ? options.delete(:class) : nil
+      options_class = label_class_from_content || label_class_from_options
+
+      label_class = tailwind_merge(LABEL_CLASS, options_class)
+
+      default_opts = { class: label_class }
+      merged_opts = default_opts.merge(options)
+      super(method, content_or_options, merged_opts, &block)
+    end
   end
 
   def multi_select(method, choices = nil, options = {}, html_options = {}, &block)

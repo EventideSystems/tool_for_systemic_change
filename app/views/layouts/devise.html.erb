@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
+<html lang="en" class="h-full text-zinc-950 antialiased lg:bg-zinc-100">
   <head>
-    <title><%= application_title%></title>
+    <title><%= application_title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta charset="utf-8">
     <%= csrf_meta_tags %>
@@ -13,7 +13,7 @@
   </head>
   <body class="hold-transition login-page">
     <%= render 'layouts/shared/flash_messages' %>
-    <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+    <div class="relative isolate min-h-svh w-full max-lg:flex-col lg:bg-zinc-100">
       <main class="py-2">
         <div class="px-2">
           <%= yield %>

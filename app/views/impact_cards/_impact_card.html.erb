@@ -14,12 +14,16 @@
           <%= highlight(impact_card.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
 
-        <%- if impact_card.community.present? || impact_card.wicked_problem.present? %>
-          <div class="flex space-x-4">
-            <%= render 'label_badge', label: impact_card.community %>
-            <%= render 'label_badge', label: impact_card.wicked_problem %>
+        <div class="flex space-x-4">
+
+          <div class="inline-flex rounded-lg items-center justify-center bg-red-950 dark:bg-red-500 text-white" title="Type: <%= impact_card.type.titleize %>">
+            <p class="py-1 px-2 text-xs"><%= impact_card.type.titleize %></p>
           </div>
-        <%- end %>
+
+          <%= render 'label_badge', label: impact_card.community if impact_card.community.present? %>
+          <%= render 'label_badge', label: impact_card.wicked_problem if impact_card.wicked_problem.present? %>
+        </div>
+
       </div>
     </div>
   </div>

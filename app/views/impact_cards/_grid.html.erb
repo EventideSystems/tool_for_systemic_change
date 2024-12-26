@@ -5,7 +5,7 @@
     <div class="flex space-x-4">
       <div>
         <%= form.label :date, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%= custom_date_field_tag :date, @date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", data: { grid_target: "date" }  %>
+        <%= custom_date_field_tag :date, @date, data: { grid_target: "date" }  %>
       </div>
       <div>
         <%= form.label :subsystem_tags, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>

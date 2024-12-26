@@ -16,18 +16,26 @@ function updateControls() {
   // Initialize custom select elements
   HSSelect.autoInit()
 
-  // Ensure native controls use the correct color theme
-  // Retrieve the color theme from localStorage
-  let colorTheme = localStorage.getItem('color-theme');
+  // // Ensure native controls use the correct color theme
+  // // Retrieve the color theme from localStorage
+  // let colorTheme = localStorage.getItem('color-theme');
 
-  // If the color theme is not set, default to 'light' and store it in localStorage
-  if (!colorTheme) {
-    colorTheme = 'light';
-    localStorage.setItem('color-theme', colorTheme);
-  }
+  // // If the color theme is not set, default to 'light' and store it in localStorage
+  // if (!colorTheme) {
+  //   colorTheme = 'light';
+  //   localStorage.setItem('color-theme', colorTheme);
+  // }
 
-  // Apply the color theme to the document
-  document.documentElement.style.colorScheme = colorTheme;
+  // if (colorTheme === 'dark') {
+  //   document.documentElement.classList.add('dark');
+  //   document.documentElement.classList.remove('light');
+  // } else {
+  //   document.documentElement.classList.add('light');
+  //   document.documentElement.classList.remove('dark');
+  // }
+
+  // // Apply the color theme to the document
+  // document.documentElement.style.colorScheme = colorTheme;
 }
 
 document.addEventListener("turbo:load", updateControls)

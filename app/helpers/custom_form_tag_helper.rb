@@ -12,8 +12,9 @@ module CustomFormTagHelper
     end
   end
 
+  # mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
   def custom_date_field_tag(name, value = nil, options = {})
-    default_opts = { class: "#{CustomFormBuilder::TEXT_FIELD_CLASS} mt-2" }
+    default_opts = { class: "#{CustomFormBuilder::TEXT_FIELD_CLASS} mt-2 dark:[color-scheme:dark]" }
 
     content_tag(:div) do
       date_field_tag(name, value, default_opts.merge(options))

@@ -65,7 +65,7 @@
 
               <%=
                 dropdown_menu_item do
-                  link_to "Dark mode &checkmark;".html_safe, '', data: { controller: 'theme', theme_target: 'toggle', action: 'theme#toggle' }, class: 'block w-full'
+                  link_to "Dark mode &checkmark;".html_safe, '', data: { controller: 'theme-toggle', theme_toggle_target: 'toggle', action: 'theme-toggle#toggle' }, class: 'block w-full'
                 end
               %>
               <hr/>

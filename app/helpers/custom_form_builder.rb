@@ -52,6 +52,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   # SELECT_FIELD_CLASS = 'mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-yellow-500 sm:text-sm sm:leading-6'
 
   ERROR_BORDER_CLASS = 'border-2 border-red-500'
+  ERROR_MESSAGE_CLASS = 'h-2 mt-2 mb-4 text-xs text-red-500 dark:text-red-500'
   LABEL_CLASS = 'block text-sm font-medium leading-6 text-gray-900 dark:text-white'
 
   MULTI_SELECT_DEFAULT_HS_SELECT = {
@@ -72,33 +73,18 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   # rubocop:enable Layout/LineLength
 
   def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
-    default_opts = { class: build_default_field_class(CHECK_BOX_CLASS, ERROR_BORDER_CLASS, method) }
-    merged_opts = default_opts.merge(options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, merged_opts, checked_value, unchecked_value))
-      append_error_message(@object, method)
-    end
+    merged_options = merged_options(method:, options:, default_class: CHECK_BOX_CLASS)
+    wrap_field(method) { super(method, merged_options, checked_value, unchecked_value) }
   end
 
   def collection_select(method, collection, value_method, text_method, options = {}, html_options = {}) # rubocop:disable Metrics/ParameterLists
-    default_html_options = { class: build_default_field_class(SELECT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
-    merged_html_options = default_html_options.merge(html_options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, collection, value_method, text_method, options, merged_html_options))
-      append_error_message(@object, method)
-    end
+    merged_html_options = merged_options(method: method, options: html_options, default_class: SELECT_FIELD_CLASS)
+    wrap_field(method) { super(method, collection, value_method, text_method, options, merged_html_options) }
   end
 
+  # TODO: Add Stimulus controller to handle the widget color change when then theme is changed
   def date_field(method, options = {})
-    default_opts = { class: build_default_field_class(TEXT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
-    merged_opts = default_opts.merge(options)
-
-    @template.content_tag(:div) do
-      @template.concat(super(method, merged_opts))
-      append_error_message(@object, method)
-    end
+    wrap_field(method) { super(method, merged_options(method:, options:)) }
   end
 
   def email_field(method, options = {})
@@ -132,13 +118,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   end
 
   def select(method, choices = nil, options = {}, html_options = {}, &block)
-    default_html_options = { class: build_default_field_class(SELECT_FIELD_CLASS, ERROR_BORDER_CLASS, method) }
-    merged_html_options = default_html_options.merge(html_options)
+    merged_html_options = merged_options(method:, options: html_options, default_class: SELECT_FIELD_CLASS)
 
-    @template.content_tag(:div) do
-      @template.concat(super(method, choices, options, merged_html_options, &block))
-      append_error_message(@object, method) if @object.present?
-    end
+    wrap_field(method) { super(method, choices, options, merged_html_options, &block) }
   end
 
   def submit(value = nil, options = {})
@@ -175,7 +157,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
     object.errors[method].each do |error_message|
       @template.concat(
-        @template.content_tag(:div, class: 'h-2 mt-2 mb-4 text-xs text-red-500 dark:text-red-500') do
+        @template.content_tag(:div, class: ERROR_MESSAGE_CLASS) do
           error_message.html_safe # rubocop:disable Rails/OutputSafety
         end
       )

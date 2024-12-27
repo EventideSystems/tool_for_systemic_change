@@ -88,5 +88,5 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Required by Devise
-  config.action_mailer.default_url_options = { host: 'app.toolforsystemicchange.com'
+  config.action_mailer.default_url_options = { host: 'app.toolforsystemicchange.com' }
 end

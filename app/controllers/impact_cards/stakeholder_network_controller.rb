@@ -3,7 +3,10 @@
 module ImpactCards
   # Controller for Stakeholder network for each ImpactCard
   class StakeholderNetworkController < ApplicationController
+    include ActiveTabItem
+
     sidebar_item :impact_cards
+    tab_item :network
 
     def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @scorecard = Scorecard.find(params[:impact_card_id])

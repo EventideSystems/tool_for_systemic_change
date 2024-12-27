@@ -3,7 +3,10 @@
 module ImpactCards
   # Controller for thematic map for each ImpactCard
   class ThematicMapController < ApplicationController
+    include ActiveTabItem
+
     sidebar_item :impact_cards
+    tab_item :thematic_map
 
     def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       @scorecard = Scorecard.find(params[:impact_card_id])

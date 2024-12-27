@@ -5,6 +5,7 @@
 class ImpactCardsController < ApplicationController
   include VerifyPolicies
   include InitiativeChildRecords
+  include ActiveTabItem
 
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
@@ -18,6 +19,7 @@ class ImpactCardsController < ApplicationController
   skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
 
   sidebar_item :impact_cards
+  tab_item :grid
 
   def index # rubocop:disable Metrics/AbcSize
     @communities = current_account.communities

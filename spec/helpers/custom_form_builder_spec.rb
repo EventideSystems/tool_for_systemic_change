@@ -41,9 +41,6 @@ RSpec.describe CustomFormBuilder, type: :helper do
         end
       end
     end
-
-    describe 'when options are present' do
-    end
   end
 
   describe '#email_field' do

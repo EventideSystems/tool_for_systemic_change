@@ -15,12 +15,7 @@ module Reports
       super()
       @scorecard = scorecard
       @stakeholder_types = StakeholderType.where(account: scorecard.account).order('lower(stakeholder_types.name)')
-      @initiatives =
-        scorecard.initiatives.not_archived.includes(
-          organisations: :stakeholder_type,
-          initiatives_organisations: :organisation
-        ).order('lower(initiatives.name)')
-
+      @initiatives = fetch_initiatives(scorecard)
       @ecosystem_map = Insights::StakeholderNetwork.new(scorecard)
       @connections = OrganisationConnections.execute(scorecard.id)
       @unique_organisations = @scorecard.unique_organisations
@@ -51,6 +46,13 @@ module Reports
     # rubocop:enable Metrics/AbcSize
 
     private
+
+    def fetch_initiatives(scorecard)
+      scorecard.initiatives.not_archived.includes(
+        organisations: :stakeholder_type,
+        initiatives_organisations: :organisation
+      ).order('lower(initiatives.name)')
+    end
 
     def scorecard_model_name
       case scorecard

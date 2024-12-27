@@ -11,5 +11,5 @@ AllCops:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
-    - 'bin/{bundle,rails,rake,importmap,setup}'
+    - 'bin/{bundle,rails,rake,importmap,setup,brakeman,rubocop}'
     - 'lib/tasks/cucumber.rake'

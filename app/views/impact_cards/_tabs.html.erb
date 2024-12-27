@@ -1,0 +1,27 @@
+  <div>
+    <div class="grid grid-cols-1 sm:hidden">
+      <!-- TODO: Use an "onChange" listener to redirect the user to the selected tab URL. Add 'selected' attribute for current page -->
+      <select aria-label="Select a tab" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600">
+        <option><%= link_to "Grid", impact_card_path(impact_card) %></option>
+        <option><%= link_to "Network", impact_card_stakeholder_network_index_path(impact_card) %></option>
+        <%- if impact_card.is_a?(SustainableDevelopmentGoalAlignmentCard) %>
+          <option><%= link_to "Thematic Map", impact_card_thematic_map_index_path(impact_card) %></option>
+        <%- end %>
+        <option><%= link_to "Activity", impact_card_path(impact_card) %></option>
+      </select>
+      <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end fill-gray-500" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+        <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+      </svg>
+    </div>
+    <div class="hidden sm:block mb-4">
+      <nav class="flex -ml-5 space-x-2" aria-label="Tabs">
+        <!-- Current: "bg-gray-100 text-gray-700", Default: "text-gray-500 hover:text-gray-700" -->
+        <%= render_tab_item title: "Grid", path: impact_card_path(impact_card), active_tab: :grid %>
+        <%= render_tab_item title: "Network", path: impact_card_stakeholder_network_index_path(impact_card), active_tab: :network %>
+        <%- if impact_card.is_a?(SustainableDevelopmentGoalAlignmentCard) %>
+          <%= render_tab_item title: "Thematic Map", path: impact_card_thematic_map_index_path(impact_card), active_tab: :thematic_map %>
+        <%- end %>
+        <%= render_tab_item title: "Activity", path: impact_card_path(impact_card), active_tab: :activity %>
+      </nav>
+    </div>
+  </div>

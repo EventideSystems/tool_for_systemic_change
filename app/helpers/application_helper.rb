@@ -20,6 +20,12 @@ module ApplicationHelper
     render "icons/#{icon}", classes:
   end
 
+  def render_tab_item(title:, path:, active_tab:, classes: '')
+    active = active_tab == controller.active_tab_item
+
+    render 'layouts/shared/tab_item', title:, path:, active:, classes:
+  end
+
   def render_sidebar_item(title:, path:, icon:, active_group:, classes: '', count: nil) # rubocop:disable Metrics/ParameterLists
     active = active_group == controller.active_sidebar_item
 

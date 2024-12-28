@@ -7,11 +7,10 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin_all_from 'app/javascript/components', under: 'components'
 pin "tailwindcss-animate" # @1.0.7
-pin "hotkeys-js" # @3.13.7
+pin "hotkeys-js" # @3.13.9
 
 
-pin "tailwindcss/plugin", to: "tailwindcss--plugin.js" # @3.4.13
-pin "@preline/select", to: "@preline--select.js" # @2.5.1
+pin "@preline/select", to: "@preline--select.js" # @2.6.0
 pin "d3" # @7.9.0
 pin "d3-array" # @3.2.4
 pin "d3-axis" # @3.0.0
@@ -46,3 +45,4 @@ pin "d3-zoom" # @3.0.0
 pin "delaunator" # @5.0.1
 pin "internmap" # @2.0.3
 pin "robust-predicates" # @3.0.2
+pin "tailwindcss/plugin", to: "tailwindcss--plugin.js" # @3.4.17

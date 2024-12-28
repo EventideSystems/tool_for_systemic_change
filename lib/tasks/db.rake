@@ -3,9 +3,9 @@
 namespace :db do
   namespace :migrate do
     # rubocop:disable Rails/RakeEnvironment
-    desc 'Reset migrations in current branch down to master'
-    task :down_to_master do
-      `git diff master | grep '+++ b/db/migrate/\d*'`
+    desc 'Reset migrations in current branch down to main'
+    task :down_to_main do
+      `git diff main | grep '+++ b/db/migrate/\d*'`
         .split("\n")
         .map { |line| line.split('/').last.split('_').first }
         .tap { |migrations| puts "Resetting #{migrations.size} migration(s)" }

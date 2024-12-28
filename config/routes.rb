@@ -68,42 +68,6 @@ Rails.application.routes.draw do
   resources :initiatives_subsystem_tags
   resources :organisations
 
-  resources :transition_cards do
-    member do
-      get 'show_shared_link'
-      post 'copy'
-      get 'copy_options'
-      post 'merge'
-      get 'merge_options'
-      get 'ecosystem_maps_organisations'
-      get 'activities'
-      get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
-    end
-  end
-
-  resources :sustainable_development_goal_alignment_cards do
-    member do
-      get 'show_shared_link'
-      post 'copy'
-      get 'copy_options'
-      post 'merge'
-      get 'merge_options'
-      get 'ecosystem_maps_organisations'
-      get 'activities'
-      get 'targets_network_map'
-      get 'linked_initiatives/:target_id', action: 'linked_initiatives', as: 'linked_initiatives'
-    end
-
-    resources :characteristics,
-              only: [:show],
-              controller: 'sustainable_development_goal_alignment_cards',
-              action: 'characteristic'
-  end
-
-  resources :ecosystem_maps do
-    resources :organisations, only: [:show], controller: 'ecosystem_maps/organisations'
-  end
-
   resources :shared,
             constraints: {
               id: /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})|(\d+)/

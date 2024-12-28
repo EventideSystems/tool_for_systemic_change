@@ -28,3 +28,4 @@ jobs:
           bundle exec rubocop
           bundle exec brakeman --quiet
           ./bin/importmap audit
+

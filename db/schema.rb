@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_10_091803) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_30_085214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -176,6 +176,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_10_091803) do
     t.datetime "updated_at", null: false
     t.string "status", default: "actual"
     t.index ["checklist_item_id"], name: "index_deprecated_checklist_item_comments_on_checklist_item_id"
+  end
+
+  create_table "deprecated_video_tutorials", id: :serial, force: :cascade do |t|
+    t.integer "linked_id"
+    t.string "linked_type"
+    t.string "link_url"
+    t.string "name"
+    t.text "description"
+    t.boolean "promote_to_dashboard"
+    t.integer "position"
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["deleted_at"], name: "index_deprecated_video_tutorials_on_deleted_at"
+    t.index ["linked_type", "linked_id"], name: "index_deprecated_video_tutorials_on_linked_type_and_linked_id"
   end
 
   create_table "focus_area_groups", id: :serial, force: :cascade do |t|
@@ -378,21 +393,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_10_091803) do
     t.jsonb "object"
     t.index ["account_id"], name: "index_versions_on_account_id"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-  end
-
-  create_table "video_tutorials", id: :serial, force: :cascade do |t|
-    t.integer "linked_id"
-    t.string "linked_type"
-    t.string "link_url"
-    t.string "name"
-    t.text "description"
-    t.boolean "promote_to_dashboard"
-    t.integer "position"
-    t.datetime "deleted_at", precision: nil
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["deleted_at"], name: "index_video_tutorials_on_deleted_at"
-    t.index ["linked_type", "linked_id"], name: "index_video_tutorials_on_linked_type_and_linked_id"
   end
 
   create_table "wicked_problems", id: :serial, force: :cascade do |t|

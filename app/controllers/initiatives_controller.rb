@@ -168,7 +168,7 @@ class InitiativesController < ApplicationController
   def set_focus_area_groups
     @focus_areas_groups = \
       FocusAreaGroup
-      .includes(:video_tutorial, focus_areas: :video_tutorial)
+      .includes(:focus_areas)
       .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
       .order(:position)
   end

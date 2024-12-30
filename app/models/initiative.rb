@@ -105,15 +105,7 @@ class Initiative < ApplicationRecord
     checklist_items = ChecklistItem
                       .includes(
                         :initiative,
-                        characteristic: [
-                          :video_tutorial,
-                          {
-                            focus_area: [
-                              :video_tutorial,
-                              { focus_area_group: :video_tutorial }
-                            ]
-                          }
-                        ]
+                        characteristic: { focus_area: :focus_area_group }
                       ).where(
                         'checklist_items.initiative_id' => id,
                         'focus_area_groups_focus_areas_2.scorecard_type' => scorecard.type

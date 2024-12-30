@@ -23,9 +23,6 @@
 #  index_focus_areas_on_position             (position)
 #
 class FocusArea < ApplicationRecord
-  acts_as_paranoid
-  include HasVideoTutorial
-
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
   scope :ordered_by_group_position, lambda {

@@ -49,21 +49,6 @@ module InitiativesHelper
     mail_to initiative.contact_email, initiative.contact_email, class: 'text-blue-500 hover:text-blue-700 underline'
   end
 
-  def link_to_video_tutorial(video_tutorial) # rubocop:disable Metrics/MethodLength
-    return '' if video_tutorial.blank?
-
-    link_to(
-      video_tutorial_path(video_tutorial),
-      class: 'video-tutorial-wrapper',
-      data: {
-        video_tutorial_link: video_tutorial_path(video_tutorial),
-        video_tutorial_title: video_tutorial.name
-      }
-    ) do
-      safe_join([content_tag(:i, '', class: 'fa fa-youtube-play')])
-    end
-  end
-
   def linked_initiative_warning(initiative)
     return '' if initiative.blank?
     return '' if initiative.scorecard.blank?

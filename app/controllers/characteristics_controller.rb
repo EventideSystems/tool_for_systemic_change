@@ -89,6 +89,6 @@ class CharacteristicsController < ApplicationController
   end
 
   def characteristic_params
-    params.fetch(:characteristic, {}).permit(:name, :description, :focus_area_id, :position, :video_tutorial_id)
+    params.fetch(:characteristic, {}).permit(:name, :description, :focus_area_id, :position)
   end
 end

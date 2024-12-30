@@ -20,7 +20,6 @@
 #  index_characteristics_on_position       (position)
 #
 class Characteristic < ApplicationRecord
-  include HasVideoTutorial
   acts_as_paranoid
 
   default_scope { order('focus_areas.position', :position).joins(:focus_area) }

@@ -78,8 +78,7 @@ class FocusAreasController < ApplicationController
         :icon_name,
         :actual_color,
         :planned_color,
-        :focus_area_group_id,
-        :video_tutorial_id
+        :focus_area_group_id
       )
   end
 end

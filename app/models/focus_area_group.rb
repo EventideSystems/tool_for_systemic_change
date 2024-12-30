@@ -26,13 +26,9 @@
 #  fk_rails_...  (account_id => accounts.id)
 #
 class FocusAreaGroup < ApplicationRecord
-  include HasVideoTutorial
-
   acts_as_paranoid
 
   default_scope { order(:position) }
-
-  attr_accessor :video_tutorial_id
 
   belongs_to :account, optional: true
 

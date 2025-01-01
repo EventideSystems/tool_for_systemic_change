@@ -1,3 +1,5 @@
+<%= render 'labels/stylesheet', labels: @stakeholder_types %>
+
 <div class="mx-auto max-w-6xl" data-controller="thematic-map">
   <%= render 'impact_cards/summary', impact_card: @scorecard %>
   <%= render 'impact_cards/tabs', impact_card: @scorecard %>
@@ -13,7 +15,7 @@
               :stakeholders,
               options_for_select(@stakeholders.pluck(:name), @selected_stakeholders.pluck(:name)),
               { placeholder: 'Select stakeholders...' },
-              { include_hidden: false, data: { thematic_map_target: "stakeholders" } }
+              { include_hidden: false, hide_icons: true, data: { thematic_map_target: "stakeholders" } }
             )
           %>
         </div>
@@ -24,7 +26,7 @@
               :initiatives,
               options_for_select(@initiatives.pluck(:name), @selected_initiatives.pluck(:name)),
               { placeholder: 'Select initiatives...' },
-              { include_hidden: false, data: { thematic_map_target: "initiatives" } }
+              { include_hidden: false, hide_icons: true, data: { thematic_map_target: "initiatives" } }
             )
           %>
         </div>

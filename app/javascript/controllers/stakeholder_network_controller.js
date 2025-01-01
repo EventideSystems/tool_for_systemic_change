@@ -28,7 +28,6 @@ export default class extends Controller {
     let getNodeColor = this.getNodeColor
     let getTextClass = this.getTextClass
 
-    let graphTarget = this.graphTarget
     let dialogTarget = this.dialogTarget
     let dialogTitleTarget = this.dialogTitleTarget
     let dialogTitleColorTarget = this.dialogTitleColorTarget
@@ -84,7 +83,7 @@ export default class extends Controller {
         .attr("r", 6)
         .attr("fill", this.getNodeColor)
         .call(dragDrop)
-        .on('click', function(event, node) {
+        .on('dblclick', function(event, node) {
           event.stopPropagation();
 
           dialogTitleTarget.innerHTML = node.label + ' - ' + node.stakeholderType
@@ -122,8 +121,10 @@ export default class extends Controller {
           dialogContentTarget.innerHTML = content
           dialogTarget.showModal();
         })
-        .on('dblclick', function(event, node) {
+        .on('click', function(event, node) {
           event.stopPropagation();
+          event.preventDefault();
+
           var neighbors = getNeighbors(data.links, node)
 
           // we modify the styles to highlight selected nodes
@@ -218,7 +219,6 @@ export default class extends Controller {
     return Array.from(document.querySelectorAll(selector))
       .find(el => el.textContent.includes(text));
   }
-
 
   getNeighbors(links, node) {
     return links.reduce(function (neighbors, link) {

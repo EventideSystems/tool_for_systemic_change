@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Helper for scorecards, to be renamed to ImpactCardsHelper
-module ScorecardsHelper
+# Helper methods for managing and displaying impact cards and related data
+module ImpactCardsHelper
   ACTUAL_OR_PLANNED = %w[actual planned].freeze
 
   def activity_occurred_at(activity)
@@ -33,6 +33,35 @@ module ScorecardsHelper
 
   def lookup_wicked_problems
     controller.current_account.wicked_problems.order(:name)
+  end
+
+  def multi_select_options_for_labels(labels, selected_labels)
+    choices = labels.map do |label|
+      color_class = dom_id(label)
+      icon = { icon: "<div class=\"w-3 h-3 mt-1 mr-2 bg-gray-500 rounded-full #{color_class}\">&nbsp;</div>".html_safe } # rubocop:disable Rails/OutputSafety
+      [label.name, { data: { hs_select_option: icon.to_json(escape_html_entities: false) } }]
+    end
+
+    selected = selected_labels.map(&:name)
+
+    options_for_select(choices, selected)
+  end
+
+  # NOTE: Statuses are expected to be an array of paired strings, e.g. [["Actual", "actual"],
+  #       ["Planned", "planned"] ...]
+  #
+  #       Selected statuses are expected to be an array of strings, e.g. ["actual", "planned", ...]
+  #
+  #       The color class is determined by the status name, which is expected to be a symbol, e.g. :actual,
+  #       :planned, ...
+  def multi_select_options_for_statuses(statuses, selected_statuses)
+    choices = statuses.map do |status|
+      color_class = ChecklistItemsHelper::CHECKLIST_LIST_ITEM_COLOR_CLASSES[status[1].to_sym]
+      icon = { icon: "<div class=\"w-3 h-3 mt-1 mr-2 bg-gray-500 rounded-full #{color_class}\">&nbsp;</div>".html_safe } # rubocop:disable Rails/OutputSafety
+      [*status, { data: { hs_select_option: icon.to_json(escape_html_entities: false) } }]
+    end
+
+    options_for_select(choices, selected_statuses)
   end
 
   def cell_class(result, focus_areas, characteristic)

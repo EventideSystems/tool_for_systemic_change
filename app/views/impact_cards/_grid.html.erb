@@ -1,37 +1,35 @@
+<%= render 'labels/stylesheet', labels: @subsystem_tags %>
+
 <div class="text-left" data-controller="grid">
   <div class="flex justify-between items-center mb-4">
 
     <%= form_with url: impact_card_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
     <div class="flex space-x-4">
       <div>
-        <%= form.label :date, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%= custom_date_field_tag :date, @date, data: { grid_target: "date" }  %>
+        <%= form.label :date, class: "sr-only" %>
+        <%= custom_date_field_tag :date, @date, title: 'Filter by date', class: 'py-1.5', data: { grid_target: "date" }  %>
       </div>
       <div>
-        <%= form.label :subsystem_tags, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%= form.label :subsystem_tags, class: "sr-only" %>
         <%=
           form.multi_select(
             :subsystem_tags,
-            options_for_select(@subsystem_tags.pluck(:name), @selected_subsystem_tags.pluck(:name)),
-            { placeholder: 'Select subsytem tags...' },
+            multi_select_options_for_labels(@subsystem_tags, @selected_subsystem_tags),
+            { placeholder: 'Select subsytem tags...',  title: 'Filter by subsystem tag' }, # TODO: Get title to work
             { include_hidden: false, data: { grid_target: "subsystemTags" } }
           )
         %>
       </div>
       <div>
-        <%= form.label :statuses, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%= form.label :statuses, class: "sr-only" %>
         <%=
           form.multi_select(
             :statuses,
-            options_for_select(@statuses, @selected_statuses),
+            multi_select_options_for_statuses(@statuses, @selected_statuses),
             { placeholder: 'Select statuses...' },
             { include_hidden: false, data: { grid_target: "statuses" } }
           )
         %>
-      </div>
-      <div>
-        <%#= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
-        <%#= form.multi_select :stakeholders, @stakeholders.pluck(:name), placeholder: 'Select stakeholders...' %>
       </div>
     </div>
     <% end %>

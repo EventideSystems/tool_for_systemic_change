@@ -43,9 +43,7 @@ class ImpactCardsController < ApplicationController
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
-    # TODO: Restrict to only show tags that are used by the scorecard
-    @subsystem_tags = @scorecard.subsystem_tags.order(:name).uniq
-    @stakeholders = @scorecard.organisations.order(:name).uniq
+    @subsystem_tags = @scorecard.subsystem_tags.order('lower(trim(subsystem_tags.name))').uniq
     @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
 
     @selected_statuses = params[:statuses]

@@ -13,6 +13,7 @@ module ImpactCards
       authorize(@scorecard, :show?)
 
       @graph = Insights::TargetsNetwork.new(@scorecard)
+      @stakeholder_types = @scorecard.stakeholder_types.order(:name).uniq
 
       @show_labels = params[:show_labels].in?(%w[true 1])
 

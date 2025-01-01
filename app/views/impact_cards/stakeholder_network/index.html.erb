@@ -1,3 +1,4 @@
+<%= render 'labels/stylesheet', labels: @stakeholder_types %>
 <div class="mx-auto max-w-6xl" data-controller="stakeholder-network">
   <%= render 'impact_cards/summary', impact_card: @scorecard %>
   <%= render 'impact_cards/tabs', impact_card: @scorecard %>
@@ -11,7 +12,7 @@
           <%=
             form.multi_select(
               :stakeholder_types,
-              options_for_select(@stakeholder_types.pluck(:name), @selected_stakeholder_types.pluck(:name)),
+              multi_select_options_for_labels(@stakeholder_types, @selected_stakeholder_types),
               { placeholder: 'Select stakeholder types...' },
               { include_hidden: false, data: { stakeholder_network_target: "stakeholderTypes" } }
             )

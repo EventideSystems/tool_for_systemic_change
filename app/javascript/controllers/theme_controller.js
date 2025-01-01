@@ -8,13 +8,13 @@ export default class extends Controller {
   connect() {
     this.updateTheme();
 
-    document.addEventListener("turbo:load", this.updateTheme)
-    document.addEventListener("DOMContentLoaded", this.updateTheme)
+    document.addEventListener("turbo:load", this.updateTheme.bind(this))
+    document.addEventListener("DOMContentLoaded", this.updateTheme.bind(this))
   }
 
   disconnect() {
-    document.removeEventListener("turbo:load", this.updateTheme)
-    document.removeEventListener("DOMContentLoaded", this.updateTheme)
+    document.removeEventListener("turbo:load", this.updateTheme.bind(this))
+    document.removeEventListener("DOMContentLoaded", this.updateTheme.bind(this))
   }
 
   updateTheme() {

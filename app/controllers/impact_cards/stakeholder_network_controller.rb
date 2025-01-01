@@ -14,7 +14,8 @@ module ImpactCards
 
       @graph = Insights::StakeholderNetwork.new(@scorecard)
 
-      @stakeholder_types = @scorecard.stakeholder_types.order(:name).uniq
+      @stakeholder_types = @scorecard.stakeholder_types.order('lower(trim(name))')
+
       @show_labels = params[:show_labels].in?(%w[true 1])
 
       @selected_stakeholder_types =

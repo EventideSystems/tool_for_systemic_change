@@ -67,8 +67,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :accounts_users, allow_destroy: true
 
   # Virtual attributes used when inviting or updating users
-  attr_accessor :initial_account_role
-  attr_accessor :initial_system_role
+  attr_accessor :initial_account_rolem, :initial_system_role, :account_role, :system_role
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name email] + _ransackers.keys

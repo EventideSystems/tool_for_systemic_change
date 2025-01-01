@@ -1,7 +1,7 @@
 <%
   if active
     options = {
-      class: "rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700",
+      class: "rounded-md bg-black dark:bg-gray-100 px-3 py-2 text-sm font-medium text-white dark:text-gray-700",
       aria: { current: "page" }
     }
   else
@@ -9,9 +9,8 @@
   end
 %>
 
-<li>
-  <%= link_to path, options do %>
-    <%= title %>
-  <% end %>
-</li>
+<%= link_to path, options do %>
+  <%= title %>
+<% end %>
+
 

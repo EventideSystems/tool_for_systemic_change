@@ -87,7 +87,7 @@ export default class extends Controller {
         .attr("r", getNodeSize)
         .attr("fill", this.getNodeColor)
         .call(dragDrop)
-        .on('click', function(event, node) {
+        .on('dblclick', function(event, node) {
           event.stopPropagation();
 
           const nodeElement = document.querySelector(`[data-id='${node.id}']`);
@@ -101,7 +101,7 @@ export default class extends Controller {
             dialogTarget.showModal()
           }
         })
-        .on('dblclick', function(event, node) {
+        .on('click', function(event, node) {
           event.stopPropagation();
           var neighbors = getNeighbors(data.links, node)
 

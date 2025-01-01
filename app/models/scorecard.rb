@@ -38,7 +38,7 @@ class Scorecard < ApplicationRecord
   belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
 
-  has_many :initiatives, -> { order('lower(initiatives.name)') }, dependent: :destroy, inverse_of: :scorecard
+  has_many :initiatives, dependent: :destroy, inverse_of: :scorecard
   has_many :initiatives_organisations, through: :initiatives
   has_many :checklists, through: :initiatives
   has_many :checklist_items, through: :initiatives

@@ -5,6 +5,7 @@
 
     <%= form_with url: impact_card_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
     <div class="flex space-x-4">
+      <div class="pt-2 flex justify-center items-center"><span class="text-sm font-medium text-gray-900 dark:text-white">Filter by:</span></div>
       <div>
         <%= form.label :date, class: "sr-only" %>
         <%= custom_date_field_tag :date, @date, title: 'Filter by date', class: 'py-1.5', data: { grid_target: "date" }  %>

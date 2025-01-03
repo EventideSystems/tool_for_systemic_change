@@ -47,13 +47,10 @@ module ImpactCardsHelper
     options_for_select(choices, selected)
   end
 
-  # NOTE: Statuses are expected to be an array of paired strings, e.g. [["Actual", "actual"],
-  #       ["Planned", "planned"] ...]
-  #
+  # NOTE: Statuses are expected to be an array of string pairs, e.g. [["Actual", "actual"], ["Planned", "planned"] ...]
   #       Selected statuses are expected to be an array of strings, e.g. ["actual", "planned", ...]
   #
-  #       The color class is determined by the status name, which is expected to be a symbol, e.g. :actual,
-  #       :planned, ...
+  #       The color class is determined by the status name, itself expected to be a symbol, e.g. :actual, :planned, ...
   def multi_select_options_for_statuses(statuses, selected_statuses)
     choices = statuses.map do |status|
       color_class = ChecklistItemsHelper::CHECKLIST_LIST_ITEM_COLOR_CLASSES[status[1].to_sym]

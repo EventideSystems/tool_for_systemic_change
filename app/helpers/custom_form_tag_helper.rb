@@ -17,9 +17,11 @@ module CustomFormTagHelper
   def custom_date_field_tag(name, value = nil, options = {})
     default_class = "#{TEXT_FIELD_CLASS} mt-2 dark:[color-scheme:dark]"
     merged_options = merge_options(options: options, default_class: default_class)
+    merged_options[:data] = (merged_options[:data] || {}).merge({ date_select_target: 'date' })
 
-    content_tag(:div) do
-      date_field_tag(name, value, merged_options)
+    content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do
+      concat(date_field_tag(name, value, merged_options))
+      concat(build_clear_button('date-select'))
     end
   end
 
@@ -54,6 +56,22 @@ module CustomFormTagHelper
 
   def base_color_select_class(selected)
     "#{SELECT_FIELD_CLASS} bg-#{selected}-500"
+  end
+
+  # SMELL: Duplicated in app/helpers/custom_form_tag_helper.rb
+  def build_clear_button(stimulus_controller) # rubocop:disable Metrics/MethodLength
+    <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
+        <button
+        type="button"
+        title="Clear filter"
+        class="mt-2 ml-1 w-auto h-auto px-1.5 border border-gray-300 rounded-lg dark:border-gray-600 rounded-md text-gray-500 dark:text-neutral-500 flex items-center justify-center"
+        data-#{stimulus_controller}-target="clear"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path>
+        </svg>
+      </button>
+    HTML
   end
 
   def merge_options(options: {}, default_class: TEXT_FIELD_CLASS)

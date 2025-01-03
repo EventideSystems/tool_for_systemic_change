@@ -164,19 +164,6 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     extraMarkup: MULTI_SELECT_EXTRA_MARKUP
   }.freeze
 
-  MULTI_SELECT_CLEAR_FILTER_BUTTON = <<~HTML
-    <button
-      type="button"
-      title="Clear filter"
-      class="mt-2 ml-1 w-auto h-auto px-1.5 border border-gray-300 rounded-lg dark:border-gray-600 rounded-md text-gray-500 dark:text-neutral-500 flex items-center justify-center"
-      data-multi-select-target="clear"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path>
-      </svg>
-    </button>
-  HTML
-
   def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
     merge_options = merge_options(method:, options:, default_class: CHECK_BOX_CLASS)
     wrap_field(method) { super(method, merge_options, checked_value, unchecked_value) }
@@ -187,9 +174,15 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     wrap_field(method) { super(method, collection, value_method, text_method, options, merged_html_options) }
   end
 
-  # TODO: Add Stimulus controller to handle the widget color change when then theme is changed
+  # TODO: Add 'dark:[color-scheme:dark]' to the end of the class string to support dark mode.
   def date_field(method, options = {})
     wrap_field(method) { super(method, merge_options(method:, options:)) }
+
+    # TODO: Sketch of possible future implementation
+    # @template.content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do
+    #   @template.concat(super(method, merge_options(method:, options:)))
+    #   @template.concat(build_clear_button('date-select'))
+    # end
   end
 
   def email_field(method, options = {})
@@ -207,13 +200,14 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     super(method, content_or_options, merge_options, &block)
   end
 
-  def multi_select(method, choices = nil, options = {}, html_options = {}, &block) # rubocop:disable Metrics/MethodLength
+  def multi_select(method, choices = nil, options = {}, html_options = {}, &block) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     placeholder = options.delete(:placeholder) || 'Select multiple options...'
     # rubocop:disable Naming/VariableName
     toggleCountText = multi_select_toggle_count_text(method)
     hs_select = MULTI_SELECT_DEFAULT_HS_SELECT.merge(placeholder:, toggleCountText:).to_json
     # rubocop:enable Naming/VariableName
 
+    choices = '<option disabled="">No options available</option>'.html_safe if choices.empty?
     options.merge!(multiple: true)
     data_options = html_options.delete(:data) || {}
     html_options.merge!(data: data_options.merge({ multi_select_target: 'select', hs_select: }), class: 'hidden')
@@ -222,7 +216,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
       @template.concat(ActionView::Helpers::Tags::Select.new(
         @object, method, @template, choices, options, html_options, &block
       ).render)
-      @template.concat(MULTI_SELECT_CLEAR_FILTER_BUTTON.html_safe) # rubocop:disable Rails/OutputSafety
+      @template.concat(build_clear_button('multi-select'))
     end
   end
 
@@ -275,6 +269,21 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
         end
       )
     end
+  end
+
+  def build_clear_button(stimulus_controller) # rubocop:disable Metrics/MethodLength
+    <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
+        <button
+        type="button"
+        title="Clear filter"
+        class="mt-2 ml-1 w-auto h-auto px-1.5 border border-gray-300 rounded-lg dark:border-gray-600 rounded-md text-gray-500 dark:text-neutral-500 flex items-center justify-center"
+        data-#{stimulus_controller}-target="clear"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path>
+        </svg>
+      </button>
+    HTML
   end
 
   def build_default_field_class(base_class, error_class, method)

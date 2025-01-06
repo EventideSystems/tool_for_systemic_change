@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:policy) { described_class }
   let(:account) { create(:account) }
-  let(:system_admin_user) { create(:user, :system_admin) }
+  let(:system_admin_user) { create(:user, :admin) }
   let(:account_admin_user) { create(:user) }
   let(:account_member_user) { create(:user) }
   let(:scorecard) { create(:scorecard, account:) }
@@ -14,7 +14,6 @@ RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedH
   before do
     account.accounts_users.create(user: account_admin_user, account_role: :admin)
     account.accounts_users.create(user: account_member_user, account_role: :member)
-    system_admin_user.update!(system_role: :admin)
   end
 
   permissions '.scope' do

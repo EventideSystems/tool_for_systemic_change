@@ -1,6 +1,6 @@
 <%= render 'labels/stylesheet', labels: @subsystem_tags %>
 
-<div class="text-left" data-controller="grid">
+<div class="text-left" data-controller="grid" data-grid-mode="<%= @scorecard.grid_mode %>">
   <div class="flex justify-between items-center mb-4">
 
     <%= form_with url: impact_card_path(@scorecard), method: :get, data: { grid_target: 'filterForm' } do |form| %>
@@ -26,7 +26,7 @@
         <%=
           form.multi_select(
             :statuses,
-            multi_select_options_for_statuses(@statuses, @selected_statuses),
+            multi_select_options_for_statuses(@statuses, @selected_statuses, @scorecard),
             { placeholder: 'Select statuses...' },
             { include_hidden: false, data: { grid_target: "statuses" } }
           )
@@ -53,7 +53,7 @@
               <%# TODO Move the lookup of the focus area details to @scorecard_grid %>
               <%= focus_area_grid_element(grouped_checklist_item_data.first) %>
               <%- grouped_checklist_item_data.each do |checklist_item_data| %>
-                <%= checklist_list_item_grid_element(checklist_item_data) %>
+                <%= checklist_list_item_grid_element(checklist_item_data:, grid_mode: @scorecard.grid_mode) %>
               <% end %>
             </div>
           <% end %>

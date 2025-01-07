@@ -4,31 +4,31 @@
 #
 # Table name: accounts
 #
-#  id                                                 :integer          not null, primary key
-#  allow_sustainable_development_goal_alignment_cards :boolean          default(FALSE)
-#  allow_transition_cards                             :boolean          default(TRUE)
-#  deactivated                                        :boolean
-#  deleted_at                                         :datetime
-#  description                                        :string
-#  expires_on                                         :date
-#  expiry_warning_sent_on                             :date
-#  max_scorecards                                     :integer          default(1)
-#  max_users                                          :integer          default(1)
-#  name                                               :string
-#  sdgs_alignment_card_characteristic_model_name      :string           default("Targets")
-#  sdgs_alignment_card_focus_area_group_model_name    :string           default("Focus Area Group")
-#  sdgs_alignment_card_focus_area_model_name          :string           default("Focus Area")
-#  sdgs_alignment_card_model_name                     :string           default("SDGs Alignment Card")
-#  solution_ecosystem_maps                            :boolean
-#  transition_card_characteristic_model_name          :string           default("Characteristic")
-#  transition_card_focus_area_group_model_name        :string           default("Focus Area Group")
-#  transition_card_focus_area_model_name              :string           default("Focus Area")
-#  transition_card_model_name                         :string           default("Transition Card")
-#  weblink                                            :string
-#  welcome_message                                    :text
-#  created_at                                         :datetime         not null
-#  updated_at                                         :datetime         not null
-#  stakeholder_type_id                                :integer
+#  id                                                            :integer          not null, primary key
+#  classic_grid_mode                                             :boolean          default(FALSE)
+#  deactivated                                                   :boolean
+#  deleted_at                                                    :datetime
+#  deprecated_allow_sustainable_development_goal_alignment_cards :boolean          default(FALSE)
+#  deprecated_allow_transition_cards                             :boolean          default(TRUE)
+#  deprecated_solution_ecosystem_maps                            :boolean
+#  deprecated_weblink                                            :string
+#  deprecated_welcome_message                                    :text
+#  description                                                   :string
+#  expires_on                                                    :date
+#  expiry_warning_sent_on                                        :date
+#  max_scorecards                                                :integer          default(1)
+#  max_users                                                     :integer          default(1)
+#  name                                                          :string
+#  sdgs_alignment_card_characteristic_model_name                 :string           default("Targets")
+#  sdgs_alignment_card_focus_area_group_model_name               :string           default("Focus Area Group")
+#  sdgs_alignment_card_focus_area_model_name                     :string           default("Focus Area")
+#  sdgs_alignment_card_model_name                                :string           default("SDGs Alignment Card")
+#  transition_card_characteristic_model_name                     :string           default("Characteristic")
+#  transition_card_focus_area_group_model_name                   :string           default("Focus Area Group")
+#  transition_card_focus_area_model_name                         :string           default("Focus Area")
+#  transition_card_model_name                                    :string           default("Transition Card")
+#  created_at                                                    :datetime         not null
+#  updated_at                                                    :datetime         not null
 #
 class Account < ApplicationRecord
   include Searchable
@@ -37,8 +37,6 @@ class Account < ApplicationRecord
   acts_as_paranoid
 
   EXPIRY_WARNING_PERIOD = 30.days
-
-  belongs_to :stakeholder_type, optional: true
 
   # Direct associations
   has_many :accounts_users, dependent: :destroy
@@ -83,22 +81,17 @@ class Account < ApplicationRecord
     users.count >= max_users
   end
 
-  def scorecard_types
-    @scorecard_types ||=
-      [].tap do |types|
-        types << TransitionCard if allow_transition_cards?
-        types << SustainableDevelopmentGoalAlignmentCard if allow_sustainable_development_goal_alignment_cards?
-      end
-  end
+  SCORECARD_TYPES = [
+    TransitionCard,
+    SustainableDevelopmentGoalAlignmentCard
+  ].freeze
 
   def default_scorecard_type
-    return scorecard_types.first if scorecard_types.size == 1
-
     TransitionCard
   end
 
   def custom_stakeholder_types_in_use?
-    StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != stakeholder_types.order(:name).pluck(:name)
+    StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
   end
 
   private

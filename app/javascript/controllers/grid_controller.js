@@ -31,18 +31,50 @@ export default class extends Controller {
 
     const elements = this.gridTarget.querySelectorAll('[data-status]')
 
-    elements.forEach(element => {
-      const status = element.getAttribute('data-status')
-      const colorClasses = this.statusColorClasses(status)
+    if (this.data.get('mode') == 'classic') {
+      elements.forEach(element => {
+        const status = element.getAttribute('data-status')
+        const baseColor = element.getAttribute('data-focus-area-color')
+        const opacity = this.statusBackgroundColorOpacity(status)
+        const color = `${baseColor}${opacity}`
 
-      if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
-        element.classList.add(...colorClasses)
-        element.classList.remove('bg-gray-500')
-      } else {
-        element.classList.remove(...colorClasses)
-        element.classList.add('bg-gray-500')
-      }
-    })
+        if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
+          element.style.backgroundColor = color
+        } else {
+          element.style.backgroundColor = '#00000000'
+        }
+      })
+    } else {
+      elements.forEach(element => {
+        const status = element.getAttribute('data-status')
+        const colorClasses = this.statusColorClasses(status)
+
+        if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
+          element.classList.add(...colorClasses)
+          element.classList.remove('bg-gray-500')
+        } else {
+          element.classList.remove(...colorClasses)
+          element.classList.add('bg-gray-500')
+        }
+      })
+    }
+  }
+
+
+  // NOTE: Duplicated in checklist_items_helper.rb
+  statusBackgroundColorOpacity(status) {
+    switch (status) {
+      case 'actual':
+        return 'FF'
+      case 'planned':
+        return '99'
+      case 'more_information':
+        return '66'
+      case 'suggestion':
+        return '40'
+      default:
+        return '00'
+    }
   }
 
   statusColorClasses(status) {

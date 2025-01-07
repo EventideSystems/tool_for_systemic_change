@@ -74,6 +74,10 @@ class Scorecard < ApplicationRecord
     true
   end
 
+  def grid_mode
+    @grid_mode ||= account.classic_grid_mode? ? :classic : :modern
+  end
+
   def linked?
     linked_scorecard_id.present?
   end

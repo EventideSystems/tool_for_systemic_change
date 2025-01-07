@@ -23,6 +23,7 @@ class AccountsController < ApplicationController
 
   def show
     @account.readonly!
+    render 'show'
   end
 
   def new
@@ -37,7 +38,7 @@ class AccountsController < ApplicationController
     authorize(@account)
 
     if @account.save
-      redirect_to(accounts_path, notice: 'Account was successfully created.')
+      redirect_to(edit_account_path(@account), notice: 'Account was successfully created.')
     else
       render(:new)
     end
@@ -45,7 +46,7 @@ class AccountsController < ApplicationController
 
   def update
     if @account.update(account_params)
-      redirect_to(accounts_path, notice: 'Account was successfully updated.')
+      redirect_to(account_path(@account), notice: 'Account was successfully updated.')
     else
       render(:edit)
     end
@@ -77,16 +78,11 @@ class AccountsController < ApplicationController
     params.fetch(:account, {}).permit(
       :name,
       :description,
-      :weblink,
-      :stakeholder_type_id,
-      :welcome_message,
+      :classic_grid_mode,
       :deactivated,
       :expires_on,
       :max_users,
       :max_scorecards,
-      :solution_ecosystem_maps,
-      :allow_transition_cards,
-      :allow_sustainable_development_goal_alignment_cards,
       :transition_card_model_name,
       :transition_card_focus_area_group_model_name,
       :transition_card_focus_area_model_name,

@@ -220,6 +220,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     end
   end
 
+  def number_field(method, options = {})
+    wrap_field(method) { super(method, merge_options(method:, options:)) }
+  end
+
   def password_field(method, options = {})
     wrap_field(method) { super(method, merge_options(method:, options:)) }
   end

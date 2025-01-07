@@ -1,70 +1,46 @@
-<%= form_for(@account, html: { class: 'space-y-6' }) do |f| %>
-  <%= form_header(@account) %>
-
-  <div class="flex items-center">
-    <%= f.label :name, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_field :name, class: 'form-input block w-full', readonly: true %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <%= page_header_tag 'Account Details' %>
+      <div class="flex justify-between items-center mt-4">
+        <div class="flex gap-6 py-6">
+        <%= render partial: 'resource_summary', locals: { name: @account.name, background_color: 'bg-green-700' } %>
+          <div class="space-y-1.5">
+            <div class="text-base/6 font-semibold dark:text-white">
+              <%= @account.name %>
+            </div>
+            <div class="text-xs/6 text-zinc-500 min-h-4">
+              <%= @account.description %>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="flex justify-end items-center mb-4">
+            <%= link_to_primary 'Edit', edit_account_path(@account), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+  <%= render 'section' do %>
+    <%= render 'section_header', title: 'Account Status' %>
+      <%= render 'section_body' do %>
+      <div class="sm:col-span-4">
 
-  <div class="flex items-center">
-    <%= f.label :description, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_area :description, class: 'form-textarea block w-full', readonly: true %>
-    </div>
-  </div>
+        <div class="w-full">
+          <dl class="grid grid-cols-1 text-base/6 sm:grid-cols-[min(50%,theme(spacing.80))_auto] sm:text-sm/6">
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Expires On</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none"><%= @account.expires_on %></dd>
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Event</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none">Bear Hug: Live in Concert</dd>
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Amount</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none">$150.00 USD</dd>
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Amount after exchange rate</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none">US$150.00 → CA$199.79</dd>
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Fee</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none">$4.79 USD</dd>
+            <dt class="col-start-1 border-t border-zinc-950/5 pt-3 text-zinc-500 first:border-none sm:border-t sm:border-zinc-950/5 sm:py-3 dark:border-white/5 dark:text-zinc-400 sm:dark:border-white/5">Net</dt><dd class="pb-3 pt-1 text-zinc-950 sm:border-t sm:border-zinc-950/5 sm:py-3 dark:text-white dark:sm:border-white/5 sm:[&amp;:nth-child(2)]:border-none">$1,955.00</dd>
+          </dl>
+        </div>
+      </div>
 
-  <div class="flex items-center">
-    <%= f.label :welcome_message, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_area :welcome_message, class: 'form-textarea block w-full', readonly: true %>
-    </div>
-  </div>
+    <% end %>
+  <% end %>
+</div>
 
-  <div class="flex items-center">
-    <%= f.label :expires_on, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_field :expires_on, class: 'form-input block w-full', readonly: true %>
-    </div>
-  </div>
-
-  <div class="flex items-center">
-    <%= f.label :expiry_warning_sent_on, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_field :expiry_warning_sent_on, class: 'form-input block w-full', readonly: true %>
-    </div>
-  </div>
-
-  <div class="flex items-center">
-    <%= f.label :max_users, class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_field :max_users, class: 'form-input block w-full', readonly: true %>
-    </div>
-  </div>
-
-  <div class="flex items-center">
-    <%= f.label :max_scorecards, "Max #{Scorecard.model_name.human.pluralize.downcase}", class: 'w-1/3 text-right pr-4' %>
-    <div class="w-2/3">
-      <%= f.text_field :max_scorecards, class: 'form-input block w-full', readonly: true %>
-    </div>
-  </div>
-
-  <div class="flex items-center">
-    <div class="w-1/3 text-right pr-4">
-      <label>Solution Ecosystem Maps</label>
-    </div>
-    <div class="w-2/3">
-      <%= f.check_box :solution_ecosystem_maps, class: 'form-checkbox', onclick: "return false;" %>
-    </div>
-  </div>
-
-  <div class="flex items-center">
-    <div class="w-1/3 text-right pr-4">
-      <label>Allow Transition Cards?</label>
-    </div>
-    <div class="w-2/3">
-      <%= f.check_box :allow_transition_cards, class: 'form-checkbox', onclick: "return false;" %>
-    </div>
-  </div>
-<% end %>

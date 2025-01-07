@@ -3,13 +3,7 @@
 class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
-      resolve_to_current_account.where(type: current_account_scorecard_types)
-    end
-
-    private
-
-    def current_account_scorecard_types
-      current_account&.scorecard_types&.map(&:name).presence || []
+      resolve_to_current_account
     end
   end
 

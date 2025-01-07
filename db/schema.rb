@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_30_085214) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_07_024008) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -19,9 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_085214) do
   create_table "accounts", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.string "weblink"
-    t.integer "stakeholder_type_id"
-    t.text "welcome_message"
+    t.string "deprecated_weblink"
+    t.text "deprecated_welcome_message"
     t.boolean "deactivated"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
@@ -29,9 +28,9 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_085214) do
     t.date "expires_on"
     t.integer "max_users", default: 1
     t.integer "max_scorecards", default: 1
-    t.boolean "solution_ecosystem_maps"
-    t.boolean "allow_transition_cards", default: true
-    t.boolean "allow_sustainable_development_goal_alignment_cards", default: false
+    t.boolean "deprecated_solution_ecosystem_maps"
+    t.boolean "deprecated_allow_transition_cards", default: true
+    t.boolean "deprecated_allow_sustainable_development_goal_alignment_cards", default: false
     t.date "expiry_warning_sent_on"
     t.string "transition_card_model_name", default: "Transition Card"
     t.string "transition_card_focus_area_group_model_name", default: "Focus Area Group"
@@ -41,6 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_30_085214) do
     t.string "sdgs_alignment_card_focus_area_group_model_name", default: "Focus Area Group"
     t.string "sdgs_alignment_card_focus_area_model_name", default: "Focus Area"
     t.string "sdgs_alignment_card_characteristic_model_name", default: "Targets"
+    t.boolean "classic_grid_mode", default: false
   end
 
   create_table "accounts_users", id: :serial, force: :cascade do |t|

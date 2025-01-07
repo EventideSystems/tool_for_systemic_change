@@ -1,0 +1,74 @@
+<%= form_for(@account, role: 'form', html: { class: 'form-horizontal record-form space-y-6' }) do |f| %>
+  <%#= form_header(@account) %>
+
+  <div class="flex items-center">
+    <%= f.label :name, class: 'w-1/3 text-right pr-4' %>
+    <div class="w-2/3">
+      <%= f.text_field :name %>
+    </div>
+  </div>
+
+  <div class="flex items-center">
+    <%= f.label :description, class: 'w-1/3 text-right pr-4' %>
+    <div class="w-2/3">
+      <%= f.text_area :description %>
+    </div>
+  </div>
+
+  <% if policy(@account).update_protected_attributes? %>
+    <div class="flex items-center">
+      <%= f.label :expires_on, class: 'w-1/3 text-right pr-4' %>
+      <div class="w-2/3">
+        <%= f.text_field :expires_on, class: 'form-input block w-full', data: { behaviour: "datepicker" } %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <%= f.label :expiry_warning_sent_on, class: 'w-1/3 text-right pr-4' %>
+      <div class="w-2/3">
+        <%= f.text_field :expiry_warning_sent_on, class: 'form-input block w-full', readonly: true %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <%= f.label :max_accounts, class: 'w-1/3 text-right pr-4' %>
+      <div class="w-2/3">
+        <%= f.text_field :max_accounts, class: 'form-input block w-full' %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <%= f.label :max_scorecards, "Max #{Scorecard.model_name.human.pluralize.downcase}", class: 'w-1/3 text-right pr-4' %>
+      <div class="w-2/3">
+        <%= f.text_field :max_scorecards, class: 'form-input block w-full' %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <div class="w-1/3 text-right pr-4">
+        <%= label :solution_ecosystem_maps, 'Solution Ecosystem Map?' %>
+      </div>
+      <div class="w-2/3 mt-1">
+        <%= f.check_box :solution_ecosystem_maps, class: 'form-checkbox' %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <div class="w-1/3 text-right pr-4">
+        <label>Allow Transition Cards?</label>
+      </div>
+      <div class="w-2/3 mt-1">
+        <%= f.check_box :allow_transition_cards, class: 'form-checkbox' %>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+      <div class="w-1/3 text-right pr-4">
+        <label>Allow SDG Goal Alignment Cards?</label>
+      </div>
+      <div class="w-2/3 mt-1">
+        <%= f.check_box :allow_sustainable_development_goal_alignment_cards, class: 'form-checkbox' %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

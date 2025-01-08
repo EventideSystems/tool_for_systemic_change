@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(@checklist_item) do %>
-  <span class="w-3 h-3 mr-2 inline-block rounded-sm <%= checklist_list_item_grid_element_color(@checklist_item.status) %>"></span>
+  <span class="w-3 h-3 mr-2 inline-block rounded-sm <%= checklist_list_item_status_color(@checklist_item.status) %>"></span>
   <%= @checklist_item.characteristic.name %>
 
   <div class="p-3">

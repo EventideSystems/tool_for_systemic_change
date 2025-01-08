@@ -33,6 +33,14 @@ module ChecklistItemsHelper
     other: 'bg-gray-200 dark:bg-gray-600'
   }.freeze
 
+  CHECKLIST_LIST_ITEM_COLOR_OPACITY = {
+    actual: 'FF',
+    planned: '99',
+    more_information: '66',
+    suggestion: '40',
+    other: '00'
+  }.freeze
+
   CHECKLIST_LIST_ITEM_RADIO_BUTTON_COLOR_CLASSES = {
     actual: 'text-sky-600 focus:ring-sky-600',
     planned: 'text-teal-500 focus:ring-teal-500',
@@ -56,16 +64,19 @@ module ChecklistItemsHelper
     )
   end
 
-  def checklist_list_item_grid_element(checklist_item_data)
-    background_color = checklist_list_item_grid_element_color(checklist_item_data[:status])
+  def checklist_list_item_grid_element(checklist_item_data:, grid_mode:)
+    options = checklist_list_item_grid_element_base_options(checklist_item_data)
 
-    content_tag(
-      :div,
-      '',
-      class: "p-1.5 h-2 rounded-sm #{background_color}",
-      title: checklist_item_data[:name],
-      data: { status: checklist_item_data[:status] }
-    )
+    case grid_mode
+    when :modern
+      background_color_class = checklist_list_item_status_color(checklist_item_data[:status])
+      options[:class] = "#{options[:class]} #{background_color_class}"
+    when :classic
+      background_color_hex = checklist_list_item_focus_area_status_color(checklist_item_data)
+      options[:style] = "background-color: #{background_color_hex}"
+    end
+
+    content_tag(:div, '', options)
   end
 
   def current_comment_status_style(checklist_item)
@@ -85,14 +96,32 @@ module ChecklistItemsHelper
         comments_target: 'badge',
         toggle: 'tooltip',
         placement: 'top',
-        title: checklist_item.status.humanize
+        title: checklist_item.status.humanizeex
       }
     )
   end
 
   private
 
-  def checklist_list_item_grid_element_color(status)
+  def checklist_list_item_grid_element_base_options(checklist_item_data)
+    {
+      class: 'p-1.5 h-2 rounded-sm',
+      title: checklist_item_data[:name],
+      data: {
+        status: checklist_item_data[:status],
+        focus_area_color: checklist_item_data[:focus_area_color]
+      }
+    }
+  end
+
+  def checklist_list_item_focus_area_status_color(checklist_item_data)
+    opacity = CHECKLIST_LIST_ITEM_COLOR_OPACITY[checklist_item_data[:status].to_sym].presence ||
+              CHECKLIST_LIST_ITEM_COLOR_OPACITY[:other]
+
+    checklist_item_data[:focus_area_color] + opacity
+  end
+
+  def checklist_list_item_status_color(status)
     CHECKLIST_LIST_ITEM_COLOR_CLASSES[status.to_sym].presence ||
       CHECKLIST_LIST_ITEM_COLOR_CLASSES[:other]
   end

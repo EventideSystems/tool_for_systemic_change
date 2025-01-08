@@ -30,15 +30,8 @@
     </div>
   </div>
   <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Contact Details' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-4">
-        <%= label_tag :weblink %>
-        <div class="mt-2">
-          <%= link_to_external_url(@organisation.weblink) %>
-        </div>
-      </div>
-    <% end %>
+
+  <%= render 'show_page_section', title: 'Contact Details' do %>
+    <%= definition_list_element('Weblink', link_to_external_url(@organisation.weblink)) %>
   <% end %>
 </div>

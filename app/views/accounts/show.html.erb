@@ -29,59 +29,23 @@
     </div>
   </div>
   <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Overview' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-8">
-        <div class="w-full">
-          <dl class="grid grid-cols-1 text-base/6 sm:grid-cols-[min(60%,theme(spacing.80))_auto] sm:text-sm/6">
-            <%= definition_list_element('Description', @account.description) %>
-          </dl>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'show_page_section', title: 'Overview' do %>
+    <%= definition_list_element('Description', @account.description) %>
   <% end %>
 
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Status' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-8">
-        <div class="w-full">
-          <dl class="grid grid-cols-1 text-base/6 sm:grid-cols-[min(60%,theme(spacing.80))_auto] sm:text-sm/6">
-            <%= definition_list_element('Deactivated', @account.deactivated) %>
-            <%= definition_list_element('Expires on', @account.expires_on) %>
-            <%= definition_list_element('Expiry warning sent on', @account.expiry_warning_sent_on) %>
-          </dl>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'show_page_section', title: 'Status' do %>
+    <%= definition_list_element('Deactivated', @account.deactivated) %>
+    <%= definition_list_element('Expires on', @account.expires_on) %>
+    <%= definition_list_element('Expiry warning sent on', @account.expiry_warning_sent_on) %>
   <% end %>
 
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Restrictions' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-8">
-        <div class="w-full">
-          <dl class="grid grid-cols-1 text-base/6 sm:grid-cols-[min(60%,theme(spacing.80))_auto] sm:text-sm/6">
-            <%= definition_list_element('Max team members', @account.max_users) %>
-            <%= definition_list_element('Max impact cards', @account.max_scorecards) %>
-          </dl>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'show_page_section', title: 'Restrictions' do %>
+    <%= definition_list_element('Max team members', @account.max_users) %>
+    <%= definition_list_element('Max impact cards', @account.max_scorecards) %>
   <% end %>
 
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Other Settings' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-8">
-        <div class="w-full">
-          <dl class="grid grid-cols-1 text-base/6 sm:grid-cols-[min(60%,theme(spacing.80))_auto] sm:text-sm/6">
-            <%= definition_list_element('Classic grid mode', @account.classic_grid_mode) %>
-          </dl>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'show_page_section', title: 'Other Settings' do %>
+    <%= definition_list_element('Classic grid mode', @account.classic_grid_mode) %>
   <% end %>
 </div>
 

@@ -27,15 +27,12 @@
     </div>
   </div>
   <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-  <%= render 'section' do %>
-    <%= render 'section_header', title: 'Settings' %>
-      <%= render 'section_body' do %>
-      <div class="sm:col-span-4">
-        <%= label_tag :time_zone %>
-        <div class="mt-2">
-          <%= display_time_zone(@user.time_zone) %>
-        </div>
-      </div>
-    <% end %>
+  <%= render 'show_page_section', title: 'Settings' do %>
+    <%= definition_list_element('Time zone', display_time_zone(@user.time_zone)) %>
+  <% end %>
+
+  <%= render 'show_page_section', title: 'Roles' do %>
+    <%= definition_list_element('System role', @user.system_role.titleize) %>
+    <%= definition_list_element('Current account', role_in_current_account(@user).titleize) %>
   <% end %>
 </div>

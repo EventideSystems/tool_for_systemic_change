@@ -42,7 +42,7 @@
             <%= dropdown_menu_content do %>
              <%=
                 dropdown_menu_item do
-                  link_to "#{current_account.name} &checkmark;".html_safe, current_account, class: "block w-full text-sm"
+                  link_to "#{current_account.name} &checkmark;".html_safe, account_path(current_account), class: "block w-full text-sm"
                 end
               %>
               <%- current_user.accounts.where.not(id: current_account.id).limit(4).each do |account| %>

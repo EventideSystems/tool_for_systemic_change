@@ -36,6 +36,10 @@ module ApplicationHelper
     render 'layouts/shared/tab_item', title:, path:, active:, classes:
   end
 
+  def definition_list_element(term, definition)
+    render 'application/definition_list_element', term: term, definition: definition
+  end
+
   # def import_files_instructions_link
   #   content_tag(:p, class: 'text-light-blue') do
   #     content_tag(:strong) do

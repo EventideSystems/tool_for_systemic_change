@@ -198,7 +198,7 @@ class InitiativesController < ApplicationController
     @scorecards = policy_scope(Scorecard).order(:name)
 
     @scorecard_types =
-      current_account.scorecard_types.map do |scorecard_type|
+      Account::SCORECARD_TYPES.map do |scorecard_type|
         ScorecardType.new(
           scorecard_type.model_name.human.pluralize,
           policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)

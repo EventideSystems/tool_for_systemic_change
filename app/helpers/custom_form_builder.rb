@@ -228,6 +228,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     wrap_field(method) { super(method, merge_options(method:, options:)) }
   end
 
+  def rich_textarea(method, options = {})
+    wrap_field(method) { super(method, merge_options(method:, options:)) }
+  end
+
   def select(method, choices = nil, options = {}, html_options = {}, &block)
     merged_html_options = merge_options(method:, options: html_options, default_class: SELECT_FIELD_CLASS)
 

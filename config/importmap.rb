@@ -46,3 +46,5 @@ pin "delaunator" # @5.0.1
 pin "internmap" # @2.0.3
 pin "robust-predicates" # @3.0.2
 pin "tailwindcss/plugin", to: "tailwindcss--plugin.js" # @3.4.17
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.esm.js"

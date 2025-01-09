@@ -1,6 +1,5 @@
 <%= render 'labels/stylesheet', labels: @subsystem_tags %>
 <div class="mx-auto max-w-6xl">
-
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Initiative Details</h1>
@@ -32,63 +31,25 @@
         </div>
       </div>
     </div>
-
-
-    <div class="mx-auto max-w-6xl w-full">
-      <div class="mt-1 border-t border-gray-100">
-        <dl class="grid grid-cols-1 gap-y-6 px-4 py-6 w-full">
-          <div class="flex items-start space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Description</dt>
-            <dd class="text-sm/6 text-gray-700"><%= @initiative.description %></dd>
-          </div>
-          <div class="flex items-start space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Contact Details</dt>
-            <dd class="text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <dl class="grid grid-cols-1 sm:grid-cols-2">
-                <div class="pb-6 sm:col-span-1 sm:px-0">
-                  <dt class="text-sm/6 font-medium text-gray-900">Contact name</dt>
-                  <dd class="mt-1 text-sm/6 text-gray-700 sm:mt-2"><%= @initiative.contact_name %></dd>
-                </div>
-                <div class="px-4 pb-6 sm:col-span-1 sm:px-0">
-                  <dt class="text-sm/6 font-medium text-gray-900">Contact email</dt>
-                  <dd class="mt-1 text-sm/6 text-gray-700 sm:mt-2"><%= mail_to_contact_email(@initiative) %></dd>
-                </div>
-                <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-                  <dt class="text-sm/6 font-medium text-gray-900">Contact website</dt>
-                  <dd class="mt-1 text-sm/6 text-gray-700 sm:mt-2"><%= link_to_external_url(@initiative.contact_website) %></dd>
-                </div>
-                <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-                  <dt class="text-sm/6 font-medium text-gray-900">Contact position</dt>
-                  <dd class="mt-1 text-sm/6 text-gray-700 sm:mt-2"><%= @initiative.contact_position %></dd>
-                </div>
-              </dl>
-            </dd>
-          </div>
-          <div class="flex items-start space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Applicable Date Range</dt>
-            <dd class="text-sm/6 text-gray-700"><%= applicable_date_range(@initiative) %></dd>
-          </div>
-
-          <div class="flex items-start space-x-4">
-            <dt class="text-sm/6 font-medium text-gray-900 min-w-48">Stakeholders</dt>
-            <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
-                <%- @initiative.organisations.each do |stakeholder| %>
-                <li class="flex items-start justify-between py-4 pl-4 pr-5 text-sm/6">
-                  <div class="flex w-0 flex-1 items-start">
-                    <%= stakeholder.name %>
-                  </div>
-                  <div class="ml-4 shrink-0">
-                    <%= link_to 'View', organisation_path(stakeholder), class: 'font-medium text-indigo-600 hover:text-indigo-500' %>
-                  </div>
-                </li>
-                <% end %>
-              </ul>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-
   </div>
+
+  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+
+  <%= render 'show_page_section', title: 'Contact Details' do %>
+    <%= definition_list_element('Contact position', @initiative.contact_position) %>
+    <%= definition_list_element('Contact name', @initiative.contact_name) %>
+    <%= definition_list_element('Contact email', mail_to_contact_email(@initiative) ) %>
+    <%= definition_list_element('Contact website', link_to_external_url(@initiative.contact_website)) %>
+  <% end %>
+
+  <%= render 'show_page_section', title: 'Applicable Date Range' do %>
+    <%= definition_list_element('Started at', @initiative.started_at) %>
+    <%= definition_list_element('Finished at', @initiative.finished_at) %>
+  <% end %>
+
+  <%= render 'show_page_section', title: 'Stakeholders' do %>
+    <% @initiative.organisations.order('lower(trim(name))').each do |organisation| %>
+      <%= definition_list_element(organisation.name, sanitize(organisation.description)) %>
+    <% end %>
+  <% end %>
 </div>

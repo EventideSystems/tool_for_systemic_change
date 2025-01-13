@@ -130,15 +130,15 @@ class ImpactCardsController < ApplicationController
   end
 
   def update
-    if @scorecard.update(scorecard_params)
-      if params[:unlink_scorecard]
-        @scorecard.linked_scorecard = nil
-        @scorecard.update(linked_scorecard: nil)
-      end
+    if @scorecard.update(impact_card_params)
+      # if params[:unlink_scorecard]
+      #   @scorecard.linked_scorecard = nil
+      #   @scorecard.update(linked_scorecard: nil)
+      # end
 
-      SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
+      # SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
 
-      redirect_to(@scorecard, notice: "#{@scorecard.model_name.human} was successfully updated.")
+      redirect_to(impact_card_path(@scorecard), notice: "#{@scorecard.model_name.human} was successfully updated.")
     else
       render(:edit)
     end
@@ -148,15 +148,15 @@ class ImpactCardsController < ApplicationController
     initiative_ids = @scorecard.initiatives.pluck(:id)
     notice = "#{@scorecard.model_name.human} was successfully deleted."
 
-    Scorecard.transaction do
-      # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
-      ChecklistItem.where(initiative_id: initiative_ids).destroy_all
-      InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
-      InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
-      Initiative.where(id: initiative_ids).delete_all
+    # Scorecard.transaction do
+    #   # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
+    #   ChecklistItem.where(initiative_id: initiative_ids).destroy_all
+    #   InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
+    #   InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
+    #   Initiative.where(id: initiative_ids).delete_all
 
-      @scorecard.delete
-    end
+    #   @scorecard.delete
+    # end
 
     redirect_to(impact_cards_path, notice: notice)
   end

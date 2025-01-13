@@ -185,7 +185,7 @@ GEM
     jmespath (1.6.2)
     json (2.9.1)
     language_server-protocol (3.17.0.3)
-    logger (1.6.4)
+    logger (1.6.5)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -409,7 +409,7 @@ GEM
     stringio (3.1.2)
     tailwind_merge (0.14.0)
       lru_redux (~> 1.1)
-    tailwindcss-rails (3.1.0)
+    tailwindcss-rails (3.2.0)
       railties (>= 7.0.0)
       tailwindcss-ruby
     tailwindcss-ruby (3.4.17)
@@ -593,7 +593,7 @@ CHECKSUMS
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
   json (2.9.1) sha256=d2bdef4644052fad91c1785d48263756fe32fcac08b96a20bb15840e96550d11
   language_server-protocol (3.17.0.3) sha256=3d5c58c02f44a20d972957a9febe386d7e7468ab3900ce6bd2b563dd910c6b3f
-  logger (1.6.4) sha256=b627b91c922231050932e7bf8ee886fe54790ba2238a468ead52ba21911f2ee7
+  logger (1.6.5) sha256=c3cfe56d01656490ddd103d38b8993d73d86296adebc5f58cefc9ec03741e56b
   loofah (2.24.0) sha256=61e6a710883abb8210887f3dc868cf3ed66594c509d9ff6987621efa6651ee1e
   lru_redux (1.1.0) sha256=ee71d0ccab164c51de146c27b480a68b3631d5b4297b8ffe8eda1c72de87affb
   mail (2.8.1) sha256=ec3b9fadcf2b3755c78785cb17bc9a0ca9ee9857108a64b6f5cfc9c0b5bfc9ad
@@ -685,7 +685,7 @@ CHECKSUMS
   stream (0.5.5) sha256=62b3330330de6907e5a1fd0557dc3ef45fc27e48dac6f2502341de1dd04ed504
   stringio (3.1.2) sha256=204f1828f85cdb39d57cac4abc6dc44b04505a223f131587f2e20ae3729ba131
   tailwind_merge (0.14.0) sha256=1f0524def886ca1d927442e5b1d928eaca05d9adb22058c187092f4e3ab00939
-  tailwindcss-rails (3.1.0) sha256=bcd468fae3ffce33d6fc81170e8fec7febd4fd1c14695f2bde72256c92ccfc75
+  tailwindcss-rails (3.2.0) sha256=d8dbcc1e9cd1ba7b8b68300e45dbc61a26252bd6df3d4805bdde76176ca8e3cc
   tailwindcss-ruby (3.4.17) sha256=464fb7cc45f1bd7446af3457a2007651eee07491df9b03ae2f1ac53b5203c427
   tailwindcss-ruby (3.4.17-aarch64-linux) sha256=a013deb088c6f32d62bb17fa804b5599486e60d76dd826d4be7697a92e881284
   tailwindcss-ruby (3.4.17-arm-linux) sha256=5562183cd75418e18427ff227a47bccba1d325f3c6a2384d752fadfe8d4ce1ba

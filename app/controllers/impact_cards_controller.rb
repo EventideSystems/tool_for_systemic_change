@@ -9,14 +9,14 @@ class ImpactCardsController < ApplicationController
 
   # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
   # rework this so that it's not in the base class.
-  before_action :set_scorecard, except: %i[index new create ecosystem_maps_organisations]
+  before_action :set_scorecard, except: %i[index new create]
 
   before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]
-  before_action :redirect_to_correct_controller, only: %i[show]
+  # before_action :redirect_to_correct_controller, only: %i[show]
 
-  skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
-  skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
+  # skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
+  # skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
 
   sidebar_item :impact_cards
   tab_item :grid
@@ -144,27 +144,21 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def destroy # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def destroy
+    initiative_ids = @scorecard.initiatives.pluck(:id)
     notice = "#{@scorecard.model_name.human} was successfully deleted."
 
-    initiative_ids = @scorecard.initiatives.pluck(:id)
+    Scorecard.transaction do
+      # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
+      ChecklistItem.where(initiative_id: initiative_ids).destroy_all
+      InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
+      InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
+      Initiative.where(id: initiative_ids).delete_all
 
-    # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
-    ChecklistItem.where(initiative_id: initiative_ids).destroy_all
-    InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
-    InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
-    Initiative.where(id: initiative_ids).delete_all
-
-    @scorecard.destroy
-
-    case @scorecard.class.name
-    when 'TransitionCard'
-      redirect_to(transition_cards_path, notice:)
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      redirect_to(sustainable_development_goal_alignment_cards_path, notice:)
-    else
-      raise("Unknown scorecard type: #{klass.name}")
+      @scorecard.delete
     end
+
+    redirect_to(impact_cards_path, notice: notice)
   end
 
   def shared; end
@@ -173,26 +167,26 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  def copy_options
-    render(layout: false)
-  end
+  # def copy_options
+  #   render(layout: false)
+  # end
 
-  def copy # rubocop:disable Metrics/MethodLength
-    new_name = params[:new_name]
+  # def copy
+  #   new_name = params[:new_name]
 
-    @copied_scorecard =
-      if params[:copy] == 'deep'
-        ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
-      else
-        ScorecardCopier.new(@scorecard, new_name, deep_copy:).perform
-      end
+  #   @copied_scorecard =
+  #     if params[:copy] == 'deep'
+  #       ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
+  #     else
+  #       ScorecardCopier.new(@scorecard, new_name, deep_copy:).perform
+  #     end
 
-    if @copied_scorecard.present?
-      redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
-    else
-      render(:edit)
-    end
-  end
+  #   if @copied_scorecard.present?
+  #     redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
+  #   else
+  #     render(:edit)
+  #   end
+  # end
 
   def merge_options
     @other_scorecards =
@@ -214,41 +208,41 @@ class ImpactCardsController < ApplicationController
     redirect_to impact_card_path(@scorecard), notice: notice
   end
 
-  def ecosystem_maps_organisations # rubocop:disable Metrics/AbcSize
-    if params[:id].to_s == params[:id].to_i.to_s
-      @scorecard = current_account.scorecards.find(params[:id])
-      authorize(@scorecard)
-    else
-      @scorecard = Scorecard.find_by(shared_link_id: params[:id])
-    end
+  # def ecosystem_maps_organisations
+  #   if params[:id].to_s == params[:id].to_i.to_s
+  #     @scorecard = current_account.scorecards.find(params[:id])
+  #     authorize(@scorecard)
+  #   else
+  #     @scorecard = Scorecard.find_by(shared_link_id: params[:id])
+  #   end
 
-    data = Insights::StakeholderNetwork.new(@scorecard)
+  #   data = Insights::StakeholderNetwork.new(@scorecard)
 
-    render(json: { data: { nodes: data.nodes, links: data.links } })
-  end
+  #   render(json: { data: { nodes: data.nodes, links: data.links } })
+  # end
 
-  def activities
-    @activities = @scorecard.scorecard_changes.order(occurred_at: :desc)
+  # def activities
+  #   @activities = @scorecard.scorecard_changes.order(occurred_at: :desc)
 
-    render(partial: '/scorecards/show_tabs/activity', locals: { activities: @activities })
-  end
+  #   render(partial: '/scorecards/show_tabs/activity', locals: { activities: @activities })
+  # end
 
-  def linked_initiatives
-    source_scorecard = current_account.scorecards.find(params[:id])
-    target_scorecard = current_account.scorecards.find(params[:target_id])
+  # def linked_initiatives
+  #   source_scorecard = current_account.scorecards.find(params[:id])
+  #   target_scorecard = current_account.scorecards.find(params[:target_id])
 
-    authorize(source_scorecard, policy_class: ScorecardPolicy)
-    authorize(target_scorecard, policy_class: ScorecardPolicy)
+  #   authorize(source_scorecard, policy_class: ScorecardPolicy)
+  #   authorize(target_scorecard, policy_class: ScorecardPolicy)
 
-    render(
-      partial: '/scorecards/show_tabs/linked_initiatives',
-      locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
-    )
-  end
+  #   render(
+  #     partial: '/scorecards/show_tabs/linked_initiatives',
+  #     locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
+  #   )
+  # end
 
   private
 
-  def build_linked_intiatives(source_scorecard, target_scorecard) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
+  def build_linked_intiatives(source_scorecard, target_scorecard)
     return [] if target_scorecard.blank?
 
     source_initiatives =
@@ -325,16 +319,16 @@ class ImpactCardsController < ApplicationController
     params[:linked_initiatives]
   end
 
-  def redirect_to_correct_controller
-    case controller_name
-    when 'transition_cards'
-      if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard'
-        redirect_to(sustainable_development_goal_alignment_card_path(@scorecard))
-      end
-    when 'sustainable_development_goal_alignment_cards'
-      redirect_to(transition_card_path(@scorecard)) if @scorecard.type == 'TransitionCard'
-    end
-  end
+  # def redirect_to_correct_controller
+  #   case controller_name
+  #   when 'transition_cards'
+  #     if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard'
+  #       redirect_to(sustainable_development_goal_alignment_card_path(@scorecard))
+  #     end
+  #   when 'sustainable_development_goal_alignment_cards'
+  #     redirect_to(transition_card_path(@scorecard)) if @scorecard.type == 'TransitionCard'
+  #   end
+  # end
 
   def impact_card_params # rubocop:disable Metrics/MethodLength
     params.require(:impact_card).permit(
@@ -363,13 +357,6 @@ class ImpactCardsController < ApplicationController
   end
 
   def scorecard_params # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-    params[scorecard_key_param][:linked_scorecard_id] = params[:linked_scorecard_id]
-
-    params[scorecard_key_param].delete(:share_ecosystem_map) unless policy(Scorecard).share_ecosystem_maps?
-    unless policy(Scorecard).share_thematic_network_maps?
-      params[scorecard_key_param].delete(:share_thematic_network_map)
-    end
-
     params.require(impact_card_param).permit( # rubocop:disable Metrics/BlockLength
       :name,
       :description,

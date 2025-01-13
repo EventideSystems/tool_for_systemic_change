@@ -1,0 +1,56 @@
+
+<%= render 'section' do %>
+  <%= render 'section_header', title: 'Sharing', subtitle: 'Allow third-party access to this impact card.' do %>
+    <%- if impact_card.shared_link_id.present? %>
+      <p class="mt-1 text-sm/6 text-gray-600">NB You may need to adjust IFRAME styles and settings to suit the your site's style and layout</p>
+    <%- end %>
+  <% end %>
+  <%= render 'section_body' do %>
+    <%- if impact_card.shared_link_id.present? %>
+
+      <div class="sm:col-span-6" data-controller="copy-to-clipboard">
+        <%= custom_label_tag :shared_link_id %>
+        <div class="mt-2" >
+          <span class="font-mono text-black dark:text-white" data-copy-to-clipboard-target="source">
+            <%= shared_url(id: impact_card.shared_link_id) %>
+          </span>
+          <%= render 'copy_to_clipboard_button' %>
+        </div>
+      </div>
+
+      <div class="sm:col-span-6 border-" data-controller="copy-to-clipboard">
+        <%= custom_label_tag 'Embedded IFRAME (Simple)' %>
+        <div class="mt-2">
+          <span class="font-mono text-black dark:text-white" data-copy-to-clipboard-target="source">
+            <%= "<iframe src=\"#{shared_url(id: impact_card.shared_link_id)}\" frameborder=\"0\" height=\"600px\" width=\"1000px\" scrolling=\"yes\"></iframe>" %>
+          </span>
+          <%= render 'copy_to_clipboard_button' %>
+        </div>
+      </div>
+
+      <div class="sm:col-span-6" data-controller="copy-to-clipboard">
+        <%= custom_label_tag 'Embedded IFRAME (Responsive)' %>
+        <div class="mt-2">
+          <span class="font-mono text-black dark:text-white" data-copy-to-clipboard-target="source">
+            <%=
+              "<div style=\"position: relative; height: 0; overflow: hidden; padding-bottom: 56.25%\">
+                <iframe style=\"position: absolute; top:0; left: 0; width: 100%; height: 100%; border: none\" src=\"#{shared_url(id: impact_card.shared_link_id)}\" allowfullscreen></iframe>
+              </div>"
+            %>
+          </span>
+          <%= render 'copy_to_clipboard_button' %>
+        </div>
+      </div>
+    <% else %>
+      <div class="sm:col-span-4">
+        <%= form.label :shared_link_id %>
+        <div class="mt-2">
+          <span class="inline-flex items-center px-3 py-1 text-sm font-semibold leading-5 text-white bg-indigo-600 rounded-full">
+            Sharing not enabled
+          </span>
+
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

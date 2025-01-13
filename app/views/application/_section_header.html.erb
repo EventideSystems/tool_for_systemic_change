@@ -3,4 +3,5 @@
   <%- if local_assigns[:subtitle] %>
     <p class="mt-1 text-sm/6 text-gray-600"><%= subtitle %></p>
   <%- end %>
+  <%= yield if block_given? %>
 </div>

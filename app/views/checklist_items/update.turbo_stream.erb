@@ -1,5 +1,5 @@
 <%= turbo_stream.replace @checklist_item do %>
   <%= turbo_frame_tag dom_id(@checklist_item) do %>
-    <%= render 'link', checklist_item: @checklist_item %>
+    <%= render 'link', checklist_item: @checklist_item, link_class: 'transition-colors ease-in duration-700 animate-flash-yellow' %>
   <% end %>
 <% end %>

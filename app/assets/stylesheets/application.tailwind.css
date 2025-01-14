@@ -5,6 +5,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes flash-yellow {
+  0% {
+    background-color: #f1e3ab98;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@layer utilities {
+  .animate-flash-yellow {
+    animation: flash-yellow 1s ease-in-out;
+  }
+}
 /*
 
 @layer components {

@@ -109,10 +109,10 @@ class ImpactCardsController < ApplicationController
   end
 
   def edit
-    source_scorecard = @scorecard
-    target_scorecard = @scorecard.linked_scorecard
+    # source_scorecard = @scorecard
+    # target_scorecard = @scorecard.linked_scorecard
 
-    @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
+    # @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
   end
 
   def create # rubocop:disable Metrics/AbcSize

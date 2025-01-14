@@ -11,7 +11,7 @@ class ImpactCardsController < ApplicationController
   # rework this so that it's not in the base class.
   before_action :set_scorecard, except: %i[index new create]
 
-  before_action :set_active_tab, only: [:show]
+  # before_action :set_active_tab, only: [:show]
   before_action :require_account_selected, only: %i[new create edit update show_shared_link]
   # before_action :redirect_to_correct_controller, only: %i[show]
 
@@ -148,15 +148,15 @@ class ImpactCardsController < ApplicationController
     initiative_ids = @scorecard.initiatives.pluck(:id)
     notice = "#{@scorecard.model_name.human} was successfully deleted."
 
-    # Scorecard.transaction do
-    #   # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
-    #   ChecklistItem.where(initiative_id: initiative_ids).destroy_all
-    #   InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
-    #   InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
-    #   Initiative.where(id: initiative_ids).delete_all
+    Scorecard.transaction do
+      # SMELL: Move all this to an event object - or better, setup up destroy dependencies / callbacks
+      ChecklistItem.where(initiative_id: initiative_ids).destroy_all
+      InitiativesOrganisation.where(initiative_id: initiative_ids).delete_all
+      InitiativesSubsystemTag.where(initiative_id: initiative_ids).delete_all
+      Initiative.where(id: initiative_ids).delete_all
 
-    #   @scorecard.delete
-    # end
+      @scorecard.delete
+    end
 
     redirect_to(impact_cards_path, notice: notice)
   end
@@ -242,41 +242,41 @@ class ImpactCardsController < ApplicationController
 
   private
 
-  def build_linked_intiatives(source_scorecard, target_scorecard)
-    return [] if target_scorecard.blank?
+  # def build_linked_intiatives(source_scorecard, target_scorecard)
+  #   return [] if target_scorecard.blank?
 
-    source_initiatives =
-      source_scorecard.initiatives.index_by(&:name)
+  #   source_initiatives =
+  #     source_scorecard.initiatives.index_by(&:name)
 
-    target_initiatives =
-      target_scorecard.initiatives.index_by(&:name)
+  #   target_initiatives =
+  #     target_scorecard.initiatives.index_by(&:name)
 
-    all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
+  #   all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
 
-    all_names.map do |name|
-      {
-        name:,
-        this_card: source_initiatives[name].present? ? 'Present' : 'Missing',
-        linked_card: target_initiatives[name].present? ? 'Present' : 'Missing',
-        action: calc_link_action(source_initiatives[name], target_initiatives[name]),
-        linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
-      }
-    end
-  end
+  #   all_names.map do |name|
+  #     {
+  #       name:,
+  #       this_card: source_initiatives[name].present? ? 'Present' : 'Missing',
+  #       linked_card: target_initiatives[name].present? ? 'Present' : 'Missing',
+  #       action: calc_link_action(source_initiatives[name], target_initiatives[name]),
+  #       linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
+  #     }
+  #   end
+  # end
 
-  def calc_present_in(source_initiative, target_initiative)
-    return 'Both' if source_initiative.present? && target_initiative.present?
-    return 'This card' if source_initiative.present?
+  # def calc_present_in(source_initiative, target_initiative)
+  #   return 'Both' if source_initiative.present? && target_initiative.present?
+  #   return 'This card' if source_initiative.present?
 
-    'Other card'
-  end
+  #   'Other card'
+  # end
 
-  def calc_link_action(source_initiative, target_initiative)
-    return 'Link existing initatives' if source_initiative.present? && target_initiative.present?
-    return 'Copy from this card and link' if source_initiative.present?
+  # def calc_link_action(source_initiative, target_initiative)
+  #   return 'Link existing initatives' if source_initiative.present? && target_initiative.present?
+  #   return 'Copy from this card and link' if source_initiative.present?
 
-    'Copy from other card and link'
-  end
+  #   'Copy from other card and link'
+  # end
 
   def initiatives_organisations_params
     params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
@@ -311,9 +311,9 @@ class ImpactCardsController < ApplicationController
     authorize(@scorecard, policy_class: ScorecardPolicy)
   end
 
-  def set_active_tab
-    @active_tab = params[:active_tab]&.to_sym || :scorecard
-  end
+  # def set_active_tab
+  #   @active_tab = params[:active_tab]&.to_sym || :scorecard
+  # end
 
   def linked_initiatives_params
     params[:linked_initiatives]

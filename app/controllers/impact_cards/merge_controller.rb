@@ -6,14 +6,17 @@ module ImpactCards
     sidebar_item :impact_cards
 
     def new
-      @source = Scorecard.find(params[:impact_card_id])
-      @targets = Scorecard.where(account_id: @source.account_id, type: @source.type).where.not(id: @source.id)
-      authorize(@source, :merge?)
+      @target = Scorecard.find(params[:impact_card_id])
+      @sources = Scorecard.where(account_id: @target.account_id, type: @target.type).where.not(id: @target.id)
+      authorize(@target, :merge?)
     end
 
-    def create
-      @source = Scorecard.find(params[:source_id])
+    def create # rubocop:disable Metrics/AbcSize
       @target = Scorecard.find(params[:target_id])
+      @source = Scorecard.find(params[:source_id])
+
+      raise 'Cannot merge cards of different types' if @source.type != @target.type
+      raise 'Cannot merge cards of different accounts' if @source.account_id != @target.account_id
 
       authorize(@source, :merge?)
       authorize(@target, :merge?)

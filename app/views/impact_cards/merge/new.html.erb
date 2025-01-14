@@ -1,10 +1,10 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_with model: @source, url: impact_card_merge_path(@source), method: :post, scope: :impact_card, data: { turbo: false }, class: 'mx-auto max-w-4xl' do |form| %>
-    <%= render 'form_header', title: "Merge #{@source.name} with another impact card" %>
-    <%= hidden_field_tag :source_id, @source.id %>
+  <%= form_with model: @target, url: impact_card_merge_path(@target), method: :post, scope: :impact_card, data: { turbo: false }, class: 'mx-auto max-w-4xl' do |form| %>
+    <%= render 'form_header', title: "Merge another impact card into #{@target.name}" %>
+    <%= hidden_field_tag :target_id, @target.id %>
     <%= render 'form_body' do %>
       <%= render 'section' do %>
-        <%= render 'section_header', title: 'Source', subtitle: 'The card you want to merge from.' %>
+        <%= render 'section_header', title: 'This Impact Card', subtitle: 'The card you want to merge the other card into. This card will remain after the merge.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :name %>
@@ -24,12 +24,12 @@
       <% end %>
 
       <%= render 'section' do %>
-        <%= render 'section_header', title: 'Target', subtitle: 'The card you are merging to.' %>
+        <%= render 'section_header', title: 'Other Impact Card', subtitle: 'The card to merge from. This card will disappear after the merge.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :name %>
             <div class="mt-2">
-              <%= custom_select_tag :target_id, options_from_collection_for_select(@targets, 'id', 'name'), prompt: 'Select an impact card', autofocus: true, required: true %>
+              <%= custom_select_tag :source_id, options_from_collection_for_select(@sources, 'id', 'name'), prompt: 'Select an impact card', autofocus: true, required: true %>
             </div>
           </div>
         <% end %>
@@ -57,6 +57,6 @@
       <% end %>
 
 
-      <%= render 'form_buttons', form:, cancel_path: edit_impact_card_path(@source) %>
+      <%= render 'form_buttons', form:, cancel_path: edit_impact_card_path(@target) %>
     <% end %>
   <% end %>

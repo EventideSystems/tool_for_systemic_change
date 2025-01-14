@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :initiatives, only: [:show], controller: 'impact_cards/initiatives'
     resources :stakeholder_network, only: [:index], controller: 'impact_cards/stakeholder_network'
     resources :thematic_map, only: [:index], controller: 'impact_cards/thematic_map'
+    resource :merge, only: %i[new create], controller: 'impact_cards/merge'
   end
 
   namespace :initiatives do

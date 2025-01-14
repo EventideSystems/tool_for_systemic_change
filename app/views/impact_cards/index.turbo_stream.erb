@@ -1,4 +1,4 @@
 <%= turbo_stream.update :list do %>
-  <%= render @impact_cards %>
+  <%= render partial: 'impact_card', collection: @impact_cards, as: :impact_card %>
   <%= render partial: 'pagination' %>
 <% end %>

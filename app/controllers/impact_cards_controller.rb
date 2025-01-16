@@ -115,13 +115,18 @@ class ImpactCardsController < ApplicationController
     # @linked_initiatives = build_linked_intiatives(source_scorecard, target_scorecard)
   end
 
-  def create # rubocop:disable Metrics/AbcSize
+  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @impact_card = current_account.scorecards.build(impact_card_params)
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
     if @impact_card.save
       update_stakeholders!(@impact_card.initiatives.first, initiatives_organisations_params)
       update_subsystem_tags!(@impact_card.initiatives.first, initiatives_subsystem_tags_params)
+
+      if params[:impact_card_source_id].present?
+        @source_impact_card = current_account.scorecards.find(params[:impact_card_source_id])
+        copy_initiatives(@impact_card, @source_impact_card) if @source_impact_card.present?
+      end
 
       redirect_to(impact_card_path(@impact_card), notice: "#{@impact_card.model_name.human} was successfully created.")
     else
@@ -277,6 +282,18 @@ class ImpactCardsController < ApplicationController
 
   #   'Copy from other card and link'
   # end
+
+  def copy_initiatives(target_impact_card, source_impact_card)
+    existing_initiative_names = target_impact_card.initiatives.pluck(:name)
+
+    source_impact_card.initiatives.where.not(name: existing_initiative_names).find_each do |source_initiative|
+      target_initiative = source_initiative.dup
+      target_initiative.scorecard = target_impact_card
+      target_initiative.organisations = source_initiative.organisations
+      target_initiative.subsystem_tags = source_initiative.subsystem_tags
+      target_initiative.save!
+    end
+  end
 
   def initiatives_organisations_params
     params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(

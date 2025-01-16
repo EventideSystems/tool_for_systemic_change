@@ -5,6 +5,8 @@ module InitiativeChildRecords
   extend ActiveSupport::Concern
 
   def update_stakeholders!(initiative, params)
+    return if initiative.blank?
+
     update_child_records!(
       initiative,
       params[:initiatives_organisations_attributes],
@@ -15,6 +17,8 @@ module InitiativeChildRecords
   end
 
   def update_subsystem_tags!(initiative, params)
+    return if initiative.blank?
+
     update_child_records!(
       initiative,
       params[:initiatives_subsystem_tags_attributes],

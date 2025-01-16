@@ -1,19 +1,14 @@
 <div class="mx-auto max-w-6xl">
   <%= form_with model: @impact_card, url: impact_cards_path, scope: :impact_card, class: 'mx-auto max-w-4xl' do |form| %>
-    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">New Impact Card - Initial Setup</h1>
-    <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-    <div class="space-y-12">
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Overview</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">General settings for your card.</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+    <%= render 'form_header', title: 'New Impact Card - Initial Setup' %>
+    <%= render 'form_body' do %>
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Overview', subtitle: 'General settings this impact card.' %>
+        <%= render 'section_body' do %>
           <div class="sm:col-span-4">
-            <%= form.label :name, 'Title' %>
+            <%= form.label :name %>
             <div class="mt-2">
-              <%= form.text_field(:name, placeholder: 'Impact card title', autofocus: true, required: true) %>
+              <%= form.text_field(:name, placeholder: 'Card name', autofocus: true, required: true) %>
             </div>
           </div>
 
@@ -22,35 +17,56 @@
             <div class="mt-2">
               <%= form.text_area :description, rows: 3, placeholder: '' %>
             </div>
-            <p class="text-sm/6 text-gray-600">Write a brief description of your new card (optional).</p>
+            <p class="text-sm/6 text-gray-600">A brief description of the impact card (optional).</p>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Data Collection</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">Choose a data model to track activity.</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'Data Collection', subtitle: 'Choose a data model to track activity.' %>
+        <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :type, 'Data model' %>
             <div class="mt-2">
               <%= form.select :type, [TransitionCard, SustainableDevelopmentGoalAlignmentCard].map { |type| [type.name.titleize, type.name] } %>
             </div>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
+
+      <% if current_account.scorecards.count.positive? %>
+        <%= render 'section' do %>
+          <%= render 'section_header', title: 'Import Initiatives', subtitle: 'Copy initiatives from another impact card.' do %>
+            <p class="mt-1 text-sm/6 text-gray-600">
+              Note: this is a completely optional step, allowing you to quickly set up an impact card by copying the structure of an existing one.
+            </p>
+          <% end %>
+          <%= render 'section_body' do %>
+            <div class="sm:col-span-4">
+              <%= form.label :impact_card_source, 'Impact Card Source' %>
+              <div class="mt-2">
+                <%=
+                  custom_select_tag(
+                    :impact_card_source_id,
+                    options_from_collection_for_select(policy_scope(Scorecard), :id, :name),
+                    include_blank: 'Select an impact card'
+                  )
+                 %>
+              </div>
+              <p class="text-sm/6 text-gray-600 mt-1">Impact card to use as a template for initiatives (optional).</p>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
 
       <%= form.fields_for :initiatives do |initiatives_form| %>
-        <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-          <div>
-            <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">First Initiative</h2>
-            <p class="mt-1 text-sm/6 text-gray-600">Create your first initiative. You can add more later.</p>
-          </div>
-
-          <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+        <%= render 'section' do %>
+          <%= render 'section_header', title: 'First Initiative', subtitle: 'Create your first initiative.' do %>
+            <p class="mt-1 text-sm/6 text-gray-600">
+              Note: you can add more initiatives later, after creating this impact card.
+            </p>
+          <% end %>
+          <%= render 'section_body' do %>
             <div class="sm:col-span-4">
               <%= initiatives_form.label :name %>
               <div class="mt-2">
@@ -64,8 +80,8 @@
                 <%= initiatives_form.text_area :description, rows: 3, placeholder: 'Initiative description' %>
               </div>
             </div>
-          </div>
-        </div>
+          <% end %>
+        <% end %>
 
         <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
           <div>
@@ -172,11 +188,7 @@
           </div>
         </div>
       <% end %>
-    </div>
-
-    <div class="mt-6 flex items-center justify-end gap-x-6">
-      <button type="button" class="text-sm/6 font-semibold text-gray-900 dark:text-white">Cancel</button>
-      <%= form.submit 'Save' %>
-    </div>
+    <% end %>
+    <%= render 'form_buttons', form:, cancel_path: impact_cards_path %>
   <%- end %>
 </div>

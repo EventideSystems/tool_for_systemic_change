@@ -1,6 +1,2 @@
 <%= label :scorecard_id, report_scorecard_label %>
-<%- if current_account.scorecard_types.count > 1 %>
-  <%= custom_select_tag :scorecard_id, grouped_options_for_select(@grouped_scorecards), include_blank: 'Select an impact card' %>
-<%- else %>
-  <%= custom_select_tag :scorecard_id, options_from_collection_for_select(@scorecards, :id, :name), include_blank: 'Select an impact card' %>
-<%- end %>
+<%= select_impact_card_tag(:scorecard_id,  prompt: 'Select an impact card') %>

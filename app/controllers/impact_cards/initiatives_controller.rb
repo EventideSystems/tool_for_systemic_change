@@ -2,7 +2,7 @@
 
 module ImpactCards
   # Controller for Initiatives, nested under ImpactCards
-  class InitiativesController < ApplicationController
+  class InitiativesController < ::InitiativesController
     sidebar_item :impact_cards
 
     def show

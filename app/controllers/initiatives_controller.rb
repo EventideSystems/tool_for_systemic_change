@@ -35,8 +35,12 @@ class InitiativesController < ApplicationController
   end
 
   def new
-    @scorecard = params[:scorecard_id].present? ? policy_scope(Scorecard).find(params[:scorecard_id]) : nil
-    @initiative = Initiative.new(scorecard: @scorecard)
+    @impact_card = Scorecard.find_by(id: params[:impact_card_id])
+    @initiative = Initiative.new(scorecard: @impact_card)
+
+    @initiative.initiatives_organisations.build if @initiative.initiatives_organisations.empty?
+    @initiative.initiatives_subsystem_tags.build if @initiative.initiatives_subsystem_tags.empty?
+
     authorize(@initiative)
   end
 
@@ -45,14 +49,19 @@ class InitiativesController < ApplicationController
     @initiative.initiatives_subsystem_tags.build if @initiative.initiatives_subsystem_tags.empty?
   end
 
-  def create
-    @initiative = Initiative.new(initiative_params)
+  def create # rubocop:disable Metrics/MethodLength
+    @impact_card = Scorecard.find_by(id: params[:impact_card_id])
+    authorize(@impact_card, :show?)
+    @initiative = @impact_card.initiatives.new(initiative_params)
+
     authorize(@initiative)
 
     if @initiative.save
-      ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
+      update_stakeholders!(@initiative, initiatives_organisations_params)
+      update_subsystem_tags!(@initiative, initiatives_subsystem_tags_params)
+      # ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
 
-      redirect_to(initiatives_path, notice: 'Initiative was successfully created.')
+      redirect_to(impact_card_path(@impact_card), notice: 'Initiative was successfully created.')
     else
       render(:new)
     end

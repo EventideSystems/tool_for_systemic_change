@@ -2,17 +2,29 @@
   <%= form_with model: initiative, class: 'mx-auto max-w-6xl', data: { turbo: false } do |form| %>
     <%= render 'form_header', record: initiative %>
     <%= render 'form_body' do %>
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">General Settings</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">Name and description</p>
-        </div>
 
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'General Settings', subtitle: 'Name and description.' %>
+        <%= render 'section_body' do %>
+          <div class="sm:col-span-4">
+            <%= form.label :impact_card_id %>
+            <% if @impact_card.present? %>
+              <%= hidden_field_tag(:impact_card_id, @impact_card.id) %>
+              <div class="mt-2">
+                <%= custom_text_field_tag(:name, @impact_card.name, readonly: true) %>
+              </div>
+            <% else %>
+              <div class="mt-2">
+                <%= select_impact_card_tag(:impact_card_id, account: current_account, autofocus: true, required: true, prompt: 'Select an impact card') %>
+              </div>
+            <% end %>
+
+          </div>
+
           <div class="sm:col-span-4">
             <%= form.label :name %>
             <div class="mt-2">
-              <%= form.text_field :name, placeholder: 'Initiative name' %>
+              <%= form.text_field(:name, placeholder: 'Initiative name', autofocus: @impact_card.blank?, required: true) %>
             </div>
           </div>
 
@@ -21,9 +33,11 @@
             <div class="mt-2">
               <%= form.text_area :description, rows: 3, placeholder: 'Initiative description' %>
             </div>
+            <p class="text-sm/6 text-gray-600">A brief description of the initiative (optional).</p>
           </div>
-        </div>
-      </div>
+        <% end %>
+      <% end %>
+
 
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
         <div>
@@ -145,7 +159,11 @@
         </div>
       </div>
 
-      <%= render 'form_buttons', form:, cancel_path: initiative.persisted? ?initiative_path(initiative) : initiatives_path %>
+      <% if @impact_card.present? %>
+        <%= render 'form_buttons', form:, cancel_path: impact_card_path(@impact_card) %>
+      <% else %>
+        <%= render 'form_buttons', form:, cancel_path: initiative.persisted? ? initiative_path(initiative) : initiatives_path %>
+      <% end %>
     <% end %>
   <% end %>
 </div>

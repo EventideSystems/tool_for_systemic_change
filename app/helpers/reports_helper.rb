@@ -25,17 +25,10 @@ module ReportsHelper
   private
 
   def default_scorecard_type_name
-    case current_account.scorecard_types&.first&.to_s
-    when 'TransitionCard'
-      current_account.transition_card_model_name
-    when 'SustainableDevelopmentGoalAlignmentCard'
-      current_account.sdgs_alignment_card_model_name
-    else
-      'Card'
-    end
+    'Impact Card'
   end
 
   def multiple_scorecards_types?
-    current_account.scorecard_types.count > 1
+    current_account.scorecard_types_in_use.count > 1
   end
 end

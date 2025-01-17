@@ -94,6 +94,10 @@ class Account < ApplicationRecord
     StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
   end
 
+  def scorecard_types_in_use
+    scorecards.pluck(:type).uniq.map(&:constantize)
+  end
+
   private
 
   def setup_account = SetupAccount.call(account: self)

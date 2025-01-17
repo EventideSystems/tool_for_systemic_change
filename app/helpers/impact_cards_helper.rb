@@ -19,21 +19,21 @@ module ImpactCardsHelper
     end
   end
 
-  def lookup_communities
-    controller.current_account.communities.order(:name)
-  end
+  # def lookup_communities
+  #   controller.current_account.communities.order(:name)
+  # end
 
-  def lookup_organisations
-    controller.current_account.organisations.order(:name)
-  end
+  # def lookup_organisations
+  #   controller.current_account.organisations.order(:name)
+  # end
 
-  def lookup_subsystem_tags
-    controller.current_account.subsystem_tags.order(:name)
-  end
+  # def lookup_subsystem_tags
+  #   controller.current_account.subsystem_tags.order(:name)
+  # end
 
-  def lookup_wicked_problems
-    controller.current_account.wicked_problems.order(:name)
-  end
+  # def lookup_wicked_problems
+  #   controller.current_account.wicked_problems.order(:name)
+  # end
 
   def multi_select_options_for_labels(labels, selected_labels)
     choices = labels.map do |label|
@@ -92,18 +92,18 @@ module ImpactCardsHelper
     end.join(' ')
   end
 
-  def collection_for_linked_scorecard(parent_scorecard)
-    return [] if parent_scorecard.blank?
+  # def collection_for_linked_scorecard(parent_scorecard)
+  #   return [] if parent_scorecard.blank?
 
-    [['', nil]] + parent_scorecard
-                  .account
-                  .scorecards
-                  .where(id: parent_scorecard.linked_scorecard_id)
-                  .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
-                  .where.not(type: parent_scorecard.type, deleted_at: nil)
-                  .order(:name)
-                  .pluck(:name, :id)
-  end
+  #   [['', nil]] + parent_scorecard
+  #                 .account
+  #                 .scorecards
+  #                 .where(id: parent_scorecard.linked_scorecard_id)
+  #                 .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
+  #                 .where.not(type: parent_scorecard.type, deleted_at: nil)
+  #                 .order(:name)
+  #                 .pluck(:name, :id)
+  # end
 
   def focus_area_cell_style(result, focus_area)
     characteristic_ids = focus_area.characteristics.pluck(:id).map(&:to_s)
@@ -123,10 +123,34 @@ module ImpactCardsHelper
       end.model_name.human
   end
 
-  def copy_scorecard_url(scorecard)
-    case scorecard.type
-    when 'TransitionCard' then copy_transition_card_url(scorecard)
-    when 'SustainableDevelopmentGoalAlignmentCard' then copy_sustainable_development_goal_alignment_card_url(scorecard)
+  def select_impact_card_tag(name, options)
+    account = options.delete(:account) || current_account
+
+    collection_options = if account.scorecard_types_in_use.count > 1
+                           grouped_scorecards = grouped_impact_cards_for_account(account)
+                           grouped_options_for_select(grouped_scorecards)
+                         else
+                           scorecards = account.scorecards.order(:name)
+                           options_from_collection_for_select(scorecards, :id, :name)
+                         end
+
+    custom_select_tag(name, collection_options, options)
+  end
+
+  private
+
+  def grouped_impact_cards_for_account(account) # rubocop:disable Metrics/MethodLength
+    account.scorecards.group_by(&:type).transform_keys do |key|
+      case key
+      when 'TransitionCard' then account.transition_card_model_name
+      when 'SustainableDevelopmentGoalAlignmentCard' then account.sdgs_alignment_card_model_name
+      else
+        'Impact Card'
+      end
+    end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
+      scorecards.map do |scorecard|
+        [scorecard.name, scorecard.id]
+      end
     end
   end
 end

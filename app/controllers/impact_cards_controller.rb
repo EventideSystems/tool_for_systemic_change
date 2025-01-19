@@ -52,10 +52,10 @@ class ImpactCardsController < ApplicationController
       if params[:subsystem_tags].blank?
         SubsystemTag.none
       else
-        SubsystemTag.where(account: current_account, name: params[:subsystem_tags].compact)
+        SubsystemTag.where(account: @scorecard.account, name: params[:subsystem_tags].compact)
       end
 
-    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date, @selected_subsystem_tags)
+    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date)
 
     respond_to do |format| # rubocop:disable Metrics/BlockLength
       format.html

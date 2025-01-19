@@ -6,6 +6,7 @@ export default class extends Controller {
   static targets = ["map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent"]
 
   connect() {
+
     const data = this.getData()
     this.drawGraph(data)
 

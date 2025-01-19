@@ -38,7 +38,8 @@ class ScorecardGrid
             jsonb_build_object(
               'id', initiatives.id,
               'name', initiatives.name,
-              'subsystem_tags', array_agg(distinct initiatives_subsystem_tags.subsystem_tag_id)
+              'subsystem_tags', array_agg(distinct initiatives_subsystem_tags.subsystem_tag_id),
+              'subsystem_tag_names', array_agg(distinct subsystem_tags.name)
             ) as initiative,
             -- Catgegory column
             characteristics.id,
@@ -62,6 +63,8 @@ class ScorecardGrid
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
+          left join subsystem_tags
+            on initiatives_subsystem_tags.subsystem_tag_id = subsystem_tags.id
           where checklist_items.deleted_at is null
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
@@ -98,7 +101,8 @@ class ScorecardGrid
             jsonb_build_object(
               'id', initiatives.id,
               'name', initiatives.name,
-              'subsystem_tags', array_agg(distinct initiatives_subsystem_tags.subsystem_tag_id)
+              'subsystem_tags', array_agg(distinct initiatives_subsystem_tags.subsystem_tag_id),
+              'subsystem_tag_names', array_agg(distinct subsystem_tags.name)
             ) as initiative,
             -- Catgegory column
             characteristics.id,
@@ -127,6 +131,8 @@ class ScorecardGrid
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
+          left join subsystem_tags
+            on initiatives_subsystem_tags.subsystem_tag_id = subsystem_tags.id
           left join checklist_items checklist_items_at_snap_shot
             on checklist_items_at_snap_shot.id = checklist_items.id
             and checklist_items_at_snap_shot.updated_at < #{wrap_date(snapshot_at)}
@@ -193,6 +199,7 @@ class ScorecardGrid
       ActiveRecord::Base.connection.execute(columns_data_sql(account, scorecard_type)).values.first.first
     end
 
+    # NOTE: This is no longer required as we filter the subsystem tags in UI via JS now
     def subsystem_sql(subsystem_tags)
       return '' if subsystem_tags.blank?
 

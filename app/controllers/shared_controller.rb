@@ -2,10 +2,34 @@
 
 # Controller for managing shared impact cards
 class SharedController < ApplicationController
-  def show # rubocop:disable Metrics/MethodLength
+  include ActiveTabItem
+
+  skip_before_action :set_session_account_id
+  skip_before_action :authenticate_user!
+  skip_before_action :set_paper_trail_whodunnit
+
+  before_action :set_scorecard
+
+  def show # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/PerceivedComplexity
+    tab_item :grid
     response.headers.delete('X-Frame-Options')
 
-    load_scorecard_and_supporting_data
+    @date = params[:date]
+    @parsed_date = @date.blank? ? nil : Date.parse(@date)
+
+    @subsystem_tags = @scorecard.subsystem_tags.order('lower(trim(subsystem_tags.name))').uniq
+    @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
+
+    @selected_statuses = params[:statuses]
+
+    @selected_subsystem_tags =
+      if params[:subsystem_tags].blank?
+        SubsystemTag.none
+      else
+        SubsystemTag.where(account: @scorecard.account, name: params[:subsystem_tags].compact)
+      end
+
+    @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date)
 
     if @scorecard.present?
       if params[:iframe] == 'true'
@@ -19,55 +43,55 @@ class SharedController < ApplicationController
     end
   end
 
-  def characteristic # rubocop:disable Metrics/AbcSize
-    @scorecard = Scorecard.find_by(shared_link_id: params[:shared_id])
+  def stakeholder_network # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    tab_item :network
 
-    @characteristic = Characteristic.find(params[:id])
+    @graph = Insights::StakeholderNetwork.new(@scorecard)
 
-    checklist_items =
-      ChecklistItem
-      .where(characteristic: @characteristic, initiative: @scorecard.initiatives)
-      .includes(:checklist_item_comments)
-      .select { |item| item.status == 'actual' }
+    @stakeholder_types = @scorecard.stakeholder_types.order('lower(trim(name))')
 
-    @initiatives = checklist_items.map(&:initiative).sort_by(&:name)
+    @show_labels = params[:show_labels].in?(%w[true 1])
 
-    @targets = TargetsNetworkMapping.where(characteristic: @characteristic).map(&:focus_area).uniq.sort_by(&:name)
+    @selected_stakeholder_types =
+      if params[:stakeholder_types].blank?
+        StakeholderType.none
+      else
+        StakeholderType.where(account: @scorecard.account, name: params[:stakeholder_types].compact)
+      end
 
-    render('sustainable_development_goal_alignment_cards/show_tabs/characteristics/show', layout: false)
+    render(layout: 'embedded')
   end
 
-  # SMELL: Duplicate of code in scorecards_controller.rb
-  def targets_network_map
-    @scorecard = Scorecard.find_by(shared_link_id: params[:id])
+  def thematic_map # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    tab_item :thematic_map
 
-    respond_to do |format|
-      format.json do
-        data = EcosystemMaps::TargetsNetwork.new(@scorecard)
-        render(json: { data: { nodes: data.nodes, links: data.links } })
+    @graph = Insights::TargetsNetwork.new(@scorecard)
+    @stakeholder_types = @scorecard.stakeholder_types.order(:name).uniq
+
+    @show_labels = params[:show_labels].in?(%w[true 1])
+
+    @stakeholders = @scorecard.organisations.order(Arel.sql('trim(organisations.name)')).uniq
+    @selected_stakeholders =
+      if params[:stakeholders].blank?
+        Organisation.none
+      else
+        Organisation.where(account: @scorecard.account, name: params[:stakeholders].compact)
       end
-    end
+
+    @initiatives = @scorecard.initiatives.order(:name).uniq
+    @selected_initiatives =
+      if params[:initiatives].blank?
+        Initiative.none
+      else
+        @scorecard.initiatives.where(name: params[:initiatives].compact)
+      end
+
+    render(layout: 'embedded')
   end
 
   private
 
-  def load_scorecard_and_supporting_data # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def set_scorecard
     @scorecard = Scorecard.find_by(shared_link_id: params[:id])
-
-    return if @scorecard.blank?
-
-    @initiatives = @scorecard.initiatives.order(:name)
-    @organisations = @initiatives.filter_map(&:organisations).flatten.uniq.sort_by(&:name)
-
-    @results = ScorecardGrid.execute(@scorecard, nil, [])
-    @focus_areas = FocusArea.per_scorecard_type_for_account(
-      @scorecard.type,
-      @scorecard.account
-    ).ordered_by_group_position
-
-    @characteristics = Characteristic.per_scorecard_type_for_account(
-      @scorecard.type,
-      @scorecard.account
-    ).includes(focus_area: :focus_area_group).order('focus_areas.position, characteristics.position')
   end
 end

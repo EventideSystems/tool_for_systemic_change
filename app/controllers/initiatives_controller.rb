@@ -45,6 +45,8 @@ class InitiativesController < ApplicationController
   end
 
   def edit
+    @impact_card = @initiative.scorecard
+
     @initiative.initiatives_organisations.build if @initiative.initiatives_organisations.empty?
     @initiative.initiatives_subsystem_tags.build if @initiative.initiatives_subsystem_tags.empty?
   end

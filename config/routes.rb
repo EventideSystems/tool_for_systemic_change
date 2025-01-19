@@ -75,7 +75,8 @@ Rails.application.routes.draw do
             },
             only: [:show] do
     member do
-      get 'targets_network_map'
+      get 'stakeholder_network'
+      get 'thematic_map'
     end
 
     resources :characteristics, only: [:show], controller: 'shared', action: 'characteristic'

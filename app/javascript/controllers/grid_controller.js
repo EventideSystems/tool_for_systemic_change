@@ -5,13 +5,65 @@ export default class extends Controller {
 
   connect() {
     this.dateTarget.addEventListener("change", this.submitForm.bind(this))
-    this.subsystemTagsTarget.addEventListener("change", this.submitForm.bind(this))
+    this.subsystemTagsTarget.addEventListener("change", this.updateSubsystemTags.bind(this))
     this.statusesTarget.addEventListener("change", this.updateStatuses.bind(this))
     this.updateStatuses({ target: this.statusesTarget })
+    this.updateSubsystemTags({ target: this.subsystemTagsTarget })
   }
 
   submitForm() {
     this.filterFormTarget.requestSubmit()
+  }
+
+  updateSubsystemTags(event) {
+    const selected = event.target.selectedOptions
+    const subsystemTags = Array.from(selected).map(({ value }) => value)
+
+    const url = new URL(window.location)
+    url.searchParams.delete('subsystem_tags[]')
+
+    if (subsystemTags && subsystemTags.length > 0) {
+      subsystemTags.forEach(tag => {
+        url.searchParams.append('subsystem_tags[]', tag)
+      })
+    }
+
+    window.history.replaceState({}, '', url)
+
+    const elements = this.gridTarget.querySelectorAll('[data-subsystem-tags]')
+
+    elements.forEach(element => {
+      const tags = JSON.parse(element.getAttribute('data-subsystem-tags'))
+
+      const visible = subsystemTags === undefined || subsystemTags.length == 0 || subsystemTags.some(tag => tags.includes(tag))
+
+      if (visible) {
+        element.parentNode.classList.remove('invisible')
+        element.parentNode.nextElementSibling.classList.remove('invisible')
+
+        element.parentNode.classList.remove('h-0')
+        element.parentNode.nextElementSibling.classList.remove('h-0')
+
+        element.parentNode.classList.remove('mb-0')
+        element.parentNode.nextElementSibling.classList.remove('mb-0')
+
+        element.parentNode.classList.add('mb-2')
+        element.parentNode.nextElementSibling.classList.add('mb-2')
+
+      } else {
+        element.parentNode.classList.add('invisible')
+        element.parentNode.nextElementSibling.classList.add('invisible')
+
+        element.parentNode.classList.add('h-0')
+        element.parentNode.nextElementSibling.classList.add('h-0')
+
+        element.parentNode.classList.add('mb-0')
+        element.parentNode.nextElementSibling.classList.add('mb-0')
+
+        element.parentNode.classList.remove('mb-2')
+        element.parentNode.nextElementSibling.classList.remove('mb-2')
+      }
+    })
   }
 
   updateStatuses(event) {

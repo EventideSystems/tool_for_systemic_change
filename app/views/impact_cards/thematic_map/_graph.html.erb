@@ -1,0 +1,84 @@
+<div class="flex justify-between items-center mb-4">
+
+  <%= form_with url: impact_card_stakeholder_network_index_path(impact_card), method: :get, data: { grid_target: 'filterForm' } do |form| %>
+    <div class="flex space-x-4">
+      <div class="pt-2 flex justify-center items-center"><span class="text-sm font-medium text-gray-900 dark:text-white">Filter by:</span></div>
+      <div>
+        <%= form.label :stakeholders, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%=
+          form.multi_select(
+            :stakeholders,
+            options_for_select(@stakeholders.pluck(:name), @selected_stakeholders.pluck(:name)),
+            { placeholder: 'Select stakeholders...' },
+            { include_hidden: false, hide_icons: true, data: { thematic_map_target: "stakeholders" } }
+          )
+        %>
+      </div>
+      <div>
+        <%= form.label :initiatives, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 sr-only" %>
+        <%=
+          form.multi_select(
+            :initiatives,
+            options_for_select(@initiatives.pluck(:name), @selected_initiatives.pluck(:name)),
+            { placeholder: 'Select initiatives...' },
+            { include_hidden: false, hide_icons: true, data: { thematic_map_target: "initiatives" } }
+          )
+        %>
+      </div>
+
+    </div>
+  <% end %>
+  <div>
+    <button type="button" role="menuitem" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="inline-flex px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-thematic-map-target="toggleLabelsButton">Labels</button>
+  </div>
+</div>
+
+<div data-thematic-map-target="graph" class="sr-only">
+  <div class="nodes">
+    <%- @graph.nodes.each do |node| %>
+      <div
+        class="node"
+        data-id="<%= node[:id] %>"
+        data-label="<%= node[:label] %>"
+        data-color="<%= node[:color] %>"
+        data-characteristic-id="<%= node[:characteristic_id] %>"
+        data-stakeholders="<%= node[:stakeholders] %>"
+        data-initiatives="<%= node[:initiatives] %>"
+        data-size="<%= node[:size] %>"
+      >
+        <div class="description">
+          <%== node[:description] %>
+        </div>
+      </div>
+    <%- end %>
+  </div>
+  <div class="links">
+    <%- @graph.links.each do |link| %>
+      <div
+        class="link"
+        data-id="<%= link[:id] %>"
+        data-target="<%= link[:target] %>"
+        data-source="<%= link[:source] %>"
+      ></div>
+    <%- end %>
+  </div>
+</div>
+
+<div id="dialog-wrapper">
+  <dialog id="dialog" data-thematic-map-target="dialog" class="rounded-md bg-white px-4 pb-4 pt-5 text-left shadow-xl text-green-400">
+    <div class="flex justify-between">
+      <div class="flex items-center space-x-2">
+        <div class="h-4 w-4 rounded-full" data-thematic-map-target="dialogTitleColor"></div>
+        <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-thematic-map-target="dialogTitle"></h2>
+      </div>
+      <h2 class="text-lg font-semibold text-zinc-950 dark:text-black" data-thematic-map-target="dialogTitle"></h2>
+      <button data-thematic-map-target="closeDialog" class="text-zinc-500 dark:text-white hover:text-zinc-700 dark:hover:text-white" aria-label="Close dialog">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="mt-4" data-thematic-map-target="dialogContent"></div>
+  </dialog>
+</div>
+<div class="min-h-screen" data-thematic-map-target="map"></div>

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950">
   <head>
     <title><%= application_title%></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'application' %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
     <%= render partial: '/layouts/shared/favicons' %>
-    <script src="https://kit.fontawesome.com/60b51f5021.js" crossorigin="anonymous"></script>
   </head>
-  <body class="skin-blue sidebar-mini layout-top-nav ">
-    <div class="wrapper">
-      <div class="content-wrapper">
-        <section class="content">
-            <%= yield %>
-        </section>
-      </div>
+  <body data-controller="theme">
+    <%= render 'layouts/shared/flash_messages' %>
+    <div class="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+      <main class="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-60 m-3">
+        <div class="grow lg:bg-white lg:p-10 dark:bg-zinc-900">
+          <%= yield %>
+        </div>
+      </main>
+
     </div>
   </body>
 </html>

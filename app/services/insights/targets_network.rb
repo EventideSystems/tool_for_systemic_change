@@ -85,13 +85,15 @@ module Insights
 
         initiatives = Initiative.where(id: initiative_ids).order(:name).pluck(:name)
 
+        description = FocusArea.find(node.id).description.presence
+
         {
           id: "focus-area-#{node.id}",
           label: node.short_name,
           color: node.actual_color,
           stakeholders:,
           initiatives:,
-          description: nil,
+          description:,
           size: 13
         }
       end

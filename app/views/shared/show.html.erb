@@ -2,6 +2,6 @@
   <%= render 'shared/summary', impact_card: @scorecard %>
   <%= render 'shared/tabs', impact_card: @scorecard %>
   <div>
-    <%= render 'impact_cards/grid', impact_card: @scorecard, impact_card_grid: @scorecard_grid, search_url: shared_path(@scorecard.shared_link_id) %>
+    <%= render 'impact_cards/grid', impact_card: @scorecard, impact_card_grid: @scorecard_grid, search_url: shared_path(@scorecard.shared_link_id), theme_controls_visible: true %>
   </div>
 </div>

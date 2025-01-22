@@ -4,36 +4,37 @@
   <div class="flex justify-between items-center mb-4">
 
     <%= form_with url: search_url, method: :get, data: { grid_target: 'filterForm' } do |form| %>
-    <div class="flex space-x-4">
-      <div class="pt-2 flex justify-center items-center"><span class="text-sm font-medium text-gray-900 dark:text-white">Filter by:</span></div>
-      <div>
-        <%= form.label :date, class: "sr-only" %>
-        <%= custom_date_field_tag :date, @date, title: 'Filter by date', class: 'py-1.5', data: { grid_target: "date" }  %>
+      <div class="flex space-x-4">
+        <div class="pt-2 flex justify-center items-center"><span class="text-sm font-medium text-gray-900 dark:text-white">Filter by:</span></div>
+        <div>
+          <%= form.label :date, class: "sr-only" %>
+          <%= custom_date_field_tag :date, @date, title: 'Filter by date', class: 'py-1.5', data: { grid_target: "date" }  %>
+        </div>
+        <div>
+          <%= form.label :subsystem_tags, class: "sr-only" %>
+          <%=
+            form.multi_select(
+              :subsystem_tags,
+              multi_select_options_for_labels(@subsystem_tags, @selected_subsystem_tags),
+              { placeholder: 'Select subsytem tags...',  title: 'Filter by subsystem tag' }, # TODO: Get title to work
+              { include_hidden: false, data: { grid_target: "subsystemTags" } }
+            )
+          %>
+        </div>
+        <div>
+          <%= form.label :statuses, class: "sr-only" %>
+          <%=
+            form.multi_select(
+              :statuses,
+              multi_select_options_for_statuses(@statuses, @selected_statuses, impact_card),
+              { placeholder: 'Select statuses...' },
+              { include_hidden: false, data: { grid_target: "statuses" } }
+            )
+          %>
+        </div>
       </div>
-      <div>
-        <%= form.label :subsystem_tags, class: "sr-only" %>
-        <%=
-          form.multi_select(
-            :subsystem_tags,
-            multi_select_options_for_labels(@subsystem_tags, @selected_subsystem_tags),
-            { placeholder: 'Select subsytem tags...',  title: 'Filter by subsystem tag' }, # TODO: Get title to work
-            { include_hidden: false, data: { grid_target: "subsystemTags" } }
-          )
-        %>
-      </div>
-      <div>
-        <%= form.label :statuses, class: "sr-only" %>
-        <%=
-          form.multi_select(
-            :statuses,
-            multi_select_options_for_statuses(@statuses, @selected_statuses, impact_card),
-            { placeholder: 'Select statuses...' },
-            { include_hidden: false, data: { grid_target: "statuses" } }
-          )
-        %>
-      </div>
-    </div>
     <% end %>
+    <%= render 'theme_controls' if local_assigns[:theme_controls_visible] %>
   </div>
 
   <div class="grid grid-cols-4 text-white mt-4" data-grid-target="grid">

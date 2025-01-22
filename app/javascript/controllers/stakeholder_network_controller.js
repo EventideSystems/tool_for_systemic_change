@@ -102,18 +102,18 @@ export default class extends Controller {
 
           const content = `
             <div class="p-4">
-              <h3 class="text-lg font-semibold">Partnering Initiatives</h3>
-              <ul class="list-disc">
+              <h3 class="text-md font-semibold">Partnering Initiatives</h3>
+              <ul class="pl-5 list-disc">
                 ${partneringInitiativesContent}
               </ul>
 
-              <h3 class="text-lg font-semibold">Partnering Stakeholders</h3>
-              <ul class="list-disc">
+              <h3 class="text-md font-semibold">Partnering Stakeholders</h3>
+              <ul class="pl-5 list-disc">
                 ${connectionNamesContent}
               </ul>
 
-              <h3 class="text-lg font-semibold">Metrics</h3>
-              <ul class="list-disc">
+              <h3 class="text-md font-semibold">Metrics</h3>
+              <ul class="pl-5 list-disc">
                 <li>Connections: ${connections.length}</li>
                 <li>Betweenness: ${node.betweenness}</li>
               </ul>

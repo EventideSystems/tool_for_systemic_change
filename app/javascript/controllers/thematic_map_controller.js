@@ -30,7 +30,6 @@ export default class extends Controller {
     let getTextClass = this.getTextClass
     let getNodeSize = this.getNodeSize // NOTE: This function looks a bit redundant
 
-    let graphTarget = this.graphTarget
     let dialogTarget = this.dialogTarget
     let dialogTitleTarget = this.dialogTitleTarget
     let dialogTitleColorTarget = this.dialogTitleColorTarget
@@ -93,13 +92,44 @@ export default class extends Controller {
           const nodeElement = document.querySelector(`[data-id='${node.id}']`);
           const nodeDescription = nodeElement.querySelector('.description').innerHTML
 
-          if (nodeDescription.trim().length) {
-            dialogContentTarget.innerHTML = nodeDescription
-            dialogTitleTarget.innerHTML = node.label
-            dialogTitleColorTarget.style.backgroundColor = node.color
+          dialogTitleTarget.innerHTML = node.label
+          dialogTitleColorTarget.style.backgroundColor = node.color
 
-            dialogTarget.showModal()
+          const descriptionContent = nodeDescription.trim().length ? nodeDescription : '<span class="italic">No description<span>'
+
+          var partneringInitiativesContent = node.initiatives.map(initiative => {
+            return `<li>${initiative}</li>`
+          }).join('')
+
+          var partneringStakeholdersContent = node.stakeholders.map(stakeholder => {
+            return `<li>${stakeholder}</li>`
+          }).join('')
+
+
+          if (!partneringInitiativesContent.length) {
+            partneringInitiativesContent = '<li class="italic">No partnering initiatives</li>'
           }
+
+          if (!partneringStakeholdersContent.length) {
+            partneringStakeholdersContent = '<li class="italic">No partnering stakeholders</li>'
+          }
+
+          const content = `
+            <div class="p-4">
+              <p>${descriptionContent}</p>
+              <h3 class="mt-2 text-md font-semibold">Partnering Initiatives</h3>
+              <ul class="pl-5 list-disc">
+                ${partneringInitiativesContent}
+              </ul>
+
+              <h3 class="mt-2 text-md font-semibold">Partnering Stakeholders</h3>
+              <ul class="pl-5 list-disc">
+                ${partneringStakeholdersContent}
+              </ul>
+            </div>
+          `
+          dialogContentTarget.innerHTML = content
+          dialogTarget.showModal();
         })
         .on('click', function(event, node) {
           event.stopPropagation();
@@ -110,7 +140,7 @@ export default class extends Controller {
           textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
           linkElements.attr('class', function (link) { return getLinkClass(link, node) })
 
-          updateStakeholderTypes({ target: stakeholderTypesTarget })
+          // updateStakeholderTypes({ target: stakeholderTypesTarget })
         })
         .on("mouseover", function(event, node) {
           var text = querySelectorIncludesText('.texts text', node.label)

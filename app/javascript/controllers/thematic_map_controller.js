@@ -92,11 +92,42 @@ export default class extends Controller {
           const nodeElement = document.querySelector(`[data-id='${node.id}']`);
           const nodeDescription = nodeElement.querySelector('.description').innerHTML
 
-          dialogTitleTarget.innerHTML = node.label + ' - ' + node.stakeholderType
+          dialogTitleTarget.innerHTML = node.label
           dialogTitleColorTarget.style.backgroundColor = node.color
 
-          const content = nodeDescription.trim().length ? nodeDescription : 'No description available'
+          const descriptionContent = nodeDescription.trim().length ? nodeDescription : '<span class="italic">No description<span>'
 
+          var partneringInitiativesContent = node.initiatives.map(initiative => {
+            return `<li>${initiative}</li>`
+          }).join('')
+
+          var partneringStakeholdersContent = node.stakeholders.map(stakeholder => {
+            return `<li>${stakeholder}</li>`
+          }).join('')
+
+
+          if (!partneringInitiativesContent.length) {
+            partneringInitiativesContent = '<li class="italic">No partnering initiatives</li>'
+          }
+
+          if (!partneringStakeholdersContent.length) {
+            partneringStakeholdersContent = '<li class="italic">No partnering stakeholders</li>'
+          }
+
+          const content = `
+            <div class="p-4">
+              <p>${descriptionContent}</p>
+              <h3 class="mt-2 text-md font-semibold">Partnering Initiatives</h3>
+              <ul class="pl-5 list-disc">
+                ${partneringInitiativesContent}
+              </ul>
+
+              <h3 class="mt-2 text-md font-semibold">Partnering Stakeholders</h3>
+              <ul class="pl-5 list-disc">
+                ${partneringStakeholdersContent}
+              </ul>
+            </div>
+          `
           dialogContentTarget.innerHTML = content
           dialogTarget.showModal();
         })

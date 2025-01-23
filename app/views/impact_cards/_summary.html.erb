@@ -2,12 +2,18 @@
   <%= render partial: 'resource_summary', locals: { name: impact_card.name, background_color: 'bg-cyan-600' } %>
   <div class="flex-1">
     <div>
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= impact_card.name %></h1>
+      <div class="flex justify-between items-center gap-x-4 gap-y-2 mt-4 print:mt-0">
+        <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white print:text-black dark:print:text-black"><%= impact_card.name %></h1>
+        <div class="hidden flex items-center space-x-2 print:flex print:items-center print:space-x-2">
+          <%= image_tag 'logo-small.png', class: 'h-7 w-7', alt: "Logo for 'Obsekio', the tool for systemic change" %>
+          <span class="ml-2 text-black font-extrabold text-lg">Obsekio</span>
+        </div>
       </div>
-      <div class="mt-2 text-sm/6 text-zinc-500"><%= sanitize(impact_card.description) %></div>
+      <div class="mt-2 text-sm/6 text-zinc-500 <%= local_assigns[:print_description] ? "print:text-black dark:print:text-black" : "print:hidden" %>">
+        <%= sanitize(impact_card.description) %>
+      </div>
     </div>
-    <div class="relative">
+    <div class="relative print:hidden">
       <div class="flex justify-end items-center mb-4 space-x-2">
         <%= link_to_primary 'Add Initiative', new_impact_card_initiative_path(impact_card), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
         <%= link_to_primary 'Edit', edit_impact_card_path(impact_card), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>

@@ -3,9 +3,17 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogContent", "dialogTitle", "dialogTitleColor", "dialogContent", "stakeholders", "initiatives"]
+  static targets = [
+    "map", "graph", "filterForm", "toggleLabelsButton", "dialog", "dialogContent", "dialogTitle",
+    "dialogTitleColor", "dialogContent", "stakeholders", "initiatives",
+    "selectedStakeholdersForPrint", "selectedInitiativesForPrint",
+    "selectedStakeholdersForPrintContainer", "selectedInitiativesForPrintContainer"
+  ]
 
   connect() {
+    window.addEventListener('beforeprint', this.beforePrint.bind(this));
+    window.addEventListener('afterprint', this.afterPrint.bind(this));
+
     const data = this.getData()
     this.drawGraph(data)
 
@@ -20,9 +28,26 @@ export default class extends Controller {
     this.updateLabelsVisibility()
   }
 
+  disconnect() {
+    window.removeEventListener('beforeprint', this.beforePrint.bind(this));
+    window.removeEventListener('afterprint', this.afterPrint.bind(this));
+  }
+
+  afterPrint() {
+    this.mapTarget.removeAttribute('height');
+  }
+
+  beforePrint() {
+    const svg = this.mapTarget.querySelector('svg');
+    const bounds = svg.getBBox();
+
+    this.mapTarget.setAttribute('height', bounds.height + 50);
+    svg.setAttribute('height', bounds.height + 50);
+  }
+
   drawGraph(data) {
-    const width = this.mapTarget.offsetWidth
-    const height = this.mapTarget.offsetHeight
+    const width = this.mapTarget.clientWidth
+    const height = this.mapTarget.clientHeight
 
     let getNeighbors = this.getNeighbors
     let getLinkClass = this.getLinkClass
@@ -69,7 +94,7 @@ export default class extends Controller {
 
     const svg = d3.create("svg")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
 
     var linkElements = svg.append("g")
       .attr("class", "links stroke-zinc-400 dark:stroke-zinc-400")
@@ -159,7 +184,7 @@ export default class extends Controller {
         });
 
     var textElements = svg.append("g")
-      .attr("class", "texts stroke-zinc-950 dark:stroke-white")
+      .attr("class", "texts stroke-zinc-950 dark:stroke-white print:stroke-zinc-950 dark:print:stroke-zinc-950")
       .selectAll("text")
       .data(data.nodes)
       .enter().append("text")
@@ -331,16 +356,31 @@ export default class extends Controller {
     url.searchParams.delete('stakeholders[]')
     url.searchParams.delete('initiatives[]')
 
+    this.selectedStakeholdersForPrintTarget.innerHTML = ''
+    this.selectedInitiativesForPrintTarget.innerHTML = ''
+
     if (selectedStakeholders && selectedStakeholders.length > 0) {
+      this.selectedStakeholdersForPrintContainerTarget.classList.add('print:block')
       selectedStakeholders.forEach(stakeholder => {
         url.searchParams.append('stakeholders[]', stakeholder)
+
+        this.selectedStakeholdersForPrintTarget.innerHTML +=
+          `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >${stakeholder}</span>`
       })
+    } else {
+      this.selectedStakeholdersForPrintContainerTarget.classList.remove('print:block')
     }
 
     if (selectedInitiatives && selectedInitiatives.length > 0) {
+      this.selectedInitiativesForPrintContainerTarget.classList.add('print:block')
       selectedInitiatives.forEach(initiative => {
         url.searchParams.append('initiatives[]', initiative)
+
+        this.selectedInitiativesForPrintTarget.innerHTML +=
+          `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >${initiative}</span>`
       })
+    } else {
+      this.selectedInitiativesForPrintContainerTarget.classList.remove('print:block')
     }
 
     window.history.replaceState({}, '', url)

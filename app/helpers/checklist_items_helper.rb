@@ -58,7 +58,7 @@ module ChecklistItemsHelper
     content_tag(
       :div,
       '',
-      class: 'w-1 h-3',
+      class: 'w-2 h-3',
       style: "background-color: #{focus_area_data[:focus_area_color]}",
       title: focus_area_data[:focus_area_name]
     )
@@ -79,6 +79,27 @@ module ChecklistItemsHelper
     content_tag(:div, '', options)
   end
 
+  # def checklist_list_item_grid_element(checklist_item_data:, grid_mode:)
+  #   options = checklist_list_item_grid_element_base_options(checklist_item_data)
+
+  #   case grid_mode
+  #   when :modern
+  #     background_color_class = checklist_list_item_status_color(checklist_item_data[:status])
+  #     options[:class] = "#{options[:class]} #{background_color_class}"
+  #   when :classic
+  #     if checklist_item_data[:status] == 'no_comment'
+  #       background_color_class = checklist_list_item_status_color(checklist_item_data[:status])
+  #       options[:class] = "#{options[:class]} #{background_color_class}"
+  #     else
+  #       background_color_hex = checklist_list_item_focus_area_status_color(checklist_item_data)
+  #       options[:style] = "background-color: #{background_color_hex}"
+  #     end
+
+  #   end
+
+  #   content_tag(:div, '', options)
+  # end
+
   def current_comment_status_style(checklist_item)
     return 'no-comment' if checklist_item.comment.blank?
 
@@ -96,7 +117,7 @@ module ChecklistItemsHelper
         comments_target: 'badge',
         toggle: 'tooltip',
         placement: 'top',
-        title: checklist_item.status.humanizeex
+        title: checklist_item.status.humanize
       }
     )
   end

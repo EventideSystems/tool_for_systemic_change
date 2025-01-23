@@ -19,6 +19,26 @@
     animation: flash-yellow 1s ease-in-out;
   }
 }
+
+body {
+  -webkit-print-color-adjust:exact !important;
+  print-color-adjust:exact !important;
+}
+
+@media print {
+
+  .page-break {
+    page-break-before: always
+  }
+
+}
+
+@page:right{
+  @bottom-right {
+    content: counter(page);
+  }
+}
+
 /*
 
 @layer components {

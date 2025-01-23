@@ -1,7 +1,7 @@
 <%= render 'labels/stylesheet', labels: @subsystem_tags %>
 
 <div class="text-left" data-controller="grid" data-grid-mode="<%= impact_card.grid_mode %>">
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center mb-4 print:hidden">
 
     <%= form_with url: search_url, method: :get, data: { grid_target: 'filterForm' } do |form| %>
       <div class="flex space-x-4">
@@ -41,7 +41,7 @@
     <% impact_card_grid.each do |data| %>
       <div class="col-span-1 mb-2">
         <h3
-          class="text-sm font-medium text-gray-900 dark:text-white truncate"
+          class="text-sm font-medium text-gray-900 dark:text-white print:text-black dark:print:text-black truncate"
           title="<%= data.dig('initiative', :name) %>"
           data-subsystem-tags="<%= data.dig('initiative', :subsystem_tag_names).to_json %>"
         >
@@ -68,4 +68,49 @@
       </div>
     <% end %>
   </div>
+
+  <div class="hidden print:flex border border-black p-4 mt-6 rounded-lg break-before-page">
+    <div class="flex justify-between items-center">
+      <div class="flex flex-col space-y-2">
+        <h4 class="text-md font-bold print:text-black">Filters</h4>
+        <%# NOTE: The date is only ever set via a complete page refresh, so there's no need to try and dyanmically set it following user input %>
+        <%- if @parsed_date.present? %>
+          <div class="flex items-center space-x-2 mb-4 hidden print:block">
+            <span class="text-sm font-medium text-gray-900 dark:text-white print:text-gray-900 print:dark:text-gray-900">Date:</span>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >
+                <%= @parsed_date %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="flex items-center space-x-2 mb-4 hidden sr:hidden" data-grid-target="selectedSubsystemTagsForPrintContainer">
+          <span class="text-sm font-medium text-gray-900 dark:text-white print:text-gray-900 print:dark:text-gray-900">Selected subsystem tags:</span>
+          <div class="mt-3 flex flex-wrap gap-2" data-grid-target="selectedSubsystemTagsForPrint">
+            <% @selected_subsystem_tags.each do |subsystem_tag| %>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >
+                <%= subsystem_tag.name %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 mb-4 hidden sr:hidden" data-grid-target="selectedStatusesForPrintContainer">
+          <span class="text-sm font-medium text-gray-900 dark:text-white print:text-gray-900 print:dark:text-gray-900">Selected statuses:</span>
+          <div class="mt-3 flex flex-wrap gap-2" data-grid-target="selectedStatusesForPrint">
+            <% @selected_statuses.each do |status| %>
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white">
+                <%= status %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'legend', items: @legend_items %>
 </div>
+
+

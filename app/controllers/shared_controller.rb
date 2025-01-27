@@ -14,6 +14,8 @@ class SharedController < ApplicationController
     tab_item :grid
     response.headers.delete('X-Frame-Options')
 
+    @legend_items = fetch_legend_items(@scorecard)
+
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
@@ -49,6 +51,9 @@ class SharedController < ApplicationController
     @graph = Insights::StakeholderNetwork.new(@scorecard)
 
     @stakeholder_types = @scorecard.stakeholder_types.order('lower(trim(name))')
+    @legend_items = @stakeholder_types.map do |stakeholder_type|
+      { label: stakeholder_type.name, color: stakeholder_type.color }
+    end
 
     @show_labels = params[:show_labels].in?(%w[true 1])
 
@@ -69,6 +74,7 @@ class SharedController < ApplicationController
     @stakeholder_types = @scorecard.stakeholder_types.order(:name).uniq
 
     @show_labels = params[:show_labels].in?(%w[true 1])
+    @legend_items = fetch_legend_items(@scorecard)
 
     @stakeholders = @scorecard.organisations.order(Arel.sql('trim(organisations.name)')).uniq
     @selected_stakeholders =
@@ -90,6 +96,15 @@ class SharedController < ApplicationController
   end
 
   private
+
+  # SMELL: Duplicated in app/controllers/impact_cards_controller.rb
+  def fetch_legend_items(impact_card)
+    FocusArea
+      .per_scorecard_type_for_account(impact_card.type, impact_card.account)
+      .joins(:focus_area_group)
+      .order('focus_area_groups.position, focus_areas.position')
+      .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }
+  end
 
   def set_scorecard
     @scorecard = Scorecard.find_by(shared_link_id: params[:id])

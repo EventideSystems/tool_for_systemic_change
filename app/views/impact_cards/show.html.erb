@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl">
-  <%= render 'impact_cards/summary', impact_card: @scorecard %>
+  <%= render 'impact_cards/summary', impact_card: @scorecard, print_description: true %>
   <%= render 'impact_cards/tabs', impact_card: @scorecard %>
   <div>
     <%= render 'impact_cards/grid', impact_card: @scorecard, impact_card_grid: @scorecard_grid, search_url: impact_card_path(@scorecard) %>

@@ -15,6 +15,9 @@ module ImpactCards
       @graph = Insights::StakeholderNetwork.new(@scorecard)
 
       @stakeholder_types = @scorecard.stakeholder_types.order('lower(trim(name))')
+      @legend_items = @stakeholder_types.map do |stakeholder_type|
+        { label: stakeholder_type.name, color: stakeholder_type.color }
+      end
 
       @show_labels = params[:show_labels].in?(%w[true 1])
 

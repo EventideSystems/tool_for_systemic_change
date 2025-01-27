@@ -39,14 +39,16 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def show # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
+  def show # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    @legend_items = fetch_legend_items(@scorecard)
+
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
     @subsystem_tags = @scorecard.subsystem_tags.order('lower(trim(subsystem_tags.name))').uniq
     @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
 
-    @selected_statuses = params[:statuses]
+    @selected_statuses = Array.wrap(params[:statuses])
 
     @selected_subsystem_tags =
       if params[:subsystem_tags].blank?
@@ -57,45 +59,8 @@ class ImpactCardsController < ApplicationController
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date)
 
-    respond_to do |format| # rubocop:disable Metrics/BlockLength
+    respond_to do |format|
       format.html
-      format.pdf do # rubocop:disable Metrics/BlockLength
-        # TODO: Convert PDF to use transition card summary data
-        @initiatives =
-          if @parsed_selected_date.present?
-            @scorecard.initiatives
-                      .where('archived_on > ? OR archived_on IS NULL', @parsed_selected_date)
-                      .where('started_at <= ? OR started_at IS NULL', @parsed_selected_date)
-                      .where('finished_at >= ? OR finished_at IS NULL', @parsed_selected_date)
-                      .order(name: :asc)
-          else
-            @scorecard.initiatives.not_archived.order(name: :asc)
-          end
-
-        @initiatives =
-          if @selected_subsystem_tags.present?
-            tag_ids = @selected_subsystem_tags.map(&:id)
-            @initiatives
-              .distinct
-              .joins(:initiatives_subsystem_tags)
-              .where('initiatives_subsystem_tags.subsystem_tag_id': tag_ids)
-              .select('initiatives.*, lower(initiatives.name)')
-          else
-            @initiatives
-          end
-
-        pdf = ScorecardPdfGenerator.new(
-          scorecard: @scorecard,
-          initiatives: @initiatives,
-          focus_areas: @focus_areas
-        ).perform
-        send_data(
-          pdf.render,
-          filename: "transition_card_#{@scorecard.id}.pdf",
-          type: 'application/pdf',
-          disposition: 'inline'
-        )
-      end
     end
   end
 
@@ -172,27 +137,6 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  # def copy_options
-  #   render(layout: false)
-  # end
-
-  # def copy
-  #   new_name = params[:new_name]
-
-  #   @copied_scorecard =
-  #     if params[:copy] == 'deep'
-  #       ImpactCards::DeepCopy.call(impact_card: @scorecard, new_name:)
-  #     else
-  #       ScorecardCopier.new(@scorecard, new_name, deep_copy:).perform
-  #     end
-
-  #   if @copied_scorecard.present?
-  #     redirect_to(@copied_scorecard, notice: "#{@copied_scorecard.model_name.human} was successfully copied.")
-  #   else
-  #     render(:edit)
-  #   end
-  # end
-
   def merge_options
     @other_scorecards =
       current_account.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
@@ -213,75 +157,15 @@ class ImpactCardsController < ApplicationController
     redirect_to impact_card_path(@scorecard), notice: notice
   end
 
-  # def ecosystem_maps_organisations
-  #   if params[:id].to_s == params[:id].to_i.to_s
-  #     @scorecard = current_account.scorecards.find(params[:id])
-  #     authorize(@scorecard)
-  #   else
-  #     @scorecard = Scorecard.find_by(shared_link_id: params[:id])
-  #   end
-
-  #   data = Insights::StakeholderNetwork.new(@scorecard)
-
-  #   render(json: { data: { nodes: data.nodes, links: data.links } })
-  # end
-
-  # def activities
-  #   @activities = @scorecard.scorecard_changes.order(occurred_at: :desc)
-
-  #   render(partial: '/scorecards/show_tabs/activity', locals: { activities: @activities })
-  # end
-
-  # def linked_initiatives
-  #   source_scorecard = current_account.scorecards.find(params[:id])
-  #   target_scorecard = current_account.scorecards.find(params[:target_id])
-
-  #   authorize(source_scorecard, policy_class: ScorecardPolicy)
-  #   authorize(target_scorecard, policy_class: ScorecardPolicy)
-
-  #   render(
-  #     partial: '/scorecards/show_tabs/linked_initiatives',
-  #     locals: { linked_initiatives: build_linked_intiatives(source_scorecard, target_scorecard) }
-  #   )
-  # end
-
   private
 
-  # def build_linked_intiatives(source_scorecard, target_scorecard)
-  #   return [] if target_scorecard.blank?
-
-  #   source_initiatives =
-  #     source_scorecard.initiatives.index_by(&:name)
-
-  #   target_initiatives =
-  #     target_scorecard.initiatives.index_by(&:name)
-
-  #   all_names = (source_initiatives.keys + target_initiatives.keys).uniq.sort
-
-  #   all_names.map do |name|
-  #     {
-  #       name:,
-  #       this_card: source_initiatives[name].present? ? 'Present' : 'Missing',
-  #       linked_card: target_initiatives[name].present? ? 'Present' : 'Missing',
-  #       action: calc_link_action(source_initiatives[name], target_initiatives[name]),
-  #       linked: target_initiatives[name]&.linked? || source_initiatives[name]&.linked?
-  #     }
-  #   end
-  # end
-
-  # def calc_present_in(source_initiative, target_initiative)
-  #   return 'Both' if source_initiative.present? && target_initiative.present?
-  #   return 'This card' if source_initiative.present?
-
-  #   'Other card'
-  # end
-
-  # def calc_link_action(source_initiative, target_initiative)
-  #   return 'Link existing initatives' if source_initiative.present? && target_initiative.present?
-  #   return 'Copy from this card and link' if source_initiative.present?
-
-  #   'Copy from other card and link'
-  # end
+  def fetch_legend_items(impact_card)
+    FocusArea
+      .per_scorecard_type_for_account(impact_card.type, impact_card.account)
+      .joins(:focus_area_group)
+      .order('focus_area_groups.position, focus_areas.position')
+      .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }
+  end
 
   def copy_initiatives(target_impact_card, source_impact_card)
     existing_initiative_names = target_impact_card.initiatives.pluck(:name)
@@ -328,24 +212,9 @@ class ImpactCardsController < ApplicationController
     authorize(@scorecard, policy_class: ScorecardPolicy)
   end
 
-  # def set_active_tab
-  #   @active_tab = params[:active_tab]&.to_sym || :scorecard
-  # end
-
   def linked_initiatives_params
     params[:linked_initiatives]
   end
-
-  # def redirect_to_correct_controller
-  #   case controller_name
-  #   when 'transition_cards'
-  #     if @scorecard.type == 'SustainableDevelopmentGoalAlignmentCard'
-  #       redirect_to(sustainable_development_goal_alignment_card_path(@scorecard))
-  #     end
-  #   when 'sustainable_development_goal_alignment_cards'
-  #     redirect_to(transition_card_path(@scorecard)) if @scorecard.type == 'TransitionCard'
-  #   end
-  # end
 
   def impact_card_params # rubocop:disable Metrics/MethodLength
     params.require(:impact_card).permit(

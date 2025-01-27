@@ -1,7 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["filterForm", "date", "subsystemTags", "statuses", "grid"]
+  static targets = [
+    "filterForm", "date", "subsystemTags", "statuses", "grid",
+    "selectedSubsystemTagsForPrint",
+    "selectedStatusesForPrint",
+    "selectedSubsystemTagsForPrintContainer",
+    "selectedStatusesForPrintContainer"
+  ]
 
   connect() {
     this.dateTarget.addEventListener("change", this.submitForm.bind(this))
@@ -22,10 +28,20 @@ export default class extends Controller {
     const url = new URL(window.location)
     url.searchParams.delete('subsystem_tags[]')
 
+    this.selectedSubsystemTagsForPrintTarget.innerHTML = ''
+
     if (subsystemTags && subsystemTags.length > 0) {
+
+      this.selectedSubsystemTagsForPrintContainerTarget.classList.add('print:block')
       subsystemTags.forEach(tag => {
+
+        this.selectedSubsystemTagsForPrintTarget.innerHTML +=
+          `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >${tag}</span>`
+
         url.searchParams.append('subsystem_tags[]', tag)
       })
+    } else {
+      this.selectedSubsystemTagsForPrintContainerTarget.classList.remove('print:block')
     }
 
     window.history.replaceState({}, '', url)
@@ -73,10 +89,23 @@ export default class extends Controller {
     const url = new URL(window.location)
     url.searchParams.delete('statuses[]')
 
+    this.selectedStatusesForPrintTarget.innerHTML = ''
+
     if (statuses && statuses.length > 0) {
+      this.selectedStatusesForPrintContainerTarget.classList.add('print:block')
+
       statuses.forEach(status => {
+        const capitalizedStatus = status
+          .replace(/_/g, ' ') // Replace underscores with spaces
+          .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize the first letter of each word
+
+        const statusName = status.charAt(0).toUpperCase() + status.slice(1)
+        this.selectedStatusesForPrintTarget.innerHTML +=
+          `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >${capitalizedStatus}</span>`
         url.searchParams.append('statuses[]', status)
       })
+    } else {
+      this.selectedStatusesForPrintContainerTarget.classList.remove('print:block')
     }
 
     window.history.replaceState({}, '', url)

@@ -3,9 +3,14 @@ import * as d3 from "d3"
 
 export default class extends Controller {
 
-  static targets = ["map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent"]
+  static targets = [
+    "map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent",
+    "selectedStakeholderTypesForPrint", "selectedStakeholderTypesForPrintContainer"
+  ]
 
   connect() {
+    window.addEventListener('beforeprint', this.beforePrint.bind(this));
+    window.addEventListener('afterprint', this.afterPrint.bind(this));
 
     const data = this.getData()
     this.drawGraph(data)
@@ -18,6 +23,23 @@ export default class extends Controller {
 
     this.updateStakeholderTypes({ target: this.stakeholderTypesTarget })
     this.updateLabelsVisibility()
+  }
+
+  disconnect() {
+    window.removeEventListener('beforeprint', this.beforePrint.bind(this));
+    window.removeEventListener('afterprint', this.afterPrint.bind(this));
+  }
+
+  afterPrint() {
+    this.mapTarget.removeAttribute('height');
+  }
+
+  beforePrint() {
+    const svg = this.mapTarget.querySelector('svg');
+    const bounds = svg.getBBox();
+
+    this.mapTarget.setAttribute('height', bounds.height + 50);
+    svg.setAttribute('height', bounds.height + 50);
   }
 
   drawGraph(data) {
@@ -152,7 +174,7 @@ export default class extends Controller {
         });
 
     var textElements = svg.append("g")
-      .attr("class", "texts stroke-zinc-950 dark:stroke-white")
+      .attr("class", "texts stroke-zinc-950 dark:stroke-white print:stroke-zinc-950 dark:print:stroke-zinc-950")
       .selectAll("text")
       .data(data.nodes)
       .enter().append("text")
@@ -313,10 +335,19 @@ export default class extends Controller {
     const url = new URL(window.location)
     url.searchParams.delete('stakeholder_types[]')
 
+    this.selectedStakeholderTypesForPrintTarget.innerHTML = ''
+
     if (stakeholderTypes && stakeholderTypes.length > 0) {
+      this.selectedStakeholderTypesForPrintContainerTarget.classList.add('print:block')
+
       stakeholderTypes.forEach(stakeholderType => {
         url.searchParams.append('stakeholder_types[]', stakeholderType)
+
+        this.selectedStakeholderTypesForPrintTarget.innerHTML +=
+          `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >${stakeholderType}</span>`
       })
+    } else {
+      this.selectedStakeholderTypesForPrintContainerTarget.classList.remove('print:block')
     }
 
     window.history.replaceState({}, '', url)

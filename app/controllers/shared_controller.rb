@@ -20,7 +20,7 @@ class SharedController < ApplicationController
     @subsystem_tags = @scorecard.subsystem_tags.order('lower(trim(subsystem_tags.name))').uniq
     @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
 
-    @selected_statuses = params[:statuses]
+    @selected_statuses = Array.wrap(params[:statuses])
 
     @selected_subsystem_tags =
       if params[:subsystem_tags].blank?

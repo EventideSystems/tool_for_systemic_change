@@ -6,19 +6,54 @@ export default class extends Controller {
     "selectedSubsystemTagsForPrint",
     "selectedStatusesForPrint",
     "selectedSubsystemTagsForPrintContainer",
-    "selectedStatusesForPrintContainer"
+    "selectedStatusesForPrintContainer",
+    "selectedDisplayingGap",
+    "highlightButton"
   ]
 
   connect() {
     this.dateTarget.addEventListener("change", this.submitForm.bind(this))
     this.subsystemTagsTarget.addEventListener("change", this.updateSubsystemTags.bind(this))
     this.statusesTarget.addEventListener("change", this.updateStatuses.bind(this))
+    this.highlightButtonTarget.addEventListener("click", this.toggleHighlight.bind(this))
+
     this.updateStatuses({ target: this.statusesTarget })
     this.updateSubsystemTags({ target: this.subsystemTagsTarget })
+    this.updateHighlightButtonIcon()
   }
 
   submitForm() {
     this.filterFormTarget.requestSubmit()
+  }
+
+  updateHighlightButtonIcon() {
+    const url = new URL(window.location)
+    const highlightSet = url.searchParams.get('highlight') == 'true'
+    const svg = this.highlightButtonTarget.querySelector('svg')
+    const filterSection = this.selectedDisplayingGapTarget
+
+    if (highlightSet) {
+      svg.classList.add('icon-highlight')
+
+      filterSection.classList.add('print:block')
+      filterSection.classList.remove('print:hidden')
+    } else {
+      svg.classList.remove('icon-highlight')
+
+      filterSection.classList.remove('print:block')
+      filterSection.classList.add('print:hidden')
+    }
+  }
+
+  toggleHighlight(event) {
+    event.preventDefault()
+    const url = new URL(window.location)
+    const highlightSet = url.searchParams.get('highlight') == 'true'
+    url.searchParams.set('highlight', !highlightSet)
+    window.history.replaceState({}, '', url)
+
+    this.updateStatuses({ target: this.statusesTarget })
+    this.updateHighlightButtonIcon()
   }
 
   updateSubsystemTags(event) {
@@ -111,65 +146,33 @@ export default class extends Controller {
     window.history.replaceState({}, '', url)
 
     const elements = this.gridTarget.querySelectorAll('[data-status]')
+    const highlightSet = url.searchParams.get('highlight') == 'true'
 
-    if (this.data.get('mode') == 'classic') {
-      elements.forEach(element => {
-        const status = element.getAttribute('data-status')
-        const baseColor = element.getAttribute('data-focus-area-color')
-        const opacity = this.statusBackgroundColorOpacity(status)
-        const color = `${baseColor}${opacity}`
+    elements.forEach(element => {
+      const status = element.getAttribute('data-status')
+      const elementClass = element.getAttribute('data-element-class')
 
-        if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
-          element.style.backgroundColor = color
+      element.classList.remove('status-highlight')
+      element.classList.remove('status-no-comment')
+      element.classList.remove(elementClass)
+
+      if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
+        if (highlightSet) {
+          if (status == 'no_comment') {
+            element.classList.add('status-highlight')
+          } else {
+            element.classList.add('status-no-comment')
+          }
         } else {
-          element.style.backgroundColor = '#00000000'
+          element.classList.add(elementClass)
         }
-      })
-    } else {
-      elements.forEach(element => {
-        const status = element.getAttribute('data-status')
-        const colorClasses = this.statusColorClasses(status)
-
-        if (statuses === undefined || statuses.length == 0 || statuses.includes(status)) {
-          element.classList.add(...colorClasses)
-          element.classList.remove('bg-gray-500')
+      } else {
+        if (highlightSet) {
+          element.classList.add('status-highlight')
         } else {
-          element.classList.remove(...colorClasses)
-          element.classList.add('bg-gray-500')
+          element.classList.add('status-no-comment')
         }
-      })
-    }
-  }
-
-
-  // NOTE: Duplicated in checklist_items_helper.rb
-  statusBackgroundColorOpacity(status) {
-    switch (status) {
-      case 'actual':
-        return 'FF'
-      case 'planned':
-        return '99'
-      case 'more_information':
-        return '66'
-      case 'suggestion':
-        return '40'
-      default:
-        return '00'
-    }
-  }
-
-  statusColorClasses(status) {
-    switch (status) {
-      case 'actual':
-        return ['bg-sky-600']
-      case 'planned':
-        return ['bg-teal-500']
-      case 'more_information':
-        return ['bg-yellow-400']
-      case 'suggestion':
-        return ['bg-indigo-400']
-      default:
-        return ['bg-gray-200', 'dark:bg-gray-600']
-    }
+      }
+    })
   }
 }

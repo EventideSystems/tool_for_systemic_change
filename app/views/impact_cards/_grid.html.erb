@@ -32,6 +32,11 @@
             )
           %>
         </div>
+        <div class="flex">
+          <%= button_tag class: merge_tailwind_class(CustomFormBuilder::MULTI_SELECT_BUTTON_CLASS, '-ml-3'), title: 'Highlight gap', data: { grid_target: "highlightButton" } do %>
+            <%= render_icon :highlight %>
+          <% end %>
+        </div>
       </div>
     <% end %>
     <%= render 'theme_controls' if local_assigns[:theme_controls_visible] %>
@@ -106,6 +111,17 @@
             <% end %>
           </div>
         </div>
+
+
+        <div class="flex items-center space-x-2 mb-4 hidden print:hidden"  data-grid-target="selectedDisplayingGap">
+          <span class="text-sm font-medium text-gray-900 dark:text-white print:text-gray-900 print:dark:text-gray-900">Displaying gap:</span>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-500 text-white" >
+              True
+            </span>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

@@ -1,0 +1,12 @@
+<% if impact_card.grid_mode == :classic %>
+  <style>
+    <% focus_areas.each do |focus_area| %>
+      <% %i[actual planned more_information suggestion].each do |status| %>
+        .<%= "status-focus-area-#{focus_area.id}-#{status.to_s.dasherize}" %> {
+          background-color: <%= focus_area.color + ChecklistItemsHelper::CHECKLIST_LIST_ITEM_COLOR_OPACITY[status] %>;
+      }
+      <% end %>
+    <% end %>
+  </style>
+<% end %>
+

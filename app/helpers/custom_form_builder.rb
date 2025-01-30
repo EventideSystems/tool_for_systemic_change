@@ -148,6 +148,24 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     </div>
   HTML
 
+  MULTI_SELECT_BUTTON_CLASS = %w[
+    mt-2
+    ml-1
+    w-auto
+    h-auto
+    px-1.5
+    border
+    border-gray-300
+    rounded-lg
+    dark:border-gray-600
+    rounded-md
+    text-gray-500
+    dark:text-neutral-500
+    flex
+    items-center
+    justify-center
+  ].join(' ')
+
   MULTI_SELECT_DEFAULT_HS_SELECT = {
     placeholder: 'Select multiple options...',
     toggleTag: '<button type="button" aria-expanded="false"></button>',
@@ -281,10 +299,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   def build_clear_button(stimulus_controller) # rubocop:disable Metrics/MethodLength
     <<~HTML.html_safe # rubocop:disable Rails/OutputSafety
-        <button
+      <button
         type="button"
         title="Clear filter"
-        class="mt-2 ml-1 w-auto h-auto px-1.5 border border-gray-300 rounded-lg dark:border-gray-600 rounded-md text-gray-500 dark:text-neutral-500 flex items-center justify-center"
+        class="#{MULTI_SELECT_BUTTON_CLASS}"
         data-#{stimulus_controller}-target="clear"
       >
         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">

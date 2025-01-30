@@ -38,6 +38,8 @@ class FocusArea < ApplicationRecord
 
   delegate :scorecard_type, :account, to: :focus_area_group
 
+  alias_attribute :color, :actual_color
+
   scope :per_scorecard_type_for_account, lambda { |scorecard_type, account|
     joins(:focus_area_group)
       .where(

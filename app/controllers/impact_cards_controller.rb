@@ -50,6 +50,10 @@ class ImpactCardsController < ApplicationController
 
     @selected_statuses = Array.wrap(params[:statuses])
 
+    @focus_areas = FocusArea.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).order(
+      'focus_area_groups.position', :position
+    )
+
     @selected_subsystem_tags =
       if params[:subsystem_tags].blank?
         SubsystemTag.none

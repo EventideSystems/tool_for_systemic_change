@@ -1,7 +1,7 @@
 <div>
   <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white"><%= title %></h2>
   <%- if local_assigns[:subtitle] %>
-    <p class="mt-1 text-sm/6 text-gray-600"><%= subtitle %></p>
+    <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400"><%= subtitle %></p>
   <%- end %>
   <%= yield if block_given? %>
 </div>

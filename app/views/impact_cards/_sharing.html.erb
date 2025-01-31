@@ -2,7 +2,7 @@
 <%= render 'section' do %>
   <%= render 'section_header', title: 'Sharing', subtitle: 'Allow third-party access to this impact card.' do %>
     <%- if impact_card.shared_link_id.present? %>
-      <p class="mt-1 text-sm/6 text-gray-600">NB You may need to adjust IFRAME styles and settings to suit the your site's style and layout</p>
+      <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">NB You may need to adjust IFRAME styles and settings to suit the your site's style and layout</p>
     <%- end %>
   <% end %>
   <%= render 'section_body' do %>
@@ -43,7 +43,7 @@
       </div>
     <% else %>
       <div class="sm:col-span-4">
-        <p class="mt-1 text-sm/6 text-gray-600">Sharing data is missing</p>
+        <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Sharing data is missing</p>
       </div>
     <% end %>
   <% end %>

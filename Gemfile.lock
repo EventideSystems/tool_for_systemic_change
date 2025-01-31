@@ -80,8 +80,8 @@ GEM
       rack
     ast (2.4.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.1043.0)
-    aws-sdk-core (3.217.0)
+    aws-partitions (1.1044.0)
+    aws-sdk-core (3.217.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -252,12 +252,12 @@ GEM
       date
       stringio
     public_suffix (6.0.1)
-    puma (6.5.0)
+    puma (6.6.0)
       nio4r (~> 2.0)
     pundit (2.4.0)
       activesupport (>= 3.0.0)
     racc (1.8.1)
-    rack (3.1.8)
+    rack (3.1.9)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-session (2.1.0)
@@ -522,8 +522,8 @@ CHECKSUMS
   appsignal (4.3.3) sha256=81759f0d63756c16068c05156ba41a1efb75aa532599996e9fb97fa4e6419788
   ast (2.4.2) sha256=1e280232e6a33754cde542bc5ef85520b74db2aac73ec14acef453784447cc12
   aws-eventstream (1.3.0) sha256=f1434cc03ab2248756eb02cfa45e900e59a061d7fbdc4a9fd82a5dd23d796d3f
-  aws-partitions (1.1043.0) sha256=9003e45467bb41d30df529742a5721fbeba9e6bd7428058e5e3783c29fa497f8
-  aws-sdk-core (3.217.0) sha256=07ae702f80900653e0f93303a8d58e2963f0be9511cefd7d9b9c78100d14a479
+  aws-partitions (1.1044.0) sha256=958b11e2c641767ac783dc8b6799390ad7a3603864379be65ff037e36014fb56
+  aws-sdk-core (3.217.1) sha256=4e2088466494b81f0ed4863e480c0f824f5e39e7994165385caab5dd2d74bc8e
   aws-sdk-lambda (1.145.0) sha256=0820b1e0403cbc64d961bb2c022d6ac11ebb70fba09b6b25102ab9c30307fdbc
   aws-sdk-rails (5.1.0) sha256=8cffd3b60142e12a6747c91a7a609f668276b1082fc0c10810d5da3d14b13189
   aws-sigv4 (1.11.0) sha256=50a8796991a862324442036ad7a395920572b84bb6cd29b945e5e1800e8da1db
@@ -612,10 +612,10 @@ CHECKSUMS
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
   psych (5.2.3) sha256=84a54bb952d14604fea22d99938348814678782f58b12648fcdfa4d2fce859ee
   public_suffix (6.0.1) sha256=61d44e1cab5cbbbe5b31068481cf16976dd0dc1b6b07bd95617ef8c5e3e00c6f
-  puma (6.5.0) sha256=94d1b75cab7f356d52e4f1b17b9040a090889b341dbeee6ee3703f441dc189f2
+  puma (6.6.0) sha256=f25c06873eb3d5de5f0a4ebc783acc81a4ccfe580c760cfe323497798018ad87
   pundit (2.4.0) sha256=43e6d27a9df082c04f0020999ce4dcf6742ecc5775d102ef2bfe9df041417572
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
-  rack (3.1.8) sha256=d3fbcbca43dc2b43c9c6d7dfbac01667ae58643c42cea10013d0da970218a1b1
+  rack (3.1.9) sha256=3d0a390444dcc753ced32978159463f92ac920ae28d7058b6fd633abb9dd349d
   rack-attack (6.7.0) sha256=3ca47e8f66cd33b2c96af53ea4754525cd928ed3fa8da10ee6dad0277791d77c
   rack-session (2.1.0) sha256=437c3916535b58ef71c816ce4a2dee0a01c8a52ae6077dc2b6cd19085760a290
   rack-test (2.2.0) sha256=005a36692c306ac0b4a9350355ee080fd09ddef1148a5f8b2ac636c720f5c463

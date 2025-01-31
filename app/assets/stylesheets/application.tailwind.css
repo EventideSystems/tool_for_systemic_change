@@ -40,9 +40,9 @@ body {
 
 .status-actual { @apply bg-sky-600; }
 .status-planned { @apply bg-teal-500; }
-.status-more_information { @apply bg-yellow-400; }
+.status-more-information { @apply bg-yellow-400; }
 .status-suggestion { @apply bg-indigo-400; }
-.status-no-comment { @apply bg-gray-300 dark:bg-gray-800 print:bg-gray-300 print:dark:bg-gray-300; }
+.status-no-comment { @apply bg-zinc-200 dark:bg-gray-800 print:bg-gray-300 print:dark:bg-gray-300; }
 .status-highlight { @apply bg-orange-300 dark:bg-orange-400 print:bg-orange-300 print:dark:bg-orange-300; }
 .icon-highlight { @apply text-orange-300 dark:text-orange-400; }
 

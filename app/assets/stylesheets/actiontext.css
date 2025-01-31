@@ -27,7 +27,7 @@ trix-toolbar .trix-button-group {
   border-bottom-color: #888;
   border-radius: 3px; }
   trix-toolbar .trix-button-group:not(:first-child) {
-    margin-left: 1.5vw; }
+    margin-left: 1.2vw; }
     @media (max-width: 768px) {
       trix-toolbar .trix-button-group:not(:first-child) {
         margin-left: 0; } }
@@ -51,7 +51,9 @@ trix-toolbar .trix-button {
   border: none;
   border-bottom: 1px solid #ddd;
   border-radius: 0;
-  background: transparent; }
+  /* background: transparent;  */
+  background: #fff !important;
+}
   trix-toolbar .trix-button:not(:first-child) {
     border-left: 1px solid #ccc; }
   trix-toolbar .trix-button.trix-active {
@@ -274,7 +276,9 @@ trix-editor .trix-button {
   outline: none;
   border: none;
   border-radius: 0;
-  background: transparent; }
+  /* background: transparent;  */
+  background: #fff !important;
+}
   trix-editor .trix-button:not(:first-child) {
     border-left: 1px solid #ccc; }
   trix-editor .trix-button.trix-active {
@@ -438,3 +442,5 @@ trix-editor .attachment__metadata {
   padding: 0 !important;
   max-width: 100% !important;
 }
+
+.trix-button-group--file-tools { display: none !important; }

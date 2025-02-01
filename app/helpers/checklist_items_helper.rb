@@ -70,6 +70,11 @@ module ChecklistItemsHelper
     content_tag(:div, '', options)
   end
 
+  def checklist_list_item_status_color(status)
+    CHECKLIST_LIST_ITEM_COLOR_CLASSES[status.to_sym].presence ||
+      CHECKLIST_LIST_ITEM_COLOR_CLASSES[:other]
+  end
+
   def checklist_list_item_grid_element_class(checklist_item_data:, grid_mode:)
     status = checklist_item_data[:status].dasherize
 

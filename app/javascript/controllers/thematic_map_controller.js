@@ -83,19 +83,22 @@ export default class extends Controller {
       .id(function (link) { return link.id })
       .strength(this.calcLinkStrength(data.links))
 
-    var dragDrop = d3.drag().on('start', function (node) {
+    var dragDrop = d3.drag()
+      .on('start', function (event, node) {
         node.fx = node.x
         node.fy = node.y
-      }).on('drag', function (event, node) {
-        simulation.alphaTarget(0.7).restart()
+      })
+      .on('drag', function (event, node) {
+        simulation.alphaTarget(0.1).restart()
         node.fx = event.x
         node.fy = event.y
-      }).on('end', function (event, node) {
+      })
+      .on('end', function (event, node) {
         if (!event.active) {
           simulation.alphaTarget(0)
         }
-        node.fx = null
-        node.fy = null
+        node.fx = event.x
+        node.fy = event.y
       })
 
     var simulation = d3

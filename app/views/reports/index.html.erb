@@ -1,4 +1,4 @@
-<div class="flex flex-wrap justify-left space-x-4">
+<div class="flex flex-wrap justify-start">
   <%=
     render(
       'form',
@@ -33,7 +33,7 @@
   %>
     <%= render partial: 'scorecard_selector', locals: { f: f } %>
     <div class="flex space-x-4">
-      <%= custom_date_field_tag :date %>
+      <%= custom_date_field_tag :date, nil, title: 'Filter by date' %>
       <%= custom_select_tag :status, options_for_select(options_for_comment_statuses), include_blank: false  %>
     </div>
   <% end %>
@@ -49,8 +49,8 @@
     %>
       <%= render partial: 'scorecard_selector', locals: { f: f } %>
       <div class="flex space-x-4">
-        <%= custom_date_field_tag :date_from, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" %>
-        <%= custom_date_field_tag :date_to, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" %>
+        <%= custom_date_field_tag :date_from, nil, title: 'Filter by start date' %>
+        <%= custom_date_field_tag :date_to, nil, title: 'Filter by end date' %>
       </div>
     <% end %>
   <% end %>

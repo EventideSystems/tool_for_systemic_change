@@ -194,13 +194,15 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   # TODO: Add 'dark:[color-scheme:dark]' to the end of the class string to support dark mode.
   def date_field(method, options = {})
-    wrap_field(method) { super(method, merge_options(method:, options:)) }
+    # wrap_field(method) { super(method, merge_options(method:, options:)) }
 
     # TODO: Sketch of possible future implementation
-    # @template.content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do
-    #   @template.concat(super(method, merge_options(method:, options:)))
-    #   @template.concat(build_clear_button('date-select'))
-    # end
+    merge_options = merge_options(method:, options:, default_class: DATE_FIELD_CLASS)
+
+    @template.content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do
+      @template.concat(super(method, merge_options(method:, options:)))
+      @template.concat(build_clear_button('date-select'))
+    end
   end
 
   def email_field(method, options = {})

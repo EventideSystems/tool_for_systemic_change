@@ -15,8 +15,7 @@ module CustomFormTagHelper
   end
 
   def custom_date_field_tag(name, value = nil, options = {})
-    default_class = "#{TEXT_FIELD_CLASS} mt-2 dark:[color-scheme:dark]"
-    merged_options = merge_options(options: options, default_class: default_class)
+    merged_options = merge_options(options: options, default_class: DATE_FIELD_CLASS)
     merged_options[:data] = (merged_options[:data] || {}).merge({ date_select_target: 'date' })
 
     content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do

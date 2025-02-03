@@ -156,7 +156,7 @@ GEM
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
     fast_jsonparser (0.6.0)
-    ffaker (2.23.0)
+    ffaker (2.24.0)
     ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-arm-linux-gnu)
     ffi (1.17.1-arm64-darwin)
@@ -559,7 +559,7 @@ CHECKSUMS
   faraday (2.12.2) sha256=157339c25c7b8bcb739f5cf1207cb0cefe8fa1c65027266bcbc34c90c84b9ad6
   faraday-net_http (3.4.0) sha256=a1f1e4cd6a2cf21599c8221595e27582d9936819977bbd4089a601f24c64e54a
   fast_jsonparser (0.6.0) sha256=8f6fb292a9627431f5174eab2dd55f82682c020f2bb1a40609a1cf37e41d3ebd
-  ffaker (2.23.0) sha256=9d2dfb5cc284a92c8571bddcbe0c573127a2f3238f4b0aa56e08ccf3e4858498
+  ffaker (2.24.0) sha256=43e3f8c12d602fbc70398be8bd1ac841a031eabdc12af01507e76a8d675a5d52
   ffi (1.17.1-aarch64-linux-gnu) sha256=c5d22cb545a3a691d46060f1343c461d1a8d38c3fd71b96b4cbbe6906bf1fd38
   ffi (1.17.1-arm-linux-gnu) sha256=fe14f5ece94082f3b0e651a09008113281f2764e7ea95f522b64e2fe32e11504
   ffi (1.17.1-arm64-darwin) sha256=a8e04f79d375742c54ee7f9fff4b4022b87200a4ec0eb082128d3b6559e67b4d

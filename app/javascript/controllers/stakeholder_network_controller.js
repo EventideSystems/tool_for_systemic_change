@@ -104,7 +104,16 @@ export default class extends Controller {
 
     const svg = d3.create("svg")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
+      .on('click', function(event) {
+        if (event.target.tagName === 'svg') {
+
+          const neighbors = []
+          nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+          textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
+          linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+        }
+      });
 
     var linkElements = svg.append("g")
       .attr("class", "links stroke-zinc-400 dark:stroke-zinc-400")
@@ -294,6 +303,18 @@ export default class extends Controller {
       return 'texts stroke-zinc-400 dark:stroke-zinc-400'
     }
   }
+
+  // calcForceStrength(nodes, links) {
+  //   const baseStrength = -40; // Base repulsive force
+  //   const nodeFactor = 10; // Adjust this factor as needed
+  //   return baseStrength - (nodes.length * nodeFactor);
+  // }
+  
+  // calcLinkStrength(links) {
+  //   const baseStrength = 0.3; // Base link strength
+  //   const linkFactor = 0.00001; // Adjust this factor as needed
+  //   return baseStrength + (links.length * linkFactor);
+  // }
 
   calcForceStrength(nodes, links) { 
     return -40 

@@ -1,7 +1,0 @@
-<%- if @scorecard.share_ecosystem_map? || @scorecard.share_thematic_network_map? %>
-  <%= render partial: 'show_tabbed' %>
-<%- else %>
-  <%= render partial: 'scorecard_grid' %>
-<%- end -%>
-
-<%= render 'layouts/modal' %>

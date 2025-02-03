@@ -16,7 +16,11 @@
       </div>
 
       <div class="flex items-center gap-4 ml-auto">
-        <%= link_to "Delete", polymorphic_path([:labels, label]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"},  class: "text-sm text-red-500 hover:underline" %>
+        <% if label.is_a?(StakeholderType) && label.organisations.present? %>
+          <span class="text-black dark:text-gray-500 whitespace-nowrap">In Use</span>
+        <% else %>
+          <%= link_to "Delete", polymorphic_path([:labels, label]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"},  class: "text-sm text-red-500 hover:underline" %>
+        <% end %>
         <%= link_to_primary "Edit", edit_polymorphic_path([:labels, label]) %>
       </div>
     </div>

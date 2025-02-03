@@ -3,7 +3,7 @@
     <%= render 'form_header', record: initiative %>
     <%= render 'form_body' do %>
 
-      <%= render 'section' do %>
+      <%= render 'section', first_section: true do %>
         <%= render 'section_header', title: 'General Settings', subtitle: 'Name and description.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">

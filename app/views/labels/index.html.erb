@@ -6,7 +6,7 @@
         <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: "Search #{label_klass.name.titleize.downcase.pluralize}..." } %>
         <div>
           <%=
-            link_to_primary("Create #{label_klass.name.titleize.downcase}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
+            link_to_primary("Create #{label_klass.name.titleize}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
           %>
         </div>
       </div>

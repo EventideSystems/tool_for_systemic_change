@@ -2,7 +2,7 @@
   <%= form_for(organisation, html: { role: 'form' }) do |form| %>
     <%= render 'form_header', record: organisation %>
     <%= render 'form_body' do %>
-      <%= render 'section' do %>
+      <%= render 'section', first_section: true do %>
         <%= render 'section_header', title: 'Overview', subtitle: 'General settings this stakeholder.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">

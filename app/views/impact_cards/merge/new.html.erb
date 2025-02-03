@@ -3,7 +3,7 @@
     <%= render 'form_header', title: "Merge another impact card into #{@target.name}" %>
     <%= hidden_field_tag :target_id, @target.id %>
     <%= render 'form_body' do %>
-      <%= render 'section' do %>
+      <%= render 'section', first_section: true do %>
         <%= render 'section_header', title: 'This Impact Card', subtitle: 'The card you want to merge the other card into. This card will remain after the merge.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">

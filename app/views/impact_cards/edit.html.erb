@@ -4,7 +4,7 @@
   <%= form_with model: @scorecard, url: impact_card_path(@scorecard), scope: :impact_card, class: 'mx-auto max-w-4xl' do |form| %>
     <%= render 'form_header', record: @scorecard %>
     <%= render 'form_body' do %>
-      <%= render 'section' do %>
+      <%= render 'section', first_section: true do %>
         <%= render 'section_header', title: 'Overview', subtitle: 'General settings this impact card.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
@@ -23,7 +23,6 @@
           </div>
         <% end %>
       <% end %>
-
 
       <%= render 'form_buttons', form:, cancel_path: @scorecard.persisted? ? impact_card_path(@scorecard) : impact_cards_path %>
     <% end %>

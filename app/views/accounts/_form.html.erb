@@ -2,7 +2,7 @@
   <%= form_for(account, html: { role: 'form' }) do |form| %>
     <%= render 'form_header', record: account %>
     <%= render 'form_body' do %>
-      <%= render 'section' do %>
+      <%= render 'section', first_section: true do %>
         <%= render 'section_header', title: 'Overview', subtitle: 'General settings this account.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">

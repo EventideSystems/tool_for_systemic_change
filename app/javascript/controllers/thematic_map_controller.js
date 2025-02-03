@@ -111,6 +111,15 @@ export default class extends Controller {
     const svg = d3.create("svg")
       .attr("width", width)
       .attr("height", height)
+      .on('click', function(event) {
+        if (event.target.tagName === 'svg') {
+
+          const neighbors = []
+          nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+          textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
+          linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+        }
+      });
 
     var linkElements = svg.append("g")
       .attr("class", "links stroke-zinc-400 dark:stroke-zinc-400")

@@ -296,7 +296,7 @@ export default class extends Controller {
   }
 
   calcForceStrength(nodes, links) { 
-    return -80 
+    return -40 
   }
 
   calcLinkStrength(links) {

@@ -4,8 +4,18 @@ import * as d3 from "d3"
 export default class extends Controller {
 
   static targets = [
-    "map", "graph", "stakeholderTypes", "filterForm", "toggleLabelsButton", "dialog", "dialogTitle", "dialogTitleColor", "dialogContent",
-    "selectedStakeholderTypesForPrint", "selectedStakeholderTypesForPrintContainer"
+    "map", 
+    "graph", 
+    "stakeholderTypes", 
+    "filterForm", 
+    "toggleLabelsButton", 
+    "dialog", 
+    "dialogTitle", 
+    "dialogTitleColor", 
+    "dialogContent",
+    "closeDialog",
+    "selectedStakeholderTypesForPrint", 
+    "selectedStakeholderTypesForPrintContainer"
   ]
 
   connect() {
@@ -17,6 +27,7 @@ export default class extends Controller {
 
     this.stakeholderTypesTarget.addEventListener("change", this.updateStakeholderTypes.bind(this))
     this.toggleLabelsButtonTarget.addEventListener("click", this.toggleLabels.bind(this))
+    this.closeDialogTarget.addEventListener("click", () => this.dialogTarget.close())
 
     this.updateLabelsVisibility = this.updateLabelsVisibility.bind(this)
     this.updateStakeholderTypes = this.updateStakeholderTypes.bind(this)

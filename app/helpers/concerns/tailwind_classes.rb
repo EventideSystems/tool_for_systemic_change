@@ -92,7 +92,7 @@ module TailwindClasses
 
   TEXT_FIELD_CLASS = COMMON_FIELD_CLASS
   TEXT_AREA_CLASS = COMMON_FIELD_CLASS
-  DATE_FIELD_CLASS = COMMON_FIELD_CLASS + ' mt-2 dark:[color-scheme:dark]'
+  DATE_FIELD_CLASS = "#{COMMON_FIELD_CLASS} mt-2 dark:[color-scheme:dark]".freeze
 
   ERROR_BORDER_CLASS = 'border-2 border-red-500'
   ERROR_MESSAGE_CLASS = 'h-2 mt-2 mb-4 text-xs text-red-500 dark:text-red-500'

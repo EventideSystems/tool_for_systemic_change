@@ -1,0 +1,40 @@
+<turbo-stream action="update" target="new_subsystem_tag">
+  <template>
+    <%= 
+      link_to(
+        'Add Subsystem Tag', 
+        '#', 
+        id: 'add-subsystem-tag', 
+        class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', 
+        data: { action: 'initiatives-subsystem-tags#addTag' } 
+      )
+    %>
+
+    <%= 
+      link_to(
+        'Create Subsystem Tag', 
+        new_initiative_subsystem_tag_path(initiative_id: params[:id] || params[:initiative_id]), 
+        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+        data: { turbo_frame: 'new_subsystem_tag' }
+      )
+    %>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="append" target="subsystem_tags">
+  <template>
+    <div class="flex items-center space-x-4 mt-2">
+      <%# TODO: Replace this index 'hack' with an index value in sequence with tags on the page %>
+      <% index = @subsystem_tag.id + rand(100000) %>
+      <%=
+        custom_select_tag(
+          "initiative[initiatives_subsystem_tags_attributes][#{index}][subsystem_tag_id]",
+          options_from_collection_for_select(policy_scope(SubsystemTag), :id, :name, @subsystem_tag.id),
+          include_blank: 'Select a subsystem tag',
+        )
+      %>
+      <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
+    </div>
+  </template>
+</turbo-stream>
+

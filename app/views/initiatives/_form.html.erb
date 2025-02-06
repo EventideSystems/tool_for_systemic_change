@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_with model: initiative, class: 'mx-auto max-w-6xl', data: { turbo: false } do |form| %>
+  <%= form_with model: initiative, class: 'mx-auto max-w-6xl' do |form| %>
     <%= render 'form_header', record: initiative %>
     <%= render 'form_body' do %>
 
@@ -18,7 +18,6 @@
                 <%= select_impact_card_tag(:impact_card_id, account: current_account, autofocus: true, required: true, prompt: 'Select an impact card') %>
               </div>
             <% end %>
-
           </div>
 
           <div class="sm:col-span-4">
@@ -47,16 +46,18 @@
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-subsystem-tags" data-controller="initiatives-subsystem-tags">
           <%= render 'subsystem_tag_fields' %>
           <div class="sm:col-span-6" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
-            <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
-              <div class="flex items-center space-x-4 mt-3">
-                <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
-                <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
-              </div>
-            <% end %>
-          </div>
+            <%= turbo_frame_tag :subsystem_tags do %>
+              <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
+                <div class="flex items-center space-x-4 mt-3">
+                  <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
+                  <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
 
           <div class="sm:col-span-6 mt-2">
-            <%= link_to 'Add Subsystem Tag', '#', id: 'add-subsystem-tag', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-subsystem-tags#addTag' } %>
+            <%= render 'initiatives/subsystem_tags/index', initiative: %>
           </div>
         </div>
       </div>

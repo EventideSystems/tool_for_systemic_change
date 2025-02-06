@@ -3,6 +3,8 @@
 # Helper for labels, specifically for calculating luminance of a hex color. Probably should be renamed to ColorHelper.
 module LabelsHelper
   def hex_to_rgb(hex)
+    return [0, 0, 0] if hex.blank?
+
     hex = hex.gsub('#', '')
     r = hex[0..1].to_i(16)
     g = hex[2..3].to_i(16)

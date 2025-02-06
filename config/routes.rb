@@ -4,15 +4,13 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  resources :checklist_items, only: %i[show edit update]
+
   resources :impact_cards do
     resources :initiatives, only: %i[show new create], controller: 'impact_cards/initiatives'
     resources :stakeholder_network, only: [:index], controller: 'impact_cards/stakeholder_network'
     resources :thematic_map, only: [:index], controller: 'impact_cards/thematic_map'
     resource :merge, only: %i[new create], controller: 'impact_cards/merge'
-  end
-
-  namespace :initiatives do
-    resources :imports, only: %i[new create update]
   end
 
   namespace :labels do
@@ -21,8 +19,6 @@ Rails.application.routes.draw do
     resources :subsystem_tags
     resources :wicked_problems
   end
-
-  resources :checklist_items, only: %i[show edit update]
 
   namespace :organisations do
     resources :imports, only: %i[new create update]
@@ -56,6 +52,9 @@ Rails.application.routes.draw do
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
+    resources :imports, only: %i[new create update]
+    resources :subsystem_tags, controller: 'initiatives/subsystem_tags', only: %i[index new create]
+
     resources :checklist_items do
       member do
         post 'update_comment'
@@ -65,8 +64,8 @@ Rails.application.routes.draw do
     end
     get 'linked'
   end
-  resources :initiatives_organisations
-  resources :initiatives_subsystem_tags
+  # resources :initiatives_organisations
+  # resources :initiatives_subsystem_tags
   resources :organisations
 
   resources :shared,

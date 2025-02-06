@@ -197,7 +197,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     # wrap_field(method) { super(method, merge_options(method:, options:)) }
 
     # TODO: Sketch of possible future implementation
-    merge_options = merge_options(method:, options:, default_class: DATE_FIELD_CLASS)
+    options = merge_options(method:, options:, default_class: DATE_FIELD_CLASS)
 
     @template.content_tag(:div, class: 'flex', data: { controller: 'date-select' }) do
       @template.concat(super(method, merge_options(method:, options:)))

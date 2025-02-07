@@ -48,13 +48,13 @@
           <div class="sm:col-span-6" data-initiatives-subsystem-tags-target="initiativesSubsystemTags">
             <%= turbo_frame_tag :subsystem_tags do %>
               <%= form.fields_for :initiatives_subsystem_tags do |initiatives_subsystem_tags_form| %>
-                <div class="flex items-center space-x-4 mt-3">
+                <div class="flex items-center space-x-4 mt-3 subsystem-tag">
                   <%= initiatives_subsystem_tags_form.collection_select :subsystem_tag_id, policy_scope(SubsystemTag), :id, :name, { include_blank: 'Select a subsystem tag' } %>
                   <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-subsystem-tags#removeTag' } %>
                 </div>
               <% end %>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
 
           <div class="sm:col-span-6 mt-2">
             <%= render 'initiatives/subsystem_tags/index', initiative: %>

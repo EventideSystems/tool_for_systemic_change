@@ -4,12 +4,14 @@ export default class extends Controller {
   static targets = ["initiativesSubsystemTags"]
 
   connect() {
-    this.index = this.initiativesSubsystemTagsTarget.children.length
+    debugger
+    this.index = this.initiativesSubsystemTagsTarget.querySelectorAll("div.subsystem-tag").length
   }
 
   addTag(event) {
     event.preventDefault()
     const template = document.getElementById("subsystem_tag_template")
+    const tags = document.getElementById("subsystem_tags")
     const clone = template.content.cloneNode(true)
 
     clone.querySelectorAll("select").forEach((input) => {
@@ -17,7 +19,7 @@ export default class extends Controller {
       input.id = input.id.replace(/__INDEX__/g, this.index)
     })
 
-    this.initiativesSubsystemTagsTarget.appendChild(clone)
+    tags.appendChild(clone)
 
     this.index++
   }

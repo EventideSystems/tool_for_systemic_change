@@ -4,11 +4,12 @@ import { Controller } from "@hotwired/stimulus"
 // to remove the duplication
 export default class extends Controller {
   static targets = ["initiativesOrganisations"]
-
+  
   connect() {
     this.index = this.initiativesOrganisationsTarget.children.length
   }
 
+  // TODO: Rename to 'addStakeholder' and 'removeStakeholder'
   addTag(event) {
     event.preventDefault()
     const template = document.getElementById("organisation_template")

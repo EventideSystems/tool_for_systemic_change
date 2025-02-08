@@ -183,16 +183,6 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def initiatives_organisations_params
-    params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
-      {
-        initiatives_organisations_attributes: %i[
-          organisation_id
-        ]
-      }
-    )
-  end
-
   def merge_cards(impact_card, other_impact_card, deep: false)
     if deep
       ImpactCards::DeepMerge.call(impact_card:, other_impact_card:)

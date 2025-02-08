@@ -1,5 +1,5 @@
 <%- if label.present? %>
-  <div class="inline-flex rounded-lg items-center justify-center <%= dom_id(label) %>" title="<%= label.class.name.titleize %>: <%= label.name %>">
-    <p class="py-1 px-2 text-xs"><%= label.name %></p>
+  <div class="inline-flex rounded-lg items-center justify-center m-2 <%= dom_id(label) %>" title="<%= label.class.name.titleize %>: <%= label.name %>">
+    <p class="py-1 px-2 text-xs whitespace-nowrap"><%= label.name %></p>
   </div>
 <%- end %>

@@ -28,6 +28,16 @@ module InitiativeChildRecords
     )
   end
 
+  def initiatives_subsystem_tags_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_subsystem_tags_attributes: %i[
+          subsystem_tag_id
+        ]
+      }
+    )
+  end
+
   private
 
   def deletable_and_creatable_ids(attributes, id_key, current_ids)

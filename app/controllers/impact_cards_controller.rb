@@ -193,16 +193,6 @@ class ImpactCardsController < ApplicationController
     )
   end
 
-  def initiatives_subsystem_tags_params
-    params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
-      {
-        initiatives_subsystem_tags_attributes: %i[
-          subsystem_tag_id
-        ]
-      }
-    )
-  end
-
   def merge_cards(impact_card, other_impact_card, deep: false)
     if deep
       ImpactCards::DeepMerge.call(impact_card:, other_impact_card:)

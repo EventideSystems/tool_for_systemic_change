@@ -1,4 +1,4 @@
-<%= turbo_frame_tag :new_subsystem_tag do %>
+<%= turbo_frame_tag :new_initiatives_subsystem_tag do %>
   <%= 
     link_to(
       'Add Subsystem Tag', 
@@ -12,9 +12,9 @@
   <%= 
     link_to(
       'Create Subsystem Tag', 
-      new_initiative_subsystem_tag_path(initiative_id: params[:id] || params[:initiative_id]), 
+      new_initiatives_subsystem_tag_path, 
       class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-      data: { turbo_frame: 'new_subsystem_tag' }
+      data: { turbo_frame: 'new_initiatives_subsystem_tag' }
     )
   %>
 <% end %>

@@ -53,8 +53,6 @@ Rails.application.routes.draw do
   resources :focus_areas
   resources :initiatives do
     resources :imports, only: %i[new create update]
-    resources :subsystem_tags, controller: 'initiatives/subsystem_tags', only: %i[index new create]
-
     resources :checklist_items do
       member do
         post 'update_comment'
@@ -64,6 +62,9 @@ Rails.application.routes.draw do
     end
     get 'linked'
   end
+
+  resources :initiatives_subsystem_tags, only: %i[index new create]
+  
   # resources :initiatives_organisations
   # resources :initiatives_subsystem_tags
   resources :organisations

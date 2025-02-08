@@ -4,7 +4,6 @@ export default class extends Controller {
   static targets = ["initiativesSubsystemTags"]
 
   connect() {
-    debugger
     this.index = this.initiativesSubsystemTagsTarget.querySelectorAll("div.subsystem-tag").length
   }
 

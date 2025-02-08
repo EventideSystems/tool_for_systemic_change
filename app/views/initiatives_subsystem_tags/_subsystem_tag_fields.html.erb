@@ -1,8 +1,8 @@
 <template id="subsystem_tag_template">
-  <div class="flex items-center space-x-4 mt-2">
+  <div class="flex items-center space-x-4 mt-2 subsystem-tag">
     <%=
       custom_select_tag(
-        'impact_card[initiatives_attributes][0][initiatives_subsystem_tags_attributes][__INDEX__][subsystem_tag_id]',
+        'initiative[initiatives_subsystem_tags_attributes][__INDEX__][subsystem_tag_id]',
         options_from_collection_for_select(policy_scope(SubsystemTag), :id, :name),
         include_blank: 'Select a subsystem tag'
       )

@@ -90,6 +90,8 @@ class ImpactCardsController < ApplicationController
 
     if @impact_card.save
       update_stakeholders!(@impact_card.initiatives.first, initiatives_organisations_params)
+      # SMELL: The need to handle two sets of subsystem tags is a smell. We should only have one set of subsystem tags in the params.
+      update_subsystem_tags!(@impact_card.initiatives.first, impact_card_initiatives_subsystem_tags_params)
       update_subsystem_tags!(@impact_card.initiatives.first, initiatives_subsystem_tags_params)
 
       if params[:impact_card_source_id].present?
@@ -194,6 +196,16 @@ class ImpactCardsController < ApplicationController
   end
 
   def initiatives_subsystem_tags_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_subsystem_tags_attributes: %i[
+          subsystem_tag_id
+        ]
+      }
+    )
+  end
+
+  def impact_card_initiatives_subsystem_tags_params
     params.fetch(:impact_card, {}).fetch(:initiatives_attributes, {}).fetch('0', {}).permit(
       {
         initiatives_subsystem_tags_attributes: %i[

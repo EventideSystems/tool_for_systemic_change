@@ -107,8 +107,8 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
       execute_call
       new_impact_card = Scorecard.last
       expect(new_impact_card.subsystem_tags.count).to eq(impact_card.subsystem_tags.count)
-      new_impact_card.subsystem_tags.each do |new_subsystem_tag|
-        expect(impact_card.subsystem_tags.pluck(:name)).to include(new_subsystem_tag.name)
+      new_impact_card.subsystem_tags.each do |new_initiatives_subsystem_tag|
+        expect(impact_card.subsystem_tags.pluck(:name)).to include(new_initiatives_subsystem_tag.name)
       end
     end
 

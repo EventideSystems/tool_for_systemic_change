@@ -231,16 +231,6 @@ class InitiativesController < ApplicationController
     )
   end
 
-  def initiatives_subsystem_tags_params
-    params.fetch(:initiative, {}).permit(
-      {
-        initiatives_subsystem_tags_attributes: %i[
-          subsystem_tag_id
-        ]
-      }
-    )
-  end
-
   def initiative_params # rubocop:disable Metrics/MethodLength
     params.fetch(:initiative, {}).permit(
       :name,

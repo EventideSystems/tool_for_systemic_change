@@ -171,7 +171,7 @@
             <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
             <p class="mt-1 text-sm/6 text-gray-600 text-right">Identify relevant subsystem tags for this initiative.</p>
           </div>
-          <%= render 'initiatives_subsystem_tags/controls', form: initiatives_form %>
+          <%= render 'initiatives_subsystem_tags/controls', initiative: @impact_card.initiatives.first %>
         </div>
       <% end %>
     <% end %>

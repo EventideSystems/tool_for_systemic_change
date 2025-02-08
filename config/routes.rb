@@ -64,9 +64,8 @@ Rails.application.routes.draw do
   end
 
   resources :initiatives_subsystem_tags, only: %i[index new create]
+  resources :initiatives_organisations, only: %i[index new create]
   
-  # resources :initiatives_organisations
-  # resources :initiatives_subsystem_tags
   resources :organisations
 
   resources :shared,

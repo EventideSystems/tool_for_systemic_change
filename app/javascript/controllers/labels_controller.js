@@ -3,10 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["form", "previewName", "previewColor", "nameField", "colorField", "submitButton"]
 
-  connect() {
-    // update preview name and color when the form is displayed
-  }
-
   checkFields(element) {
     const nameField = element.currentTarget.closest("form").querySelector("[data-labels-target='nameField']")
     const colorField = element.currentTarget.closest("form").querySelector("[data-labels-target='colorField']")
@@ -46,7 +42,6 @@ export default class extends Controller {
   }
 
   updatePreviewColor(element) {
-
     const value = element.currentTarget.value
     const previewColorElement = element.currentTarget.closest("form").querySelector("[data-labels-target='previewColor']")
 

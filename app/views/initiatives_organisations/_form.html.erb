@@ -1,0 +1,61 @@
+<div data-controller="initiatives-organisations-form">
+  <%= form_with(model: @organisation, url: initiatives_organisations_path, html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |form| %>
+    <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">New Stakeholder</h1>
+
+    <div class="flex space-x-2">
+      <div class="flex-1">
+        <%= form.label :name, class: 'block text-xs font-medium text-gray-700' %>
+        <%=
+          form.text_field(
+            :name,
+            placeholder: 'Stakeholder name',
+            autofocus: true,
+            data: { 
+              initiatives_organisations_form_target: 'nameField', 
+              action: 'input->initiatives-organisations-form#checkFields' 
+            },
+            class: 'block w-full px-2 py-2',
+        
+          )
+        %>
+      </div>
+
+      <div class="flex-1">
+        <%= form.label :stakeholder_type_id, class: 'block text-xs font-medium text-gray-700' %>
+        <%=
+          form.collection_select(
+            :stakeholder_type_id, 
+            current_account.stakeholder_types.order(:name), 
+            :id, 
+            :name        
+          )
+        %>
+      </div>
+    </div>
+    
+    <div class="flex space-x-2 mt-4 justify-end">
+      <%- save_disabled = false # (label.name.blank? || label.color.blank?) %>
+      <%= 
+        link_to(
+          "Cancel", 
+          initiatives_organisations_path, 
+          class: LinksHelper::SECONDARY_CLASS,
+          data: { turbo_stream: true } 
+        )
+      %>
+      <%=
+          form.submit(
+          "Save",
+          data: { labels_target: 'submitButton' },
+          class: "#{LinksHelper::PRIMARY_CLASS}#{ ' opacity-50 cursor-not-allowed' if save_disabled }",
+          data: { initiatives_organisations_form_target: 'submitButton' }, 
+          disabled: save_disabled
+          )
+        %>
+    </div>
+
+  <% end %>
+</div>
+
+
+

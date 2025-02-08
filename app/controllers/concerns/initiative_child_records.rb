@@ -38,6 +38,16 @@ module InitiativeChildRecords
     )
   end
 
+  def initiatives_organisations_params
+    params.fetch(:initiative, {}).permit(
+      {
+        initiatives_organisations_attributes: %i[
+          organisation_id
+        ]
+      }
+    )
+  end
+
   private
 
   def deletable_and_creatable_ids(attributes, id_key, current_ids)

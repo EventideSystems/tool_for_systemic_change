@@ -1,0 +1,23 @@
+<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-organisations" data-controller="initiatives-organisations">
+  <%= render 'initiatives_organisations/organisation_fields' %>
+  <div class="sm:col-span-6" data-initiatives-organisations-target="initiativesOrganisations">
+  <%= turbo_frame_tag :organisations do %>
+    <% initiative.initiatives_organisations.each_with_index do |initiatives_organisation, index| %>
+      <div class="flex items-center space-x-4 mt-2 organisation">
+        <%=
+          custom_select_tag(
+            "initiative[initiatives_organisations_attributes][#{index}][organisation_id]",
+            options_from_collection_for_select(policy_scope(Organisation), :id, :name, initiatives_organisation.organisation_id),
+            include_blank: 'Select a stakeholder'
+          )
+        %>
+        <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-organisations#removeTag' } %>
+      </div>
+    <% end %>
+  <% end %>
+  </div>
+
+  <div class="sm:col-span-6 mt-2">
+    <%= render 'initiatives_organisations/index' %>
+  </div>
+</div>

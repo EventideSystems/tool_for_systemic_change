@@ -111,21 +111,7 @@
           <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
           <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Identify who might be interested in this initiative.</p>
         </div>
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2" id="initiatives-organisations" data-controller="initiatives-organisations">
-          <%= render 'organisation_fields' %>
-          <div class="sm:col-span-6" data-initiatives-organisations-target="initiativesOrganisations">
-            <%= form.fields_for :initiatives_organisations do |initiatives_organisations_form| %>
-              <div class="flex items-center space-x-4 mt-3">
-                <%= initiatives_organisations_form.collection_select :organisation_id, policy_scope(Organisation), :id, :name, { include_blank: 'Select a stakeholder' } %>
-                <%= link_to 'Remove', '#', class: 'text-red-500', data: { action: 'initiatives-organisations#removeTag' } %>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="sm:col-span-6 mt-2">
-            <%= link_to 'Add Stakeholder', '#', id: 'add-organisation', class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', data: { action: 'initiatives-organisations#addTag' } %>
-          </div>
-        </div>
+        <%= render 'initiatives_organisations/controls', initiative: %>
       </div>
 
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">

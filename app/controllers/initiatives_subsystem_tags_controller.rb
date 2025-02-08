@@ -14,15 +14,18 @@ class InitiativesSubsystemTagsController < ApplicationController
     end
   end
 
-  def new
+  def new # rubocop:disable Metrics/MethodLength
     @subsystem_tag = current_account.subsystem_tags.new(color: random_hex_color)
     authorize @subsystem_tag
 
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('new_initiatives_subsystem_tag', partial: '/initiatives_subsystem_tags/form',
-                                                                                   locals: { subsystem_tag: @subsystem_tag })
+        render turbo_stream: turbo_stream.replace(
+          'new_initiatives_subsystem_tag',
+          partial: '/initiatives_subsystem_tags/form',
+          locals: { subsystem_tag: @subsystem_tag }
+        )
       end
     end
   end
@@ -41,8 +44,11 @@ class InitiativesSubsystemTagsController < ApplicationController
       respond_to do |format|
         format.html
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('new_initiatives_subsystem_tag', partial: '/initiatives/subsystem_tags/form',
-                                                                                     locals: { subsystem_tag: @subsystem_tag })
+          render turbo_stream: turbo_stream.replace(
+            'new_initiatives_subsystem_tag',
+            partial: '/initiatives/subsystem_tags/form',
+            locals: { subsystem_tag: @subsystem_tag }
+          )
         end
       end
     end

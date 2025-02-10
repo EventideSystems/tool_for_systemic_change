@@ -31,7 +31,7 @@
               <div class="group flex justify-between gap-x-3 rounded-md -mx-2 p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
                 <div class="flex items-center">
                   <%= render_icon :user_profile %>
-                  <span class="ml-2">Your Profile</span>
+                  <span class="ml-2">Settings</span>
                 </div>
                 <div class="ml-auto flex items-center">
                   <%= render_icon :menu_up %>
@@ -59,7 +59,7 @@
               <hr/>
               <%=
                 dropdown_menu_item do
-                  link_to "Settings", root_path, class: "block w-full text-sm"
+                  link_to "My Profile", user_path(current_user), class: "block w-full text-sm"
                 end
               %>
 

@@ -1,8 +1,5 @@
 <li>
-  <hr
-    role="presentation"
-    class="w-full border-t border-zinc-950/10 dark:border-white/10"
-  />
+  <%= horizontal_rule %>
   <div class="flex items-center justify-between">
     <div class="flex gap-6 py-6">
       <%= render partial: 'resource_summary', locals: { name: user.display_name, background_color: 'bg-green-700' } %>
@@ -16,7 +13,6 @@
         <%= role_in_current_account_badge(user) %>
       </div>
     </div>
-
 
     <div class="flex items-center gap-4">
       <%= render_dropdown_menu do %>

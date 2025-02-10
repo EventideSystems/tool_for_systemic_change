@@ -12,7 +12,9 @@ module TailwindClasses
     end
   end
 
-  DANGER_ZONE_BUTTON_CLASS = %w[
+  BORDER_CLASS = 'border-zinc-950/10 dark:border-white/10'
+
+  DANGER_ZONE_BUTTON_CLASS = <<~CSS.squish
     rounded-md
     border
     dark:border-gray-600
@@ -34,7 +36,7 @@ module TailwindClasses
     dark:border:hover:bg-red-500
     hover:text-white
     dark:hover:text-white
-  ].join(' ')
+  CSS
 
   CHECK_BOX_CLASS = 'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
 

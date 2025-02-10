@@ -3,6 +3,7 @@
 # General helper methods for the application
 module ApplicationHelper
   include Pagy::Frontend
+  include TailwindClasses
 
   def application_title
     return 'Obsekio' if Rails.env.production?
@@ -13,6 +14,15 @@ module ApplicationHelper
   def page_header_tag(title)
     content_tag :h1, title, class: 'text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white'
   end
+
+  def horizontal_rule(options = {})
+    options[:class] = merge_tailwind_class("w-full border-t #{BORDER_CLASS}", options[:class])
+    options[:role] = 'presentation'
+
+    content_tag(:hr, nil, options)
+  end
+
+  # <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
 
   # def turbo_id_for(obj)
   #   obj.persisted? ? obj.id : obj.hash

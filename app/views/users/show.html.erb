@@ -1,7 +1,9 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Team Member Details</h1>
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">
+        <%= @user == current_user ? 'My Profile' : 'Team Member Details' %>
+      </h1>
 
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
@@ -20,19 +22,20 @@
         </div>
         <div class="relative">
           <div class="flex justify-end items-center mb-4">
-            <%= link_to_primary 'Edit Team Member', edit_user_path(@user), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+            <% edit_title = @user == current_user ? 'Edit Profile' : 'Edit Team Member' %>
+            <%= link_to_primary edit_title, edit_user_path(@user), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
+  <%= horizontal_rule(class: 'my-10 mt-6') %>
   <%= render 'show_page_section', title: 'Settings' do %>
     <%= definition_list_element('Time zone', display_time_zone(@user.time_zone)) %>
   <% end %>
 
   <%= render 'show_page_section', title: 'Roles' do %>
     <%= definition_list_element('System role', @user.system_role.titleize) %>
-    <%= definition_list_element('Current account', role_in_current_account(@user).titleize) %>
+    <%= definition_list_element('Current account', role_in_current_account(@user).titleize) if role_in_current_account(@user).present? %>
   <% end %>
 </div>

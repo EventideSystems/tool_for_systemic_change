@@ -12,7 +12,7 @@ export default class InitiativesSubsystemTagsFormController extends LabelsContro
 
     const nameValue = nameField.value.trim()
     const colorValue = colorField.value.trim()
-    const isFormValid = nameValue !== "" && colorValue !== ""
+    var isFormValid = nameValue !== "" && colorValue !== ""
 
     if (isFormValid) {
       const subsystemTags = this.subsystemTagsValue.map(name => name.toLowerCase())

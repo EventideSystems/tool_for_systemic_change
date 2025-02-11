@@ -80,11 +80,12 @@ GEM
       rack
     ast (2.4.2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.1047.0)
-    aws-sdk-core (3.218.0)
+    aws-partitions (1.1049.0)
+    aws-sdk-core (3.218.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
+      base64
       jmespath (~> 1, >= 1.6.1)
     aws-sdk-lambda (1.146.0)
       aws-sdk-core (~> 3, >= 3.216.0)
@@ -168,8 +169,8 @@ GEM
     htmlentities (4.3.4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    image_processing (1.13.0)
-      mini_magick (>= 4.9.5, < 5)
+    image_processing (1.14.0)
+      mini_magick (>= 4.9.5, < 6)
       ruby-vips (>= 2.0.17, < 3)
     importmap-rails (2.1.0)
       actionpack (>= 6.0.0)
@@ -184,7 +185,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
-    json (2.9.1)
+    json (2.10.1)
     language_server-protocol (3.17.0.4)
     logger (1.6.5)
     loofah (2.24.0)
@@ -202,14 +203,16 @@ GEM
       yajl-ruby
     marcel (1.0.4)
     method_source (1.1.0)
-    mini_magick (4.13.2)
+    mini_magick (5.1.2)
+      benchmark
+      logger
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
     minitest (5.25.4)
     msgpack (1.8.0)
     net-http (0.6.0)
       uri
-    net-imap (0.5.5)
+    net-imap (0.5.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -303,7 +306,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    ransack (4.2.1)
+    ransack (4.3.0)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
@@ -523,8 +526,8 @@ CHECKSUMS
   appsignal (4.4.0) sha256=9ef41aec69b81df7cc1547b80f834f86df3b2de927aad08d662393f1eeea1862
   ast (2.4.2) sha256=1e280232e6a33754cde542bc5ef85520b74db2aac73ec14acef453784447cc12
   aws-eventstream (1.3.0) sha256=f1434cc03ab2248756eb02cfa45e900e59a061d7fbdc4a9fd82a5dd23d796d3f
-  aws-partitions (1.1047.0) sha256=976e74daa0f8a3425ef0b090d8908625c64fe18806b5df2608b3479ec42390ba
-  aws-sdk-core (3.218.0) sha256=3b82f6550c826a8a10937852d7e9497fbde103dca62f27cacac7bfc9e3d70e9f
+  aws-partitions (1.1049.0) sha256=1a8994af52c0c4e8e03b769b40bdc289992464b8d5cf72fbb6bf2e051337f766
+  aws-sdk-core (3.218.1) sha256=60db0286e32ff1f915a064fa0b1096f5749c29941976c257f609007c7fa4a09e
   aws-sdk-lambda (1.146.0) sha256=65389de11de4f1c73404338f1d9f49de8effa47cdd90ec8705ae83bb1299dd0d
   aws-sdk-rails (5.1.0) sha256=8cffd3b60142e12a6747c91a7a609f668276b1082fc0c10810d5da3d14b13189
   aws-sigv4 (1.11.0) sha256=50a8796991a862324442036ad7a395920572b84bb6cd29b945e5e1800e8da1db
@@ -570,13 +573,13 @@ CHECKSUMS
   globalid (1.2.1) sha256=70bf76711871f843dbba72beb8613229a49429d1866828476f9c9d6ccc327ce9
   htmlentities (4.3.4) sha256=125a73c6c9f2d1b62100b7c3c401e3624441b663762afa7fe428476435a673da
   i18n (1.14.7) sha256=ceba573f8138ff2c0915427f1fc5bdf4aa3ab8ae88c8ce255eb3ecf0a11a5d0f
-  image_processing (1.13.0) sha256=71cffe2707573b16a4800b10619dc851add8cf9e667931ae900b7cac1d9cdd65
+  image_processing (1.14.0) sha256=754cc169c9c262980889bec6bfd325ed1dafad34f85242b5a07b60af004742fb
   importmap-rails (2.1.0) sha256=9f10c67d60651a547579f448100d033df311c5d5db578301374aeb774faae741
   io-console (0.8.0) sha256=cd6a9facbc69871d69b2cb8b926fc6ea7ef06f06e505e81a64f14a470fddefa2
   irb (1.15.1) sha256=d9bca745ac4207a8b728a52b98b766ca909b86ff1a504bcde3d6f8c84faae890
   jbuilder (2.13.0) sha256=7200a38a1c0081aa81b7a9757e7a299db75bc58cf1fd45ca7919a91627d227d6
   jmespath (1.6.2) sha256=238d774a58723d6c090494c8879b5e9918c19485f7e840f2c1c7532cf84ebcb1
-  json (2.9.1) sha256=d2bdef4644052fad91c1785d48263756fe32fcac08b96a20bb15840e96550d11
+  json (2.10.1) sha256=ddc88ad91a1baf3f0038c174f253af3b086d30dc74db17ca4259bbde982f94dc
   language_server-protocol (3.17.0.4) sha256=c484626478664fd13482d8180947c50a8590484b1258b99b7aedb3b69df89669
   logger (1.6.5) sha256=c3cfe56d01656490ddd103d38b8993d73d86296adebc5f58cefc9ec03741e56b
   loofah (2.24.0) sha256=61e6a710883abb8210887f3dc868cf3ed66594c509d9ff6987621efa6651ee1e
@@ -584,13 +587,13 @@ CHECKSUMS
   mailjet (1.8.0) sha256=cda37d1a2d01a648dda267fb9a7433980f0c13c7d52bd52e9a86a6cf4fcc344a
   marcel (1.0.4) sha256=0d5649feb64b8f19f3d3468b96c680bae9746335d02194270287868a661516a4
   method_source (1.1.0) sha256=181301c9c45b731b4769bc81e8860e72f9161ad7d66dd99103c9ab84f560f5c5
-  mini_magick (4.13.2) sha256=71d6258e0e8a3d04a9a0a09784d5d857b403a198a51dd4f882510435eb95ddd9
+  mini_magick (5.1.2) sha256=2c57112a2c55d9f86b1ed7ab568b3c389a3265788ac5c1ad3e632a201b629a7e
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   mini_portile2 (2.8.8) sha256=8e47136cdac04ce81750bb6c09733b37895bf06962554e4b4056d78168d70a75
   minitest (5.25.4) sha256=9cf2cae25ac4dfc90c988ebc3b917f53c054978b673273da1bd20bcb0778f947
   msgpack (1.8.0) sha256=e64ce0212000d016809f5048b48eb3a65ffb169db22238fb4b72472fecb2d732
   net-http (0.6.0) sha256=9621b20c137898af9d890556848c93603716cab516dc2c89b01a38b894e259fb
-  net-imap (0.5.5) sha256=abe6a8932c68269804b0f0b499a0d1972098e7e6b8b61a7c508b127ebde1682a
+  net-imap (0.5.6) sha256=1ede8048ee688a14206060bf37a716d18cb6ea00855f6c9b15daee97ee51fbe5
   net-pop (0.1.2) sha256=848b4e982013c15b2f0382792268763b748cce91c9e91e36b0f27ed26420dff3
   net-protocol (0.2.2) sha256=aa73e0cba6a125369de9837b8d8ef82a61849360eba0521900e2c3713aa162a8
   net-smtp (0.5.1) sha256=ed96a0af63c524fceb4b29b0d352195c30d82dd916a42f03c62a3a70e5b70736
@@ -628,7 +631,7 @@ CHECKSUMS
   railties (8.0.1) sha256=8f653c6b1b0721b553045bd0deda1f22074b9ddc2209526e6f7285fcf607ac51
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.2.1) sha256=46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d
-  ransack (4.2.1) sha256=e0f688c6ef35abe0bad3cf5afc1b050f36a819bdd56eb454c955c63cdd1bef40
+  ransack (4.3.0) sha256=48e141814eb4af8a5cc4e9890b7a088fe818c9996c6b8c846f11104b4c12e8b1
   rdoc (6.12.0) sha256=7d6f706e070bffa5d18a448f24076cbfb34923a99c1eab842aa18e6ca69f56e0
   redis (5.3.0) sha256=6bf810c5ae889187f0c45f77db503310980310afa57cf1640d57f419ccda72b1
   redis-client (0.23.2) sha256=e33bab6682c8155cfef95e6dd296936bb9c2981a89fb578ace27a076fa2836fa

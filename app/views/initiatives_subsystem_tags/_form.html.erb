@@ -1,10 +1,13 @@
-<div data-controller="labels">
+<div 
+  data-controller="initiatives-subsystem-tags-form" 
+  data-initiatives-subsystem-tags-form-subsystem-tags-value="<%= current_account.subsystem_tags.pluck(:name).to_json %>"
+>
   <%= form_with(model: @subsystem_tag, url: initiatives_subsystem_tags_path, html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |f| %>
     <div class="w-full mb-4">
         <div class="flex items-center justify-between py-4">
           <div class="flex items-center gap-6 w-1/3">
-              <div class="flex-shrink-0 rounded-lg flex items-center justify-center <%= dom_id(label) %>" data-labels-target="previewColor">
-              <p class="p-2 text-sm" data-labels-target="previewName"><%= label.name.presence || 'Preview' %></p>
+              <div class="flex-shrink-0 rounded-lg flex items-center justify-center <%= dom_id(label) %>" data-initiatives-subsystem-tags-form-target="previewColor">
+                <p class="p-2 text-sm" data-initiatives-subsystem-tags-form-target="previewName"><%= label.name.presence || 'Preview' %></p>
               </div>
           </div>
         </div>
@@ -15,13 +18,14 @@
         <%= f.label :name, class: 'block text-xs font-medium text-gray-700' %>
         <%=
             f.text_field(
-            :name,
-            placeholder: 'Name',
-            autofocus: true,
-            data: { labels_target: 'nameField', action: 'input->labels#updatePreviewName' },
-            class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-xs py-1'
+              :name,
+              placeholder: 'Name',
+              autofocus: true,
+              data: { initiatives_subsystem_tags_form_target: 'nameField', action: 'input->initiatives-subsystem-tags-form#updatePreviewName' },
+              class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-xs py-1'
             )
         %>
+        <div class="text-red-500 text-xs mt-1" data-initiatives-subsystem-tags-form-target="nameError"></div>
       </div>
 
       <div class="flex-1">
@@ -29,31 +33,31 @@
         <%=
             f.color_field(
             :color,
-            data: { labels_target: 'colorField', action: 'input->labels#updatePreviewColor' },
+            data: { initiatives_subsystem_tags_form_target: 'colorField', action: 'input->initiatives-subsystem-tags-form#updatePreviewColor' },
             class: 'mt-1 block w-24 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-xs'
             )
         %>
       </div>
+    </div>
 
-      <div class="flex space-x-2 mt-4">
-        <%- save_disabled = (label.name.blank? || label.color.blank?) %>
-        <%= 
-          link_to(
-            "Cancel", 
-            initiatives_subsystem_tags_path, 
-            class: LinksHelper::SECONDARY_CLASS,
-            data: { turbo_stream: true } 
-          )
-        %>
-        <%=
-            f.submit(
-            "Save",
-            data: { labels_target: 'submitButton' },
-            class: "#{LinksHelper::PRIMARY_CLASS}#{ ' opacity-50 cursor-not-allowed' if save_disabled }",
-            disabled: save_disabled
-            )
-          %>
-        </div>
+    <div class="flex space-x-2 mt-4 justify-end">
+      <%- save_disabled = (label.name.blank? || label.color.blank?) %>
+      <%= 
+        link_to(
+          "Cancel", 
+          initiatives_subsystem_tags_path, 
+          class: LinksHelper::SECONDARY_CLASS,
+          data: { turbo_stream: true } 
+        )
+      %>
+      <%=
+        f.submit(
+          "Save",
+          data: { initiatives_subsystem_tags_form_target: 'submitButton' },
+          class: "#{LinksHelper::PRIMARY_CLASS}#{ ' opacity-50 cursor-not-allowed' if save_disabled }",
+          disabled: save_disabled
+        )
+      %>
     </div>
   <% end %>
 </div>

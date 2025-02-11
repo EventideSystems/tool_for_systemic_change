@@ -15,7 +15,7 @@ class InitiativesSubsystemTagsController < ApplicationController
   end
 
   def new # rubocop:disable Metrics/MethodLength
-    @subsystem_tag = current_account.subsystem_tags.new(color: random_hex_color)
+    @subsystem_tag = current_account.subsystem_tags.new
     authorize @subsystem_tag
 
     respond_to do |format|
@@ -30,8 +30,15 @@ class InitiativesSubsystemTagsController < ApplicationController
     end
   end
 
-  def create # rubocop:disable Metrics/MethodLength
-    @subsystem_tag = current_account.subsystem_tags.new(subsystem_tag_params)
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    @subsystem_tag = find_existing_subsystem_tag(subsystem_tag_params)
+
+    if @subsystem_tag.present?
+      @subsystem_tag.assign_attributes(subsystem_tag_params)
+    else
+      @subsystem_tag = current_account.subsystem_tags.new(subsystem_tag_params)
+    end
+
     authorize @subsystem_tag
 
     if @subsystem_tag.save
@@ -56,8 +63,8 @@ class InitiativesSubsystemTagsController < ApplicationController
 
   private
 
-  def random_hex_color
-    "##{SecureRandom.hex(3)}"
+  def find_existing_subsystem_tag(subsystem_tag_params)
+    current_account.subsystem_tags.find_by(name: subsystem_tag_params[:name])
   end
 
   def subsystem_tag_params

@@ -19,6 +19,7 @@
 #
 class StakeholderType < ApplicationRecord
   include Searchable
+  include RandomColorAttribute
 
   acts_as_paranoid
 

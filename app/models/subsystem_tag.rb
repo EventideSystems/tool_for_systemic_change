@@ -20,6 +20,7 @@
 #
 class SubsystemTag < ApplicationRecord
   include Searchable
+  include RandomColorAttribute
 
   has_paper_trail
   acts_as_paranoid

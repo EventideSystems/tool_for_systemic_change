@@ -3,10 +3,20 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["form", "previewName", "previewColor", "nameField", "colorField", "submitButton"]
 
+  connect() {
+    if (this.hasColorFieldTarget) {
+      const value = this.colorFieldTarget.value
+      const previewColorElement = this.previewColorTarget 
+
+      previewColorElement.style.color = this.calculateLuminance(value) > 0.28 ? 'black' : '#e0e0e0'
+      previewColorElement.style.backgroundColor = value;
+    }
+  }
+
   checkFields(element) {
-    const nameField = element.currentTarget.closest("form").querySelector("[data-labels-target='nameField']")
-    const colorField = element.currentTarget.closest("form").querySelector("[data-labels-target='colorField']")
-    const submitButton = element.currentTarget.closest("form").querySelector("[data-labels-target='submitButton']")
+    const nameField = this.nameFieldTarget
+    const colorField = this.colorFieldTarget
+    const submitButton = this.submitButtonTarget
 
     const nameValue = nameField.value.trim()
     const colorValue = colorField.value.trim()
@@ -25,6 +35,12 @@ export default class extends Controller {
     } else {
       if (newForm.classList.contains("hidden")) {
         newForm.classList.remove("hidden")
+
+        const value = this.colorFieldTarget.value
+        const previewColorElement = this.previewColorTarget 
+    
+        previewColorElement.style.color = this.calculateLuminance(value) > 0.28 ? 'black' : '#e0e0e0'
+        previewColorElement.style.backgroundColor = value;
       } else {
         newForm.classList.add("hidden")
       }
@@ -34,7 +50,7 @@ export default class extends Controller {
 
   updatePreviewName(element) {
     const value = element.currentTarget.value
-    const previewNameElement = element.currentTarget.closest("form").querySelector("[data-labels-target='previewName']")
+    const previewNameElement = this.previewNameTarget
 
     previewNameElement.innerText  = value.trim() === "" ? "Preview" : value
 
@@ -43,7 +59,7 @@ export default class extends Controller {
 
   updatePreviewColor(element) {
     const value = element.currentTarget.value
-    const previewColorElement = element.currentTarget.closest("form").querySelector("[data-labels-target='previewColor']")
+    const previewColorElement = this.previewColorTarget 
 
     previewColorElement.style.color = this.calculateLuminance(value) > 0.28 ? 'black' : '#e0e0e0'
     previewColorElement.style.backgroundColor = value;

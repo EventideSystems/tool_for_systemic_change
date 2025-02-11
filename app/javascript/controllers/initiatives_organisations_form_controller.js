@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // NOTE: This is very similar to initiatives_subsystem_tags_controller.js and can probably be refactored
 // to remove the duplication
 export default class extends Controller {
-  static targets = ["nameError"]
+  static targets = ["form", "nameField", "submitButton", "nameError"]
   static values = { organisations: Array }
 
   connect() {

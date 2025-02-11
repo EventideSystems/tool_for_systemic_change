@@ -1,4 +1,4 @@
-import LabelsController from './labels_controller';
+import LabelsController from "controllers/labels_controller";
 
 export default class InitiativesSubsystemTagsFormController extends LabelsController {
  

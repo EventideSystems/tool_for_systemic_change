@@ -30,8 +30,15 @@ class InitiativesOrganisationsController < ApplicationController
     end
   end
 
-  def create # rubocop:disable Metrics/MethodLength
-    @organisation = current_account.organisations.new(organisation_params)
+  def create # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+    @organisation = find_existing_organisation(organisation_params)
+
+    if @organisation.present?
+      @organisation.assign_attributes(organisation_params)
+    else
+      @organisation = current_account.organisations.new(organisation_params)
+    end
+
     authorize @organisation
 
     if @organisation.save
@@ -55,6 +62,10 @@ class InitiativesOrganisationsController < ApplicationController
   end
 
   private
+
+  def find_existing_organisation(organisation_params)
+    current_account.organisations.find_by(name: organisation_params[:name])
+  end
 
   def organisation_params
     params.require(:organisation).permit(:name, :description, :stakeholder_type_id, :weblink)

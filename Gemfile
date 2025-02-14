@@ -114,8 +114,11 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
+  gem 'selenium-webdriver'
   gem 'timecop'
 end

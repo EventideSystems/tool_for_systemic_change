@@ -21,7 +21,6 @@
         <%- if impact_card.is_a?(SustainableDevelopmentGoalAlignmentCard) %>
           <%= render_tab_item title: "Thematic Map", path: impact_card_thematic_map_index_path(impact_card), active_tab: :thematic_map %>
         <%- end %>
-        <%= render_tab_item title: "Activity", path: impact_card_path(impact_card), active_tab: :activity %>
       </nav>
     </div>
   </div>

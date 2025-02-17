@@ -107,11 +107,15 @@ export default class extends Controller {
       .attr("height", height)
       .on('click', function(event) {
         if (event.target.tagName === 'svg') {
+          const selected = this.stakeholderTypesTarget.selectedOptions
+          const selectedStakeholderTypes = Array.from(selected).map(({ value }) => value)  
 
-          const neighbors = []
-          nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-          textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
-          linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+          this.updateNodeColors(selectedStakeholderTypes)
+
+          // const neighbors = []
+          // nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
+          // textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
+          // linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
         }
       });
 
@@ -139,27 +143,27 @@ export default class extends Controller {
           const connections = data.links.filter(link => link.source.id == node.id || link.target.id == node.id)
           const connectionNames = connections.map(link => { return link.source.id == node.id ? link.target.label : link.source.label })
           const connectionNamesContent = connectionNames.map(name => {
-            return `<li>${name}</li>`
+            return `<li class="text-sm">${name}</li>`
           }).join('')
 
           const partneringInitiativesContent = node.partneringInitiatives.map(initiative => {
-            return `<li>${initiative}</li>`
+            return `<li class="text-sm">${initiative}</li>`
           }).join('')
 
           const content = `
             <div class="p-4">
               <h3 class="text-md font-semibold">Partnering Initiatives</h3>
-              <ul class="pl-5 list-disc">
+              <ul class="pl-5 list-disc list-inside">
                 ${partneringInitiativesContent}
               </ul>
 
-              <h3 class="text-md font-semibold">Partnering Stakeholders</h3>
-              <ul class="pl-5 list-disc">
+              <h3 class="text-md font-semibold mt-2">Partnering Stakeholders</h3>
+              <ul class="pl-5 list-disc list-inside">
                 ${connectionNamesContent}
               </ul>
 
-              <h3 class="text-md font-semibold">Metrics</h3>
-              <ul class="pl-5 list-disc">
+              <h3 class="text-md font-semibold mt-2">Metrics</h3>
+              <ul class="pl-5 list-disc list-inside">
                 <li>Connections: ${connections.length}</li>
                 <li>Betweenness: ${node.betweenness}</li>
               </ul>
@@ -366,19 +370,37 @@ export default class extends Controller {
     }
   }
 
+  updateNodeColors(selectedStakeholderTypes) {
+    const svgElement = this.mapTarget.querySelector('svg')
+    const nodeElement = svgElement.querySelector('.nodes')
+    const nodeElements = nodeElement.querySelectorAll('circle')
+
+    nodeElements.forEach(element => {
+      const elementData = d3.select(element).datum();
+      const stakeholderType = elementData.stakeholderType
+      const color = elementData.color
+
+      if (selectedStakeholderTypes === undefined || selectedStakeholderTypes.length == 0 || selectedStakeholderTypes.includes(stakeholderType)) {
+        d3.select(element).attr('fill', color)
+      } else {
+        d3.select(element).attr('fill', 'gray')
+      }
+    })
+  }
+
   updateStakeholderTypes(event) {
-    const selected = event.target.selectedOptions
-    const stakeholderTypes = Array.from(selected).map(({ value }) => value)
+    const selected = this.stakeholderTypesTarget.selectedOptions
+    const selectedStakeholderTypes = Array.from(selected).map(({ value }) => value)
 
     const url = new URL(window.location)
     url.searchParams.delete('stakeholder_types[]')
 
     this.selectedStakeholderTypesForPrintTarget.innerHTML = ''
 
-    if (stakeholderTypes && stakeholderTypes.length > 0) {
+    if (selectedStakeholderTypes && selectedStakeholderTypes.length > 0) {
       this.selectedStakeholderTypesForPrintContainerTarget.classList.add('print:block')
 
-      stakeholderTypes.forEach(stakeholderType => {
+      selectedStakeholderTypes.forEach(stakeholderType => {
         url.searchParams.append('stakeholder_types[]', stakeholderType)
 
         this.selectedStakeholderTypesForPrintTarget.innerHTML +=
@@ -390,22 +412,6 @@ export default class extends Controller {
 
     window.history.replaceState({}, '', url)
 
-    const svgElement = this.mapTarget.querySelector('svg')
-    const nodeElement = svgElement.querySelector('.nodes')
-    const nodeElements = nodeElement.querySelectorAll('circle')
-
-    nodeElements.forEach(element => {
-      const elementData = d3.select(element).datum();
-      const stakeholderType = elementData.stakeholderType
-      const color = elementData.color
-
-      if (stakeholderTypes === undefined || stakeholderTypes.length == 0 || stakeholderTypes.includes(stakeholderType)) {
-        d3.select(element).attr('fill', color)
-      } else {
-        console.log('nope')
-        d3.select(element).attr('fill', 'gray')
-      }
-    })
+    this.updateNodeColors(selectedStakeholderTypes)
   }
-
 }

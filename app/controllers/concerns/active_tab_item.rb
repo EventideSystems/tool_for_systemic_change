@@ -14,7 +14,5 @@ module ActiveTabItem
     end
   end
 
-  def tab_item(name)
-    self.class.tab_item(name)
-  end
+  delegate :tab_item, to: :class
 end

@@ -14,7 +14,5 @@ module ActiveSidebarItem
     end
   end
 
-  def sidebar_item(name)
-    self.class.sidebar_item(name)
-  end
+  delegate :sidebar_item, to: :class
 end

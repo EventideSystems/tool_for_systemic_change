@@ -113,11 +113,10 @@ export default class extends Controller {
       .attr("height", height)
       .on('click', function(event) {
         if (event.target.tagName === 'svg') {
+          const selectedStakeholders = Array.from(this.stakeholdersTarget.selectedOptions).map(({ value }) => value)
+          const selectedInitiatives = Array.from(this.initiativesTarget.selectedOptions).map(({ value }) => value)
 
-          const neighbors = []
-          nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-          textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
-          linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+          this.updateNodeColors(selectedStakeholders, selectedInitiatives)
         }
       });
 
@@ -410,6 +409,10 @@ export default class extends Controller {
 
     window.history.replaceState({}, '', url)
 
+    this.updateNodeColors(selectedStakeholders, selectedInitiatives)  
+  }
+
+  updateNodeColors(selectedStakeholders, selectedInitiatives) {
     const svgElement = this.mapTarget.querySelector('svg')
     const nodeElement = svgElement.querySelector('.nodes')
     const nodeElements = nodeElement.querySelectorAll('circle')

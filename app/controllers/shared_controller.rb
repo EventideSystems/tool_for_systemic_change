@@ -19,6 +19,10 @@ class SharedController < ApplicationController
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
+    @focus_areas = FocusArea.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).order(
+      'focus_area_groups.position', :position
+    )
+
     @subsystem_tags = @scorecard.subsystem_tags.order('lower(trim(subsystem_tags.name))').uniq
     @statuses = ChecklistItem.statuses.keys.excluding('no_comment').map { |status| [status.humanize, status] }
 

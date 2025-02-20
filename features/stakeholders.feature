@@ -1,11 +1,17 @@
 Feature: Stakeholder management
 
+Background:
+  Given a stakeholder typed named "Business" exists
+  And a stakeholder typed named "Government" exists
+  And a stakeholder typed named "Community" exists
+
 Scenario: Create stakeholder
 Given an account named "Default Account" exists
-And I am an admin user for the "Default Account"
-When I visit the list of stakeholders
+And I am an admin user for the "Default Account" account
+When I sign in
+And I visit the list of stakeholders
 And I create a new stakeholder named "New Stakeholder"
-Then the new stakeholder will appear on the list of stakeholders
+Then a stakeholder named "New Stakeholder" will appear in the list of stakeholders
 
 Scenario: Create a new Stakeholder within a new Initiative
 Given an account named "Default Account" exists

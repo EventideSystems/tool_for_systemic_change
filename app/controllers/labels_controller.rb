@@ -18,7 +18,7 @@ class LabelsController < ApplicationController
     respond_to do |format|
       format.html { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.turbo_stream { render 'labels/index', locals: { labels: @labels, label_klass: } }
-      format.css  { render 'labels/index', formats: [:css], locals: { labels: @labels } }
+      format.css { render 'labels/index', formats: [:css], locals: { labels: @labels } }
     end
   end
 

@@ -17,11 +17,43 @@
             </div>
             <div class="flex space-x-4">
               <%= role_in_current_account_badge(@user) %>
+              <%= user_system_role_badge(@user) %>
+              <%= user_status_badge(@user) %>
             </div>
           </div>
         </div>
         <div class="relative">
-          <div class="flex justify-end items-center mb-4">
+          <div class="flex justify-end items-center mb-4 space-x-2">
+            <%- if policy(@user).impersonate? %>
+              <%= 
+                button_to_primary(
+                  'Impersonate', 
+                  impersonate_user_path(@user), 
+                  data: { turbo: false } 
+                )
+              %>
+            <%- end %>
+
+            <%- if @user.status == 'deleted' && policy(@user).undelete? %>
+              <%= 
+                link_to_primary(
+                  'Undelete', 
+                  undelete_user_path(@user), 
+                  data: { turbo: false } 
+                )
+              %>
+            <%- end %>
+
+            <%- if @user.status == 'invitation-pending' && policy(@user).resend_invitation? %>
+              <%=                
+                link_to_primary(
+                  "Resend Invitation", 
+                  resend_invitation_user_path(@user), 
+                  data: { turbo: false }
+                )
+              %>
+            <%- end %>
+
             <% edit_title = @user == current_user ? 'Edit Profile' : 'Edit Team Member' %>
             <%= link_to_primary edit_title, edit_user_path(@user), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
           </div>

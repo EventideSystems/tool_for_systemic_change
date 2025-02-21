@@ -430,7 +430,7 @@ GEM
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.28.0)
+    selenium-webdriver (4.29.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -733,7 +733,7 @@ CHECKSUMS
   rubyzip (2.4.1) sha256=8577c88edc1fde8935eb91064c5cb1aef9ad5494b940cf19c775ee833e075615
   scenic (1.8.0) sha256=31920ab1f3aa00e8b39aa273ebcb10727806a2e2fc100146b57afc079e530d70
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  selenium-webdriver (4.28.0) sha256=4cf7722062c3691f9c616890d68d3715d4f2e2e4fb0bc0ee5441a4dc1f5a89d3
+  selenium-webdriver (4.29.0) sha256=372143a8172a4f8cf67476967851b5cf6b82d86b14162028cb9b6c446407a9e7
   shadcn-ui (0.0.15) sha256=6dde7aa77d6e0121db922ce5e8e2673c60bc30f0af7ddd055c90dbdf9d17f7a4
   shrine (3.6.0) sha256=d361b7e5a452d65d900f3326ed99fe343d0d3b2ce17e012fc04ae85b0373358c
   sin_lru_redux (2.5.0) sha256=d88841f5443e72c27ce528f715eed7a14de8564edb72ded583dbfadefa59010b

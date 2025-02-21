@@ -37,6 +37,8 @@ class InitiativePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     system_admin? || (account_admin?(current_account) && in_scope?(record))
   end
 
+  alias edit_data? show?
+
   private
 
   def in_scope?(record)

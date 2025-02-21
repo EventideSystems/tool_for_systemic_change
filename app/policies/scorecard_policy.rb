@@ -100,4 +100,6 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   def linked_initiatives?
     show?
   end
+
+  alias add_initiative? edit?
 end

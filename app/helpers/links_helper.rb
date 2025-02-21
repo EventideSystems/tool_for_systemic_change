@@ -7,6 +7,11 @@ module LinksHelper
   SECONDARY_CLASS = 'rounded-md border border-gray-500 bg-white dark:bg-zinc-950 px-3 py-2 text-sm font-semibold text-zinc-950 dark:text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500 whitespace-nowrap'
   EXTERNAL_LINK_CLASS = 'text-blue-500 hover:text-blue-700 underline'
   # rubocop:enable Layout/LineLength
+
+  def button_to_primary(text, url, options = {})
+    button_to(text, url, options.merge(class: PRIMARY_CLASS))
+  end
+
   def link_to_primary(text, url, options = {})
     link_to(text, url, options.merge(class: PRIMARY_CLASS))
   end

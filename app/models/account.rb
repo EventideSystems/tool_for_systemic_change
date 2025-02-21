@@ -69,6 +69,10 @@ class Account < ApplicationRecord
           where(expires_on: Time.zone.today..(Time.zone.today + EXPIRY_WARNING_PERIOD)).order(created_at: :asc)
         }
 
+  def add_user(user, account_role)
+    accounts_users.create(user:, account_role:)
+  end
+
   def accounts_users_remaining
     return :unlimited if max_users.zero?
 

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :checklist_items, only: %i[show edit update]
 
   resources :impact_cards do
+    resources :sharing, only: [:index], controller: 'impact_cards/sharing'
     resources :initiatives, only: %i[show new create], controller: 'impact_cards/initiatives'
     resources :stakeholder_network, only: [:index], controller: 'impact_cards/stakeholder_network'
     resources :thematic_map, only: [:index], controller: 'impact_cards/thematic_map'

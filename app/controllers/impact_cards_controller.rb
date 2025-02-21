@@ -141,25 +141,25 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  def merge_options
-    @other_scorecards =
-      current_account.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
+  # def merge_options
+  #   @other_scorecards =
+  #     current_account.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
 
-    render(layout: false)
-  end
+  #   render(layout: false)
+  # end
 
-  def merge
-    @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
-    authorize(@other_scorecard, policy_class: ScorecardPolicy).merge?
+  # def merge
+  #   @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
+  #   authorize(@other_scorecard, policy_class: ScorecardPolicy).merge?
 
-    notice = if merge_cards(@scorecard, @other_scorecard, deep: params[:merge] == 'deep')
-               'Cards were successfully merged.'
-             else
-               'Merge failed.'
-             end
+  #   notice = if merge_cards(@scorecard, @other_scorecard, deep: params[:merge] == 'deep')
+  #              'Cards were successfully merged.'
+  #            else
+  #              'Merge failed.'
+  #            end
 
-    redirect_to impact_card_path(@scorecard), notice: notice
-  end
+  #   redirect_to impact_card_path(@scorecard), notice: notice
+  # end
 
   private
 

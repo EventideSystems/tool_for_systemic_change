@@ -10,7 +10,7 @@ module ImpactCards
       authorize(@impact_card, :show?)
 
       @initiative = @impact_card.initiatives.find(params[:id])
-      authorize(@initiative, :edit?)
+      authorize(@initiative, :edit_data?)
 
       @focus_areas_groups = FocusAreaGroup
                             .where(scorecard_type: @impact_card.type, account_id: @impact_card.account_id)

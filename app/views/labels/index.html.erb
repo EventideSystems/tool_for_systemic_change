@@ -13,10 +13,12 @@
     </div>
 
     <%= turbo_frame_tag :new_label_form %>
+    <%= turbo_frame_tag :stylesheet do %>
+      <%= render 'labels/stylesheet', labels: @all_labels %>
+    <% end %>
 
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
-        <%= render 'labels/stylesheet', labels: @labels %>
         <%= render partial: 'labels/label', collection: @labels %>
         <%= render partial: 'pagination' %>
       <% end %>

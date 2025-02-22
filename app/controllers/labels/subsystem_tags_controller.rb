@@ -9,5 +9,6 @@ module Labels
 
     def label_klass = SubsystemTag
     def label_params = params.fetch(:subsystem_tag, {}).permit(:name, :description, :color)
+    def label_index_path = subsystem_tags_path
   end
 end

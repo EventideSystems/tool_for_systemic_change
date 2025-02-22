@@ -1,6 +1,6 @@
-<%= turbo_stream.replace :styles do %>
-  <%= turbo_frame_tag :styles do %>
-    <%= render 'labels/stylesheet', labels: @labels %>
+<%= turbo_stream.replace :stylesheet do %>
+  <%= turbo_frame_tag :stylesheet do %>
+    <%= render 'labels/stylesheet', labels: @all_labels %>
   <% end %>
 <% end %>
 

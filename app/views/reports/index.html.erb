@@ -16,7 +16,7 @@
         'form',
         name: 'Subsystem Report',
         path: subsystem_summary_reports_path(format: :xlsx),
-        description: 'This report shows a summary of the interactons between subsystems, organisations and initiatives.'
+        description: 'This report shows a summary of the interactions between subsystems, organisations and initiatives.'
       ) do |f|
     %>
       <%= render partial: 'scorecard_selector', locals: { f: f } %>

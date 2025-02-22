@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_07_024008) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_22_112934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -176,21 +176,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_07_024008) do
     t.datetime "updated_at", null: false
     t.string "status", default: "actual"
     t.index ["checklist_item_id"], name: "index_deprecated_checklist_item_comments_on_checklist_item_id"
-  end
-
-  create_table "deprecated_video_tutorials", id: :serial, force: :cascade do |t|
-    t.integer "linked_id"
-    t.string "linked_type"
-    t.string "link_url"
-    t.string "name"
-    t.text "description"
-    t.boolean "promote_to_dashboard"
-    t.integer "position"
-    t.datetime "deleted_at", precision: nil
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["deleted_at"], name: "index_deprecated_video_tutorials_on_deleted_at"
-    t.index ["linked_type", "linked_id"], name: "index_deprecated_video_tutorials_on_linked_type_and_linked_id"
   end
 
   create_table "focus_area_groups", id: :serial, force: :cascade do |t|
@@ -555,16 +540,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_07_024008) do
      FROM events_checklist_item_checkeds;
   SQL
   create_view "events_transition_card_activities", sql_definition: <<-SQL
-      SELECT events_transition_card_activities_v02.transition_card_id,
-      events_transition_card_activities_v02.transition_card_name,
-      events_transition_card_activities_v02.initiative_id,
-      events_transition_card_activities_v02.initiative_name,
-      events_transition_card_activities_v02.characteristic_name,
-      events_transition_card_activities_v02.event,
-      events_transition_card_activities_v02.comment,
-      events_transition_card_activities_v02.occurred_at,
-      events_transition_card_activities_v02.from_status,
-      events_transition_card_activities_v02.to_status
+      SELECT transition_card_id,
+      transition_card_name,
+      initiative_id,
+      initiative_name,
+      characteristic_name,
+      event,
+      comment,
+      occurred_at,
+      from_status,
+      to_status
      FROM ( SELECT scorecards.id AS transition_card_id,
               scorecards.name AS transition_card_name,
               initiatives.id AS initiative_id,

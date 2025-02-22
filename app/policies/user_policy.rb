@@ -4,10 +4,14 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
       if account_admin?(user_context.account) || system_admin?
-        scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
+        base_scope
       else
-        User.none
+        base_scope.where(invitation_token: nil)
       end
+    end
+
+    def base_scope
+      scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
     end
   end
 

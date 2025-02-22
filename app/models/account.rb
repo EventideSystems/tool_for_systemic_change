@@ -102,6 +102,10 @@ class Account < ApplicationRecord
     scorecards.pluck(:type).uniq.map(&:constantize)
   end
 
+  def expired?
+    expires_on.present? && expires_on < Time.zone.today
+  end
+
   private
 
   def setup_account = SetupAccount.call(account: self)

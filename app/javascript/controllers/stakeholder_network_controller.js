@@ -1,26 +1,18 @@
-import { Controller } from "@hotwired/stimulus"
+import GraphController from "controllers/graph_controller";
+
+// import { Controller } from "@hotwired/stimulus"
 import * as d3 from "d3"
 
-export default class extends Controller {
+export default class extends GraphController  {
 
   static targets = [
-    "map", 
-    "graph", 
     "stakeholderTypes", 
-    "filterForm", 
-    "toggleLabelsButton", 
-    "dialog", 
-    "dialogTitle", 
-    "dialogTitleColor", 
-    "dialogContent",
-    "closeDialog",
     "selectedStakeholderTypesForPrint", 
     "selectedStakeholderTypesForPrintContainer"
   ]
 
   connect() {
-    window.addEventListener('beforeprint', this.beforePrint.bind(this));
-    window.addEventListener('afterprint', this.afterPrint.bind(this));
+    super.connect()
 
     const data = this.getData()
     this.drawGraph(data)
@@ -34,23 +26,6 @@ export default class extends Controller {
 
     this.updateStakeholderTypes({ target: this.stakeholderTypesTarget })
     this.updateLabelsVisibility()
-  }
-
-  disconnect() {
-    window.removeEventListener('beforeprint', this.beforePrint.bind(this));
-    window.removeEventListener('afterprint', this.afterPrint.bind(this));
-  }
-
-  afterPrint() {
-    this.mapTarget.removeAttribute('height');
-  }
-
-  beforePrint() {
-    const svg = this.mapTarget.querySelector('svg');
-    const bounds = svg.getBBox();
-
-    this.mapTarget.setAttribute('height', bounds.height + 50);
-    svg.setAttribute('height', bounds.height + 50);
   }
 
   drawGraph(data) {
@@ -71,6 +46,8 @@ export default class extends Controller {
     let updateStakeholderTypes = this.updateStakeholderTypes.bind(this)
 
     let stakeholderTypesTarget = this.stakeholderTypesTarget
+
+    let updateNodeColors = this.updateNodeColors.bind(this)
 
     var linkForce = d3
       .forceLink()
@@ -107,15 +84,12 @@ export default class extends Controller {
       .attr("height", height)
       .on('click', function(event) {
         if (event.target.tagName === 'svg') {
-          const selected = this.stakeholderTypesTarget.selectedOptions
+          linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+
+          const selected = stakeholderTypesTarget.selectedOptions
           const selectedStakeholderTypes = Array.from(selected).map(({ value }) => value)  
 
-          this.updateNodeColors(selectedStakeholderTypes)
-
-          // const neighbors = []
-          // nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-          // textElements.attr('class', function (node) { return getTextClass(node, neighbors) })
-          // linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+          updateNodeColors(selectedStakeholderTypes)
         }
       });
 
@@ -266,60 +240,6 @@ export default class extends Controller {
     return { nodes: nodesData, links: linksData };
   }
 
-  querySelectorIncludesText(selector, text) {
-    return Array.from(document.querySelectorAll(selector))
-      .find(el => el.textContent.includes(text));
-  }
-
-  getNeighbors(links, node) {
-    return links.reduce(function (neighbors, link) {
-        if (link.target.id === node.id) {
-          neighbors.push(link.source.id)
-        } else if (link.source.id === node.id) {
-          neighbors.push(link.target.id)
-        }
-        return neighbors
-      },
-      [node.id]
-    )
-  }
-
-  getLinkClass(link, node) {
-    if (link.target.id === node.id || link.source.id === node.id) {
-      return 'links stroke-green-300 dark:stroke-green-300'
-    } else {
-      return 'links stroke-zinc-400 dark:stroke-zinc-400'
-    }
-  }
-
-  getNodeColor(node, neighbors) {
-    if (Array.isArray(neighbors) && neighbors.includes(node.id)) {
-      return '#49C472'
-    } else  {
-      return node.color
-    }
-  }
-
-  getTextClass(node, neighbors) {
-    if (Array.isArray(neighbors) && neighbors.includes(node.id)) {
-      return 'texts stroke-green-300 dark:stroke-green-300'
-    } else {
-      return 'texts stroke-zinc-400 dark:stroke-zinc-400'
-    }
-  }
-
-  // calcForceStrength(nodes, links) {
-  //   const baseStrength = -40; // Base repulsive force
-  //   const nodeFactor = 10; // Adjust this factor as needed
-  //   return baseStrength - (nodes.length * nodeFactor);
-  // }
-  
-  // calcLinkStrength(links) {
-  //   const baseStrength = 0.3; // Base link strength
-  //   const linkFactor = 0.00001; // Adjust this factor as needed
-  //   return baseStrength + (links.length * linkFactor);
-  // }
-
   calcForceStrength(nodes, links) { 
     return -40 
   }
@@ -328,46 +248,6 @@ export default class extends Controller {
     var x = links.length;
     var y = 0.0002063777*x - 0.00345955;
     return y
-  }
-
-  toggleLabels(event) {
-    if (typeof event.stopPropagation === 'function') {
-      event.stopPropagation()
-    }
-
-    const url = new URL(window.location)
-    const showLabels = url.searchParams.get('show_labels') == 'true'
-
-    if (showLabels) {
-      url.searchParams.delete('show_labels')
-    } else {
-      url.searchParams.append('show_labels', 'true')
-    }
-
-    window.history.replaceState({}, '', url)
-
-    this.updateLabelsVisibility()
-  }
-
-  updateLabelsVisibility() {
-    const textElements = this.mapTarget.querySelectorAll('.texts text')
-
-    const url = new URL(window.location)
-    const showLabels = url.searchParams.get('show_labels') == 'true'
-
-    if (showLabels) {
-      this.toggleLabelsButtonTarget.innerHTML = 'Hide names'
-
-      textElements.forEach(element => {
-        element.setAttribute('visibility', 'visible')
-      })
-    } else {
-      this.toggleLabelsButtonTarget.innerHTML = 'Show names'
-
-      textElements.forEach(element => {
-        element.setAttribute('visibility', 'hidden')
-      })
-    }
   }
 
   updateNodeColors(selectedStakeholderTypes) {

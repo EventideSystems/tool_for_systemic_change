@@ -27,10 +27,6 @@
       <%= render 'form_buttons', form:, cancel_path: @scorecard.persisted? ? impact_card_path(@scorecard) : impact_cards_path %>
     <% end %>
   <% end %>
-
-  <div class="mx-auto max-w-4xl pt-10">
-    <%#= render 'sharing', impact_card: @scorecard %>
-    <%= render 'danger_zone', impact_card: @scorecard %>
-  </div>
+  <%= render 'danger_zone', impact_card: @scorecard %>
 </div>
 

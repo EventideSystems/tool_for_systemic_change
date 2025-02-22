@@ -7,8 +7,6 @@ end
 When('I visit the list of stakeholder types') do
   visit labels_stakeholder_types_path
 end
-
-@javascript
 When('I create a new stakeholder type named {string}') do |string|
   visit labels_stakeholder_types_path
   sleep(1)

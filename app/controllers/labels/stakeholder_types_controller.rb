@@ -9,5 +9,6 @@ module Labels
 
     def label_klass = StakeholderType
     def label_params = params.fetch(:stakeholder_type, {}).permit(:name, :description, :color)
+    def label_index_path = stakeholder_types_path
   end
 end

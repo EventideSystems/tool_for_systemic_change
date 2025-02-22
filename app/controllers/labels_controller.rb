@@ -4,7 +4,8 @@
 class LabelsController < ApplicationController
   include VerifyPolicies
 
-  before_action :set_label, only: %i[edit update destroy]
+  before_action :load_label, only: %i[edit update destroy]
+  before_action :load_all_labels
   before_action :require_account_selected, only: %i[new create edit update] # Still in use?
 
   def index # rubocop:disable Metrics/AbcSize
@@ -41,7 +42,7 @@ class LabelsController < ApplicationController
         @labels = policy_scope(WickedProblem).all
         format.turbo_stream { render 'labels/create', locals: { label: @label } }
         format.html do
-          redirect_to polymorphic_path(WickedProblem), notice: "#{label_klass.name.titleize} was successfully created."
+          redirect_to label_index_path, notice: "#{label_klass.name.titleize} was successfully created."
         end
       else
         format.turbo_stream do
@@ -59,13 +60,12 @@ class LabelsController < ApplicationController
     end
   end
 
-  def update # rubocop:disable Metrics/MethodLength
+  def update
     if @label.update(label_params)
-      @labels = policy_scope(label_klass).all
       respond_to do |format|
         format.turbo_stream { render 'labels/update', locals: { label: @label } }
         format.html do
-          redirect_to wicked_problems_path, notice: "#{label_klass.name.titleize} was successfully updated."
+          redirect_to label_index_path, notice: "#{label_klass.name.titleize} was successfully updated."
         end
       end
     else
@@ -84,12 +84,20 @@ class LabelsController < ApplicationController
 
   private
 
-  def set_label
+  def load_all_labels
+    @all_labels = policy_scope(label_klass).all
+  end
+
+  def load_label
     @label = label_klass.find_by(id: params[:id], account_id: current_account.id)
     authorize @label
   end
 
   def label_klass
+    # implement in subclass
+  end
+
+  def label_index_path
     # implement in subclass
   end
 end

@@ -48,7 +48,7 @@ class OrganisationsController < ApplicationController
     authorize @organisation
 
     if @organisation.save
-      redirect_to edit_organisation_path(@organisation), notice: 'Stakeholder was successfully created.'
+      redirect_to organisation_path(@organisation), notice: 'Stakeholder was successfully created.'
     else
       render :new
     end

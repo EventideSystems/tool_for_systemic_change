@@ -1,3 +1,7 @@
+<style>
+  <%= render partial: 'labels/label', formats: :css, locals: { label: label } %>
+</style>
+
 <%= form_with(model: [:labels, label], html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |f| %>
   <div class="w-full mb-4">
     <div class="flex items-center justify-between py-4">
@@ -39,7 +43,7 @@
       %>
     </div>
 
-    <div class="flex space-x-2 mt-4">
+    <div class="space-x-2 mt-4">
       <%- save_disabled = (label.name.blank? || label.color.blank?) %>
       <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: LinksHelper::SECONDARY_CLASS %>
       <%=

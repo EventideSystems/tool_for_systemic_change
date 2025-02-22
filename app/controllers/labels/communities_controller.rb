@@ -9,5 +9,6 @@ module Labels
 
     def label_klass = Community
     def label_params = params.fetch(:community, {}).permit(:name, :description, :color)
+    def label_index_path = communities_path
   end
 end

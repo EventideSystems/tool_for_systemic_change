@@ -16,7 +16,7 @@ class WickedProblemPolicy < ApplicationPolicy # rubocop:disable Style/Documentat
   end
 
   def create?
-    system_admin? || account_admin?(record.account)
+    system_admin? || account_admin?(current_account)
   end
 
   def update?

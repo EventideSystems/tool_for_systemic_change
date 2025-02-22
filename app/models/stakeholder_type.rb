@@ -32,6 +32,8 @@ class StakeholderType < ApplicationRecord
 
   scope :system_stakeholder_types, -> { where(account_id: nil) }
 
+  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+
   def in_use?
     organisations.any?
   end

@@ -80,6 +80,14 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     true
   end
 
+  def change_account_role?
+    system_admin? || account_admin?(user_context.account)
+  end
+
+  def change_password?
+    system_admin? || record_is_current_user?
+  end
+
   private
 
   def record_is_current_user?

@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl">
-  <%= form_for(user, html: { role: 'form' }) do |form| %>
+  <%= form_for(user, html: { role: 'form' }, data: { turbo: false }) do |form| %>
     <%= render 'form_header', record: user %>
     <%= render 'form_body' do %>
       <%= render 'section', first_section: true do %>
@@ -35,40 +35,65 @@
         <% end %>
       <% end %>
 
-      <%= render 'section' do %>
-        <%= render 'section_header', title: 'Role', subtitle: 'Access levels for this user.' %>
-        <%= render 'section_body' do %>
-          <%- if policy(User).invite_with_system_role? %>
+      <%- if policy(user).change_account_role? || policy(User).invite_with_system_role? %>
+        <%= render 'section' do %>
+          <%= render 'section_header', title: 'Role', subtitle: 'Access levels for this user.' %>
+          <%= render 'section_body' do %>
+            <%- if policy(User).invite_with_system_role? %>
+              <div class="sm:col-span-4">
+                <%= form.label :system_role %>
+                <div class="mt-2">
+                  <%=
+                    form.select(
+                      :system_role, 
+                      options_for_select(
+                        User.system_roles.keys.map { |key| [key.capitalize, key]}, 
+                        user.system_role
+                      )
+                    ) 
+                  %>
+                </div>
+              </div>
+            <%- end %>
+
+            <%- if policy(user).change_account_role? %>
+              <div class="sm:col-span-4">
+                <%= form.label :account_role %>
+                <div class="mt-2">
+                  <%= 
+                    form.select(
+                      :account_role, 
+                      options_for_select(
+                        AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, 
+                        role_in_current_account(user)
+                      )
+                    ) 
+                  %>
+                </div>
+              <%- end %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <%- if policy(user).change_password? %>
+        <%= render 'section' do %>
+          <%= render 'section_header', title: 'Change Password', subtitle: 'Optional. Leave blank if no change required.' %>
+          <%= render 'section_body' do %>
             <div class="sm:col-span-4">
-              <%= form.label :system_role %>
+              <%= form.label :password %>
               <div class="mt-2">
-                <%=
-                  form.select(
-                    :system_role, 
-                    options_for_select(
-                      User.system_roles.keys.map { |key| [key.capitalize, key]}, 
-                      user.system_role
-                    )
-                  ) 
-                %>
+                <%= form.password_field(:password, placeholder: "Password") %>
               </div>
             </div>
-          <%- end %>
 
-          <div class="sm:col-span-4">
-            <%= form.label :account_role %>
-            <div class="mt-2">
-              <%= 
-                form.select(
-                  :account_role, 
-                  options_for_select(
-                    AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, 
-                    role_in_current_account(user)
-                  )
-                ) 
-              %>
+            <div class="sm:col-span-4">
+              <%= form.label :password %>
+              <div class="mt-2">
+                <%= form.password_field(:password_confirmation, placeholder: "Confirm password") %>
+              </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
       <% end %>
       <%= render 'form_buttons', form:, cancel_path: user.persisted? ? user_path(user) : users_path %>

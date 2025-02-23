@@ -63,17 +63,9 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
     end
   end
 
-  def update # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    user_params.delete(:system_role) unless policy(User).invite_with_system_role?
-    account_role = user_params.delete(:account_role)
-
-    current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
-
-    if current_account_user
-      current_account_user.update(account_role: account_role)
-    else
-      @user.accounts_users.build(account: current_account, account_role: account_role)
-    end
+  def update
+    update_system_role!(@user, user_params)
+    update_account_role!(@user, user_params)
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: 'User was successfully updated.'
@@ -137,14 +129,43 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
     authorize @user
   end
 
-  def user_params
+  def update_system_role!(user, user_params)
+    system_role = user_params.delete(:system_role)
+
+    return unless system_role.present? && policy(user).invite_with_system_role?
+
+    user.update(system_role:)
+  end
+
+  def update_account_role!(user, user_params)
+    account_role = user_params.delete(:account_role)
+
+    return unless account_role.present? && policy(user).change_account_role?
+
+    current_account_user = user.accounts_users.find_by(account_id: current_account.id)
+
+    if current_account_user
+      current_account_user.update(account_role: account_role)
+    else
+      user.accounts_users.build(account: current_account, account_role: account_role)
+    end
+  end
+
+  def user_params # rubocop:disable Metrics/MethodLength
     params.fetch(:user, {}).permit(
       :name,
       :email,
       :time_zone,
       :account_role,
-      :system_role
-    )
+      :system_role,
+      :password,
+      :password_confirmation
+    ).then do |permitted_params|
+      permitted_params.delete(:password) if params[:user][:password].blank?
+      permitted_params.delete(:password_confirmation) if params[:user][:password].blank?
+
+      permitted_params
+    end
   end
 
   # TODO: Consider adding this back in as an 'export' feature

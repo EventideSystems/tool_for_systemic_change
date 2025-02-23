@@ -21,6 +21,7 @@
 class WickedProblem < ApplicationRecord
   include Searchable
   include RandomColorAttribute
+  include ExportToCsv
 
   has_paper_trail
   acts_as_paranoid
@@ -31,4 +32,6 @@ class WickedProblem < ApplicationRecord
   validates :account, presence: true
   # TODO: Add validation to datbase schema
   validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+
+  csv_attributes :name, :description, :color
 end

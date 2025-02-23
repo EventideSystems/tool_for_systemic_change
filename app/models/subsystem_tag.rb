@@ -21,6 +21,7 @@
 class SubsystemTag < ApplicationRecord
   include Searchable
   include RandomColorAttribute
+  include ExportToCsv
 
   has_paper_trail
   acts_as_paranoid
@@ -34,4 +35,6 @@ class SubsystemTag < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   alias_attribute :text, :name # TODO: Check if this is still required?
+
+  csv_attributes :name, :description, :color
 end

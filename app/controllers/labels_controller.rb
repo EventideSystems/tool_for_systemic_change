@@ -20,6 +20,7 @@ class LabelsController < ApplicationController
       format.html { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.turbo_stream { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.css { render 'labels/index', formats: [:css], locals: { labels: @labels } }
+      format.csv { render csv: @all_labels, filename: label_klass.name.pluralize }
     end
   end
 
@@ -85,7 +86,7 @@ class LabelsController < ApplicationController
   private
 
   def load_all_labels
-    @all_labels = policy_scope(label_klass).all
+    @all_labels = policy_scope(label_klass).order('lower(name)')
   end
 
   def load_label

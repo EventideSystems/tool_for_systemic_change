@@ -1,11 +1,11 @@
 
 
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
+<p><%= t("devise.mailer.invitation_instructions.hello", invitee: @resource.name) %></p>
 <p>
   <%=
     t(
       "devise.mailer.invitation_instructions.someone_invited_you",
-      link: link_to("Tool for Systemic Change", root_url)
+      link: link_to("Obsekio: the Tool for Systemic Change", root_url)
     ).html_safe
   %>
 </p>
@@ -17,11 +17,4 @@
   <p><%= t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :'devise.mailer.invitation_instructions.accept_until_format')) %></p>
 <% end %>
 
-<p><%=
-  t(
-    "devise.mailer.invitation_instructions.access_guides",
-    link: link_to(t("devise.mailer.invitation_instructions.access_guides_link"), 'https://www.wickedlab.co/help-guides')
-  ).html_safe
-%></p>
-
-
+<p><%= sanitize(t("devise.mailer.invitation_instructions.ignore")) %></p>

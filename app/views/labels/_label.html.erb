@@ -16,9 +16,9 @@
       </div>
 
       <div class="flex items-center gap-4 ml-auto">        
-        <% if label.is_a?(StakeholderType) && label.organisations.present? %>
+        <% if label.is_a?(StakeholderType) && label.stakeholders.present? %>
           <%- if policy(label).edit? %>
-            <span class="text-black dark:text-gray-500 whitespace-nowrap">In Use</span>
+            <span class="text-black dark:text-gray-500 whitespace-nowrap">In Use (<%= label.stakeholders_count %>)</span>
           <%- end %>
         <% else %>
           <%- if policy(label).destroy? %>

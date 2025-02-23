@@ -56,6 +56,14 @@ class User < ApplicationRecord
 
   has_many :accounts_users, dependent: :destroy
   has_many :accounts, through: :accounts_users
+
+  has_many :active_accounts,
+           lambda {
+             where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Time.zone.today)
+           },
+           through: :accounts_users,
+           source: :account
+
   has_many :active_accounts_with_admin_role,
            lambda {
              where(accounts_users: { account_role: :admin })
@@ -83,11 +91,6 @@ class User < ApplicationRecord
     return 'invitation-pending' if invitation_token.present?
 
     'active'
-  end
-
-  def active_accounts
-    user_context = UserContext.new(self, nil)
-    AccountPolicy::Scope.new(user_context, Account).resolve
   end
 
   # Returns the user's display name, which is their name if present, otherwise their email.

@@ -20,6 +20,7 @@
 class StakeholderType < ApplicationRecord
   include Searchable
   include RandomColorAttribute
+  include ExportToCsv
 
   acts_as_paranoid
 
@@ -27,7 +28,6 @@ class StakeholderType < ApplicationRecord
 
   belongs_to :account, optional: true
   has_many :organisations, dependent: :nullify
-  has_many :initiatives_subsytsem_stakeholder_types, dependent: :destroy
 
   before_destroy :check_no_longer_used!, prepend: true
 
@@ -35,20 +35,26 @@ class StakeholderType < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  def self.to_csv
-    attributes = %w[name color description created_at updated_at]
+  alias stakeholders organisations
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
+  csv_attributes :name, :description, :color, :stakeholders_count
 
-      all.find_each do |user|
-        csv << attributes.map { |attr| user.send(attr) }
-      end
-    end
-  end
+  # def self.to_csv
+  #   attributes = %w[name color description stakeholders_count]
+
+  #   CSV.generate(headers: true) do |csv|
+  #     csv << attributes
+
+  #     all.find_each do |user|
+  #       csv << attributes.map { |attr| user.send(attr) }
+  #     end
+  #   end
+  # end
 
   def in_use? = organisations.any?
   def system_stakeholder_type? = account_id.nil?
+
+  delegate :count, to: :stakeholders, prefix: true, allow_nil: true
 
   private
 

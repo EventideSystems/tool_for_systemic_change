@@ -5,9 +5,11 @@
       <%= page_header_tag 'Stakeholders' %>
       <div class="flex justify-between items-center mt-4 ">
         <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search stakeholders...' } %>
-        <div>
-          <%= link_to_primary 'Create Stakeholder', new_organisation_path %>
-        </div>
+        <%- if policy(Organisation).create? %>
+          <div>
+            <%= link_to_primary 'Create Stakeholder', new_organisation_path %>
+          </div>
+        <%- end %>
       </div>
     </div>
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">

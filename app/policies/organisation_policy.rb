@@ -12,7 +12,7 @@ class OrganisationPolicy < ApplicationPolicy # rubocop:disable Style/Documentati
   end
 
   def create?
-    system_admin? || account_admin?(record.account)
+    system_admin? || account_admin?(current_account)
   end
 
   def update?

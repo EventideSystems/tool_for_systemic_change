@@ -25,9 +25,11 @@
           </div>
         </div>
         <div class="relative">
-          <div class="flex justify-end items-start mb-4">
-            <%= link_to_primary 'Edit Initiative', edit_initiative_path(@initiative), class: 'inline-flex items-start px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-          </div>
+          <%- if policy(@initiative).edit? %>
+            <div class="flex justify-end items-start mb-4">
+              <%= link_to_primary 'Edit Initiative', edit_initiative_path(@initiative), class: 'inline-flex items-start px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+            </div>
+          <%- end %>
         </div>
       </div>
     </div>

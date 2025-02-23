@@ -4,11 +4,13 @@
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= label_klass.name.titleize.pluralize %></h1>
       <div class="flex justify-between items-center mt-4 ">
         <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: "Search #{label_klass.name.titleize.downcase.pluralize}..." } %>
-        <div>
-          <%=
-            link_to_primary("Create #{label_klass.name.titleize}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
-          %>
-        </div>
+        <%- if policy(label_klass).create? %>
+          <div>          
+            <%=
+              link_to_primary("Create #{label_klass.name.titleize}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
+            %>
+          </div>
+        <%- end %>
       </div>
     </div>
 

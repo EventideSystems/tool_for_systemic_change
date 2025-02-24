@@ -243,7 +243,7 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
-    mini_magick (5.1.2)
+    mini_magick (5.2.0)
       benchmark
       logger
     mini_mime (1.1.5)
@@ -430,7 +430,7 @@ GEM
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.29.0)
+    selenium-webdriver (4.29.1)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -659,7 +659,7 @@ CHECKSUMS
   marcel (1.0.4) sha256=0d5649feb64b8f19f3d3468b96c680bae9746335d02194270287868a661516a4
   matrix (0.4.2) sha256=71083ccbd67a14a43bfa78d3e4dc0f4b503b9cc18e5b4b1d686dc0f9ef7c4cc0
   method_source (1.1.0) sha256=181301c9c45b731b4769bc81e8860e72f9161ad7d66dd99103c9ab84f560f5c5
-  mini_magick (5.1.2) sha256=2c57112a2c55d9f86b1ed7ab568b3c389a3265788ac5c1ad3e632a201b629a7e
+  mini_magick (5.2.0) sha256=2757ffbfdb1d38242d1da9ff1505360ab75d59dc02eb7ab79ff6d5acb1243f4a
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
   mini_portile2 (2.8.8) sha256=8e47136cdac04ce81750bb6c09733b37895bf06962554e4b4056d78168d70a75
   minitest (5.25.4) sha256=9cf2cae25ac4dfc90c988ebc3b917f53c054978b673273da1bd20bcb0778f947
@@ -733,7 +733,7 @@ CHECKSUMS
   rubyzip (2.4.1) sha256=8577c88edc1fde8935eb91064c5cb1aef9ad5494b940cf19c775ee833e075615
   scenic (1.8.0) sha256=31920ab1f3aa00e8b39aa273ebcb10727806a2e2fc100146b57afc079e530d70
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  selenium-webdriver (4.29.0) sha256=372143a8172a4f8cf67476967851b5cf6b82d86b14162028cb9b6c446407a9e7
+  selenium-webdriver (4.29.1) sha256=0a7fe53cc4d2c515adbb89e115c6e786c64e9b98f85939d21071c6e32883a146
   shadcn-ui (0.0.15) sha256=6dde7aa77d6e0121db922ce5e8e2673c60bc30f0af7ddd055c90dbdf9d17f7a4
   shrine (3.6.0) sha256=d361b7e5a452d65d900f3326ed99fe343d0d3b2ce17e012fc04ae85b0373358c
   sin_lru_redux (2.5.0) sha256=d88841f5443e72c27ce528f715eed7a14de8564edb72ded583dbfadefa59010b

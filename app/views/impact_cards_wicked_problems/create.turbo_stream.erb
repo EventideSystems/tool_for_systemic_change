@@ -1,0 +1,22 @@
+<%= turbo_stream.update :select_wicked_problem do %>          
+  <%= custom_label_tag :impact_card_wicked_problem_id, 'Problem / opportunity' %>
+  <div class="mt-2">
+    <%= 
+      custom_select_tag(
+        'impact_card[wicked_problem_id]', 
+        options_from_collection_for_select(
+          current_account.wicked_problems.order(:name), 
+          :id, 
+          :name, 
+          @wicked_problem.id
+        ),
+        include_blank: true,
+        class: 'transition-colors ease-in duration-700 animate-flash-yellow'
+      ) 
+    %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update :new_impact_cards_wicked_problems_form do %>
+  <%= render 'new_wicked_problem_button' %>
+<% end %>

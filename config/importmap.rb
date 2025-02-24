@@ -9,7 +9,6 @@ pin_all_from 'app/javascript/components', under: 'components'
 pin "tailwindcss-animate" # @1.0.7
 pin "hotkeys-js" # @3.13.9
 
-
 pin "@preline/select", to: "@preline--select.js" # @2.6.0
 pin "d3" # @7.9.0
 pin "d3-array" # @3.2.4

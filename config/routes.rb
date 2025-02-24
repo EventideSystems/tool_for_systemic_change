@@ -63,10 +63,12 @@ Rails.application.routes.draw do
     end
     get 'linked'
   end
-
+  
+  resources :impact_cards_communities, only: %i[index new create]
+  resources :impact_cards_wicked_problems, only: %i[index new create]
   resources :initiatives_subsystem_tags, only: %i[index new create]
   resources :initiatives_organisations, only: %i[index new create]
-  
+
   resources :organisations
 
   resources :shared,

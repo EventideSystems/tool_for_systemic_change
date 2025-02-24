@@ -1,6 +1,6 @@
-<%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %>
+<%= t("devise.mailer.invitation_instructions.hello", invitee: @resource.name) %>
 
-<%= strip_tags t("devise.mailer.invitation_instructions.someone_invited_you", link: root_url) %>
+<%= strip_tags t("devise.mailer.invitation_instructions.someone_invited_you", link: root_url) %> ("Obsekio: the Tool for Systemic Change")
 
 <%= accept_invitation_url(@resource, :invitation_token => @token) %>
 

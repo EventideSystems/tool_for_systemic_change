@@ -3,7 +3,7 @@
     <%= render 'form_header', record: account %>
     <%= render 'form_body' do %>
       <%= render 'section', first_section: true do %>
-        <%= render 'section_header', title: 'Overview', subtitle: 'General settings this account.' %>
+        <%= render 'section_header', title: 'Overview', subtitle: 'General settings for this account.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :name %>
@@ -45,7 +45,7 @@
             <div class="sm:col-span-4">
               <%= form.label :expiry_warning_sent_on %>
               <div class="mt-2">
-                <%= form.date_field :expiry_warning_sent_on, readonly: true, disabled: true %>
+                <%= form.date_field :expiry_warning_sent_on, readonly: true, disabled: true, class: 'bg-slate-200 dark:bg-slate-600' %>
               </div>
             </div>
           <% end %>

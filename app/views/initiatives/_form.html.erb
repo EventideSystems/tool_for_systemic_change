@@ -11,7 +11,7 @@
             <% if @impact_card.present? %>
               <%= hidden_field_tag(:impact_card_id, @impact_card.id) %>
               <div class="mt-2">
-                <%= custom_text_field_tag(:name, @impact_card.name, readonly: true) %>
+                <%= custom_text_field_tag(:name, @impact_card.name, readonly: true, class: 'bg-slate-200 dark:bg-slate-600') %>
               </div>
             <% else %>
               <div class="mt-2">

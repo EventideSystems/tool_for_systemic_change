@@ -36,15 +36,15 @@ module CustomFormTagHelper
   end
 
   def custom_text_field_tag(name, value = nil, options = {})
-    default_opts = { class: "#{TEXT_FIELD_CLASS} mt-2" }
+    default_class = "#{TEXT_FIELD_CLASS} mt-2"
 
     # content_tag(:div) do
-    text_field_tag(name, value, default_opts.merge(options))
+    text_field_tag(name, value, merge_options(options:, default_class:))
     # end
   end
 
   def custom_select_tag(name, option_tags = nil, options = {})
-    default_class = { class: "#{SELECT_FIELD_CLASS} mt-2" }
+    default_class = "#{SELECT_FIELD_CLASS} mt-2"
 
     content_tag(:div) do
       select_tag(name, option_tags, merge_options(options:, default_class:))

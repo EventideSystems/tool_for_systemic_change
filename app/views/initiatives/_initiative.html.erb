@@ -15,7 +15,7 @@
         </div>
 
         <%- if initiative.subsystem_tags.present? %>
-          <div class="flex space-x-4">
+          <div class="flex space-x-2">
             <%- initiative.subsystem_tags.each do |subsystem_tag| %>
               <%= render 'label_badge', label: subsystem_tag %>
             <%- end %>

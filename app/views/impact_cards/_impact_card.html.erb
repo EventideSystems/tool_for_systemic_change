@@ -11,7 +11,7 @@
           <%= highlight(impact_card.description, params.dig(:q, :name_or_description_cont)) %>
         </div>
 
-        <div class="flex space-x-4">
+        <div class="flex space-x-2">
           <%= render 'impact_card_type_badge', impact_card: impact_card %>
           <%= render 'label_badge', label: impact_card.community if impact_card.community.present? %>
           <%= render 'label_badge', label: impact_card.wicked_problem if impact_card.wicked_problem.present? %>

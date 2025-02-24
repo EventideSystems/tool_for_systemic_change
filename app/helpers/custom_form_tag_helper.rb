@@ -44,10 +44,10 @@ module CustomFormTagHelper
   end
 
   def custom_select_tag(name, option_tags = nil, options = {})
-    default_opts = { class: "#{SELECT_FIELD_CLASS} mt-2" }
+    default_class = { class: "#{SELECT_FIELD_CLASS} mt-2" }
 
     content_tag(:div) do
-      select_tag(name, option_tags, default_opts.merge(options))
+      select_tag(name, option_tags, merge_options(options:, default_class:))
     end
   end
 

@@ -24,6 +24,8 @@
         <% end %>
       <% end %>
 
+      <%= render 'context_section', form: %>
+
       <%= render 'form_buttons', form:, cancel_path: @scorecard.persisted? ? impact_card_path(@scorecard) : impact_cards_path %>
     <% end %>
   <% end %>

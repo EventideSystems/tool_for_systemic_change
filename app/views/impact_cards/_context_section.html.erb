@@ -1,0 +1,48 @@
+<%= render 'section' do %>
+  <%= render 'section_header', title: 'Context', subtitle: 'Optionally set Community or Problem / Opportunity indentifiers for this impact card.' %>
+  <%= render 'section_body' do %>
+    <div class="sm:col-span-6">
+      <%= turbo_frame_tag :select_community do %>          
+        <%= form.label :community_id %>
+        <div class="mt-2">
+          <%= 
+            form.collection_select(
+              :community_id, 
+              current_account.communities.order(:name), 
+              :id, 
+              :name, 
+              include_blank: true, 
+              prompt: 'Select a community'
+            ) 
+          %>
+        </div>
+      <% end %>
+
+      <%= turbo_frame_tag :new_impact_cards_communities_form do %>
+        <%= render 'impact_cards_communities/new_community_button' %>
+      <% end %>
+    </div>
+
+    <div class="sm:col-span-6">
+      <%= turbo_frame_tag :select_wicked_problem do %> 
+        <%= form.label :wicked_problem_id, 'Problem / Opportunity' %>
+        <div class="mt-2">
+          <%= 
+            form.collection_select(
+              :wicked_problem_id, 
+              current_account.wicked_problems.order(:name), 
+              :id, 
+              :name, 
+              include_blank: true, 
+              prompt: 'Select a problem / opportunity'
+            ) 
+          %>
+        </div>
+      <% end %>
+
+      <%= turbo_frame_tag :new_impact_cards_wicked_problems_form do %>
+        <%= render 'impact_cards_wicked_problems/new_wicked_problem_button' %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

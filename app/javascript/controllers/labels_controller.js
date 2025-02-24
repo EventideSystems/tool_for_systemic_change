@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["form", "previewName", "previewColor", "nameField", "colorField", "submitButton"]
+  static targets = ["previewName", "previewColor", "nameField", "colorField", "submitButton"]
 
   connect() {
     if (this.hasColorFieldTarget) {
@@ -65,11 +65,11 @@ export default class extends Controller {
     previewColorElement.style.backgroundColor = value;
   }
 
-  focusNameField() {
-    if (!this.formTarget.classList.contains("hidden")) {
-      this.nameFieldTarget.focus()
-    }
-  }
+  // focusNameField() {
+  //   if (!this.formTarget.classList.contains("hidden")) {
+  //     this.nameFieldTarget.focus()
+  //   }
+  // }
 
   // Equivalent method in labels_helper.rb
   hexToRgb(hex) {

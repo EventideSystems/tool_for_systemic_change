@@ -59,6 +59,8 @@
         <% end %>
       <% end %>
 
+      <%= render 'context_section', form: %>
+
       <%= form.fields_for :initiatives do |initiatives_form| %>
         <%= render 'section' do %>
           <%= render 'section_header', title: 'First Initiative', subtitle: 'Create your first initiative.' do %>

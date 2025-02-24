@@ -206,6 +206,8 @@ class ImpactCardsController < ApplicationController
       :name,
       :description,
       :notes,
+      :community_id,
+      :wicked_problem_id,
       :linked_scorecard_id,
       :share_ecosystem_map,
       :share_thematic_network_map,

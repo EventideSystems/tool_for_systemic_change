@@ -28,7 +28,7 @@
           <div class="sm:col-span-4">
             <%= form.label :stakeholder_type_id %>
             <div class="mt-2">
-              <%= form.collection_select :stakeholder_type_id, current_account.stakeholder_types.order(:name), :id, :name, {}%>
+              <%= form.collection_select :stakeholder_type_id, current_account.stakeholder_types.order(:name), :id, :name, {} %>
             </div>
           </div>
         <% end %>

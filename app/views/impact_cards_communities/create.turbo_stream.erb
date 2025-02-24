@@ -1,0 +1,22 @@
+<%= turbo_stream.update :select_community do %>          
+  <%= custom_label_tag :impact_card_community_id, 'Community' %>
+  <div class="mt-2">
+    <%= 
+      custom_select_tag(
+        'impact_card[community_id]', 
+        options_from_collection_for_select(
+          current_account.communities.order(:name), 
+          :id, 
+          :name, 
+          @community.id
+        ),
+        include_blank: true,
+        class: 'transition-colors ease-in duration-700 animate-flash-yellow'
+      ) 
+    %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update :new_impact_cards_communities_form do %>
+  <%= render 'new_community_button' %>
+<% end %>

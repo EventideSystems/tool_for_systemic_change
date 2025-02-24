@@ -38,18 +38,18 @@
       <% end %>
 
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-t border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3 pt-10">
         <div>
-          <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Subsystem Tags</h3>
-          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Identify relevant subsystem tags for this initiative.</p>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Subsystem Tags</h2>
+          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Identify relevant subsystem tags for this initiative.</p>
         </div>
         <%= render 'initiatives_subsystem_tags/controls', initiative: %>
       </div>
 
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-        <div>
-          <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">Contact Details</h3>
-          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Enter the main contact for this initiative (optional).</p>
+        <div>t
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Contact Details</h2>
+          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Enter the main contact for this initiative (optional).</p>
         </div>
 
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -85,8 +85,8 @@
 
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
         <div>
-          <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Applicable Date Range</h3>
-          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Optional</p>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Applicable Date Range</h2>
+          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Optionally set the start and end dates for this initiative.</p>
         </div>
 
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
@@ -106,29 +106,25 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 pb-12 md:grid-cols-3">
         <div>
-          <h3 class="pl-10 text-sm font-semibold text-zinc-950 dark:text-white text-right">Stakeholders</h3>
-          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Identify who might be interested in this initiative.</p>
+          <h2 class="text-base/7 font-semibold text-zinc-950 dark:text-white">Stakeholders</h2>
+          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400">Identify who might be interested in this initiative.</p>
         </div>
         <%= render 'initiatives_organisations/controls', initiative: %>
       </div>
 
-      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 dark:border-white/10 pb-12 md:grid-cols-3">
-        <div>
-          <h3 class="text-sm font-semibold text-zinc-950 dark:text-white text-right">More</h3>
-          <p class="mt-1 text-sm/6 text-gray-600 dark:text-gray-400 text-right">Any additional details (optional).</p>
-        </div>
-
-        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <%= render 'section' do %>
+        <%= render 'section_header', title: 'More', subtitle: 'Any additional details (optional).' %>
+        <%= render 'section_body' do %>
           <div class="sm:col-span-8">
             <%= form.label :notes %>
             <div class="mt-2">
               <%= form.rich_textarea :notes %>
             </div>
           </div>
-        </div>
-      </div>
+        <%- end %>
+      <%- end %>
 
       <% if @impact_card.present? %>
         <%= render 'form_buttons', form:, cancel_path: impact_card_path(@impact_card) %>

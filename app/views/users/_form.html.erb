@@ -86,14 +86,14 @@
             <div class="sm:col-span-4">
               <%= form.label :password %>
               <div class="mt-2">
-                <%= form.password_field(:password, placeholder: "Password") %>
+                <%= form.password_field(:password, placeholder: "Password", autocomplete: 'off') %>
               </div>
             </div>
 
             <div class="sm:col-span-4">
               <%= form.label :password %>
               <div class="mt-2">
-                <%= form.password_field(:password_confirmation, placeholder: "Confirm password") %>
+                <%= form.password_field(:password_confirmation, placeholder: "Confirm password", autocomplete: 'off') %>
               </div>
             </div>
           <% end %>

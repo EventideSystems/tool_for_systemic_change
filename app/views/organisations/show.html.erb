@@ -15,7 +15,7 @@
               <%= @organisation.description %>
             </div>
             <%- if @organisation.stakeholder_type.present? %>
-              <div class="flex space-x-4">
+              <div class="flex space-x-2">
                 <%= render 'label_badge', label: @organisation.stakeholder_type %>
               </div>
             <%- end %>

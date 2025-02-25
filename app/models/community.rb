@@ -5,7 +5,7 @@
 # Table name: communities
 #
 #  id          :integer          not null, primary key
-#  color       :string           default("#80389d"), not null
+#  color       :string           default("#53ea64"), not null
 #  deleted_at  :datetime
 #  description :string
 #  name        :string

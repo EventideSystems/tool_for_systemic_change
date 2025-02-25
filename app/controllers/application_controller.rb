@@ -87,6 +87,7 @@ class ApplicationController < ActionController::Base
 
   def fetch_default_account_and_set_session
     default_account = current_user&.default_account
+    default_account = Account.active.first if default_account.blank? && current_user.system_role == 'admin'
     session[:account_id] = default_account&.id
     default_account
   end

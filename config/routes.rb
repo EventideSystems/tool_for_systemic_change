@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :contacts, only: %i[new create]
+
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do

@@ -75,18 +75,19 @@ gem 'aws-sdk-rails'
 
 gem 'data_migrate'
 
+gem 'net-http'
 gem 'pagy'
 gem 'paper_trail'
 gem 'paranoia'
 gem 'ransack'
-
-gem 'net-http'
+gem 'recaptcha'
 
 # Monitoring related
 gem 'appsignal'
 gem 'rack-attack'
 
 group :development, :test do
+  gem 'dotenv'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows]
 

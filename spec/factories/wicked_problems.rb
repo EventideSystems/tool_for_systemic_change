@@ -5,7 +5,7 @@
 # Table name: wicked_problems
 #
 #  id          :integer          not null, primary key
-#  color       :string           default("#8a2d8a"), not null
+#  color       :string           default("#be6048"), not null
 #  deleted_at  :datetime
 #  description :string
 #  name        :string

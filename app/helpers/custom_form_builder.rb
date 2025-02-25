@@ -259,9 +259,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   end
 
   def submit(value = nil, options = {})
-    default_opts = { class: SUBMIT_BUTTON_CLASS }
-    merged_opts = default_opts.merge(options)
-    super(value, merged_opts)
+    super(value, merge_options(method: nil, options:, default_class: SUBMIT_BUTTON_CLASS))
   end
 
   def text_area(method, options = {})
@@ -316,6 +314,7 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
 
   def build_default_field_class(base_class, error_class, method)
     return if @object.blank?
+    return base_class if method.blank?
 
     base_class + (@object.errors[method].any? ? " #{error_class}" : '')
   end

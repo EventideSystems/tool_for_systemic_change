@@ -12,7 +12,12 @@
   </head>
 
   <body class="h-full">
-    <%= render 'layouts/shared/flash_messages' %>
-    <%= yield %>
+    <div class="bg-teal-800">
+      <main>
+        <%= render 'layouts/shared/flash_messages' %>
+        <%= yield %>
+      </main>
+      <%= render 'home/footer' %>
+    </div>
   </body>
 </html>

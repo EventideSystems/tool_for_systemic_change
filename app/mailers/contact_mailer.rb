@@ -6,6 +6,12 @@ class ContactMailer < ApplicationMailer
     @name = name
     @email = email
     @message = message
-    mail(subject: 'Contact request', to: 'tom@eventidesystems.com')
+    mail(subject: 'Contact request', to: contact_mail_recipients)
+  end
+
+  private
+
+  def contact_mail_recipients
+    ENV['CONTACT_MAIL_RECIPIENTS']
   end
 end

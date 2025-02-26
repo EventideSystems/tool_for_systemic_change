@@ -90,6 +90,7 @@ module TailwindClasses
     focus-visible:outline-2
     focus-visible:outline-offset-2
     focus-visible:outline-zinc-500
+    cursor-pointer
   CSS
 
   TEXT_FIELD_CLASS = COMMON_FIELD_CLASS

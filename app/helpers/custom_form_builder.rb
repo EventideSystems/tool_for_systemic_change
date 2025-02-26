@@ -313,8 +313,8 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
   end
 
   def build_default_field_class(base_class, error_class, method)
-    return if @object.blank?
     return base_class if method.blank?
+    return base_class if @object.blank?
 
     base_class + (@object.errors[method].any? ? " #{error_class}" : '')
   end

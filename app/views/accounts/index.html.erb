@@ -1,12 +1,12 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Accounts</h1>
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Workspaces</h1>
       <div class="flex justify-between items-center mt-4 ">
-        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search accounts...' } %>
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search workspaces...' } %>
         <%- if policy(Account).create? %>
           <div>
-            <%= link_to_primary 'Create Account', new_account_path %>
+            <%= link_to_primary 'Create Workspace', new_account_path %>
           </div>
         <%- end %>
       </div>

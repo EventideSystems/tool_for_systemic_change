@@ -45,7 +45,7 @@
 
     <div class="space-x-2 mt-4">
       <%- save_disabled = (label.name.blank? || label.color.blank?) %>
-      <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: LinksHelper::SECONDARY_CLASS %>
+      <%= link_to "Cancel", polymorphic_path([:labels, label.class]), class: 'text-sm/6 font-semibold text-gray-900 dark:text-white' %>
       <%=
         f.submit(
           "Save",

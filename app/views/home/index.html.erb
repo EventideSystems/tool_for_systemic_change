@@ -249,7 +249,9 @@
       Contact us to discuss your goals and challenges, and together we'll figure out how Obsekio can help. Let's start the conversation today.
     </p>
     <div class="mt-10 flex items-center justify-center gap-x-6">
-      <a href="#" class="text-sm font-semibold leading-6 text-white">Get in touch <span aria-hidden="true">→</span></a>
+      <%= link_to new_contact_path, class: 'text-sm font-semibold leading-6 text-white', data: { turbo: false } do %>
+        Get in touch <span aria-hidden="true">→</span>
+      <% end %>
     </div>
   </div>
 </div>

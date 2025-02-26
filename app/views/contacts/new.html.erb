@@ -22,7 +22,7 @@
       </p>
     </div>
 
-    <div class="bg-white/10 p-8 rounded-lg mx-auto w-full ml-14 mt-8">
+    <div class="h-fit bg-white/10 p-8 rounded-lg mx-auto w-full ml-14 mt-8">
       <%= form_with(model: @contact, local: true, data: { turbo: false }) do |form| %>
         <%= recaptcha_v3(action: 'contact') %>
         <div class="space-y-6">
@@ -30,7 +30,7 @@
             <%= form.label :name, 'Contact name', class: 'text-white dark:text-white' %>
             <div class="mt-2">
               <%= form.text_field :name, class: 'text-white dark:text-white w-full focus:ring-amber-500 ', autofocus: true %>
-            </div>
+            </div> 
           <div>
 
           <div class="mt-4">

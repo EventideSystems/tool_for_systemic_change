@@ -1,7 +1,7 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <%= page_header_tag 'Account Details' %>
+      <%= page_header_tag 'Workspace Details' %>
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
         <%= render partial: 'resource_summary', locals: { name: @account.name, background_color: 'bg-green-700' } %>
@@ -15,15 +15,22 @@
           </div>
         </div>
         <div class="relative">
-          <div class="flex justify-end items-center mb-4  gap-4">
+          <div class="flex justify-end items-center mb-4 gap-4" data-controller="switch-workspace">
             <% if @account == current_account %>
-              <span class="text-xs/6 text-zinc-600">Current account</span>
+              <span class="text-xs/6 text-zinc-600">Current workspace</span>
             <% else %>
-              <%= link_to_primary 'Switch To', switch_account_path(@account), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= 
+                link_to_primary(
+                  'Switch To', 
+                  switch_account_path(@account), 
+                  class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+                  data: { action: 'click->switch-workspace#handleClick' }
+                )
+              %>
             <% end %>
 
             <%- if policy(@account).edit? %>
-              <%= link_to_primary 'Edit Account', edit_account_path(@account), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to_primary 'Edit Workspace', edit_account_path(@account), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
             <%- end %>
           </div>
         </div>

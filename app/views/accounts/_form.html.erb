@@ -3,13 +3,13 @@
     <%= render 'form_header', record: account %>
     <%= render 'form_body' do %>
       <%= render 'section', first_section: true do %>
-        <%= render 'section_header', title: 'Overview', subtitle: 'General settings for this account.' %>
+        <%= render 'section_header', title: 'Overview', subtitle: 'General settings for this workspace.' %>
         <%= render 'section_body' do %>
           <div class="sm:col-span-4">
             <%= form.label :name %>
             <div class="mt-2">
               <%=
-                form.text_field(:name, placeholder: 'Account name', autofocus: true, required: true)
+                form.text_field(:name, placeholder: 'Workspace name', autofocus: true, required: true)
               %>
             </div>
           </div>
@@ -25,7 +25,7 @@
       <% end %>
 
       <%= render 'section' do %>
-        <%= render 'section_header', title: 'Status', subtitle: 'Activation and expiration settings for this account' %>
+        <%= render 'section_header', title: 'Status', subtitle: 'Activation and expiration settings for this workspace.' %>
         <%= render 'section_body' do %>
           <% if policy(@account).update_protected_attributes? %>
             <div class="sm:col-span-4">

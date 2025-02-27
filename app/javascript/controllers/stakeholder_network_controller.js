@@ -85,6 +85,7 @@ export default class extends GraphController  {
       .on('click', function(event) {
         if (event.target.tagName === 'svg') {
           linkElements.attr('class', function (link) { 'links stroke-zinc-400 dark:stroke-zinc-400' })
+          textElements.attr('class', function() { 'texts stroke-zinc-400 dark:stroke-zinc-400' })
 
           const selected = stakeholderTypesTarget.selectedOptions
           const selectedStakeholderTypes = Array.from(selected).map(({ value }) => value)  

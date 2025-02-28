@@ -54,7 +54,10 @@
                       account.name, 
                       switch_account_path(account), 
                       class: "block w-full text-sm",
-                      data: { action: 'click->switch-workspace#handleClick' }
+                      data: { 
+                        action: 'click->switch-workspace#handleClick', 
+                        turbo: false 
+                      }
                     ) 
                   %>
                 <% end %>

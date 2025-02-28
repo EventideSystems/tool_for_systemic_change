@@ -6,7 +6,7 @@ class AccountPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
       if system_admin?
         scope.all
       else
-        scope.where(id: AccountsUser.where(user: current_user))
+        scope.where(id: AccountsUser.where(user: current_user).pluck(:account_id))
       end
     end
   end

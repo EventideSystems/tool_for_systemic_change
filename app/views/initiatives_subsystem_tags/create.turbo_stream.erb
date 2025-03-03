@@ -29,7 +29,7 @@
       <%=
         custom_select_tag(
           "initiative[initiatives_subsystem_tags_attributes][#{index}][subsystem_tag_id]",
-          options_from_collection_for_select(policy_scope(SubsystemTag), :id, :name, @subsystem_tag.id),
+          options_for_subsystem_tag_select(@subsystem_tag),
           include_blank: 'Select a subsystem tag',
         )
       %>

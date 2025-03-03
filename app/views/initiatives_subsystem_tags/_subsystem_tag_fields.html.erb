@@ -3,7 +3,7 @@
     <%=
       custom_select_tag(
         'initiative[initiatives_subsystem_tags_attributes][__INDEX__][subsystem_tag_id]',
-        options_from_collection_for_select(policy_scope(SubsystemTag), :id, :name),
+        options_for_subsystem_tag_select,
         include_blank: 'Select a subsystem tag'
       )
     %>

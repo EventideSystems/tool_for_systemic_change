@@ -22,12 +22,6 @@ module ApplicationHelper
     content_tag(:hr, nil, options)
   end
 
-  # <hr role="presentation" class="my-10 mt-6 w-full border-t border-zinc-950/10 dark:border-white/10">
-
-  # def turbo_id_for(obj)
-  #   obj.persisted? ? obj.id : obj.hash
-  # end
-
   # Render an SVG icon from views/icons
   # Source: https://www.writesoftwarewell.com/how-to-render-svg-icons-in-rails
   def render_icon(icon, classes: '')

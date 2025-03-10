@@ -1,29 +1,50 @@
-# Tool for Systemic Change
+# Obsekio: the Tool for Systemic Change
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 ![check](https://github.com/EventideSystems/tool_for_systemic_change/actions/workflows/check.yml/badge.svg)
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rubystyle.guide)
 
-## Background
+## About
 
-Originally developed by WickedLab, the Tool for Systemic Change is a web-based application that supports the development of a shared understanding of complex problems and the development of strategies to address them. It is based on the Transition Card model developed by Dr Sharon Zivkovic, and is used by a number of organisations in Australia and internationally.
+Obekio supports the development of a shared understanding of complex problems and the development of strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
 
-The tool has been extended to support the management of problems in relation to the United Nations Sustainable Development Goals (SDGs), and to support the development of strategies to address them.
+Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving the performance and redesigning the user interface.
 
-The source code tool has been released under an open source license, and is now maintained by Eventide Systems Pty Ltd. The various configurations used to define the diagnostic models used by the tool remain the intellectual property of their owners. These models are _not_ covered by the open source license. Please see **Additional License Information** below.
+## Features
+
+### Measuring Impact
+
+Obsekio
+
+![screenshot](blob/main/app/assets/images/screenshot.png)
+
+### Measuring Impact
+
+### Reporting
+
+Obsekio includes several built-in reports for mea
+
+
+## Acknowlegments
+
+We're grateful to Emily Humphreys and Dr Sharon Zivkovic for developing the original Tool for Systemic Change and for agreeing to release the code as open source.
+
+We'd also like to thank [AppSignal](https://www.appsignal.com/) for providing monitoring and error tracking services.
+
+And naturally we appreciate the support from our users. Without your feedback we'd  
+
+So, thank you everyone!
 
 ## License & Attribution
 
-This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.
+Copyright © 2025 Eventide Systems Pty Ltd, released under an open source license. The repository contains seed data models that are copyright their respective owners. See the copyright notices within the /db/data_models directory. 
 
-Copyright © 2023 Emily Humphreys. Portions copyright Eventide Systems Pty Ltd. All rights reserved.
+This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.  
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 If you modify this program, or any covered work, by linking or combining it with the Tool for Systemic Change, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
 
@@ -37,18 +58,14 @@ Attribution Notice:
 
 For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com
 
-### Additional License Information
-
-The configuration of the Transition Card model - the original diagnostic model used by the tool - remains the intellectual property of Dr Sharon Zivkovic and may not be used without her permission.
-
-SDG logos, and the Sustainable Development Goals model, are the property of the United Nations and may not be used commercially without permission from the United Nations.
+For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com
 
 ## System Architecture
 
 ### System Components
 
 ```
-                   HEROKU                              AWS LAMBDA                    APPSIGNAL       MANDRILL
+                   HEROKU                              AWS LAMBDA                    APPSIGNAL       MAILJET
 
 
  ┌────────────────────┐     ┌─────────────┐      ┌────────────────────────┐

@@ -17,7 +17,7 @@ Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/
 
 Obsekio
 
-![screenshot](/blob/main/app/assets/images/screenshot.png)
+![screenshot](app/assets/images/screenshot.png)
 
 ### Measuring Impact
 

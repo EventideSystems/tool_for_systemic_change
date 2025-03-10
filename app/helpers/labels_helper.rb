@@ -30,7 +30,7 @@ module LabelsHelper
   end
 
   def label_class_human_title(klass)
-    klass.model_name.human.pluralize
+    klass.model_name.human.pluralize.titleize
   end
 
   def label_class_search_placeholder(klass)

@@ -13,17 +13,21 @@ Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/
 
 ## Features
 
+### Tracking Changes
+
 ### Measuring Impact
 
-Obsekio
+Obsekio provides an at-a-glance overview of 
+
+![](app/assets/images/screenshot.png)
+
+### Connecting Stakeholders
 
 ![screenshot](app/assets/images/screenshot.png)
 
-### Measuring Impact
-
 ### Reporting
 
-Obsekio includes several built-in reports for mea
+Obsekio includes several built-in reports for 
 
 
 ## Acknowlegments

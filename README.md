@@ -33,7 +33,7 @@ Obsekio provides an at-a-glance overview of related initiatives, comparing progr
 
 Obsekio provides tools for visualising the connections betweens stakeholders engaged across initiatives, identify the impact of each in the network that supports your projects. 
 
-![stakeholder graph](app/assets/images/screenshot.png)
+![stakeholder graph](app/assets/images/graph.png)
 
 ## Acknowledgments
 
@@ -65,9 +65,7 @@ Attribution Notice:
 
 - If you distribute the software or any derivative works in binary form, you must, at a minimum, reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
-For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com
-
-For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com
+For any questions regarding the use of this software, please contact hello@toolforsystemicchange.com or raise a ticket in the project's [issue tracker on Github](https://github.com/EventideSystems/tool_for_systemic_change/issues).
 
 ## System Architecture
 

@@ -171,7 +171,7 @@ class InitiativesController < ApplicationController
           initiative.contact_phone,
           initiative.contact_website,
           initiative.contact_position
-        ] + organisation_names + subsystem_tag_names + [initiative.notes.to_plain_text.gsub("\n", ' ')])
+        ] + organisation_names + subsystem_tag_names + [initiative.notes.to_plain_text.tr("\n", ' ')])
       end
     end
   end

@@ -19,10 +19,10 @@
         <li>
           <div class="text-xs font-semibold leading-6 text-gray-400 mt-8">Labels</div>
           <ul role="list" class="-mx-2 mt-2 space-y-1">
-            <%= render_sidebar_item title: 'Communities', path: labels_communities_path, icon: :tags, active_group: :communities %>
-            <%= render_sidebar_item title: 'Problems / Opportunities', path: labels_wicked_problems_path, icon: :tags, active_group: :problems %>
-            <%= render_sidebar_item title: 'Stakeholder Types', path: labels_stakeholder_types_path, icon: :tags, active_group: :stakeholder_types %>
-            <%= render_sidebar_item title: 'Subsystem Tags', path: labels_subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
+            <%= render_sidebar_item title: label_class_human_title(Community), path: labels_communities_path, icon: :tags, active_group: :communities %>
+            <%= render_sidebar_item title: label_class_human_title(WickedProblem), path: labels_wicked_problems_path, icon: :tags, active_group: :problems %>
+            <%= render_sidebar_item title: label_class_human_title(StakeholderType), path: labels_stakeholder_types_path, icon: :tags, active_group: :stakeholder_types %>
+            <%= render_sidebar_item title: label_class_human_title(SubsystemTag), path: labels_subsystem_tags_path, icon: :tags, active_group: :subsystem_tags %>
           </ul>
         </li>
         <li class="mt-auto" data-controller="switch-workspace">

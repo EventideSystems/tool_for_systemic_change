@@ -1,9 +1,9 @@
 <div class="mx-auto max-w-6xl" data-controller="labels">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= label_klass.name.titleize.pluralize %></h1>
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white"><%= label_class_human_title(label_klass) %></h1>
       <div class="flex justify-between items-center mt-4 ">
-        <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: "Search #{label_klass.name.titleize.downcase.pluralize}..." } %>
+        <%= render partial: 'search_form', locals: { record: [:labels, @q], placeholder: label_class_search_placeholder(label_klass) } %>
         <div class="relative print:hidden">
           <div class="flex justify-end items-center mb-4 space-x-2">         
             <%=
@@ -11,7 +11,7 @@
             %>
             <%- if policy(label_klass).create? %>
               <%=
-                link_to_primary("Create #{label_klass.name.titleize}", new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
+                link_to_primary(label_class_button_name(label_klass), new_polymorphic_path([:labels, label_klass]), data: { turbo_stream: true, action: 'click->labels#toggle' })
               %>
             <%- end %>
           </div>

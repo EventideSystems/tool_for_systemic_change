@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <%= turbo_frame_tag :new_label_form %>
+    <%= turbo_frame_tag :new_label_form, class: 'w-full' %>
     <%= turbo_frame_tag :stylesheet do %>
       <%= render 'labels/stylesheet', labels: @all_labels %>
     <% end %>

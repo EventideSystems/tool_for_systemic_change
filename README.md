@@ -9,26 +9,29 @@
 
 Obekio supports the development of a shared understanding of complex problems and the development of strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
 
-Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving the performance and redesigning the user interface.
+Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving its performance and accessiblity.
+
+The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails.org/) and is available under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html) open source license.
 
 ## Features
 
 ### Tracking Changes
 
+Obekio allows you to model the objectivites of successful initiatives and record efforts made working towards reaching  goals. Obsekio includes pre-defined models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that you can customize for your ends - or create your own models from scratch.  
+
+![example of data entry](app/assets/images/data_entry.png)
+
 ### Measuring Impact
 
-Obsekio provides an at-a-glance overview of 
+Obsekio provides an at-a-glance overview of related initiatives, comparing progress across projects and identifying gaps in effort.
 
-![](app/assets/images/screenshot.png)
+![grid view of initiatives](app/assets/images/screenshot.png)
 
 ### Connecting Stakeholders
 
-![screenshot](app/assets/images/screenshot.png)
+Obsekio provides tools for visualising the connections betweens stakeholders engaged across initiatives, identify the impact of each in the network that supports your projects. 
 
-### Reporting
-
-Obsekio includes several built-in reports for 
-
+![stakeholder graph](app/assets/images/screenshot.png)
 
 ## Acknowlegments
 
@@ -36,7 +39,7 @@ We're grateful to Emily Humphreys and Dr Sharon Zivkovic for developing the orig
 
 We'd also like to thank [AppSignal](https://www.appsignal.com/) for providing monitoring and error tracking services.
 
-And naturally we appreciate the support from our users. Without your feedback we'd  
+And naturally we appreciate our users, without whose support and feedback this project would not exist.    
 
 So, thank you everyone!
 

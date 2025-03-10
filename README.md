@@ -7,9 +7,9 @@
 
 ## About
 
-Obekio helps users develop a shared understanding of complex problems and identify strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
+Obsekio helps users develop a shared understanding of complex problems and identify strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
 
-Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving its performance and accessiblity.
+Obsekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving its performance and accessiblity.
 
 The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails.org/) and is available under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html) open source license.
 
@@ -17,7 +17,7 @@ The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails
 
 ### Tracking Changes
 
-Obekio allows users to model the objectivites of successful initiatives and record efforts made working towards reaching goals within those initiatives. 
+Obsekio allows users to model the objectivites of successful initiatives and record efforts made working towards reaching goals within those initiatives. 
 
 Obsekio includes pre-defined data-collection models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that users can customize to their ends - or create new models from scratch.  
 

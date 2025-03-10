@@ -7,7 +7,7 @@
 
 ## About
 
-Obekio supports the development of a shared understanding of complex problems and the development of strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
+Obekio helps users develop a shared understanding of complex problems and identify strategies to address them. It enables the tracking of progress towards desired changes within an organization or the community, and allows visualization of the connections between stakeholders enagaged in effecting those changes.  
 
 Obekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630/https://www.wickedlab.co/) **Tool for Systemic Change**. It enhances the original Tool, improving its performance and accessiblity.
 
@@ -17,9 +17,9 @@ The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails
 
 ### Tracking Changes
 
-Obekio allows you to model the objectivites of successful initiatives and record efforts made working towards reaching  goals. 
+Obekio allows users to model the objectivites of successful initiatives and record efforts made working towards reaching goals within those initiatives. 
 
-Obsekio includes pre-defined models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that you can customize for your ends - or create your own models from scratch.  
+Obsekio includes pre-defined data-collection models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that users can customize to their ends - or create new models from scratch.  
 
 ![example of data entry](app/assets/images/data_entry.png)
 
@@ -31,7 +31,7 @@ Obsekio provides an at-a-glance overview of related initiatives, comparing progr
 
 ### Connecting Stakeholders
 
-Obsekio provides tools for visualising the connections betweens stakeholders engaged across initiatives, identify the impact of each in the network that supports your projects. 
+Obsekio provides tools for visualising the connections betweens stakeholders engaged across initiatives, identify how much each impacts the ecosystem of parties with an interest in the tracked projects. 
 
 ![stakeholder graph](app/assets/images/graph.png)
 

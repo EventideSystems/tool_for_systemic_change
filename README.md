@@ -35,7 +35,7 @@ Obsekio provides tools for visualising the connections betweens stakeholders eng
 
 ![stakeholder graph](app/assets/images/screenshot.png)
 
-## Acknowlegments
+## Acknowledgments
 
 We're grateful to Emily Humphreys and Dr Sharon Zivkovic for developing the original Tool for Systemic Change and for agreeing to release the code as open source.
 

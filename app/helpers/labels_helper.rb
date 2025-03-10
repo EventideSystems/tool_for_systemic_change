@@ -5,7 +5,7 @@ module LabelsHelper
   def hex_to_rgb(hex)
     return [0, 0, 0] if hex.blank?
 
-    hex = hex.gsub('#', '')
+    hex = hex.delete('#')
     r = hex[0..1].to_i(16)
     g = hex[2..3].to_i(16)
     b = hex[4..5].to_i(16)
@@ -27,5 +27,17 @@ module LabelsHelper
 
     # Calculate luminance
     0.2126 * r + 0.7152 * g + 0.0722 * b
+  end
+
+  def label_class_human_title(klass)
+    klass.model_name.human.pluralize
+  end
+
+  def label_class_search_placeholder(klass)
+    "Search #{klass.model_name.human.pluralize.downcase}..."
+  end
+
+  def label_class_button_name(klass)
+    "Create #{klass.model_name.human.titleize}"
   end
 end

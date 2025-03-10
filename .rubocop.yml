@@ -1,9 +1,10 @@
 plugins:
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-factory_bot
+  - rubocop-performance
 require:
   - rubocop-capybara
-  - rubocop-factory_bot
   - rubocop-rspec_rails
 AllCops:
   NewCops: disable

@@ -20,7 +20,7 @@ class LabelsController < ApplicationController
       format.html { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.turbo_stream { render 'labels/index', locals: { labels: @labels, label_klass: } }
       format.css { render 'labels/index', formats: [:css], locals: { labels: @labels } }
-      format.csv { render csv: @all_labels, filename: label_klass.name.pluralize }
+      format.csv { render csv: @all_labels, filename: csv_filename(@all_labels) }
     end
   end
 
@@ -84,6 +84,10 @@ class LabelsController < ApplicationController
   end
 
   private
+
+  def csv_filename(labels)
+    "#{labels.model_name.human.tr('/', '-')} - #{Time.zone.now.to_date}"
+  end
 
   def load_all_labels
     @all_labels = policy_scope(label_klass).order('lower(name)')

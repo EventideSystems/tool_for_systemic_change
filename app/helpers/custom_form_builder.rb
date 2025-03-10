@@ -228,9 +228,10 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     # rubocop:enable Naming/VariableName
 
     choices = '<option disabled="">No options available</option>'.html_safe if choices.empty?
-    options.merge!(multiple: true)
+    options[:multiple] = true
     data_options = html_options.delete(:data) || {}
-    html_options.merge!(data: data_options.merge({ multi_select_target: 'select', hs_select: }), class: 'hidden')
+    html_options[:data] = data_options.merge({ multi_select_target: 'select', hs_select: })
+    html_options[:class] = 'hidden'
 
     @template.content_tag(:div, class: 'flex', data: { controller: 'multi-select' }) do
       @template.concat(ActionView::Helpers::Tags::Select.new(
@@ -336,9 +337,9 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder # rubocop:disable Met
     "#{base_text}(#{diff}) selected"
   end
 
-  def wrap_field(method, &block)
+  def wrap_field(method)
     @template.content_tag(:div) do
-      @template.concat(block.call)
+      @template.concat(yield)
       append_error_message(@object, method)
     end
   end

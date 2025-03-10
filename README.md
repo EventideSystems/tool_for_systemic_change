@@ -17,7 +17,9 @@ The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails
 
 ### Tracking Changes
 
-Obekio allows you to model the objectivites of successful initiatives and record efforts made working towards reaching  goals. Obsekio includes pre-defined models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that you can customize for your ends - or create your own models from scratch.  
+Obekio allows you to model the objectivites of successful initiatives and record efforts made working towards reaching  goals. 
+
+Obsekio includes pre-defined models (_e.g._ the United Nations [Sustainable Development Goals](https://sdgs.un.org/goals)) that you can customize for your ends - or create your own models from scratch.  
 
 ![example of data entry](app/assets/images/data_entry.png)
 

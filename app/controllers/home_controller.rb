@@ -13,4 +13,6 @@ class HomeController < ApplicationController
   end
 
   def contributors; end
+
+  def privacy; end
 end

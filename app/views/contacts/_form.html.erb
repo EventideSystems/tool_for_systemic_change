@@ -1,0 +1,30 @@
+<%= form_with(model: contact, local: true, data: { turbo: false }) do |form| %>
+  <%= recaptcha_v3(action: 'contact') %>
+  <div class="space-y-6">
+    <div class="mt-2">
+      <%= form.label :name, 'Contact name', class: 'text-white dark:text-white' %>
+      <div class="mt-2">
+        <%= form.text_field :name, class: 'text-white dark:text-white w-full focus:ring-amber-500 ', autofocus: true %>
+      </div> 
+    <div>
+
+    <div class="mt-4">
+      <%= form.label :email, 'Contact email', class: 'text-white dark:text-white' %>
+      <div class="mt-2">
+        <%= form.email_field :email, class: 'text-white dark:text-white w-full focus:ring-amber-500' %>
+      </div>
+    <div>  
+
+    <div class="mt-4">
+      <%= form.label :message, class: 'text-white dark:text-white' %>
+      <div class="mt-2">
+        <%= form.text_area :message, class: 'text-white dark:text-white w-full focus:ring-amber-500 h-48' %>
+      </div>
+    <div> 
+  </div>
+
+  <div class="mt-6 flex items-center justify-end gap-x-6">
+    <%= link_to 'Cancel', root_path, class: "text-sm/6 font-semibold text-gray-200 dark:text-gray-700" %>
+    <%= form.submit 'Post', class: 'bg-teal-900 dark:bg-teal-900 hover:bg-teal-700 dark:hover:bg-teal-700' %>
+  </div>
+<%- end %>

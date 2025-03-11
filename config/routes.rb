@@ -50,7 +50,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :contacts, only: %i[new create]
+  resources :contacts, only: %i[new create] do
+    collection do
+      get 'privacy'
+      get 'terms'
+    end
+  end
 
   resources :focus_area_groups
   resources :focus_areas
@@ -124,6 +129,9 @@ Rails.application.routes.draw do
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
   get 'contributors', to: 'home#contributors'
+  get 'privacy', to: 'home#privacy'
+  get 'cookie', to: 'home#cookie'
+  get 'terms', to: 'home#terms'
 
   namespace :system do
     resources :stakeholder_types

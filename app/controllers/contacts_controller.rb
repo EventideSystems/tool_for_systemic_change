@@ -10,6 +10,14 @@ class ContactsController < ApplicationController
     @contact = Contact.new
   end
 
+  def privacy
+    @contact = Contact.new
+  end
+
+  def terms
+    @contact = Contact.new
+  end
+
   def create # rubocop:disable Metrics/MethodLength
     @contact = Contact.new(params[:contact].permit(:name, :email, :message))
     recaptcha_valid = verify_recaptcha(model: @contact, action: 'contact')

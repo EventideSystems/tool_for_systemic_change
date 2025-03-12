@@ -22,7 +22,12 @@ module LinksHelper
   def link_to_external_url(url)
     return '' if url.blank?
 
-    domain = URI.parse(url).host
+    begin
+      domain = URI.parse(url).host
+      return '' if domain.blank?
+    rescue URI::InvalidURIError
+      return "Invalid URL: '#{url}'"
+    end
 
     link_to domain, url, target: '_blank', rel: 'noopener', alt: url, class: EXTERNAL_LINK_CLASS
   end

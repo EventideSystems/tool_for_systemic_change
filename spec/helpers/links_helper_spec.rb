@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe LinksHelper, type: :helper do
   describe '#link_to_external_url' do
-    let(:valid_url) { 'https://example.com' }
+    let(:valid_url) { 'http://example.com' }
     let(:invalid_url) { 'invalid-url' }
     let(:domain) { 'example.com' }
 
@@ -19,6 +19,19 @@ RSpec.describe LinksHelper, type: :helper do
       it 'returns a link to the domain with the correct attributes' do
         link = helper.link_to_external_url(valid_url)
         expect(link).to include("href=\"#{valid_url}\"")
+        expect(link).to include('target="_blank"')
+        expect(link).to include('rel="noopener"')
+        expect(link).to include("class=\"#{LinksHelper::EXTERNAL_LINK_CLASS}\"")
+        expect(link).to include(domain)
+      end
+    end
+    # rubocop:enable RSpec/ExampleLength,RSpec/MultipleExpectations
+
+    # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+    context 'when the URL is missing the protocol' do
+      it 'returns a link to the domain with the correct attributes' do
+        link = helper.link_to_external_url('example.com')
+        expect(link).to include('href="https://example.com"')
         expect(link).to include('target="_blank"')
         expect(link).to include('rel="noopener"')
         expect(link).to include("class=\"#{LinksHelper::EXTERNAL_LINK_CLASS}\"")

@@ -1,90 +1,98 @@
-<div class="flex flex-wrap justify-start">
-  <%=
-    render(
-      'form',
-      name: stakeholder_report_name,
-      path: transition_card_stakeholders_reports_path(format: :xlsx),
-      description: 'This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.'
-    ) do |f|
-  %>
-    <%= render partial: 'scorecard_selector', locals: { f: f } %>
-  <% end %>
+<div class="mx-auto max-w-6xl" data-controller="labels">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">      
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Reports</h1>
 
-  <%- if policy(:report).subsystem_summary? %>
-    <%=
-      render(
-        'form',
-        name: 'Subsystem Report',
-        path: subsystem_summary_reports_path(format: :xlsx),
-        description: 'This report shows a summary of the interactions between subsystems, organisations and initiatives.'
-      ) do |f|
-    %>
-      <%= render partial: 'scorecard_selector', locals: { f: f } %>
-    <% end %>
-  <% end %>
+      <div class="flex flex-wrap justify-start mt-4">
+        <%=
+          render(
+            'form',
+            name: stakeholder_report_name,
+            path: transition_card_stakeholders_reports_path(format: :xlsx),
+            description: 'This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.'
+          ) do |f|
+        %>
+          <%= render partial: 'scorecard_selector', locals: { f: f } %>
+        <% end %>
 
-  <%=
-    render(
-      'form',
-      name: comments_report_name,
-      path: scorecard_comments_reports_path(format: :xlsx),
-      description: 'This report shows the first time comments have been recorded across initiatives.'
-    ) do |f|
-  %>
-    <%= render partial: 'scorecard_selector', locals: { f: f } %>
-    <div class="flex space-x-4">
-      <%= custom_date_field_tag :date, nil, title: 'Filter by date' %>
-      <%= custom_select_tag :status, options_for_select(options_for_comment_statuses), include_blank: false  %>
+        <%- if policy(:report).subsystem_summary? %>
+          <%=
+            render(
+              'form',
+              name: 'Subsystem Report',
+              path: subsystem_summary_reports_path(format: :xlsx),
+              description: 'This report shows a summary of the interactions between subsystems, organisations and initiatives.'
+            ) do |f|
+          %>
+            <%= render partial: 'scorecard_selector', locals: { f: f } %>
+          <% end %>
+        <% end %>
+
+        <%=
+          render(
+            'form',
+            name: comments_report_name,
+            path: scorecard_comments_reports_path(format: :xlsx),
+            description: 'This report shows the first time comments have been recorded across initiatives.'
+          ) do |f|
+        %>
+          <%= render partial: 'scorecard_selector', locals: { f: f } %>
+          <div class="flex space-x-4">
+            <%= custom_date_field_tag :date, nil, title: 'Filter by date' %>
+            <%= custom_select_tag :status, options_for_select(options_for_comment_statuses), include_blank: false  %>
+          </div>
+        <% end %>
+
+        <%- if policy(:report).transition_card_activity? %>
+          <%=
+            render(
+              'form',
+              name: activity_report_name,
+              path: transition_card_activity_reports_path(format: :xlsx),
+              description: 'This report shows the addition and removal of characteristics across initiatives over a period of time.'
+            ) do |f|
+          %>
+            <%= render partial: 'scorecard_selector', locals: { f: f } %>
+            <div class="flex space-x-4">
+              <%= custom_date_field_tag :date_from, nil, title: 'Filter by start date' %>
+              <%= custom_date_field_tag :date_to, nil, title: 'Filter by end date' %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <%- if policy(:report).cross_account_percent_actual? %>
+          <%=
+            render(
+              'form',
+              name: 'Cross-Account Percent Actual',
+              path: cross_account_percent_actual_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card for all accounts (must have admin role in each account).'
+            )
+          %>
+        <% end %>
+
+        <%- if policy(:report).cross_account_percent_actual_by_focus_area? %>
+          <%=
+            render(
+              'form',
+              name: 'Cross-Account Percent Actual Per Focus Area',
+              path: cross_account_percent_actual_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card per Focus Area for all accounts (must have admin role in each account).'
+            )
+          %>
+        <% end %>
+
+        <%- if policy(:report).cross_account_percent_actual_by_focus_area_tabbed? %>
+          <%=
+            render(
+              'form',
+              name: 'Cross-Account Percent Actual Per Focus Area (Tabbed)',
+              path: cross_account_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card all accounts, grouped by Focus Area in separate tabs (must have admin role in each account).'
+            )
+          %>
+        <% end %>
+      <div>
     </div>
-  <% end %>
-
-  <%- if policy(:report).transition_card_activity? %>
-    <%=
-      render(
-        'form',
-        name: activity_report_name,
-        path: transition_card_activity_reports_path(format: :xlsx),
-        description: 'This report shows the addition and removal of characteristics across initiatives over a period of time.'
-      ) do |f|
-    %>
-      <%= render partial: 'scorecard_selector', locals: { f: f } %>
-      <div class="flex space-x-4">
-        <%= custom_date_field_tag :date_from, nil, title: 'Filter by start date' %>
-        <%= custom_date_field_tag :date_to, nil, title: 'Filter by end date' %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <%- if policy(:report).cross_account_percent_actual? %>
-    <%=
-      render(
-        'form',
-        name: 'Cross-Account Percent Actual',
-        path: cross_account_percent_actual_reports_path(format: :xlsx),
-        description: 'Actual Percentage per Transition Card for all accounts (must have admin role in each account).'
-      )
-    %>
-  <% end %>
-
-  <%- if policy(:report).cross_account_percent_actual_by_focus_area? %>
-    <%=
-      render(
-        'form',
-        name: 'Cross-Account Percent Actual Per Focus Area',
-        path: cross_account_percent_actual_reports_path(format: :xlsx),
-        description: 'Actual Percentage per Transition Card per Focus Area for all accounts (must have admin role in each account).'
-      )
-    %>
-  <% end %>
-
-  <%- if policy(:report).cross_account_percent_actual_by_focus_area_tabbed? %>
-    <%=
-      render(
-        'form',
-        name: 'Cross-Account Percent Actual Per Focus Area (Tabbed)',
-        path: cross_account_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx),
-        description: 'Actual Percentage per Transition Card all accounts, grouped by Focus Area in separate tabs (must have admin role in each account).'
-      )
-    %>
-  <% end %>
-<div>
+  </div>
+</div>

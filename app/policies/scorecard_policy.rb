@@ -16,11 +16,11 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def create?
-    system_admin? || (current_account_admin? && max_scorecards_not_reached?(user_context.account))
+    system_admin? || (current_account_admin? && max_scorecards_not_reached? && current_account_not_expired?)
   end
 
   def update?
-    system_admin? || current_account_admin?
+    system_admin? || (current_account_admin? && current_account_not_expired?)
   end
 
   def destroy?
@@ -40,7 +40,7 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def merge?
-    system_admin? || current_account_admin?
+    system_admin? || (current_account_admin? && current_account_not_expired?)
   end
 
   def merge_options?
@@ -59,11 +59,11 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     system_admin? || account_any_role?(record.account)
   end
 
-  def max_scorecards_not_reached?(account)
-    return false if account.blank?
-    return true if account.max_scorecards.zero? # NOTE: magic number, meaning no limit
+  def max_scorecards_not_reached?
+    return false if current_account.blank?
+    return true if current_account.max_scorecards.zero? # NOTE: magic number, meaning no limit
 
-    account.scorecards.count < account.max_scorecards
+    current_account.scorecards.count < current_account.max_scorecards
   end
 
   def ecosystem_maps?

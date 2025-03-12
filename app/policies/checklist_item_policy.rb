@@ -20,26 +20,15 @@ class ChecklistItemPolicy < ApplicationPolicy # rubocop:disable Style/Documentat
   end
 
   def update?
-    system_admin? || account_any_role?(checklist_item_account)
+    system_admin? || (account_any_role?(checklist_item_account) && current_account_not_expired?)
   end
 
-  def update_comment?
-    update?
-  end
+  # def update_comment?
+  #   update?
+  # end
 
   def destroy?
     system_admin? || account_admin?(checklist_item_account)
-  end
-
-  def edit_checklist_item?
-    return true if system_admin?
-
-    account = record.initiative.scorecard.account
-    account_admin?(account) || account_member?(account)
-  end
-
-  def comment_status?
-    edit_checklist_item?
   end
 
   private

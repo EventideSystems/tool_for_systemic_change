@@ -12,11 +12,11 @@ class OrganisationPolicy < ApplicationPolicy # rubocop:disable Style/Documentati
   end
 
   def create?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (current_account_admin? && current_account_not_expired?)
   end
 
   def update?
-    system_admin? || account_admin?(record.account)
+    system_admin? || (account_admin?(record.account) && current_account_not_expired?)
   end
 
   def destroy?

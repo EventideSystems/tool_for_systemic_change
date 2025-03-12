@@ -14,34 +14,28 @@ class InitiativePolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def show?
-    system_admin? || (account_any_role?(current_account) && in_scope?(record))
+    system_admin? || (current_account_any_role? && record_in_scope?)
   end
 
   def show_archived?
-    system_admin? || account_admin?(current_account)
+    system_admin? || current_account_admin?
   end
 
   def create?
-    system_admin? || account_admin?(current_account)
+    system_admin? || (current_account_admin? && current_account_not_expired?)
   end
 
   def update?
-    system_admin? || (account_admin?(current_account) && in_scope?(record))
+    system_admin? || (current_account_admin? && record_in_scope? && current_account_not_expired?)
   end
 
   def destroy?
-    system_admin? || (account_admin?(current_account) && in_scope?(record))
+    system_admin? || (current_account_admin? && record_in_scope?)
   end
 
   def archive?
-    system_admin? || (account_admin?(current_account) && in_scope?(record))
+    system_admin? || (current_account_admin? && record_in_scope?)
   end
 
   alias edit_data? show?
-
-  private
-
-  def in_scope?(record)
-    Pundit.policy_scope(user_context, Initiative).exists?(id: record.id)
-  end
 end

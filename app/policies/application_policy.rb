@@ -86,12 +86,24 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
     user_context.account
   end
 
+  def current_account_not_expired?
+    !current_account.expired?
+  end
+
   def current_user
     user_context.user
   end
 
   def current_account_admin?
     current_user.admin? || account_admin?(user_context.account)
+  end
+
+  def current_account_member?
+    account_member?(user_context.account)
+  end
+
+  def current_account_any_role?
+    current_account_admin? || current_account_member?
   end
 
   def account_admin?(account)
@@ -109,4 +121,8 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
   def account_any_role?(account)
     account_admin?(account) || account_member?(account)
   end
+
+  private
+
+  def record_in_scope? = scope.exists?(id: record.id)
 end

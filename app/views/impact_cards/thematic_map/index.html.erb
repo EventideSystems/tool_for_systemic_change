@@ -1,5 +1,5 @@
 <%= render 'labels/stylesheet', labels: @stakeholder_types %>
-
+<%= render 'expiry_warning' %>
 <div class="mx-auto max-w-6xl" data-controller="thematic-map">
   <%= render 'impact_cards/summary', impact_card: @scorecard %>
   <%= render 'impact_cards/tabs', impact_card: @scorecard %>

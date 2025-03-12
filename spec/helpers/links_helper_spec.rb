@@ -28,14 +28,16 @@ RSpec.describe LinksHelper, type: :helper do
     # rubocop:enable RSpec/ExampleLength,RSpec/MultipleExpectations
 
     context 'when the URL is invalid' do
-      it 'returns an empty string' do
-        expect(helper.link_to_external_url(invalid_url)).to eq('')
+      it 'returns a warning message' do
+        expect(helper.link_to_external_url(invalid_url))
+          .to eq('<span class="text-orange-950 dark:text-orange-500">invalid-url [invalid URL]</span>')
       end
     end
 
     context 'when the URL has an invalid domain' do
-      it 'returns an empty string' do
-        expect(helper.link_to_external_url('https://')).to eq('')
+      it 'returns a warning message' do
+        expect(helper.link_to_external_url('https://'))
+          .to eq('<span class="text-orange-950 dark:text-orange-500">https:// [invalid URL]</span>')
       end
     end
   end

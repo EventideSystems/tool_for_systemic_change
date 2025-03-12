@@ -21,14 +21,33 @@ module LinksHelper
 
   def link_to_external_url(url)
     return '' if url.blank?
- 
-    domain = URI.parse(url).host
-    return content_tag(:span, "#{url} [invalid URL]", class: 'text-orange-950 dark:text-orange-500') if domain.blank?
 
-    link_to domain, url, target: '_blank', rel: 'noopener', alt: url, class: EXTERNAL_LINK_CLASS
+    url_with_protocol = %r{\Ahttp(s)?://}.match?(url) ? url : "https://#{url}"
+
+    return invalid_url_message(url) unless valid_web_domain?(url_with_protocol)
+
+    begin
+      domain = URI.parse(url_with_protocol).host
+      return invalid_url_message(url) if domain.blank?
+    rescue URI::InvalidURIError
+      return invalid_url_message(url)
+    end
+
+    link_to domain, url_with_protocol, target: '_blank', rel: 'noopener', alt: url, class: EXTERNAL_LINK_CLASS
   end
 
   def landing_pages_link_to(text, url, options = {})
     link_to(text, url, class: merge_tailwind_class(LANDING_PAGES_LINK_CLASS, options[:class]))
+  end
+
+  private
+
+  def invalid_url_message(url)
+    content_tag(:span, "#{url} [invalid URL]", class: 'text-orange-950 dark:text-orange-500')
+  end
+
+  def valid_web_domain?(domain)
+    domain_regex = %r{\Ahttp(s)?://(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}\z}i
+    domain_regex.match?(domain)
   end
 end

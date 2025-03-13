@@ -15,18 +15,12 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     end
   end
 
-  class SystemScope < Scope # rubocop:disable Style/Documentation
-    def resolve
-      scope.with_deleted.all if user_context.user.admin?
-    end
-  end
-
   def show?
-    system_admin? || account_admin?(user_context.account) || account_member?(user_context.account)
+    system_admin? || current_account_any_role?
   end
 
   def create?
-    system_admin? || (account_admin?(user_context.account) && max_users_not_reached?(user_context.account))
+    system_admin? || (current_account_any_role? && current_account_not_expired?)
   end
 
   def invite?
@@ -38,17 +32,15 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def update?
-    system_admin? || account_admin?(user_context.account) || record == current_user
+    system_admin? || current_account_admin? || record_is_current_user?
   end
 
   def update_system_role?
-    system_admin? && record != current_user
+    system_admin? && record_is_not_current_user?
   end
 
   def destroy?
-    return false if user_context.user == record
-
-    system_admin? || account_admin?(user_context.account)
+    record_is_not_current_user? && (system_admin? || current_account_admin?)
   end
 
   def undelete?
@@ -56,13 +48,11 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def resend_invitation?
-    system_admin? || account_admin?(current_account)
+    system_admin? || current_account_admin?
   end
 
   def remove_from_account?
-    return false if user_context.user == record
-
-    system_admin? || account_admin?(user_context.account)
+    record_is_not_current_user? && (system_admin? || current_account_admin?)
   end
 
   def max_users_not_reached?(account)
@@ -73,7 +63,7 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def impersonate?
-    system_admin? && !record_is_current_user?
+    system_admin? && record_is_not_current_user?
   end
 
   def stop_impersonating?
@@ -81,7 +71,7 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def change_account_role?
-    system_admin? || account_admin?(user_context.account)
+    system_admin? || current_account_admin?
   end
 
   def change_password?
@@ -92,5 +82,9 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
 
   def record_is_current_user?
     user_context.user.id == record.id
+  end
+
+  def record_is_not_current_user?
+    !record_is_current_user?
   end
 end

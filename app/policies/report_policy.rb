@@ -1,45 +1,18 @@
 # frozen_string_literal: true
 
-class ReportPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
-  def index?
-    true
-  end
+# Policy for Reports
+class ReportPolicy < ApplicationPolicy
+  def index? = true
+  def initiatives_report? = true
+  def initiatives_results? = true
+  def stakeholders_report? = true
+  def stakeholders_results? = true
+  def transition_card_activity? = true
+  def subsystem_summary? = true
 
-  def initiatives_report?
-    true
-  end
-
-  def initiatives_results?
-    true
-  end
-
-  def stakeholders_report?
-    true
-  end
-
-  def stakeholders_results?
-    true
-  end
-
-  def transition_card_activity?
-    true
-  end
-
-  def subsystem_summary?
-    true
-  end
-
-  def cross_account_percent_actual?
-    user_has_active_accounts_with_admin_role?
-  end
-
-  def cross_account_percent_actual_by_focus_area?
-    user_has_active_accounts_with_admin_role?
-  end
-
-  def cross_account_percent_actual_by_focus_area_tabbed?
-    user_has_active_accounts_with_admin_role?
-  end
+  def cross_account_percent_actual? = user_has_active_accounts_with_admin_role?
+  def cross_account_percent_actual_by_focus_area? = user_has_active_accounts_with_admin_role?
+  def cross_account_percent_actual_by_focus_area_tabbed? = user_has_active_accounts_with_admin_role?
 
   private
 

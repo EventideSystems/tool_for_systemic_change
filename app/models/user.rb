@@ -81,6 +81,7 @@ class User < ApplicationRecord
     %w[name email] + _ransackers.keys
   end
 
+  # Used by Devise to determine if the user is active and can sign in.
   def active_for_authentication?
     super && (admin? || default_account.present?)
   end
@@ -100,7 +101,7 @@ class User < ApplicationRecord
   end
 
   def default_account
-    active_accounts.first
+    active_accounts.first || accounts.first
   end
 
   def primary_account_name

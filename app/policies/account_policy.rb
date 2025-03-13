@@ -24,7 +24,7 @@ class AccountPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def update?
-    system_admin? || account_admin?(record)
+    system_admin? || (account_admin?(record) && !record.expired?)
   end
 
   def update_protected_attributes?

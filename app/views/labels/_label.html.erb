@@ -16,10 +16,8 @@
       </div>
 
       <div class="flex items-center gap-4 ml-auto">        
-        <% if label.is_a?(StakeholderType) && label.stakeholders.present? %>
-          <%- if policy(label).edit? %>
-            <span class="text-black dark:text-gray-500 whitespace-nowrap">In Use (<%= label.stakeholders_count %>)</span>
-          <%- end %>
+        <% if label.is_a?(StakeholderType) && label.stakeholders.present? %>          
+            <span class="text-black dark:text-gray-500 whitespace-nowrap">In Use (<%= label.stakeholders_count %>)</span>          
         <% else %>
           <%- if policy(label).destroy? %>
             <%= link_to "Delete", polymorphic_path([:labels, label]), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"},  class: "text-sm text-red-500 hover:underline" %>

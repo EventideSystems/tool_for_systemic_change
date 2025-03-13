@@ -14,16 +14,19 @@ end
 
 Given('I am an admin user for the {string} account') do |account_name|
   account = Account.find_by(name: account_name)
+  @user = User.find_by(email: 'account-admin@obsek.io')
 
-  @user_password = 'password'
-  @user = create(
-    :user,
-    system_role: :member,
-    email: 'acconut-admin@obsek.io',
-    password: @user_password,
-    password_confirmation: @user_password,
-    name: 'Account Admin'
-  )
+  if @user.nil?
+    @user_password = 'password'
+    @user = create(
+      :user,
+      system_role: :member,
+      email: 'account-admin@obsek.io',
+      password: @user_password,
+      password_confirmation: @user_password,
+      name: 'Account Admin'
+    )
+  end
 
   account.add_user(@user, :admin)
 end

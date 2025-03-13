@@ -1,3 +1,8 @@
+<%- if role_in_current_account(current_user) == 'admin' %>
+  <%= render 'limited_functionality' %>
+<% else %>
+  <%= render 'expiry_warning' %>
+<% end %>
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">

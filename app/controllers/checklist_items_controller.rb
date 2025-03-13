@@ -8,7 +8,7 @@ class ChecklistItemsController < ApplicationController
     @checklist_item = ChecklistItem.find(params[:id])
     authorize @checklist_item
 
-    render json: @checklist_item.to_json(only: %i[id status comment humanized_status])
+    # render json: @checklist_item.to_json(only: %i[id status comment humanized_status])
   end
 
   def edit

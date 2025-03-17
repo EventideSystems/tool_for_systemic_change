@@ -5,7 +5,13 @@
   <%- if current_account.expired? %>
     <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
       <strong class="font-bold">Your account has expired!</strong>
-      <span class="block sm:inline">Please contact your account administrator to renew your subscription.</span>
+      <%- if role_in_current_account(current_user) == 'admin' %>
+        <span class="block sm:inline">
+          Please contact the <%= mail_to 'hello@toolforsystemicchange.com', 'system administrators', subject: 'Renew subscription', class: 'underline' %> to renew your subscription.
+        </span>
+      <%- else %>
+        <span class="block sm:inline">Please contact your account administrator to renew your subscription.</span>
+      <%- end %>
     </div>
   <% end %>
   <div class="mt-8 flex items-end justify-between">

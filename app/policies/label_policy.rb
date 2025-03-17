@@ -22,6 +22,6 @@ class LabelPolicy < ApplicationPolicy
   end
 
   def destroy?
-    system_admin? || (account_admin?(current_account) && record_in_scope?)
+    system_admin? || (account_admin?(current_account) && record_in_scope? && current_account_not_expired?)
   end
 end

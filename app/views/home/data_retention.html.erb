@@ -1,0 +1,56 @@
+<div class="relative isolate overflow-hidden">
+  <%= render 'top_links' %>
+  <div class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]" aria-hidden="true">
+    <div class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-20" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)"></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-6 pb-16 pt-8 sm:pb-16 lg:px-8 lg:pt-40 flex flex-col">
+    <div class="flex items-center gap-x-6 ml-8 mb-8">
+      <%= image_tag 'logo-small.png', class: 'h-16 w-auto', alt: "Logo for the 'Tool for Systemic Change'" %>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">Data Retention Policy</h1>
+    </div>
+    <div class="text-white bg-teal-900 rounded-lg p-8 w-full">
+      <p class="my-4 text-gray-300">
+        We are committed to safeguarding user data while balancing operational requirements and compliance with applicable laws. 
+        This policy outlines how data is retained, accessed, and managed.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">1. Read-Only Data Access for Expired Accounts</h2>
+      <p class="my-4 text-gray-300">
+        Users may be granted limited, read-only access to their data under certain circumstances, typically in the advent of 
+        expired user accounts. This access is provided to allow users to retrieve or review their data. During this time, 
+        no changes, updates, or additions to the data will be permitted.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">2. Data Deletion or Anonymisation</h2>
+      <p class="my-4 text-gray-300">
+        We reserve the right to permanently delete or anonymise user data in accordance with our data retention practices 
+        and applicable legal requirements. Data deletion or anonymisation ensures compliance with privacy laws and protects 
+        user confidentiality.
+      </p>
+      <p class="my-4 text-gray-300">
+        Whever possible, we will notify users of any impending data deletion or anonymisation activities. Users may also
+        request the deletion of their data by contacting us via the
+        <%= landing_pages_link_to 'Privacy Contact Form', privacy_contacts_path %>.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">3. Compliance with Legal Regulations</h2>
+      <p class="my-4 text-gray-300">
+        We comply with relevant data privacy regulations, including but not limited to those covered by Australian Federal 
+        and South Australian privacy legislation. Our data handling practices aim to meet the highest standards of 
+        integrity and user rights.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">4. Changes to This Policy</h2>
+      <p class="my-4 text-gray-300">
+        We reserve the right to update or modify this Data Retention Policy at any time. Any changes will be posted on 
+        this page, and your continued use of the platform after such changes constitutes acceptance of the revised policy.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">Contact Us</h2>
+      <p class="my-4 text-gray-300">
+        If you have any questions or concerns about this Data Retention Policy, please contact us via the 
+        <%= landing_pages_link_to 'Privacy Contact Form', privacy_contacts_path %>.
+      </p>
+    </div>
+  </div>
+</div>

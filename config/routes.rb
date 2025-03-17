@@ -132,6 +132,7 @@ Rails.application.routes.draw do
   get 'privacy', to: 'home#privacy'
   get 'cookie', to: 'home#cookie'
   get 'terms', to: 'home#terms'
+  get 'data_retention', to: 'home#data_retention'
 
   namespace :system do
     resources :stakeholder_types

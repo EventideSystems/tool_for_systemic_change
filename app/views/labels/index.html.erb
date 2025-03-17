@@ -1,8 +1,4 @@
-<%- if role_in_current_account(current_user) == 'admin' %>
-  <%= render 'limited_functionality' %>
-<% else %>
-  <%= render 'expiry_warning' %>
-<% end %>
+<%= render 'expiry_warning' %>
 <div class="mx-auto max-w-6xl" data-controller="labels">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">

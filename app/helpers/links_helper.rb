@@ -42,12 +42,11 @@ module LinksHelper
 
   private
 
+  DOMAIN_REGEX = %r{https?://[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)}i
+
   def invalid_url_message(url)
     content_tag(:span, "#{url} [invalid URL]", class: 'text-orange-950 dark:text-orange-500')
   end
 
-  def valid_web_domain?(domain)
-    domain_regex = %r{\Ahttp(s)?://(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}\z}i
-    domain_regex.match?(domain)
-  end
+  def valid_web_domain?(domain) = DOMAIN_REGEX.match?(domain)
 end

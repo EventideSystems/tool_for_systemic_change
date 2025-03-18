@@ -40,6 +40,27 @@ RSpec.describe LinksHelper, type: :helper do
     end
     # rubocop:enable RSpec/ExampleLength,RSpec/MultipleExpectations
 
+    context 'when the URL has a trailing slash' do
+      it 'returns a link to the domain' do
+        link = helper.link_to_external_url("#{valid_url}/")
+        expect(link).to include("href=\"#{valid_url}\/")
+      end
+    end
+
+    context 'when the URL includes a path' do
+      it 'returns a link to the domain and path' do
+        link = helper.link_to_external_url("#{valid_url}/check")
+        expect(link).to include("href=\"#{valid_url}\/check")
+      end
+    end
+
+    context 'when the URL includes parameters' do
+      it 'returns a link to the domain, path and parameters' do
+        link = helper.link_to_external_url("#{valid_url}/check?param=value")
+        expect(link).to include("href=\"#{valid_url}\/check?param=value")
+      end
+    end
+
     context 'when the URL is invalid' do
       it 'returns a warning message' do
         expect(helper.link_to_external_url(invalid_url))

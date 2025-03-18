@@ -124,7 +124,6 @@ GEM
       rubyzip (>= 1.3.0, < 3)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.0)
-    content_disposition (1.0.0)
     crass (1.0.6)
     csv (3.3.2)
     cucumber (9.2.1)
@@ -180,8 +179,6 @@ GEM
       devise (>= 4.6)
     diff-lcs (1.6.0)
     dotenv (3.1.7)
-    down (5.4.2)
-      addressable (~> 2.8)
     drb (2.2.1)
     erubi (1.13.1)
     factory_bot (6.5.1)
@@ -368,9 +365,6 @@ GEM
       actionpack (>= 5.2)
       railties (>= 5.2)
     rexml (3.4.1)
-    roo (2.10.1)
-      nokogiri (~> 1)
-      rubyzip (>= 1.3.0, < 3.0.0)
     rspec-core (3.13.3)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -443,9 +437,6 @@ GEM
       websocket (~> 1.0)
     shadcn-ui (0.0.15)
       tailwind_merge (~> 0.12)
-    shrine (3.6.0)
-      content_disposition (~> 1.0)
-      down (~> 5.1)
     sin_lru_redux (2.5.2)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
@@ -537,7 +528,6 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   mailjet
-  marcel
   net-http
   pagy
   paper_trail
@@ -552,7 +542,6 @@ DEPENDENCIES
   ransack
   recaptcha
   redis (>= 4.0.1)
-  roo
   rspec-rails
   rspec_junit_formatter
   rubocop
@@ -566,7 +555,6 @@ DEPENDENCIES
   scenic
   selenium-webdriver
   shadcn-ui (~> 0.0.13)
-  shrine (>= 3.3.0)
   sprockets-rails
   stimulus-rails
   tailwindcss-rails (~> 3.3.1)
@@ -611,7 +599,6 @@ CHECKSUMS
   caxlsx (4.2.0) sha256=043e832e912010e36357ed7f65b24c49e09a764b172e27f21aff7a55db8bc8f0
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   connection_pool (2.5.0) sha256=233b92f8d38e038c1349ccea65dd3772727d669d6d2e71f9897c8bf5cd53ebfc
-  content_disposition (1.0.0) sha256=aa153da9c1543a45413a3f5f281d8dd50384bb0fba864fe1bd42ba80d88da516
   crass (1.0.6) sha256=dc516022a56e7b3b156099abc81b6d2b08ea1ed12676ac7a5657617f012bd45d
   csv (3.3.2) sha256=6ff0c135e65e485d1864dde6c1703b60d34cc9e19bed8452834a0b28a519bd4e
   cucumber (9.2.1) sha256=fa4161391485bca15362871c04c241e8c761580d0ad52ec54703368ecd0b7131
@@ -633,7 +620,6 @@ CHECKSUMS
   devise_invitable (2.0.9) sha256=d726c724ecc3481211f73752ed5020088e080c7fe9ef0b3899ece5b15056902e
   diff-lcs (1.6.0) sha256=a1e7f7b272962f8fc769358ad00001b87cdcf32ba349d6c70c6b544613d2da2e
   dotenv (3.1.7) sha256=c670df478675d23889e657beaca6fb423228f75ce9f052a0690c0d0daa333cf3
-  down (5.4.2) sha256=516e5e01e7a96214a7e2cd155aac6f700593038ae6c857c0f4a05413b1c58acf
   drb (2.2.1) sha256=e9d472bf785f558b96b25358bae115646da0dbfd45107ad858b0bc0d935cb340
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   factory_bot (6.5.1) sha256=40581ea7bec0aee05514b8f4f99ed477274bdf1884c1372de5209e60322d6ca9
@@ -722,7 +708,6 @@ CHECKSUMS
   request_store (1.7.0) sha256=e1b75d5346a315f452242a68c937ef8e48b215b9453a77a6c0acdca2934c88cb
   responders (3.1.1) sha256=92f2a87e09028347368639cfb468f5fefa745cb0dc2377ef060db1cdd79a341a
   rexml (3.4.1) sha256=c74527a9a0a04b4ec31dbe0dc4ed6004b960af943d8db42e539edde3a871abca
-  roo (2.10.1) sha256=cbb43bc955f9c110e74b721c835fb9bd3515b63af88ec709ac87fbf30f8be70e
   rspec-core (3.13.3) sha256=25136507f4f9cf2e8977a2851e64e438b4331646054e345998714108745cdfe4
   rspec-expectations (3.13.3) sha256=0e6b5af59b900147698ea0ff80456c4f2e69cac4394fbd392fbd1ca561f66c58
   rspec-mocks (3.13.2) sha256=2327335def0e1665325a9b617e3af9ae20272741d80ac550336309a7c59abdef
@@ -744,7 +729,6 @@ CHECKSUMS
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
   selenium-webdriver (4.29.1) sha256=0a7fe53cc4d2c515adbb89e115c6e786c64e9b98f85939d21071c6e32883a146
   shadcn-ui (0.0.15) sha256=6dde7aa77d6e0121db922ce5e8e2673c60bc30f0af7ddd055c90dbdf9d17f7a4
-  shrine (3.6.0) sha256=d361b7e5a452d65d900f3326ed99fe343d0d3b2ce17e012fc04ae85b0373358c
   sin_lru_redux (2.5.2) sha256=feed104c943afaeeecb1ad83f3f63562088b9785a816625c32b2305eccbd9963
   sprockets (4.2.1) sha256=951b13dd2f2fcae840a7184722689a803e0ff9d2702d902bd844b196da773f97
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
@@ -779,7 +763,7 @@ CHECKSUMS
   zeitwerk (2.7.2) sha256=842e067cb11eb923d747249badfb5fcdc9652d6f20a1f06453317920fdcd4673
 
 RUBY VERSION
-   ruby 3.4.1p0
+   ruby 3.4.2p28
 
 BUNDLED WITH
    2.6.3

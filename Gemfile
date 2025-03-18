@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.4.1'
+ruby '3.4.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 8.0'
@@ -63,12 +63,12 @@ gem 'pundit'
 # Report related
 gem 'caxlsx'
 gem 'csv'
-gem 'roo'
+# gem 'roo'
 gem 'rubyzip', '>= 1.3.0'
 gem 'scenic'
 
-gem 'marcel'
-gem 'shrine', '>= 3.3.0'
+# gem 'marcel'
+# gem 'shrine', '>= 3.3.0'
 
 gem 'aws-sdk-lambda'
 gem 'aws-sdk-rails'

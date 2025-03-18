@@ -86,7 +86,7 @@ class LabelsController < ApplicationController
   private
 
   def csv_filename(labels)
-    "#{labels.model_name.human.tr('/', '-')} - #{Time.zone.now.to_date}"
+    "#{labels.model_name.human.pluralize.downcase.tr('/', '-')}-#{Time.zone.now.to_date}"
   end
 
   def load_all_labels

@@ -8,7 +8,7 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def index?
-    system_admin? || account_any_role?(current_account)
+    system_admin? || current_account_any_role?
   end
 
   def show?

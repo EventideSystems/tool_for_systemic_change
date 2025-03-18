@@ -13,7 +13,7 @@ class InitiativesController < ApplicationController
 
   sidebar_item :initiatives
 
-  def index # rubocop:disable Metrics/AbcSize
+  def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(Initiative).order(:name).ransack(search_params[:q])
@@ -25,7 +25,14 @@ class InitiativesController < ApplicationController
     respond_to do |format|
       format.html { render 'initiatives/index', locals: { initiatives: @initiatives } }
       format.turbo_stream { render 'initiatives/index', locals: { initiatives: @initiatives } }
-      format.csv { send_data(initiatives_to_csv(@initiatives), type: Mime[:csv], filename: "#{export_filename}.csv") }
+      format.csv do
+        all_initiatives =
+          policy_scope(Initiative)
+          .order('lower(initiatives.name)')
+          .includes(:scorecard, :subsystem_tags, :organisations)
+
+        send_data(initiatives_to_csv(all_initiatives), type: Mime[:csv], filename: "#{export_filename}.csv")
+      end
     end
   end
 
@@ -114,11 +121,7 @@ class InitiativesController < ApplicationController
   private
 
   def export_filename
-    if current_account.scorecard_types.count > 1
-      "initiatives_for_#{scope_from_params}_#{Time.zone.today.strftime('%Y_%m_%d')}"
-    else
-      "initiatives_#{Time.zone.today.strftime('%Y_%m_%d')}"
-    end
+    "initiatives-#{Time.zone.today.strftime('%Y-%m-%d')}"
   end
 
   def initiatives_to_csv(initiatives) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
@@ -164,8 +167,8 @@ class InitiativesController < ApplicationController
           initiative.name,
           initiative.description,
           initiative.scorecard.try(:name),
-          initiative.started_at,
-          initiative.finished_at,
+          initiative.started_at&.strftime('%Y-%m-%d'),
+          initiative.finished_at&.strftime('%Y-%m-%d'),
           initiative.contact_name,
           initiative.contact_email,
           initiative.contact_phone,

@@ -6,11 +6,16 @@
       <%= page_header_tag 'Stakeholders' %>
       <div class="flex justify-between items-center mt-4 ">
         <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search stakeholders...' } %>
-        <%- if policy(Organisation).create? %>
-          <div>
-            <%= link_to_primary 'Create Stakeholder', new_organisation_path %>
-          </div>
-        <%- end %>
+        <div class="flex justify-end items-center mb-4 space-x-2">
+          <%=
+            link_to_primary("Export", organisations_path(format: :csv), data: { turbo_stream: false })
+          %>
+          <%- if policy(Organisation).create? %>
+            <div>
+              <%= link_to_primary 'Create Stakeholder', new_organisation_path %>
+            </div>
+          <%- end %>
+        </div>
       </div>
     </div>
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">

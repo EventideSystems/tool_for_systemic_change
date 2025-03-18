@@ -14,7 +14,7 @@ class OrganisationsController < ApplicationController
 
   sidebar_item :stakeholders
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @stakeholder_types = current_account.stakeholder_types
 
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
@@ -28,6 +28,12 @@ class OrganisationsController < ApplicationController
     respond_to do |format|
       format.html { render 'organisations/index', locals: { organisations: @organisations } }
       format.turbo_stream { render 'organisations/index', locals: { organisations: @organisations } }
+      format.csv do
+        all_organisations = policy_scope(Organisation).order('lower(name)')
+        send_data(
+          organisations_to_csv(all_organisations, params[:include_stakeholder_list]), filename: "#{export_filename}.csv"
+        )
+      end
     end
   end
 
@@ -87,7 +93,7 @@ class OrganisationsController < ApplicationController
   end
 
   def export_filename
-    "organisations_#{Time.zone.today.strftime('%Y_%m_%d')}"
+    "organisations-#{Time.zone.today.strftime('%Y-%m-%d')}"
   end
 
   def organisations_to_csv(organisations, include_stakeholder_list) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength

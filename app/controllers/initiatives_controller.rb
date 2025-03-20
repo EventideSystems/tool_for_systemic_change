@@ -132,7 +132,8 @@ class InitiativesController < ApplicationController
       csv << (([
         'Name',
         'Description',
-        "#{Scorecard.model_name.human} Name",
+        'Impact Card Name',
+        'Impact Card Type',
         'Started At',
         'Finished At',
         'Contact Name',
@@ -141,7 +142,7 @@ class InitiativesController < ApplicationController
         'Contact Website',
         'Contact Position'
       ] + 1.upto(max_organisation_index).map do |index|
-        "Organisation #{index} Name"
+        "Stakeholder #{index} Name"
       end + 1.upto(max_subsystem_tag_index).map do |index|
         "Subsystem Tag #{index} Name"
       end) + ['Notes'])
@@ -166,7 +167,8 @@ class InitiativesController < ApplicationController
         csv << ([
           initiative.name,
           initiative.description,
-          initiative.scorecard.try(:name),
+          initiative.scorecard&.name,
+          initiative.scorecard&.model_name&.human,
           initiative.started_at&.strftime('%Y-%m-%d'),
           initiative.finished_at&.strftime('%Y-%m-%d'),
           initiative.contact_name,

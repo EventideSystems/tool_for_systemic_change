@@ -38,7 +38,7 @@ class AccountsController < ApplicationController
     authorize(@account)
 
     if @account.save
-      redirect_to(edit_account_path(@account), notice: 'Account was successfully created.')
+      redirect_to(edit_account_path(@account), notice: 'Workspace was successfully created.')
     else
       render(:new)
     end
@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
 
   def update
     if @account.update(account_params)
-      redirect_to(account_path(@account), notice: 'Account was successfully updated.')
+      redirect_to(account_path(@account), notice: 'Workspace was successfully updated.')
     else
       render(:edit)
     end
@@ -54,12 +54,12 @@ class AccountsController < ApplicationController
 
   def destroy
     @account.destroy
-    redirect_to(accounts_url, notice: 'Account was successfully deleted.')
+    redirect_to(accounts_url, notice: 'Workspace was successfully deleted.')
   end
 
   def switch
     self.current_account = @account
-    redirect_to(dashboard_path, notice: 'Account successfully switched.')
+    redirect_to(dashboard_path, notice: 'Workspace successfully switched.')
   end
 
   def content_subtitle

@@ -32,7 +32,7 @@ module Organisations
       end
 
       @organisations_import.destroy
-      file_system = Shrine.storages[:cache]
+      # file_system = Shrine.storages[:cache]
       file_system.clear! { |path| path.mtime < Time.zone.now - 1.hour }
     end
 

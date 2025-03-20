@@ -192,19 +192,6 @@ class InitiativesController < ApplicationController
     authorize(@initiative)
   end
 
-  def scope_from_params # rubocop:disable Metrics/AbcSize
-    if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
-      case current_account.default_scorecard_type&.name
-      when 'TransitionCard' then :transition_cards
-      when 'SustainableDevelopmentGoalAlignmentCard' then :sdgs_alignment_cards
-      else
-        raise("Unknown scorecard_type.name '#{current_account.default_scorecard_type.name}'")
-      end
-    else
-      params[:scope].to_sym
-    end
-  end
-
   # SMELL: Duplication of code in reports_controller
   ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 

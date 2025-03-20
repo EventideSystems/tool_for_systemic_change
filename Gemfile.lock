@@ -80,14 +80,14 @@ GEM
       rack (>= 2.0.0)
     ast (2.4.2)
     aws-eventstream (1.3.2)
-    aws-partitions (1.1068.0)
+    aws-partitions (1.1070.0)
     aws-sdk-core (3.220.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-lambda (1.147.0)
+    aws-sdk-lambda (1.148.0)
       aws-sdk-core (~> 3, >= 3.216.0)
       aws-sigv4 (~> 1.5)
     aws-sdk-rails (5.1.0)
@@ -581,9 +581,9 @@ CHECKSUMS
   appsignal (4.5.5) sha256=7c57666a038dfa7f3af6e3c4cb74503b9acaffc4abaecd107e075e9eb8e1fb4b
   ast (2.4.2) sha256=1e280232e6a33754cde542bc5ef85520b74db2aac73ec14acef453784447cc12
   aws-eventstream (1.3.2) sha256=7e2c3a55ca70d7861d5d3c98e47daa463ed539c349caba22b48305b8919572d7
-  aws-partitions (1.1068.0) sha256=5160073ac3e153619b26c968931c65049affe8efcb2fa9b173a9f2a434e9b652
+  aws-partitions (1.1070.0) sha256=e52ece124ed498ff534bbf92a473bbbad4dd4b99c9cfc10ea06d05d01c0c296d
   aws-sdk-core (3.220.1) sha256=9e10ccfd63c8061fb70a0f1e26cf7dd81cb5070931301501fb6f49587cc54d32
-  aws-sdk-lambda (1.147.0) sha256=ce421cabc5e2923818558fbfd962d5011be095518761da2d270b00ef8f331629
+  aws-sdk-lambda (1.148.0) sha256=9c6ef3b96b838651f78cb3e72cb70d58acb2e084bea519ac07a6f2cdb7ef8fa7
   aws-sdk-rails (5.1.0) sha256=8cffd3b60142e12a6747c91a7a609f668276b1082fc0c10810d5da3d14b13189
   aws-sigv4 (1.11.0) sha256=50a8796991a862324442036ad7a395920572b84bb6cd29b945e5e1800e8da1db
   base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507

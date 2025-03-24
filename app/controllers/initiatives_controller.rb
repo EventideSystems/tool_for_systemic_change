@@ -68,7 +68,6 @@ class InitiativesController < ApplicationController
     if @initiative.save
       update_stakeholders!(@initiative, initiatives_organisations_params)
       update_subsystem_tags!(@initiative, initiatives_subsystem_tags_params)
-      # ::SynchronizeLinkedInitiative.call(@initiative) if @initiative.scorecard.linked?
 
       redirect_to(impact_card_path(@impact_card), notice: 'Initiative was successfully created.')
     else
@@ -77,18 +76,9 @@ class InitiativesController < ApplicationController
   end
 
   def update
-    # linked_initiative = @initiative.linked_initiative
-
     if @initiative.update(initiative_params)
       update_stakeholders!(@initiative, initiatives_organisations_params)
       update_subsystem_tags!(@initiative, initiatives_subsystem_tags_params)
-
-      # if params[:unlink_initiative]
-      #   linked_initiative.update(linked: false) if linked_initiative.present?
-      #   @initiative.update(linked: false)
-      # elsif @initiative.linked?
-      #   ::SynchronizeLinkedInitiative.call(@initiative, linked_initiative)
-      # end
 
       # TODO: Put some smarts in here to redirect to the impact cards page if the user was on the impact cards page
       #      when they clicked the edit button, and to the initiative show page if they were on the initiatives page

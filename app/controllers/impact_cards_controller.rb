@@ -105,13 +105,6 @@ class ImpactCardsController < ApplicationController
 
   def update
     if @scorecard.update(impact_card_params)
-      # if params[:unlink_scorecard]
-      #   @scorecard.linked_scorecard = nil
-      #   @scorecard.update(linked_scorecard: nil)
-      # end
-
-      # SynchronizeLinkedScorecard.call(@scorecard, linked_initiatives_params)
-
       redirect_to(impact_card_path(@scorecard), notice: "#{@scorecard.model_name.human} was successfully updated.")
     else
       render(:edit)

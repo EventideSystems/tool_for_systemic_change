@@ -4,18 +4,18 @@
 #
 # Table name: stakeholder_types
 #
-#  id          :integer          not null, primary key
-#  color       :string
-#  deleted_at  :datetime
-#  description :string
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
+#  id           :integer          not null, primary key
+#  color        :string
+#  deleted_at   :datetime
+#  description  :string
+#  name         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_stakeholder_types_on_account_id  (account_id)
+#  index_stakeholder_types_on_workspace_id  (workspace_id)
 #
 class StakeholderType < ApplicationRecord
   include Searchable
@@ -26,14 +26,14 @@ class StakeholderType < ApplicationRecord
 
   validates :name, presence: true
 
-  belongs_to :account, optional: true
+  belongs_to :workspace, optional: true
   has_many :organisations, dependent: :nullify
 
   before_destroy :check_no_longer_used!, prepend: true
 
-  scope :system_stakeholder_types, -> { where(account_id: nil) }
+  scope :system_stakeholder_types, -> { where(workspace_id: nil) }
 
-  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, presence: true, uniqueness: { scope: :workspace_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   alias stakeholders organisations
 
@@ -52,7 +52,7 @@ class StakeholderType < ApplicationRecord
   # end
 
   def in_use? = organisations.any?
-  def system_stakeholder_type? = account_id.nil?
+  def system_stakeholder_type? = workspace_id.nil?
 
   delegate :count, to: :stakeholders, prefix: true, allow_nil: true
 

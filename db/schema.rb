@@ -10,49 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
   enable_extension "tablefunc"
-
-  create_table "accounts", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.string "deprecated_weblink"
-    t.text "deprecated_welcome_message"
-    t.boolean "deactivated"
-    t.datetime "deleted_at", precision: nil
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.date "expires_on"
-    t.integer "max_users", default: 1
-    t.integer "max_scorecards", default: 1
-    t.boolean "deprecated_solution_ecosystem_maps"
-    t.boolean "deprecated_allow_transition_cards", default: true
-    t.boolean "deprecated_allow_sustainable_development_goal_alignment_cards", default: false
-    t.date "expiry_warning_sent_on"
-    t.string "transition_card_model_name", default: "Transition Card"
-    t.string "transition_card_focus_area_group_model_name", default: "Focus Area Group"
-    t.string "transition_card_focus_area_model_name", default: "Focus Area"
-    t.string "transition_card_characteristic_model_name", default: "Characteristic"
-    t.string "sdgs_alignment_card_model_name", default: "SDGs Alignment Card"
-    t.string "sdgs_alignment_card_focus_area_group_model_name", default: "Focus Area Group"
-    t.string "sdgs_alignment_card_focus_area_model_name", default: "Focus Area"
-    t.string "sdgs_alignment_card_characteristic_model_name", default: "Targets"
-    t.boolean "classic_grid_mode", default: false
-  end
-
-  create_table "accounts_users", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "account_id"
-    t.integer "account_role", default: 0
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["account_id", "user_id"], name: "index_accounts_users_on_account_id_and_user_id", unique: true
-    t.index ["account_id"], name: "index_accounts_users_on_account_id"
-    t.index ["user_id"], name: "index_accounts_users_on_user_id"
-  end
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -103,11 +65,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
     t.integer "recipient_id"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
-    t.integer "account_id"
-    t.index ["account_id"], name: "index_activities_on_account_id"
+    t.integer "workspace_id"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+    t.index ["workspace_id"], name: "index_activities_on_workspace_id"
   end
 
   create_table "characteristics", id: :serial, force: :cascade do |t|
@@ -156,13 +118,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
   create_table "communities", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "color", default: "#14b8a6", null: false
-    t.index ["account_id"], name: "index_communities_on_account_id"
     t.index ["deleted_at"], name: "index_communities_on_deleted_at"
+    t.index ["workspace_id"], name: "index_communities_on_workspace_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -194,11 +156,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "scorecard_type", default: "TransitionCard"
-    t.bigint "account_id"
-    t.index ["account_id"], name: "index_focus_area_groups_on_account_id"
+    t.bigint "workspace_id"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["position"], name: "index_focus_area_groups_on_position"
     t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
+    t.index ["workspace_id"], name: "index_focus_area_groups_on_workspace_id"
   end
 
   create_table "focus_areas", id: :serial, force: :cascade do |t|
@@ -218,15 +180,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
   end
 
   create_table "imports", id: :serial, force: :cascade do |t|
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.integer "user_id"
     t.text "import_data"
     t.integer "status", default: 0
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "type"
-    t.index ["account_id"], name: "index_imports_on_account_id"
     t.index ["user_id"], name: "index_imports_on_user_id"
+    t.index ["workspace_id"], name: "index_imports_on_workspace_id"
   end
 
   create_table "initiatives", id: :serial, force: :cascade do |t|
@@ -279,21 +241,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
   create_table "organisations", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.integer "stakeholder_type_id"
     t.string "weblink"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["account_id"], name: "index_organisations_on_account_id"
     t.index ["deleted_at"], name: "index_organisations_on_deleted_at"
+    t.index ["workspace_id"], name: "index_organisations_on_workspace_id"
   end
 
   create_table "scorecards", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "community_id"
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.integer "wicked_problem_id"
     t.string "shared_link_id"
     t.datetime "deleted_at", precision: nil
@@ -303,9 +265,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
     t.integer "linked_scorecard_id"
     t.boolean "share_ecosystem_map", default: true
     t.boolean "share_thematic_network_map", default: true
-    t.index ["account_id"], name: "index_scorecards_on_account_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
     t.index ["type"], name: "index_scorecards_on_type"
+    t.index ["workspace_id"], name: "index_scorecards_on_workspace_id"
   end
 
   create_table "stakeholder_types", id: :serial, force: :cascade do |t|
@@ -315,20 +277,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "color"
-    t.integer "account_id"
-    t.index ["account_id"], name: "index_stakeholder_types_on_account_id"
+    t.integer "workspace_id"
+    t.index ["workspace_id"], name: "index_stakeholder_types_on_workspace_id"
   end
 
   create_table "subsystem_tags", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "color", default: "#14b8a6", null: false
-    t.index ["account_id"], name: "index_subsystem_tags_on_account_id"
     t.index ["deleted_at"], name: "index_subsystem_tags_on_deleted_at"
+    t.index ["workspace_id"], name: "index_subsystem_tags_on_workspace_id"
   end
 
   create_table "targets_network_mappings", force: :cascade do |t|
@@ -382,22 +344,60 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
     t.string "whodunnit"
     t.text "old_object"
     t.datetime "created_at", precision: nil
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.jsonb "object"
-    t.index ["account_id"], name: "index_versions_on_account_id"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index ["workspace_id"], name: "index_versions_on_workspace_id"
   end
 
   create_table "wicked_problems", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "account_id"
+    t.integer "workspace_id"
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "color", default: "#14b8a6", null: false
-    t.index ["account_id"], name: "index_wicked_problems_on_account_id"
     t.index ["deleted_at"], name: "index_wicked_problems_on_deleted_at"
+    t.index ["workspace_id"], name: "index_wicked_problems_on_workspace_id"
+  end
+
+  create_table "workspaces", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "deprecated_weblink"
+    t.text "deprecated_welcome_message"
+    t.boolean "deactivated"
+    t.datetime "deleted_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.date "expires_on"
+    t.integer "max_users", default: 1
+    t.integer "max_scorecards", default: 1
+    t.boolean "deprecated_solution_ecosystem_maps"
+    t.boolean "deprecated_allow_transition_cards", default: true
+    t.boolean "deprecated_allow_sustainable_development_goal_alignment_cards", default: false
+    t.date "expiry_warning_sent_on"
+    t.string "transition_card_model_name", default: "Transition Card"
+    t.string "transition_card_focus_area_group_model_name", default: "Focus Area Group"
+    t.string "transition_card_focus_area_model_name", default: "Focus Area"
+    t.string "transition_card_characteristic_model_name", default: "Characteristic"
+    t.string "sdgs_alignment_card_model_name", default: "SDGs Alignment Card"
+    t.string "sdgs_alignment_card_focus_area_group_model_name", default: "Focus Area Group"
+    t.string "sdgs_alignment_card_focus_area_model_name", default: "Focus Area"
+    t.string "sdgs_alignment_card_characteristic_model_name", default: "Targets"
+    t.boolean "classic_grid_mode", default: false
+  end
+
+  create_table "workspaces_users", id: :serial, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "workspace_id"
+    t.integer "workspace_role", default: 0
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["user_id"], name: "index_workspaces_users_on_user_id"
+    t.index ["workspace_id", "user_id"], name: "index_workspaces_users_on_workspace_id_and_user_id", unique: true
+    t.index ["workspace_id"], name: "index_workspaces_users_on_workspace_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -406,42 +406,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
   add_foreign_key "checklist_item_changes", "users"
   add_foreign_key "checklist_items", "characteristics", column: "previous_characteristic_id"
   add_foreign_key "checklist_items", "users"
-  add_foreign_key "focus_area_groups", "accounts"
+  add_foreign_key "focus_area_groups", "workspaces"
 
-  create_view "checklist_item_first_checkeds", sql_definition: <<-SQL
-      SELECT checklist_items.id AS checklist_item_id,
-          CASE
-              WHEN (previous_versions.created_at IS NULL) THEN checklist_items.updated_at
-              ELSE last_versions.created_at
-          END AS first_checked_at
-     FROM ((checklist_items
-       LEFT JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
-              versions.item_type,
-              versions.item_id,
-              versions.event,
-              versions.whodunnit,
-              versions.old_object,
-              versions.created_at,
-              versions.account_id,
-              versions.object
-             FROM versions
-            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.object ->> 'checked'::text) IS NULL))
-            ORDER BY versions.item_id, versions.created_at DESC) last_versions ON ((last_versions.item_id = checklist_items.id)))
-       LEFT JOIN ( SELECT DISTINCT ON (versions.item_id) versions.id,
-              versions.item_type,
-              versions.item_id,
-              versions.event,
-              versions.whodunnit,
-              versions.old_object,
-              versions.created_at,
-              versions.account_id,
-              versions.object
-             FROM versions
-            WHERE (((versions.item_type)::text = 'ChecklistItem'::text) AND ((versions.object ->> 'checked'::text) = 'true'::text))
-            ORDER BY versions.item_id, versions.created_at) previous_versions ON (((previous_versions.item_id = checklist_items.id) AND (previous_versions.created_at > last_versions.created_at))))
-    WHERE (((previous_versions.object ->> 'checked'::text) = 'true'::text) OR (((previous_versions.object ->> 'checked'::text) IS NULL) AND (checklist_items.checked = true)))
-    ORDER BY checklist_items.id;
-  SQL
   create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
       deprecated_checklist_item_comments.checklist_item_id,
@@ -650,7 +616,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_102726) do
       characteristics.created_at,
       characteristics.updated_at,
       focus_area_groups.scorecard_type,
-      focus_area_groups.account_id
+      focus_area_groups.workspace_id
      FROM ((characteristics
        JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
        JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))

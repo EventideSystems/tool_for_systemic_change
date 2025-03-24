@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-Given('an account named {string} exists') do |string|
-  create(:account, name: string)
+Given('a workspace named {string} exists') do |string|
+  create(:workspace, name: string)
 end
 
 Given('I am logged in') do

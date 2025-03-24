@@ -4,19 +4,19 @@
 #
 # Table name: wicked_problems
 #
-#  id          :integer          not null, primary key
-#  color       :string           default("#be6048"), not null
-#  deleted_at  :datetime
-#  description :string
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
+#  id           :integer          not null, primary key
+#  color        :string           default("#4c0831"), not null
+#  deleted_at   :datetime
+#  description  :string
+#  name         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_wicked_problems_on_account_id  (account_id)
-#  index_wicked_problems_on_deleted_at  (deleted_at)
+#  index_wicked_problems_on_deleted_at    (deleted_at)
+#  index_wicked_problems_on_workspace_id  (workspace_id)
 #
 class WickedProblem < ApplicationRecord
   include Searchable
@@ -26,12 +26,12 @@ class WickedProblem < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
-  belongs_to :account
+  belongs_to :workspace
   has_many :scorecards, dependent: :restrict_with_error
 
-  validates :account, presence: true
+  validates :workspace, presence: true
   # TODO: Add validation to datbase schema
-  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, presence: true, uniqueness: { scope: :workspace_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   csv_attributes :name, :description, :color
 end

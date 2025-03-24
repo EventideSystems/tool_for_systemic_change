@@ -29,6 +29,6 @@ module ReportsHelper
   end
 
   def multiple_scorecards_types?
-    current_account.scorecard_types_in_use.count > 1
+    current_workspace.scorecard_types_in_use.count > 1
   end
 end

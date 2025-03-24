@@ -4,17 +4,17 @@ module ScorecardComments
   # Imports for Scorecard Comments
   class ImportsController < ApplicationController
     def new
-      @scorecard_comments_import = current_account.scorecard_comments_imports.build
+      @scorecard_comments_import = current_workspace.scorecard_comments_imports.build
       authorize(@scorecard_comments_import)
     end
 
     def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      @scorecard_comments_import = current_account.scorecard_comments_imports.build(
+      @scorecard_comments_import = current_workspace.scorecard_comments_imports.build(
         scorecard_comments_import_params.merge(user: current_user)
       )
       authorize(@scorecard_comments_import)
 
-      if @scorecard_comments_import.save && @scorecard_comments_import.process(current_user, current_account)
+      if @scorecard_comments_import.save && @scorecard_comments_import.process(current_user, current_workspace)
         redirect_to(transition_cards_path, notice: 'Card Comments records successfully imported.')
       else
         render(:new)

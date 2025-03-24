@@ -10,8 +10,8 @@ class FocusAreasController < ApplicationController
   def index
     @focus_areas = \
       policy_scope(FocusArea)
-      .joins(focus_area_group: :account)
-      .where('focus_area_groups.account': current_account)
+      .joins(focus_area_group: :workspace)
+      .where('focus_area_groups.workspace': current_workspace)
       .order(sort_order)
       .page(params[:page])
   end
@@ -65,7 +65,7 @@ class FocusAreasController < ApplicationController
   end
 
   def set_focus_area_groups
-    @focus_area_groups = policy_scope(FocusAreaGroup).where(account: current_account)
+    @focus_area_groups = policy_scope(FocusAreaGroup).where(workspace: current_workspace)
   end
 
   def focus_area_params # rubocop:disable Metrics/MethodLength

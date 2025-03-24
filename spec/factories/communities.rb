@@ -4,23 +4,23 @@
 #
 # Table name: communities
 #
-#  id          :integer          not null, primary key
-#  color       :string           default("#53ea64"), not null
-#  deleted_at  :datetime
-#  description :string
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
+#  id           :integer          not null, primary key
+#  color        :string           default("#4ac27e"), not null
+#  deleted_at   :datetime
+#  description  :string
+#  name         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_communities_on_account_id  (account_id)
-#  index_communities_on_deleted_at  (deleted_at)
+#  index_communities_on_deleted_at    (deleted_at)
+#  index_communities_on_workspace_id  (workspace_id)
 #
 FactoryBot.define do
   factory :community do
     name { FFaker::Name.name }
-    account
+    workspace
   end
 end

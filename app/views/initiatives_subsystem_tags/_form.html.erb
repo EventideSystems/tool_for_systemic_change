@@ -1,6 +1,6 @@
 <div 
   data-controller="initiatives-subsystem-tags-form" 
-  data-initiatives-subsystem-tags-form-subsystem-tags-value="<%= current_account.subsystem_tags.pluck(:name).to_json %>"
+  data-initiatives-subsystem-tags-form-subsystem-tags-value="<%= current_workspace.subsystem_tags.pluck(:name).to_json %>"
 >
   <%= form_with(model: @subsystem_tag, url: initiatives_subsystem_tags_path, html: { class: 'form-horizontal record-form border-b border-zinc-950/10 dark:border-white/10 pb-5' }) do |f| %>
     <div class="w-full mb-4">

@@ -12,21 +12,21 @@ Given('I am a system admin user') do
   )
 end
 
-Given('I am an admin user for the {string} account') do |account_name|
-  account = Account.find_by(name: account_name)
-  @user = User.find_by(email: 'account-admin@obsek.io')
+Given('I am an admin user for the {string} workspace') do |workspace_name|
+  workspace = Workspace.find_by(name: workspace_name)
+  @user = User.find_by(email: 'workspace-admin@obsek.io')
 
   if @user.nil?
     @user_password = 'password'
     @user = create(
       :user,
       system_role: :member,
-      email: 'account-admin@obsek.io',
+      email: 'workspace-admin@obsek.io',
       password: @user_password,
       password_confirmation: @user_password,
-      name: 'Account Admin'
+      name: 'Workspace Admin'
     )
   end
 
-  account.add_user(@user, :admin)
+  workspace.add_user(@user, :admin)
 end

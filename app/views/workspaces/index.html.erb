@@ -1,0 +1,21 @@
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Workspaces</h1>
+      <div class="flex justify-between items-center mt-4 ">
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search workspaces...' } %>
+        <%- if policy(Workspace).create? %>
+          <div>
+            <%= link_to_primary 'Create Workspace', new_workspace_path %>
+          </div>
+        <%- end %>
+      </div>
+    </div>
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render partial: 'workspaces/workspace', collection: @workspaces %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
+  </div>
+</div>

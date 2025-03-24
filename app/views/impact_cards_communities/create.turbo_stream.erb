@@ -5,7 +5,7 @@
       custom_select_tag(
         'impact_card[community_id]', 
         options_from_collection_for_select(
-          current_account.communities.order(:name), 
+          current_workspace.communities.order(:name), 
           :id, 
           :name, 
           @community.id

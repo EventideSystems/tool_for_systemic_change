@@ -10,7 +10,7 @@
         <%= import_files_instructions_link %>
       </div>
 
-      <%- if current_account.scorecard_types.count > 1 %>
+      <%- if current_workspace.scorecard_types.count > 1 %>
         <%= f.input :card_type, collection: initiative_scorecard_types %>
       <%- else -%>
         <%= f.hidden_field :card_type, value: @initiatives_import.card_type %>

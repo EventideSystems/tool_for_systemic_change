@@ -1,0 +1,24 @@
+<li>
+  <%= horizontal_rule %>
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <%= render partial: 'resource_summary', locals: { name: workspace.name, background_color: 'bg-green-700' } %>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to highlight(workspace.name, params.dig(:q, :name_or_description_cont)), workspace_path(workspace), data: { turbo: false } %>
+        </div>
+        <div class="text-xs/6 text-zinc-500 min-h-4">
+          <%= highlight(workspace.description, params.dig(:q, :name_or_description_cont)) %>
+        </div>
+        <div class="text-xs/6 text-zinc-600">
+          <%- if workspace.expired? %>
+            <div class="inline-flex rounded-lg items-center justify-center bg-red-600 dark:bg-red-600 text-white" title="Expired">
+              <p class="py-1 px-2 text-xs whitespace-nowrap">Expired</p>
+            </div>
+          <%- end %>
+          <%= max_users(workspace) %>; <%= max_impact_cards(workspace) %>; <%= expires_on(workspace) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

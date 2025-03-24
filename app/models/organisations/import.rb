@@ -4,24 +4,24 @@
 #
 # Table name: imports
 #
-#  id          :integer          not null, primary key
-#  import_data :text
-#  status      :integer          default("pending")
-#  type        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
-#  user_id     :integer
+#  id           :integer          not null, primary key
+#  import_data  :text
+#  status       :integer          default("pending")
+#  type         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :integer
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_imports_on_account_id  (account_id)
-#  index_imports_on_user_id     (user_id)
+#  index_imports_on_user_id       (user_id)
+#  index_imports_on_workspace_id  (workspace_id)
 #
 module Organisations
   # Class for importing organisations
   class Import < Import
-    def process(account) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+    def process(workspace) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       name_index              = column_index(:name)
       description_index       = column_index(:description)
       stakeholder_type_index  = column_index(:stakeholder_type) || column_index(:sector)
@@ -41,11 +41,11 @@ module Organisations
 
         next if row[name_index].blank?
 
-        organisation = find_or_build_organisation_by_name(account, row[name_index])
+        organisation = find_or_build_organisation_by_name(workspace, row[name_index])
         stakeholder_type = if stakeholder_type_index.nil?
                              nil
                            else
-                             find_stakeholder_type_by_name(account,
+                             find_stakeholder_type_by_name(workspace,
                                                            row[stakeholder_type_index])
                            end
 
@@ -77,21 +77,21 @@ module Organisations
 
     private
 
-    def find_stakeholder_type_by_name(account, name)
+    def find_stakeholder_type_by_name(workspace, name)
       return nil if name.nil?
 
       StakeholderType.where(
-        'lower(name) = :name and account_id = :account_id',
-        { name: name.downcase.strip, account_id: account.id }
+        'lower(name) = :name and workspace_id = :workspace_id',
+        { name: name.downcase.strip, workspace_id: workspace.id }
       ).first
     end
 
-    def find_or_build_organisation_by_name(account, name)
-      organisation = account.organisations.where(
+    def find_or_build_organisation_by_name(workspace, name)
+      organisation = workspace.organisations.where(
         'lower(name) = :name', { name: name.downcase }
       ).first
 
-      organisation || account.organisations.build
+      organisation || workspace.organisations.build
     end
   end
 end

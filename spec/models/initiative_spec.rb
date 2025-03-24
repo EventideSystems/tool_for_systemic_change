@@ -39,13 +39,13 @@ RSpec.describe(Initiative, type: :model) do
   let(:user) { create(:user) }
 
   describe '#checklist_items_ordered_by_ordered_focus_area' do # rubocop:disable RSpec/MultipleMemoizedHelpers
-    let(:default_account) { create(:account) }
+    let(:default_workspace) { create(:workspace) }
     let!(:characteristic_1) { create(:characteristic) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let!(:characteristic_2) { create(:characteristic) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
-    let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
+    let(:stakeholder_type) { create(:stakeholder_type, workspace: default_workspace) }
 
     let!(:initiative) do
-      create(:initiative, organisations: create_list(:organisation, 2, account: default_account, stakeholder_type:))
+      create(:initiative, organisations: create_list(:organisation, 2, workspace: default_workspace, stakeholder_type:))
     end
 
     describe '.archived?' do # rubocop:disable RSpec/MultipleMemoizedHelpers

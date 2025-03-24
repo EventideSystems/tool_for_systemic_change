@@ -9,31 +9,15 @@ module ImpactCardsHelper
   end
 
   def display_scorecard_model_name(scorecard)
-    return '' if scorecard&.account.blank?
+    return '' if scorecard&.workspace.blank?
 
     case scorecard
     when TransitionCard
-      scorecard.account.transition_card_model_name
+      scorecard.workspace.transition_card_model_name
     when SustainableDevelopmentGoalAlignmentCard
-      scorecard.account&.sdgs_alignment_card_model_name
+      scorecard.workspace&.sdgs_alignment_card_model_name
     end
   end
-
-  # def lookup_communities
-  #   controller.current_account.communities.order(:name)
-  # end
-
-  # def lookup_organisations
-  #   controller.current_account.organisations.order(:name)
-  # end
-
-  # def lookup_subsystem_tags
-  #   controller.current_account.subsystem_tags.order(:name)
-  # end
-
-  # def lookup_wicked_problems
-  #   controller.current_account.wicked_problems.order(:name)
-  # end
 
   def multi_select_options_for_labels(labels, selected_labels)
     choices = labels.map do |label|
@@ -62,7 +46,7 @@ module ImpactCardsHelper
   end
 
   def choices_for_statuses(statuses, impact_card) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    focus_area_groups = impact_card.account.focus_area_groups.where(scorecard_type: impact_card.type)
+    focus_area_groups = impact_card.workspace.focus_area_groups.where(scorecard_type: impact_card.type)
     focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:scorecard_type, :position)
     classic_mode_colors = focus_areas.map(&:actual_color).values_at(0, focus_areas.length / 2, -1).uniq
 
@@ -104,10 +88,10 @@ module ImpactCardsHelper
   #   return [] if parent_scorecard.blank?
 
   #   [['', nil]] + parent_scorecard
-  #                 .account
+  #                 .workspace
   #                 .scorecards
   #                 .where(id: parent_scorecard.linked_scorecard_id)
-  #                 .or(parent_scorecard.account.scorecards.where(linked_scorecard_id: nil))
+  #                 .or(parent_scorecard.workspace.scorecards.where(linked_scorecard_id: nil))
   #                 .where.not(type: parent_scorecard.type, deleted_at: nil)
   #                 .order(:name)
   #                 .pluck(:name, :id)
@@ -132,13 +116,13 @@ module ImpactCardsHelper
   # end
 
   def select_impact_card_tag(name, options)
-    account = options.delete(:account) || current_account
+    workspace = options.delete(:workspace) || current_workspace
 
-    collection_options = if account.scorecard_types_in_use.count > 1
-                           grouped_scorecards = grouped_impact_cards_for_account(account)
+    collection_options = if workspace.scorecard_types_in_use.count > 1
+                           grouped_scorecards = grouped_impact_cards_for_workspace(workspace)
                            grouped_options_for_select(grouped_scorecards)
                          else
-                           scorecards = account.scorecards.order(:name)
+                           scorecards = workspace.scorecards.order(:name)
                            options_from_collection_for_select(scorecards, :id, :name)
                          end
 
@@ -147,11 +131,11 @@ module ImpactCardsHelper
 
   private
 
-  def grouped_impact_cards_for_account(account) # rubocop:disable Metrics/MethodLength
-    account.scorecards.group_by(&:type).transform_keys do |key|
+  def grouped_impact_cards_for_workspace(workspace) # rubocop:disable Metrics/MethodLength
+    workspace.scorecards.group_by(&:type).transform_keys do |key|
       case key
-      when 'TransitionCard' then account.transition_card_model_name
-      when 'SustainableDevelopmentGoalAlignmentCard' then account.sdgs_alignment_card_model_name
+      when 'TransitionCard' then workspace.transition_card_model_name
+      when 'SustainableDevelopmentGoalAlignmentCard' then workspace.sdgs_alignment_card_model_name
       else
         'Impact Card'
       end

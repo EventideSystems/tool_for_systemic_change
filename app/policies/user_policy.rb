@@ -3,7 +3,7 @@
 class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   class Scope < Scope # rubocop:disable Style/Documentation
     def resolve
-      if account_admin?(user_context.account) || system_admin?
+      if workspace_admin?(user_context.workspace) || system_admin?
         base_scope
       else
         base_scope.where(invitation_token: nil)
@@ -11,16 +11,16 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     end
 
     def base_scope
-      scope.joins(:accounts_users).where('accounts_users.account_id' => current_account.id)
+      scope.joins(:workspaces_users).where('workspaces_users.workspace_id' => current_workspace.id)
     end
   end
 
   def show?
-    system_admin? || current_account_any_role?
+    system_admin? || current_workspace_any_role?
   end
 
   def create?
-    system_admin? || (current_account_any_role? && current_account_not_expired?)
+    system_admin? || (current_workspace_any_role? && current_workspace_not_expired?)
   end
 
   def invite?
@@ -32,7 +32,7 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def update?
-    system_admin? || current_account_admin? || record_is_current_user?
+    system_admin? || current_workspace_admin? || record_is_current_user?
   end
 
   def update_system_role?
@@ -40,7 +40,7 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def destroy?
-    record_is_not_current_user? && (system_admin? || current_account_admin?)
+    record_is_not_current_user? && (system_admin? || current_workspace_admin?)
   end
 
   def undelete?
@@ -48,18 +48,18 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def resend_invitation?
-    system_admin? || current_account_admin?
+    system_admin? || current_workspace_admin?
   end
 
-  def remove_from_account?
-    record_is_not_current_user? && (system_admin? || current_account_admin?)
+  def remove_from_workspace?
+    record_is_not_current_user? && (system_admin? || current_workspace_admin?)
   end
 
-  def max_users_not_reached?(account)
-    return false if account.blank?
-    return true if account.max_users.zero? # NOTE: magic number, meaning no limit
+  def max_users_not_reached?(workspace)
+    return false if workspace.blank?
+    return true if workspace.max_users.zero? # NOTE: magic number, meaning no limit
 
-    account.users.count < account.max_users
+    workspace.users.count < workspace.max_users
   end
 
   def impersonate?
@@ -70,8 +70,8 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     true
   end
 
-  def change_account_role?
-    system_admin? || current_account_admin?
+  def change_workspace_role?
+    system_admin? || current_workspace_admin?
   end
 
   def change_password?

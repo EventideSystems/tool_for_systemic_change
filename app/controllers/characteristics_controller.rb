@@ -10,8 +10,8 @@ class CharacteristicsController < ApplicationController
   def index
     @characteristics = \
       policy_scope(Characteristic)
-      .joins(focus_area: { focus_area_group: :account })
-      .where(focus_area_groups: { accounts: { id: current_account.id } })
+      .joins(focus_area: { focus_area_group: :workspace })
+      .where(focus_area_groups: { workspaces: { id: current_workspace.id } })
       .order(sort_order)
       .page(params[:page])
   end
@@ -84,8 +84,8 @@ class CharacteristicsController < ApplicationController
   end
 
   def set_focus_areas
-    @focus_areas = FocusArea.where(focus_area_group: current_account.focus_area_groups).order(:scorecard_type,
-                                                                                              :position)
+    @focus_areas = FocusArea.where(focus_area_group: current_workspace.focus_area_groups).order(:scorecard_type,
+                                                                                                :position)
   end
 
   def characteristic_params

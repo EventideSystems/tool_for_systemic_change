@@ -185,7 +185,7 @@ class InitiativesController < ApplicationController
     @focus_areas_groups = \
       FocusAreaGroup
       .includes(:focus_areas)
-      .where(scorecard_type: @initiative.scorecard.type, account_id: @initiative.scorecard.account_id)
+      .where(scorecard_type: @initiative.scorecard.type, workspace_id: @initiative.scorecard.workspace_id)
       .order(:position)
   end
 
@@ -201,7 +201,7 @@ class InitiativesController < ApplicationController
     @scorecards = policy_scope(Scorecard).order(:name)
 
     @scorecard_types =
-      Account::SCORECARD_TYPES.map do |scorecard_type|
+      Workspace::SCORECARD_TYPES.map do |scorecard_type|
         ScorecardType.new(
           scorecard_type.model_name.human.pluralize,
           policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
@@ -210,7 +210,7 @@ class InitiativesController < ApplicationController
   end
 
   def set_subsystem_tags
-    @subsystem_tags = current_account.subsystem_tags
+    @subsystem_tags = current_workspace.subsystem_tags
   end
 
   def initiative_params # rubocop:disable Metrics/MethodLength

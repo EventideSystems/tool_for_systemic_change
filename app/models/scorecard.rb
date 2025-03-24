@@ -13,17 +13,17 @@
 #  type                       :string           default("TransitionCard")
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  account_id                 :integer
 #  community_id               :integer
 #  linked_scorecard_id        :integer
 #  shared_link_id             :string
 #  wicked_problem_id          :integer
+#  workspace_id               :integer
 #
 # Indexes
 #
-#  index_scorecards_on_account_id  (account_id)
-#  index_scorecards_on_deleted_at  (deleted_at)
-#  index_scorecards_on_type        (type)
+#  index_scorecards_on_deleted_at    (deleted_at)
+#  index_scorecards_on_type          (type)
+#  index_scorecards_on_workspace_id  (workspace_id)
 #
 class Scorecard < ApplicationRecord
   include Searchable
@@ -34,7 +34,7 @@ class Scorecard < ApplicationRecord
   after_initialize :ensure_shared_link_id, if: :new_record?
 
   belongs_to :community, optional: true
-  belongs_to :account
+  belongs_to :workspace
   belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
 
@@ -53,17 +53,17 @@ class Scorecard < ApplicationRecord
   delegate :name, :description, to: :wicked_problem, prefix: true, allow_nil: true
   delegate :name, :description, to: :community, prefix: true, allow_nil: true
 
-  delegate :stakeholder_types, to: :account
+  delegate :stakeholder_types, to: :workspace
 
   accepts_nested_attributes_for :initiatives,
                                 allow_destroy: true,
                                 reject_if: proc { |attributes| attributes['name'].blank? }
 
-  validates :account, presence: true
+  validates :workspace, presence: true
   validates :name, presence: true
   # TODO: Add validation to datbase schema
   validates :shared_link_id, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validate :linked_scorecard_must_be_in_same_account
+  validate :linked_scorecard_must_be_in_same_workspace
 
   before_save :set_inverse_linked_scorecard, if: :linked_scorecard_id_changed?
 
@@ -75,7 +75,7 @@ class Scorecard < ApplicationRecord
   end
 
   def grid_mode
-    @grid_mode ||= account.classic_grid_mode? ? :classic : :modern
+    @grid_mode ||= workspace.classic_grid_mode? ? :classic : :modern
   end
 
   def linked?
@@ -107,10 +107,10 @@ class Scorecard < ApplicationRecord
 
   private
 
-  def linked_scorecard_must_be_in_same_account
-    return unless linked_scorecard.present? && linked_scorecard.account != account
+  def linked_scorecard_must_be_in_same_workspace
+    return unless linked_scorecard.present? && linked_scorecard.workspace != workspace
 
-    errors.add(:linked_scorecard_id, 'must be in the same account')
+    errors.add(:linked_scorecard_id, 'must be in the same workspace')
   end
 
   def non_clashing_initiative_name(name, existing_names)

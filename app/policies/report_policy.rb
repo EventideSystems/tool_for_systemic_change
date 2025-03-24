@@ -10,13 +10,13 @@ class ReportPolicy < ApplicationPolicy
   def transition_card_activity? = true
   def subsystem_summary? = true
 
-  def cross_account_percent_actual? = user_has_active_accounts_with_admin_role?
-  def cross_account_percent_actual_by_focus_area? = user_has_active_accounts_with_admin_role?
-  def cross_account_percent_actual_by_focus_area_tabbed? = user_has_active_accounts_with_admin_role?
+  def cross_workspace_percent_actual? = user_has_active_workspaces_with_admin_role?
+  def cross_workspace_percent_actual_by_focus_area? = user_has_active_workspaces_with_admin_role?
+  def cross_workspace_percent_actual_by_focus_area_tabbed? = user_has_active_workspaces_with_admin_role?
 
   private
 
-  def user_has_active_accounts_with_admin_role?
-    user_context.user.active_accounts_with_admin_role.exists?
+  def user_has_active_workspaces_with_admin_role?
+    user_context.user.active_workspaces_with_admin_role.exists?
   end
 end

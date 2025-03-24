@@ -1,11 +1,11 @@
 <div class="mx-auto max-w-6xl">
   <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 text-black dark:text-white">Hello, <%= current_user.name %></h1>
-  <h2 class="text-lg font-semibold text-zinc-950 sm:text-lg text-black dark:text-white">Welcome to the '<%= current_account&.name %>' workspace</h2>
+  <h2 class="text-lg font-semibold text-zinc-950 sm:text-lg text-black dark:text-white">Welcome to the '<%= current_workspace&.name %>' workspace</h2>
 
-  <%- if current_account.expired? %>
+  <%- if current_workspace.expired? %>
     <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold">Your account has expired!</strong>
-      <%- if role_in_current_account(current_user) == 'admin' %>
+      <strong class="font-bold">Your workspace has expired!</strong>
+      <%- if role_in_current_workspace(current_user) == 'admin' %>
         <span class="block sm:inline">
           Please contact the <%= mail_to 'hello@toolforsystemicchange.com', 'system administrators', subject: 'Renew subscription', class: 'underline' %> to renew your subscription.
         </span>

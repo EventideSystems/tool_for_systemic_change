@@ -3,20 +3,20 @@
 module ImpactCards
   # rubocop:disable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength
   class DeepCopy
-    attr_accessor :impact_card, :new_name, :target_account
+    attr_accessor :impact_card, :new_name, :target_workspace
 
-    def self.call(impact_card:, new_name: nil, target_account: nil)
-      new(impact_card:, new_name:, target_account:).call
+    def self.call(impact_card:, new_name: nil, target_workspace: nil)
+      new(impact_card:, new_name:, target_workspace:).call
     end
 
-    def initialize(impact_card:, new_name: nil, target_account: nil)
+    def initialize(impact_card:, new_name: nil, target_workspace: nil)
       @impact_card = impact_card
       @new_name = new_name.presence || "#{impact_card.name} (copy)"
-      @target_account = target_account.presence || impact_card.account
+      @target_workspace = target_workspace.presence || impact_card.workspace
     end
 
     def call
-      assert_valid_target_account!
+      assert_valid_target_workspace!
 
       ActiveRecord::Base.transaction do
         copy_wicked_problem
@@ -29,7 +29,7 @@ module ImpactCards
           new_impact_card.shared_link_id = impact_card.new_shared_link_id
           new_impact_card.wicked_problem = find_matching_wicked_problem(impact_card.wicked_problem)
           new_impact_card.community = find_matching_community(impact_card.community)
-          new_impact_card.account = target_account
+          new_impact_card.workspace = target_workspace
           new_impact_card.save!
 
           copy_initiatives(impact_card, new_impact_card)
@@ -39,28 +39,28 @@ module ImpactCards
 
     private
 
-    # Ensure that the target account has a compatible data model
-    def assert_valid_target_account!
-      return if target_account == impact_card.account
+    # Ensure that the target workspace has a compatible data model
+    def assert_valid_target_workspace!
+      return if target_workspace == impact_card.workspace
 
-      impact_card.account.focus_area_groups.where(scorecard_type: impact_card.type).find_each do |focus_area_group|
+      impact_card.workspace.focus_area_groups.where(scorecard_type: impact_card.type).find_each do |focus_area_group|
         target_group = find_target_focus_area_group(focus_area_group.name, impact_card.type)
 
         if target_group.blank?
-          raise(ArgumentError, "Missing focus area group '#{focus_area_group.name}' in target account")
+          raise(ArgumentError, "Missing focus area group '#{focus_area_group.name}' in target workspace")
         end
 
         focus_area_group.focus_areas.each do |focus_area|
           target_area = target_group.focus_areas.find_by(name: focus_area.name)
 
-          raise(ArgumentError, "Missing focus area '#{focus_area.name}' in target account") if target_area.blank?
+          raise(ArgumentError, "Missing focus area '#{focus_area.name}' in target workspace") if target_area.blank?
 
           focus_area.characteristics.each do |characteristic|
             target_characteristic = target_area.characteristics.find_by(name: characteristic.name)
 
             next if target_characteristic.present?
 
-            raise(ArgumentError, "Missing characteristic '#{characteristic.name}' in target account")
+            raise(ArgumentError, "Missing characteristic '#{characteristic.name}' in target workspace")
           end
         end
       end
@@ -114,16 +114,16 @@ module ImpactCards
     end
 
     def copy_stakeholders
-      return if target_account == impact_card.account
+      return if target_workspace == impact_card.workspace
 
       impact_card.organisations.uniq.each do |organisation|
-        next if target_account.organisations.find_by(name: [organisation.name, organisation.name.strip])
+        next if target_workspace.organisations.find_by(name: [organisation.name, organisation.name.strip])
 
         stakeholder_type = fetch_stakeholder_type(organisation.stakeholder_type)
 
         organisation.dup.tap do |new_organisation|
           new_organisation.name = organisation.name.strip
-          new_organisation.account = target_account
+          new_organisation.workspace = target_workspace
           new_organisation.stakeholder_type = stakeholder_type
           new_organisation.save!
         end
@@ -131,75 +131,75 @@ module ImpactCards
     end
 
     def copy_subsystem_tags
-      return if target_account == impact_card.account
+      return if target_workspace == impact_card.workspace
 
       impact_card.subsystem_tags.uniq.each do |tag|
-        next if target_account.subsystem_tags.find_by(name: [tag.name, tag.name.strip])
+        next if target_workspace.subsystem_tags.find_by(name: [tag.name, tag.name.strip])
 
-        target_account.subsystem_tags.create!(name: tag.name.strip)
+        target_workspace.subsystem_tags.create!(name: tag.name.strip)
       end
     end
 
     def copy_wicked_problem
-      return if target_account == impact_card.account
+      return if target_workspace == impact_card.workspace
 
       wicked_problem = impact_card.wicked_problem
 
-      return if target_account.wicked_problems.find_by(name: wicked_problem.name)
+      return if target_workspace.wicked_problems.find_by(name: wicked_problem.name)
 
       wicked_problem.dup.tap do |new_wicked_problem|
-        new_wicked_problem.account = target_account
+        new_wicked_problem.workspace = target_workspace
         new_wicked_problem.save!
       end
     end
 
     def copy_community
-      return if target_account == impact_card.account
+      return if target_workspace == impact_card.workspace
 
       community = impact_card.community
 
-      return if target_account.communities.find_by(name: community.name)
+      return if target_workspace.communities.find_by(name: community.name)
 
       community.dup.tap do |new_community|
-        new_community.account = target_account
+        new_community.workspace = target_workspace
         new_community.save!
       end
     end
 
     def fetch_stakeholder_type(stakeholder_type)
-      target_stakeholder_type = target_account.stakeholder_types.find_by(name: stakeholder_type.name)
+      target_stakeholder_type = target_workspace.stakeholder_types.find_by(name: stakeholder_type.name)
 
       return target_stakeholder_type if target_stakeholder_type.present?
 
       stakeholder_type.dup.tap do |new_stakeholder_type|
-        new_stakeholder_type.account = target_account
+        new_stakeholder_type.workspace = target_workspace
         new_stakeholder_type.save!
       end
     end
 
     def fetch_stakeholders(initiative)
-      target_account.organisations.where(name: initiative.organisations.pluck(:name).map(&:strip))
+      target_workspace.organisations.where(name: initiative.organisations.pluck(:name).map(&:strip))
     end
 
     def fetch_subsystem_tags(initiative)
-      target_account.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name).map(&:strip))
+      target_workspace.subsystem_tags.where(name: initiative.subsystem_tags.pluck(:name).map(&:strip))
     end
 
-    # Find a community in the target account that matches the source community
+    # Find a community in the target workspace that matches the source community
     def find_matching_community(community)
       return nil if community.blank?
 
-      target_account.communities.find_by(name: community.name)
+      target_workspace.communities.find_by(name: community.name)
     end
 
     def find_matching_wicked_problem(wicked_problem)
       return nil if wicked_problem.blank?
 
-      target_account.wicked_problems.find_by(name: wicked_problem.name)
+      target_workspace.wicked_problems.find_by(name: wicked_problem.name)
     end
 
     def find_target_focus_area_group(name, scorecard_type)
-      target_account.focus_area_groups.find_by(name:, scorecard_type:)
+      target_workspace.focus_area_groups.find_by(name:, scorecard_type:)
     end
   end
   # rubocop:enable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength

@@ -15,7 +15,7 @@ class InitiativesSubsystemTagsController < ApplicationController
   end
 
   def new # rubocop:disable Metrics/MethodLength
-    @subsystem_tag = current_account.subsystem_tags.new
+    @subsystem_tag = current_workspace.subsystem_tags.new
     authorize @subsystem_tag
 
     respond_to do |format|
@@ -36,7 +36,7 @@ class InitiativesSubsystemTagsController < ApplicationController
     if @subsystem_tag.present?
       @subsystem_tag.assign_attributes(subsystem_tag_params)
     else
-      @subsystem_tag = current_account.subsystem_tags.new(subsystem_tag_params)
+      @subsystem_tag = current_workspace.subsystem_tags.new(subsystem_tag_params)
     end
 
     authorize @subsystem_tag
@@ -64,7 +64,7 @@ class InitiativesSubsystemTagsController < ApplicationController
   private
 
   def find_existing_subsystem_tag(subsystem_tag_params)
-    current_account.subsystem_tags.find_by(name: subsystem_tag_params[:name])
+    current_workspace.subsystem_tags.find_by(name: subsystem_tag_params[:name])
   end
 
   def subsystem_tag_params

@@ -15,7 +15,7 @@
         <% end %>
       <% end %>
 
-      <% if current_account.scorecards.count.positive? %>
+      <% if current_workspace.scorecards.count.positive? %>
         <%= render 'section' do %>
           <%= render 'section_header', title: 'Import Initiatives', subtitle: 'Copy initiatives from another impact card.' do %>
             <p class="mt-1 text-sm/6 text-gray-600">

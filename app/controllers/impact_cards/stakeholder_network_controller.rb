@@ -25,7 +25,7 @@ module ImpactCards
         if params[:stakeholder_types].blank?
           StakeholderType.none
         else
-          StakeholderType.where(account: current_account, name: params[:stakeholder_types].compact)
+          StakeholderType.where(workspace: current_workspace, name: params[:stakeholder_types].compact)
         end
     end
   end

@@ -60,35 +60,35 @@
           <% end %>
         <% end %>
 
-        <%- if policy(:report).cross_account_percent_actual? %>
+        <%- if policy(:report).cross_workspace_percent_actual? %>
           <%=
             render(
               'form',
-              name: 'Cross-Account Percent Actual',
-              path: cross_account_percent_actual_reports_path(format: :xlsx),
-              description: 'Actual Percentage per Transition Card for all accounts (must have admin role in each account).'
+              name: 'Cross-Workspace Percent Actual',
+              path: cross_workspace_percent_actual_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card for all workspaces (must have admin role in each workspace).'
             )
           %>
         <% end %>
 
-        <%- if policy(:report).cross_account_percent_actual_by_focus_area? %>
+        <%- if policy(:report).cross_workspace_percent_actual_by_focus_area? %>
           <%=
             render(
               'form',
-              name: 'Cross-Account Percent Actual Per Focus Area',
-              path: cross_account_percent_actual_reports_path(format: :xlsx),
-              description: 'Actual Percentage per Transition Card per Focus Area for all accounts (must have admin role in each account).'
+              name: 'Cross-Workspace Percent Actual Per Focus Area',
+              path: cross_workspace_percent_actual_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card per Focus Area for all workspaces (must have admin role in each workspace).'
             )
           %>
         <% end %>
 
-        <%- if policy(:report).cross_account_percent_actual_by_focus_area_tabbed? %>
+        <%- if policy(:report).cross_workspace_percent_actual_by_focus_area_tabbed? %>
           <%=
             render(
               'form',
-              name: 'Cross-Account Percent Actual Per Focus Area (Tabbed)',
-              path: cross_account_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx),
-              description: 'Actual Percentage per Transition Card all accounts, grouped by Focus Area in separate tabs (must have admin role in each account).'
+              name: 'Cross-Workspace Percent Actual Per Focus Area (Tabbed)',
+              path: cross_workspace_percent_actual_by_focus_area_tabbed_reports_path(format: :xlsx),
+              description: 'Actual Percentage per Transition Card all workspaces, grouped by Focus Area in separate tabs (must have admin role in each workspace).'
             )
           %>
         <% end %>

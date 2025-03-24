@@ -4,26 +4,26 @@
 #
 # Table name: imports
 #
-#  id          :integer          not null, primary key
-#  import_data :text
-#  status      :integer          default("pending")
-#  type        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
-#  user_id     :integer
+#  id           :integer          not null, primary key
+#  import_data  :text
+#  status       :integer          default("pending")
+#  type         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :integer
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_imports_on_account_id  (account_id)
-#  index_imports_on_user_id     (user_id)
+#  index_imports_on_user_id       (user_id)
+#  index_imports_on_workspace_id  (workspace_id)
 #
 module Initiatives
   # Class for importing initiativs
   class Import < Import # rubocop:disable Metrics/ClassLength
     attr_accessor :card_type
 
-    def process(account) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+    def process(workspace) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
       name_index             = column_index(:name)
       description_index      = column_index(:description)
       scorecard_name_index   = column_index_for_scorecard_name
@@ -49,8 +49,8 @@ module Initiatives
 
         if scorecard_name_index.nil?
           scorecard_column_names = ['Scorecard Name']
-          scorecard_column_names << 'Transition Card Name' if account.allow_transition_cards?
-          scorecard_column_names << 'SDG Card Name' if account.allow_sustainable_development_goal_alignment_cards?
+          scorecard_column_names << 'Transition Card Name' if workspace.allow_transition_cards?
+          scorecard_column_names << 'SDG Card Name' if workspace.allow_sustainable_development_goal_alignment_cards?
 
           scorecard_column_names = scorecard_column_names.map { |name| "'#{name}'" }
 
@@ -68,7 +68,7 @@ module Initiatives
           next
         end
 
-        scorecard = find_scorecard_by_name(account, card_type, row[scorecard_name_index])
+        scorecard = find_scorecard_by_name(workspace, card_type, row[scorecard_name_index])
 
         if scorecard.nil?
           processing_errors << build_processing_errors(
@@ -90,7 +90,7 @@ module Initiatives
 
           next if organisation_name.blank?
 
-          organisation = find_organisation_by_name(account, organisation_name)
+          organisation = find_organisation_by_name(workspace, organisation_name)
 
           if organisation
             initiative.organisations << organisation unless initiative.organisations.include?(organisation)
@@ -110,9 +110,9 @@ module Initiatives
 
           next if subsystem_tag_name.blank?
 
-          subsystem_tag = find_subsystem_tag_by_name(account, subsystem_tag_name)
+          subsystem_tag = find_subsystem_tag_by_name(workspace, subsystem_tag_name)
 
-          subsystem_tag = SubsystemTag.create!(account: account, name: subsystem_tag_name) if subsystem_tag.blank?
+          subsystem_tag = SubsystemTag.create!(workspace: workspace, name: subsystem_tag_name) if subsystem_tag.blank?
 
           initiative.subsystem_tags << subsystem_tag unless initiative.subsystem_tags.include?(subsystem_tag)
         end
@@ -184,19 +184,19 @@ module Initiatives
         .presence || 1
     end
 
-    def find_scorecard_by_name(account, scorecard_type, name)
-      account.scorecards.where(
+    def find_scorecard_by_name(workspace, scorecard_type, name)
+      workspace.scorecards.where(
         'type = :scorecard_type and lower(name) = :name',
         { name: name.downcase, scorecard_type: scorecard_type }
       ).first
     end
 
-    def find_organisation_by_name(account, name)
-      account.organisations.where('lower(name) = :name', { name: name.downcase }).first
+    def find_organisation_by_name(workspace, name)
+      workspace.organisations.where('lower(name) = :name', { name: name.downcase }).first
     end
 
-    def find_subsystem_tag_by_name(account, name)
-      account.subsystem_tags.where('lower(name) = :name', { name: name.downcase }).first
+    def find_subsystem_tag_by_name(workspace, name)
+      workspace.subsystem_tags.where('lower(name) = :name', { name: name.downcase }).first
     end
 
     def find_or_build_initiative_by_name(scorecard, name)

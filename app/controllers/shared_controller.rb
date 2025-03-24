@@ -4,7 +4,7 @@
 class SharedController < ApplicationController
   include ActiveTabItem
 
-  skip_before_action :set_session_account_id
+  skip_before_action :set_session_workspace_id
   skip_before_action :authenticate_user!
   skip_before_action :set_paper_trail_whodunnit
 
@@ -19,7 +19,7 @@ class SharedController < ApplicationController
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
-    @focus_areas = FocusArea.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).order(
+    @focus_areas = FocusArea.per_scorecard_type_for_workspace(@scorecard.type, @scorecard.workspace).order(
       'focus_area_groups.position', :position
     )
 
@@ -32,7 +32,7 @@ class SharedController < ApplicationController
       if params[:subsystem_tags].blank?
         SubsystemTag.none
       else
-        SubsystemTag.where(account: @scorecard.account, name: params[:subsystem_tags].compact)
+        SubsystemTag.where(workspace: @scorecard.workspace, name: params[:subsystem_tags].compact)
       end
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date)
@@ -65,7 +65,7 @@ class SharedController < ApplicationController
       if params[:stakeholder_types].blank?
         StakeholderType.none
       else
-        StakeholderType.where(account: @scorecard.account, name: params[:stakeholder_types].compact)
+        StakeholderType.where(workspace: @scorecard.workspace, name: params[:stakeholder_types].compact)
       end
 
     render(layout: 'embedded')
@@ -85,7 +85,7 @@ class SharedController < ApplicationController
       if params[:stakeholders].blank?
         Organisation.none
       else
-        Organisation.where(account: @scorecard.account, name: params[:stakeholders].compact)
+        Organisation.where(workspace: @scorecard.workspace, name: params[:stakeholders].compact)
       end
 
     @initiatives = @scorecard.initiatives.order(:name).uniq
@@ -104,7 +104,7 @@ class SharedController < ApplicationController
   # SMELL: Duplicated in app/controllers/impact_cards_controller.rb
   def fetch_legend_items(impact_card)
     FocusArea
-      .per_scorecard_type_for_account(impact_card.type, impact_card.account)
+      .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
       .joins(:focus_area_group)
       .order('focus_area_groups.position, focus_areas.position')
       .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }

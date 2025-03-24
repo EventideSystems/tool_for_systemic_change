@@ -5,8 +5,8 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
   include VerifyPolicies
 
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show edit update remove_from_account undelete resend_invitation impersonate]
-  before_action :set_account_role, only: %i[show edit]
+  before_action :set_user, only: %i[show edit update remove_from_workspace undelete resend_invitation impersonate]
+  before_action :set_workspace_role, only: %i[show edit]
 
   sidebar_item :teams
 
@@ -36,22 +36,22 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
 
   def edit; end
 
-  # TODO: Refactor this so that if a user already exists in the system they are sent an invitation to join the account
-  # not created as a new user. This will allow for the user to be added to multiple accounts. Maybe move this to a
+  # TODO: Refactor this so that if a user already exists in the system they are sent an invitation to join the workspace
+  # not created as a new user. This will allow for the user to be added to multiple workspaces. Maybe move this to a
   # service object.
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @user = User.new(user_params)
     # SMELL: Move the user_params to the policy
     user_params.delete(:system_role) unless policy(User).invite_with_system_role?
-    account_role = user_params.delete(:account_role)
+    workspace_role = user_params.delete(:workspace_role)
 
-    if current_account.users.where(email: @user.email).exists?
+    if current_workspace.users.where(email: @user.email).exists?
       redirect_to users_path,
-                  alert: "A user with the email '#{user.email}' is already a member of this account."
-    elsif current_account.max_users_reached?
-      redirect_to users_path, alert: 'You have reached the maximum number of users for this account.'
+                  alert: "A user with the email '#{user.email}' is already a member of this workspace."
+    elsif current_workspace.max_users_reached?
+      redirect_to users_path, alert: 'You have reached the maximum number of users for this workspace.'
     else
-      @user.accounts_users.build(account: current_account, role: account_role)
+      @user.workspaces_users.build(workspace: current_workspace, role: workspace_role)
 
       authorize @user
 
@@ -65,7 +65,7 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
 
   def update
     update_system_role!(@user, user_params)
-    update_account_role!(@user, user_params)
+    update_workspace_role!(@user, user_params)
 
     if @user.update(user_params)
       redirect_to user_path(@user), notice: 'User was successfully updated.'
@@ -74,13 +74,13 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
     end
   end
 
-  def remove_from_account
-    accounts_user = AccountsUser
-                    .where(user: @user, account: current_account)
-                    .where.not(user: current_user)
-                    .first
+  def remove_from_workspace
+    workspaces_user = WorkspacesUser
+                      .where(user: @user, workspace: current_workspace)
+                      .where.not(user: current_user)
+                      .first
 
-    if accounts_user.present? && accounts_user.destroy
+    if workspaces_user.present? && workspaces_user.destroy
       redirect_to users_path, notice: 'User was successfully removed.'
     else
       redirect_to users_path, error: 'User could not be removed.'
@@ -88,7 +88,7 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
   end
 
   def impersonate
-    self.current_account = @user.accounts.first
+    self.current_workspace = @user.workspaces.first
     impersonate_user(@user)
 
     redirect_to root_path, flash: { notice: "You are now impersonating #{current_user.name}." }
@@ -119,9 +119,9 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
 
   private
 
-  def set_account_role
-    current_account_user = @user.accounts_users.find_by(account_id: current_account.id)
-    @user.account_role = current_account_user.present? ? current_account_user.account_role : 'member'
+  def set_workspace_role
+    current_workspace_user = @user.workspaces_users.find_by(workspace_id: current_workspace.id)
+    @user.workspace_role = current_workspace_user.present? ? current_workspace_user.workspace_role : 'member'
   end
 
   def set_user
@@ -137,17 +137,17 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
     user.update(system_role:)
   end
 
-  def update_account_role!(user, user_params)
-    account_role = user_params.delete(:account_role)
+  def update_workspace_role!(user, user_params)
+    workspace_role = user_params.delete(:workspace_role)
 
-    return unless account_role.present? && policy(user).change_account_role?
+    return unless workspace_role.present? && policy(user).change_workspace_role?
 
-    current_account_user = user.accounts_users.find_by(account_id: current_account.id)
+    current_workspace_user = user.workspaces_users.find_by(workspace_id: current_workspace.id)
 
-    if current_account_user
-      current_account_user.update(account_role: account_role)
+    if current_workspace_user
+      current_workspace_user.update(workspace_role: workspace_role)
     else
-      user.accounts_users.build(account: current_account, account_role: account_role)
+      user.workspaces_users.build(workspace: current_workspace, workspace_role: workspace_role)
     end
   end
 
@@ -156,7 +156,7 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
       :name,
       :email,
       :time_zone,
-      :account_role,
+      :workspace_role,
       :system_role,
       :password,
       :password_confirmation
@@ -170,32 +170,32 @@ class UsersController < ApplicationController # rubocop:disable Metrics/ClassLen
 
   # TODO: Consider adding this back in as an 'export' feature
   # def users_to_csv(users)
-  #   account_ids = policy_scope(Account).all.pluck(:id)
+  #   workspace_ids = policy_scope(workspace).all.pluck(:id)
 
   #   CSV.generate(force_quotes: true) do |csv|
   #     csv << [
   #       'Name',
   #       'Email',
-  #       'Account name',
+  #       'workspace name',
   #       'Date created',
-  #       'Account Expiry date',
+  #       'workspace Expiry date',
   #       'Systems Role',
-  #       'Account Role',
+  #       'workspace Role',
   #       'Last logged in date'
   #     ]
 
   #     users.each do |user|
-  #       user.accounts_users.each do |accounts_user|
-  #         next unless account_ids.include?(accounts_user.account_id)
+  #       user.workspaces_users.each do |workspaces_user|
+  #         next unless workspace_ids.include?(workspaces_user.workspace_id)
 
   #         csv << [
   #           user.name,
   #           user.email,
-  #           accounts_user.account.name,
-  #           accounts_user.account.created_at.strftime('%d/%m/%Y'),
-  #           accounts_user.account.expires_on&.strftime('%d/%m/%Y') || '',
+  #           workspaces_user.workspace.name,
+  #           workspaces_user.workspace.created_at.strftime('%d/%m/%Y'),
+  #           workspaces_user.workspace.expires_on&.strftime('%d/%m/%Y') || '',
   #           user.system_role.titleize,
-  #           accounts_user.account_role.titleize,
+  #           workspaces_user.workspace_role.titleize,
   #           user.last_sign_in_at&.strftime('%d/%m/%Y') || ''
   #         ]
   #       end

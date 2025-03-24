@@ -12,7 +12,7 @@ class ImpactCardsController < ApplicationController
   before_action :set_scorecard, except: %i[index new create]
 
   # before_action :set_active_tab, only: [:show]
-  before_action :require_account_selected, only: %i[new create edit update show_shared_link]
+  before_action :require_workspace_selected, only: %i[new create edit update show_shared_link]
   # before_action :redirect_to_correct_controller, only: %i[show]
 
   # skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
@@ -22,8 +22,8 @@ class ImpactCardsController < ApplicationController
   tab_item :grid
 
   def index # rubocop:disable Metrics/AbcSize
-    @communities = current_account.communities
-    @wicked_problems = current_account.wicked_problems
+    @communities = current_workspace.communities
+    @wicked_problems = current_workspace.wicked_problems
 
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
@@ -50,7 +50,7 @@ class ImpactCardsController < ApplicationController
 
     @selected_statuses = Array.wrap(params[:statuses])
 
-    @focus_areas = FocusArea.per_scorecard_type_for_account(@scorecard.type, @scorecard.account).order(
+    @focus_areas = FocusArea.per_scorecard_type_for_workspace(@scorecard.type, @scorecard.workspace).order(
       'focus_area_groups.position', :position
     )
 
@@ -58,7 +58,7 @@ class ImpactCardsController < ApplicationController
       if params[:subsystem_tags].blank?
         SubsystemTag.none
       else
-        SubsystemTag.where(account: @scorecard.account, name: params[:subsystem_tags].compact)
+        SubsystemTag.where(workspace: @scorecard.workspace, name: params[:subsystem_tags].compact)
       end
 
     @scorecard_grid = ScorecardGrid.execute(@scorecard, @parsed_date)
@@ -69,7 +69,7 @@ class ImpactCardsController < ApplicationController
   end
 
   def new
-    @impact_card = current_account.scorecards.build
+    @impact_card = current_workspace.scorecards.build
 
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
@@ -85,7 +85,7 @@ class ImpactCardsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @impact_card = current_account.scorecards.build(impact_card_params)
+    @impact_card = current_workspace.scorecards.build(impact_card_params)
     authorize(@impact_card, policy_class: ScorecardPolicy)
 
     if @impact_card.save
@@ -93,7 +93,7 @@ class ImpactCardsController < ApplicationController
       update_subsystem_tags!(@impact_card.initiatives.first, initiatives_subsystem_tags_params)
 
       if params[:impact_card_source_id].present?
-        @source_impact_card = current_account.scorecards.find(params[:impact_card_source_id])
+        @source_impact_card = current_workspace.scorecards.find(params[:impact_card_source_id])
         copy_initiatives(@impact_card, @source_impact_card) if @source_impact_card.present?
       end
 
@@ -143,13 +143,13 @@ class ImpactCardsController < ApplicationController
 
   # def merge_options
   #   @other_scorecards =
-  #     current_account.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
+  #     current_workspace.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
 
   #   render(layout: false)
   # end
 
   # def merge
-  #   @other_scorecard = current_account.scorecards.find(params[:other_scorecard_id])
+  #   @other_scorecard = current_workspace.scorecards.find(params[:other_scorecard_id])
   #   authorize(@other_scorecard, policy_class: ScorecardPolicy).merge?
 
   #   notice = if merge_cards(@scorecard, @other_scorecard, deep: params[:merge] == 'deep')
@@ -165,7 +165,7 @@ class ImpactCardsController < ApplicationController
 
   def fetch_legend_items(impact_card)
     FocusArea
-      .per_scorecard_type_for_account(impact_card.type, impact_card.account)
+      .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
       .joins(:focus_area_group)
       .order('focus_area_groups.position, focus_areas.position')
       .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }
@@ -192,7 +192,7 @@ class ImpactCardsController < ApplicationController
   end
 
   def set_scorecard
-    @scorecard = current_account.scorecards.find(params[:id])
+    @scorecard = current_workspace.scorecards.find(params[:id])
     authorize(@scorecard, policy_class: ScorecardPolicy)
   end
 

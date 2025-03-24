@@ -2,7 +2,7 @@
 
 # Controller for the dashboard (logged-in home page)
 class DashboardController < ApplicationController
-  before_action :require_account, only: :index
+  before_action :require_workspace, only: :index
 
   sidebar_item :home
 
@@ -12,13 +12,13 @@ class DashboardController < ApplicationController
     @wicked_problem_count = policy_scope(WickedProblem).count
     @organisation_count = policy_scope(Organisation).count
 
-    @recent_versions = current_account.present? ? recent_activity : []
+    @recent_versions = current_workspace.present? ? recent_activity : []
   end
 
   private
 
-  def require_account
-    flash[:alert] = 'Select an account before continuing.' if current_account.blank?
+  def require_workspace
+    flash[:alert] = 'Select an workspace before continuing.' if current_workspace.blank?
   end
 
   def recent_activity

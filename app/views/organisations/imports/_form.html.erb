@@ -10,7 +10,7 @@
         <%= import_files_instructions_link %>
       </div>
 
-      <% if current_account.custom_stakeholder_types_in_use? %>
+      <% if current_workspace.custom_stakeholder_types_in_use? %>
         <div class="alert alert-info" role="alert">
           <p>NOTE: You have custom stakeholder types in use.</p>
           <p>You may want to export your organisations with a list of available stakeholder types before importing.</p>

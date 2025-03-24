@@ -6,9 +6,9 @@ RSpec.describe(ScorecardCopier) do # rubocop:disable RSpec/MultipleMemoizedHelpe
   subject(:copied) { described_class.new(scorecard, 'new name', deep_copy: deep_copy?).perform }
 
   let(:user) { create(:user) }
-  let(:default_account) { create(:account) }
+  let(:default_workspace) { create(:workspace) }
   let!(:characteristic) { create(:characteristic) }
-  let!(:scorecard) { create(:scorecard, account: default_account, initiatives: create_list(:initiative, 2)) }
+  let!(:scorecard) { create(:scorecard, workspace: default_workspace, initiatives: create_list(:initiative, 2)) }
   let(:initiative) { scorecard.initiatives.first }
   let(:checklist_item) do
     create(:checklist_item, initiative:, characteristic:, user:, comment: 'test', status: :planned)
@@ -22,8 +22,8 @@ RSpec.describe(ScorecardCopier) do # rubocop:disable RSpec/MultipleMemoizedHelpe
   describe '#copied' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:deep_copy?) { false }
     let(:copied_first_initiative) { copied.initiatives.where(name: scorecard.initiatives.first.name).first }
-    let(:stakeholder_type) { create(:stakeholder_type, account: default_account) }
-    let(:organisations) { create_list(:organisation, 5, account: default_account, stakeholder_type:) }
+    let(:stakeholder_type) { create(:stakeholder_type, workspace: default_workspace) }
+    let(:organisations) { create_list(:organisation, 5, workspace: default_workspace, stakeholder_type:) }
 
     before do
       scorecard.initiatives.first.organisations = organisations

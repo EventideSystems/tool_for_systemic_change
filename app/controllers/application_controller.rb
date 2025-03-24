@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   include ActiveSidebarItem
   include Pagy::Backend
 
-  before_action :set_session_account_id
+  before_action :set_session_workspace_id
   before_action :authenticate_user!
 
   before_action :set_paper_trail_whodunnit
@@ -21,28 +21,28 @@ class ApplicationController < ActionController::Base
 
   sidebar_item :home
 
-  def current_account
+  def current_workspace
     return nil if current_user.blank?
 
-    @current_account ||= fetch_account_from_session || fetch_default_account_and_set_session
+    @current_workspace ||= fetch_workspace_from_session || fetch_default_workspace_and_set_session
   end
 
-  helper_method :current_account
+  helper_method :current_workspace
 
-  def current_account=(account)
-    @current_account = nil
-    session[:account_id] = account.present? ? account.id : nil
-    current_account
+  def current_workspace=(workspace)
+    @current_workspace = nil
+    session[:workspace_id] = workspace.present? ? workspace.id : nil
+    current_workspace
   end
 
   def pundit_user
-    UserContext.new(current_user, current_account)
+    UserContext.new(current_user, current_workspace)
   end
 
-  def require_account_selected
-    return if current_account.present?
+  def require_workspace_selected
+    return if current_workspace.present?
 
-    redirect_back(fallback_location: dashboard_path, alert: 'Select an account before using this feature')
+    redirect_back(fallback_location: dashboard_path, alert: 'Select an workspace before using this feature')
   end
 
   def configure_permitted_parameters
@@ -52,13 +52,13 @@ class ApplicationController < ActionController::Base
         :email,
         :name,
         :system_role,
-        { accounts_users_attributes: %i[account_id account_role] }
+        { workspaces_users_attributes: %i[workspace_id workspace_role] }
       ]
     )
   end
 
   def info_for_paper_trail
-    { account_id: current_account&.id }
+    { workspace_id: current_workspace&.id }
   end
 
   def user_for_paper_trail
@@ -76,26 +76,26 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def fetch_account_from_session
-    return nil if session[:account_id].blank?
+  def fetch_workspace_from_session
+    return nil if session[:workspace_id].blank?
 
-    AccountPolicy::Scope
-      .new(UserContext.new(current_user, nil), Account)
+    WorkspacePolicy::Scope
+      .new(UserContext.new(current_user, nil), Workspace)
       .scope
-      .find_by(id: session[:account_id])
+      .find_by(id: session[:workspace_id])
   end
 
-  def fetch_default_account_and_set_session
-    default_account = current_user&.default_account
-    default_account = Account.active.first if default_account.blank? && current_user.system_role == 'admin'
-    session[:account_id] = default_account&.id
-    default_account
+  def fetch_default_workspace_and_set_session
+    default_workspace = current_user&.default_workspace
+    default_workspace = Workspace.active.first if default_workspace.blank? && current_user.system_role == 'admin'
+    session[:workspace_id] = default_workspace&.id
+    default_workspace
   end
 
-  def set_session_account_id
-    return unless session[:account_id].blank? && user_signed_in?
+  def set_session_workspace_id
+    return unless session[:workspace_id].blank? && user_signed_in?
 
-    self.current_account = current_user.default_account
+    self.current_workspace = current_user.default_workspace
   end
 
   def user_not_authorized(_exception)
@@ -106,7 +106,7 @@ class ApplicationController < ActionController::Base
   end
 
   def flash_resource_not_found(_exception)
-    flash[:error] = "Resource not found in account '#{current_account.name}'"
+    flash[:error] = "Resource not found in workspace '#{current_workspace.name}'"
     redirect_to(root_path)
   end
 end

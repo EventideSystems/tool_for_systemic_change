@@ -93,7 +93,7 @@ class OrganisationsController < ApplicationController
   end
 
   def export_filename
-    "organisations-#{Time.zone.today.strftime('%Y-%m-%d')}"
+    "#{Organisation.model_name.human.pluralize.downcase}-#{Time.zone.today.strftime('%Y-%m-%d')}"
   end
 
   def organisations_to_csv(organisations, include_stakeholder_list) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
@@ -103,7 +103,7 @@ class OrganisationsController < ApplicationController
       header_row = ['Name', 'Description', 'Stakeholder Type', 'Weblink'].tap do |header|
         if include_stakeholder_list
           header.push('')
-          header.push('Stakeholder type list - add one to each organisation')
+          header.push('Stakeholder type list - add one to each stakeholder')
         end
       end
 

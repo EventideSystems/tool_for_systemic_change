@@ -76,8 +76,8 @@ class InitiativesController < ApplicationController
     end
   end
 
-  def update # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
-    linked_initiative = @initiative.linked_initiative
+  def update
+    # linked_initiative = @initiative.linked_initiative
 
     if @initiative.update(initiative_params)
       update_stakeholders!(@initiative, initiatives_organisations_params)

@@ -9,7 +9,7 @@
       <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Team</h1>
       <div class="flex justify-between items-center mt-4 ">
         <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search team...', search_field: :name_or_email_cont } %>
-        <%- if policy(User).invite?%>
+        <%- if policy(User).invite? %>
           <div>
             <%= link_to_primary 'Invite Team Member', new_user_invitation_path %>
           </div>

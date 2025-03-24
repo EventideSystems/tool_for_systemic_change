@@ -140,9 +140,7 @@ module Initiatives
 
         success = success && unknown_organisation_names.empty? && unknown_subsystem_tag_names.empty?
 
-        if success
-          ::SynchronizeLinkedInitiative.call(initiative) if initiative.scorecard.linked?
-        else
+        unless success
           error_messages = initiative.errors.full_messages || []
           unless unknown_organisation_names.empty?
             error_messages << "Unknown Organisation Names: #{unknown_organisation_names.join(', ')}."

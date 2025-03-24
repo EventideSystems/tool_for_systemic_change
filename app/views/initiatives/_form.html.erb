@@ -15,7 +15,7 @@
               </div>
             <% else %>
               <div class="mt-2">
-                <%= select_impact_card_tag(:impact_card_id, account: current_account, autofocus: true, required: true, prompt: 'Select an impact card') %>
+                <%= select_impact_card_tag(:impact_card_id, workspace: current_workspace, autofocus: true, required: true, prompt: 'Select an impact card') %>
               </div>
             <% end %>
           </div>

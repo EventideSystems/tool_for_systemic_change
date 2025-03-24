@@ -4,14 +4,15 @@
 module UsersHelper
   BADGE_BASE_CLASS = 'inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline text-black' # rubocop:disable Layout/LineLength
 
-  def role_in_current_account_badge(user)
-    account_role = role_in_current_account(user)
-    return '' if account_role.blank?
+  def role_in_current_workspace_badge(user)
+    workspace_role = role_in_current_workspace(user)
+    return '' if workspace_role.blank?
 
-    badge_class = role_in_current_account_badge_class(account_role)
-    member_since = AccountsUser.find_by(user: user, account: current_account).created_at.strftime('%b. %Y')
+    badge_class = role_in_current_workspace_badge_class(workspace_role)
+    member_since = WorkspacesUser.find_by(user: user, workspace: current_workspace).created_at.strftime('%b. %Y')
 
-    content_tag(:span, "Account #{account_role.titleize}", class: badge_class, title: "Member since #{member_since}")
+    content_tag(:span, "Workspace #{workspace_role.titleize}", class: badge_class,
+                                                               title: "Member since #{member_since}")
   end
 
   def user_system_role_badge(user)
@@ -45,8 +46,8 @@ module UsersHelper
 
   private
 
-  def role_in_current_account_badge_class(account_role)
-    case account_role.to_sym
+  def role_in_current_workspace_badge_class(workspace_role)
+    case workspace_role.to_sym
     when :admin
       "#{BADGE_BASE_CLASS} bg-pink-400"
     when :member
@@ -54,9 +55,9 @@ module UsersHelper
     end
   end
 
-  def role_in_current_account(user)
-    accounts_user = AccountsUser.where(user: user, account: current_account).first
-    accounts_user.try(:account_role)
+  def role_in_current_workspace(user)
+    workspaces_user = WorkspacesUser.where(user: user, workspace: current_workspace).first
+    workspaces_user.try(:workspace_role)
   end
 
   def user_system_role_badge_class(system_role)

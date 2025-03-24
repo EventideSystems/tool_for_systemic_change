@@ -15,7 +15,7 @@ class InitiativesOrganisationsController < ApplicationController
   end
 
   def new # rubocop:disable Metrics/MethodLength
-    @organisation = current_account.organisations.new
+    @organisation = current_workspace.organisations.new
     authorize @organisation
 
     respond_to do |format|
@@ -36,7 +36,7 @@ class InitiativesOrganisationsController < ApplicationController
     if @organisation.present?
       @organisation.assign_attributes(organisation_params)
     else
-      @organisation = current_account.organisations.new(organisation_params)
+      @organisation = current_workspace.organisations.new(organisation_params)
     end
 
     authorize @organisation
@@ -64,7 +64,7 @@ class InitiativesOrganisationsController < ApplicationController
   private
 
   def find_existing_organisation(organisation_params)
-    current_account.organisations.find_by(name: organisation_params[:name])
+    current_workspace.organisations.find_by(name: organisation_params[:name])
   end
 
   def organisation_params

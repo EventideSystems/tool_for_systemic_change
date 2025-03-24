@@ -54,28 +54,28 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :accounts_users, dependent: :destroy
-  has_many :accounts, through: :accounts_users
+  has_many :workspaces_users, dependent: :destroy
+  has_many :workspaces, through: :workspaces_users
 
-  has_many :active_accounts,
+  has_many :active_workspaces,
            lambda {
-             where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Time.zone.today)
+             where('workspaces.expires_on IS NULL OR workspaces.expires_on >= ?', Time.zone.today)
            },
-           through: :accounts_users,
-           source: :account
+           through: :workspaces_users,
+           source: :workspace
 
-  has_many :active_accounts_with_admin_role,
+  has_many :active_workspaces_with_admin_role,
            lambda {
-             where(accounts_users: { account_role: :admin })
-               .where('accounts.expires_on IS NULL OR accounts.expires_on >= ?', Time.zone.today)
+             where(workspaces_users: { workspace_role: :admin })
+               .where('workspaces.expires_on IS NULL OR workspaces.expires_on >= ?', Time.zone.today)
            },
-           through: :accounts_users,
-           source: :account
+           through: :workspaces_users,
+           source: :workspace
 
-  accepts_nested_attributes_for :accounts_users, allow_destroy: true
+  accepts_nested_attributes_for :workspaces_users, allow_destroy: true
 
   # Virtual attributes used when inviting or updating users
-  attr_accessor :initial_account_role, :initial_system_role, :account_role
+  attr_accessor :initial_workspace_role, :initial_system_role, :workspace_role
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name email] + _ransackers.keys
@@ -83,7 +83,7 @@ class User < ApplicationRecord
 
   # Used by Devise to determine if the user is active and can sign in.
   def active_for_authentication?
-    super && (admin? || default_account.present?)
+    super && (admin? || default_workspace.present?)
   end
 
   # TODO: Consider converting this to symbols.
@@ -100,11 +100,11 @@ class User < ApplicationRecord
     name.presence || email
   end
 
-  def default_account
-    active_accounts.first || accounts.first
+  def default_workspace
+    active_workspaces.first || workspaces.first
   end
 
-  def primary_account_name
-    default_account.present? ? default_account.name : '<none>'
+  def primary_workspace_name
+    default_workspace.present? ? default_workspace.name : '<none>'
   end
 end

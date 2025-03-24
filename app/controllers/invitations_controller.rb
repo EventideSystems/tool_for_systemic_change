@@ -6,25 +6,25 @@ class InvitationsController < Devise::InvitationsController
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/PerceivedComplexity
     params[:user].delete(:initial_system_role) unless policy(User).invite_with_system_role?
-    account_role = params[:user].delete(:initial_account_role)
+    workspace_role = params[:user].delete(:initial_workspace_role)
 
     user = User.find_by(email: params[:user][:email])
 
     if user
-      if current_account.users.include?(user)
-        redirect_to users_path, alert: "A user with the email '#{user.email}' is already a member of this account."
-      elsif current_account.max_users_reached?
-        redirect_to users_path, alert: 'You have reached the maximum number of users for this account.'
+      if current_workspace.users.include?(user)
+        redirect_to users_path, alert: "A user with the email '#{user.email}' is already a member of this workspace."
+      elsif current_workspace.max_users_reached?
+        redirect_to users_path, alert: 'You have reached the maximum number of users for this workspace.'
       else
-        AccountsUser.create!(user: user, account: current_account, account_role: account_role)
+        WorkspacesUser.create!(user: user, workspace: current_workspace, workspace_role: workspace_role)
         redirect_to users_path, notice: 'User was successfully invited.'
       end
-    elsif current_account.max_users_reached?
-      redirect_to users_path, alert: 'You have reached the maximum number of users for this account.'
+    elsif current_workspace.max_users_reached?
+      redirect_to users_path, alert: 'You have reached the maximum number of users for this workspace.'
     else
       super do |resource|
         if resource.errors.empty?
-          AccountsUser.create!(user: resource, account: current_account, account_role: account_role)
+          WorkspacesUser.create!(user: resource, workspace: current_workspace, workspace_role: workspace_role)
         end
       end
     end

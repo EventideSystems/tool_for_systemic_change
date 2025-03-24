@@ -14,7 +14,7 @@ module Reports
     def initialize(scorecard)
       super()
       @scorecard = scorecard
-      @stakeholder_types = StakeholderType.where(account: scorecard.account).order('lower(stakeholder_types.name)')
+      @stakeholder_types = StakeholderType.where(workspace: scorecard.workspace).order('lower(stakeholder_types.name)')
       @initiatives = fetch_initiatives(scorecard)
       @ecosystem_map = Insights::StakeholderNetwork.new(scorecard)
       @connections = OrganisationConnections.execute(scorecard.id)
@@ -57,9 +57,9 @@ module Reports
     def scorecard_model_name
       case scorecard
       when TransitionCard
-        scorecard.account.transition_card_model_name
+        scorecard.workspace.transition_card_model_name
       when SustainableDevelopmentGoalAlignmentCard
-        scorecard.account.sdgs_alignment_card_model_name
+        scorecard.workspace.sdgs_alignment_card_model_name
       end
     end
 

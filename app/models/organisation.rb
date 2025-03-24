@@ -11,13 +11,13 @@
 #  weblink             :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  account_id          :integer
 #  stakeholder_type_id :integer
+#  workspace_id        :integer
 #
 # Indexes
 #
-#  index_organisations_on_account_id  (account_id)
-#  index_organisations_on_deleted_at  (deleted_at)
+#  index_organisations_on_deleted_at    (deleted_at)
+#  index_organisations_on_workspace_id  (workspace_id)
 #
 class Organisation < ApplicationRecord
   include Searchable
@@ -25,16 +25,16 @@ class Organisation < ApplicationRecord
   has_paper_trail
   acts_as_paranoid
 
-  belongs_to :account
+  belongs_to :workspace
   belongs_to :stakeholder_type
   has_many :initiatives_organisations, dependent: :delete_all
   has_many :initiatives, through: :initiatives_organisations
 
-  validates :account, presence: true
+  validates :workspace, presence: true
   # TODO: Add validation in the database schema
-  validates :name, presence: true, uniqueness: { scope: :account_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, presence: true, uniqueness: { scope: :workspace_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :stakeholder_type_id, presence: true
-  validate :stakeholder_type_is_in_same_account
+  validate :stakeholder_type_is_in_same_workspace
 
   delegate :name, to: :stakeholder_type, prefix: true, allow_nil: true
 
@@ -42,10 +42,10 @@ class Organisation < ApplicationRecord
 
   private
 
-  def stakeholder_type_is_in_same_account
-    return unless stakeholder_type && stakeholder_type.account != account
+  def stakeholder_type_is_in_same_workspace
+    return unless stakeholder_type && stakeholder_type.workspace != workspace
 
     errors.add(:stakeholder_type_id,
-               'must be in the same account')
+               'must be in the same workspace')
   end
 end

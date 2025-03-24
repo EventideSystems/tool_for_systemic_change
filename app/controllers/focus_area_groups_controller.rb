@@ -9,7 +9,7 @@ class FocusAreaGroupsController < ApplicationController
   def index
     @focus_area_groups = \
       policy_scope(FocusAreaGroup)
-      .where(account: current_account)
+      .where(workspace: current_workspace)
       .order(sort_order)
       .page(params[:page])
   end
@@ -17,14 +17,14 @@ class FocusAreaGroupsController < ApplicationController
   def show; end
 
   def new
-    @focus_area_group = current_account.build_focus_area_group
+    @focus_area_group = current_workspace.build_focus_area_group
     authorize @focus_area_group
   end
 
   def edit; end
 
   def create
-    @focus_area_group = current_account.build_focus_area_group(focus_area_group_params)
+    @focus_area_group = current_workspace.build_focus_area_group(focus_area_group_params)
     authorize @focus_area_group
 
     if @focus_area_group.save

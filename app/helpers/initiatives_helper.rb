@@ -16,8 +16,8 @@ module InitiativesHelper
 
   def scorecard_label(initiative) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     if initiative.new_record? || initiative.scorecard.nil?
-      current_account.scorecard_types.map { |type| type.model_name.human }
-                     .join(' / ')
+      current_workspace.scorecard_types.map { |type| type.model_name.human }
+                       .join(' / ')
     else
       safe_join(
         [
@@ -65,7 +65,7 @@ module InitiativesHelper
   end
 
   def initiative_scorecard_types
-    current_account.scorecard_types.map do |scorecard_type|
+    current_workspace.scorecard_types.map do |scorecard_type|
       [scorecard_type.model_name.human.pluralize, scorecard_type.name]
     end
   end
@@ -75,7 +75,7 @@ module InitiativesHelper
   # SMELL: Duplicate of code in initiatives_controller.rb
   def scorecard_type_from_params(params)
     if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
-      current_account.default_scorecard_type
+      current_workspace.default_scorecard_type
     else
       case params[:scope].to_sym
       when :sdgs_alignment_cards then SustainableDevelopmentGoalAlignmentCard

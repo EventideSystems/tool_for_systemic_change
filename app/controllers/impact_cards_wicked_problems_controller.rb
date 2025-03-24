@@ -6,12 +6,12 @@ class ImpactCardsWickedProblemsController < ApplicationController
   def index; end
 
   def new
-    @wicked_problem = current_account.wicked_problems.new
+    @wicked_problem = current_workspace.wicked_problems.new
     authorize @wicked_problem
   end
 
   def create # rubocop:disable Metrics/MethodLength
-    @wicked_problem = current_account.wicked_problems.new(wicked_problem_params)
+    @wicked_problem = current_workspace.wicked_problems.new(wicked_problem_params)
     authorize @wicked_problem
 
     if @wicked_problem.save

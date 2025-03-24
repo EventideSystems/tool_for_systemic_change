@@ -71,9 +71,9 @@ module Reports
     def scorecard_model_name
       case scorecard
       when TransitionCard
-        scorecard.account.transition_card_model_name
+        scorecard.workspace.transition_card_model_name
       when SustainableDevelopmentGoalAlignmentCard
-        scorecard.account.sdgs_alignment_card_model_name
+        scorecard.workspace.sdgs_alignment_card_model_name
       end
     end
 
@@ -81,9 +81,9 @@ module Reports
       col_base_name =
         case scorecard
         when TransitionCard
-          scorecard.account.transition_card_characteristic_model_name.pluralize
+          scorecard.workspace.transition_card_characteristic_model_name.pluralize
         when SustainableDevelopmentGoalAlignmentCard
-          scorecard.account.sdgs_alignment_card_characteristic_model_name.pluralize
+          scorecard.workspace.sdgs_alignment_card_characteristic_model_name.pluralize
         end
 
       sheet.add_row do |row|

@@ -3,7 +3,7 @@
 module Organisations
   # Imports for Organisations (aka 'stakeholders')
   class ImportsController < ApplicationController
-    before_action :require_account_selected, only: %i[new create edit update]
+    before_action :require_workspace_selected, only: %i[new create edit update]
     before_action :set_organisations_import, only: %i[show edit update destroy]
 
     def index
@@ -13,19 +13,19 @@ module Organisations
     def show; end
 
     def new
-      @organisations_import = current_account.organisations_imports.build
+      @organisations_import = current_workspace.organisations_imports.build
       authorize @organisations_import
     end
 
     def edit; end
 
     def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      @organisations_import = current_account.organisations_imports.build(
+      @organisations_import = current_workspace.organisations_imports.build(
         organisations_import_params.merge(user: current_user)
       )
       authorize @organisations_import
 
-      if @organisations_import.save && @organisations_import.process(current_account)
+      if @organisations_import.save && @organisations_import.process(current_workspace)
         redirect_to organisations_path, notice: 'Organisation records successfully imported'
       else
         render :new

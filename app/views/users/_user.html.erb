@@ -10,7 +10,7 @@
         <div class="text-xs/6 text-zinc-500 dark:text-zinc-100">
           <%= highlight(user.email, params.dig(:q, :name_or_email_cont)) %>
         </div>
-        <%= role_in_current_account_badge(user) %>
+        <%= role_in_current_workspace_badge(user) %>
         <%= user_system_role_badge(user) %>
         <%= user_status_badge(user) %>
       </div>

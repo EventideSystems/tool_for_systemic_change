@@ -23,7 +23,7 @@ module ImpactCards
         if params[:stakeholders].blank?
           Organisation.none
         else
-          Organisation.where(account: current_account, name: params[:stakeholders].compact)
+          Organisation.where(workspace: current_workspace, name: params[:stakeholders].compact)
         end
 
       @initiatives = @scorecard.initiatives.order(:name).uniq
@@ -40,7 +40,7 @@ module ImpactCards
     # SMELL: Duplicate code, also found in impact_cards_controller.rb
     def fetch_legend_items(impact_card)
       FocusArea
-        .per_scorecard_type_for_account(impact_card.type, impact_card.account)
+        .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
         .joins(:focus_area_group)
         .order('focus_area_groups.position, focus_areas.position')
         .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }

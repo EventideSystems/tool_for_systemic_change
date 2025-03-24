@@ -4,11 +4,11 @@ module PaperTrail
   class VersionPolicy < ApplicationPolicy
     class Scope < Scope # rubocop:disable Style/Documentation
       def resolve
-        if system_admin? || account_admin?(current_account)
-          visible_items_query(scope.where(account_id: current_account.id))
+        if system_admin? || workspace_admin?(current_workspace)
+          visible_items_query(scope.where(workspace_id: current_workspace.id))
         else
           visible_items_query(
-            scope.where(account_id: current_account.id, whodunnit: current_user.id)
+            scope.where(workspace_id: current_workspace.id, whodunnit: current_user.id)
           )
         end
       end

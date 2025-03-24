@@ -1,4 +1,4 @@
-<%- if role_in_current_account(current_user) == 'admin' || @user == current_user %>
+<%- if role_in_current_workspace(current_user) == 'admin' || @user == current_user %>
   <%= render 'limited_functionality' %>
 <% else %>
   <%= render 'expiry_warning' %>
@@ -21,7 +21,7 @@
               <%= @user.email %>
             </div>
             <div class="flex space-x-4">
-              <%= role_in_current_account_badge(@user) %>
+              <%= role_in_current_workspace_badge(@user) %>
               <%= user_system_role_badge(@user) %>
               <%= user_status_badge(@user) %>
             </div>
@@ -75,6 +75,6 @@
 
   <%= render 'show_page_section', title: 'Roles' do %>
     <%= definition_list_element('System role', @user.system_role.titleize) %>
-    <%= definition_list_element('Current account', role_in_current_account(@user).titleize) if role_in_current_account(@user).present? %>
+    <%= definition_list_element('Current workspace', role_in_current_workspace(@user).titleize) if role_in_current_workspace(@user).present? %>
   <% end %>
 </div>

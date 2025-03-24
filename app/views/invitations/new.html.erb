@@ -23,8 +23,8 @@
     <%- end %>
 
     <div>
-      <%= f.label :initial_account_role, class: 'block text-sm font-medium text-gray-700 dark:text-gray-700' %>
-      <%= f.select :initial_account_role, options_for_select(AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, AccountsUser.account_roles.keys.first) %>
+      <%= f.label :initial_workspace_role, class: 'block text-sm font-medium text-gray-700 dark:text-gray-700' %>
+      <%= f.select :initial_workspace_role, options_for_select(WorkspacesUser.workspace_roles.keys.map { |key| [key.capitalize, key]}, WorkspacesUser.workspace_roles.keys.first) %>
     </div>
 
     <div>

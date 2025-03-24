@@ -48,7 +48,7 @@ module Reports
 
           FocusAreaGroup.where( # rubocop:disable Metrics/BlockLength
             scorecard_type: scorecard.type,
-            account: scorecard.account
+            workspace: scorecard.workspace
           ).order(:position).each do |focus_area_group|
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2]) # rubocop:disable Naming/VariableNumber
 
@@ -96,9 +96,9 @@ module Reports
     def scorecard_model_name
       case scorecard
       when TransitionCard
-        scorecard.account.transition_card_model_name
+        scorecard.workspace.transition_card_model_name
       when SustainableDevelopmentGoalAlignmentCard
-        scorecard.account.sdgs_alignment_card_model_name
+        scorecard.workspace.sdgs_alignment_card_model_name
       end
     end
 
@@ -168,7 +168,7 @@ module Reports
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
-          where focus_area_groups.account_id = #{scorecard.account_id}
+          where focus_area_groups.workspace_id = #{scorecard.workspace_id}
           order by focus_area_groups.position, focus_areas.position, characteristics.id
         )
 

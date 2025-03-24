@@ -31,13 +31,13 @@ class Characteristic < ApplicationRecord
   validates :position, presence: true, uniqueness: { scope: :focus_area } # rubocop:disable Rails/UniqueValidationWithoutIndex
   delegate :position, to: :focus_area, prefix: true
 
-  delegate :scorecard_type, :account, to: :focus_area
+  delegate :scorecard_type, :workspace, to: :focus_area
 
-  scope :per_scorecard_type_for_account, lambda { |scorecard_type, account|
+  scope :per_scorecard_type_for_workspace, lambda { |scorecard_type, workspace|
     joins(focus_area: :focus_area_group)
       .where(
         'focus_area_groups_focus_areas.scorecard_type' => scorecard_type,
-        'focus_area_groups_focus_areas.account_id' => account.id
+        'focus_area_groups_focus_areas.workspace_id' => workspace.id
       )
   }
 

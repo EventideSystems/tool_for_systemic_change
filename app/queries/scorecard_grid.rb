@@ -7,7 +7,7 @@ require 'benchmark'
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = []) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-      columns_data = column_data(scorecard.account, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
+      columns_data = column_data(scorecard.workspace, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
 
       if snapshot_at.present?
         ActiveRecord::Base
@@ -69,7 +69,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > now())
-          and focus_area_groups.account_id = #{scorecard.account_id}
+          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -84,7 +84,7 @@ class ScorecardGrid
           order by initiative
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
+            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and workspace_id = #{scorecard.workspace_id}
           $$
         ) as data(#{columns_data})
         order by lower(trim(initiative->>'name'))
@@ -149,7 +149,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
-          and focus_area_groups.account_id = #{scorecard.account_id}
+          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -168,14 +168,14 @@ class ScorecardGrid
           order by initiative
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and account_id = #{scorecard.account_id}
+            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and workspace_id = #{scorecard.workspace_id}
           $$
         ) as data(#{columns_data})
         order by lower(trim(initiative->>'name'))
       SQL
     end
 
-    def columns_data_sql(account, scorecard_type)
+    def columns_data_sql(workspace, scorecard_type)
       <<~SQL
         select
           array_to_string(
@@ -185,7 +185,7 @@ class ScorecardGrid
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
             where focus_area_groups.scorecard_type = '#{scorecard_type}'
-            and focus_area_groups.account_id = #{account.id}
+            and focus_area_groups.workspace_id = #{workspace.id}
             and focus_area_groups.deleted_at is null
             and focus_areas.deleted_at is null
             and characteristics.deleted_at is null
@@ -195,8 +195,8 @@ class ScorecardGrid
       SQL
     end
 
-    def column_data(account, scorecard_type)
-      ActiveRecord::Base.connection.execute(columns_data_sql(account, scorecard_type)).values.first.first
+    def column_data(workspace, scorecard_type)
+      ActiveRecord::Base.connection.execute(columns_data_sql(workspace, scorecard_type)).values.first.first
     end
 
     # NOTE: This is no longer required as we filter the subsystem tags in UI via JS now

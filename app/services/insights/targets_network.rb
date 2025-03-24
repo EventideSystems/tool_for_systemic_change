@@ -5,10 +5,11 @@ module Insights
   # for a given SDGs Card.
   #
   # It's all a bit of a mess at present, as the TargetsNetworkMapping only points to the original shared SDGs Card
-  # model (i.e. focus area groups, areas and characteristics) and not the ones that are now duplicated across accounts.
+  # model (i.e. focus area groups, areas and characteristics) and not the ones that are now duplicated across
+  # workspaces.
   #
-  # For now we'll use the original shared SDGs Card model to get the data we need and map it to the account's
-  # duplicated models. NB This requires that the account's duplicated models are in sync with the original shared
+  # For now we'll use the original shared SDGs Card model to get the data we need and map it to the workspace's
+  # duplicated models. NB This requires that the workspace's duplicated models are in sync with the original shared
   # SDGs Card model. If the names are ever changed, this will break.
   class TargetsNetwork # rubocop:disable Metrics/ClassLength
     attr_reader :transition_card, :targets_network_mappings
@@ -19,8 +20,8 @@ module Insights
 
     def links
       targets_network_mapping.map do |mapping|
-        target = account_characteristics.find { |characteristic| characteristic.name == mapping.characteristic.name }
-        source = account_focus_areas.find { |focus_area| focus_area.name == mapping.focus_area.name }
+        target = workspace_characteristics.find { |characteristic| characteristic.name == mapping.characteristic.name }
+        source = workspace_focus_areas.find { |focus_area| focus_area.name == mapping.focus_area.name }
 
         {
           id: mapping.id,
@@ -37,25 +38,25 @@ module Insights
 
     private
 
-    def account_focus_areas
-      @account_focus_areas ||=
+    def workspace_focus_areas
+      @workspace_focus_areas ||=
         transition_card
-        .account
+        .workspace
         .focus_area_groups
         .includes(focus_areas: :characteristics)
         .where(scorecard_type: 'SustainableDevelopmentGoalAlignmentCard')
         .flat_map(&:focus_areas)
     end
 
-    def account_characteristics
-      @account_characteristics ||= account_focus_areas.flat_map(&:characteristics)
+    def workspace_characteristics
+      @workspace_characteristics ||= workspace_focus_areas.flat_map(&:characteristics)
     end
 
     def characteristics
       @characteristics ||=
         targets_network_mapping.map(&:characteristic).map do |characteristic|
-          account_characteristics.find do |account_characteristic|
-            account_characteristic.name == characteristic.name
+          workspace_characteristics.find do |workspace_characteristic|
+            workspace_characteristic.name == characteristic.name
           end
         end.uniq.compact
     end
@@ -63,7 +64,7 @@ module Insights
     def focus_areas
       @focus_areas ||=
         targets_network_mapping.map(&:focus_area).map do |focus_area|
-          account_focus_areas.find { |account_focus_area| account_focus_area.name == focus_area.name }
+          workspace_focus_areas.find { |workspace_focus_area| workspace_focus_area.name == focus_area.name }
         end.uniq.compact
     end
 

@@ -7,7 +7,7 @@ module ImpactCards
 
     def new
       @target = Scorecard.find(params[:impact_card_id])
-      @sources = Scorecard.where(account_id: @target.account_id, type: @target.type).where.not(id: @target.id)
+      @sources = Scorecard.where(workspace_id: @target.workspace_id, type: @target.type).where.not(id: @target.id)
       authorize(@target, :merge?)
     end
 
@@ -16,7 +16,7 @@ module ImpactCards
       @source = Scorecard.find(params[:source_id])
 
       raise 'Cannot merge cards of different types' if @source.type != @target.type
-      raise 'Cannot merge cards of different accounts' if @source.account_id != @target.account_id
+      raise 'Cannot merge cards of different workspaces' if @source.workspace_id != @target.workspace_id
 
       authorize(@source, :merge?)
       authorize(@target, :merge?)

@@ -160,9 +160,9 @@ class Initiative < ApplicationRecord
   # TODO: Move to a service object
   def create_missing_checklist_items! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     missing_characteristic_ids = Characteristic
-                                 .per_scorecard_type_for_account(
+                                 .per_scorecard_type_for_workspace(
                                    scorecard.type,
-                                   scorecard.account
+                                   scorecard.workspace
                                  ).pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?

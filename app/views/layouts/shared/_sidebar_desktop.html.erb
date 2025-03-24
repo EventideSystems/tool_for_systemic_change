@@ -40,19 +40,19 @@
             <% end %>
 
             <%= dropdown_menu_content do %>
-              <% if current_account.present? %>
+              <% if current_workspace.present? %>
                 <%=
                   dropdown_menu_item do
-                    link_to "#{current_account.name} &checkmark;".html_safe, account_path(current_account), class: "block w-full text-sm"
+                    link_to "#{current_workspace.name} &checkmark;".html_safe, workspace_path(current_workspace), class: "block w-full text-sm"
                   end
                 %>
               <% end %>
-              <%- current_user.accounts.where.not(id: current_account&.id).limit(4).each do |account| %>
+              <%- current_user.workspaces.where.not(id: current_workspace&.id).limit(4).each do |workspace| %>
                 <%= dropdown_menu_item do %>
                   <%= 
                     link_to(
-                      account.name, 
-                      switch_account_path(account), 
+                      workspace.name, 
+                      switch_workspace_path(workspace), 
                       class: "block w-full text-sm",
                       data: { 
                         action: 'click->switch-workspace#handleClick', 
@@ -65,7 +65,7 @@
 
               <%=
                 dropdown_menu_item do
-                  link_to "Other workspaces...", accounts_path, class: "block w-full text-sm"
+                  link_to "Other workspaces...", workspaces_path, class: "block w-full text-sm"
                 end
               %>
               <hr/>

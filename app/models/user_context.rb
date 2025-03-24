@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Holds the user and account context for the current request
+# Holds the user and workspace context for the current request
 class UserContext
-  attr_reader :user, :account
+  attr_reader :user, :workspace
 
-  def initialize(user, account)
+  def initialize(user, workspace)
     @user = user
-    @account = account
+    @workspace = workspace
   end
 end

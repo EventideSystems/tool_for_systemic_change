@@ -6,7 +6,7 @@ class LabelsController < ApplicationController
 
   before_action :load_label, only: %i[edit update destroy]
   before_action :load_all_labels
-  before_action :require_account_selected, only: %i[new create edit update] # Still in use?
+  before_action :require_workspace_selected, only: %i[new create edit update] # Still in use?
 
   def index # rubocop:disable Metrics/AbcSize
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
@@ -25,7 +25,7 @@ class LabelsController < ApplicationController
   end
 
   def new
-    @label = label_klass.build(account_id: current_account.id)
+    @label = label_klass.build(workspace_id: current_workspace.id)
     authorize @label
 
     respond_to do |format|
@@ -35,7 +35,7 @@ class LabelsController < ApplicationController
   end
 
   def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @label = label_klass.build(label_params.merge(account_id: current_account.id))
+    @label = label_klass.build(label_params.merge(workspace_id: current_workspace.id))
     authorize @label
 
     respond_to do |format|
@@ -94,7 +94,7 @@ class LabelsController < ApplicationController
   end
 
   def load_label
-    @label = label_klass.find_by(id: params[:id], account_id: current_account.id)
+    @label = label_klass.find_by(id: params[:id], workspace_id: current_workspace.id)
     authorize @label
   end
 

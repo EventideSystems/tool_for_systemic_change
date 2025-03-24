@@ -13,7 +13,7 @@ module ImpactCards
       authorize(@initiative, :edit_data?)
 
       @focus_areas_groups = FocusAreaGroup
-                            .where(scorecard_type: @impact_card.type, account_id: @impact_card.account_id)
+                            .where(scorecard_type: @impact_card.type, workspace_id: @impact_card.workspace_id)
                             .order(:position)
 
       @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area

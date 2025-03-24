@@ -4,7 +4,7 @@
 class LabelPolicy < ApplicationPolicy
   # Scope class for LabelPolicy
   class Scope < Scope
-    def resolve = resolve_to_current_account
+    def resolve = resolve_to_current_workspace
   end
 
   def index? = true
@@ -14,14 +14,14 @@ class LabelPolicy < ApplicationPolicy
   end
 
   def create?
-    system_admin? || (account_admin?(current_account) && current_account_not_expired?)
+    system_admin? || (workspace_admin?(current_workspace) && current_workspace_not_expired?)
   end
 
   def update?
-    system_admin? || (account_admin?(current_account) && record_in_scope? && current_account_not_expired?)
+    system_admin? || (workspace_admin?(current_workspace) && record_in_scope? && current_workspace_not_expired?)
   end
 
   def destroy?
-    system_admin? || (account_admin?(current_account) && record_in_scope? && current_account_not_expired?)
+    system_admin? || (workspace_admin?(current_workspace) && record_in_scope? && current_workspace_not_expired?)
   end
 end

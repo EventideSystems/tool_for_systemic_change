@@ -11,8 +11,8 @@ class ReportsController < ApplicationController
     @scorecards = policy_scope(Scorecard).order(:name)
     @grouped_scorecards = @scorecards.group_by(&:type).transform_keys do |key|
       case key
-      when 'TransitionCard' then current_account.transition_card_model_name
-      when 'SustainableDevelopmentGoalAlignmentCard' then current_account.sdgs_alignment_card_model_name
+      when 'TransitionCard' then current_workspace.transition_card_model_name
+      when 'SustainableDevelopmentGoalAlignmentCard' then current_workspace.sdgs_alignment_card_model_name
       else
         'Impact Card'
       end
@@ -31,7 +31,7 @@ class ReportsController < ApplicationController
     @date_to = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_to]).end_of_day.utc
 
     @date_to = Date.parse(params[:date_to]).end_of_day
-    @scorecard = current_account.scorecards.find(params[:scorecard_id])
+    @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
 
     @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
 
@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
   def scorecard_comments # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     authorize(:report, :index?)
 
-    @scorecard = current_account
+    @scorecard = current_workspace
                  .scorecards
                  .includes(initiatives: [checklist_items: [characteristic: [focus_area: :focus_area_group]]])
                  .find(params[:scorecard_id])
@@ -75,7 +75,7 @@ class ReportsController < ApplicationController
   def transition_card_stakeholders
     authorize(:report, :index?)
 
-    @scorecard = current_account.scorecards.find(params[:scorecard_id])
+    @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
     @report = Reports::TransitionCardStakeholders.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
@@ -87,7 +87,7 @@ class ReportsController < ApplicationController
   def subsystem_summary
     authorize(:report, :subsystem_summary?)
 
-    @scorecard = current_account.scorecards.find(params[:scorecard_id])
+    @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
     @report = Reports::SubsystemSummary.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
@@ -96,39 +96,39 @@ class ReportsController < ApplicationController
     )
   end
 
-  def cross_account_percent_actual
-    authorize(:report, :cross_account_percent_actual?)
+  def cross_workspace_percent_actual
+    authorize(:report, :cross_workspace_percent_actual?)
 
-    @accounts = current_user.active_accounts_with_admin_role
-    @report = Reports::CrossAccountPercentActual.new(@accounts)
+    @workspaces = current_user.active_workspaces_with_admin_role
+    @report = Reports::CrossWorkspacePercentActual.new(@workspaces)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
-      filename: "Cross_Account_Percent_Actual_#{time_stamp_suffix}.xlsx"
+      filename: "Cross_Workspace_Percent_Actual_#{time_stamp_suffix}.xlsx"
     )
   end
 
-  def cross_account_percent_actual_by_focus_area
-    authorize(:report, :cross_account_percent_actual_by_focus_area?)
+  def cross_workspace_percent_actual_by_focus_area
+    authorize(:report, :cross_workspace_percent_actual_by_focus_area?)
 
-    @accounts = current_user.active_accounts_with_admin_role
-    @report = Reports::CrossAccountPercentActualByFocusArea.new(@accounts)
+    @workspaces = current_user.active_workspaces_with_admin_role
+    @report = Reports::CrossWorkspacePercentActualByFocusArea.new(@workspaces)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
-      filename: "Cross_Account_Percent_Actual_By_Focus_Area_#{time_stamp_suffix}.xlsx"
+      filename: "Cross_Workspace_Percent_Actual_By_Focus_Area_#{time_stamp_suffix}.xlsx"
     )
   end
 
-  def cross_account_percent_actual_by_focus_area_tabbed
-    authorize(:report, :cross_account_percent_actual_by_focus_area_tabbed?)
+  def cross_workspace_percent_actual_by_focus_area_tabbed
+    authorize(:report, :cross_workspace_percent_actual_by_focus_area_tabbed?)
 
-    @accounts = current_user.active_accounts_with_admin_role
-    @report = Reports::CrossAccountPercentActualByFocusAreaTabbed.new(@accounts)
+    @workspaces = current_user.active_workspaces_with_admin_role
+    @report = Reports::CrossWorkspacePercentActualByFocusAreaTabbed.new(@workspaces)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
-      filename: "Cross_Account_Percent_Actual_By_Focus_Area_Tabbed_#{time_stamp_suffix}.xlsx"
+      filename: "Cross_Workspace_Percent_Actual_By_Focus_Area_Tabbed_#{time_stamp_suffix}.xlsx"
     )
   end
 

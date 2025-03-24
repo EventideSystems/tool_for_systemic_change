@@ -7,7 +7,7 @@ class OrganisationsController < ApplicationController
   include VerifyPolicies
 
   before_action :set_organisation, only: %i[show edit update destroy]
-  before_action :require_account_selected, only: %i[new create edit update]
+  before_action :require_workspace_selected, only: %i[new create edit update]
   before_action :set_stakeholder_types, only: %i[index show]
 
   respond_to :js, :html
@@ -15,7 +15,7 @@ class OrganisationsController < ApplicationController
   sidebar_item :stakeholders
 
   def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @stakeholder_types = current_account.stakeholder_types
+    @stakeholder_types = current_workspace.stakeholder_types
 
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
@@ -43,14 +43,14 @@ class OrganisationsController < ApplicationController
   end
 
   def new
-    @organisation = current_account.organisations.build
+    @organisation = current_workspace.organisations.build
     authorize @organisation
   end
 
   def edit; end
 
   def create
-    @organisation = current_account.organisations.build(organisation_params)
+    @organisation = current_workspace.organisations.build(organisation_params)
     authorize @organisation
 
     if @organisation.save
@@ -80,12 +80,12 @@ class OrganisationsController < ApplicationController
   private
 
   def set_organisation
-    @organisation = current_account.organisations.find(params[:id])
+    @organisation = current_workspace.organisations.find(params[:id])
     authorize @organisation
   end
 
   def set_stakeholder_types
-    @stakeholder_types = current_account.stakeholder_types
+    @stakeholder_types = current_workspace.stakeholder_types
   end
 
   def organisation_params
@@ -97,7 +97,7 @@ class OrganisationsController < ApplicationController
   end
 
   def organisations_to_csv(organisations, include_stakeholder_list) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength
-    stakeholder_types = current_account.stakeholder_types.order(name: :desc).pluck(:name)
+    stakeholder_types = current_workspace.stakeholder_types.order(name: :desc).pluck(:name)
 
     CSV.generate(force_quotes: true) do |csv| # rubocop:disable Metrics/BlockLength
       header_row = ['Name', 'Description', 'Stakeholder Type', 'Weblink'].tap do |header|

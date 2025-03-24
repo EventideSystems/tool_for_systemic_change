@@ -3,21 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/MultipleMemoizedHelpers
-  let(:account) { create(:account) }
-  let(:target_account) { create(:account) }
-  let(:impact_card) { create(:scorecard, account: account, type: 'TransitionCard') }
+  let(:workspace) { create(:workspace) }
+  let(:target_workspace) { create(:workspace) }
+  let(:impact_card) { create(:scorecard, workspace: workspace, type: 'TransitionCard') }
   let(:new_name) { "#{impact_card.name} (copy)" }
-  let(:subsystem_tags) { create_list(:subsystem_tag, 3, account: account) }
+  let(:subsystem_tags) { create_list(:subsystem_tag, 3, workspace: workspace) }
   let(:initiatives) { create_list(:initiative, 2, scorecard: impact_card) }
-  let(:stakeholder_types) { create_list(:stakeholder_type, 4, account: account) }
+  let(:stakeholder_types) { create_list(:stakeholder_type, 4, workspace: workspace) }
   let(:stakeholders) do
     stakeholder_types.each_with_object([]) do |stakeholder_type, memo|
-      memo << create(:organisation, account:, stakeholder_type:)
+      memo << create(:organisation, workspace:, stakeholder_type:)
     end
   end
   let(:user) { create(:user) }
 
-  let(:focus_area_groups) { create_list(:focus_area_group, 2, account: account, scorecard_type: 'TransitionCard') }
+  let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, scorecard_type: 'TransitionCard') }
   let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
   let(:characteristics) { create_list(:characteristic, 2, focus_area: focus_areas.first) }
 
@@ -30,7 +30,7 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
 
     focus_area_groups.each do |focus_area_group|
       focus_area_group.dup.tap do |new_group|
-        new_group.account = target_account
+        new_group.workspace = target_workspace
         new_group.save!
 
         focus_area_group.focus_areas.each do |focus_area|
@@ -89,18 +89,18 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
 
   describe '.call' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:execute_call) do
-      described_class.call(impact_card: impact_card, new_name: new_name, target_account: target_account)
+      described_class.call(impact_card: impact_card, new_name: new_name, target_workspace: target_workspace)
     end
 
     it 'creates a new impact card with the specified name' do # rubocop:disable RSpec/MultipleExpectations
       expect { execute_call }.to change(Scorecard, :count).by(1)
       new_impact_card = Scorecard.last
       expect(new_impact_card.name).to eq(new_name)
-      expect(new_impact_card.account).to eq(target_account)
+      expect(new_impact_card.workspace).to eq(target_workspace)
     end
 
-    it 'copies subsystem tags to the target account' do
-      expect { execute_call }.to change { target_account.subsystem_tags.count }.by(3)
+    it 'copies subsystem tags to the target workspace' do
+      expect { execute_call }.to change { target_workspace.subsystem_tags.count }.by(3)
     end
 
     it 'copies subsystem tags to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
@@ -112,12 +112,12 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
       end
     end
 
-    it 'copies stakeholder types to the target account' do
-      expect { execute_call }.to change { target_account.stakeholder_types.count }.by(4)
+    it 'copies stakeholder types to the target workspace' do
+      expect { execute_call }.to change { target_workspace.stakeholder_types.count }.by(4)
     end
 
-    it 'copies stakeholders to the target account' do
-      expect { execute_call }.to change { target_account.organisations.count }.by(4)
+    it 'copies stakeholders to the target workspace' do
+      expect { execute_call }.to change { target_workspace.organisations.count }.by(4)
     end
 
     it 'copies stakeholders to the new impact card' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations

@@ -12,8 +12,8 @@
 #  scorecard_type :string
 #  created_at     :datetime
 #  updated_at     :datetime
-#  account_id     :bigint
 #  focus_area_id  :integer
+#  workspace_id   :bigint
 #
 require 'rails_helper'
 

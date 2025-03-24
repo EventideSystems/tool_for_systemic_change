@@ -1,8 +1,8 @@
-<% if current_account.expired? %>
+<% if current_workspace.expired? %>
   <div class="relative w-full">
     <div 
       class="absolute top-0 right-0 inline-flex rounded-lg items-center justify-end bg-red-400 mr-3" 
-      title="Access is read-only because your account has expired"
+      title="Access is read-only because your workspace has expired"
     >
       <p class="py-1 px-2 text-sm whitespace-nowrap text-gray-800">Read Only</p>
     </div>

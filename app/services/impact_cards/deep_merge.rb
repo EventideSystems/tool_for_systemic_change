@@ -32,8 +32,8 @@ module ImpactCards
     private
 
     def assert_valid_merge!
-      unless impact_card.account == other_impact_card.account
-        raise(ArgumentError, 'Impact cards must be in the same account')
+      unless impact_card.workspace == other_impact_card.workspace
+        raise(ArgumentError, 'Impact cards must be in the same workspace')
       end
 
       raise(ArgumentError, 'Impact cards must be the same type') unless impact_card.type == other_impact_card.type

@@ -4,8 +4,8 @@ module ScorecardComments
   class ImportPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     class Scope < Scope # rubocop:disable Style/Documentation
       def resolve
-        if current_account
-          scope.joins(:scorecard).where('scorecards.account_id': current_account.id)
+        if current_workspace
+          scope.joins(:scorecard).where('scorecards.workspace_id': current_workspace.id)
         else
           scope.joins(:scorecard).none
         end
@@ -13,19 +13,19 @@ module ScorecardComments
     end
 
     def show?
-      system_admin? || account_any_role?(current_account)
+      system_admin? || workspace_any_role?(current_workspace)
     end
 
     def create?
-      system_admin? || account_admin?(current_account)
+      system_admin? || workspace_admin?(current_workspace)
     end
 
     def update?
-      system_admin? || account_admin?(current_account)
+      system_admin? || workspace_admin?(current_workspace)
     end
 
     def destroy?
-      system_admin? || account_admin?(current_account)
+      system_admin? || workspace_admin?(current_workspace)
     end
   end
 end

@@ -8,7 +8,7 @@
           <%= 
             form.collection_select(
               :community_id, 
-              current_account.communities.order(:name), 
+              current_workspace.communities.order(:name), 
               :id, 
               :name, 
               include_blank: true, 
@@ -30,7 +30,7 @@
           <%= 
             form.collection_select(
               :wicked_problem_id, 
-              current_account.wicked_problems.order(:name), 
+              current_workspace.wicked_problems.order(:name), 
               :id, 
               :name, 
               include_blank: true, 

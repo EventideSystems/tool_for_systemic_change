@@ -4,7 +4,7 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
   class Scope # rubocop:disable Style/Documentation
     attr_reader :user_context, :scope
 
-    delegate :user, :account, to: :user_context, prefix: :current
+    delegate :user, :workspace, to: :user_context, prefix: :current
 
     def initialize(user_context, scope)
       @user_context = user_context
@@ -15,8 +15,8 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
       scope
     end
 
-    def resolve_to_current_account
-      current_account.present? ? scope.where(account: current_account) : scope.none
+    def resolve_to_current_workspace
+      current_workspace.present? ? scope.where(workspace: current_workspace) : scope.none
     end
 
     # SMELL Move all these to a concern
@@ -24,22 +24,22 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
       user_context.user.admin?
     end
 
-    def account_admin?(account)
-      return false unless account
+    def workspace_admin?(workspace)
+      return false unless workspace
 
-      AccountsUser.where(user: current_user, account: account).first.try(:admin?)
+      WorkspacesUser.where(user: current_user, workspace: workspace).first.try(:admin?)
     end
 
-    def account_member?(account)
-      return false unless account
+    def workspace_member?(workspace)
+      return false unless workspace
 
-      AccountsUser.where(user: current_user, account: account).first.try(:member?)
+      WorkspacesUser.where(user: current_user, workspace: workspace).first.try(:member?)
     end
   end
 
   attr_reader :user_context, :record
 
-  delegate :user, :account, to: :user_context, prefix: :current
+  delegate :user, :workspace, to: :user_context, prefix: :current
 
   def initialize(user_context, record)
     @user_context = user_context
@@ -82,44 +82,44 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
     current_user.admin?
   end
 
-  def current_account
-    user_context.account
+  def current_workspace
+    user_context.workspace
   end
 
-  def current_account_not_expired?
-    !current_account.expired?
+  def current_workspace_not_expired?
+    !current_workspace.expired?
   end
 
   def current_user
     user_context.user
   end
 
-  def current_account_admin?
-    current_user.admin? || account_admin?(user_context.account)
+  def current_workspace_admin?
+    current_user.admin? || workspace_admin?(user_context.workspace)
   end
 
-  def current_account_member?
-    account_member?(user_context.account)
+  def current_workspace_member?
+    workspace_member?(user_context.workspace)
   end
 
-  def current_account_any_role?
-    current_account_admin? || current_account_member?
+  def current_workspace_any_role?
+    current_workspace_admin? || current_workspace_member?
   end
 
-  def account_admin?(account)
-    return false unless account
+  def workspace_admin?(workspace)
+    return false unless workspace
 
-    AccountsUser.where(user: current_user, account: account).first.try(:admin?)
+    WorkspacesUser.where(user: current_user, workspace: workspace).first.try(:admin?)
   end
 
-  def account_member?(account)
-    return false unless account
+  def workspace_member?(workspace)
+    return false unless workspace
 
-    AccountsUser.where(user: current_user, account: account).first.try(:member?)
+    WorkspacesUser.where(user: current_user, workspace: workspace).first.try(:member?)
   end
 
-  def account_any_role?(account)
-    account_admin?(account) || account_member?(account)
+  def workspace_any_role?(workspace)
+    workspace_admin?(workspace) || workspace_member?(workspace)
   end
 
   private

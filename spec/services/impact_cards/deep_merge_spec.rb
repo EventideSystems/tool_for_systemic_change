@@ -4,17 +4,17 @@ require 'rails_helper'
 
 RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:user) { create(:user) }
-  let(:account) { create(:account) }
+  let(:workspace) { create(:workspace) }
 
-  let(:stakeholder_type) { create(:stakeholder_type, account:) }
-  let(:organisation) { create(:organisation, account:, stakeholder_type:) }
-  let(:other_organisation) { create(:organisation, account:, stakeholder_type:) }
+  let(:stakeholder_type) { create(:stakeholder_type, workspace:) }
+  let(:organisation) { create(:organisation, workspace:, stakeholder_type:) }
+  let(:other_organisation) { create(:organisation, workspace:, stakeholder_type:) }
 
-  let(:subsystem_tag) { create(:subsystem_tag, account:) }
-  let(:other_subsystem_tag) { create(:subsystem_tag, account:) }
+  let(:subsystem_tag) { create(:subsystem_tag, workspace:) }
+  let(:other_subsystem_tag) { create(:subsystem_tag, workspace:) }
 
-  let(:impact_card) { create(:scorecard, account:) }
-  let(:other_impact_card) { create(:scorecard, account:) }
+  let(:impact_card) { create(:scorecard, workspace:) }
+  let(:other_impact_card) { create(:scorecard, workspace:) }
 
   let!(:clashing_initiative) do
     create(

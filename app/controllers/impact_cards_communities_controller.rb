@@ -6,12 +6,12 @@ class ImpactCardsCommunitiesController < ApplicationController
   def index; end
 
   def new
-    @community = current_account.communities.new
+    @community = current_workspace.communities.new
     authorize @community
   end
 
   def create # rubocop:disable Metrics/MethodLength
-    @community = current_account.communities.new(community_params)
+    @community = current_workspace.communities.new(community_params)
     authorize @community
 
     if @community.save

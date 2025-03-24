@@ -15,9 +15,9 @@ module FocusAreasHelper
   def focus_area_model_name(focus_area)
     case focus_area.scorecard_type
     when 'TransitionCard'
-      focus_area.account&.transition_card_focus_area_model_name
+      focus_area.workspace&.transition_card_focus_area_model_name
     when 'SustainableDevelopmentGoalAlignmentCard'
-      focus_area.account&.sdgs_alignment_card_focus_area_model_name
+      focus_area.workspace&.sdgs_alignment_card_focus_area_model_name
     end || focus_area.model_name.human.titleize
   end
 

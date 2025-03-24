@@ -24,18 +24,18 @@ user = User.find_or_create_by!(email: 'user@obsekio.org') do |user|
   user.system_role = 'member'
 end
 
-# Create an account admin user
+# Create an workspace admin user
 #
-account_admmin_user = User.find_or_create_by!(email: 'admin@obsekio.org') do |user|
+workspace_admmin_user = User.find_or_create_by!(email: 'admin@obsekio.org') do |user|
   user.password = 'password'
   user.password_confirmation = 'password'
   user.system_role = 'member'
 end
 
-# Create a default account
+# Create a default workspace
 
-Account.find_or_create_by!(name: 'Default Account') do |account|
-  account.accounts_users << AccountsUser.new(user: user, account_role: 'member')
-  account.accounts_users << AccountsUser.new(user: account_admmin_user, account_role: 'admin')
-  account.save!
+Workspace.find_or_create_by!(name: 'Default Workspace') do |workspace|
+  workspace.workspaces_users << WorkspacesUser.new(user: user, workspace_role: 'member')
+  workspace.workspaces_users << WorkspacesUser.new(user: workspace_admmin_user, workspace_role: 'admin')
+  workspace.save!
 end

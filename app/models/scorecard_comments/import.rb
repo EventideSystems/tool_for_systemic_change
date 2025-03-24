@@ -4,19 +4,19 @@
 #
 # Table name: imports
 #
-#  id          :integer          not null, primary key
-#  import_data :text
-#  status      :integer          default("pending")
-#  type        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  account_id  :integer
-#  user_id     :integer
+#  id           :integer          not null, primary key
+#  import_data  :text
+#  status       :integer          default("pending")
+#  type         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :integer
+#  workspace_id :integer
 #
 # Indexes
 #
-#  index_imports_on_account_id  (account_id)
-#  index_imports_on_user_id     (user_id)
+#  index_imports_on_user_id       (user_id)
+#  index_imports_on_workspace_id  (workspace_id)
 #
 module ScorecardComments
   # Import class for importing comments for checklist items
@@ -24,7 +24,7 @@ module ScorecardComments
   # NOTE: This, like other imports, is a bit of a mess. We should refactor this to be more modular and easier to read.
   # We can probably look at moving the logic into an ETL class or something similar.
   class Import < Import # rubocop:disable Metrics/ClassLength
-    def process(current_user, account) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def process(current_user, workspace) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       scorecard = nil
       initiatives = {}
 
@@ -40,7 +40,7 @@ module ScorecardComments
         # Find Scorecard
         if row_index == 1
           scorecard_name = row[1]
-          scorecard = find_scorecard_by_name(account, scorecard_name)
+          scorecard = find_scorecard_by_name(workspace, scorecard_name)
           Rails.logger.info "ScorecardComments::Import: Scorecard identified: #{scorecard_name}"
 
           if scorecard.nil?
@@ -169,8 +169,8 @@ module ScorecardComments
         checklist_item.status == 'actual'
     end
 
-    def find_scorecard_by_name(account, name)
-      account.scorecards.where('lower(name) = :name', { name: name&.downcase }).first
+    def find_scorecard_by_name(workspace, name)
+      workspace.scorecards.where('lower(name) = :name', { name: name&.downcase }).first
     end
 
     def find_initiative_by_name(scorecard, name)

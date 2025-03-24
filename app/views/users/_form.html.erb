@@ -38,7 +38,7 @@
         <% end %>
       <% end %>
 
-      <%- if policy(user).change_account_role? || policy(User).invite_with_system_role? %>
+      <%- if policy(user).change_workspace_role? || policy(User).invite_with_system_role? %>
         <%= render 'section' do %>
           <%= render 'section_header', title: 'Role', subtitle: 'Access levels for this team member.' %>
           <%= render 'section_body' do %>
@@ -59,16 +59,16 @@
               </div>
             <%- end %>
 
-            <%- if policy(user).change_account_role? %>
+            <%- if policy(user).change_workspace_role? %>
               <div class="sm:col-span-4">
-                <%= form.label :account_role %>
+                <%= form.label :workspace_role %>
                 <div class="mt-2">
                   <%= 
                     form.select(
-                      :account_role, 
+                      :workspace_role, 
                       options_for_select(
-                        AccountsUser.account_roles.keys.map { |key| [key.capitalize, key]}, 
-                        role_in_current_account(user)
+                        WorkspacesUser.workspace_roles.keys.map { |key| [key.capitalize, key]}, 
+                        role_in_current_workspace(user)
                       )
                     ) 
                   %>

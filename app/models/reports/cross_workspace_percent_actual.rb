@@ -97,7 +97,7 @@ module Reports
         inner join initiatives on raw_percent_actual.initiative_id = initiatives.id
         inner join scorecards on initiatives.scorecard_id = scorecards.id
         inner join workspaces on scorecards.workspace_id = workspaces.id
-        order by workspace_name, scorecard_name, initiative_name
+        order by workspace_name, impact_card_name, initiative_name
       SQL
 
       ActiveRecord::Base.connection.execute(sql)

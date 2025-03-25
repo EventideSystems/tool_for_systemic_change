@@ -20,7 +20,7 @@ class UserPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   end
 
   def create?
-    system_admin? || (current_workspace_any_role? && current_workspace_not_expired?)
+    system_admin? || (current_workspace_admin? && current_workspace_not_expired?)
   end
 
   def invite?

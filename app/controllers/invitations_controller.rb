@@ -32,7 +32,7 @@ class InvitationsController < Devise::InvitationsController
 
   def new
     self.resource = resource_class.new
-    authorize resource
+    authorize resource, :invite?
     render :new
   end
 end

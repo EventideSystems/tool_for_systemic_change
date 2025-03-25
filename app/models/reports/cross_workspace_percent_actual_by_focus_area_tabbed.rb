@@ -105,7 +105,7 @@ module Reports
             group by workspaces.id, scorecards.id, initiatives.id, focus_areas.name
         )
 
-        select distinct on (workspace_name, scorecard_name, initiative_name, focus_area_name)
+        select distinct on (workspace_name, impact_card_name, initiative_name, focus_area_name)
           workspaces.name as workspace_name,
           scorecards.name as impact_card_name,
           scorecards.type as scorecard_type,

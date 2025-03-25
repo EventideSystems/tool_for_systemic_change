@@ -1,5 +1,5 @@
 <%= render layout: "layouts/devise_page", locals: { title: "Change your password" } do %>
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'space-y-6' }, data: { turbo: false }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: 'space-y-6' }, html: { method: :put }, data: { turbo: false }) do |f| %>
     <%= f.hidden_field :reset_password_token %>
     <div>
       <%= f.label :password, class: 'block text-sm font-medium text-gray-700' %>
@@ -16,7 +16,7 @@
     </div>
 
     <div>
-      <%= f.submit "Change your password", class: "flex w-full justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" %>
+      <%= f.submit "Change your password", class: "mt-4 flex w-full justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" %>
     </div>
   <% end %>
 <% end %>

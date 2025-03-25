@@ -59,7 +59,7 @@ module Reports
 
     def add_header(sheet, styles)
       sheet.add_row(
-        ['Workspace', 'Transition Card', 'Initiative', 'Actual', 'Target', 'Percent Actual'],
+        ['Workspace', 'Impact Card', 'Initiative', 'Actual', 'Target', 'Percent Actual'],
         style: styles[:header_1] # rubocop:disable Naming/VariableNumber
       )
     end
@@ -87,7 +87,7 @@ module Reports
 
         select
           workspaces.name as workspace_name,
-          scorecards.name as scorecard_name,
+          scorecards.name as impact_card_name,
           scorecards.type as scorecard_type,
           initiatives.name as initiative_name,
           raw_percent_actual.total_characteristics,

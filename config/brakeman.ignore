@@ -3,6 +3,29 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "0751c56dccfa27157d7a7bc62bf11afe5e301eff2dbae533940dbdfc936a293d",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/cross_workspace_percent_actual_by_focus_area_tabbed.rb",
+      "line": 125,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.name as focus_area_name,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    and focus_areas.name = '#{focus_area_name}'\\n    group by workspaces.id, scorecards.id, initiatives.id, focus_areas.name\\n)\\n\\nselect distinct on (workspace_name, impact_card_name, initiative_name, focus_area_name)\\n  workspaces.name as workspace_name,\\n  scorecards.name as impact_card_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_name = focus_areas.name\\norder by workspace_name, impact_card_name, initiative_name, focus_area_name\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::CrossWorkspacePercentActualByFocusAreaTabbed",
+        "method": "generate_data"
+      },
+      "user_input": "workspaces.pluck(:id).join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "1797ef6f9e67e3a9c8346ccd237a3843f33de5a511a4a4da417d62adcd3af5b1",
       "check_name": "SQL",
       "message": "Possible SQL injection",
@@ -95,6 +118,29 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "589dd9e15f568ae5159ecf24e2069346c99bb6731fd2c4966d749df02228b640",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/cross_workspace_percent_actual.rb",
+      "line": 103,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by workspaces.id, scorecards.id, initiatives.id\\n)\\n\\nselect\\n  workspaces.name as workspace_name,\\n  scorecards.name as impact_card_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  raw_percent_actual.total_characteristics,\\n  raw_percent_actual.actual_characteristics,\\n  raw_percent_actual.percent_actual\\nfrom raw_percent_actual\\ninner join initiatives on raw_percent_actual.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\norder by workspace_name, impact_card_name, initiative_name\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::CrossWorkspacePercentActual",
+        "method": "generate_data"
+      },
+      "user_input": "workspaces.pluck(:id).join(\",\")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "6d11f4f7bcaf801f4ae4711c3a291166dc349f4236c750361eb7fadb80e40b3f",
       "check_name": "SQL",
       "message": "Possible SQL injection",
@@ -141,59 +187,13 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "92a1977de0914fadecb31206ebc563f570df68feeac1e4ecf2a359609be1806c",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/reports/cross_workspace_percent_actual.rb",
-      "line": 103,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by workspaces.id, scorecards.id, initiatives.id\\n)\\n\\nselect\\n  workspaces.name as workspace_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  raw_percent_actual.total_characteristics,\\n  raw_percent_actual.actual_characteristics,\\n  raw_percent_actual.percent_actual\\nfrom raw_percent_actual\\ninner join initiatives on raw_percent_actual.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\norder by workspace_name, scorecard_name, initiative_name\\n\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Reports::CrossWorkspacePercentActual",
-        "method": "generate_data"
-      },
-      "user_input": "workspaces.pluck(:id).join(\",\")",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "a4ae18d134e6a4ac79c71f52e90030f8911a9e51c52390da0a01a7a16fb9e3f8",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/reports/cross_workspace_percent_actual_by_focus_area_tabbed.rb",
-      "line": 125,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.name as focus_area_name,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    and focus_areas.name = '#{focus_area_name}'\\n    group by workspaces.id, scorecards.id, initiatives.id, focus_areas.name\\n)\\n\\nselect distinct on (workspace_name, scorecard_name, initiative_name, focus_area_name)\\n  workspaces.name as workspace_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_name = focus_areas.name\\norder by workspace_name, scorecard_name, initiative_name, focus_area_name\\n\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Reports::CrossWorkspacePercentActualByFocusAreaTabbed",
-        "method": "generate_data"
-      },
-      "user_input": "workspaces.pluck(:id).join(\",\")",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "d3b313d4c2d22a3a8bf42126eb15ab8db6dccaeacdd75f0d2e7ecf5e703df7dc",
+      "fingerprint": "cc459a348e8572a6a9fe29db4eb6b2529d9ed69a6c6abd80b2f7bb53fc8dc9c0",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/reports/cross_workspace_percent_actual_by_focus_area.rb",
       "line": 109,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.id as focus_area_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by workspaces.id, scorecards.id, initiatives.id, focus_areas.id\\n)\\n\\nselect\\n  workspaces.name as workspace_name,\\n  scorecards.name as scorecard_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_id = focus_areas.id\\norder by workspace_name, scorecard_name, initiative_name, focus_areas.position\\n\")",
+      "code": "ActiveRecord::Base.connection.execute(\"with raw_percent_actual_by_focus_area as (\\n  select\\n    workspaces.id as workspace_id,\\n    scorecards.id as scorecard_id,\\n    initiatives.id as initiative_id,\\n    focus_areas.id as focus_area_id,\\n    count(checklist_items.id) as total_characteristics,\\n    sum(case when checklist_items.status = 'actual' then 1 else 0 end) as actual_characteristics,\\n    round(sum(case when checklist_items.status = 'actual' then 1 else 0 end)::numeric / count(checklist_items.id)::numeric * 100.0, 2) as percent_actual\\n  from checklist_items\\n    inner join initiatives on checklist_items.initiative_id = initiatives.id\\n    inner join scorecards on initiatives.scorecard_id = scorecards.id\\n    inner join workspaces on scorecards.workspace_id = workspaces.id\\n    inner join characteristics on checklist_items.characteristic_id = characteristics.id\\n    inner join focus_areas on characteristics.focus_area_id = focus_areas.id\\n    where workspaces.id in (#{workspaces.pluck(:id).join(\",\")})\\n    and initiatives.deleted_at is null\\n    and scorecards.deleted_at is null\\n    and scorecards.type = 'TransitionCard'\\n    group by workspaces.id, scorecards.id, initiatives.id, focus_areas.id\\n)\\n\\nselect\\n  workspaces.name as workspace_name,\\n  scorecards.name as impact_card_name,\\n  scorecards.type as scorecard_type,\\n  initiatives.name as initiative_name,\\n  focus_areas.name as focus_area_name,\\n  raw_percent_actual_by_focus_area.total_characteristics,\\n  raw_percent_actual_by_focus_area.actual_characteristics,\\n  raw_percent_actual_by_focus_area.percent_actual\\nfrom raw_percent_actual_by_focus_area\\ninner join initiatives on raw_percent_actual_by_focus_area.initiative_id = initiatives.id\\ninner join scorecards on initiatives.scorecard_id = scorecards.id\\ninner join workspaces on scorecards.workspace_id = workspaces.id\\ninner join focus_areas on raw_percent_actual_by_focus_area.focus_area_id = focus_areas.id\\norder by workspace_name, impact_card_name, initiative_name, focus_areas.position\\n\")",
       "render_path": null,
       "location": {
         "type": "method",

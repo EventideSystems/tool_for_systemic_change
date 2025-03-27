@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :checklist_items, only: %i[show edit update]
+  resources :impact_card_data_models, only: %i[index show] 
 
   resources :impact_cards do
     resources :sharing, only: [:index], controller: 'impact_cards/sharing'

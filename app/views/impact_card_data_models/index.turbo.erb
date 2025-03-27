@@ -1,0 +1,4 @@
+<%= turbo_stream.update :list do %>
+  <%= render partial: 'impact_card_data_model', collection: @impact_card_data_models, as: :impact_card_data_model %>
+  <%= render partial: 'pagination' %>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_27_034458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -157,7 +157,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "scorecard_type", default: "TransitionCard"
     t.bigint "workspace_id"
+    t.bigint "impact_card_data_model_id"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
+    t.index ["impact_card_data_model_id"], name: "index_focus_area_groups_on_impact_card_data_model_id"
     t.index ["position"], name: "index_focus_area_groups_on_position"
     t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
     t.index ["workspace_id"], name: "index_focus_area_groups_on_workspace_id"
@@ -177,6 +179,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
+  end
+
+  create_table "impact_card_data_models", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "short_name"
+    t.string "description"
+    t.string "status", default: "active", null: false
+    t.string "color", default: "#0d9488", null: false
+    t.bigint "workspace_id"
+    t.boolean "system_model", default: false
+    t.datetime "deleted_at"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "workspace_id"], name: "index_impact_card_data_models_on_name_and_workspace_id", unique: true, where: "((workspace_id IS NOT NULL) AND (deleted_at IS NULL))"
+    t.index ["workspace_id"], name: "index_impact_card_data_models_on_workspace_id"
   end
 
   create_table "imports", id: :serial, force: :cascade do |t|
@@ -265,7 +283,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.integer "linked_scorecard_id"
     t.boolean "share_ecosystem_map", default: true
     t.boolean "share_thematic_network_map", default: true
+    t.bigint "impact_card_data_model_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
+    t.index ["impact_card_data_model_id"], name: "index_scorecards_on_impact_card_data_model_id"
     t.index ["type"], name: "index_scorecards_on_type"
     t.index ["workspace_id"], name: "index_scorecards_on_workspace_id"
   end
@@ -406,7 +426,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
   add_foreign_key "checklist_item_changes", "users"
   add_foreign_key "checklist_items", "characteristics", column: "previous_characteristic_id"
   add_foreign_key "checklist_items", "users"
+  add_foreign_key "focus_area_groups", "impact_card_data_models"
   add_foreign_key "focus_area_groups", "workspaces"
+  add_foreign_key "impact_card_data_models", "workspaces"
+  add_foreign_key "scorecards", "impact_card_data_models"
 
   create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,

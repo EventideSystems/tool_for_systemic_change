@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Layout/LineLength
 # == Schema Information
 #
 # Table name: impact_card_data_models
@@ -26,6 +27,7 @@
 #
 #  fk_rails_...  (workspace_id => workspaces.id)
 #
+# rubocop:enable Layout/LineLength
 class ImpactCardDataModel < ApplicationRecord
   include Searchable
 

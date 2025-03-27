@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_27_034458) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_27_222523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -638,7 +638,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_27_034458) do
       characteristics.deleted_at,
       characteristics.created_at,
       characteristics.updated_at,
-      focus_area_groups.scorecard_type,
+      focus_area_groups.impact_card_data_model_id,
       focus_area_groups.workspace_id
      FROM ((characteristics
        JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))

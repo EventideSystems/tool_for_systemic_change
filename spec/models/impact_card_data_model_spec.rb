@@ -30,6 +30,6 @@
 # rubocop:enable Layout/LineLength
 require 'rails_helper'
 
-RSpec.describe ImpactCardModel, type: :model do
+RSpec.describe ImpactCardDataModel, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

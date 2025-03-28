@@ -41,10 +41,9 @@ module Insights
     def workspace_focus_areas
       @workspace_focus_areas ||=
         transition_card
-        .workspace
+        .impact_card_data_model
         .focus_area_groups
         .includes(focus_areas: :characteristics)
-        .where(scorecard_type: 'SustainableDevelopmentGoalAlignmentCard')
         .flat_map(&:focus_areas)
     end
 

@@ -5,7 +5,7 @@
 # Table name: wicked_problems
 #
 #  id           :integer          not null, primary key
-#  color        :string           default("#094fb9"), not null
+#  color        :string           default("#c0c218"), not null
 #  deleted_at   :datetime
 #  description  :string
 #  name         :string
@@ -21,6 +21,6 @@
 FactoryBot.define do
   factory :wicked_problem do
     name { FFaker::Name.name }
-    workspace
+    # workspace
   end
 end

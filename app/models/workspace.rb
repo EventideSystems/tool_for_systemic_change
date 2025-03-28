@@ -99,8 +99,8 @@ class Workspace < ApplicationRecord
     StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
   end
 
-  def scorecard_types_in_use
-    scorecards.pluck(:type).uniq.map(&:constantize)
+  def data_models_in_use
+    scorecards.map(&:impact_card_data_model).uniq
   end
 
   def expired?

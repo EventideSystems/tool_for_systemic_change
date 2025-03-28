@@ -1,5 +1,6 @@
 <div class="w-24 shrink-0 print:hidden">
-  <div class="h-20 w-20 flex-shrink-0 rounded-lg <%= background_color %> text-white dark:text-black flex items-center justify-center">
+  <div 
+    class="h-20 w-20 flex-shrink-0 rounded-lg<%= " #{background_color}" if local_assigns[:background_color] %> text-white dark:text-black flex items-center justify-center<%= " #{dom_id}" if local_assigns[:dom_id] %>">
     <span class="text-4xl"><%= name&.lstrip&.first&.upcase || '?' %></span>
   </div>
 </div>

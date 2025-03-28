@@ -6,10 +6,10 @@
 #
 #  id                        :integer          not null, primary key
 #  deleted_at                :datetime
+#  deprecated_scorecard_type :string           default("TransitionCard")
 #  description               :string
 #  name                      :string
 #  position                  :integer
-#  scorecard_type            :string           default("TransitionCard")
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  impact_card_data_model_id :bigint
@@ -18,9 +18,9 @@
 # Indexes
 #
 #  index_focus_area_groups_on_deleted_at                 (deleted_at)
+#  index_focus_area_groups_on_deprecated_scorecard_type  (deprecated_scorecard_type)
 #  index_focus_area_groups_on_impact_card_data_model_id  (impact_card_data_model_id)
 #  index_focus_area_groups_on_position                   (position)
-#  index_focus_area_groups_on_scorecard_type             (scorecard_type)
 #  index_focus_area_groups_on_workspace_id               (workspace_id)
 #
 # Foreign Keys

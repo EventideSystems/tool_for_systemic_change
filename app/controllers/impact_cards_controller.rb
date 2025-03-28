@@ -21,7 +21,7 @@ class ImpactCardsController < ApplicationController
   sidebar_item :impact_cards
   tab_item :grid
 
-  def index # rubocop:disable Metrics/AbcSize
+  def index # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     @communities = current_workspace.communities
     @wicked_problems = current_workspace.wicked_problems
 
@@ -32,6 +32,8 @@ class ImpactCardsController < ApplicationController
     impact_cards = @q.result(distinct: true)
 
     @pagy, @impact_cards = pagy(impact_cards, limit: 10)
+
+    @all_impact_card_data_models = impact_cards.map(&:impact_card_data_model).uniq
 
     respond_to do |format|
       format.html { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
@@ -50,7 +52,7 @@ class ImpactCardsController < ApplicationController
 
     @selected_statuses = Array.wrap(params[:statuses])
 
-    @focus_areas = FocusArea.per_scorecard_type_for_workspace(@scorecard.type, @scorecard.workspace).order(
+    @focus_areas = FocusArea.per_data_model(@scorecard.impact_card_data_model_id).order(
       'focus_area_groups.position', :position
     )
 
@@ -134,31 +136,11 @@ class ImpactCardsController < ApplicationController
     render(layout: false)
   end
 
-  # def merge_options
-  #   @other_scorecards =
-  #     current_workspace.scorecards.where(type: @scorecard.type).where.not(id: @scorecard.id).order('lower(name)')
-
-  #   render(layout: false)
-  # end
-
-  # def merge
-  #   @other_scorecard = current_workspace.scorecards.find(params[:other_scorecard_id])
-  #   authorize(@other_scorecard, policy_class: ScorecardPolicy).merge?
-
-  #   notice = if merge_cards(@scorecard, @other_scorecard, deep: params[:merge] == 'deep')
-  #              'Cards were successfully merged.'
-  #            else
-  #              'Merge failed.'
-  #            end
-
-  #   redirect_to impact_card_path(@scorecard), notice: notice
-  # end
-
   private
 
   def fetch_legend_items(impact_card)
     FocusArea
-      .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
+      .per_data_model(impact_card.impact_card_data_model_id)
       .joins(:focus_area_group)
       .order('focus_area_groups.position, focus_areas.position')
       .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }
@@ -189,10 +171,6 @@ class ImpactCardsController < ApplicationController
     authorize(@scorecard, policy_class: ScorecardPolicy)
   end
 
-  def linked_initiatives_params
-    params[:linked_initiatives]
-  end
-
   def impact_card_params # rubocop:disable Metrics/MethodLength
     params.require(:impact_card).permit(
       :type,
@@ -204,6 +182,7 @@ class ImpactCardsController < ApplicationController
       :linked_scorecard_id,
       :share_ecosystem_map,
       :share_thematic_network_map,
+      :impact_card_data_model_id,
       initiatives_attributes: %i[
         _destroy
         name

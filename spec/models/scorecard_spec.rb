@@ -6,11 +6,11 @@
 #
 #  id                         :integer          not null, primary key
 #  deleted_at                 :datetime
+#  deprecated_type            :string           default("TransitionCard")
 #  description                :string
 #  name                       :string
 #  share_ecosystem_map        :boolean          default(TRUE)
 #  share_thematic_network_map :boolean          default(TRUE)
-#  type                       :string           default("TransitionCard")
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  community_id               :integer
@@ -23,8 +23,8 @@
 # Indexes
 #
 #  index_scorecards_on_deleted_at                 (deleted_at)
+#  index_scorecards_on_deprecated_type            (deprecated_type)
 #  index_scorecards_on_impact_card_data_model_id  (impact_card_data_model_id)
-#  index_scorecards_on_type                       (type)
 #  index_scorecards_on_workspace_id               (workspace_id)
 #
 # Foreign Keys
@@ -32,14 +32,23 @@
 #  fk_rails_...  (impact_card_data_model_id => impact_card_data_models.id)
 #
 require 'rails_helper'
+require 'shared/workspace_context'
 
 RSpec.describe Scorecard, type: :model do
-  let(:scorecard) { create(:scorecard, initiatives: create_list(:initiative, 10)) }
+  include_context 'with simple workspace'
+
+  let(:scorecard) { create(:scorecard, impact_card_data_model:, workspace:) }
+
+  before { create_list(:initiative, 10, scorecard:) }
 
   describe '#merge' do
     subject(:merged) { scorecard.merge(other_scorecard) }
 
-    let(:other_scorecard) { create(:scorecard, initiatives: create_list(:initiative, 5)) }
+    let(:other_scorecard) do
+      create(:scorecard, impact_card_data_model:, workspace:)
+    end
+
+    before { create_list(:initiative, 10, scorecard: other_scorecard) }
 
     it { expect(merged.name).to eq(scorecard.name) }
 

@@ -24,7 +24,7 @@ FactoryBot.define do
 
   factory :characteristic do
     name { FFaker::Name.name }
-    focus_area
+    # focus_area
     position { generate(:characteristic_position) }
   end
 end

@@ -34,6 +34,7 @@ class ImpactCardDataModel < ApplicationRecord
   string_enum status: %i[active archived]
 
   belongs_to :workspace, optional: true
+  has_many :focus_area_groups, dependent: :destroy
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :workspace_id }, if: -> { workspace_id.present? }

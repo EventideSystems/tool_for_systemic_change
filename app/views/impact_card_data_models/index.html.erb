@@ -14,6 +14,10 @@
         <%- end %>
       </div>
     </div>
+    <%= turbo_frame_tag :stylesheet do %>
+      <%= render 'impact_card_data_models/stylesheet', impact_card_data_models: @all_impact_card_data_models %>
+    <% end %>
+
     <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
       <%= turbo_frame_tag :list do %>
         <%= render partial: 'impact_card_data_model', collection: @impact_card_data_models, as: :impact_card_data_model %>

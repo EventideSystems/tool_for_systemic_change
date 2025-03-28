@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:user) { create(:user) }
   let(:workspace) { create(:workspace) }
+  let(:impact_card_data_model) { create(:impact_card_data_model, workspace:) }
+
+  let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, impact_card_data_model:) }
+  let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
 
   let(:stakeholder_type) { create(:stakeholder_type, workspace:) }
   let(:organisation) { create(:organisation, workspace:, stakeholder_type:) }
@@ -42,7 +46,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpe
     create(:initiative, name: 'Non-Clashing Initiative', scorecard: other_impact_card)
   end
 
-  let(:characteristic) { create(:characteristic, name: 'Checklist Item 1') }
+  let(:characteristic) { create(:characteristic, name: 'Checklist Item 1', focus_area: focus_areas.first) }
 
   let!(:checklist_item) do
     create(:checklist_item, characteristic:, user:, initiative: clashing_initiative, comment: 'Comment')

@@ -1,4 +1,3 @@
-<% badge_background_class = impact_card.type == 'TransitionCard' ? 'bg-teal-600 dark:bg-teal-600' : 'bg-blue-600 dark:bg-blue-600' %>
-<div class="inline-flex rounded-lg items-center justify-center <%= badge_background_class %> text-white" title="Type: <%= impact_card.impact_card_data_model.name %>">
+<div class="inline-flex rounded-lg items-center justify-center <%= dom_id(impact_card.impact_card_data_model) %> text-white" title="Type: <%= impact_card.impact_card_data_model.name %>">
   <p class="py-1 px-2 text-xs whitespace-nowrap"><%= impact_card.impact_card_data_model.short_name %></p>
 </div>

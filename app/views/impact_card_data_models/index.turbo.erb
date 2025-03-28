@@ -1,3 +1,7 @@
+<%= turbo_stream.update :stylesheet do %>
+  <%= render 'stylesheet', impact_card_data_models: @all_impact_card_data_models %>
+<% end %>
+
 <%= turbo_stream.update :list do %>
   <%= render partial: 'impact_card_data_model', collection: @impact_card_data_models, as: :impact_card_data_model %>
   <%= render partial: 'pagination' %>

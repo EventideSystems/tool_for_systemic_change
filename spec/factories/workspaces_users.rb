@@ -19,8 +19,8 @@
 #
 FactoryBot.define do
   factory :workspaces_user do
-    workspace
-    user
+    # workspace
+    # user
     workspace_role { :member }
   end
 end

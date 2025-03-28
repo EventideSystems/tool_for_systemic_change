@@ -27,7 +27,7 @@ FactoryBot.define do
 
   factory :focus_area do
     name { FFaker::Name.name }
-    focus_area_group
+    # focus_area_group
     position { generate(:focus_area_position) }
   end
 end

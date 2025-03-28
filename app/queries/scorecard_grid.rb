@@ -7,7 +7,7 @@ require 'benchmark'
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = []) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-      columns_data = column_data(scorecard.workspace, scorecard.impact_card_data_model_id) # ScorecardGridColumns::DATA[scorecard.type]
+      columns_data = column_data(scorecard.workspace, scorecard.impact_card_data_model_id)
 
       if snapshot_at.present?
         ActiveRecord::Base

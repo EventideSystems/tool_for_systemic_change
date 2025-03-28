@@ -173,9 +173,11 @@ class InitiativesController < ApplicationController
 
   def set_focus_area_groups
     @focus_areas_groups = \
-      FocusAreaGroup
+      @initiative
+      .scorecard
+      .impact_card_data_model
+      .focus_area_groups
       .includes(:focus_areas)
-      .where(scorecard_type: @initiative.scorecard.type, workspace_id: @initiative.scorecard.workspace_id)
       .order(:position)
   end
 

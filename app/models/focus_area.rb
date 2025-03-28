@@ -40,11 +40,10 @@ class FocusArea < ApplicationRecord
 
   alias_attribute :color, :actual_color
 
-  scope :per_scorecard_type_for_workspace, lambda { |scorecard_type, workspace|
+  scope :per_data_model, lambda { |impact_card_data_model_id|
     joins(:focus_area_group)
       .where(
-        'focus_area_groups.scorecard_type' => scorecard_type,
-        'focus_area_groups.workspace_id' => workspace.id
+        'focus_area_groups.impact_card_data_model_id' => impact_card_data_model_id
       )
   }
 

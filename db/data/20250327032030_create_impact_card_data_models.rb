@@ -8,7 +8,7 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
       update_scorecards(workspace, 'SustainableDevelopmentGoalAlignmentCard', impact_card_data_model)
       update_focus_area_groups(workspace,  'SustainableDevelopmentGoalAlignmentCard', impact_card_data_model)
 
-      if workspace.scorecards.where(type: 'TransitionCard').exists?        
+      if workspace.scorecards.where(type_key => 'TransitionCard').exists?        
         impact_card_data_model = transition_impact_card_data_model(workspace)
 
         update_scorecards(workspace, 'TransitionCard', impact_card_data_model)
@@ -24,6 +24,14 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
   end
 
   private
+
+  def type_key 
+    Scorecard.column_names.include?('deprecated_type') ? :deprecated_type : :type    
+  end
+
+  def scorecard_type_key
+    Scorecard.column_names.include?('deprecated_type') ? :deprecated_scorecard_type : :scorecard_type
+  end
 
   def sdgs_impact_card_data_model(workspace)
     workspace.impact_card_data_models.find_or_create_by(name: 'Sustainable Development Goals') do |impact_card_data_model|
@@ -44,11 +52,11 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
   end
 
   def update_scorecards(workspace, type, impact_card_data_model)
-    workspace.scorecards.where(type:).update_all(impact_card_data_model_id: impact_card_data_model.id)
+    workspace.scorecards.where(type_key => type).update_all(impact_card_data_model_id: impact_card_data_model.id)
   end
 
   def update_focus_area_groups(workspace, scorecard_type, impact_card_data_model)
-    workspace.focus_area_groups.where(scorecard_type:).update_all(impact_card_data_model_id: impact_card_data_model.id)
+    workspace.focus_area_groups.where(scorecard_type_key => scorecard_type).update_all(impact_card_data_model_id: impact_card_data_model.id)
   end
 end
 

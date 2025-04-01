@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared/workspace_context'
 
 RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpec/MultipleMemoizedHelpers
+  include_context 'with simple workspace'
+
   let(:user) { create(:user) }
-  let(:workspace) { create(:workspace) }
-  let(:impact_card_data_model) { create(:impact_card_data_model, workspace:) }
 
   let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, impact_card_data_model:) }
   let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
@@ -17,8 +18,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpe
   let(:subsystem_tag) { create(:subsystem_tag, workspace:) }
   let(:other_subsystem_tag) { create(:subsystem_tag, workspace:) }
 
-  let(:impact_card) { create(:scorecard, workspace:) }
-  let(:other_impact_card) { create(:scorecard, workspace:) }
+  let(:impact_card) { create(:scorecard, workspace:, impact_card_data_model:) }
+  let(:other_impact_card) { create(:scorecard, workspace:, impact_card_data_model:) }
 
   let!(:clashing_initiative) do
     create(

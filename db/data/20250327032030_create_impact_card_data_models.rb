@@ -37,7 +37,7 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
   def transition_impact_card_data_model(workspace)
     workspace.impact_card_data_models.find_or_create_by(name: 'Transition Card') do |impact_card_data_model|
       impact_card_data_model.short_name = 'Transition'
-      impact_card_data_model.description = 'Legacy WickedLab Transition Card'
+      impact_card_data_model.description = 'Legacy Transition Card'
       impact_card_data_model.color = '#0d9488'
       impact_card_data_model.status = 'active'
     end

@@ -5,11 +5,13 @@
 # Table name: focus_area_groups
 #
 #  id                        :integer          not null, primary key
+#  code                      :string
 #  deleted_at                :datetime
 #  deprecated_scorecard_type :string           default("TransitionCard")
 #  description               :string
 #  name                      :string
 #  position                  :integer
+#  short_name                :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  impact_card_data_model_id :bigint
@@ -17,11 +19,12 @@
 #
 # Indexes
 #
-#  index_focus_area_groups_on_deleted_at                 (deleted_at)
-#  index_focus_area_groups_on_deprecated_scorecard_type  (deprecated_scorecard_type)
-#  index_focus_area_groups_on_impact_card_data_model_id  (impact_card_data_model_id)
-#  index_focus_area_groups_on_position                   (position)
-#  index_focus_area_groups_on_workspace_id               (workspace_id)
+#  index_focus_area_groups_on_deleted_at                          (deleted_at)
+#  index_focus_area_groups_on_deprecated_scorecard_type           (deprecated_scorecard_type)
+#  index_focus_area_groups_on_impact_card_data_model_id           (impact_card_data_model_id)
+#  index_focus_area_groups_on_impact_card_data_model_id_and_code  (impact_card_data_model_id,code) UNIQUE
+#  index_focus_area_groups_on_position                            (position)
+#  index_focus_area_groups_on_workspace_id                        (workspace_id)
 #
 # Foreign Keys
 #
@@ -42,4 +45,8 @@ class FocusAreaGroup < ApplicationRecord
   has_many :focus_areas, dependent: :restrict_with_error
 
   validates :position, presence: true
+
+  def full_name
+    [code, name].compact.join(' - ')
+  end
 end

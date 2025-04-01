@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_28_000747) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_01_043505) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -80,7 +80,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_000747) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "code"
+    t.string "short_name"
     t.index ["deleted_at"], name: "index_characteristics_on_deleted_at"
+    t.index ["focus_area_id", "code"], name: "index_characteristics_on_focus_area_id_and_code", unique: true
     t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id"
     t.index ["position"], name: "index_characteristics_on_position"
   end
@@ -158,8 +161,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_000747) do
     t.string "deprecated_scorecard_type", default: "TransitionCard"
     t.bigint "workspace_id"
     t.bigint "impact_card_data_model_id"
+    t.string "code"
+    t.string "short_name"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["deprecated_scorecard_type"], name: "index_focus_area_groups_on_deprecated_scorecard_type"
+    t.index ["impact_card_data_model_id", "code"], name: "index_focus_area_groups_on_impact_card_data_model_id_and_code", unique: true
     t.index ["impact_card_data_model_id"], name: "index_focus_area_groups_on_impact_card_data_model_id"
     t.index ["position"], name: "index_focus_area_groups_on_position"
     t.index ["workspace_id"], name: "index_focus_area_groups_on_workspace_id"
@@ -176,7 +182,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_000747) do
     t.string "icon_name", default: ""
     t.string "actual_color"
     t.string "planned_color"
+    t.string "code"
+    t.string "short_name"
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
+    t.index ["focus_area_group_id", "code"], name: "index_focus_areas_on_focus_area_group_id_and_code", unique: true
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
   end

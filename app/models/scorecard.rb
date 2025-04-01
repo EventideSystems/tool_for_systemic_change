@@ -86,7 +86,7 @@ class Scorecard < ApplicationRecord
   end
 
   # SMELL: Hack to test if the scorecard has a thematic map (originally only SDGs)
-  def has_thematic_map?
+  def thematic_map?
     impact_card_data_model.name.include?('Sustainable Development Goals')
   end
 

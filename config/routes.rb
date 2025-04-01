@@ -129,7 +129,6 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
-  get 'contributors', to: 'home#contributors'
   get 'privacy', to: 'home#privacy'
   get 'cookie', to: 'home#cookie'
   get 'terms', to: 'home#terms'

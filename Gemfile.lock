@@ -80,8 +80,8 @@ GEM
       rack (>= 2.0.0)
     ast (2.4.3)
     aws-eventstream (1.3.2)
-    aws-partitions (1.1076.0)
-    aws-sdk-core (3.222.0)
+    aws-partitions (1.1078.0)
+    aws-sdk-core (3.222.1)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -262,18 +262,18 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.6)
+    nokogiri (1.18.7)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.6-aarch64-linux-gnu)
+    nokogiri (1.18.7-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.6-arm-linux-gnu)
+    nokogiri (1.18.7-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.6-arm64-darwin)
+    nokogiri (1.18.7-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.6-x86_64-darwin)
+    nokogiri (1.18.7-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.6-x86_64-linux-gnu)
+    nokogiri (1.18.7-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pagy (9.3.4)
@@ -283,7 +283,7 @@ GEM
     parallel (1.26.3)
     paranoia (3.0.1)
       activerecord (>= 6, < 8.1)
-    parser (3.3.7.3)
+    parser (3.3.7.4)
       ast (~> 2.4.1)
       racc
     pg (1.5.9)
@@ -351,7 +351,7 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
-    rdoc (6.13.0)
+    rdoc (6.13.1)
       psych (>= 4.0.0)
     recaptcha (5.19.0)
     redis (5.4.0)
@@ -406,15 +406,15 @@ GEM
     rubocop-factory_bot (2.27.1)
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
-    rubocop-performance (1.24.0)
+    rubocop-performance (1.25.0)
       lint_roller (~> 1.1)
-      rubocop (>= 1.72.1, < 2.0)
+      rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
-    rubocop-rails (2.30.3)
+    rubocop-rails (2.31.0)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
-      rubocop (>= 1.72.1, < 2.0)
+      rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
     rubocop-rspec (3.5.0)
       lint_roller (~> 1.1)
@@ -584,8 +584,8 @@ CHECKSUMS
   appsignal (4.5.7) sha256=f45147e8b700e0c77c685e4cf62ed36c90aa6877a1e9db218132d6168e64ca97
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   aws-eventstream (1.3.2) sha256=7e2c3a55ca70d7861d5d3c98e47daa463ed539c349caba22b48305b8919572d7
-  aws-partitions (1.1076.0) sha256=6f33818b3e7d5a4a4a90585c08b6d78c6f096d2f014f5b28bb07828b5432dac3
-  aws-sdk-core (3.222.0) sha256=a32d6e1ccd4344f6d40afaae633225a11d2700313d2d67551b5d8a366d893872
+  aws-partitions (1.1078.0) sha256=970e0fe975dd4c03e516e20778fcfb8704f595eb6d48eb4aa3ec1b80ce2339b2
+  aws-sdk-core (3.222.1) sha256=349f39840fca4300384bd6dc85a546a0ad9def81d48d1f99607a6b3ec27bcbb2
   aws-sdk-lambda (1.148.0) sha256=9c6ef3b96b838651f78cb3e72cb70d58acb2e084bea519ac07a6f2cdb7ef8fa7
   aws-sdk-rails (5.1.0) sha256=8cffd3b60142e12a6747c91a7a609f668276b1082fc0c10810d5da3d14b13189
   aws-sigv4 (1.11.0) sha256=50a8796991a862324442036ad7a395920572b84bb6cd29b945e5e1800e8da1db
@@ -668,18 +668,18 @@ CHECKSUMS
   net-protocol (0.2.2) sha256=aa73e0cba6a125369de9837b8d8ef82a61849360eba0521900e2c3713aa162a8
   net-smtp (0.5.1) sha256=ed96a0af63c524fceb4b29b0d352195c30d82dd916a42f03c62a3a70e5b70736
   nio4r (2.7.4) sha256=d95dee68e0bb251b8ff90ac3423a511e3b784124e5db7ff5f4813a220ae73ca9
-  nokogiri (1.18.6) sha256=4d283431d7829719ea1287ca388f24c6ce343af736bbcbd1365cbdb83bce41a4
-  nokogiri (1.18.6-aarch64-linux-gnu) sha256=1b11f9a814068282cc2b47ebe61395b2a69d1918092d2ca3bd664074f72540e9
-  nokogiri (1.18.6-arm-linux-gnu) sha256=2da07a07ef4c9d9e9da809b3dc0937ed90b031e32c2c658d9918941b85d68b95
-  nokogiri (1.18.6-arm64-darwin) sha256=727a441d179d934b4b7c73e0e28e6723ee46463d96bb0cc6e2e33a13540962c4
-  nokogiri (1.18.6-x86_64-darwin) sha256=fb72568c97ccd90a8d68cb765b0ff0720b109bd62e3babbf372e854ef8fef995
-  nokogiri (1.18.6-x86_64-linux-gnu) sha256=df065db6ba6e1e80f76ef04f860fcf260cc24685125fe33cdc3d1572a1c66b71
+  nokogiri (1.18.7) sha256=6b63ff5defe48f30d1d3b3122f65255ca91df2caf5378c6e0482ce73ff46fb31
+  nokogiri (1.18.7-aarch64-linux-gnu) sha256=57a064ab5440814a69a0e040817bd8154adea68a30d2ff2b3aa515a6a06dbb5f
+  nokogiri (1.18.7-arm-linux-gnu) sha256=337d9149deb5ae01022dff7c90f97bed81715fd586aacab0c5809ef933994c5e
+  nokogiri (1.18.7-arm64-darwin) sha256=083abb2e9ed2646860f6b481a981485a658c6064caafaa81bf1cda1bada2e9d5
+  nokogiri (1.18.7-x86_64-darwin) sha256=081d1aa517454ba3415304e2ea51fe411d6a3a809490d0c4aa42799cada417b7
+  nokogiri (1.18.7-x86_64-linux-gnu) sha256=3a0bf946eb2defde13d760f869b61bc8b0c18875afdd3cffa96543cfa3a18005
   orm_adapter (0.5.0) sha256=aa5d0be5d540cbb46d3a93e88061f4ece6a25f6e97d6a47122beb84fe595e9b9
   pagy (9.3.4) sha256=b058e064bd02237e76d591e90fadc02c795426dd51f90d0c51089558bf3ab5f7
   paper_trail (16.0.0) sha256=e9b9f0fb1b8b590c8231cfa931b282ba92f90e066e393930a5e1c61ae4c5019d
   parallel (1.26.3) sha256=d86babb7a2b814be9f4b81587bf0b6ce2da7d45969fab24d8ae4bf2bb4d4c7ef
   paranoia (3.0.1) sha256=cdb50c4c5c66f61fd1354f26371a8f0ca6d60156215bebffff42e135c495d083
-  parser (3.3.7.3) sha256=5803acc132cf1155fac2656bf02d3fb9223dccd66f1aa538dac095b785fa4d64
+  parser (3.3.7.4) sha256=2b26282274280e13f891080dc4ef3f65ce658d62e13255b246b28ec6754e98ab
   pg (1.5.9) sha256=761efbdf73b66516f0c26fcbe6515dc7500c3f0aa1a1b853feae245433c64fdc
   pp (0.6.2) sha256=947ec3120c6f92195f8ee8aa25a7b2c5297bb106d83b41baa02983686577b6ff
   pretender (0.5.0) sha256=02120f25bc1c2b98468e136cec9e841360935dcc291158195b0cd073ff8fad77
@@ -703,7 +703,7 @@ CHECKSUMS
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.2.1) sha256=46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d
   ransack (4.3.0) sha256=48e141814eb4af8a5cc4e9890b7a088fe818c9996c6b8c846f11104b4c12e8b1
-  rdoc (6.13.0) sha256=32c2139ae43ed91b7c43032fe5423d21d57718829cc5a11e5c9710d2aa5e0329
+  rdoc (6.13.1) sha256=62a0dac99493c94e8eb7a3fb44e55aefcb4cecb119f7991f25bddc5ed8d472f7
   recaptcha (5.19.0) sha256=b69c021a5b788da06901d2c95ab86f10a8634e6496343096cc5167f0318b2a39
   redis (5.4.0) sha256=798900d869418a9fc3977f916578375b45c38247a556b61d58cba6bb02f7d06b
   redis-client (0.24.0) sha256=ee65ee39cb2c38608b734566167fd912384f3c1241f59075e22858f23a085dbb
@@ -722,8 +722,8 @@ CHECKSUMS
   rubocop-ast (1.43.0) sha256=92cd649e336ce10212cb2f2b29028f487777ecc477f108f437a1dce1ee3db79a
   rubocop-capybara (2.22.1) sha256=ced88caef23efea53f46e098ff352f8fc1068c649606ca75cb74650970f51c0c
   rubocop-factory_bot (2.27.1) sha256=9d744b5916778c1848e5fe6777cc69855bd96548853554ec239ba9961b8573fe
-  rubocop-performance (1.24.0) sha256=e5bd39ff3e368395b9af886927cc37f5892f43db4bd6c8526594352d5b4440b5
-  rubocop-rails (2.30.3) sha256=fc5a6506daa916d15e282cc806943afa64a020bf592b93a94025d89a2a78a715
+  rubocop-performance (1.25.0) sha256=6f7d03568a770054117a78d0a8e191cefeffb703b382871ca7743831b1a52ec1
+  rubocop-rails (2.31.0) sha256=79476e1075299c3e60fc50549c7c32614f9ebaae719b899ed75785c6786c52bd
   rubocop-rspec (3.5.0) sha256=710c942fe1af884ba8eea75cbb8bdbb051929a2208880a6fc2e2dce1eed5304c
   rubocop-rspec_rails (2.31.0) sha256=775375e18a26a1184a812ef3054b79d218e85601b9ae897f38f8be24dddf1f45
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33

@@ -13,7 +13,7 @@ class ImpactCardDataModelsController < ApplicationController
 
   sidebar_item :library
 
-  def index # rubocop:disable Metrics/MethodLength
+  def index # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
     search_params = params.permit(:format, :page, q: [:name_or_description_cont])
 
     @q = policy_scope(ImpactCardDataModel).order(:name).ransack(search_params[:q])
@@ -42,5 +42,10 @@ class ImpactCardDataModelsController < ApplicationController
       #   )
       # end
     end
+  end
+
+  def show
+    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
+    authorize @impact_card_data_model
   end
 end

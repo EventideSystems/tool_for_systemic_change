@@ -6,21 +6,24 @@
 #
 #  id                  :integer          not null, primary key
 #  actual_color        :string
+#  code                :string
 #  deleted_at          :datetime
 #  description         :string
 #  icon_name           :string           default("")
 #  name                :string
 #  planned_color       :string
 #  position            :integer
+#  short_name          :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  focus_area_group_id :integer
 #
 # Indexes
 #
-#  index_focus_areas_on_deleted_at           (deleted_at)
-#  index_focus_areas_on_focus_area_group_id  (focus_area_group_id)
-#  index_focus_areas_on_position             (position)
+#  index_focus_areas_on_deleted_at                    (deleted_at)
+#  index_focus_areas_on_focus_area_group_id           (focus_area_group_id)
+#  index_focus_areas_on_focus_area_group_id_and_code  (focus_area_group_id,code) UNIQUE
+#  index_focus_areas_on_position                      (position)
 #
 class FocusArea < ApplicationRecord
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
@@ -47,7 +50,10 @@ class FocusArea < ApplicationRecord
       )
   }
 
-  def short_name
-    name.match(/(Goal\s\d*)\.*./)[1] || name
+  def full_name
+    [code, name].compact.join(' - ')
   end
+  # def short_name
+  #   name.match(/(Goal\s\d*)\.*./)[1] || name
+  # end
 end

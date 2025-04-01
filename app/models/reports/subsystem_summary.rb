@@ -36,16 +36,12 @@ module Reports
     private
 
     def scorecard_model_name
-      case scorecard
-      when TransitionCard
-        scorecard.workspace.transition_card_model_name
-      when SustainableDevelopmentGoalAlignmentCard
-        scorecard.workspace.sdgs_alignment_card_model_name
-      end
+      scorecard.impact_card_data_model.name
     end
 
     def add_title(sheet, styles)
-      sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
+      sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name,
+                                                                         style: styles[:blue_normal])
       sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
       sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end

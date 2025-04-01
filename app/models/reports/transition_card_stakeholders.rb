@@ -55,12 +55,7 @@ module Reports
     end
 
     def scorecard_model_name
-      case scorecard
-      when TransitionCard
-        scorecard.workspace.transition_card_model_name
-      when SustainableDevelopmentGoalAlignmentCard
-        scorecard.workspace.sdgs_alignment_card_model_name
-      end
+      scorecard.impact_card_data_model.name
     end
 
     def add_summary(sheet, styles)

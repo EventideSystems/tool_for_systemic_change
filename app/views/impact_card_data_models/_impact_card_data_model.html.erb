@@ -1,0 +1,24 @@
+<li>
+  <%= horizontal_rule %>
+  <div class="flex items-center justify-between">
+    <div class="flex gap-6 py-6">
+      <%= render partial: 'resource_summary', locals: { name: impact_card_data_model.name, dom_id: dom_id(impact_card_data_model) } %>
+      <div class="space-y-1.5">
+        <div class="text-base/6 font-semibold dark:text-white">
+          <%= link_to highlight(impact_card_data_model.name, params.dig(:q, :name_or_description_cont)), impact_card_data_model_path(impact_card_data_model), data: { turbo: false } %>
+        </div>
+        <div class="text-xs/6 text-zinc-500 min-h-4">
+          <%= highlight(impact_card_data_model.description, params.dig(:q, :name_or_description_cont)) %>
+        </div>
+
+        <div class="flex space-x-2">
+          <%= render 'impact_card_data_model_type_badge', impact_card_data_model: impact_card_data_model %>
+          <%#= render 'label_badge', label: impact_card_data_model.community if impact_card_data_model.community.present? %>
+          <%#= render 'label_badge', label: impact_card_data_model.wicked_problem if impact_card_data_model.wicked_problem.present? %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</li>
+

@@ -41,7 +41,8 @@ class Workspace < ApplicationRecord
   # Direct associations
   has_many :workspaces_users, dependent: :destroy
   has_many :communities, dependent: :destroy
-  has_many :focus_area_groups, dependent: :destroy
+  has_many :focus_area_groups, dependent: :destroy # TODO: Remove when all focus_area_groups have an impact card model
+  has_many :impact_card_data_models, dependent: :destroy
   has_many :initiatives_imports, class_name: 'Initiatives::Import', dependent: :destroy
   has_many :organisations, dependent: :destroy
   has_many :organisations_imports, class_name: 'Organisations::Import', dependent: :destroy
@@ -98,8 +99,8 @@ class Workspace < ApplicationRecord
     StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
   end
 
-  def scorecard_types_in_use
-    scorecards.pluck(:type).uniq.map(&:constantize)
+  def data_models_in_use
+    scorecards.map(&:impact_card_data_model).uniq
   end
 
   def expired?

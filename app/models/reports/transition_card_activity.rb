@@ -69,12 +69,7 @@ module Reports
     private
 
     def scorecard_model_name
-      case scorecard
-      when TransitionCard
-        scorecard.workspace.transition_card_model_name
-      when SustainableDevelopmentGoalAlignmentCard
-        scorecard.workspace.sdgs_alignment_card_model_name
-      end
+      scorecard.impact_card_data_model.name
     end
 
     def add_characteristic_columns_header(sheet, header_1, wrap_text) # rubocop:disable Metrics/MethodLength,Naming/VariableNumber
@@ -145,12 +140,12 @@ module Reports
       package.workbook.styles.add_style(bg_color: 'dce6f1', fg_color: '386190', sz: 12, b: false)
     end
 
+    # SMELL: Hack to get the title of the initiative characteristics, based on the implied scorecard type
     def initiative_characteristics_title
-      case scorecard
-      when TransitionCard then 'Initiative Characteristics'
-      when SustainableDevelopmentGoalAlignmentCard then 'Sustainable Development Goals'
+      if scorecard.impact_card_data_model.name.include?('Sustainable Development Goals')
+        'Sustainable Development Goals'
       else
-        raise("Unexpected scorecard type: #{scorecard.class}")
+        'Initiative Characteristics'
       end
     end
 

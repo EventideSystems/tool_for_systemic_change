@@ -36,7 +36,9 @@ module ImpactCards
         raise(ArgumentError, 'Impact cards must be in the same workspace')
       end
 
-      raise(ArgumentError, 'Impact cards must be the same type') unless impact_card.type == other_impact_card.type
+      return if impact_card.impact_card_data_model == other_impact_card.impact_card_data_model
+
+      raise(ArgumentError, 'Impact cards must use the same data model')
     end
 
     def calc_new_activity_for_addition(previous_change)

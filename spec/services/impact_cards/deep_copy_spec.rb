@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:workspace) { create(:workspace) }
+  let(:impact_card_data_model) { create(:impact_card_data_model, workspace:) }
+
   let(:target_workspace) { create(:workspace) }
-  let(:impact_card) { create(:scorecard, workspace: workspace, type: 'TransitionCard') }
+  let(:impact_card) { create(:scorecard, workspace:, impact_card_data_model:) }
   let(:new_name) { "#{impact_card.name} (copy)" }
-  let(:subsystem_tags) { create_list(:subsystem_tag, 3, workspace: workspace) }
+  let(:subsystem_tags) { create_list(:subsystem_tag, 3, workspace:) }
   let(:initiatives) { create_list(:initiative, 2, scorecard: impact_card) }
   let(:stakeholder_types) { create_list(:stakeholder_type, 4, workspace: workspace) }
   let(:stakeholders) do
@@ -17,7 +19,7 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
   end
   let(:user) { create(:user) }
 
-  let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, scorecard_type: 'TransitionCard') }
+  let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, impact_card_data_model:) }
   let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
   let(:characteristics) { create_list(:characteristic, 2, focus_area: focus_areas.first) }
 
@@ -27,10 +29,17 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
     focus_area_groups
     focus_areas
     characteristics
+    impact_card_data_model
+
+    target_impact_card_data_model = impact_card_data_model.dup.tap do |model|
+      model.workspace = target_workspace
+      model.save!
+    end
 
     focus_area_groups.each do |focus_area_group|
       focus_area_group.dup.tap do |new_group|
         new_group.workspace = target_workspace
+        new_group.impact_card_data_model = target_impact_card_data_model
         new_group.save!
 
         focus_area_group.focus_areas.each do |focus_area|

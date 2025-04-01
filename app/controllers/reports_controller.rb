@@ -5,17 +5,12 @@
 class ReportsController < ApplicationController
   sidebar_item :reports
 
-  def index # rubocop:disable Metrics/MethodLength
+  def index
     authorize(:report, :index?)
 
     @scorecards = policy_scope(Scorecard).order(:name)
-    @grouped_scorecards = @scorecards.group_by(&:type).transform_keys do |key|
-      case key
-      when 'TransitionCard' then current_workspace.transition_card_model_name
-      when 'SustainableDevelopmentGoalAlignmentCard' then current_workspace.sdgs_alignment_card_model_name
-      else
-        'Impact Card'
-      end
+    @grouped_scorecards = @scorecards.group_by do |scorecard|
+      scorecard.impact_card_data_model.name
     end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
       scorecards.map do |scorecard|
         [scorecard.name, scorecard.id]
@@ -159,7 +154,7 @@ class ReportsController < ApplicationController
   end
 
   def report_filename_prefix(scorecard)
-    scorecard.model_name.human.delete(' ')
+    scorecard.impact_card_data_model.name.tr(' ', '_')
   end
 
   def time_stamp_suffix

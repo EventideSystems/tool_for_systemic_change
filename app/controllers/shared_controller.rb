@@ -19,7 +19,7 @@ class SharedController < ApplicationController
     @date = params[:date]
     @parsed_date = @date.blank? ? nil : Date.parse(@date)
 
-    @focus_areas = FocusArea.per_scorecard_type_for_workspace(@scorecard.type, @scorecard.workspace).order(
+    @focus_areas = FocusArea.per_data_model(@scorecard.impact_card_data_model_id).order(
       'focus_area_groups.position', :position
     )
 
@@ -104,7 +104,7 @@ class SharedController < ApplicationController
   # SMELL: Duplicated in app/controllers/impact_cards_controller.rb
   def fetch_legend_items(impact_card)
     FocusArea
-      .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
+      .per_data_model(impact_card.impact_card_data_model_id)
       .joins(:focus_area_group)
       .order('focus_area_groups.position, focus_areas.position')
       .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }

@@ -6,6 +6,7 @@
 #
 #  id                        :integer          not null, primary key
 #  code                      :string
+#  color                     :string
 #  deleted_at                :datetime
 #  deprecated_scorecard_type :string           default("TransitionCard")
 #  description               :string

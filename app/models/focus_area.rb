@@ -51,7 +51,7 @@ class FocusArea < ApplicationRecord
   }
 
   def full_name
-    [code, name].compact.join(' - ')
+    [code, short_name.presence || name].compact.join(' ')
   end
   # def short_name
   #   name.match(/(Goal\s\d*)\.*./)[1] || name

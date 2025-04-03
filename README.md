@@ -47,7 +47,10 @@ So, thank you everyone!
 
 ## License & Attribution
 
-Copyright © 2025 Eventide Systems Pty Ltd, released under an open source license. The repository contains seed data models that are copyright their respective owners. See the copyright notices within the /db/data_models directory. 
+Copyright © 2023 Emily Humphreys
+Copyright © 2025 Eventide Systems Pty Ltd
+
+Rreleased under an open source license. The repository contains seed data models that are copyright their respective owners.
 
 This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.  
 
@@ -55,7 +58,7 @@ This program is free software: you can redistribute it and/or modify it under th
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
-If you modify this program, or any covered work, by linking or combining it with the Tool for Systemic Change, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
+If you modify this program, or any covered work, by linking or combining it with Obsekio, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
 
 Attribution Notice:
 

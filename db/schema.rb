@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_01_043505) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_075821) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -163,6 +163,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_01_043505) do
     t.bigint "impact_card_data_model_id"
     t.string "code"
     t.string "short_name"
+    t.string "color"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["deprecated_scorecard_type"], name: "index_focus_area_groups_on_deprecated_scorecard_type"
     t.index ["impact_card_data_model_id", "code"], name: "index_focus_area_groups_on_impact_card_data_model_id_and_code", unique: true

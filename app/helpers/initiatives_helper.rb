@@ -36,13 +36,6 @@ module InitiativesHelper
     end
   end
 
-  def initiatives_characteristics_title(initiative)
-    case initiative.scorecard.type
-    when 'TransitionCard' then 'Initiative Characteristics'
-    when 'SustainableDevelopmentGoalAlignmentCard' then 'Initiative SDGs Targets'
-    end
-  end
-
   def mail_to_contact_email(initiative)
     return '' if initiative&.contact_email.blank?
 
@@ -67,20 +60,6 @@ module InitiativesHelper
   def initiative_scorecard_types
     current_workspace.scorecard_types.map do |scorecard_type|
       [scorecard_type.model_name.human.pluralize, scorecard_type.name]
-    end
-  end
-
-  private
-
-  # SMELL: Duplicate of code in initiatives_controller.rb
-  def scorecard_type_from_params(params)
-    if params[:scope].blank? || !params[:scope].in?(%w[transition_cards sdgs_alignment_cards])
-      current_workspace.default_scorecard_type
-    else
-      case params[:scope].to_sym
-      when :sdgs_alignment_cards then SustainableDevelopmentGoalAlignmentCard
-      when :transition_cards then TransitionCard
-      end
     end
   end
 end

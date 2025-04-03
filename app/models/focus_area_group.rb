@@ -6,6 +6,7 @@
 #
 #  id                        :integer          not null, primary key
 #  code                      :string
+#  color                     :string
 #  deleted_at                :datetime
 #  deprecated_scorecard_type :string           default("TransitionCard")
 #  description               :string
@@ -47,6 +48,6 @@ class FocusAreaGroup < ApplicationRecord
   validates :position, presence: true
 
   def full_name
-    [code, name].compact.join(' - ')
+    [code, short_name.presence || name].compact.join(' ')
   end
 end

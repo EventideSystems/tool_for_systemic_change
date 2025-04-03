@@ -43,10 +43,7 @@ class Workspace < ApplicationRecord
   has_many :communities, dependent: :destroy
   has_many :focus_area_groups, dependent: :destroy # TODO: Remove when all focus_area_groups have an impact card model
   has_many :impact_card_data_models, dependent: :destroy
-  has_many :initiatives_imports, class_name: 'Initiatives::Import', dependent: :destroy
   has_many :organisations, dependent: :destroy
-  has_many :organisations_imports, class_name: 'Organisations::Import', dependent: :destroy
-  has_many :scorecard_comments_imports, class_name: 'ScorecardComments::Import', dependent: :destroy
   has_many :scorecards, dependent: :destroy
   has_many :stakeholder_types, dependent: :destroy
   has_many :subsystem_tags, dependent: :destroy
@@ -84,19 +81,6 @@ class Workspace < ApplicationRecord
     return false if max_users.zero? || max_users.blank?
 
     users.count >= max_users
-  end
-
-  SCORECARD_TYPES = [
-    TransitionCard,
-    SustainableDevelopmentGoalAlignmentCard
-  ].freeze
-
-  def default_scorecard_type
-    TransitionCard
-  end
-
-  def custom_stakeholder_types_in_use?
-    StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
   end
 
   def data_models_in_use

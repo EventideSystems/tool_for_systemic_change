@@ -4,11 +4,12 @@ require 'open-uri'
 require 'json'
 
 module Gateways
-  # This class is responsible for interacting with the SDG API.
+  # This class is responsible for interacting with the United Nations Statistics Division's SDG API.
   # It provides methods to fetch data related to SDGs, targets, and indicators.
+  #
+  # NOTE: This is a very simple API client. It does not handle error handling in a robust way.
   class SdgApi
     BASE_URI = 'https://unstats.un.org/SDGAPI/v1/sdg/'
-    # The base URI for the SDG API.
 
     def fetch_indicators
       get_data('Indicator/List')

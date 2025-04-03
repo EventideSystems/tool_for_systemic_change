@@ -1,22 +1,14 @@
 # frozen_string_literal: true
 
-# Controller for the ImpactCard model (TransitionCard and SustainableDevelopmentGoalAlignmentCard)
+# Controller for the ImpactCard model
 # rubocop:disable Metrics/ClassLength
 class ImpactCardsController < ApplicationController
   include VerifyPolicies
   include InitiativeChildRecords
   include ActiveTabItem
 
-  # SMELL: characteristic is actually in the SustainableDevelopmentGoalAlignmentCardsController. Need to
-  # rework this so that it's not in the base class.
   before_action :set_scorecard, except: %i[index new create]
-
-  # before_action :set_active_tab, only: [:show]
   before_action :require_workspace_selected, only: %i[new create edit update show_shared_link]
-  # before_action :redirect_to_correct_controller, only: %i[show]
-
-  # skip_before_action :authenticate_user!, only: %i[ecosystem_maps_organisations]
-  # skip_after_action :verify_authorized, only: %i[ecosystem_maps_organisations]
 
   sidebar_item :impact_cards
   tab_item :grid

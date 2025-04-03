@@ -82,10 +82,11 @@ module Reports
             inner join workspaces on scorecards.workspace_id = workspaces.id
             inner join characteristics on checklist_items.characteristic_id = characteristics.id
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
+            inner join impact_card_data_models on scorecards.impact_card_data_model_id = impact_card_data_models.id
             where workspaces.id in (#{workspaces.pluck(:id).join(',')})
             and initiatives.deleted_at is null
             and scorecards.deleted_at is null
-            and scorecards.type = 'TransitionCard'
+            and impact_card_data_models.name = 'Transition Card'
             group by workspaces.id, scorecards.id, initiatives.id, focus_areas.id
         )
 

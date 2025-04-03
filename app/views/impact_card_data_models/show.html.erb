@@ -16,8 +16,9 @@
   <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
     <% @impact_card_data_model.focus_area_groups.each do |focus_area_group| %>
       <div class="mb-6">
-        <h2 class="text-2xl font-bold text-zinc-950 dark:text-white mb-4">
-          <%= focus_area_group.full_name %>
+        <h2 class="text-2xl font-bold text-zinc-950 dark:text-white mb-4" title="<%= focus_area_group.name %>">
+          <span class="w-2 mr-1" style="background-color: <%= focus_area_color(focus_area_group) %>">&nbsp;</span>
+          <%= display_name(focus_area_group) %>
         </h2>
         <%- if focus_area_group.description.present? %>        
           <div class="flex text-zinc-500 mb-4">
@@ -26,9 +27,9 @@
         <% end %>
         <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
           <div class="mb-4 ml-3">
-            <h3 class="text-xl font-semibold text-zinc-950 dark:text-white mb-2">
+            <h3 class="text-xl font-semibold text-zinc-950 dark:text-white mb-2" title="<%= focus_area.name %>">
               <span class="w-2 mr-1" style="background-color: <%= focus_area_color(focus_area) %>">&nbsp;</span>
-              <%= focus_area.full_name %>
+              <%= display_name(focus_area) %>
             </h3>
             <%- if focus_area.description.present? %>        
               <div class="flex text-zinc-500 mb-4">
@@ -37,8 +38,8 @@
             <% end %>
             <ul class="list-none pl-4">
               <% focus_area.characteristics.each do |characteristic| %>
-                <li class="text-zinc-950 dark:text-white">
-                  <%= characteristic.name %>
+                <li class="mt-1 text-zinc-950 dark:text-white" title="<%= characteristic.name %>">
+                  <%= display_name(characteristic) %>
                 </li>
               <% end %>
             </ul>

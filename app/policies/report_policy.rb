@@ -7,7 +7,7 @@ class ReportPolicy < ApplicationPolicy
   def initiatives_results? = true
   def stakeholders_report? = true
   def stakeholders_results? = true
-  def transition_card_activity? = true
+  def impact_card_activity? = true
   def subsystem_summary? = true
 
   def cross_workspace_percent_actual? = user_has_active_workspaces_with_admin_role?

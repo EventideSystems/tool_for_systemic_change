@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe(Reports::TransitionCardActivity) do
+RSpec.describe(Reports::ImpactCardActivity) do
   describe '#results' do
     pending "add some examples to (or delete) #{__FILE__}"
   end

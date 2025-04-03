@@ -8,17 +8,6 @@ module ImpactCardsHelper
     activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
   end
 
-  def display_scorecard_model_name(scorecard)
-    return '' if scorecard&.workspace.blank?
-
-    case scorecard
-    when TransitionCard
-      scorecard.workspace.transition_card_model_name
-    when SustainableDevelopmentGoalAlignmentCard
-      scorecard.workspace&.sdgs_alignment_card_model_name
-    end
-  end
-
   def multi_select_options_for_labels(labels, selected_labels)
     choices = labels.map do |label|
       color_class = dom_id(label)
@@ -84,19 +73,6 @@ module ImpactCardsHelper
     end.join(' ')
   end
 
-  # def collection_for_linked_scorecard(parent_scorecard)
-  #   return [] if parent_scorecard.blank?
-
-  #   [['', nil]] + parent_scorecard
-  #                 .workspace
-  #                 .scorecards
-  #                 .where(id: parent_scorecard.linked_scorecard_id)
-  #                 .or(parent_scorecard.workspace.scorecards.where(linked_scorecard_id: nil))
-  #                 .where.not(type: parent_scorecard.type, deleted_at: nil)
-  #                 .order(:name)
-  #                 .pluck(:name, :id)
-  # end
-
   def focus_area_cell_style(result, focus_area)
     characteristic_ids = focus_area.characteristics.pluck(:id).map(&:to_s)
 
@@ -104,16 +80,6 @@ module ImpactCardsHelper
 
     any_actual ? "background-color: #{focus_area.actual_color}" : ''
   end
-
-  # def linked_scorecard_label(scorecard)
-  #   'Linked ' +
-  #     case scorecard
-  #     when TransitionCard then SustainableDevelopmentGoalAlignmentCard
-  #     when SustainableDevelopmentGoalAlignmentCard then TransitionCard
-  #     else
-  #       raise('Unknown scorecard type')
-  #     end.model_name.human
-  # end
 
   def select_impact_card_tag(name, options)
     workspace = options.delete(:workspace) || current_workspace

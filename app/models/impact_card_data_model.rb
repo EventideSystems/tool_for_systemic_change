@@ -31,6 +31,8 @@
 class ImpactCardDataModel < ApplicationRecord
   include Searchable
 
+  acts_as_paranoid
+
   string_enum status: %i[active archived]
 
   belongs_to :workspace, optional: true

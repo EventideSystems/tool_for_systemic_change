@@ -7,7 +7,8 @@ module Gateways
   # This class is responsible for fetching SDG I18n data from the Consul Democracy project on Github.
   # See: https://github.com/consuldemocracy/consuldemocracy
   #
-  # NOTE We might consider a fallback to the Open SDG project. See https://github.com/open-sdg/sdg-translations.
+  # NOTE We might consider a fallback to the Open SDG project, should the consuldemocracy ever become unavailable.
+  # See https://github.com/open-sdg/sdg-translations.
   #
   # We'll extend this further to allow for language selection and other features.
   #

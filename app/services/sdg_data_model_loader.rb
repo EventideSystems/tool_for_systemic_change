@@ -27,6 +27,9 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
     load_three_tier_sdg_data_model
   end
 
+  TWO_TIER_SDG_DATA_MODEL_NAME = 'Sustainable Development Goals and Targets'
+  THREE_TIER_SDG_DATA_MODEL_NAME = 'Sustainable Development Goals, Targets and Indicators'
+
   private
 
   attr_reader :sdg_api, :sdg_i18n, :sdg_goals, :sdg_targets, :sdg_indicators, :sdg_goal_translations
@@ -63,7 +66,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
       data_model = \
         ImpactCardDataModel
         .where(system_model: true)
-        .find_or_create_by(name: 'Sustainable Development Goals and Targets') do |model|
+        .find_or_create_by(name: TWO_TIER_SDG_DATA_MODEL_NAME) do |model|
           model.description = 'Two-tier SDGs data model, focusing on Goals and Targets'
           model.system_model = true
           model.save!
@@ -123,7 +126,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
       data_model = \
         ImpactCardDataModel
         .where(system_model: true)
-        .find_or_create_by(name: 'Sustainable Development Goals, Targets and Indicators') do |model|
+        .find_or_create_by(name: THREE_TIER_SDG_DATA_MODEL_NAME) do |model|
           model.description = 'Three-tier SDGs data model, expanded to Goals, Targets and Indicators'
           model.system_model = true
           model.save!

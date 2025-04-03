@@ -4,7 +4,7 @@ require 'csv'
 
 module Reports
   # This class is responsible for generating a report for the stakeholders of an impact card
-  class TransitionCardStakeholders < Base # rubocop:disable Metrics/ClassLength
+  class ImpactCardStakeholders < Base # rubocop:disable Metrics/ClassLength
     attr_accessor :scorecard,
                   :unique_organisations,
                   :initiatives,

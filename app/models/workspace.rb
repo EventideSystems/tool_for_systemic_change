@@ -86,19 +86,6 @@ class Workspace < ApplicationRecord
     users.count >= max_users
   end
 
-  SCORECARD_TYPES = [
-    TransitionCard,
-    SustainableDevelopmentGoalAlignmentCard
-  ].freeze
-
-  def default_scorecard_type
-    TransitionCard
-  end
-
-  def custom_stakeholder_types_in_use?
-    StakeholderType.system_stakeholder_types.order(:name).pluck(:name) != SCORECARD_TYPES.order(:name).pluck(:name)
-  end
-
   def data_models_in_use
     scorecards.map(&:impact_card_data_model).uniq
   end

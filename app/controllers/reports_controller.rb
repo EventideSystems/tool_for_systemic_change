@@ -18,8 +18,8 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    authorize(:report, :transition_card_activity?)
+  def impact_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize(:report, :impact_card_activity?)
 
     @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_from]).beginning_of_day.utc
 
@@ -28,7 +28,7 @@ class ReportsController < ApplicationController
     @date_to = Date.parse(params[:date_to]).end_of_day
     @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
 
-    @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
+    @report = Reports::ImpactCardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
       format.xlsx do
@@ -71,7 +71,7 @@ class ReportsController < ApplicationController
     authorize(:report, :index?)
 
     @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
-    @report = Reports::TransitionCardStakeholders.new(@scorecard)
+    @report = Reports::ImpactCardStakeholders.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],

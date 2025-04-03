@@ -5,7 +5,7 @@ require 'csv'
 # rubocop:disable Metrics/ClassLength
 module Reports
   # This class is responsible for generating the Transition Card Activity report
-  class TransitionCardActivity < Base
+  class ImpactCardActivity < Base
     attr_accessor :scorecard, :date_from, :date_to
 
     def initialize(scorecard, date_from, date_to)
@@ -33,7 +33,7 @@ module Reports
           add_initiative_totals(sheet, header_1)
           add_characteristic_columns_header(sheet, header_1, wrap_text)
 
-          data = TransitionCardChecklistItems.execute(scorecard.id, date_from, date_to)
+          data = ImpactCardChecklistItems.execute(scorecard.id, date_from, date_to)
 
           current_focus_area_group_name = ''
           current_focus_area_name = ''
@@ -72,20 +72,12 @@ module Reports
       scorecard.impact_card_data_model.name
     end
 
-    def add_characteristic_columns_header(sheet, header_1, wrap_text) # rubocop:disable Metrics/MethodLength,Naming/VariableNumber
-      col_base_name =
-        case scorecard
-        when TransitionCard
-          scorecard.workspace.transition_card_characteristic_model_name.pluralize
-        when SustainableDevelopmentGoalAlignmentCard
-          scorecard.workspace.sdgs_alignment_card_characteristic_model_name.pluralize
-        end
-
+    def add_characteristic_columns_header(sheet, header_1, wrap_text) # rubocop:disable Naming/VariableNumber
       sheet.add_row do |row|
         row.add_cell(initiative_characteristics_title, style: header_1)
-        row.add_cell("#{col_base_name} beginning of period", height: 48, style: wrap_text)
+        row.add_cell("#{scorecard_model_name} beginning of period", height: 48, style: wrap_text)
         row.add_cell('Additions', height: 48, style: wrap_text)
-        row.add_cell("#{col_base_name} end of period", height: 48, style: wrap_text)
+        row.add_cell("#{scorecard_model_name} end of period", height: 48, style: wrap_text)
         row.add_cell('New Comments Saved assigned Actuals', height: 48, style: wrap_text)
       end
     end
@@ -159,7 +151,7 @@ module Reports
     end
 
     def initiative_totals
-      @initiative_totals ||= TotalTransitionCardInitiatives.execute(scorecard.id, date_from, date_to)
+      @initiative_totals ||= TotalImpactCardInitiatives.execute(scorecard.id, date_from, date_to)
     end
 
     def set_column_widths(sheet) # rubocop:disable Naming/AccessorMethodName

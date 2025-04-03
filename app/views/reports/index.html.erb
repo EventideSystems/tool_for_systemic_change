@@ -12,7 +12,7 @@
             description: 'This report provides details on the number of partnering organisations, the initiatives they are working on and their stakeholder type.'
           ) do |f|
         %>
-          <%= render partial: 'scorecard_selector', locals: { f: f } %>
+          <%= render partial: 'impact_card_selector', locals: { f: f } %>
         <% end %>
 
         <%- if policy(:report).subsystem_summary? %>
@@ -24,7 +24,7 @@
               description: 'This report shows a summary of the interactions between subsystems, organisations and initiatives.'
             ) do |f|
           %>
-            <%= render partial: 'scorecard_selector', locals: { f: f } %>
+            <%= render partial: 'impact_card_selector', locals: { f: f } %>
           <% end %>
         <% end %>
 
@@ -36,23 +36,23 @@
             description: 'This report shows the first time comments have been recorded across initiatives.'
           ) do |f|
         %>
-          <%= render partial: 'scorecard_selector', locals: { f: f } %>
+          <%= render partial: 'impact_card_selector', locals: { f: f } %>
           <div class="flex space-x-4">
             <%= custom_date_field_tag :date, nil, title: 'Filter by date' %>
             <%= custom_select_tag :status, options_for_select(options_for_comment_statuses), include_blank: false  %>
           </div>
         <% end %>
 
-        <%- if policy(:report).transition_card_activity? %>
+        <%- if policy(:report).impact_card_activity? %>
           <%=
             render(
               'form',
               name: activity_report_name,
-              path: transition_card_activity_reports_path(format: :xlsx),
+              path: impact_card_activity_reports_path(format: :xlsx),
               description: 'This report shows the addition and removal of characteristics across initiatives over a period of time.'
             ) do |f|
           %>
-            <%= render partial: 'scorecard_selector', locals: { f: f } %>
+            <%= render partial: 'impact_card_selector', locals: { f: f } %>
             <div class="flex space-x-4">
               <%= custom_date_field_tag :date_from, nil, title: 'Filter by start date' %>
               <%= custom_date_field_tag :date_to, nil, title: 'Filter by end date' %>

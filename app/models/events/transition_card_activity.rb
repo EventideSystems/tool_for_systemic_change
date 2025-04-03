@@ -16,6 +16,7 @@
 #  transition_card_id   :integer
 #
 module Events
+  # TODO: Review this and see if it can be removed
   class TransitionCardActivity < View
   end
 end

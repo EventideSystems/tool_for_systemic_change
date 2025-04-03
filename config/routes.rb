@@ -22,19 +22,6 @@ Rails.application.routes.draw do
     resources :wicked_problems
   end
 
-  namespace :organisations do
-    resources :imports, only: %i[new create update]
-  end
-
-  namespace :transition_card_comments do
-    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
-  end
-
-  # TODO: Fix this route once we have a proper transition_card_comments import
-  namespace :sustainable_development_goal_alignment_card_comments do
-    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
-  end
-
   devise_for :users, controllers: {
     invitations: 'invitations'
    }
@@ -113,8 +100,8 @@ Rails.application.routes.draw do
       post 'transition_card_stakeholders'
       post 'scorecard_comments'
       get 'scorecard_comments'
-      get 'transition_card_activity'
-      post 'transition_card_activity'
+      get 'impact_card_activity'
+      post 'impact_card_activity'
       get 'subsystem_summary'
       post 'subsystem_summary'
       get 'cross_workspace_percent_actual'

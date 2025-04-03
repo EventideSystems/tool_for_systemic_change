@@ -118,8 +118,8 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def load_three_tier_sdg_data_model # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    ActiveRecord::Base.transaction do
+  def load_three_tier_sdg_data_model # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
+    ActiveRecord::Base.transaction do # rubocop:disable Metrics/BlockLength
       data_model = \
         ImpactCardDataModel
         .where(system_model: true)
@@ -131,7 +131,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
 
       data_model.focus_area_groups.update_all(position: nil) # rubocop:disable Rails/SkipsModelValidations
 
-      sdg_goals.each do |sdg_goal|
+      sdg_goals.each do |sdg_goal| # rubocop:disable Metrics/BlockLength
         FocusAreaGroup.upsert( # rubocop:disable Rails/SkipsModelValidations
           {
             impact_card_data_model_id: data_model.id,
@@ -148,7 +148,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
 
         goal = data_model.focus_area_groups.find_by(code: sdg_goal['code'])
 
-        sdg_targets.select { |t| t['goal'] == sdg_goal['code'] }.each do |sdg_target|
+        sdg_targets.select { |t| t['goal'] == sdg_goal['code'] }.each do |sdg_target| # rubocop:disable Metrics/BlockLength
           FocusArea.upsert( # rubocop:disable Rails/SkipsModelValidations
             {
               focus_area_group_id: goal.id,

@@ -89,7 +89,7 @@ module Reports
     # NOTE: Not sure what Emily requires here. The following code restricts the
     #       number of partnering organisations and initiatives to those that are
     #       part of the subsystems.
-    #       The code above is the same as the code in Reports::TransitionCardStakeholders
+    #       The code above is the same as the code in Reports::ImpactCardStakeholders
     #
     # def total_partnering_organisations
     #   subsystem_tags_query.flat_map(&:initiatives).flat_map(&:organisations).uniq.count

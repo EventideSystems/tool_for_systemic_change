@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Query to fetch the total number of checklist items for a transition card, optionally given a date range
+# Query to fetch the total number of checklist items for a impact card, optionally given a date range
 # rubocop:disable Metrics/ClassLength
-class TransitionCardChecklistItems
+class ImpactCardChecklistItems
   class << self
     def execute(transition_card_id, date_from, date_to)
       fetch_transition_card_initiatives_totals(transition_card_id, date_from, date_to)

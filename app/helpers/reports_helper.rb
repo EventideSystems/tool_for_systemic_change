@@ -7,25 +7,25 @@ module ReportsHelper
   end
 
   def activity_report_name
-    multiple_scorecards_types? ? 'Activity Report' : "#{default_scorecard_type_name} Activity Report"
+    multiple_scorecards_types? ? 'Activity Report' : "#{default_data_model_name} Activity Report"
   end
 
   def comments_report_name
-    multiple_scorecards_types? ? 'Comments Report' : "#{default_scorecard_type_name} Comments Report"
+    multiple_scorecards_types? ? 'Comments Report' : "#{default_data_model_name} Comments Report"
   end
 
   def stakeholder_report_name
-    multiple_scorecards_types? ? 'Stakeholder Report' : "#{default_scorecard_type_name} Stakeholder Report"
+    multiple_scorecards_types? ? 'Stakeholder Report' : "#{default_data_model_name} Stakeholder Report"
   end
 
   def report_scorecard_label
-    multiple_scorecards_types? ? 'Select Card' : default_scorecard_type_name
+    multiple_scorecards_types? ? 'Select Card' : default_data_model_name
   end
 
   private
 
-  def default_scorecard_type_name
-    'Impact Card'
+  def default_data_model_name
+    current_workspace.data_models_in_use&.first&.name.presence || 'Impact Card'
   end
 
   def multiple_scorecards_types?

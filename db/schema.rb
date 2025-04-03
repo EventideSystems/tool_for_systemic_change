@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_075821) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -205,18 +205,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_075821) do
     t.datetime "updated_at", null: false
     t.index ["name", "workspace_id"], name: "index_impact_card_data_models_on_name_and_workspace_id", unique: true, where: "((workspace_id IS NOT NULL) AND (deleted_at IS NULL))"
     t.index ["workspace_id"], name: "index_impact_card_data_models_on_workspace_id"
-  end
-
-  create_table "imports", id: :serial, force: :cascade do |t|
-    t.integer "workspace_id"
-    t.integer "user_id"
-    t.text "import_data"
-    t.integer "status", default: 0
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "type"
-    t.index ["user_id"], name: "index_imports_on_user_id"
-    t.index ["workspace_id"], name: "index_imports_on_workspace_id"
   end
 
   create_table "initiatives", id: :serial, force: :cascade do |t|

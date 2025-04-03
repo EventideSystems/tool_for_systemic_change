@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # This class is responsible for generating the data required to render the total initiative counts for impact cards,
-# as well as the total initiative counts for the impact card's initiatives that were added and removed within a given
-# date range.
-class TotalTransitionCardInitiatives
+# as well as the total initiative counts for the impact card's initiatives that were added and removed within a
+# given date range.
+class TotalImpactCardInitiatives
   class << self
     def execute(transition_card_id, date_from, date_to)
       fetch_initiative_totals(transition_card_id, date_from, date_to)

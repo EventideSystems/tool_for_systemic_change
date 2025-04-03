@@ -67,7 +67,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_stakeholders
+  def impact_card_stakeholders
     authorize(:report, :index?)
 
     @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
@@ -75,7 +75,7 @@ class ReportsController < ApplicationController
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
-      filename: "#{transition_card_stakeholders_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
+      filename: "#{impact_card_stakeholders_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
     )
   end
 
@@ -145,7 +145,7 @@ class ReportsController < ApplicationController
     "#{report_filename_prefix(scorecard)}_Comments"
   end
 
-  def transition_card_stakeholders_base_filename(scorecard)
+  def impact_card_stakeholders_base_filename(scorecard)
     "#{report_filename_prefix(scorecard)}_Stakeholders"
   end
 

@@ -71,10 +71,11 @@ module Reports
     end
 
     def focus_area_names
-      workspaces
+      ImpactCardDataModel
+        .where(name: 'Transition Card')
+        .where(workspace_id: workspaces.pluck(:id))
         .first
         .focus_area_groups
-        .where(scorecard_type: 'TransitionCard')
         .flat_map(&:focus_areas)
         .sort_by { |focus_area| [focus_area.focus_area_group.position, focus_area.position] }
         .map(&:name)
@@ -97,10 +98,11 @@ module Reports
             inner join workspaces on scorecards.workspace_id = workspaces.id
             inner join characteristics on checklist_items.characteristic_id = characteristics.id
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
+            inner join impact_card_data_models on scorecards.impact_card_data_model_id = impact_card_data_models.id
             where workspaces.id in (#{workspaces.pluck(:id).join(',')})
             and initiatives.deleted_at is null
             and scorecards.deleted_at is null
-            and scorecards.type = 'TransitionCard'
+            and impact_card_data_models.name = 'Transition Card'
             and focus_areas.name = '#{focus_area_name}'
             group by workspaces.id, scorecards.id, initiatives.id, focus_areas.name
         )
@@ -108,7 +110,6 @@ module Reports
         select distinct on (workspace_name, impact_card_name, initiative_name, focus_area_name)
           workspaces.name as workspace_name,
           scorecards.name as impact_card_name,
-          scorecards.type as scorecard_type,
           initiatives.name as initiative_name,
           focus_areas.name as focus_area_name,
           raw_percent_actual_by_focus_area.total_characteristics,
@@ -119,6 +120,7 @@ module Reports
         inner join scorecards on initiatives.scorecard_id = scorecards.id
         inner join workspaces on scorecards.workspace_id = workspaces.id
         inner join focus_areas on raw_percent_actual_by_focus_area.focus_area_name = focus_areas.name
+        inner join impact_card_data_models on scorecards.impact_card_data_model_id = impact_card_data_models.id
         order by workspace_name, impact_card_name, initiative_name, focus_area_name
       SQL
 

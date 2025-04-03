@@ -48,7 +48,6 @@ Rails.application.routes.draw do
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
-    resources :imports, only: %i[new create update]
     resources :checklist_items do
       member do
         post 'update_comment'
@@ -97,7 +96,7 @@ Rails.application.routes.draw do
       post 'stakeholders'
       get 'scorecard_activity'
       post 'scorecard_activity'
-      post 'transition_card_stakeholders'
+      post 'impact_card_stakeholders'
       post 'scorecard_comments'
       get 'scorecard_comments'
       get 'impact_card_activity'
@@ -120,10 +119,6 @@ Rails.application.routes.draw do
   get 'cookie', to: 'home#cookie'
   get 'terms', to: 'home#terms'
   get 'data_retention', to: 'home#data_retention'
-
-  namespace :system do
-    resources :stakeholder_types
-  end
 
   root to: 'home#index'
 end

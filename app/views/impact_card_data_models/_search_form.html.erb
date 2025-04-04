@@ -25,18 +25,20 @@
       <%= f.label :current_workspace, 'Current workspace', class: 'text-black dark:text-white' %>
     </span>
 
-    <span class="ml-2">
-      <%= 
-        f.checkbox(
-          :other_workspaces,
-          class: "form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600",
-          checked: params[:other_workspaces] == 'true',
-          id: 'other_workspaces',
-          onchange: 'this.form.requestSubmit()'
-        )
-      %> 
-      <%= f.label :other_workspaces, 'Other workspaces', class: 'text-black dark:text-white' %>
-    </span>
+    <%- if current_user.workspaces.count > 1 %>
+      <span class="ml-2">
+        <%= 
+          f.checkbox(
+            :other_workspaces,
+            class: "form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600",
+            checked: params[:other_workspaces] == 'true',
+            id: 'other_workspaces',
+            onchange: 'this.form.requestSubmit()'
+          )
+        %> 
+        <%= f.label :other_workspaces, 'Other workspaces', class: 'text-black dark:text-white' %>
+      </span>
+    <% end %>
 
     <span class="ml-2">
       <%= 

@@ -18,9 +18,12 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
   end
 
   def down
-    Scorecard.update_all(impact_card_data_model_id: nil)
-    FocusAreaGroup.update_all(impact_card_data_model_id: nil)
-    ImpactCardDataModel.delete_all
+    Scorecard.with_deleted.update_all(impact_card_data_model_id: nil)
+    FocusAreaGroup.with_deleted.update_all(impact_card_data_model_id: nil)
+    ImpactCardDataModel.where(
+      name: ['Transition Card', 'Sustainable Development Goals'],
+      system_model: false
+    ).each(&:really_destroy!)
   end
 
   private

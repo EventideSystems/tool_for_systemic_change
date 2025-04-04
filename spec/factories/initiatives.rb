@@ -34,7 +34,7 @@
 #
 FactoryBot.define do
   factory :initiative do
-    scorecard
+    # scorecard
 
     name { FFaker::Name.name }
     description { FFaker::Lorem.paragraph }

@@ -43,38 +43,4 @@ module ApplicationHelper
   def definition_list_element(term, definition)
     render 'application/definition_list_element', term: term, definition: definition
   end
-
-  # def import_files_instructions_link
-  #   content_tag(:p, class: 'text-light-blue') do
-  #     content_tag(:strong) do
-  #       concat('For instructions on importing files go to ')
-  #       concat(
-  #         link_to(
-  #           'www.wickedlab.co/importing-initiatives-organisations',
-  #           'https://www.wickedlab.co/importing-initiatives-organisations',
-  #           target: :_blank,
-  #           style: 'text-decoration: underline;', rel: :noopener
-  #         )
-  #       )
-  #       concat('.')
-  #     end
-  #   end
-  # end
-
-  # def import_comments_instructions_link
-  #   content_tag(:p, class: 'text-light-blue') do
-  #     content_tag(:strong) do
-  #       concat('For instructions on importing files go to ')
-  #       concat(
-  #         link_to(
-  #           'www.wickedlab.co/importing-comments-transition-cards',
-  #           'https://www.wickedlab.co/importing-comments-transition-cards',
-  #           target: :_blank,
-  #           style: 'text-decoration: underline;', rel: :noopener
-  #         )
-  #       )
-  #       concat('.')
-  #     end
-  #   end
-  # end
 end

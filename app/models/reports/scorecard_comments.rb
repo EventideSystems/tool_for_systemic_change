@@ -46,10 +46,7 @@ module Reports
 
           data = generate_data
 
-          FocusAreaGroup.where( # rubocop:disable Metrics/BlockLength
-            scorecard_type: scorecard.type,
-            workspace: scorecard.workspace
-          ).order(:position).each do |focus_area_group|
+          scorecard.impact_card_data_model.focus_area_groups.order(:position).each do |focus_area_group| # rubocop:disable Metrics/BlockLength
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2]) # rubocop:disable Naming/VariableNumber
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|
@@ -94,12 +91,7 @@ module Reports
     private
 
     def scorecard_model_name
-      case scorecard
-      when TransitionCard
-        scorecard.workspace.transition_card_model_name
-      when SustainableDevelopmentGoalAlignmentCard
-        scorecard.workspace.sdgs_alignment_card_model_name
-      end
+      scorecard.impact_card_data_model.name
     end
 
     def add_header(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength

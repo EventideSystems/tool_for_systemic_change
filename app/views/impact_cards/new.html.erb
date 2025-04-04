@@ -9,7 +9,14 @@
           <div class="sm:col-span-4">
             <%= form.label :type, 'Data model' %>
             <div class="mt-2">
-              <%= form.select :type, [TransitionCard, SustainableDevelopmentGoalAlignmentCard].map { |type| [type.name.titleize, type.name] } %>
+              <%=
+                form.select(
+                  :impact_card_data_model_id,
+                  options_from_collection_for_select(current_workspace.impact_card_data_models, :id, :name),
+                  include_blank: 'Select a data model',
+                  required: true
+                )
+                %>
             </div>
           </div>
         <% end %>

@@ -66,41 +66,5 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     current_workspace.scorecards.count < current_workspace.max_scorecards
   end
 
-  def ecosystem_maps?
-    system_admin? || current_workspace&.solution_ecosystem_maps?
-  end
-
-  # TODO: Will need to check this against workspace option, per spec
-  def ecosystem_maps_organisations?
-    ecosystem_maps?
-  end
-
-  # TODO: Rename this to 'show_targets_network_map?'
-  def targets_network_maps?
-    record.is_a?(SustainableDevelopmentGoalAlignmentCard) &&
-      record.workspace.allow_sustainable_development_goal_alignment_cards?
-  end
-
-  def targets_network_map?
-    targets_network_maps?
-  end
-
-  def link_scorecards?
-    record.workspace.allow_transition_cards? && record.workspace.allow_sustainable_development_goal_alignment_cards?
-  end
-
-  def share_ecosystem_maps?
-    system_admin? || (current_workspace&.solution_ecosystem_maps? && current_workspace_admin?)
-  end
-
-  def share_thematic_network_maps?
-    system_admin? ||
-      (current_workspace&.allow_sustainable_development_goal_alignment_cards? && current_workspace_admin?)
-  end
-
-  def linked_initiatives?
-    show?
-  end
-
   alias add_initiative? edit?
 end

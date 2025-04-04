@@ -40,7 +40,7 @@ module ImpactCards
     # SMELL: Duplicate code, also found in impact_cards_controller.rb
     def fetch_legend_items(impact_card)
       FocusArea
-        .per_scorecard_type_for_workspace(impact_card.type, impact_card.workspace)
+        .per_data_model(impact_card.impact_card_data_model_id)
         .joins(:focus_area_group)
         .order('focus_area_groups.position, focus_areas.position')
         .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }

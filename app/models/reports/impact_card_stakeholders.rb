@@ -59,7 +59,7 @@ module Reports
     end
 
     def add_summary(sheet, styles)
-      sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: styles[:h1])
+      sheet.add_row(['Total Partnering Stakeholders', total_partnering_organisations], style: styles[:h1])
       sheet.add_row(
         ["Total #{scorecard_model_name} Initiatives", total_transition_card_initiatives],
         style: styles[:h1]
@@ -67,7 +67,7 @@ module Reports
     end
 
     def add_initiatives(sheet, styles)
-      sheet.add_row(['Initiatives', 'Total Organisations', 'Organisations'], style: styles[:h3])
+      sheet.add_row(['Initiatives', 'Total Stakeholders', 'Stakeholders'], style: styles[:h3])
       initiatives.each do |initiative|
         name = initiative.name
         organisations = organisations_for_initiative(initiative)
@@ -79,7 +79,7 @@ module Reports
     end
 
     def add_stakeholder_types(sheet, styles)
-      sheet.add_row(['Stakeholder Type', 'Total Organisations', 'Organisations'], style: styles[:h3])
+      sheet.add_row(['Stakeholder Type', 'Total Stakeholders', 'Stakeholders'], style: styles[:h3])
       stakeholder_types.each do |stakeholder_type|
         name = stakeholder_type.name
         organisations = organisations_for_stakeholder_type(stakeholder_type)
@@ -92,7 +92,7 @@ module Reports
 
     def add_title(sheet, styles)
       sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
+      sheet.add_row(['Problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
       sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end
 

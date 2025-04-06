@@ -5,11 +5,12 @@ require 'rails_helper'
 RSpec.describe(Workspaces::Copy, type: :service) do
   let(:workspace) { create(:workspace) }
   let(:new_name) { "#{workspace.name} (copy)" }
+  let(:impact_card_data_model) { create(:impact_card_data_model, workspace:) }
 
   before do
     # Create some stakeholder types and focus area groups for the workspace
     create_list(:stakeholder_type, 3, workspace:)
-    create_list(:focus_area_group, 2, workspace:)
+    create_list(:focus_area_group, 2, impact_card_data_model:)
   end
 
   describe '.call' do
@@ -30,12 +31,12 @@ RSpec.describe(Workspaces::Copy, type: :service) do
       end
     end
 
-    it 'copies focus area groups to the new workspace' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+    it 'copies impact card data models to the new workspace' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
       execute_call
       new_workspace = Workspace.last
-      expect(new_workspace.focus_area_groups.count).to(eq(workspace.focus_area_groups.count))
-      new_workspace.focus_area_groups.each do |new_focus_area_group|
-        expect(workspace.focus_area_groups.pluck(:name)).to(include(new_focus_area_group.name))
+      expect(new_workspace.impact_card_data_models.count).to(eq(workspace.impact_card_data_models.count))
+      new_workspace.impact_card_data_models.each do |new_impact_card_data_model|
+        expect(workspace.impact_card_data_models.pluck(:name)).to(include(new_impact_card_data_model.name))
       end
     end
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Controller for FocusAreas
+# NOTE: This controller is no longer used in the application.
 class FocusAreasController < ApplicationController
   include VerifyPolicies
 
@@ -76,7 +77,7 @@ class FocusAreasController < ApplicationController
         :description,
         :position,
         :icon_name,
-        :actual_color,
+        :color,
         :planned_color,
         :focus_area_group_id
       )

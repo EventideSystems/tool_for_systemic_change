@@ -43,7 +43,7 @@ module ImpactCards
         .per_data_model(impact_card.impact_card_data_model_id)
         .joins(:focus_area_group)
         .order('focus_area_groups.position, focus_areas.position')
-        .map { |focus_area| { label: focus_area.name, color: focus_area.actual_color } }
+        .map { |focus_area| { label: focus_area.name, color: focus_area.color } }
     end
   end
 end

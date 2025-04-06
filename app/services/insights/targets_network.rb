@@ -90,7 +90,7 @@ module Insights
         {
           id: "focus-area-#{node.id}",
           label: node.short_name,
-          color: node.actual_color,
+          color: node.color,
           stakeholders:,
           initiatives:,
           description:,
@@ -122,7 +122,7 @@ module Insights
         {
           id: "characteristic-#{node.id}",
           label: node.short_name,
-          color: node.focus_area.actual_color,
+          color: node.focus_area.color,
           characteristic_id: node.id,
           stakeholders:,
           initiatives:,

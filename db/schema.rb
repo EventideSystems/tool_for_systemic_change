@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_134629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -82,6 +82,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "code"
     t.string "short_name"
+    t.string "color"
     t.index ["deleted_at"], name: "index_characteristics_on_deleted_at"
     t.index ["focus_area_id", "code"], name: "index_characteristics_on_focus_area_id_and_code", unique: true
     t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id"
@@ -159,17 +160,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "deprecated_scorecard_type", default: "TransitionCard"
-    t.bigint "workspace_id"
+    t.bigint "deprecated_workspace_id"
     t.bigint "impact_card_data_model_id"
     t.string "code"
     t.string "short_name"
     t.string "color"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
     t.index ["deprecated_scorecard_type"], name: "index_focus_area_groups_on_deprecated_scorecard_type"
+    t.index ["deprecated_workspace_id"], name: "index_focus_area_groups_on_deprecated_workspace_id"
     t.index ["impact_card_data_model_id", "code"], name: "index_focus_area_groups_on_impact_card_data_model_id_and_code", unique: true
     t.index ["impact_card_data_model_id"], name: "index_focus_area_groups_on_impact_card_data_model_id"
     t.index ["position"], name: "index_focus_area_groups_on_position"
-    t.index ["workspace_id"], name: "index_focus_area_groups_on_workspace_id"
   end
 
   create_table "focus_areas", id: :serial, force: :cascade do |t|
@@ -181,8 +182,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
     t.integer "position"
     t.datetime "deleted_at", precision: nil
     t.string "icon_name", default: ""
-    t.string "actual_color"
-    t.string "planned_color"
+    t.string "color"
     t.string "code"
     t.string "short_name"
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
@@ -203,6 +203,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
     t.jsonb "metadata", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "author"
+    t.string "license"
     t.index ["name", "workspace_id"], name: "index_impact_card_data_models_on_name_and_workspace_id", unique: true, where: "((workspace_id IS NOT NULL) AND (deleted_at IS NULL))"
     t.index ["workspace_id"], name: "index_impact_card_data_models_on_workspace_id"
   end
@@ -425,7 +427,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
   add_foreign_key "checklist_items", "characteristics", column: "previous_characteristic_id"
   add_foreign_key "checklist_items", "users"
   add_foreign_key "focus_area_groups", "impact_card_data_models"
-  add_foreign_key "focus_area_groups", "workspaces"
+  add_foreign_key "focus_area_groups", "workspaces", column: "deprecated_workspace_id"
   add_foreign_key "impact_card_data_models", "workspaces"
   add_foreign_key "scorecards", "impact_card_data_models"
 
@@ -636,11 +638,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_084735) do
       characteristics.deleted_at,
       characteristics.created_at,
       characteristics.updated_at,
+      characteristics.code,
+      characteristics.short_name,
+      characteristics.color,
       focus_area_groups.impact_card_data_model_id,
-      focus_area_groups.workspace_id
-     FROM ((characteristics
+      impact_card_data_models.workspace_id
+     FROM (((characteristics
        JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
        JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+       JOIN impact_card_data_models ON ((focus_area_groups.impact_card_data_model_id = impact_card_data_models.id)))
     WHERE ((characteristics.deleted_at IS NULL) AND (focus_areas.deleted_at IS NULL) AND (focus_area_groups.deleted_at IS NULL))
     ORDER BY focus_areas."position", characteristics."position";
   SQL

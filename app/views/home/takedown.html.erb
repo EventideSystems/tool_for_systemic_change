@@ -1,0 +1,91 @@
+<div class="relative isolate overflow-hidden">
+  <%= render 'top_links' %>
+  <div class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]" aria-hidden="true">
+    <div class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-20" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)"></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-6 pb-16 pt-8 sm:pb-16 lg:px-8 lg:pt-40 flex flex-col">
+    <div class="flex items-center gap-x-6 ml-8 mb-8">
+      <%= image_tag 'logo-small.png', class: 'h-16 w-auto', alt: "Logo for the 'Tool for Systemic Change'" %>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">Takedown Policy</h1>
+    </div>
+    <div class="text-white bg-teal-900 rounded-lg p-8 w-full">
+      <h2 class="text-3x1 font-bold leading-10">Purpose</h2>
+      <p class="my-4 text-gray-300">        
+        This policy outlines the procedures for handling requests to remove or restrict access to content 
+        hosted on our platform. We are committed to complying with Australian laws, including copyright, 
+        privacy, and defamation legislation, while balancing the principles of freedom of expression and 
+        equitable access to information.
+      </p>
+      <h2 class="text-3x1 font-bold leading-10">Scope</h2>
+      <p class="my-4 text-gray-300">        
+        This policy applies to all content hosted on our platform, including user-generated content and 
+        materials provided by third parties.
+      </p>
+      <h2 class="text-3x1 font-bold leading-10">Grounds for Takedown</h2>
+      <p class="my-4 text-gray-300">        
+        Content may be subject to takedown or access restrictions under the following circumstances:
+        <ul class="list-disc list-inside mb-4">
+          <li>Breach of copyright laws, as outlined in the Australian Copyright Act 1968.</li>
+          <li>Violation of privacy laws, including the Privacy Act 1988.</li>
+          <li>Defamatory content, as defined under Australian defamation laws.</li>
+          <li>
+            Content deemed objectionable or harmful under Australian law, such as material that incites 
+            violence or hate speech.
+          </li>
+        </ul>
+      </p>
+      <h2 class="text-3x1 font-bold leading-10">Procedure for Takedown Requests</h2>
+      <p class="my-4 text-gray-300">        
+        <span class="bold">1.	Submission:</span> Requests must be submitted in writing via our 
+          <%= landing_pages_link_to 'designated contact form', takedown_contacts_path %> or email. The 
+          request should include:
+        <ul class="list-disc list-inside mb-4">
+          <li>
+            Identification of the content in question (<span class="italic">e.g.</span> URL or description).
+          </li>
+          <li>Reason for the takedown request, citing relevant legal grounds.</li>
+          <li>Contact information of the requestor.</li>
+        </ul>
+      </p>
+      <p class="my-4 text-gray-300">        
+        <span class="bold">2.	Review:</span> Upon receiving a request, we will:
+        <ul class="list-disc list-inside mb-4">
+          <li>Verify the validity of the claim.</li>
+          <li>Assess the content against applicable laws and our terms of service.</li>
+        </ul>
+      </p>
+
+      <p class="my-4 text-gray-300">        
+        <span class="bold">3.	Action:</span> If the request is deemed valid:
+        <ul class="list-disc list-inside mb-4">
+          <li>The content will be removed or access restricted promptly.</li>
+          <li>The affected user will be notified and given an opportunity to contest the decision.</li>
+        </ul>
+      </p>
+
+      <p class="my-4 text-gray-300">        
+        <span class="bold">4.	Appeals:</span> Users may appeal takedown decisions by providing additional 
+        information or evidence supporting their case.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">Transparency</h2>
+      <p class="my-4 text-gray-300">        
+        We will maintain a public record of takedown requests, excluding sensitive information, to ensure 
+        transparency and accountability.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">Periodic Review</h2>
+      <p class="my-4 text-gray-300">        
+        Content that has been removed or restricted will be periodically reviewed to determine whether it can 
+        be reinstated.
+      </p>
+
+      <h2 class="text-3x1 font-bold leading-10">Contact Us</h2>
+      <p class="my-4 text-gray-300">        
+        For takedown requests, please contact us at 
+        <%= landing_pages_link_to 'takedown@toolforsystemicchange.com', 'mailto:takedown@toolforsystemicchange.com' %> 
+        or via the <%= landing_pages_link_to 'Takedown Request Form', takedown_contacts_path %>.
+      </p>
+    </div>
+  </div>
+</div>

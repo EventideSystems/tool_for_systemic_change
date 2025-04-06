@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :checklist_items, only: %i[show edit update]
-  resources :impact_card_data_models, only: %i[index show] 
+  resources :impact_card_data_models, only: %i[index show edit update] do
+    member do
+      post 'copy_to_current_workspace'
+    end
+  end
 
   resources :impact_cards do
     resources :sharing, only: [:index], controller: 'impact_cards/sharing'
@@ -42,6 +46,7 @@ Rails.application.routes.draw do
     collection do
       get 'privacy'
       get 'terms'
+      get 'takedown'
     end
   end
 
@@ -119,6 +124,7 @@ Rails.application.routes.draw do
   get 'cookie', to: 'home#cookie'
   get 'terms', to: 'home#terms'
   get 'data_retention', to: 'home#data_retention'
+  get 'takedown', to: 'home#takedown'
 
   root to: 'home#index'
 end

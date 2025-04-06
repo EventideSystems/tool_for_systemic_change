@@ -19,7 +19,7 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
   end
   let(:user) { create(:user) }
 
-  let(:focus_area_groups) { create_list(:focus_area_group, 2, workspace: workspace, impact_card_data_model:) }
+  let(:focus_area_groups) { create_list(:focus_area_group, 2, impact_card_data_model:) }
   let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
   let(:characteristics) { create_list(:characteristic, 2, focus_area: focus_areas.first) }
 
@@ -38,7 +38,6 @@ RSpec.describe ImpactCards::DeepCopy, type: :service do # rubocop:disable RSpec/
 
     focus_area_groups.each do |focus_area_group|
       focus_area_group.dup.tap do |new_group|
-        new_group.workspace = target_workspace
         new_group.impact_card_data_model = target_impact_card_data_model
         new_group.save!
 

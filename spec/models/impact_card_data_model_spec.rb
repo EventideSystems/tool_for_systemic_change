@@ -6,9 +6,11 @@
 # Table name: impact_card_data_models
 #
 #  id           :bigint           not null, primary key
+#  author       :string
 #  color        :string           default("#0d9488"), not null
 #  deleted_at   :datetime
 #  description  :string
+#  license      :string
 #  metadata     :jsonb
 #  name         :string           not null
 #  short_name   :string

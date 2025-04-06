@@ -42,13 +42,13 @@ module Reports
     def add_title(sheet, styles)
       sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name,
                                                                          style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
+      sheet.add_row(['Problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
       sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end
 
     def add_summary(sheet, styles)
       sheet.add_row(['Total Subsystems', total_subsystems], style: styles[:h1])
-      sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: styles[:h1])
+      sheet.add_row(['Total Partnering Stakeholders', total_partnering_organisations], style: styles[:h1])
       sheet.add_row(
         ["Total #{scorecard_model_name} Initiatives", total_transition_card_initiatives],
         style: styles[:h1]
@@ -70,7 +70,7 @@ module Reports
       max_organisations = organisations_per_subsystem.values.map(&:count).max || 0
 
       sheet.add_row(
-        ['Subsystem ', 'Total Organisations'] + Array.new(max_organisations, 'Organisations'),
+        ['Subsystem ', 'Total Stakeholders'] + Array.new(max_organisations, 'Stakeholders'),
         style: styles[:h3]
       )
       organisations_per_subsystem.each do |subsystem, organisations|

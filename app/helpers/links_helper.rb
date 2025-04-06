@@ -9,6 +9,7 @@ module LinksHelper
   SECONDARY_CLASS = 'rounded-md border border-gray-500 bg-white dark:bg-zinc-950 px-3 py-2 text-sm font-semibold text-zinc-950 dark:text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500 whitespace-nowrap'
   EXTERNAL_LINK_CLASS = 'text-blue-500 hover:text-blue-700 underline'
   LANDING_PAGES_LINK_CLASS = 'text-orange-300 hover:text-orange-500 dark:text-orange-300 dark:hover:text-orange-500'
+  LOGIN_PAGES_LINK_CLASS = 'text-teal-500 hover:text-teal-600 dark:text-teal-500 dark:hover:text-teal-600'
   # rubocop:enable Layout/LineLength
 
   def button_to_primary(text, url, options = {})
@@ -38,6 +39,15 @@ module LinksHelper
 
   def landing_pages_link_to(text, url, options = {})
     link_to(text, url, class: merge_tailwind_class(LANDING_PAGES_LINK_CLASS, options[:class]))
+  end
+
+  def login_pages_link_to(text, url, options = {})
+    link_to(
+      text, url, class: merge_tailwind_class(
+        LOGIN_PAGES_LINK_CLASS,
+        options[:class]
+      ), target: '_blank', rel: 'noopener'
+    )
   end
 
   private

@@ -37,7 +37,7 @@ module ImpactCardsHelper
   def choices_for_statuses(statuses, impact_card) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     focus_area_groups = impact_card.impact_card_data_model.focus_area_groups
     focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:impact_card_data_model_id, :position)
-    classic_mode_colors = focus_areas.map(&:actual_color).values_at(0, focus_areas.length / 2, -1).uniq
+    classic_mode_colors = focus_areas.map(&:color).values_at(0, focus_areas.length / 2, -1).uniq
 
     statuses.map do |status|
       if impact_card.grid_mode.to_sym == :classic
@@ -78,7 +78,7 @@ module ImpactCardsHelper
 
     any_actual = result.values_at(*characteristic_ids).any? { |checklist_item| checklist_item[:status] == 'actual' }
 
-    any_actual ? "background-color: #{focus_area.actual_color}" : ''
+    any_actual ? "background-color: #{focus_area.color}" : ''
   end
 
   def select_impact_card_tag(name, options)

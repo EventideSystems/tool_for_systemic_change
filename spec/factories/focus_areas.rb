@@ -5,13 +5,12 @@
 # Table name: focus_areas
 #
 #  id                  :integer          not null, primary key
-#  actual_color        :string
 #  code                :string
+#  color               :string
 #  deleted_at          :datetime
 #  description         :string
 #  icon_name           :string           default("")
 #  name                :string
-#  planned_color       :string
 #  position            :integer
 #  short_name          :string
 #  created_at          :datetime         not null

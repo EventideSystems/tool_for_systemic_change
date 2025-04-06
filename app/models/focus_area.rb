@@ -5,13 +5,12 @@
 # Table name: focus_areas
 #
 #  id                  :integer          not null, primary key
-#  actual_color        :string
 #  code                :string
+#  color               :string
 #  deleted_at          :datetime
 #  description         :string
 #  icon_name           :string           default("")
 #  name                :string
-#  planned_color       :string
 #  position            :integer
 #  short_name          :string
 #  created_at          :datetime         not null
@@ -26,6 +25,8 @@
 #  index_focus_areas_on_position                      (position)
 #
 class FocusArea < ApplicationRecord
+  include RandomColorAttribute
+
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
   scope :ordered_by_group_position, lambda {
@@ -40,8 +41,6 @@ class FocusArea < ApplicationRecord
   validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   delegate :scorecard_type, :workspace, to: :focus_area_group
-
-  alias_attribute :color, :actual_color
 
   scope :per_data_model, lambda { |impact_card_data_model_id|
     joins(:focus_area_group)

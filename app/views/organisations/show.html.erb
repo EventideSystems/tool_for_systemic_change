@@ -6,7 +6,7 @@
       <%= page_header_tag 'Stakeholder Details' %>
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
-        <%= render partial: 'resource_summary', locals: { name: @organisation.name, background_color: 'bg-teal-500' } %>
+          <%= render partial: 'resource_summary', locals: { name: @organisation.name, background_color: 'bg-teal-500' } %>
           <div class="space-y-1.5">
             <div class="text-base/6 font-semibold dark:text-white">
               <%= @organisation.name %>
@@ -24,7 +24,7 @@
         <div class="relative">
           <%- if policy(@organisation).edit? %>
             <div class="flex justify-end items-center mb-4">
-              <%= link_to_primary 'Edit Stakeholder', edit_organisation_path(@organisation), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to_primary 'Edit Stakeholder', edit_organisation_path(@organisation) %>
             </div>
           <%- end %>
         </div>

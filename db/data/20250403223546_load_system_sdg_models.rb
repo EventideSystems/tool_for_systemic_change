@@ -2,11 +2,19 @@
 
 class LoadSystemSdgModels < ActiveRecord::Migration[8.0]
   def up
-    SdgDataModelLoader.new.call
+    [
+      'sustainable_development_goals_and_targets.yml',
+      'sustainable_development_goals_targets_and_indicators.yml'
+    ].each do |filename|
+      ImpactCardDataModels::Import.call(filename: Rails.root.join('db/data_models', filename))
+    end
   end
 
   def down
-    [SdgDataModelLoader::TWO_TIER_SDG_DATA_MODEL_NAME, SdgDataModelLoader::THREE_TIER_SDG_DATA_MODEL_NAME].each do |model_name|
+    [
+      'Sustainable Development Goals and Targets',
+      'Sustainable Development Goals, Targets and Indicators'
+    ].each do |model_name|
       ImpactCardDataModel.where(system_model: true).find_by(name: model_name)&.really_destroy!
     end
   end

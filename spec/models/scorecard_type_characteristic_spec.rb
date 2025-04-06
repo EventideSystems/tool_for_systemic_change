@@ -5,10 +5,13 @@
 # Table name: scorecard_type_characteristics
 #
 #  id                        :integer
+#  code                      :string
+#  color                     :string
 #  deleted_at                :datetime
 #  description               :string
 #  name                      :string
 #  position                  :integer
+#  short_name                :string
 #  created_at                :datetime
 #  updated_at                :datetime
 #  focus_area_id             :integer

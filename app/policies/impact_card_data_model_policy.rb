@@ -33,4 +33,12 @@ class ImpactCardDataModelPolicy < ApplicationPolicy
   def destroy?
     system_admin? || (workspace_admin?(current_workspace) && record_in_scope? && current_workspace_not_expired?)
   end
+
+  def copy_to_current_workspace?
+    system_admin? || (
+      workspace_admin?(current_workspace) &&
+      workspace_admin?(record.workspace) &&
+      current_workspace_not_expired?
+    )
+  end
 end

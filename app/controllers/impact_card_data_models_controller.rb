@@ -31,16 +31,27 @@ class ImpactCardDataModelsController < ApplicationController
         render 'impact_card_data_models/index', formats: [:css],
                                                 locals: { impact_card_data_models: @impact_card_data_models }
       end
-      # format.csv do
-      #   all_impact_card_data_models = current_workspace.impact_card_data_models.order('lower(name)')
-      #   send_data(
-      #     impact_card_data_models_to_csv(all_impact_card_data_models), filename: "#{export_filename}.csv"
-      #   )
-      # end
     end
   end
 
   def show
+    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
+    authorize @impact_card_data_model
+  end
+
+  def copy_to_current_workspace
+    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
+    authorize @impact_card_data_model
+
+    new_impact_card_data_model = ImpactCardDataModels::CopyToWorkspace.call(
+      data_model: @impact_card_data_model, workspace: current_workspace
+    )
+
+    redirect_to impact_card_data_model_path(new_impact_card_data_model),
+                notice: 'Data Model copied to current workspace'
+  end
+
+  def edit
     @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
     authorize @impact_card_data_model
   end

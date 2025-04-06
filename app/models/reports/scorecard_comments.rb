@@ -160,7 +160,8 @@ module Reports
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
-          where focus_area_groups.workspace_id = #{scorecard.workspace_id}
+          inner join impact_card_data_models on impact_card_data_models.id = focus_area_groups.impact_card_data_model_id
+          where impact_card_data_models.workspace_id = #{scorecard.workspace_id}
           order by focus_area_groups.position, focus_areas.position, characteristics.id
         )
 

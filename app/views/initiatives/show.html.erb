@@ -3,11 +3,10 @@
 <div class="mx-auto max-w-6xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="w-full">
-      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Initiative Details</h1>
-
+      <%= page_header_tag 'Initiative Details' %>
       <div class="flex justify-between items-start mt-4">
         <div class="flex gap-6 py-6">
-        <%= render partial: 'resource_summary', locals: { name: @initiative.name, background_color: 'bg-sky-600' } %>
+          <%= render partial: 'resource_summary', locals: { name: @initiative.name, background_color: 'bg-sky-600' } %>
           <div class="space-y-1.5">
             <div class="text-base/6 font-semibold dark:text-white">
               <%= @initiative.name %>

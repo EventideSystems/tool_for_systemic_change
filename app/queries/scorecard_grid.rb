@@ -47,7 +47,7 @@ class ScorecardGrid
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
-              'focus_area_color', focus_areas.actual_color,
+              'focus_area_color', focus_areas.color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -61,6 +61,7 @@ class ScorecardGrid
           inner join initiatives on checklist_items.initiative_id = initiatives.id
           inner join focus_areas on characteristics.focus_area_id = focus_areas.id
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+          inner join impact_card_data_models on focus_area_groups.impact_card_data_model_id = impact_card_data_models.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           left join subsystem_tags
@@ -69,7 +70,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > now())
-          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
+          and impact_card_data_models.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -80,7 +81,7 @@ class ScorecardGrid
             checklist_items.id,
             focus_area_groups.id,
             focus_areas.name,
-            focus_areas.actual_color
+            focus_areas.color
           order by initiative
           $$,
           $$
@@ -110,7 +111,7 @@ class ScorecardGrid
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
-              'focus_area_color', focus_areas.actual_color,
+              'focus_area_color', focus_areas.color,
               'focus_area_group_id', focus_area_groups.id,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
@@ -129,6 +130,7 @@ class ScorecardGrid
           inner join initiatives on checklist_items.initiative_id = initiatives.id
           inner join focus_areas on characteristics.focus_area_id = focus_areas.id
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+          inner join impact_card_data_models on focus_area_groups.impact_card_data_model_id = impact_card_data_models.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           left join subsystem_tags
@@ -149,7 +151,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
-          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
+          and impact_card_data_models.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -160,7 +162,7 @@ class ScorecardGrid
             checklist_items.id,
             focus_area_groups.id,
             focus_areas.name,
-            focus_areas.actual_color,
+            focus_areas.color,
             changes.comment,
             checklist_items_at_snap_shot.comment,
             changes.ending_status,
@@ -184,8 +186,9 @@ class ScorecardGrid
             from characteristics
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+            inner join impact_card_data_models on focus_area_groups.impact_card_data_model_id = impact_card_data_models.id
             where focus_area_groups.impact_card_data_model_id = '#{impact_card_data_model_id}'
-            and focus_area_groups.workspace_id = #{workspace.id}
+            and impact_card_data_models.workspace_id = #{workspace.id}
             and focus_area_groups.deleted_at is null
             and focus_areas.deleted_at is null
             and characteristics.deleted_at is null

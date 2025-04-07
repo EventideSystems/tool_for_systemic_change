@@ -20,28 +20,6 @@
           </div>
         </div>
         <div class="relative">
-          <div class="flex justify-end items-center mb-4 space-x-2">
-            <%- if policy(@impact_card_data_model).copy_to_current_workspace? %>
-              <div class="flex justify-end items-center mb-4">
-                <%= 
-                  button_to_primary(
-                    'Copy to Workspace', 
-                    copy_to_current_workspace_impact_card_data_model_path(@impact_card_data_model), 
-                    method: :post,
-                    data: {
-                      turbo: false
-                    },
-                    title: 'Copy this data model to your current workspace'
-                  )
-                %>
-              </div>
-            <%- end %>
-            <%- if policy(@impact_card_data_model).edit? %>
-              <div class="flex justify-end items-center mb-4">
-                <%= link_to_primary 'Edit Data Model', edit_impact_card_data_model_path(@impact_card_data_model) %>
-              </div>
-            <%- end %>
-          </div>
         </div>
       </div>
     </div>
@@ -50,35 +28,19 @@
   <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
     <% @impact_card_data_model.focus_area_groups.each do |focus_area_group| %>
       <div class="mb-6">
-        <h2 class="text-2xl font-bold text-zinc-950 dark:text-white mb-4" title="<%= focus_area_group.name %>">
-          <%- if focus_area_group.color.present? %>
-            <span class="w-2 mr-1" style="background-color: <%= focus_area_group.color %>">&nbsp;</span>
-          <% end %>
-          <%= display_name(focus_area_group) %>
-        </h2>
-        <%- if focus_area_group.description.present? %>        
-          <div class="flex text-zinc-500 mb-4">
-            <%= focus_area_group.description %>
-          </div>
+        <%= turbo_frame_tag dom_id(focus_area_group) do %>
+          <%= render '/goals/link', goal: focus_area_group %>
         <% end %>
         <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
           <div class="mb-4 ml-3">
-            <h3 class="text-xl font-semibold text-zinc-950 dark:text-white mb-2" title="<%= focus_area.name %>">
-              <%- if focus_area.color.present? %>
-                <span class="w-2 mr-1" style="background-color: <%= focus_area.color %>">&nbsp;</span>
-              <% end %>
-              <%= display_name(focus_area) %>
-            </h3>
-            <%- if focus_area.description.present? %>        
-              <div class="flex text-zinc-500 mb-4">
-                <%= focus_area.description %>
-              </div>
+            <%= turbo_frame_tag dom_id(focus_area) do %>
+              <%= render '/targets/link', target: focus_area %>
             <% end %>
-            <ul class="list-disc pl-4">
+            <ul class="list-disc pl-8">
               <% focus_area.characteristics.each do |characteristic| %>
-                <li class="mt-1 text-zinc-950 dark:text-white" title="<%= characteristic.name %>">
-                  <%= display_name(characteristic) %>
-                </li>
+                <%= turbo_frame_tag dom_id(characteristic) do %>
+                  <%= render '/indicators/link', indicator: characteristic %>
+                <% end %>
               <% end %>
             </ul>
           </div>

@@ -1,0 +1,9 @@
+<li class="mt-1 text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800" title="<%= indicator.name %>">
+  <%= 
+    link_to(
+      edit_indicator_path(indicator), 
+      data: { turbo_frame: dom_id(indicator) }
+    ) do %>
+      <%= display_name(indicator) %>
+  <% end %>
+</li>

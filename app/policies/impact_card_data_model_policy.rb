@@ -37,7 +37,7 @@ class ImpactCardDataModelPolicy < ApplicationPolicy
   def copy_to_current_workspace?
     system_admin? || (
       workspace_admin?(current_workspace) &&
-      workspace_admin?(record.workspace) &&
+      (workspace_admin?(record.workspace) || record.system_model) &&
       current_workspace_not_expired?
     )
   end

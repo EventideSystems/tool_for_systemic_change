@@ -39,6 +39,8 @@ class GoalsController < ApplicationController
       :name,
       :position,
       :short_name
-    ).compact_blank
+    ).tap do |whitelisted|
+      whitelisted.delete(:code) if whitelisted[:code].blank?
+    end
   end
 end

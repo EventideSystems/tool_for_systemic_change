@@ -26,6 +26,29 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "95f87b10a48671f96e0c5f467939b6ec97c1d07771b644449a8ebb5dc558794c",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/reports/scorecard_comments.rb",
+      "line": 185,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"with comments_with_timestamp as (\\n  select\\n    characteristics.id as characteristic_id,\\n    initiatives.id as initiative_id,\\n    json_strip_nulls(\\n      json_agg(\\n        json_build_object(\\n          'comment', checklist_item_changes.comment,\\n          'date', checklist_item_changes.created_at\\n        )\\n      )\\n    ) AS comments,\\n    count(checklist_item_changes.comment) as comment_count\\n  from checklist_item_changes\\n  inner join checklist_items on checklist_items.id = checklist_item_changes.checklist_item_id\\n  inner join characteristics on characteristics.id = checklist_items.characteristic_id\\n  inner join initiatives on initiatives.id = checklist_items.initiative_id\\n  left join lateral (\\n    select\\n      distinct on (previous_changes.checklist_item_id)\\n      previous_changes.id,\\n      previous_changes.comment\\n    from checklist_item_changes previous_changes\\n      where previous_changes.checklist_item_id = checklist_item_changes.checklist_item_id\\n      and previous_changes.created_at < checklist_item_changes.created_at\\n      order by previous_changes.checklist_item_id, previous_changes.created_at desc\\n  ) previous_changes on true\\n  where checklist_item_changes.comment <> coalesce(previous_changes.comment, '')\\n  and checklist_item_changes.created_at <= '#{date}'\\n  and checklist_item_changes.ending_status = '#{status}'\\n  and initiatives.scorecard_id = #{scorecard.id}\\n  and (checklist_item_changes.created_at < initiatives.archived_on or initiatives.archived_on is null)\\n  group by characteristics.id, initiatives.id\\n),\\n\\ncharacteristics_ordered_by_position as (\\n  select\\n    characteristics.*\\n  from characteristics\\n  inner join focus_areas on focus_areas.id = characteristics.focus_area_id\\n  inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id\\n  inner join impact_card_data_models on impact_card_data_models.id = focus_area_groups.impact_card_data_model_id\\n  where impact_card_data_models.workspace_id = #{scorecard.workspace_id}\\n  order by focus_area_groups.position, focus_areas.position, characteristics.id\\n)\\n\\nselect\\n  characteristics.id as characteristic_id,\\n  json_strip_nulls(\\n    json_agg(\\n      json_build_object(\\n        'initiative_id', initiative_id,\\n        'comments', comments,\\n        'comment_count', comment_count\\n      )\\n    )\\n  ) as comments,\\n  count(initiative_id) as initiative_count\\nfrom characteristics\\ninner join comments_with_timestamp on comments_with_timestamp.characteristic_id = characteristics.id\\ngroup by characteristics.id\\n\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Reports::ScorecardComments",
+        "method": "generate_data"
+      },
+      "user_input": "date",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "bb359411a6abbab81dcf8e7c00ca889aa532e8b9ad23c3f2f9d1f349d270461f",
       "check_name": "SQL",
       "message": "Possible SQL injection",
@@ -63,29 +86,6 @@
         "method": "generate_data"
       },
       "user_input": "workspaces.pluck(:id).join(\",\")",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "e79d72af205c001ec53027fb5e8a222219ef244301646a132c3fe9f5a5ea7b0a",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/reports/scorecard_comments.rb",
-      "line": 184,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveRecord::Base.connection.execute(\"with comments_with_timestamp as (\\n  select\\n    characteristics.id as characteristic_id,\\n    initiatives.id as initiative_id,\\n    json_strip_nulls(\\n      json_agg(\\n        json_build_object(\\n          'comment', checklist_item_changes.comment,\\n          'date', checklist_item_changes.created_at\\n        )\\n      )\\n    ) AS comments,\\n    count(checklist_item_changes.comment) as comment_count\\n  from checklist_item_changes\\n  inner join checklist_items on checklist_items.id = checklist_item_changes.checklist_item_id\\n  inner join characteristics on characteristics.id = checklist_items.characteristic_id\\n  inner join initiatives on initiatives.id = checklist_items.initiative_id\\n  left join lateral (\\n    select\\n      distinct on (previous_changes.checklist_item_id)\\n      previous_changes.id,\\n      previous_changes.comment\\n    from checklist_item_changes previous_changes\\n      where previous_changes.checklist_item_id = checklist_item_changes.checklist_item_id\\n      and previous_changes.created_at < checklist_item_changes.created_at\\n      order by previous_changes.checklist_item_id, previous_changes.created_at desc\\n  ) previous_changes on true\\n  where checklist_item_changes.comment <> coalesce(previous_changes.comment, '')\\n  and checklist_item_changes.created_at <= '#{date}'\\n  and checklist_item_changes.ending_status = '#{status}'\\n  and initiatives.scorecard_id = #{scorecard.id}\\n  and (checklist_item_changes.created_at < initiatives.archived_on or initiatives.archived_on is null)\\n  group by characteristics.id, initiatives.id\\n),\\n\\ncharacteristics_ordered_by_position as (\\n  select\\n    characteristics.*\\n  from characteristics\\n  inner join focus_areas on focus_areas.id = characteristics.focus_area_id\\n  inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id\\n  where focus_area_groups.workspace_id = #{scorecard.workspace_id}\\n  order by focus_area_groups.position, focus_areas.position, characteristics.id\\n)\\n\\nselect\\n  characteristics.id as characteristic_id,\\n  json_strip_nulls(\\n    json_agg(\\n      json_build_object(\\n        'initiative_id', initiative_id,\\n        'comments', comments,\\n        'comment_count', comment_count\\n      )\\n    )\\n  ) as comments,\\n  count(initiative_id) as initiative_count\\nfrom characteristics\\ninner join comments_with_timestamp on comments_with_timestamp.characteristic_id = characteristics.id\\ngroup by characteristics.id\\n\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Reports::ScorecardComments",
-        "method": "generate_data"
-      },
-      "user_input": "date",
       "confidence": "Medium",
       "cwe_id": [
         89

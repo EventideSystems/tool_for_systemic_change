@@ -19,7 +19,7 @@ _Detail the reason for building this feature - specifcally identify the value it
 
   _"This feature will speed up the delivery of reports"_
 
-## Examplar User Stories
+## Exemplar User Stories
 
 _Describe one or more User Stories required to deliver this feature._
 

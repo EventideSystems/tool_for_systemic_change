@@ -15,16 +15,21 @@ module WorkspacesHelper
   end
 
   def max_users(workspace)
-    "Max users: #{workspace.max_users.zero? ? 'unlimited' : workspace.max_users}"
+    "Max users: #{limit_text(workspace.max_users)}"
   end
 
   def max_impact_cards(workspace)
-    "Max impact cards: #{workspace.max_users.zero? ? 'unlimited' : workspace.max_scorecards}"
+    "Max impact cards: #{limit_text(workspace.max_users)}"
   end
 
   def expires_on(workspace)
     return 'Never expires' if workspace.expires_on.blank?
 
     "Expires on: #{workspace.expires_on}"
+  end
+
+  # NOTES: Magic number 0 is used to represent 'unlimited' in the database.
+  def limit_text(value)
+    value.zero? ? 'unlimited' : value
   end
 end

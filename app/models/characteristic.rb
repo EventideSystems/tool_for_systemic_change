@@ -26,6 +26,8 @@
 class Characteristic < ApplicationRecord
   acts_as_paranoid
 
+  include ValidateUniqueCode
+
   default_scope { order('focus_areas.position', :position).joins(:focus_area) }
 
   belongs_to :focus_area
@@ -33,9 +35,11 @@ class Characteristic < ApplicationRecord
 
   # TODO: Add scoped position validation to database schema
   validates :position, presence: true, uniqueness: { scope: :focus_area } # rubocop:disable Rails/UniqueValidationWithoutIndex
-  delegate :position, to: :focus_area, prefix: true
 
-  delegate :scorecard_type, :workspace, to: :focus_area
+  delegate :position, to: :focus_area, prefix: true # TODO: Check if this is needed, see `identifier` method below
+
+  delegate :impact_card_data_model, to: :focus_area
+  delegate :workspace, to: :focus_area
 
   scope :per_data_model, lambda { |impact_card_data_model_id|
     joins(focus_area: :focus_area_group)
@@ -44,6 +48,7 @@ class Characteristic < ApplicationRecord
       )
   }
 
+  # TODO: Check if this is needed
   def identifier
     "#{focus_area.position}.#{position}"
   end

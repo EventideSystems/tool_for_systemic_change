@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="mt-2 text-sm/6 text-zinc-500 <%= local_assigns[:print_description] ? "print:text-black dark:print:text-black" : "print:hidden" %>">
-        <%= sanitize(impact_card.description) %>
+        <%= rich_text(impact_card.description) %>
       </div>
     </div>
           

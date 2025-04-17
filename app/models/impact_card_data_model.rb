@@ -39,7 +39,23 @@ class ImpactCardDataModel < ApplicationRecord
 
   belongs_to :workspace, optional: true
   has_many :focus_area_groups, dependent: :destroy
+  has_many :focus_areas, through: :focus_area_groups
+  has_many :characteristics, through: :focus_areas
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :workspace_id }, if: -> { workspace_id.present? }
+
+  def codes
+    [focus_area_groups, focus_areas, characteristics]
+      .flat_map(&:reload)
+      .compact_blank
+      .filter_map(&:code)
+      .uniq
+  end
+
+  def element_by_code(code)
+    focus_area_groups.find_by(code: code) ||
+      focus_areas.find_by(code: code) ||
+      characteristics.find_by(code: code)
+  end
 end

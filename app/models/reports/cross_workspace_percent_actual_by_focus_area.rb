@@ -65,6 +65,7 @@ module Reports
       )
     end
 
+    # SMELL Explicit reference to impact_card_data_models.name = 'Transition Card'
     def generate_data # rubocop:disable Metrics/MethodLength
       sql = <<~SQL
         with raw_percent_actual_by_focus_area as (
@@ -93,7 +94,6 @@ module Reports
         select
           workspaces.name as workspace_name,
           scorecards.name as impact_card_name,
-          scorecards.type as scorecard_type,
           initiatives.name as initiative_name,
           focus_areas.name as focus_area_name,
           raw_percent_actual_by_focus_area.total_characteristics,

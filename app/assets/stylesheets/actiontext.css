@@ -27,7 +27,7 @@ trix-toolbar .trix-button-group {
   border-bottom-color: #888;
   border-radius: 3px; }
   trix-toolbar .trix-button-group:not(:first-child) {
-    margin-left: 1.2vw; }
+    margin-left: 0.9vw; }
     @media (max-width: 768px) {
       trix-toolbar .trix-button-group:not(:first-child) {
         margin-left: 0; } }

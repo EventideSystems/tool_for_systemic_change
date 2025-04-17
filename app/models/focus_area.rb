@@ -26,6 +26,7 @@
 #
 class FocusArea < ApplicationRecord
   include RandomColorAttribute
+  include ValidateUniqueCode
 
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
@@ -40,7 +41,8 @@ class FocusArea < ApplicationRecord
   # TODO: Add validations to the database schema
   validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  delegate :scorecard_type, :workspace, to: :focus_area_group
+  delegate :workspace, to: :focus_area_group
+  delegate :impact_card_data_model, to: :focus_area_group
 
   scope :per_data_model, lambda { |impact_card_data_model_id|
     joins(:focus_area_group)
@@ -52,7 +54,4 @@ class FocusArea < ApplicationRecord
   def full_name
     [code, short_name.presence || name].compact.join(' ')
   end
-  # def short_name
-  #   name.match(/(Goal\s\d*)\.*./)[1] || name
-  # end
 end

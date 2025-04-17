@@ -35,6 +35,8 @@
 class FocusAreaGroup < ApplicationRecord
   acts_as_paranoid
 
+  include ValidateUniqueCode
+
   default_scope { order(:position) }
 
   # TODO: Remove 'optional: true' when all focus_area_groups have an impact card data model

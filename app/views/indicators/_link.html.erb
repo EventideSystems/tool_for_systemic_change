@@ -6,4 +6,10 @@
     ) do %>
       <%= display_name(indicator) %>
   <% end %>
+
+  <%- if indicator.description.present? %>        
+    <div class="flex text-zinc-500 mb-4">
+      <%= rich_text(indicator.description) %>
+    </div>
+  <% end %>
 </li>

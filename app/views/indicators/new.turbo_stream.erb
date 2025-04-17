@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@target, :new_indicator) do %>
+  <%= render 'form', indicator: @indicator, url: target_indicators_path(@target), cancel_path: indicators_path(target_id: @target.id) %>
+<% end %>

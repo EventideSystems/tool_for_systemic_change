@@ -12,7 +12,7 @@
               <%= @organisation.name %>
             </div>
             <div class="text-xs/6 text-zinc-500 min-h-4">
-              <%= @organisation.description %>
+              <%= rich_text(@organisation.description) %>
             </div>
             <%- if @organisation.stakeholder_type.present? %>
               <div class="flex space-x-2">

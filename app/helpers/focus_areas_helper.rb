@@ -9,10 +9,4 @@ module FocusAreasHelper
 
     "##{%w[FD6E77 FADD83 FEA785 AFBFF5 84ACD4 74C4DF 71B9B9 7AE0CC 7FD4A0][position]}"
   end
-
-  def options_for_icon_name
-    Dir.glob(Rails.root.join('app/assets/images/sdg_icons/E-WEB-Goal-*.png')).map do |path|
-      [path.split('/').last, path.split('/').last]
-    end.sort
-  end
 end

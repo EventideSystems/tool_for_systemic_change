@@ -12,6 +12,6 @@
 <% end %>
 <%- if target.description.present? %>        
   <div class="flex text-zinc-500 mb-4">
-    <%= target.description %>
+    <%= rich_text(target.description) %>
   </div>
 <% end %>

@@ -35,12 +35,20 @@ module ApplicationHelper
   end
 
   def render_tab_item(title:, path:, active_tab:, classes: '')
-    active = active_tab == controller.active_tab_item
+    active = active_tab == current_active_tab
 
     render 'layouts/shared/tab_item', title:, path:, active:, classes:
   end
 
   def definition_list_element(term, definition)
     render 'application/definition_list_element', term: term, definition: definition
+  end
+
+  private
+
+  def current_active_tab
+    return nil unless controller.respond_to?(:active_tab_item)
+
+    controller.active_tab_item
   end
 end

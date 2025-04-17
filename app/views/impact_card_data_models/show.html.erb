@@ -58,7 +58,7 @@
         </h2>
         <%- if focus_area_group.description.present? %>        
           <div class="flex text-zinc-500 mb-4">
-            <%= focus_area_group.description %>
+            <%= rich_text(focus_area_group.description) %>
           </div>
         <% end %>
         <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
@@ -71,13 +71,18 @@
             </h3>
             <%- if focus_area.description.present? %>        
               <div class="flex text-zinc-500 mb-4">
-                <%= focus_area.description %>
+                <%= rich_text(focus_area.description) %>
               </div>
             <% end %>
             <ul class="list-disc pl-8">
               <% focus_area.characteristics.each do |characteristic| %>
                 <li class="mt-1 text-zinc-950 dark:text-white" title="<%= characteristic.name %>">
                   <%= display_name(characteristic) %>
+                  <%- if characteristic.description.present? %>        
+                    <div class="flex text-zinc-500 mb-4">
+                      <%= rich_text(characteristic.description) %>
+                    </div>
+                  <% end %>
                 </li>
               <% end %>
             </ul>

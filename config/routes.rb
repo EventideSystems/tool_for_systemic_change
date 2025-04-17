@@ -19,9 +19,15 @@ Rails.application.routes.draw do
     resource :merge, only: %i[new create], controller: 'impact_cards/merge'
   end
 
-  resources :goals
+  resources :goals do
+    resources :targets, only: %i[new create], controller: 'targets'
+  end
+
   resources :indicators
-  resources :targets
+
+  resources :targets do
+    resources :indicators, only: %i[new create], controller: 'indicators'
+  end
 
   namespace :labels do
     resources :communities

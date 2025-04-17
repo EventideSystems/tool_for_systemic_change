@@ -3,6 +3,8 @@
 # Controller for goals (aka focus areas)
 # This controller is a similar to the IndicatorsController, just at a different nesting level in the data model.
 class GoalsController < ApplicationController
+  include DataModelSupport
+
   def show
     @goal = FocusAreaGroup.find(params[:id])
     authorize @goal
@@ -32,14 +34,7 @@ class GoalsController < ApplicationController
   private
 
   def goal_params
-    params.require(:focus_area_group).permit(
-      :code,
-      :color,
-      :description,
-      :name,
-      :position,
-      :short_name
-    ).tap do |whitelisted|
+    params.require(:focus_area_group).permit(DATA_MODEL_ELEMENT_PARAMS).tap do |whitelisted|
       whitelisted.delete(:code) if whitelisted[:code].blank?
     end
   end

@@ -52,8 +52,8 @@
   <% end %>
 
   <%= render 'show_page_section', title: 'Restrictions' do %>
-    <%= definition_list_element('Max team members', @workspace.max_users) %>
-    <%= definition_list_element('Max impact cards', @workspace.max_scorecards) %>
+    <%= definition_list_element('Max team members', limit_text(@workspace.max_users)) %>
+    <%= definition_list_element('Max impact cards', limit_text(@workspace.max_scorecards)) %>
   <% end %>
 
   <%= render 'show_page_section', title: 'Other Settings' do %>

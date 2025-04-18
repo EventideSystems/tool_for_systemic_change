@@ -1,0 +1,38 @@
+<div class="relative isolate overflow-hidden min-h-screen">
+  <div class="text-left mt-10 ml-10">
+    <%= 
+      link_to(
+        "< Back to Takedown Policy", 
+        takedown_path, 
+        class: 'text-lg font-semibold leading-6 text-white bg-teal-900 hover:bg-teal-700 px-4 py-2 rounded', 
+        data: { turbo: false }
+      )
+    %>
+  </div>
+  <div class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]" aria-hidden="true">
+    <div class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#80caff] to-[#4f46e5] opacity-20" style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%)"></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-6 pb-16 pt-8 sm:pb-16 lg:flex lg:px-8 lg:pt-40">
+    <div class="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+      <%= render 'branding' %>
+      <h2 class="mt-10 text-3xl font-bold tracking-tight text-white sm:text-4xl">Takedown Request</h2>
+      <p class="mt-6 text-lg leading-8 text-gray-300">
+        Please provide identification of the content in question (<span class="italic">e.g.</span> URL or 
+        description), along with the reason and legal grounds for the takedown request.
+      </p>
+      <p class="mt-6 text-lg leading-8 text-gray-300">
+        Ensure you are familiar with the details of our 
+        <%= landing_pages_link_to 'Takedown Policy', takedown_path, target: :blank %>
+        before making your request. 
+      </p>
+      <p class="mt-6 text-lg leading-8 text-gray-300">
+        We take infringement notifications seriously and will review your claim and respond to your request 
+        promptly.
+      </p>
+    </div>
+
+    <div class="h-fit bg-white/10 p-8 rounded-lg mx-auto w-full ml-14 mt-8">
+      <%= render 'form', contact: @contact %>
+    </div>
+  </div>
+</div>

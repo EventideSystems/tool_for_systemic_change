@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@goal, :new_target) do %>
+  <%= render 'form', target: @target, url: goal_targets_path(@goal), cancel_path: targets_path(goal_id: @goal.id) %>
+<% end %>

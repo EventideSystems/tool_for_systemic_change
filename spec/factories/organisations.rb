@@ -21,8 +21,8 @@
 #
 FactoryBot.define do
   factory :organisation do
-    stakeholder_type
-    workspace
+    # stakeholder_type
+    # workspace
     name { FFaker::Name.name }
   end
 end

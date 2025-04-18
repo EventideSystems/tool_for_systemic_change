@@ -5,24 +5,29 @@
 # Table name: focus_areas
 #
 #  id                  :integer          not null, primary key
-#  actual_color        :string
+#  code                :string
+#  color               :string
 #  deleted_at          :datetime
 #  description         :string
 #  icon_name           :string           default("")
 #  name                :string
-#  planned_color       :string
 #  position            :integer
+#  short_name          :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  focus_area_group_id :integer
 #
 # Indexes
 #
-#  index_focus_areas_on_deleted_at           (deleted_at)
-#  index_focus_areas_on_focus_area_group_id  (focus_area_group_id)
-#  index_focus_areas_on_position             (position)
+#  index_focus_areas_on_deleted_at                    (deleted_at)
+#  index_focus_areas_on_focus_area_group_id           (focus_area_group_id)
+#  index_focus_areas_on_focus_area_group_id_and_code  (focus_area_group_id,code) UNIQUE
+#  index_focus_areas_on_position                      (position)
 #
 class FocusArea < ApplicationRecord
+  include RandomColorAttribute
+  include ValidateUniqueCode
+
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
   scope :ordered_by_group_position, lambda {
@@ -36,19 +41,17 @@ class FocusArea < ApplicationRecord
   # TODO: Add validations to the database schema
   validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  delegate :scorecard_type, :workspace, to: :focus_area_group
+  delegate :workspace, to: :focus_area_group
+  delegate :impact_card_data_model, to: :focus_area_group
 
-  alias_attribute :color, :actual_color
-
-  scope :per_scorecard_type_for_workspace, lambda { |scorecard_type, workspace|
+  scope :per_data_model, lambda { |impact_card_data_model_id|
     joins(:focus_area_group)
       .where(
-        'focus_area_groups.scorecard_type' => scorecard_type,
-        'focus_area_groups.workspace_id' => workspace.id
+        'focus_area_groups.impact_card_data_model_id' => impact_card_data_model_id
       )
   }
 
-  def short_name
-    name.match(/(Goal\s\d*)\.*./)[1] || name
+  def full_name
+    [code, short_name.presence || name].compact.join(' ')
   end
 end

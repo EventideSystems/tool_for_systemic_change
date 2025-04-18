@@ -1,0 +1,42 @@
+<%= turbo_stream.append dom_id(@goal, :targets_list) do %>
+  <div class="mb-4 ml-3">
+    <%= turbo_frame_tag dom_id(@target) do %>
+      <%= render partial: 'link', locals: { target: @target } %>
+    <% end %>
+
+    <ul class="list-disc pl-8">
+      <%= turbo_frame_tag dom_id(@target, :indicators_list) do %>
+        <% @target.characteristics.each do |characteristic| %>
+          <%= turbo_frame_tag dom_id(characteristic) do %>
+            <%= render '/indicators/link', indicator: characteristic %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+    <%= turbo_frame_tag dom_id(@target, :new_indicator) do %>
+      <div class="flex justify-end">
+        <%= 
+          link_to(
+            'Create Indicator', 
+            new_target_indicator_path(target_id: @target.id), 
+            class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+            data: { turbo_stream: true }
+          )
+        %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream.update dom_id(@goal, :new_target) do %>
+  <div class="flex justify-end">
+    <%= 
+      link_to(
+        'Create Target', 
+        new_goal_target_path(goal_id: @goal.id), 
+        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+        data: { turbo_stream: true }
+      )
+    %>
+  </div>
+<% end %>

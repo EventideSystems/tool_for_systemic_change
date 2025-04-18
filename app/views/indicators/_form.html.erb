@@ -1,0 +1,52 @@
+<%= form_with(model: indicator, local: true, url:, class: 'mb-1 mt-1') do |form| %>
+  <div class="grid grid-cols-4 gap-4 w-full">
+    <div class="sm:col-span-4">
+      <div class="mt-2">
+        <%= form.text_field(:name, placeholder: 'Indicator name', autofocus: true, required: true) %>
+      </div>
+    </div>
+
+    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <div class="sm:col-span-2">
+        <%= form.label :code %>
+        <div class="mt-2">
+          <%= form.text_field :code %>
+        </div>
+      </div>
+
+      <div class="sm:col-span-2">
+        <%= form.label :short_name %>
+        <div class="mt-2">
+          <%= form.text_field :short_name %>
+        </div>
+      </div>
+
+      <div class="sm:col-span-2">
+        <%= form.label :color %>
+        <div class="mt-2">
+          <%= form.color_field :color %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-full">
+      <%= form.label :description %>
+      <div class="mt-2">
+        <%= form.rich_textarea :description, rows: 3, placeholder: 'Initiative description' %>
+      </div>
+      <p class="text-sm/6 text-gray-600 dark:text-gray-400">A brief description of the indicator (optional).</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4 w-full pt-2 pb-3">
+    <div class="col-span-4 flex justify-end space-x-4">
+      <%= link_to(
+        'Cancel',
+        cancel_path,
+        class: 'text-sm font-semibold text-gray-900 dark:text-white mt-2 mr-3',
+        data: { turbo_stream: true }
+      ) %>
+      <%= form.submit 'Save' %>
+    </div>
+  </div>
+<% end %>

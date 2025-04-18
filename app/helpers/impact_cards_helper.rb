@@ -56,4 +56,26 @@ module ImpactCardsHelper
       [status, icon]
     end
   end
+
+  def select_impact_card_tag(name, options)
+    workspace = options.delete(:workspace) || current_workspace
+
+    collection_options = if workspace.data_models_in_use.count > 1
+                           grouped_scorecards = grouped_impact_cards_for_workspace(workspace)
+                           grouped_options_for_select(grouped_scorecards)
+                         else
+                           scorecards = workspace.scorecards.order(:name)
+                           options_from_collection_for_select(scorecards, :id, :name)
+                         end
+
+    custom_select_tag(name, collection_options, options)
+  end
+
+  private
+
+  def grouped_impact_cards_for_workspace(workspace)
+    workspace.scorecards.group_by(&:impact_card_data_model).transform_keys(&:name).transform_values do |impact_cards|
+      impact_cards.pluck(:name, :id)
+    end
+  end
 end

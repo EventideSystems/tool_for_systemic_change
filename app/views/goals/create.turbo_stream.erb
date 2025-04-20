@@ -1,0 +1,65 @@
+<%= turbo_stream.append dom_id(@impact_card_data_model, :goals_list) do %>
+  <div class="mb-4">
+    <%= turbo_frame_tag dom_id(@goal) do %>
+      <%= render partial: 'link', locals: { goal: @goal } %>
+    <% end %>
+
+    <%= turbo_frame_tag dom_id(@goal, :targets_list) do %>
+      <% @goal.focus_areas.order(:position).each do |focus_area| %>
+        <div class="mb-4 ml-3">
+          <%= turbo_frame_tag dom_id(focus_area) do %>
+            <%= render '/targets/link', target: focus_area %>
+          <% end %>
+          <ul class="list-disc pl-8">
+            <%= turbo_frame_tag dom_id( focus_area, :indicators_list) do %>
+              <% focus_area.characteristics.each do |characteristic| %>
+                <%= turbo_frame_tag dom_id(characteristic) do %>
+                  <%= render '/indicators/link', indicator: characteristic %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </ul>
+          <%= turbo_frame_tag dom_id(focus_area, :new_indicator) do %>
+            <div class="flex justify-end">
+              <%= 
+                link_to(
+                  'Create Indicator', 
+                  new_target_indicator_path(target_id: focus_area.id), 
+                  class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+                  data: { turbo_stream: true }
+                )
+              %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= turbo_frame_tag dom_id(@goal, :new_target) do %>
+      <div class="flex justify-end">
+        <%= 
+          link_to(
+            'Create Target', 
+            new_goal_target_path(goal_id: @goal.id), 
+            class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+            data: { turbo_stream: true }
+          )
+        %>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>
+
+<%= turbo_stream.update dom_id(@impact_card_data_model, :new_goal) do %>
+  <div class="flex justify-end">
+    <%= 
+      link_to(
+        'Create Goal', 
+        new_impact_card_data_model_goal_path(impact_card_data_model_id: @impact_card_data_model.id), 
+        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+        data: { turbo_stream: true }
+      )
+    %>
+  </div>
+<% end %>

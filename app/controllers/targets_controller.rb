@@ -43,7 +43,7 @@ class TargetsController < ApplicationController
     authorize @target
   end
 
-  def update # rubocop:disable Metrics/MethodLength
+  def update
     @target = FocusArea.find(params[:id])
     authorize @target
 
@@ -51,7 +51,7 @@ class TargetsController < ApplicationController
 
     if @target.save
       respond_to do |format|
-        format.html { redirect_to impact_card_data_model_path(@target) }
+        # format.html { redirect_to impact_card_data_model_path(@target) }
         format.turbo_stream
       end
     else

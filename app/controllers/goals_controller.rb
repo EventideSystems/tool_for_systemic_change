@@ -5,9 +5,37 @@
 class GoalsController < ApplicationController
   include DataModelSupport
 
+  def index
+    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
+  end
+
   def show
     @goal = FocusAreaGroup.find(params[:id])
     authorize @goal
+  end
+
+  def new
+    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
+    @goal = @impact_card_data_model.focus_area_groups.build
+    authorize @goal
+  end
+
+  def create
+    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
+
+    position = @impact_card_data_model.focus_area_groups.maximum(:position) || 0
+    @goal = @impact_card_data_model.focus_area_groups.build(goal_params.merge(position: position + 1))
+
+    # authorize @target
+
+    if @goal.save
+      respond_to do |format|
+        # format.html { redirect_to impact_card_data_model_path(@goal) }
+        format.turbo_stream
+      end
+    else
+      render 'new'
+    end
   end
 
   def edit

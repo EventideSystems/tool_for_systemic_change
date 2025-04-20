@@ -1,0 +1,10 @@
+<%= turbo_stream.update dom_id(@impact_card_data_model, :new_goal) do %>
+  <%= 
+    render(
+      'form', 
+      goal: @goal, 
+      url: impact_card_data_model_goals_path(@impact_card_data_model), 
+      cancel_path: impact_card_data_model_goals_path(@impact_card_data_model)
+    )
+  %>
+<% end %>

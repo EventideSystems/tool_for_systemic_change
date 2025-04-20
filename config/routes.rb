@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :checklist_items, only: %i[show edit update]
   resources :impact_card_data_models, only: %i[index show edit update] do
+    resources :goals, only: %i[index new create], controller: 'goals'
     member do
       post 'copy_to_current_workspace'
     end
@@ -20,13 +21,13 @@ Rails.application.routes.draw do
   end
 
   resources :goals do
-    resources :targets, only: %i[new create], controller: 'targets'
+    resources :targets, only: %i[index new create], controller: 'targets'
   end
 
   resources :indicators
 
   resources :targets do
-    resources :indicators, only: %i[new create], controller: 'indicators'
+    resources :indicators, only: %i[index new create], controller: 'indicators'
   end
 
   namespace :labels do

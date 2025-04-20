@@ -33,9 +33,10 @@
 #  fk_rails_...  (impact_card_data_model_id => impact_card_data_models.id)
 #
 class FocusAreaGroup < ApplicationRecord
-  acts_as_paranoid
-
+  include RandomColorAttribute
   include ValidateUniqueCode
+
+  acts_as_paranoid
 
   default_scope { order(:position) }
 

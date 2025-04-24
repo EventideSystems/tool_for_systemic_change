@@ -47,12 +47,12 @@ So, thank you everyone!
 
 ## License & Attribution
 
-Copyright © 2023 Emily Humphreys
+Copyright © 2023 Wicked Lab
 Copyright © 2025 Eventide Systems Pty Ltd
 
-Rreleased under an open source license. The repository contains seed data models that are copyright their respective owners.
-
 This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.  
+
+NB the `db/data_models` directory contains seed data models that are copyright their respective owners.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -126,13 +126,19 @@ System configuration items are stored on the Heroku platform within environment 
 
 | Variable | Description |
 | --------------- | --------------- |
-| DATABASE_URL | Postgresql database connection string |
-| MANDRILL_API_KEY | Mandrill API key used to send emails |
-| MANDRILL_USERNAME | Mandrill username used to send emails |
-| RAILS_ENV | Environment used to determine whether the system is running in the `staging` or `production` environment |
-| RAILS_MASTER_KEY | Secret key used to encrypt and decrypt data |
 | APPSIGNAL_APP_NAME | Name of application within the AppSignal monitoring service |
 | APPSIGNAL_PUSH_API_KEY | Key used to authenticate with the AppSignal monitoring service |
+| AWS_ACCESS_KEY_ID | AWS access key for "betweenness" lambda function |
+| AWS_SECRET_ACCESS_KEY | AWS secret key |
+| CONTACT_MAIL_RECIPIENTS | Comma-separated list of recipients of email sent via contact forms |
+| DATABASE_URL | Postgresql database connection string |
+| MAILJET_API_KEY | API key used to send email via Mailjet |
+| MAILJET_SECRET_KEY | Secret key used to send email via Mailjet |
+| MAILJET_DEFAULT_FROM | Nominal 'from' address for outgoing mail |
+| RECAPTCHA_SITE_KEY | Key for Google ReCaptcha used on "external" forms (contact, login, etc) |
+| RECAPTCHA_SECRET_KEY | Secrete for Google ReCaptcha |
+| RUBY_YJIT_ENABLE | Set to '1' to enable JIT compilation |
+| SECRET_KEY_BASE | Secret used by Rails for generating cookies and other encryption-related operations |
 
 ### Deploying to the Application Server
 

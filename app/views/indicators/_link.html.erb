@@ -1,15 +1,18 @@
-<li class="mt-1 text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800" title="<%= indicator.name %>">
-  <%= 
-    link_to(
-      edit_indicator_path(indicator), 
-      data: { turbo_frame: dom_id(indicator) }
-    ) do %>
+<%= 
+  link_to(
+    edit_indicator_path(indicator), 
+    data: { turbo_frame: dom_id(indicator) }
+  ) do %>
+    <h4 class="text-sm font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2" title="<%= indicator.name %>">
+      <%- if indicator.color.present? %>
+        <span class="w-2 mr-1" style="background-color: <%= indicator.color %>">&nbsp;</span>
+      <% end %>
       <%= display_name(indicator) %>
-  <% end %>
+    </h4>
+<% end %>
 
   <%- if indicator.description.present? %>        
     <div class="flex text-zinc-500 mb-4">
       <%= rich_text(indicator.description) %>
     </div>
   <% end %>
-</li>

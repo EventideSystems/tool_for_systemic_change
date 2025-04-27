@@ -55,7 +55,7 @@ module Reports
     end
 
     def scorecard_model_name
-      scorecard.impact_card_data_model.name
+      scorecard.data_model.name
     end
 
     def add_summary(sheet, styles)

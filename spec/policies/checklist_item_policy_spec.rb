@@ -11,7 +11,7 @@ RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedH
   let(:system_admin_user) { create(:user, :admin) }
   let(:workspace_member_user) { create(:user) }
 
-  let(:scorecard) { create(:scorecard, workspace:, impact_card_data_model:) }
+  let(:scorecard) { create(:scorecard, workspace:, data_model:) }
   let(:initiative) { create(:initiative, scorecard:) }
 
   before do

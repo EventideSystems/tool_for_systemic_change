@@ -5,9 +5,9 @@
 class GoalsController < ApplicationController
   include DataModelSupport
 
-  def index
-    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
-  end
+  before_action :set_data_model, only: %i[index new create]
+
+  def index; end
 
   def show
     @goal = FocusAreaGroup.find(params[:id])
@@ -15,22 +15,19 @@ class GoalsController < ApplicationController
   end
 
   def new
-    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
-    @goal = @impact_card_data_model.focus_area_groups.build
+    @goal = @data_model.focus_area_groups.build
     authorize @goal
   end
 
   def create
-    @impact_card_data_model = ImpactCardDataModel.find(params[:impact_card_data_model_id])
+    position = @data_model.focus_area_groups.maximum(:position) || 0
+    @goal = @data_model.focus_area_groups.build(goal_params.merge(position: position + 1))
 
-    position = @impact_card_data_model.focus_area_groups.maximum(:position) || 0
-    @goal = @impact_card_data_model.focus_area_groups.build(goal_params.merge(position: position + 1))
-
-    # authorize @target
+    authorize @goal
 
     if @goal.save
       respond_to do |format|
-        # format.html { redirect_to impact_card_data_model_path(@goal) }
+        # format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
       end
     else
@@ -51,7 +48,7 @@ class GoalsController < ApplicationController
 
     if @goal.save
       respond_to do |format|
-        format.html { redirect_to impact_card_data_model_path(@goal) }
+        format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
       end
     else
@@ -63,7 +60,12 @@ class GoalsController < ApplicationController
 
   def goal_params
     params.require(:focus_area_group).permit(DATA_MODEL_ELEMENT_PARAMS).tap do |whitelisted|
-      whitelisted.delete(:code) if whitelisted[:code].blank?
+      whitelisted[:code] = nil if whitelisted[:code].blank?
     end
+  end
+
+  def set_data_model
+    @data_model = DataModel.find(params[:data_model_id])
+    authorize @data_model
   end
 end

@@ -46,7 +46,7 @@ module Reports
 
           data = generate_data
 
-          scorecard.impact_card_data_model.focus_area_groups.order(:position).each do |focus_area_group| # rubocop:disable Metrics/BlockLength
+          scorecard.data_model.focus_area_groups.order(:position).each do |focus_area_group| # rubocop:disable Metrics/BlockLength
             sheet.add_row([focus_area_group.name] + padding_plus_2, style: styles[:header_2]) # rubocop:disable Naming/VariableNumber
 
             focus_area_group.focus_areas.order(:position).each do |focus_area|
@@ -91,7 +91,7 @@ module Reports
     private
 
     def scorecard_model_name
-      scorecard.impact_card_data_model.name
+      scorecard.data_model.name
     end
 
     def add_header(sheet, styles) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -160,8 +160,8 @@ module Reports
           from characteristics
           inner join focus_areas on focus_areas.id = characteristics.focus_area_id
           inner join focus_area_groups on focus_area_groups.id = focus_areas.focus_area_group_id
-          inner join impact_card_data_models on impact_card_data_models.id = focus_area_groups.impact_card_data_model_id
-          where impact_card_data_models.workspace_id = #{scorecard.workspace_id}
+          inner join data_models on data_models.id = focus_area_groups.data_model_id
+          where data_models.workspace_id = #{scorecard.workspace_id}
           order by focus_area_groups.position, focus_areas.position, characteristics.id
         )
 

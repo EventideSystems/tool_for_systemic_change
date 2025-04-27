@@ -25,7 +25,7 @@ class ImpactCardsController < ApplicationController
 
     @pagy, @impact_cards = pagy(impact_cards, limit: 10)
 
-    @all_impact_card_data_models = impact_cards.map(&:impact_card_data_model).uniq
+    @all_data_models = impact_cards.map(&:data_model).uniq
 
     respond_to do |format|
       format.html { render 'impact_cards/index', locals: { impact_cards: @impact_cards } }
@@ -44,7 +44,7 @@ class ImpactCardsController < ApplicationController
 
     @selected_statuses = Array.wrap(params[:statuses])
 
-    @focus_areas = FocusArea.per_data_model(@scorecard.impact_card_data_model_id).order(
+    @focus_areas = FocusArea.per_data_model(@scorecard.data_model_id).order(
       'focus_area_groups.position', :position
     )
 
@@ -132,7 +132,7 @@ class ImpactCardsController < ApplicationController
 
   def fetch_legend_items(impact_card)
     FocusArea
-      .per_data_model(impact_card.impact_card_data_model_id)
+      .per_data_model(impact_card.data_model_id)
       .joins(:focus_area_group)
       .order('focus_area_groups.position, focus_areas.position')
       .map { |focus_area| { label: focus_area.name, color: focus_area.color } }
@@ -174,7 +174,7 @@ class ImpactCardsController < ApplicationController
       :linked_scorecard_id,
       :share_ecosystem_map,
       :share_thematic_network_map,
-      :impact_card_data_model_id,
+      :data_model_id,
       initiatives_attributes: %i[
         _destroy
         name

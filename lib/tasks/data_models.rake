@@ -4,7 +4,7 @@ namespace :data_models do # rubocop:disable Metrics/BlockLength
   namespace :system do # rubocop:disable Metrics/BlockLength
     desc 'Import SDG indicators from unstats.un.org'
     task import_sdgs: :environment do # rubocop:disable Metrics/BlockLength
-      simple_data_model = ImpactCardDataModel.where(system_model: true).find_or_create_by(name: 'Sustainable Development Goals and Targets') do |model| # rubocop:disable Layout/LineLength
+      simple_data_model = DataModel.where(system_model: true).find_or_create_by(name: 'Sustainable Development Goals and Targets') do |model| # rubocop:disable Layout/LineLength
         model.description = 'Two-level SDGs data model, focusing on Goals and Targets'
         model.system_model = true
       end
@@ -22,7 +22,7 @@ namespace :data_models do # rubocop:disable Metrics/BlockLength
 
       simple_data_model_group = simple_data_model.focus_area_groups.find_by(code: 'SDG')
 
-      # deep_data_model = ImpactCardDataModel.where(system_model: true).find_or_create_by(name: 'Sustainable Development Goals, Targets and Indicators') do |model| # rubocop:disable Layout/LineLength
+      # deep_data_model = DataModel.where(system_model: true).find_or_create_by(name: 'Sustainable Development Goals, Targets and Indicators') do |model| # rubocop:disable Layout/LineLength
       #   model.description = 'Three-level SDGs data model, focusing on Goals, Targets and Indicators'
       #   model.system_model = true
       # end

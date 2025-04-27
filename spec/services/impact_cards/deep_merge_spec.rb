@@ -8,7 +8,7 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpe
 
   let(:user) { create(:user) }
 
-  let(:focus_area_groups) { create_list(:focus_area_group, 2, impact_card_data_model:) }
+  let(:focus_area_groups) { create_list(:focus_area_group, 2, data_model:) }
   let(:focus_areas) { create_list(:focus_area, 2, focus_area_group: focus_area_groups.first) }
 
   let(:stakeholder_type) { create(:stakeholder_type, workspace:) }
@@ -18,8 +18,8 @@ RSpec.describe(ImpactCards::DeepMerge, type: :service) do # rubocop:disable RSpe
   let(:subsystem_tag) { create(:subsystem_tag, workspace:) }
   let(:other_subsystem_tag) { create(:subsystem_tag, workspace:) }
 
-  let(:impact_card) { create(:scorecard, workspace:, impact_card_data_model:) }
-  let(:other_impact_card) { create(:scorecard, workspace:, impact_card_data_model:) }
+  let(:impact_card) { create(:scorecard, workspace:, data_model:) }
+  let(:other_impact_card) { create(:scorecard, workspace:, data_model:) }
 
   let!(:clashing_initiative) do
     create(

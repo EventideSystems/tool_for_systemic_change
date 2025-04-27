@@ -175,7 +175,7 @@ class InitiativesController < ApplicationController
     @focus_areas_groups = \
       @initiative
       .scorecard
-      .impact_card_data_model
+      .data_model
       .focus_area_groups
       .includes(:focus_areas)
       .order(:position)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ImpactCardDataModels
+module DataModels
   # Save data model to YAML file
   class Export
     attr_reader :data_model, :filename

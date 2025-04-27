@@ -64,7 +64,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
   def load_two_tier_sdg_data_model # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     ActiveRecord::Base.transaction do # rubocop:disable Metrics/BlockLength
       data_model = \
-        ImpactCardDataModel
+        DataModel
         .where(system_model: true)
         .find_or_create_by(name: TWO_TIER_SDG_DATA_MODEL_NAME) do |model|
           model.description = 'Two-tier SDGs data model, focusing on Goals and Targets'
@@ -124,7 +124,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
   def load_three_tier_sdg_data_model # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity
     ActiveRecord::Base.transaction do # rubocop:disable Metrics/BlockLength
       data_model = \
-        ImpactCardDataModel
+        DataModel
         .where(system_model: true)
         .find_or_create_by(name: THREE_TIER_SDG_DATA_MODEL_NAME) do |model|
           model.description = 'Three-tier SDGs data model, expanded to Goals, Targets and Indicators'
@@ -137,7 +137,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
       sdg_goals.each do |sdg_goal| # rubocop:disable Metrics/BlockLength
         FocusAreaGroup.upsert( # rubocop:disable Rails/SkipsModelValidations
           {
-            impact_card_data_model_id: data_model.id,
+            data_model_id: data_model.id,
             name: sdg_goal['title'],
             short_name: sdg_goal_translation_short_name(sdg_goal['code']),
             description: sdg_goal['description'],
@@ -145,7 +145,7 @@ class SdgDataModelLoader # rubocop:disable Metrics/ClassLength
             color: sdg_goal_color(sdg_goal['code']),
             position: sdg_goal['code'].to_i
           },
-          unique_by: %i[code impact_card_data_model_id],
+          unique_by: %i[code data_model_id],
           returning: %i[id]
         )
 

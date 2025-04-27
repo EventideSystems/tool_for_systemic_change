@@ -14,7 +14,7 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  community_id               :integer
-#  impact_card_data_model_id  :bigint
+#  data_model_id              :bigint
 #  linked_scorecard_id        :integer
 #  shared_link_id             :string
 #  wicked_problem_id          :integer
@@ -22,14 +22,14 @@
 #
 # Indexes
 #
-#  index_scorecards_on_deleted_at                 (deleted_at)
-#  index_scorecards_on_deprecated_type            (deprecated_type)
-#  index_scorecards_on_impact_card_data_model_id  (impact_card_data_model_id)
-#  index_scorecards_on_workspace_id               (workspace_id)
+#  index_scorecards_on_data_model_id    (data_model_id)
+#  index_scorecards_on_deleted_at       (deleted_at)
+#  index_scorecards_on_deprecated_type  (deprecated_type)
+#  index_scorecards_on_workspace_id     (workspace_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (impact_card_data_model_id => impact_card_data_models.id)
+#  fk_rails_...  (data_model_id => data_models.id)
 #
 class Scorecard < ApplicationRecord
   include Searchable
@@ -43,7 +43,7 @@ class Scorecard < ApplicationRecord
   belongs_to :workspace
   belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
-  belongs_to :impact_card_data_model
+  belongs_to :data_model
 
   has_many :initiatives, dependent: :destroy, inverse_of: :scorecard
   has_many :initiatives_organisations, through: :initiatives
@@ -87,7 +87,7 @@ class Scorecard < ApplicationRecord
 
   # SMELL: Hack to test if the scorecard has a thematic map (originally only SDGs)
   def thematic_map?
-    impact_card_data_model.name.include?('Sustainable Development Goals')
+    data_model.name.include?('Sustainable Development Goals')
   end
 
   def linked?

@@ -3,7 +3,7 @@
 require 'csv'
 
 # Controller for managing impact card data models
-class ImpactCardDataModelsController < ApplicationController
+class DataModelsController < ApplicationController
   after_action :verify_authorized, except: :index
 
   sidebar_item :library
@@ -14,46 +14,46 @@ class ImpactCardDataModelsController < ApplicationController
     base_scope = build_base_scope
     @q = base_scope.order(:name).ransack(search_params[:q])
 
-    impact_card_data_models = @q.result(distinct: true)
+    data_models = @q.result(distinct: true)
 
-    @pagy, @impact_card_data_models = pagy(impact_card_data_models, limit: 10)
-    @all_impact_card_data_models = policy_scope(ImpactCardDataModel).order('lower(name)')
+    @pagy, @data_models = pagy(data_models, limit: 10)
+    @all_data_models = policy_scope(DataModel).order('lower(name)')
 
     respond_to do |format|
       format.html do
-        render 'impact_card_data_models/index', locals: { impact_card_data_models: @impact_card_data_models }
+        render 'data_models/index', locals: { data_models: @data_models }
       end
       format.turbo_stream do
-        render 'impact_card_data_models/index', locals: { impact_card_data_models: @impact_card_data_models }
+        render 'data_models/index', locals: { data_models: @data_models }
       end
 
       format.css do
-        render 'impact_card_data_models/index', formats: [:css],
-                                                locals: { impact_card_data_models: @impact_card_data_models }
+        render 'data_models/index', formats: [:css],
+                                    locals: { data_models: @data_models }
       end
     end
   end
 
   def show
-    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
-    authorize @impact_card_data_model
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model
   end
 
   def copy_to_current_workspace
-    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
-    authorize @impact_card_data_model
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model
 
-    new_impact_card_data_model = ImpactCardDataModels::CopyToWorkspace.call(
-      data_model: @impact_card_data_model, workspace: current_workspace
+    new_data_model = DataModels::CopyToWorkspace.call(
+      data_model: @data_model, workspace: current_workspace
     )
 
-    redirect_to impact_card_data_model_path(new_impact_card_data_model),
+    redirect_to data_model_path(new_data_model),
                 notice: 'Data Model copied to current workspace'
   end
 
   def edit
-    @impact_card_data_model = policy_scope(ImpactCardDataModel).find(params[:id])
-    authorize @impact_card_data_model
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model
   end
 
   private
@@ -71,11 +71,11 @@ class ImpactCardDataModelsController < ApplicationController
 
     permitted_workspaces.concat(other_workspaces) if filter_params.dig(:q, :other_workspaces) == '1'
 
-    base_scope = policy_scope(ImpactCardDataModel)
+    base_scope = policy_scope(DataModel)
 
     base_scope = base_scope.where(workspace: permitted_workspaces)
     if filter_params.dig(:q, :system_models) == '1'
-      base_scope.or(ImpactCardDataModel.where(system_model: true))
+      base_scope.or(DataModel.where(system_model: true))
     else
       base_scope.where(system_model: [false, nil])
     end

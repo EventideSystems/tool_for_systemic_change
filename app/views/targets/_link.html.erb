@@ -4,10 +4,7 @@
     data: { turbo_frame: dom_id(target) }
   ) do %>
   <h3 class="text-xl font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2" title="<%= target.name %>">
-    <%- if target.color.present? %>
-      <span class="w-2 mr-1" style="background-color: <%= target.color %>">&nbsp;</span>
-    <% end %>
-    <%= display_name(target) %>
+    <%= render 'data_model_elements/link_text', element: target %>
   </h3>
 <% end %>
 <%- if target.description.present? %>        

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ImpactCardDataModels
+module DataModels
   # Load data model from YAML file
   class Import
     attr_reader :filename
@@ -42,7 +42,7 @@ module ImpactCardDataModels
     private
 
     def find_or_create_data_model(data_model_source)
-      ImpactCardDataModel.where(system_model: true).find_or_create_by(name: data_model_source[:name]) do |model|
+      DataModel.where(system_model: true).find_or_create_by(name: data_model_source[:name]) do |model|
         model.description = data_model_source[:description]
         model.license = data_model_source[:license]
         model.author = data_model_source[:author]

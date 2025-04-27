@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :checklist_items, only: %i[show edit update]
-  resources :impact_card_data_models, only: %i[index show edit update] do
+  resources :data_models, only: %i[index show edit update] do
     resources :goals, only: %i[index new create], controller: 'goals'
     member do
       post 'copy_to_current_workspace'

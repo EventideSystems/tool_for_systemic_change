@@ -5,7 +5,7 @@ require 'rails_helper'
 # rubocop:disable Layout/LineLength
 # == Schema Information
 #
-# Table name: impact_card_data_models
+# Table name: data_models
 #
 #  id           :bigint           not null, primary key
 #  author       :string
@@ -24,8 +24,8 @@ require 'rails_helper'
 #
 # Indexes
 #
-#  index_impact_card_data_models_on_name_and_workspace_id  (name,workspace_id) UNIQUE WHERE ((workspace_id IS NOT NULL) AND (deleted_at IS NULL))
-#  index_impact_card_data_models_on_workspace_id           (workspace_id)
+#  index_data_models_on_name_and_workspace_id  (name,workspace_id) UNIQUE WHERE ((workspace_id IS NOT NULL) AND (deleted_at IS NULL))
+#  index_data_models_on_workspace_id           (workspace_id)
 #
 # Foreign Keys
 #
@@ -33,19 +33,19 @@ require 'rails_helper'
 #
 # rubocop:enable Layout/LineLength
 
-RSpec.describe ImpactCardDataModel, type: :model do
+RSpec.describe DataModel, type: :model do
   describe '#codes' do
-    let(:impact_card_data_model) { create(:impact_card_data_model) }
-    let(:focus_area_group) { create(:focus_area_group, impact_card_data_model: impact_card_data_model, code: 'FAG1') }
+    let(:data_model) { create(:data_model) }
+    let(:focus_area_group) { create(:focus_area_group, data_model: data_model, code: 'FAG1') }
     let(:focus_area) { create(:focus_area, focus_area_group: focus_area_group, code: 'FA1') }
     let!(:characteristic) { create(:characteristic, focus_area: focus_area, code: 'C1') } # rubocop:disable RSpec/LetSetup
 
     it 'returns all codes from focus_area_groups, focus_areas, and characteristics' do
-      expect(impact_card_data_model.codes).to contain_exactly('FAG1', 'FA1', 'C1')
+      expect(data_model.codes).to contain_exactly('FAG1', 'FA1', 'C1')
     end
 
     it 'returns an empty array if there are no codes' do
-      empty_model = create(:impact_card_data_model)
+      empty_model = create(:data_model)
       expect(empty_model.codes).to eq([])
     end
   end

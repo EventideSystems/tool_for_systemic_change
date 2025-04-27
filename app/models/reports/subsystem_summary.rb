@@ -36,7 +36,7 @@ module Reports
     private
 
     def scorecard_model_name
-      scorecard.impact_card_data_model.name
+      scorecard.data_model.name
     end
 
     def add_title(sheet, styles)

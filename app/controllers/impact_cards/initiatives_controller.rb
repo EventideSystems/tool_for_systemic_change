@@ -12,7 +12,7 @@ module ImpactCards
       @initiative = @impact_card.initiatives.find(params[:id])
       authorize(@initiative, :edit_data?)
 
-      @focus_areas_groups = @impact_card.impact_card_data_model.focus_area_groups.order(:position)
+      @focus_areas_groups = @impact_card.data_model.focus_area_groups.order(:position)
 
       @grouped_checklist_items = @initiative.checklist_items_ordered_by_ordered_focus_area
     end

@@ -43,16 +43,16 @@ module ImpactCards
     def assert_valid_target_workspace! # rubocop:disable Metrics/CyclomaticComplexity
       return if target_workspace == impact_card.workspace
 
-      target_workspace_impact_card_data_model = target_workspace.impact_card_data_models.find_by(
-        name: impact_card.impact_card_data_model.name
+      target_workspace_data_model = target_workspace.data_models.find_by(
+        name: impact_card.data_model.name
       )
 
-      if target_workspace_impact_card_data_model.blank?
+      if target_workspace_data_model.blank?
         raise(ArgumentError, 'Target workspace does not have a compatible data model')
       end
 
-      target_workspace_impact_card_data_model.focus_area_groups.find_each do |focus_area_group|
-        target_group = find_target_focus_area_group(focus_area_group.name, target_workspace_impact_card_data_model)
+      target_workspace_data_model.focus_area_groups.find_each do |focus_area_group|
+        target_group = find_target_focus_area_group(focus_area_group.name, target_workspace_data_model)
 
         if target_group.blank?
           raise(ArgumentError, "Missing focus area group '#{focus_area_group.name}' in target workspace")
@@ -208,8 +208,8 @@ module ImpactCards
       target_workspace.wicked_problems.find_by(name: wicked_problem.name)
     end
 
-    def find_target_focus_area_group(name, target_workspace_impact_card_data_model)
-      target_workspace_impact_card_data_model.focus_area_groups.find_by(name:)
+    def find_target_focus_area_group(name, target_workspace_data_model)
+      target_workspace_data_model.focus_area_groups.find_by(name:)
     end
   end
   # rubocop:enable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength

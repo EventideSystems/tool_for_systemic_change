@@ -42,7 +42,7 @@ class Workspace < ApplicationRecord
   has_many :workspaces_users, dependent: :destroy
   has_many :communities, dependent: :destroy
   has_many :focus_area_groups, dependent: :destroy # TODO: Remove when all focus_area_groups have an impact card model
-  has_many :impact_card_data_models, dependent: :destroy
+  has_many :data_models, dependent: :destroy
   has_many :organisations, dependent: :destroy
   has_many :scorecards, dependent: :destroy
   has_many :stakeholder_types, dependent: :destroy
@@ -84,7 +84,7 @@ class Workspace < ApplicationRecord
   end
 
   def data_models_in_use
-    scorecards.map(&:impact_card_data_model).uniq
+    scorecards.map(&:data_model).uniq
   end
 
   def expired?

@@ -69,7 +69,7 @@ module Reports
     private
 
     def scorecard_model_name
-      scorecard.impact_card_data_model.name
+      scorecard.data_model.name
     end
 
     def add_characteristic_columns_header(sheet, header_1, wrap_text) # rubocop:disable Naming/VariableNumber
@@ -134,7 +134,7 @@ module Reports
 
     # SMELL: Hack to get the title of the initiative characteristics, based on the implied scorecard type
     def initiative_characteristics_title
-      if scorecard.impact_card_data_model.name.include?('Sustainable Development Goals')
+      if scorecard.data_model.name.include?('Sustainable Development Goals')
         'Sustainable Development Goals'
       else
         'Initiative Characteristics'

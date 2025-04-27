@@ -28,8 +28,8 @@ require 'rails_helper'
 
 RSpec.describe FocusArea, type: :model do
   describe 'validations' do
-    let(:impact_card_data_model) { create(:impact_card_data_model) }
-    let(:focus_area_group) { create(:focus_area_group, impact_card_data_model: impact_card_data_model) }
+    let(:data_model) { create(:data_model) }
+    let(:focus_area_group) { create(:focus_area_group, data_model: data_model) }
     let!(:existing_focus_area) { create(:focus_area, focus_area_group: focus_area_group, code: 'FA1') } # rubocop:disable RSpec/LetSetup
 
     context 'when the code is unique within the impact card data model' do

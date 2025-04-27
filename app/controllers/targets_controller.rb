@@ -5,9 +5,9 @@
 class TargetsController < ApplicationController
   include DataModelSupport
 
-  def index
-    @goal = FocusAreaGroup.find(params[:goal_id])
-  end
+  before_action :set_goal, only: %i[index new create]
+
+  def index; end
 
   def show
     @target = FocusArea.find(params[:id])
@@ -15,14 +15,11 @@ class TargetsController < ApplicationController
   end
 
   def new
-    @goal = FocusAreaGroup.find(params[:goal_id])
     @target = @goal.focus_areas.build
     authorize @target
   end
 
-  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @goal = FocusAreaGroup.find(params[:goal_id])
-
+  def create
     position = @goal.focus_areas.maximum(:position) || 0
     @target = @goal.focus_areas.build(target_params.merge(position: position + 1))
 
@@ -30,7 +27,7 @@ class TargetsController < ApplicationController
 
     if @target.save
       respond_to do |format|
-        format.html { redirect_to impact_card_data_model_path(@target) }
+        format.html { redirect_to data_model_path(@target) }
         format.turbo_stream
       end
     else
@@ -51,7 +48,7 @@ class TargetsController < ApplicationController
 
     if @target.save
       respond_to do |format|
-        # format.html { redirect_to impact_card_data_model_path(@target) }
+        # format.html { redirect_to data_model_path(@target) }
         format.turbo_stream
       end
     else
@@ -63,7 +60,12 @@ class TargetsController < ApplicationController
 
   def target_params
     params.require(:focus_area).permit(DATA_MODEL_ELEMENT_PARAMS).tap do |whitelisted|
-      whitelisted.delete(:code) if whitelisted[:code].blank?
+      whitelisted[:code] = nil if whitelisted[:code].blank?
     end
+  end
+
+  def set_goal
+    @goal = FocusAreaGroup.find(params[:goal_id])
+    authorize @goal
   end
 end

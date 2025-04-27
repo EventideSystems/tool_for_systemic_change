@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 # Policy for impact card model records
-class ImpactCardDataModelPolicy < ApplicationPolicy
+class DataModelPolicy < ApplicationPolicy
   # Scope class for LabelPolicy
   class Scope < Scope
     def resolve
-      scope.where(workspace_id: workspace_ids).or(ImpactCardDataModel.where(system_model: true))
+      scope.where(workspace_id: workspace_ids).or(DataModel.where(system_model: true))
     end
 
     def workspace_ids

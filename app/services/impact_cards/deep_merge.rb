@@ -36,7 +36,7 @@ module ImpactCards
         raise(ArgumentError, 'Impact cards must be in the same workspace')
       end
 
-      return if impact_card.impact_card_data_model == other_impact_card.impact_card_data_model
+      return if impact_card.data_model == other_impact_card.data_model
 
       raise(ArgumentError, 'Impact cards must use the same data model')
     end

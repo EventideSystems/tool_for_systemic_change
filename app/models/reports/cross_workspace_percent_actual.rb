@@ -78,11 +78,11 @@ module Reports
             inner join initiatives on checklist_items.initiative_id = initiatives.id
             inner join scorecards on initiatives.scorecard_id = scorecards.id
             inner join workspaces on scorecards.workspace_id = workspaces.id
-            inner join impact_card_data_models on scorecards.impact_card_data_model_id = impact_card_data_models.id
+            inner join data_models on scorecards.data_model_id = data_models.id
             where workspaces.id in (#{workspaces.pluck(:id).join(',')})
             and initiatives.deleted_at is null
             and scorecards.deleted_at is null
-            and impact_card_data_models.name = 'Transition Card'
+            and data_models.name = 'Transition Card'
             group by workspaces.id, scorecards.id, initiatives.id
         )
 
@@ -97,7 +97,7 @@ module Reports
         inner join initiatives on raw_percent_actual.initiative_id = initiatives.id
         inner join scorecards on initiatives.scorecard_id = scorecards.id
         inner join workspaces on scorecards.workspace_id = workspaces.id
-        inner join impact_card_data_models on scorecards.impact_card_data_model_id = impact_card_data_models.id
+        inner join data_models on scorecards.data_model_id = data_models.id
         order by workspace_name, impact_card_name, initiative_name
       SQL
 

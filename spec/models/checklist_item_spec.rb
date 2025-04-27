@@ -41,7 +41,7 @@ RSpec.describe(ChecklistItem) do
     create(:checklist_item, initiative:, characteristic:, user:, comment: 'test', status: :planned)
   end
   let(:initiative) { create(:initiative, scorecard:) }
-  let(:scorecard) { create(:scorecard, workspace:, impact_card_data_model:) }
+  let(:scorecard) { create(:scorecard, workspace:, data_model:) }
 
   before { initiative.checklist_items << checklist_item }
 

@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
 
     @scorecards = policy_scope(Scorecard).order(:name)
     @grouped_scorecards = @scorecards.group_by do |scorecard|
-      scorecard.impact_card_data_model.name
+      scorecard.data_model.name
     end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
       scorecards.map do |scorecard|
         [scorecard.name, scorecard.id]
@@ -154,7 +154,7 @@ class ReportsController < ApplicationController
   end
 
   def report_filename_prefix(scorecard)
-    scorecard.impact_card_data_model.name.tr(' ', '_')
+    scorecard.data_model.name.tr(' ', '_')
   end
 
   def time_stamp_suffix

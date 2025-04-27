@@ -42,12 +42,12 @@ class FocusArea < ApplicationRecord
   validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   delegate :workspace, to: :focus_area_group
-  delegate :impact_card_data_model, to: :focus_area_group
+  delegate :data_model, to: :focus_area_group
 
-  scope :per_data_model, lambda { |impact_card_data_model_id|
+  scope :per_data_model, lambda { |data_model_id|
     joins(:focus_area_group)
       .where(
-        'focus_area_groups.impact_card_data_model_id' => impact_card_data_model_id
+        'focus_area_groups.data_model_id' => data_model_id
       )
   }
 

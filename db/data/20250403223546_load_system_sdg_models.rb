@@ -6,7 +6,7 @@ class LoadSystemSdgModels < ActiveRecord::Migration[8.0]
       'sustainable_development_goals_and_targets.yml',
       'sustainable_development_goals_targets_and_indicators.yml'
     ].each do |filename|
-      ImpactCardDataModels::Import.call(filename: Rails.root.join('db/data_models', filename))
+      DataModels::Import.call(filename: Rails.root.join('db/data_models', filename))
     end
   end
 
@@ -15,7 +15,7 @@ class LoadSystemSdgModels < ActiveRecord::Migration[8.0]
       'Sustainable Development Goals and Targets',
       'Sustainable Development Goals, Targets and Indicators'
     ].each do |model_name|
-      ImpactCardDataModel.where(system_model: true).find_by(name: model_name)&.really_destroy!
+      DataModel.where(system_model: true).find_by(name: model_name)&.really_destroy!
     end
   end
 end

@@ -4,9 +4,9 @@
 class IndicatorsController < ApplicationController
   include DataModelSupport
 
-  def index
-    @target = FocusArea.find(params[:target_id])
-  end
+  before_action :set_target, only: %i[index new create]
+
+  def index; end
 
   def show
     @indicator = Characteristic.find(params[:id])
@@ -14,14 +14,11 @@ class IndicatorsController < ApplicationController
   end
 
   def new
-    @target = FocusArea.find(params[:target_id])
     @indicator = @target.characteristics.build
     authorize @indicator
   end
 
-  def create # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    @target = FocusArea.find(params[:target_id])
-
+  def create
     position = @target.characteristics.maximum(:position) || 0
     @indicator = @target.characteristics.build(indicator_params.merge(position: position + 1))
 
@@ -30,7 +27,7 @@ class IndicatorsController < ApplicationController
     if @indicator.save
 
       respond_to do |format|
-        format.html { redirect_to impact_card_data_model_path(@indicator) }
+        format.html { redirect_to data_model_path(@indicator) }
         format.turbo_stream
       end
     else
@@ -51,7 +48,7 @@ class IndicatorsController < ApplicationController
 
     if @indicator.save
       respond_to do |format|
-        format.html { redirect_to impact_card_data_model_path(@indicator) }
+        format.html { redirect_to data_model_path(@indicator) }
         format.turbo_stream
       end
     else
@@ -63,7 +60,12 @@ class IndicatorsController < ApplicationController
 
   def indicator_params
     params.require(:characteristic).permit(DATA_MODEL_ELEMENT_PARAMS).tap do |whitelisted|
-      whitelisted.delete(:code) if whitelisted[:code].blank?
+      whitelisted[:code] = nil if whitelisted[:code].blank?
     end
+  end
+
+  def set_target
+    @target = FocusArea.find(params[:target_id])
+    authorize @target
   end
 end

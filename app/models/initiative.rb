@@ -98,8 +98,8 @@ class Initiative < ApplicationRecord
                         characteristic: { focus_area: :focus_area_group }
                       ).where(
                         'checklist_items.initiative_id' => id,
-                        'focus_area_groups_focus_areas_2.impact_card_data_model_id' =>
-                          scorecard.impact_card_data_model_id
+                        'focus_area_groups_focus_areas_2.data_model_id' =>
+                          scorecard.data_model_id
                       ).order(
                         'focus_area_groups_focus_areas_2.position',
                         'focus_areas_characteristics.position',
@@ -151,7 +151,7 @@ class Initiative < ApplicationRecord
   # TODO: Move to a service object
   def create_missing_checklist_items! # rubocop:disable Metrics/MethodLength
     missing_characteristic_ids = Characteristic
-                                 .per_data_model(scorecard.impact_card_data_model_id)
+                                 .per_data_model(scorecard.data_model_id)
                                  .pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?

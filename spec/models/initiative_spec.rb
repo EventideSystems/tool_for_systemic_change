@@ -40,15 +40,15 @@ RSpec.describe(Initiative, type: :model) do
 
   describe '#checklist_items_ordered_by_ordered_focus_area' do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:default_workspace) { create(:workspace) }
-    let(:impact_card_data_model) { create(:impact_card_data_model, workspace: default_workspace) }
-    let(:focus_area_group) { create(:focus_area_group, impact_card_data_model:) }
+    let(:data_model) { create(:data_model, workspace: default_workspace) }
+    let(:focus_area_group) { create(:focus_area_group, data_model:) }
     let(:focus_area) { create(:focus_area, focus_area_group:, position: 1) }
 
     let!(:characteristic_1) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let!(:characteristic_2) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let(:stakeholder_type) { create(:stakeholder_type, workspace: default_workspace) }
 
-    let(:scorecard) { create(:scorecard, workspace: default_workspace, impact_card_data_model:) }
+    let(:scorecard) { create(:scorecard, workspace: default_workspace, data_model:) }
 
     let!(:initiative) do
       create(:initiative, scorecard:,

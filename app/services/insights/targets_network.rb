@@ -41,7 +41,7 @@ module Insights
     def workspace_focus_areas
       @workspace_focus_areas ||=
         transition_card
-        .impact_card_data_model
+        .data_model
         .focus_area_groups
         .includes(focus_areas: :characteristics)
         .flat_map(&:focus_areas)

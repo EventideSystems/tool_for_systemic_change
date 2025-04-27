@@ -38,13 +38,13 @@ class Characteristic < ApplicationRecord
 
   delegate :position, to: :focus_area, prefix: true # TODO: Check if this is needed, see `identifier` method below
 
-  delegate :impact_card_data_model, to: :focus_area
+  delegate :data_model, to: :focus_area
   delegate :workspace, to: :focus_area
 
-  scope :per_data_model, lambda { |impact_card_data_model_id|
+  scope :per_data_model, lambda { |data_model_id|
     joins(focus_area: :focus_area_group)
       .where(
-        'focus_area_groups_focus_areas.impact_card_data_model_id' => impact_card_data_model_id
+        'focus_area_groups_focus_areas.data_model_id' => data_model_id
       )
   }
 

@@ -1,4 +1,4 @@
-<%= turbo_stream.append dom_id(@impact_card_data_model, :goals_list) do %>
+<%= turbo_stream.append dom_id(@data_model, :goals_list) do %>
   <div class="mb-4 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
     <%= turbo_frame_tag dom_id(@goal) do %>
       <%= render partial: 'link', locals: { goal: @goal } %>
@@ -51,12 +51,12 @@
   </div>
 <% end %>
 
-<%= turbo_stream.update dom_id(@impact_card_data_model, :new_goal) do %>
+<%= turbo_stream.update dom_id(@data_model, :new_goal) do %>
   <div class="flex justify-end">
     <%= 
       link_to(
         'Create Goal', 
-        new_impact_card_data_model_goal_path(impact_card_data_model_id: @impact_card_data_model.id), 
+        new_data_model_goal_path(data_model_id: @data_model.id), 
         class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
         data: { turbo_stream: true }
       )

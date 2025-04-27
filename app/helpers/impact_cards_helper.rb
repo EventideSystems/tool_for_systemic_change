@@ -35,8 +35,8 @@ module ImpactCardsHelper
   end
 
   def choices_for_statuses(statuses, impact_card) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    focus_area_groups = impact_card.impact_card_data_model.focus_area_groups
-    focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:impact_card_data_model_id, :position)
+    focus_area_groups = impact_card.data_model.focus_area_groups
+    focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:data_model_id, :position)
     classic_mode_colors = focus_areas.map(&:color).values_at(0, focus_areas.length / 2, -1).uniq
 
     statuses.map do |status|
@@ -74,7 +74,7 @@ module ImpactCardsHelper
   private
 
   def grouped_impact_cards_for_workspace(workspace)
-    workspace.scorecards.group_by(&:impact_card_data_model).transform_keys(&:name).transform_values do |impact_cards|
+    workspace.scorecards.group_by(&:data_model).transform_keys(&:name).transform_values do |impact_cards|
       impact_cards.pluck(:name, :id)
     end
   end

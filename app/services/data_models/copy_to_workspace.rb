@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ImpactCardDataModels
+module DataModels
   # Copy data model into a workspace
   class CopyToWorkspace
     attr_reader :data_model, :workspace
@@ -20,7 +20,7 @@ module ImpactCardDataModels
 
           data_model.focus_area_groups.each do |focus_area_group|
             new_focus_area_group = focus_area_group.dup
-            new_focus_area_group.impact_card_data_model = new_data_model
+            new_focus_area_group.data_model = new_data_model
             new_focus_area_group.save!
 
             focus_area_group.focus_areas.each do |focus_area|
@@ -50,7 +50,7 @@ module ImpactCardDataModels
       candidate_name = data_model.name
       count = 0
 
-      while workspace.impact_card_data_models.exists?(name: candidate_name)
+      while workspace.data_models.exists?(name: candidate_name)
         count += 1
         candidate_name = "#{data_model.name} (#{count})"
       end

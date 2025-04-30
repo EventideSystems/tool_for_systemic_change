@@ -56,6 +56,20 @@ class GoalsController < ApplicationController
     end
   end
 
+  def destroy
+    @goal = FocusAreaGroup.find(params[:id])
+    authorize @goal
+
+    if @goal.destroy
+      respond_to do |format|
+        format.html { redirect_to data_model_path(@goal) }
+        format.turbo_stream
+      end
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   def goal_params

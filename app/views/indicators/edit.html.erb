@@ -1,3 +1,10 @@
 <%= turbo_frame_tag dom_id(@indicator) do %>
-  <%= render 'form', indicator: @indicator, url: indicator_path(@indicator), cancel_path: indicator_path(@indicator) %>
+  <%= 
+    render(
+      'data_model_elements/form', 
+      element: @indicator, 
+      url: indicator_path(@indicator), 
+      cancel_path: indicator_path(@indicator)
+    ) 
+  %>
 <% end %>

@@ -1,8 +1,8 @@
-  <%= form_with(model: @target, local: true, url:, class: 'mb-1 mt-1') do |form| %>
+  <%= form_with(model: element, local: true, url:, class: 'mb-3 mt-1 rounded-lg p-4 bg-zinc-200 dark:bg-zinc-900') do |form| %>
     <div class="grid grid-cols-4 gap-4 w-full">
       <div class="sm:col-span-4">
         <div class="mt-2">
-          <%= form.text_field(:name, placeholder: 'Target name', autofocus: true, required: true) %>
+          <%= form.text_field(:name, placeholder: 'Name', autofocus: true, required: true) %>
         </div>
       </div>
 
@@ -32,14 +32,31 @@
       <div class="col-span-full">
         <%= form.label :description %>
         <div class="mt-2">
-          <%= form.rich_textarea :description, rows: 3, placeholder: 'Target description' %>
+          <%= form.rich_textarea :description, rows: 3, placeholder: 'Description' %>
         </div>
-        <p class="text-sm/6 text-gray-600 dark:text-gray-400">A brief description of the target (optional).</p>
+        <p class="text-sm/6 text-gray-600 dark:text-gray-400">A brief description of the element (optional).</p>
       </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-4 w-full pt-2 pb-3">
-      <div class="col-span-4 flex justify-end space-x-4">
+    <div class="grid grid-cols-2 gap-4 w-full pt-5 pb-3 flex justify-between">
+      
+      <div class="flex justify-start">
+        <%- if local_assigns[:destroy_path] %>
+          <%= link_to(
+            'Delete',
+            destroy_path,        
+            data: {
+              turbo_method: :delete,
+              controller: "confirmation",
+              action: 'click->confirmation#confirm',
+              confirmation_message_value: 'Are you sure you want to delete this element?'
+            },
+            class: TailwindClasses::DANGER_ZONE_BUTTON_CLASS
+          ) %>
+        <% end %>
+      </div>
+   
+      <div class="flex justify-end space-x-4">
         <%= link_to(
           'Cancel',
           cancel_path,

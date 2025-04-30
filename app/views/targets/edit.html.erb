@@ -1,3 +1,10 @@
 <%= turbo_frame_tag dom_id(@target) do %>
-  <%= render 'form', target: @target, url: target_path(@target), cancel_path: target_path(@target) %>
+  <%= 
+    render(
+      'data_model_elements/form', 
+      element: @target, 
+      url: target_path(@target), 
+      cancel_path: target_path(@target)
+    ) 
+  %>
 <% end %>

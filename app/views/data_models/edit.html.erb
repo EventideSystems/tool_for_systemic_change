@@ -35,20 +35,20 @@
 
   <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
     <%= turbo_frame_tag dom_id(@data_model, :goals_list) do %>
-      <% @data_model.focus_area_groups.each do |focus_area_group| %>
-        <%= turbo_frame_tag dom_id(focus_area_group) do %>
+      <% @data_model.children.each do |goal| %>
+        <%= turbo_frame_tag dom_id(goal) do %>
           <div class="mb-6 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-            <%= turbo_frame_tag dom_id(focus_area_group, :link) do %>
-              <%= render '/goals/link', goal: focus_area_group %>
+            <%= turbo_frame_tag dom_id(goal, :link) do %>
+              <%= render '/goals/link', goal: goal %>
             <% end %>
-            <%= turbo_frame_tag dom_id(focus_area_group, :targets_list) do %>
-              <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
+            <%= turbo_frame_tag dom_id(goal, :targets_list) do %>
+              <% goal.focus_areas.order(:position).each do |focus_area| %>
                 <%= turbo_frame_tag dom_id(focus_area) do %>
                   <div class="mb-4 ml-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
                     <%= turbo_frame_tag dom_id(focus_area, :link) do %>
                       <%= render '/targets/link', target: focus_area %>
                     <% end %>
-                    <%= turbo_frame_tag dom_id( focus_area, :indicators_list) do %>
+                    <%= turbo_frame_tag dom_id(focus_area, :indicators_list) do %>
                       <% focus_area.characteristics.each do |characteristic| %>
                         <%= turbo_frame_tag dom_id(characteristic) do %>
                           <div class="ml-5 bg-white shadow-sm p-0.5 dark:bg-zinc-800">
@@ -67,8 +67,8 @@
               <% end %>
             <% end %>
 
-            <%= turbo_frame_tag dom_id(focus_area_group, :new_target) do %>
-              <%= render 'targets/link_to_new_element', parent: focus_area_group %>
+            <%= turbo_frame_tag dom_id(goal, :new_target) do %>
+              <%= render 'targets/link_to_new_element', parent: goal %>
             <% end %>
             
           </div>

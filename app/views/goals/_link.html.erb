@@ -7,8 +7,4 @@
     <%= render 'data_model_elements/link_text', element: goal %>  
   </h2>
 <% end %>
-<%- if goal.description.present? %>        
-  <div class="flex text-zinc-500 mb-4">
-    <%= rich_text(goal.description) %>
-  </div>
-<% end %>
+<%= render 'data_model_elements/description', element: goal %>

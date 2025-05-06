@@ -61,7 +61,7 @@ class TargetsController < ApplicationController
     @target = FocusArea.find(params[:id])
     authorize @target
 
-    if @target.destroy
+    if @target.delete
       respond_to do |format|
         format.turbo_stream
       end

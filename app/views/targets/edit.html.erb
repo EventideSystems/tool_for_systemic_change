@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(@target) do %>
+<%= turbo_frame_tag dom_id(@target, :link) do %>
   <%= 
     render(
       'data_model_elements/form', 

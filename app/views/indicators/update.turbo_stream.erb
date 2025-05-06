@@ -1,5 +1,7 @@
-<%= turbo_stream.replace @indicator do %>
-  <%= turbo_frame_tag dom_id(@indicator) do %>
-    <%= render 'link', indicator: @indicator, link_class: 'transition-colors ease-in duration-700 animate-flash-yellow' %>
-  <% end %>
+<%= turbo_stream.update dom_id(@indicator) do %>
+  <div class="ml-5 bg-white p-4 shadow-sm p-0.5 dark:bg-zinc-800">
+    <%= turbo_frame_tag dom_id(@indicator, :link) do %>
+      <%= render '/indicators/link', indicator: @indicator, link_class: 'animate-flash-yellow' %>
+    <% end %>
+  </div>
 <% end %>

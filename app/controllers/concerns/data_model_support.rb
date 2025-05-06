@@ -12,4 +12,8 @@ module DataModelSupport
     position
     short_name
   ].freeze
+
+  def next_position(siblings)
+    siblings.maximum(:position).to_i + 1
+  end
 end

@@ -36,69 +36,48 @@
   <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
     <%= turbo_frame_tag dom_id(@data_model, :goals_list) do %>
       <% @data_model.focus_area_groups.each do |focus_area_group| %>
-        <div class="mb-6 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-          <%= turbo_frame_tag dom_id(focus_area_group) do %>
-            <%= render '/goals/link', goal: focus_area_group %>
-          <% end %>
-          <%= turbo_frame_tag dom_id(focus_area_group, :targets_list) do %>
-            <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
-              <div class="mb-4 ml-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+        <%= turbo_frame_tag dom_id(focus_area_group) do %>
+          <div class="mb-6 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+            <%= turbo_frame_tag dom_id(focus_area_group, :link) do %>
+              <%= render '/goals/link', goal: focus_area_group %>
+            <% end %>
+            <%= turbo_frame_tag dom_id(focus_area_group, :targets_list) do %>
+              <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
                 <%= turbo_frame_tag dom_id(focus_area) do %>
-                  <%= render '/targets/link', target: focus_area %>
-                <% end %>
-                <ul class="list-disc pl-8">
-                  <%= turbo_frame_tag dom_id( focus_area, :indicators_list) do %>
-                    <% focus_area.characteristics.each do |characteristic| %>
-                      <%= turbo_frame_tag dom_id(characteristic) do %>
-                        <%= render '/indicators/link', indicator: characteristic %>
+                  <div class="mb-4 ml-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+                    <%= turbo_frame_tag dom_id(focus_area, :link) do %>
+                      <%= render '/targets/link', target: focus_area %>
+                    <% end %>
+                    <%= turbo_frame_tag dom_id( focus_area, :indicators_list) do %>
+                      <% focus_area.characteristics.each do |characteristic| %>
+                        <%= turbo_frame_tag dom_id(characteristic) do %>
+                          <div class="ml-5 bg-white shadow-sm p-0.5 dark:bg-zinc-800">
+                            <%= turbo_frame_tag dom_id(characteristic, :link) do %>
+                              <%= render '/indicators/link', indicator: characteristic %>
+                            <% end %>
+                          </div>
+                        <% end %>
                       <% end %>
                     <% end %>
-                  <% end %>
-                </ul>
-                <%= turbo_frame_tag dom_id(focus_area, :new_indicator) do %>
-                  <div class="flex justify-end">
-                    <%= 
-                      link_to(
-                        'Create Indicator', 
-                        new_target_indicator_path(target_id: focus_area.id), 
-                        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-                        data: { turbo_stream: true }
-                      )
-                    %>
+                    <%= turbo_frame_tag dom_id(focus_area, :new_indicator) do %>
+                      <%= render 'indicators/link_to_new_element', parent: focus_area %>
+                    <% end %>
                   </div>
                 <% end %>
-              </div>
+              <% end %>
             <% end %>
-          <% end %>
 
-          <%= turbo_frame_tag dom_id(focus_area_group, :new_target) do %>
-            <div class="flex justify-start">
-              <%= 
-                link_to(
-                  'Create Target', 
-                  new_goal_target_path(goal_id: focus_area_group.id), 
-                  class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-                  data: { turbo_stream: true }
-                )
-              %>
-            </div>
-          <% end %>
-          
-        </div>
+            <%= turbo_frame_tag dom_id(focus_area_group, :new_target) do %>
+              <%= render 'targets/link_to_new_element', parent: focus_area_group %>
+            <% end %>
+            
+          </div>
+        <% end %>
       <% end %>
     <% end %>
     
     <%= turbo_frame_tag dom_id(@data_model, :new_goal) do %>
-      <div class="flex justify-start">
-        <%= 
-          link_to(
-            'Create Goal', 
-            new_data_model_goal_path(data_model_id: @data_model.id), 
-            class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-            data: { turbo_stream: true }
-          )
-        %>
-      </div>
+       <%= render 'goals/link_to_new_element', data_model_id: @data_model.id %>
     <% end %>
   </div>
 </div>

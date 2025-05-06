@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(@goal) do %>
+<%= turbo_frame_tag dom_id(@goal, :link) do %>
   <%= 
     render(
       'data_model_elements/form', 
@@ -6,6 +6,7 @@
       url: goal_path(@goal), 
       cancel_path: goal_path(@goal),
       destroy_path: goal_path(@goal),
+      max_position: @max_position
     ) 
   %>
 <% end %>

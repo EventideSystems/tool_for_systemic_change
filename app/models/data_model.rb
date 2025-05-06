@@ -45,6 +45,8 @@ class DataModel < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: { scope: :workspace_id }, if: -> { workspace_id.present? }
 
+  alias children focus_area_groups
+
   def codes
     [focus_area_groups, focus_areas, characteristics]
       .flat_map(&:reload)

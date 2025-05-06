@@ -30,7 +30,6 @@ export default class extends Controller {
   }
 
   beforePrint() {
-    debugger
     const svg = this.mapTarget.querySelector('svg');
     const bounds = svg.getBBox();
 

@@ -4,7 +4,9 @@
       'data_model_elements/form', 
       element: @indicator, 
       url: indicator_path(@indicator), 
-      cancel_path: indicator_path(@indicator)
+      cancel_path: indicator_path(@indicator),
+      destroy_path: indicator_path(@indicator),
+      max_position: @max_position
     ) 
   %>
 <% end %>

@@ -4,7 +4,9 @@
       'data_model_elements/form', 
       element: @target, 
       url: target_path(@target), 
-      cancel_path: target_path(@target)
+      cancel_path: target_path(@target),
+      destroy_path: target_path(@target),
+      max_position: @max_position
     ) 
   %>
 <% end %>

@@ -1,6 +1,6 @@
 <%= turbo_stream.append dom_id(@data_model, :goals_list) do %>
   <div class="mb-4 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
-    <%= turbo_frame_tag dom_id(@goal) do %>
+    <%= turbo_frame_tag dom_id(@goal, :link) do %>
       <%= render partial: 'link', locals: { goal: @goal } %>
     <% end %>
 
@@ -20,46 +20,19 @@
             <% end %>
           </ul>
           <%= turbo_frame_tag dom_id(focus_area, :new_indicator) do %>
-            <div class="flex justify-end">
-              <%= 
-                link_to(
-                  'Create Indicator', 
-                  new_target_indicator_path(target_id: focus_area.id), 
-                  class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-                  data: { turbo_stream: true }
-                )
-              %>
-            </div>
+            <%= render 'indicators/link_to_new_element', parent: focus_area %>
           <% end %>
         </div>
       <% end %>
     <% end %>
 
     <%= turbo_frame_tag dom_id(@goal, :new_target) do %>
-      <div class="flex justify-end">
-        <%= 
-          link_to(
-            'Create Target', 
-            new_goal_target_path(goal_id: @goal.id), 
-            class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-            data: { turbo_stream: true }
-          )
-        %>
-      </div>
+      <%= render 'targets/link_to_new_element', parent: @goal %>
     <% end %>
 
   </div>
 <% end %>
 
 <%= turbo_stream.update dom_id(@data_model, :new_goal) do %>
-  <div class="flex justify-end">
-    <%= 
-      link_to(
-        'Create Goal', 
-        new_data_model_goal_path(data_model_id: @data_model.id), 
-        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-        data: { turbo_stream: true }
-      )
-    %>
-  </div>
+  <%= render 'goals/link_to_new_element', data_model_id: @data_model.id %>
 <% end %>

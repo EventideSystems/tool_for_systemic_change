@@ -54,4 +54,25 @@ RSpec.describe FocusArea, type: :model do
       end
     end
   end
+
+  describe 'siblings' do
+    let(:data_model) { create(:data_model) }
+    let(:focus_area_group) { create(:focus_area_group, data_model:) }
+    # rubocop:disable RSpec/IndexedLet
+    let!(:child1) { create(:focus_area, focus_area_group:) }
+    let!(:child2) { create(:focus_area, focus_area_group:) }
+    let!(:child3) { create(:focus_area, focus_area_group:) }
+    # rubocop:enable RSpec/IndexedLet
+
+    it 'returns all siblings except the current object' do # rubocop:disable RSpec/MultipleExpectations
+      expect(child1.siblings).to contain_exactly(child2, child3)
+      expect(child2.siblings).to contain_exactly(child1, child3)
+      expect(child3.siblings).to contain_exactly(child1, child2)
+    end
+
+    it 'returns an empty array if the object has no siblings' do
+      allow(focus_area_group).to receive(:children).and_return([child1])
+      expect(child1.siblings).to eq([])
+    end
+  end
 end

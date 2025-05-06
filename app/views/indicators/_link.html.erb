@@ -3,13 +3,14 @@
     edit_indicator_path(indicator), 
     data: { turbo_frame: dom_id(indicator) }
   ) do %>
-    <h4 class="text-sm font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2" title="<%= indicator.name %>">
-      <%= render 'data_model_elements/link_text', element: indicator %>
-    </h4>
+  <h4 class="text-sm font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2 <%= local_assigns[:link_class] %>" title="<%= indicator.name %>">
+    <%= render 'data_model_elements/link_text', element: indicator %>
+  </h4>
 <% end %>
 
-  <%- if indicator.description.present? %>        
-    <div class="flex text-zinc-500 mb-4">
-      <%= rich_text(indicator.description) %>
-    </div>
-  <% end %>
+
+<%- if indicator.description.present? %>        
+  <div class="flex text-zinc-500 mb-4">
+    <%= rich_text(indicator.description) %>
+  </div>
+<% end %>

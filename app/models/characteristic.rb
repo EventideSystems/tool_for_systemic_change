@@ -27,19 +27,22 @@ class Characteristic < ApplicationRecord
   acts_as_paranoid
 
   include ValidateUniqueCode
+  include DataElementable
 
   default_scope { order('focus_areas.position', :position).joins(:focus_area) }
 
   belongs_to :focus_area
   has_many :checklist_items, dependent: :nullify
 
-  # TODO: Add scoped position validation to database schema
+  # TODO: Add validations to the database schema (taking into account the deleted_at column)
   validates :position, presence: true, uniqueness: { scope: :focus_area } # rubocop:disable Rails/UniqueValidationWithoutIndex
-
   delegate :position, to: :focus_area, prefix: true # TODO: Check if this is needed, see `identifier` method below
 
   delegate :data_model, to: :focus_area
   delegate :workspace, to: :focus_area
+
+  # Required by the DataElementable concern
+  alias parent focus_area
 
   scope :per_data_model, lambda { |data_model_id|
     joins(focus_area: :focus_area_group)
@@ -52,8 +55,4 @@ class Characteristic < ApplicationRecord
   def identifier
     "#{focus_area.position}.#{position}"
   end
-
-  # def short_name
-  #   name.match(/(\d*\.\d*)\s.*/)[1] || name
-  # end
 end

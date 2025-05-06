@@ -27,6 +27,7 @@
 class FocusArea < ApplicationRecord
   include RandomColorAttribute
   include ValidateUniqueCode
+  include DataElementable
 
   default_scope { order('focus_area_groups.position', :position).joins(:focus_area_group) }
 
@@ -38,11 +39,15 @@ class FocusArea < ApplicationRecord
   belongs_to :focus_area_group, inverse_of: :focus_areas
   has_many :characteristics, -> { order(position: :desc) }, dependent: :restrict_with_error, inverse_of: :focus_area
 
-  # TODO: Add validations to the database schema
+  # TODO: Add validations to the database schema (taking into account the deleted_at column)
   validates :position, presence: true, uniqueness: { scope: :focus_area_group } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   delegate :workspace, to: :focus_area_group
   delegate :data_model, to: :focus_area_group
+
+  # Required by the DataElementable concern
+  alias children characteristics
+  alias parent focus_area_group
 
   scope :per_data_model, lambda { |data_model_id|
     joins(:focus_area_group)
@@ -50,8 +55,4 @@ class FocusArea < ApplicationRecord
         'focus_area_groups.data_model_id' => data_model_id
       )
   }
-
-  def full_name
-    [code, short_name.presence || name].compact.join(' ')
-  end
 end

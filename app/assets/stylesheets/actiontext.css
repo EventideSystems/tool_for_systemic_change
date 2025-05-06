@@ -17,7 +17,9 @@ trix-toolbar .trix-button-row {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  overflow-x: auto; }
+  overflow-x: auto; 
+  @apply rounded-md; /* Not quite working. Button is only rounded on top; */
+}
 
 trix-toolbar .trix-button-group {
   display: flex;

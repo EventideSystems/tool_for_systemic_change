@@ -1,5 +1,5 @@
 <%= turbo_stream.replace @goal do %>
-  <%= turbo_frame_tag dom_id(@goal) do %>
+  <%= turbo_frame_tag dom_id(@goal, :link) do %>
     <%= render 'link', goal: @goal, link_class: 'transition-colors ease-in duration-700 animate-flash-yellow' %>
   <% end %>
 <% end %>

@@ -5,7 +5,7 @@
 class GoalsController < ApplicationController
   include DataModelSupport
 
-  before_action :set_data_model, only: %i[index new create]
+  before_action :set_parent, only: %i[index new create]
 
   def index; end
 
@@ -15,19 +15,19 @@ class GoalsController < ApplicationController
   end
 
   def new
-    @goal = @data_model.focus_area_groups.build
+    @goal = @data_model.children.build(position: next_position(@data_model.children))
+    @max_position = @data_model.children.maximum(:position).to_i + 1
     authorize @goal
   end
 
   def create
-    position = @data_model.focus_area_groups.maximum(:position) || 0
-    @goal = @data_model.focus_area_groups.build(goal_params.merge(position: position + 1))
+    position = @data_model.children.maximum(:position) || 0
+    @goal = @data_model.children.build(data_element_params.merge(position: position + 1))
 
     authorize @goal
 
     if @goal.save
       respond_to do |format|
-        # format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
       end
     else
@@ -37,6 +37,7 @@ class GoalsController < ApplicationController
 
   def edit
     @goal = FocusAreaGroup.find(params[:id])
+    @max_position = @goal.parent.children.maximum(:position)
     authorize @goal
   end
 
@@ -44,7 +45,7 @@ class GoalsController < ApplicationController
     @goal = FocusAreaGroup.find(params[:id])
     authorize @goal
 
-    @goal.assign_attributes(goal_params)
+    @goal.assign_attributes(data_element_params)
 
     if @goal.save
       respond_to do |format|
@@ -60,9 +61,8 @@ class GoalsController < ApplicationController
     @goal = FocusAreaGroup.find(params[:id])
     authorize @goal
 
-    if @goal.destroy
+    if @goal.delete
       respond_to do |format|
-        format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
       end
     else
@@ -72,13 +72,13 @@ class GoalsController < ApplicationController
 
   private
 
-  def goal_params
+  def data_element_params
     params.require(:focus_area_group).permit(DATA_MODEL_ELEMENT_PARAMS).tap do |whitelisted|
       whitelisted[:code] = nil if whitelisted[:code].blank?
     end
   end
 
-  def set_data_model
+  def set_parent
     @data_model = DataModel.find(params[:data_model_id])
     authorize @data_model
   end

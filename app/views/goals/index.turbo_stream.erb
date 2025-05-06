@@ -1,12 +1,3 @@
 <%= turbo_stream.update dom_id(@data_model, :new_goal) do %>
-  <div class="flex justify-end">
-    <%= 
-      link_to(
-        'Create Goal', 
-        new_data_model_goal_path(impact_card_data_mode_id: @data_model.id), 
-        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-        data: { turbo_stream: true }
-      )
-    %>
-  </div>
+  <%= render 'link_to_new_element', data_model_id: @data_model.id %>
 <% end %>

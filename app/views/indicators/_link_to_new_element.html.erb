@@ -1,0 +1,10 @@
+<div class="flex justify-end">
+  <%= 
+    link_to(
+      'Create Indicator', 
+      new_target_indicator_path(target_id: parent.id), 
+      class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
+      data: { turbo_stream: true }
+    )
+  %>
+</div>

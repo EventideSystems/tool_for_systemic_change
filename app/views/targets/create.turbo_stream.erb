@@ -14,29 +14,11 @@
       <% end %>
     </ul>
     <%= turbo_frame_tag dom_id(@target, :new_indicator) do %>
-      <div class="flex justify-end">
-        <%= 
-          link_to(
-            'Create Indicator', 
-            new_target_indicator_path(target_id: @target.id), 
-            class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-            data: { turbo_stream: true }
-          )
-        %>
-      </div>
+       <%= render 'targets/link_to_new_element', parent: @target %>
     <% end %>
   </div>
 <% end %>
 
 <%= turbo_stream.update dom_id(@goal, :new_target) do %>
-  <div class="flex justify-end">
-    <%= 
-      link_to(
-        'Create Target', 
-        new_goal_target_path(goal_id: @goal.id), 
-        class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500', 
-        data: { turbo_stream: true }
-      )
-    %>
-  </div>
+  <%= render 'targets/link_to_new_element', parent: @goal %>
 <% end %>

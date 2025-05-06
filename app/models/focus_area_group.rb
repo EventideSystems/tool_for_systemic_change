@@ -35,6 +35,7 @@
 class FocusAreaGroup < ApplicationRecord
   include RandomColorAttribute
   include ValidateUniqueCode
+  include DataElementable
 
   acts_as_paranoid
 
@@ -45,11 +46,11 @@ class FocusAreaGroup < ApplicationRecord
 
   has_many :focus_areas, dependent: :restrict_with_error
 
-  validates :position, presence: true
+  validates :position, presence: true # TODO: Scope uniqueness to data_model
 
   delegate :workspace, to: :data_model, allow_nil: true
 
-  def full_name
-    [code, short_name.presence || name].compact.join(' ')
-  end
+  # Required by the DataElementable concern
+  alias children focus_areas
+  alias parent data_model
 end

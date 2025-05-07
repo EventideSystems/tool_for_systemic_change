@@ -18,13 +18,13 @@ class GoalsController < DataElementsController
     authorize @goal
   end
 
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     @goal = @data_model.children.build(data_element_params)
 
     authorize @goal
 
     @goal.assign_attributes(data_element_params)
-    
+
     success = save_element(@goal, data_element_params[:position].presence || fallback_position(@data_model))
 
     if success
@@ -47,7 +47,7 @@ class GoalsController < DataElementsController
     authorize @goal
 
     @goal.assign_attributes(data_element_params)
-    siblings = @goal.siblings
+    @goal.siblings
 
     success = save_element(@goal, data_element_params[:position])
 
@@ -86,5 +86,4 @@ class GoalsController < DataElementsController
     @data_model = DataModel.find(params[:data_model_id])
     authorize @data_model
   end
-
 end

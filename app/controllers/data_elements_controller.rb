@@ -2,7 +2,6 @@
 
 # Base controller for the data elements (goals, targets, indicators)
 class DataElementsController < ApplicationController
-
   private
 
   def fallback_position(parent)
@@ -17,10 +16,11 @@ class DataElementsController < ApplicationController
     siblings = element.siblings
 
     ActiveRecord::Base.transaction do
-      siblings.each_with_index { |sibling, index| sibling.update_attribute(:position, index + 1) }
+      siblings.each_with_index { |sibling, index| sibling.update_attribute(:position, index + 1) } # rubocop:disable Rails/SkipsModelValidations
       element.delete
     end
   end
+
   # Save the element and its siblings, ensuring that the position is updated correctly
   # and that the transaction is handled properly.
   def save_element(element, new_position)
@@ -29,8 +29,8 @@ class DataElementsController < ApplicationController
     DataModels::RepositionElement.call(element:, new_position:, siblings:)
 
     ActiveRecord::Base.transaction do
-      siblings.each { |sibling| sibling.update_attribute(:position, sibling.position) } 
-      element.save 
+      siblings.each { |sibling| sibling.update_attribute(:position, sibling.position) } # rubocop:disable Rails/SkipsModelValidations
+      element.save
     end
   end
 
@@ -42,5 +42,4 @@ class DataElementsController < ApplicationController
     position
     short_name
   ].freeze
-
 end

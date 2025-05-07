@@ -40,7 +40,7 @@ class TargetsController < DataElementsController
     authorize @target
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength
     @target = FocusArea.find(params[:id])
     authorize @target
 

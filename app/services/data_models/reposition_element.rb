@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module DataModels
   # Reorder elements by position in a data model
   class RepositionElement
-    
     def initialize(element:, new_position:, siblings:)
       @siblings = siblings
       @element = element
@@ -24,9 +25,9 @@ module DataModels
       new(element:, new_position:, siblings:).call
     end
 
-    def call 
+    def call
       ordered_siblings = (siblings - [element]).sort_by(&:position)
-      
+
       ordered_siblings.insert(new_position - 1, element)
 
       element.position = new_position
@@ -36,5 +37,4 @@ module DataModels
       end
     end
   end
-
 end

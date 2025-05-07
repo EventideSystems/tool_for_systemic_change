@@ -17,7 +17,7 @@
         f.checkbox(
           :current_workspace,
           class: "form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600",
-          checked: (params[:current_workspace] == 'true') || (params[:other_workspaces].blank? && params[:system_models].blank?),
+          checked: (params[:current_workspace] == 'true') || (params[:other_workspaces].blank? && params[:public_models].blank?),
           id: 'current_workspace',
           onchange: 'this.form.requestSubmit()'
         )
@@ -43,14 +43,14 @@
     <span class="ml-2">
       <%= 
         f.checkbox(
-          :system_models,
+          :public_models,
           class: "form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600",
-          checked: params[:system_models] == 'true',
-          id: 'system_models',
+          checked: params[:public_models] == 'true',
+          id: 'public_models',
           onchange: 'this.form.requestSubmit()'
         )
       %> 
-      <%= f.label :system_models, 'System models', class: 'text-black dark:text-white' %>
+      <%= f.label :public_models, 'Public models', class: 'text-black dark:text-white' %>
     </span>
   <% end %>
 </div>

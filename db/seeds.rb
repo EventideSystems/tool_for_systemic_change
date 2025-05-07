@@ -41,14 +41,14 @@ end
 
 # Create system impact card data models
 
-sdgs_goals_and_targets = DataModel.where(system_model: true).find_by(name: 'SDGs Goals and Targets') 
+sdgs_goals_and_targets = DataModel.where(public_model: true).find_by(name: 'SDGs Goals and Targets') 
 
 if sdgs_goals_and_targets.nil?
   sdgs_goals_and_targets = DataModel.create!(
     name: 'SDGs Goals and Targets',
     short_name: 'SDGs',
     description: 'Sustainable Development Goals (SDGs), tracking only Goals and Targets (not Indicators)',
-    system_model: true,
+    public_model: true,
     status: :active
   ).tap do |model|
     model.focus_area_groups.create!(

@@ -17,7 +17,7 @@ require 'rails_helper'
 #  name         :string           not null
 #  short_name   :string
 #  status       :string           default("active"), not null
-#  system_model :boolean          default(FALSE)
+#  public_model :boolean          default(FALSE)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  workspace_id :bigint

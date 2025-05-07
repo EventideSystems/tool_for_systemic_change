@@ -7,6 +7,6 @@ class LoadLewinsChangeManagementModelExample < ActiveRecord::Migration[8.0]
   end
 
   def down
-    DataModel.find_by(system_model: true, name: "Lewin's Change Management Model")&.really_destroy!
+    DataModel.find_by(public_model: true, name: "Lewin's Change Management Model")&.really_destroy!
   end
 end

@@ -5,7 +5,7 @@ class DataModelPolicy < ApplicationPolicy
   # Scope class for LabelPolicy
   class Scope < Scope
     def resolve
-      scope.where(workspace_id: workspace_ids).or(DataModel.where(system_model: true))
+      scope.where(workspace_id: workspace_ids).or(DataModel.where(public_model: true))
     end
 
     def workspace_ids
@@ -37,7 +37,7 @@ class DataModelPolicy < ApplicationPolicy
   def copy_to_current_workspace?
     system_admin? || (
       workspace_admin?(current_workspace) &&
-      (workspace_admin?(record.workspace) || record.system_model) &&
+      (workspace_admin?(record.workspace) || record.public_model) &&
       current_workspace_not_expired?
     )
   end

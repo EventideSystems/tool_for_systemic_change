@@ -42,11 +42,11 @@ module DataModels
     private
 
     def find_or_create_data_model(data_model_source)
-      DataModel.where(system_model: true).find_or_create_by(name: data_model_source[:name]) do |model|
+      DataModel.where(public_model: true).find_or_create_by(name: data_model_source[:name]) do |model|
         model.description = data_model_source[:description]
         model.license = data_model_source[:license]
         model.author = data_model_source[:author]
-        model.system_model = true
+        model.public_model = true
         model.save!
       end
     end

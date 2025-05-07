@@ -12,7 +12,7 @@
   <div class="flex flex-wrap items-end justify-between gap-4 mt-4">
     <div class="w-full">
       <%= page_header_tag 'Edit Data Model' %>
-      
+    
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
           <%= render partial: 'resource_summary', locals: { name: @data_model.name, dom_id: dom_id(@data_model) } %>
@@ -27,14 +27,12 @@
             <%= render 'other_workspace_badge', data_model: @data_model %>
           </div>
         </div>
-        <div class="relative">
-        </div>
       </div>
     </div>
   </div>
 
   <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
-    <%= turbo_frame_tag dom_id(@data_model, :goals_list) do %>
+    <%= turbo_frame_tag dom_id(@data_model, :goals_list), class: 'w-full' do %>
       <% @data_model.children.order(:position).each do |goal| %>
         <%= turbo_frame_tag dom_id(goal) do %>
           <div class="mb-6 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">

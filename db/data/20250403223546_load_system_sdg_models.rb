@@ -15,7 +15,7 @@ class LoadSystemSdgModels < ActiveRecord::Migration[8.0]
       'Sustainable Development Goals and Targets',
       'Sustainable Development Goals, Targets and Indicators'
     ].each do |model_name|
-      DataModel.where(system_model: true).find_by(name: model_name)&.really_destroy!
+      DataModel.where(public_model: true).find_by(name: model_name)&.really_destroy!
     end
   end
 end

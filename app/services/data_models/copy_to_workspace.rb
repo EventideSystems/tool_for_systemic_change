@@ -14,7 +14,7 @@ module DataModels
       ActiveRecord::Base.transaction do
         data_model.dup.tap do |new_data_model|
           new_data_model.workspace = workspace
-          new_data_model.system_model = false
+          new_data_model.public_model = false
           new_data_model.name = new_workspace_name
           new_data_model.save!
 

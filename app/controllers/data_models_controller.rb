@@ -59,7 +59,7 @@ class DataModelsController < ApplicationController
   private
 
   def build_base_scope # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    filter_params = params.permit(q: %i[current_workspace other_workspaces system_models])
+    filter_params = params.permit(q: %i[current_workspace other_workspaces public_models])
 
     other_workspaces = current_user.workspaces.where.not(id: current_workspace.id)
 
@@ -74,10 +74,10 @@ class DataModelsController < ApplicationController
     base_scope = policy_scope(DataModel)
 
     base_scope = base_scope.where(workspace: permitted_workspaces)
-    if filter_params.dig(:q, :system_models) == '1'
-      base_scope.or(DataModel.where(system_model: true))
+    if filter_params.dig(:q, :public_models) == '1'
+      base_scope.or(DataModel.where(public_model: true))
     else
-      base_scope.where(system_model: [false, nil])
+      base_scope.where(public_model: [false, nil])
     end
   end
 end

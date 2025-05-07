@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_24_032115) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_06_122909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -149,7 +149,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_24_032115) do
     t.string "status", default: "active", null: false
     t.string "color", default: "#0d9488", null: false
     t.bigint "workspace_id"
-    t.boolean "system_model", default: false
+    t.boolean "public_model", default: false
     t.datetime "deleted_at"
     t.jsonb "metadata", default: {}
     t.datetime "created_at", null: false

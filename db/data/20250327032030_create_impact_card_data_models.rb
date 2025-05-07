@@ -22,7 +22,7 @@ class CreateImpactCardDataModels < ActiveRecord::Migration[8.0]
     FocusAreaGroup.with_deleted.update_all(data_model_id: nil)
     DataModel.where(
       name: ['Transition Card', 'Sustainable Development Goals'],
-      system_model: false
+      public_model: false
     ).each(&:really_destroy!)
   end
 

@@ -2,9 +2,7 @@
 
 # Controller for goals (aka focus areas)
 # This controller is a similar to the IndicatorsController, just at a different nesting level in the data model.
-class GoalsController < ApplicationController
-  include DataModelSupport
-
+class GoalsController < DataElementsController
   before_action :set_parent, only: %i[index new create]
 
   def index; end
@@ -21,12 +19,15 @@ class GoalsController < ApplicationController
   end
 
   def create
-    position = @data_model.children.maximum(:position) || 0
-    @goal = @data_model.children.build(data_element_params.merge(position: position + 1))
+    @goal = @data_model.children.build(data_element_params)
 
     authorize @goal
 
-    if @goal.save
+    @goal.assign_attributes(data_element_params)
+    
+    success = save_element(@goal, data_element_params[:position].presence || fallback_position(@data_model))
+
+    if success
       respond_to do |format|
         format.turbo_stream
       end
@@ -46,8 +47,11 @@ class GoalsController < ApplicationController
     authorize @goal
 
     @goal.assign_attributes(data_element_params)
+    siblings = @goal.siblings
 
-    if @goal.save
+    success = save_element(@goal, data_element_params[:position])
+
+    if success
       respond_to do |format|
         format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
@@ -61,7 +65,7 @@ class GoalsController < ApplicationController
     @goal = FocusAreaGroup.find(params[:id])
     authorize @goal
 
-    if @goal.delete
+    if delete_element(@goal)
       respond_to do |format|
         format.turbo_stream
       end
@@ -82,4 +86,5 @@ class GoalsController < ApplicationController
     @data_model = DataModel.find(params[:data_model_id])
     authorize @data_model
   end
+
 end

@@ -2,9 +2,7 @@
 
 # Controller for targets (aka focus areas)
 # This controller is a similar to the IndicatorsController, just at a different nesting level in the data model.
-class TargetsController < ApplicationController
-  include DataModelSupport
-
+class TargetsController < DataElementsController
   before_action :set_parent, only: %i[index new create]
 
   def index; end
@@ -21,12 +19,13 @@ class TargetsController < ApplicationController
   end
 
   def create
-    position = @goal.children.maximum(:position) || 0
-    @target = @goal.children.build(data_element_params.merge(position: position + 1))
+    @target = @goal.children.build(data_element_params)
 
     authorize @target
 
-    if @target.save
+    success = save_element(@target, data_element_params[:position].presence || fallback_position(@goal))
+
+    if success
       respond_to do |format|
         format.turbo_stream
       end
@@ -47,9 +46,10 @@ class TargetsController < ApplicationController
 
     @target.assign_attributes(data_element_params)
 
-    if @target.save
+    success = save_element(@target, data_element_params[:position])
+
+    if success
       respond_to do |format|
-        # format.html { redirect_to data_model_path(@target) }
         format.turbo_stream
       end
     else
@@ -61,7 +61,7 @@ class TargetsController < ApplicationController
     @target = FocusArea.find(params[:id])
     authorize @target
 
-    if @target.delete
+    if delete_element(@target)
       respond_to do |format|
         format.turbo_stream
       end

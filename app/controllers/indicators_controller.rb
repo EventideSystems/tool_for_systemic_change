@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 # Controller for indicators (aka characteristics)
-class IndicatorsController < ApplicationController
-  include DataModelSupport
-
+class IndicatorsController < DataElementsController
   before_action :set_parent, only: %i[index new create]
 
   def index; end
@@ -23,8 +21,9 @@ class IndicatorsController < ApplicationController
     @indicator = @target.children.build(data_element_params)
     authorize @indicator
 
-    if @indicator.save
+    success = save_element(@indicator, data_element_params[:position].presence || fallback_position(@target))
 
+    if success
       respond_to do |format|
         format.turbo_stream
       end
@@ -45,9 +44,10 @@ class IndicatorsController < ApplicationController
 
     @indicator.assign_attributes(data_element_params)
 
-    if @indicator.save
+    success = save_element(@indicator, data_element_params[:position])
+
+    if success
       respond_to do |format|
-        format.html { redirect_to data_model_path(@indicator) }
         format.turbo_stream
       end
     else
@@ -59,7 +59,7 @@ class IndicatorsController < ApplicationController
     @indicator = Characteristic.find(params[:id])
     authorize @indicator
 
-    if @indicator.destroy
+    if delete_element(@indicator)
       respond_to do |format|
         format.turbo_stream
       end

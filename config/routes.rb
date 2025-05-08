@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 
   resources :checklist_items, only: %i[show edit update]
   resources :data_models, only: %i[index show edit update] do
+    member do
+      get 'edit_name'
+      patch 'update_name'
+      get 'edit_description'
+      patch 'update_description'
+    end
     resources :goals, only: %i[index new create], controller: 'goals'
     member do
       post 'copy_to_current_workspace'

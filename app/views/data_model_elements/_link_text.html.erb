@@ -1,7 +1,7 @@
 <span class="inline-flex group">
-  <%- if element.color.present? %>
+  <%- if element.color.present? && !local_assigns[:hide_colors] %>
     <span class="w-[0.5ch] mr-1 mt-[0.2em] h-[1em]" style="background-color: <%= element.color %>">&nbsp;</span>
   <% end %>
   <%= display_name(element) %>
-  <%= render_icon :edit, classes: "ml-1 invisible group-hover:visible" %>
+  <%= render_icon :edit, classes: "ml-1 mt-[0.1em] invisible group-hover:visible" %>
 </span>

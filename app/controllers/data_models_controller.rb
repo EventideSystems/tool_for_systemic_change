@@ -56,6 +56,50 @@ class DataModelsController < ApplicationController
     authorize @data_model
   end
 
+  def edit_name
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model, :edit?
+  end
+
+  def update_name
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model, :edit?
+    @data_model.assign_attributes(data_model_params)
+
+    if @data_model.save
+      respond_to do |format|
+        format.turbo_stream
+      end
+    else
+      render 'edit'
+    end
+  end
+
+  def edit_description
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model, :edit?
+  end
+
+  def update_description
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model, :edit?
+    @data_model.assign_attributes(data_model_params)
+
+    if @data_model.save
+      respond_to do |format|
+        format.turbo_stream
+      end
+    else
+      render 'edit'
+    end
+  end
+
+  def update
+    @data_model = policy_scope(DataModel).find(params[:id])
+    authorize @data_model
+    @data_model.assign_attributes(data_model_params)
+  end
+
   private
 
   def build_base_scope # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
@@ -79,5 +123,9 @@ class DataModelsController < ApplicationController
     else
       base_scope.where(public_model: [false, nil])
     end
+  end
+
+  def data_model_params
+    params.require(:data_model).permit(:name, :description)
   end
 end

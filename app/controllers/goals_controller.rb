@@ -53,7 +53,6 @@ class GoalsController < DataElementsController
 
     if success
       respond_to do |format|
-        format.html { redirect_to data_model_path(@goal) }
         format.turbo_stream
       end
     else

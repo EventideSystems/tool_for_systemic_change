@@ -16,16 +16,22 @@
       <div class="flex justify-between items-center mt-4">
         <div class="flex gap-6 py-6">
           <%= render partial: 'resource_summary', locals: { name: @data_model.name, dom_id: dom_id(@data_model) } %>
-          <div class="space-y-1.5">
-            <div class="text-base/6 font-semibold dark:text-white">
-              <%= @data_model.name %>
+          <%= turbo_frame_tag dom_id(@data_model) do %>
+            <div class="space-y-1.5">
+              <div class="text-base/6 font-semibold dark:text-white">
+                <%= turbo_frame_tag dom_id(@data_model, :edit_name) do %>
+                  <%= render 'data_models/link_to_edit_name', data_model: @data_model %>
+                <% end %>
+              </div>
+              <div class="text-xs/6 text-zinc-500 min-h-4">
+                <%= turbo_frame_tag dom_id(@data_model, :edit_description) do %>
+                  <%= render 'data_models/link_to_edit_description', data_model: @data_model %>
+                <% end %>
+              </div>
+              <%= render 'data_model_type_badge', data_model: @data_model %>
+              <%= render 'other_workspace_badge', data_model: @data_model %>
             </div>
-            <div class="text-xs/6 text-zinc-500 min-h-4">
-              <%= @data_model.description %>
-            </div>
-            <%= render 'data_model_type_badge', data_model: @data_model %>
-            <%= render 'other_workspace_badge', data_model: @data_model %>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>

@@ -71,7 +71,7 @@ class DataModelsController < ApplicationController
         format.turbo_stream
       end
     else
-      render 'edit'
+      render 'edit_name'
     end
   end
 
@@ -90,7 +90,7 @@ class DataModelsController < ApplicationController
         format.turbo_stream
       end
     else
-      render 'edit'
+      render 'edit_description'
     end
   end
 

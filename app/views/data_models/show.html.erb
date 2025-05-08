@@ -13,7 +13,7 @@
               <%= @data_model.name %>
             </div>
             <div class="text-xs/6 text-zinc-500 min-h-4">
-              <%= @data_model.description %>
+              <%= rich_text(@data_model.description) %>
             </div>
             <%= render 'data_model_type_badge', data_model: @data_model %>
             <%= render 'other_workspace_badge', data_model: @data_model %>

@@ -1,9 +1,0 @@
-<%= simple_form_for(@characteristic, role: 'form', html: { class: 'form-horizontal record-form' }) do |f| %>
-  <%= f.error_notification %>
-  <%= form_header(@characteristic) %>
-  <%= f.input :name %>
-  <%= f.input :description , as: :trix_editor %>
-  <%= f.association :focus_area, collection: @focus_areas %>
-  <%= f.input :position %>
-  <%= render_form_button(f) %>
-<% end %>

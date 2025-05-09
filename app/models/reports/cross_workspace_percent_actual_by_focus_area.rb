@@ -65,6 +65,7 @@ module Reports
       )
     end
 
+    # SMELL Explicit reference to data_models.name = 'Transition Card'
     def generate_data # rubocop:disable Metrics/MethodLength
       sql = <<~SQL
         with raw_percent_actual_by_focus_area as (
@@ -82,17 +83,17 @@ module Reports
             inner join workspaces on scorecards.workspace_id = workspaces.id
             inner join characteristics on checklist_items.characteristic_id = characteristics.id
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
+            inner join data_models on scorecards.data_model_id = data_models.id
             where workspaces.id in (#{workspaces.pluck(:id).join(',')})
             and initiatives.deleted_at is null
             and scorecards.deleted_at is null
-            and scorecards.type = 'TransitionCard'
+            and data_models.name = 'Transition Card'
             group by workspaces.id, scorecards.id, initiatives.id, focus_areas.id
         )
 
         select
           workspaces.name as workspace_name,
           scorecards.name as impact_card_name,
-          scorecards.type as scorecard_type,
           initiatives.name as initiative_name,
           focus_areas.name as focus_area_name,
           raw_percent_actual_by_focus_area.total_characteristics,

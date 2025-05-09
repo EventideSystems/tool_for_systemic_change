@@ -40,11 +40,19 @@ module ImpactCards
     private
 
     # Ensure that the target workspace has a compatible data model
-    def assert_valid_target_workspace!
+    def assert_valid_target_workspace! # rubocop:disable Metrics/CyclomaticComplexity
       return if target_workspace == impact_card.workspace
 
-      impact_card.workspace.focus_area_groups.where(scorecard_type: impact_card.type).find_each do |focus_area_group|
-        target_group = find_target_focus_area_group(focus_area_group.name, impact_card.type)
+      target_workspace_data_model = target_workspace.data_models.find_by(
+        name: impact_card.data_model.name
+      )
+
+      if target_workspace_data_model.blank?
+        raise(ArgumentError, 'Target workspace does not have a compatible data model')
+      end
+
+      target_workspace_data_model.focus_area_groups.find_each do |focus_area_group|
+        target_group = find_target_focus_area_group(focus_area_group.name, target_workspace_data_model)
 
         if target_group.blank?
           raise(ArgumentError, "Missing focus area group '#{focus_area_group.name}' in target workspace")
@@ -141,6 +149,7 @@ module ImpactCards
     end
 
     def copy_wicked_problem
+      return if impact_card.wicked_problem.blank?
       return if target_workspace == impact_card.workspace
 
       wicked_problem = impact_card.wicked_problem
@@ -154,6 +163,7 @@ module ImpactCards
     end
 
     def copy_community
+      return if impact_card.community.blank?
       return if target_workspace == impact_card.workspace
 
       community = impact_card.community
@@ -198,8 +208,8 @@ module ImpactCards
       target_workspace.wicked_problems.find_by(name: wicked_problem.name)
     end
 
-    def find_target_focus_area_group(name, scorecard_type)
-      target_workspace.focus_area_groups.find_by(name:, scorecard_type:)
+    def find_target_focus_area_group(name, target_workspace_data_model)
+      target_workspace_data_model.focus_area_groups.find_by(name:)
     end
   end
   # rubocop:enable Metrics/ClassLength,Style/Documentation,Metrics/AbcSize,Metrics/MethodLength,Metrics/BlockLength

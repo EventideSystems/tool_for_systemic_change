@@ -1,0 +1,8 @@
+<%= turbo_frame_tag dom_id(@data_model, :edit_name) do %>
+  <%= form_for @data_model, url: update_name_data_model_path(@data_model) do |form| %>
+    <div class="flex items-center gap-4">
+      <%= form.text_field :name, class: 'text-lg font-bold text-zinc-950 dark:text-white w-[48rem]' %>
+      <%= form.submit 'Save' %>
+    </div>
+  <% end %>
+<% end %>

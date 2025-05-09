@@ -5,6 +5,18 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :checklist_items, only: %i[show edit update]
+  resources :data_models, only: %i[index show edit update] do
+    member do
+      get 'edit_name'
+      patch 'update_name'
+      get 'edit_description'
+      patch 'update_description'
+    end
+    resources :goals, only: %i[index new create], controller: 'goals'
+    member do
+      post 'copy_to_current_workspace'
+    end
+  end
 
   resources :impact_cards do
     resources :sharing, only: [:index], controller: 'impact_cards/sharing'
@@ -14,24 +26,21 @@ Rails.application.routes.draw do
     resource :merge, only: %i[new create], controller: 'impact_cards/merge'
   end
 
+  resources :goals do
+    resources :targets, only: %i[index new create], controller: 'targets'
+  end
+
+  resources :indicators
+
+  resources :targets do
+    resources :indicators, only: %i[index new create], controller: 'indicators'
+  end
+
   namespace :labels do
     resources :communities
     resources :stakeholder_types
     resources :subsystem_tags
     resources :wicked_problems
-  end
-
-  namespace :organisations do
-    resources :imports, only: %i[new create update]
-  end
-
-  namespace :transition_card_comments do
-    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
-  end
-
-  # TODO: Fix this route once we have a proper transition_card_comments import
-  namespace :sustainable_development_goal_alignment_card_comments do
-    resources :imports, only: %i[new create update], controller: '/scorecard_comments/imports'
   end
 
   devise_for :users, controllers: {
@@ -54,13 +63,13 @@ Rails.application.routes.draw do
     collection do
       get 'privacy'
       get 'terms'
+      get 'takedown'
     end
   end
 
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
-    resources :imports, only: %i[new create update]
     resources :checklist_items do
       member do
         post 'update_comment'
@@ -109,11 +118,11 @@ Rails.application.routes.draw do
       post 'stakeholders'
       get 'scorecard_activity'
       post 'scorecard_activity'
-      post 'transition_card_stakeholders'
+      post 'impact_card_stakeholders'
       post 'scorecard_comments'
       get 'scorecard_comments'
-      get 'transition_card_activity'
-      post 'transition_card_activity'
+      get 'impact_card_activity'
+      post 'impact_card_activity'
       get 'subsystem_summary'
       post 'subsystem_summary'
       get 'cross_workspace_percent_actual'
@@ -128,15 +137,11 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#index'
   get 'reports', to: 'reports#index'
   get 'activities', to: 'activities#index'
-  get 'contributors', to: 'home#contributors'
   get 'privacy', to: 'home#privacy'
   get 'cookie', to: 'home#cookie'
   get 'terms', to: 'home#terms'
   get 'data_retention', to: 'home#data_retention'
-
-  namespace :system do
-    resources :stakeholder_types
-  end
+  get 'takedown', to: 'home#takedown'
 
   root to: 'home#index'
 end

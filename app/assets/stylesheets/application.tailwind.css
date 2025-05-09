@@ -1,9 +1,29 @@
 @import "shadcn.css";
 @import "pagy.tailwind.css";
-/* @import "split.css"; */
+@import "actiontext.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@keyframes hide-element {
+  0% {
+    opacity: 1;
+    background-color: #f1e3ab98;
+  }
+  100% {
+    background-color: transparent;
+    opacity: 0;
+    display: none;
+  }
+}
+
+@layer utilities {
+  .animate-hide {
+    animation: hide-element 1s forwards;
+  }
+}
 
 @keyframes flash-yellow {
   0% {
@@ -13,6 +33,7 @@
     background-color: transparent;
   }
 }
+
 
 @layer utilities {
   .animate-flash-yellow {

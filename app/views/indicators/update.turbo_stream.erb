@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@indicator) do %>
+  <%= render 'indicators/indicator', indicator: @indicator, link_class: 'animate-flash-yellow' %>
+<% end %>

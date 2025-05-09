@@ -1,0 +1,10 @@
+<%= 
+  link_to(
+    edit_indicator_path(indicator, hide_colors: true), 
+    data: { turbo_frame: dom_id(indicator) }
+  ) do %>
+  <h4 class="text-sm font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2 <%= local_assigns[:link_class] %>" title="<%= indicator.name %>">
+    <%= render 'data_model_elements/link_text', element: indicator, hide_colors: true %>
+  </h4>
+<% end %>
+<%= render 'data_model_elements/description', element: indicator %>

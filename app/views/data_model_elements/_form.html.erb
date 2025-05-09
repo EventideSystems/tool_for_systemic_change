@@ -1,0 +1,88 @@
+<%= 
+  form_with(
+    model: element, 
+    local: true, url:, 
+    class: 'mb-3 mt-1 rounded-lg p-6 bg-zinc-200 dark:bg-zinc-900',
+    data: { controller: 'data-model-form' }
+  ) do |form| 
+%>
+  <div class="grid grid-cols-4 gap-4 w-full">
+    <div class="sm:col-span-4">
+      <div class="mt-2">
+        <%= form.text_field(:name, placeholder: 'Name', autofocus: true, required: true) %>
+      </div>
+    </div>
+
+    <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-8 md:col-span-2">
+      <div class="sm:col-span-2">
+        <%= form.label :code %>
+        <div class="mt-2">
+          <%= form.text_field :code %>
+        </div>
+      </div>
+
+      <div class="sm:col-span-2">
+        <%= form.label :short_name %>
+        <div class="mt-2">
+          <%= form.text_field :short_name %>
+        </div>
+      </div>
+
+      <%- unless params[:hide_colors] %>
+        <div class="sm:col-span-2">
+          <%= form.label :color %>
+          <div class="mt-2">
+            <%= form.color_field :color %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="sm:col-span-2">
+        <%= form.label :position %>
+        <div class="mt-2">
+          <%= form.number_field :position, min: 1, max: max_position %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-full">
+      <%= form.label :description %>
+      <div class="mt-2">
+        <%= form.rich_textarea :description, rows: 3, placeholder: 'Description' %>
+      </div>
+      <p class="text-sm/6 text-gray-600 dark:text-gray-400">A brief description of the element (optional).</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 w-full pt-5 pb-3 flex justify-between">
+    
+    <div class="flex justify-start">
+      <%- if local_assigns[:destroy_path] %>
+        <%= link_to(
+          'Delete',
+          '#',
+          class: TailwindClasses::DANGER_ZONE_BUTTON_CLASS,
+          data: { 
+            action: 'click->data-model-form#showDangerZone',
+            data_model_form_target: 'dangerZoneButton'
+          }
+        ) %>
+      <% end %>
+    </div>
+  
+    <div class="flex justify-end space-x-4">
+      <%= link_to(
+        'Cancel',
+        cancel_path,
+        class: 'text-sm font-semibold text-gray-900 dark:text-white mt-2 mr-3',
+        data: { turbo_stream: true }
+      ) %>
+      <%= form.submit 'Save' %>
+    </div>
+  </div>
+
+  <%- if local_assigns[:destroy_path] %>
+    <%= render 'data_model_elements/danger_zone', destroy_path: %>
+  <% end %>
+<% end %>
+

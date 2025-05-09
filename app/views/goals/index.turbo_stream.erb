@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@data_model, :new_goal) do %>
+  <%= render 'link_to_new_element', data_model_id: @data_model.id %>
+<% end %>

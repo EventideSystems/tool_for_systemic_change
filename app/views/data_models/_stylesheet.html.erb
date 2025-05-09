@@ -1,0 +1,5 @@
+<style>
+  <% data_models.each do |data_model| %>
+    <%= render partial: 'data_models/data_model', formats: :css, locals: { data_model: data_model } %>
+  <% end %>
+</style>

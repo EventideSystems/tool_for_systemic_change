@@ -73,7 +73,6 @@ class WorkspacesController < ApplicationController
     authorize(@workspace)
   end
 
-  # rubocop:disable Metrics/MethodLength
   def workspace_params
     params.fetch(:workspace, {}).permit(
       :name,
@@ -82,16 +81,7 @@ class WorkspacesController < ApplicationController
       :deactivated,
       :expires_on,
       :max_users,
-      :max_scorecards,
-      :transition_card_model_name,
-      :transition_card_focus_area_group_model_name,
-      :transition_card_focus_area_model_name,
-      :transition_card_characteristic_model_name,
-      :sdgs_alignment_card_model_name,
-      :sdgs_alignment_card_focus_area_group_model_name,
-      :sdgs_alignment_card_focus_area_model_name,
-      :sdgs_alignment_card_characteristic_model_name
+      :max_scorecards
     )
   end
-  # rubocop:enable Metrics/MethodLength
 end

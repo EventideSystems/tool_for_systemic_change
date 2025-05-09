@@ -2,8 +2,8 @@
 
 class UpdateFocusAreaColors < ActiveRecord::Migration[6.1]
   def up
-    FocusArea.where.not(actual_color: nil).each do |focus_area|
-      focus_area.update(planned_color: lighten_color(focus_area.actual_color))
+    FocusArea.where.not(color: nil).each do |focus_area|
+      focus_area.update(planned_color: lighten_color(focus_area.color))
     end
   end
 

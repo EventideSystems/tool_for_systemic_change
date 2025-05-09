@@ -8,17 +8,6 @@ module ImpactCardsHelper
     activity.occurred_at.in_time_zone(current_user.time_zone).strftime('%F %T %Z')
   end
 
-  def display_scorecard_model_name(scorecard)
-    return '' if scorecard&.workspace.blank?
-
-    case scorecard
-    when TransitionCard
-      scorecard.workspace.transition_card_model_name
-    when SustainableDevelopmentGoalAlignmentCard
-      scorecard.workspace&.sdgs_alignment_card_model_name
-    end
-  end
-
   def multi_select_options_for_labels(labels, selected_labels)
     choices = labels.map do |label|
       color_class = dom_id(label)
@@ -46,9 +35,9 @@ module ImpactCardsHelper
   end
 
   def choices_for_statuses(statuses, impact_card) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    focus_area_groups = impact_card.workspace.focus_area_groups.where(scorecard_type: impact_card.type)
-    focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:scorecard_type, :position)
-    classic_mode_colors = focus_areas.map(&:actual_color).values_at(0, focus_areas.length / 2, -1).uniq
+    focus_area_groups = impact_card.data_model.focus_area_groups
+    focus_areas = FocusArea.where(focus_area_group: focus_area_groups).order(:data_model_id, :position)
+    classic_mode_colors = focus_areas.map(&:color).values_at(0, focus_areas.length / 2, -1).uniq
 
     statuses.map do |status|
       if impact_card.grid_mode.to_sym == :classic
@@ -68,57 +57,10 @@ module ImpactCardsHelper
     end
   end
 
-  def cell_class(result, focus_areas, characteristic)
-    return 'cell hidden' if result.blank?
-
-    characteristic_data = result[characteristic.id.to_s]
-
-    return 'cell hidden' if characteristic_data.blank?
-
-    [
-      'cell',
-      "#{characteristic_data[:status].dasherize}#{focus_areas.index(characteristic.focus_area) + 1}",
-      characteristic_data[:status].dasherize
-    ].tap do |class_names|
-      class_names << 'hidden' unless characteristic_data[:status] == 'actual'
-    end.join(' ')
-  end
-
-  # def collection_for_linked_scorecard(parent_scorecard)
-  #   return [] if parent_scorecard.blank?
-
-  #   [['', nil]] + parent_scorecard
-  #                 .workspace
-  #                 .scorecards
-  #                 .where(id: parent_scorecard.linked_scorecard_id)
-  #                 .or(parent_scorecard.workspace.scorecards.where(linked_scorecard_id: nil))
-  #                 .where.not(type: parent_scorecard.type, deleted_at: nil)
-  #                 .order(:name)
-  #                 .pluck(:name, :id)
-  # end
-
-  def focus_area_cell_style(result, focus_area)
-    characteristic_ids = focus_area.characteristics.pluck(:id).map(&:to_s)
-
-    any_actual = result.values_at(*characteristic_ids).any? { |checklist_item| checklist_item[:status] == 'actual' }
-
-    any_actual ? "background-color: #{focus_area.actual_color}" : ''
-  end
-
-  # def linked_scorecard_label(scorecard)
-  #   'Linked ' +
-  #     case scorecard
-  #     when TransitionCard then SustainableDevelopmentGoalAlignmentCard
-  #     when SustainableDevelopmentGoalAlignmentCard then TransitionCard
-  #     else
-  #       raise('Unknown scorecard type')
-  #     end.model_name.human
-  # end
-
   def select_impact_card_tag(name, options)
     workspace = options.delete(:workspace) || current_workspace
 
-    collection_options = if workspace.scorecard_types_in_use.count > 1
+    collection_options = if workspace.data_models_in_use.count > 1
                            grouped_scorecards = grouped_impact_cards_for_workspace(workspace)
                            grouped_options_for_select(grouped_scorecards)
                          else
@@ -131,18 +73,9 @@ module ImpactCardsHelper
 
   private
 
-  def grouped_impact_cards_for_workspace(workspace) # rubocop:disable Metrics/MethodLength
-    workspace.scorecards.group_by(&:type).transform_keys do |key|
-      case key
-      when 'TransitionCard' then workspace.transition_card_model_name
-      when 'SustainableDevelopmentGoalAlignmentCard' then workspace.sdgs_alignment_card_model_name
-      else
-        'Impact Card'
-      end
-    end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
-      scorecards.map do |scorecard|
-        [scorecard.name, scorecard.id]
-      end
+  def grouped_impact_cards_for_workspace(workspace)
+    workspace.scorecards.group_by(&:data_model).transform_keys(&:name).transform_values do |impact_cards|
+      impact_cards.pluck(:name, :id)
     end
   end
 end

@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared/workspace_context'
 
 RSpec.describe(ChecklistItemPolicy) do # rubocop:disable RSpec/MultipleMemoizedHelpers
+  include_context 'with simple workspace'
+
   let(:policy) { described_class }
-  let(:workspace) { create(:workspace) }
-  let(:system_admin_user) { create(:user, :admin) }
   let(:workspace_admin_user) { create(:user) }
+  let(:system_admin_user) { create(:user, :admin) }
   let(:workspace_member_user) { create(:user) }
-  let(:scorecard) { create(:scorecard, workspace:) }
+
+  let(:scorecard) { create(:scorecard, workspace:, data_model:) }
   let(:initiative) { create(:initiative, scorecard:) }
 
   before do

@@ -1,0 +1,59 @@
+
+name: Lewin's Change Management Model
+description: Example using Kurt Lewin Change Management Model as a basis. Modify the targets and indicators to suit your needs. 
+author: Kurt Lewin
+goals:
+  - name: Unfreeze
+    description: Prepare the organization for change by creating awareness and readiness.
+    targets:
+      - name: Conduct awareness campaigns, reaching at least 80% of community stakeholders within the first month.
+        indicators:
+          - name: Engagement metrics such as website visits or social media interactions tied to the campaign.
+          - name: Number of inquiries or follow-up meetings requested by community stakeholders after the campaign.
+          - name: Attendance rates at community forums or informational events.
+      - name: Organize workshops for 90% of the social enterprise staff to explain the need for change and gather input.
+        indicators:
+          - name: Pre- and post-workshop surveys measuring changes in staff understanding of the need for change.
+          - name: Volume and quality of suggestions or concerns raised by staff during workshops.
+          - name: Percentage of staff expressing enthusiasm or willingness to support the initiative (via follow-up questionnaires).
+      - name: Engage 100% of key donors and partners in discussions about the anticipated benefits of the new approach.
+        indicators:
+          - name: Donor and partner agreement rates to support the initiative (e.g., signed pledges or letters of support).
+          - name: Positive feedback in post-discussion evaluations.
+          - name: Commitments of resources (time, funding, or expertise) made by donors and partners.
+  - name: Change
+    description: Implement the changes and ensure that the new processes are adopted.
+    targets:
+      - name: Implement new project management tools across 100% of teams within two months.
+        indicators:
+          - name: Number of teams actively using the tools within the specified timeframe.
+          - name: Reduction in project delays or errors after tool implementation.
+          - name: Increased collaboration metrics (e.g., frequency of shared updates or meetings using the new tools).
+      - name: Train 85% of staff and community volunteers to use the new tools effectively.
+        indicators:
+          - name: Training completion rates and scores on post-training assessments.
+          - name: Staff and volunteer feedback on the usefulness of training sessions.
+          - name: Frequency of troubleshooting requests related to the new tools (lower rates suggest better proficiency).
+      - name: Launch at least one pilot project within three months to test the effectiveness of the changes.
+        indicators:
+          - name: Success metrics of the pilot project, such as meeting defined objectives or milestones.
+          - name: Community feedback on the pilot project's impact (e.g., satisfaction surveys or focus groups).
+          - name: Data showing improved outcomes compared to previous practices (e.g., increased service reach or efficiency).
+  - name: Refreeze
+    description: Solidify the changes and ensure they are integrated into the organization's culture.
+    targets:
+      - name: Integrate new processes into the operational framework, ensuring inclusion in 100% of standard operating procedures (SOPs) within four months.
+        indicators:
+          - name: Audit results showing alignment of SOPs with the new processes.
+          - name: Staff adherence rates during observed operations, indicating successful integration.
+          - name: Feedback from employees or volunteers highlighting improvements in workflow consistency.
+      - name: Conduct quarterly evaluations of project outcomes to measure the effectiveness of the changes.
+        indicators:
+          - name: Key performance indicators (KPIs) such as improved service delivery time or cost savings.
+          - name: Trends in community impact metrics (e.g., greater food security, reduced homelessness rates).
+          - name: Qualitative feedback from stakeholders on changes in outcomes or efficiency.
+      - name: Create annual knowledge-sharing events to promote the adoption of the new practices across partner organizations.
+        indicators:
+          - name: Attendance rates and engagement during knowledge-sharing events.
+          - name: Number of partner organizations expressing interest or committing to adopt similar changes.
+          - name: Post-event surveys showing increased understanding or appreciation of the new practices.

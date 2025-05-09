@@ -41,10 +41,9 @@ module Insights
     def workspace_focus_areas
       @workspace_focus_areas ||=
         transition_card
-        .workspace
+        .data_model
         .focus_area_groups
         .includes(focus_areas: :characteristics)
-        .where(scorecard_type: 'SustainableDevelopmentGoalAlignmentCard')
         .flat_map(&:focus_areas)
     end
 
@@ -91,7 +90,7 @@ module Insights
         {
           id: "focus-area-#{node.id}",
           label: node.short_name,
-          color: node.actual_color,
+          color: node.color,
           stakeholders:,
           initiatives:,
           description:,
@@ -123,7 +122,7 @@ module Insights
         {
           id: "characteristic-#{node.id}",
           label: node.short_name,
-          color: node.focus_area.actual_color,
+          color: node.focus_area.color,
           characteristic_id: node.id,
           stakeholders:,
           initiatives:,

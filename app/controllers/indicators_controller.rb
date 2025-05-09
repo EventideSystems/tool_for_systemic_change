@@ -17,11 +17,13 @@ class IndicatorsController < DataElementsController
     authorize @indicator
   end
 
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     @indicator = @target.children.build(data_element_params)
     authorize @indicator
 
     success = save_element(@indicator, data_element_params[:position].presence || fallback_position(@target))
+
+    update_iniatives(@indicator)
 
     if success
       respond_to do |format|
@@ -79,5 +81,10 @@ class IndicatorsController < DataElementsController
   def set_parent
     @target = FocusArea.find(params[:target_id])
     authorize @target
+  end
+
+  # TODO: Consider moving this to a service object and/or making it a background job
+  def update_iniatives(indicator)
+    indicator.data_model.initiatives.each(&:create_missing_checklist_items!)
   end
 end

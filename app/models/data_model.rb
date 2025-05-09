@@ -41,6 +41,8 @@ class DataModel < ApplicationRecord
   has_many :focus_area_groups, dependent: :destroy
   has_many :focus_areas, through: :focus_area_groups
   has_many :characteristics, through: :focus_areas
+  has_many :scorecards, dependent: :restrict_with_error
+  has_many :initiatives, through: :scorecards
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :workspace_id }, if: -> { workspace_id.present? }

@@ -37,13 +37,12 @@ require 'rails_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe(Initiative, type: :model) do
   let(:user) { create(:user) }
+  let(:default_workspace) { create(:workspace) }
+  let(:data_model) { create(:data_model, workspace: default_workspace) }
+  let(:focus_area_group) { create(:focus_area_group, data_model:) }
+  let(:focus_area) { create(:focus_area, focus_area_group:, position: 1) }
 
   describe '#checklist_items_ordered_by_ordered_focus_area' do # rubocop:disable RSpec/MultipleMemoizedHelpers
-    let(:default_workspace) { create(:workspace) }
-    let(:data_model) { create(:data_model, workspace: default_workspace) }
-    let(:focus_area_group) { create(:focus_area_group, data_model:) }
-    let(:focus_area) { create(:focus_area, focus_area_group:, position: 1) }
-
     let!(:characteristic_1) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let!(:characteristic_2) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet,RSpec/LetSetup,Naming/VariableNumber
     let(:stakeholder_type) { create(:stakeholder_type, workspace: default_workspace) }
@@ -172,6 +171,52 @@ RSpec.describe(Initiative, type: :model) do
         it { expect(first_item.status).to eq('no_comment') }
         it { expect(first_item.comment).to be_nil }
       end
+    end
+  end
+
+  describe '#create_missing_checklist_items!' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    let(:user) { create(:user) }
+    let(:scorecard) { create(:scorecard, workspace: default_workspace, data_model:) }
+    let(:initiative) { create(:initiative, scorecard:) }
+    let(:characteristic1) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet
+    let(:characteristic2) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet
+    let(:characteristic3) { create(:characteristic, focus_area:) } # rubocop:disable RSpec/IndexedLet
+    let(:comment) { 'test' }
+    let(:status) { :planned }
+
+    before do
+      # Associate some checklist items with the initiative
+      create(:checklist_item, initiative: initiative, characteristic: characteristic1, user:, comment:, status:)
+      initiative.reload
+    end
+
+    it 'creates missing checklist items for characteristics not yet associated' do # rubocop:disable RSpec/ExampleLength,RSpec/MultipleExpectations
+      # Ensure only characteristic2 and characteristic3 are missing
+      expect(initiative.checklist_items.map(&:characteristic_id)).to include(characteristic1.id)
+      expect(initiative.checklist_items.map(&:characteristic_id)).not_to include(characteristic2.id, characteristic3.id)
+
+      # Call the method
+      initiative.create_missing_checklist_items!
+
+      # Reload checklist items and verify all characteristics are now associated
+      initiative.reload
+      expect(initiative.checklist_items.reload.map(&:characteristic_id)).to include(characteristic1.id, characteristic2.id,
+                                                                                    characteristic3.id)
+    end
+
+    it 'does not create duplicate checklist items for already associated characteristics' do
+      # Call the method twice
+      initiative.create_missing_checklist_items!
+      expect { initiative.create_missing_checklist_items! }.not_to(change { initiative.reload.checklist_items.count })
+    end
+
+    it 'does nothing if all characteristics are already associated' do
+      # Associate all characteristics
+      create(:checklist_item, initiative:, characteristic: characteristic2, user:, comment:, status:)
+      create(:checklist_item, initiative:, characteristic: characteristic3, user:, comment:, status:)
+
+      # Call the method
+      expect { initiative.create_missing_checklist_items! }.not_to(change { initiative.checklist_items.count })
     end
   end
 end

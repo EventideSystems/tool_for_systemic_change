@@ -13,6 +13,8 @@ Obsekio is a rewrite of [WickedLab's](https://web.archive.org/web/20240329200630
 
 The source code for Obsekio is written using [Ruby on Rails](https://rubyonrails.org/) and is available under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html) open source license.
 
+The hosted instance of the tool can be found here: https://www.obsek.io/
+
 ## Features
 
 ### Tracking Changes

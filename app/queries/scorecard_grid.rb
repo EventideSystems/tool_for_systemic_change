@@ -192,7 +192,7 @@ class ScorecardGrid
             and focus_area_groups.deleted_at is null
             and focus_areas.deleted_at is null
             and characteristics.deleted_at is null
-            order by focus_areas.position, characteristics.position
+            order by focus_area_groups.position, focus_areas.position, characteristics.position
           ), ', '
         )
       SQL

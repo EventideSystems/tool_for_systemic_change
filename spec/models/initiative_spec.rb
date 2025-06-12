@@ -200,8 +200,9 @@ RSpec.describe(Initiative, type: :model) do
 
       # Reload checklist items and verify all characteristics are now associated
       initiative.reload
-      expect(initiative.checklist_items.reload.map(&:characteristic_id)).to include(characteristic1.id, characteristic2.id,
-                                                                                    characteristic3.id)
+      expect(
+        initiative.checklist_items.reload.map(&:characteristic_id)
+      ).to include(characteristic1.id, characteristic2.id, characteristic3.id)
     end
 
     it 'does not create duplicate checklist items for already associated characteristics' do

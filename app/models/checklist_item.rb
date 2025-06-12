@@ -67,8 +67,6 @@ class ChecklistItem < ApplicationRecord
     paper_trail.version_at(timestamp) || raw_clone
   end
 
-  delegate :focus_area, to: :characteristic
-
   def humanized_status
     status.humanize
   end

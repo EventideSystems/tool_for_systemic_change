@@ -48,9 +48,12 @@ class ScorecardGrid
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
               'focus_area_color', focus_areas.color,
+              'focus_area_position', focus_areas.position,
               'focus_area_group_id', focus_area_groups.id,
+              'focus_area_group_position', focus_area_groups.position,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
+              'characteristics_position', characteristics.position,
               'comment', checklist_items.comment,
               'name', characteristics.name,
               'status', checklist_items.status
@@ -81,8 +84,11 @@ class ScorecardGrid
             checklist_items.id,
             focus_area_groups.id,
             focus_areas.name,
-            focus_areas.color
-          order by initiative
+            focus_areas.color,
+            focus_area_groups.position,
+            focus_areas.position,
+            characteristics.position
+          order by initiative, focus_area_groups.position, focus_areas.position, characteristics.position
           $$,
           $$
             select id from scorecard_type_characteristics where data_model_id = '#{scorecard.data_model_id}' and workspace_id = #{scorecard.workspace_id}
@@ -112,9 +118,12 @@ class ScorecardGrid
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
               'focus_area_color', focus_areas.color,
+              'focus_area_position', focus_areas.position,
               'focus_area_group_id', focus_area_groups.id,
+              'focus_area_group_position', focus_area_groups.position,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
+              'characteristics_position', characteristics.position,
               'comment', coalesce(
                 changes.comment,
                 checklist_items_at_snap_shot.comment
@@ -166,8 +175,11 @@ class ScorecardGrid
             changes.comment,
             checklist_items_at_snap_shot.comment,
             changes.ending_status,
-            checklist_items_at_snap_shot.status
-          order by initiative
+            checklist_items_at_snap_shot.status,
+            focus_area_groups.position,
+            focus_areas.position,
+            characteristics.position
+          order by initiative, focus_area_groups.position, focus_areas.position, characteristics.position
           $$,
           $$
             select id from scorecard_type_characteristics where data_model_id = '#{scorecard.data_model_id}' and workspace_id = #{scorecard.workspace_id}

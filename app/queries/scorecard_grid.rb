@@ -7,7 +7,7 @@ require 'benchmark'
 class ScorecardGrid
   class << self
     def execute(scorecard, snapshot_at = nil, subsystem_tags = []) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
-      columns_data = column_data(scorecard.workspace, scorecard.type) # ScorecardGridColumns::DATA[scorecard.type]
+      columns_data = column_data(scorecard.workspace, scorecard.data_model_id)
 
       if snapshot_at.present?
         ActiveRecord::Base
@@ -47,10 +47,13 @@ class ScorecardGrid
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
-              'focus_area_color', focus_areas.actual_color,
+              'focus_area_color', focus_areas.color,
+              'focus_area_position', focus_areas.position,
               'focus_area_group_id', focus_area_groups.id,
+              'focus_area_group_position', focus_area_groups.position,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
+              'characteristics_position', characteristics.position,
               'comment', checklist_items.comment,
               'name', characteristics.name,
               'status', checklist_items.status
@@ -61,6 +64,7 @@ class ScorecardGrid
           inner join initiatives on checklist_items.initiative_id = initiatives.id
           inner join focus_areas on characteristics.focus_area_id = focus_areas.id
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+          inner join data_models on focus_area_groups.data_model_id = data_models.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           left join subsystem_tags
@@ -69,7 +73,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > now())
-          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
+          and data_models.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -80,11 +84,14 @@ class ScorecardGrid
             checklist_items.id,
             focus_area_groups.id,
             focus_areas.name,
-            focus_areas.actual_color
-          order by initiative
+            focus_areas.color,
+            focus_area_groups.position,
+            focus_areas.position,
+            characteristics.position
+          order by initiative, focus_area_groups.position, focus_areas.position, characteristics.position
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and workspace_id = #{scorecard.workspace_id}
+            select id from scorecard_type_characteristics where data_model_id = '#{scorecard.data_model_id}' and workspace_id = #{scorecard.workspace_id}
           $$
         ) as data(#{columns_data})
         order by lower(trim(initiative->>'name'))
@@ -110,10 +117,13 @@ class ScorecardGrid
             jsonb_build_object(
               'focus_area_id', characteristics.focus_area_id,
               'focus_area_name', focus_areas.name,
-              'focus_area_color', focus_areas.actual_color,
+              'focus_area_color', focus_areas.color,
+              'focus_area_position', focus_areas.position,
               'focus_area_group_id', focus_area_groups.id,
+              'focus_area_group_position', focus_area_groups.position,
               'checklist_item_id', checklist_items.id,
               'characteristics_id', characteristics.id,
+              'characteristics_position', characteristics.position,
               'comment', coalesce(
                 changes.comment,
                 checklist_items_at_snap_shot.comment
@@ -129,6 +139,7 @@ class ScorecardGrid
           inner join initiatives on checklist_items.initiative_id = initiatives.id
           inner join focus_areas on characteristics.focus_area_id = focus_areas.id
           inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
+          inner join data_models on focus_area_groups.data_model_id = data_models.id
           left join initiatives_subsystem_tags
             on initiatives.id = initiatives_subsystem_tags.initiative_id
           left join subsystem_tags
@@ -149,7 +160,7 @@ class ScorecardGrid
           and initiatives.scorecard_id = #{scorecard.id}
           and initiatives.deleted_at is null
           and (initiatives.archived_on is null or initiatives.archived_on > #{wrap_date(snapshot_at)})
-          and focus_area_groups.workspace_id = #{scorecard.workspace_id}
+          and data_models.workspace_id = #{scorecard.workspace_id}
           and focus_area_groups.deleted_at is null
           and focus_areas.deleted_at is null
           and characteristics.deleted_at is null
@@ -160,22 +171,25 @@ class ScorecardGrid
             checklist_items.id,
             focus_area_groups.id,
             focus_areas.name,
-            focus_areas.actual_color,
+            focus_areas.color,
             changes.comment,
             checklist_items_at_snap_shot.comment,
             changes.ending_status,
-            checklist_items_at_snap_shot.status
-          order by initiative
+            checklist_items_at_snap_shot.status,
+            focus_area_groups.position,
+            focus_areas.position,
+            characteristics.position
+          order by initiative, focus_area_groups.position, focus_areas.position, characteristics.position
           $$,
           $$
-            select id from scorecard_type_characteristics where scorecard_type = '#{scorecard.type}' and workspace_id = #{scorecard.workspace_id}
+            select id from scorecard_type_characteristics where data_model_id = '#{scorecard.data_model_id}' and workspace_id = #{scorecard.workspace_id}
           $$
         ) as data(#{columns_data})
         order by lower(trim(initiative->>'name'))
       SQL
     end
 
-    def columns_data_sql(workspace, scorecard_type)
+    def columns_data_sql(workspace, data_model_id)
       <<~SQL
         select
           array_to_string(
@@ -184,19 +198,20 @@ class ScorecardGrid
             from characteristics
             inner join focus_areas on characteristics.focus_area_id = focus_areas.id
             inner join focus_area_groups on focus_areas.focus_area_group_id = focus_area_groups.id
-            where focus_area_groups.scorecard_type = '#{scorecard_type}'
-            and focus_area_groups.workspace_id = #{workspace.id}
+            inner join data_models on focus_area_groups.data_model_id = data_models.id
+            where focus_area_groups.data_model_id = '#{data_model_id}'
+            and data_models.workspace_id = #{workspace.id}
             and focus_area_groups.deleted_at is null
             and focus_areas.deleted_at is null
             and characteristics.deleted_at is null
-            order by focus_areas.position, characteristics.position
+            order by focus_area_groups.position, focus_areas.position, characteristics.position
           ), ', '
         )
       SQL
     end
 
-    def column_data(workspace, scorecard_type)
-      ActiveRecord::Base.connection.execute(columns_data_sql(workspace, scorecard_type)).values.first.first
+    def column_data(workspace, data_model_id)
+      ActiveRecord::Base.connection.execute(columns_data_sql(workspace, data_model_id)).values.first.first
     end
 
     # NOTE: This is no longer required as we filter the subsystem tags in UI via JS now

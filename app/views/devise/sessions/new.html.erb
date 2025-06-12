@@ -1,4 +1,16 @@
 
+<% content_for :extra_links do %>
+  <div class="sm:mx-auto xsm:w-full sm:max-w-md">
+    <div class="py-8 px-4 sm:px-10">
+      <div class="mt-8 text-xs leading-5 text-gray-100 md:order-1 md:mt-0 text-center space-x-4">
+        <%= login_pages_link_to 'Privacy policy', privacy_path %>
+        <%= login_pages_link_to 'Terms & conditions', terms_path %>
+        <%= login_pages_link_to 'Takedown policy', takedown_path %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= render layout: "layouts/devise_page", locals: { title: "Sign in" } do %>
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'space-y-6' }, data: { turbo: false }) do |f| %>
     <div>

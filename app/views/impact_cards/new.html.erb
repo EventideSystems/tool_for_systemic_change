@@ -9,7 +9,14 @@
           <div class="sm:col-span-4">
             <%= form.label :type, 'Data model' %>
             <div class="mt-2">
-              <%= form.select :type, [TransitionCard, SustainableDevelopmentGoalAlignmentCard].map { |type| [type.name.titleize, type.name] } %>
+              <%=
+                form.select(
+                  :data_model_id,
+                  options_from_collection_for_select(current_workspace.data_models, :id, :name),
+                  include_blank: 'Select a data model',
+                  required: true
+                )
+                %>
             </div>
           </div>
         <% end %>
@@ -60,7 +67,7 @@
             <div class="col-span-full">
               <%= initiatives_form.label :description %>
               <div class="mt-2">
-                <%= initiatives_form.text_area :description, rows: 3, placeholder: 'Initiative description' %>
+                <%= initiatives_form.rich_textarea :description, rows: 3, placeholder: 'Initiative description' %>
               </div>
             </div>
           <% end %>

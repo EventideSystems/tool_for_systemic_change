@@ -1,0 +1,5 @@
+<% if data_model.workspace != current_workspace && data_model.public_model == false %>
+  <div class="inline-flex rounded-lg items-center justify-center bg-blue-200" title="">
+    <p class="py-1 px-2 text-xs whitespace-nowrap"><%= data_model.workspace.name %></p>
+  </div>
+<% end %>

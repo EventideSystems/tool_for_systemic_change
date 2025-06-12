@@ -82,16 +82,8 @@ class ApplicationPolicy # rubocop:disable Style/Documentation
     current_user.admin?
   end
 
-  def current_workspace
-    user_context.workspace
-  end
-
   def current_workspace_not_expired?
     !current_workspace.expired?
-  end
-
-  def current_user
-    user_context.user
   end
 
   def current_workspace_admin?

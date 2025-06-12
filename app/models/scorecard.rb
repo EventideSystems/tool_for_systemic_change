@@ -6,14 +6,15 @@
 #
 #  id                         :integer          not null, primary key
 #  deleted_at                 :datetime
+#  deprecated_type            :string           default("TransitionCard")
 #  description                :string
 #  name                       :string
 #  share_ecosystem_map        :boolean          default(TRUE)
 #  share_thematic_network_map :boolean          default(TRUE)
-#  type                       :string           default("TransitionCard")
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  community_id               :integer
+#  data_model_id              :bigint
 #  linked_scorecard_id        :integer
 #  shared_link_id             :string
 #  wicked_problem_id          :integer
@@ -21,9 +22,14 @@
 #
 # Indexes
 #
-#  index_scorecards_on_deleted_at    (deleted_at)
-#  index_scorecards_on_type          (type)
-#  index_scorecards_on_workspace_id  (workspace_id)
+#  index_scorecards_on_data_model_id    (data_model_id)
+#  index_scorecards_on_deleted_at       (deleted_at)
+#  index_scorecards_on_deprecated_type  (deprecated_type)
+#  index_scorecards_on_workspace_id     (workspace_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (data_model_id => data_models.id)
 #
 class Scorecard < ApplicationRecord
   include Searchable
@@ -37,6 +43,7 @@ class Scorecard < ApplicationRecord
   belongs_to :workspace
   belongs_to :wicked_problem, optional: true
   belongs_to :linked_scorecard, class_name: 'Scorecard', optional: true
+  belongs_to :data_model
 
   has_many :initiatives, dependent: :destroy, inverse_of: :scorecard
   has_many :initiatives_organisations, through: :initiatives
@@ -76,6 +83,11 @@ class Scorecard < ApplicationRecord
 
   def grid_mode
     @grid_mode ||= workspace.classic_grid_mode? ? :classic : :modern
+  end
+
+  # SMELL: Hack to test if the scorecard has a thematic map (originally only SDGs)
+  def thematic_map?
+    data_model.name.include?('Sustainable Development Goals')
   end
 
   def linked?

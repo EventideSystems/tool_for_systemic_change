@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Delegate checks to DataModelPolicy
 class FocusAreaGroupPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
   class Scope < Scope # rubocop:disable Style/Documentation
     def resolve

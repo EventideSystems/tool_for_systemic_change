@@ -29,16 +29,19 @@
 #  fk_rails_...  (user_id => users.id)
 #
 require 'rails_helper'
+require 'shared/workspace_context'
 
 RSpec.describe(ChecklistItem) do
   subject { checklist_item }
 
+  include_context 'with simple workspace'
+
   let(:user) { create(:user) }
-  let(:characteristic) { create(:characteristic) }
-  let(:initiative) { create(:initiative) }
   let(:checklist_item) do
     create(:checklist_item, initiative:, characteristic:, user:, comment: 'test', status: :planned)
   end
+  let(:initiative) { create(:initiative, scorecard:) }
+  let(:scorecard) { create(:scorecard, workspace:, data_model:) }
 
   before { initiative.checklist_items << checklist_item }
 

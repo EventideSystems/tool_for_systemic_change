@@ -33,7 +33,7 @@
             <% end %>
 
             <%- if policy(@workspace).edit? %>
-              <%= link_to_primary 'Edit Workspace', edit_workspace_path(@workspace), class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to_primary 'Edit Workspace', edit_workspace_path(@workspace) %>
             <%- end %>
           </div>
         </div>
@@ -52,8 +52,8 @@
   <% end %>
 
   <%= render 'show_page_section', title: 'Restrictions' do %>
-    <%= definition_list_element('Max team members', @workspace.max_users) %>
-    <%= definition_list_element('Max impact cards', @workspace.max_scorecards) %>
+    <%= definition_list_element('Max team members', limit_text(@workspace.max_users)) %>
+    <%= definition_list_element('Max impact cards', limit_text(@workspace.max_scorecards)) %>
   <% end %>
 
   <%= render 'show_page_section', title: 'Other Settings' do %>

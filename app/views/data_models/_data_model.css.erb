@@ -1,0 +1,4 @@
+.<%= dom_id(data_model) %> {
+  color: <%= calculate_luminance(data_model.color) > 0.28 ? 'black' : '#e0e0e0' %>;
+  background-color: <%= data_model.color %>;
+}

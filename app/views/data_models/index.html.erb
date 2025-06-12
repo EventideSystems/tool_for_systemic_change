@@ -1,0 +1,26 @@
+<%= render 'expiry_warning' %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Data Models</h1>
+      <div class="flex justify-between items-center mt-4">
+        <%= render partial: 'search_form', locals: { record: @q, placeholder: 'Search data model library...', options: { url: data_models_path } } %>
+        <%- if policy(DataModel).create? %>
+          <div>
+            <%#= link_to_primary 'Create Impact Card Data Model', new_data_model_path %>
+          </div>
+        <%- end %>
+      </div>
+    </div>
+    <%= turbo_frame_tag :stylesheet do %>
+      <%= render 'data_models/stylesheet', data_models: @all_data_models %>
+    <% end %>
+
+    <ul class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <%= turbo_frame_tag :list do %>
+        <%= render partial: 'data_model', collection: @data_models, as: :data_model %>
+        <%= render partial: 'pagination' %>
+      <% end %>
+    </ul>
+  </div>
+</div>

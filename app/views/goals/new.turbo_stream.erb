@@ -1,0 +1,13 @@
+<%= turbo_stream.update dom_id(@data_model, :new_goal) do %>
+  <div class="mb-6 w-full rounded-lg border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800">
+    <%= 
+      render(
+        'data_model_elements/form', 
+        element: @goal, 
+        url: data_model_goals_path(@data_model),
+        cancel_path: data_model_goals_path(@data_model),
+        max_position: @max_position
+      ) 
+    %>
+  </div>
+<% end %>

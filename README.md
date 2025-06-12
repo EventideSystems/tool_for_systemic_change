@@ -39,7 +39,7 @@ Obsekio provides tools for visualising the connections betweens stakeholders eng
 
 ## Acknowledgments
 
-We're grateful to Emily Humphreys and Dr Sharon Zivkovic for developing the original Tool for Systemic Change and for agreeing to release the code as open source.
+We're grateful to Wicked Lab for developing the original Tool for Systemic Change and for agreeing to release the code as open source.
 
 We'd also like to thank [AppSignal](https://www.appsignal.com/) for providing monitoring and error tracking services.
 
@@ -49,15 +49,18 @@ So, thank you everyone!
 
 ## License & Attribution
 
-Copyright © 2025 Eventide Systems Pty Ltd, released under an open source license. The repository contains seed data models that are copyright their respective owners. See the copyright notices within the /db/data_models directory. 
+Copyright © 2023 Wicked Lab
+Copyright © 2025 Eventide Systems Pty Ltd
 
 This software is licensed under the GNU Affero General Public License, version 3 ("AGPL-3.0"). See the [LICENSE](LICENSE.md) file for details.  
+
+NB the `db/data_models` directory contains seed data models that are copyright their respective owners.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
-If you modify this program, or any covered work, by linking or combining it with the Tool for Systemic Change, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
+If you modify this program, or any covered work, by linking or combining it with Obsekio, containing parts covered by the terms of the Affero GPL 3 license, the licensors of this program grant you additional permission to convey the resulting work. Corresponding Source for a non-source form of such a combination shall include the source code for the parts of the Tool for Systemic Change that are used as well as that of the covered work.
 
 Attribution Notice:
 
@@ -125,13 +128,19 @@ System configuration items are stored on the Heroku platform within environment 
 
 | Variable | Description |
 | --------------- | --------------- |
-| DATABASE_URL | Postgresql database connection string |
-| MANDRILL_API_KEY | Mandrill API key used to send emails |
-| MANDRILL_USERNAME | Mandrill username used to send emails |
-| RAILS_ENV | Environment used to determine whether the system is running in the `staging` or `production` environment |
-| RAILS_MASTER_KEY | Secret key used to encrypt and decrypt data |
 | APPSIGNAL_APP_NAME | Name of application within the AppSignal monitoring service |
 | APPSIGNAL_PUSH_API_KEY | Key used to authenticate with the AppSignal monitoring service |
+| AWS_ACCESS_KEY_ID | AWS access key for "betweenness" lambda function |
+| AWS_SECRET_ACCESS_KEY | AWS secret key |
+| CONTACT_MAIL_RECIPIENTS | Comma-separated list of recipients of email sent via contact forms |
+| DATABASE_URL | Postgresql database connection string |
+| MAILJET_API_KEY | API key used to send email via Mailjet |
+| MAILJET_SECRET_KEY | Secret key used to send email via Mailjet |
+| MAILJET_DEFAULT_FROM | Nominal 'from' address for outgoing mail |
+| RECAPTCHA_SITE_KEY | Key for Google ReCaptcha used on "external" forms (contact, login, etc) |
+| RECAPTCHA_SECRET_KEY | Secrete for Google ReCaptcha |
+| RUBY_YJIT_ENABLE | Set to '1' to enable JIT compilation |
+| SECRET_KEY_BASE | Secret used by Rails for generating cookies and other encryption-related operations |
 
 ### Deploying to the Application Server
 

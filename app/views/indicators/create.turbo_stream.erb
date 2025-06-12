@@ -1,0 +1,9 @@
+<%= turbo_stream.append dom_id(@target, :indicators_list) do %>
+  <%= turbo_frame_tag dom_id(@indicator) do %>
+    <%= render 'indicators/indicator', indicator: @indicator, link_class: 'animate-flash-yellow' %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update dom_id(@target, :new_indicator) do %>
+  <%= render 'indicators/link_to_new_element', parent: @target %>
+<% end %>

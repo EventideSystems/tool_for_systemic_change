@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@goal, :link) do %>
+  <%= render 'link', goal: @goal, link_class: 'animate-flash-yellow' %>
+<% end %>

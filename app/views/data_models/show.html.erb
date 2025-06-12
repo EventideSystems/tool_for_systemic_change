@@ -1,0 +1,94 @@
+<%= render 'data_models/stylesheet', data_models: [@data_model] %>
+<%= render 'expiry_warning' %>
+<div class="mx-auto max-w-6xl">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="w-full">
+      <%= page_header_tag 'Data Model Details' %>
+      
+      <div class="flex justify-between items-center mt-4">
+        <div class="flex gap-6 py-6">
+          <%= render partial: 'resource_summary', locals: { name: @data_model.name, dom_id: dom_id(@data_model) } %>
+          <div class="space-y-1.5">
+            <div class="text-base/6 font-semibold dark:text-white">
+              <%= @data_model.name %>
+            </div>
+            <div class="text-xs/6 text-zinc-500 min-h-4">
+              <%= rich_text(@data_model.description) %>
+            </div>
+            <%= render 'data_model_type_badge', data_model: @data_model %>
+            <%= render 'other_workspace_badge', data_model: @data_model %>
+          </div>
+        </div>
+        <div class="relative">
+          <div class="flex justify-end items-center mb-4 space-x-2">
+            <%- if policy(@data_model).copy_to_current_workspace? %>
+              <div class="flex justify-end items-center mb-4">
+                <%= 
+                  button_to_primary(
+                    'Copy to Workspace', 
+                    copy_to_current_workspace_data_model_path(@data_model), 
+                    method: :post,
+                    data: {
+                      turbo: false
+                    },
+                    title: 'Copy this data model to your current workspace'
+                  )
+                %>
+              </div>
+            <%- end %>
+            <%- if policy(@data_model).edit? %>
+              <div class="flex justify-end items-center mb-4">
+                <%= link_to_primary 'Edit Data Model', edit_data_model_path(@data_model) %>
+              </div>
+            <%- end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 flex flex-wrap items-end justify-start gap-4">
+    <% @data_model.focus_area_groups.each do |focus_area_group| %>
+      <div class="mb-6 w-full">
+        <h2 class="text-2xl font-bold text-zinc-950 dark:text-white mb-4" title="<%= focus_area_group.name %>">
+          <%- if focus_area_group.color.present? %>
+            <span class="w-2 mr-1" style="background-color: <%= focus_area_group.color %>">&nbsp;</span>
+          <% end %>
+          <%= display_name(focus_area_group) %>
+        </h2>
+        <%- if focus_area_group.description.present? %>        
+          <div class="flex text-zinc-500 mb-4">
+            <%= rich_text(focus_area_group.description) %>
+          </div>
+        <% end %>
+        <% focus_area_group.focus_areas.order(:position).each do |focus_area| %>
+          <div class="mb-4 ml-3">
+            <h3 class="text-xl font-semibold text-zinc-950 dark:text-white mb-2" title="<%= focus_area.name %>">
+              <%- if focus_area.color.present? %>
+                <span class="w-2 mr-1" style="background-color: <%= focus_area.color %>">&nbsp;</span>
+              <% end %>
+              <%= display_name(focus_area) %>
+            </h3>
+            <%- if focus_area.description.present? %>        
+              <div class="flex text-zinc-500 mb-4">
+                <%= rich_text(focus_area.description) %>
+              </div>
+            <% end %>
+            <ul class="list-disc pl-8">
+              <% focus_area.characteristics.each do |characteristic| %>
+                <li class="mt-1 text-zinc-950 dark:text-white" title="<%= characteristic.name %>">
+                  <%= display_name(characteristic) %>
+                  <%- if characteristic.description.present? %>        
+                    <div class="flex text-zinc-500 mb-4">
+                      <%= rich_text(characteristic.description) %>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

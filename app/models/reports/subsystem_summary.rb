@@ -36,23 +36,19 @@ module Reports
     private
 
     def scorecard_model_name
-      case scorecard
-      when TransitionCard
-        scorecard.workspace.transition_card_model_name
-      when SustainableDevelopmentGoalAlignmentCard
-        scorecard.workspace.sdgs_alignment_card_model_name
-      end
+      scorecard.data_model.name
     end
 
     def add_title(sheet, styles)
-      sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name, style: styles[:blue_normal])
-      sheet.add_row(['Wicked problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
+      sheet.add_row([scorecard_model_name], style: styles[:h1]).add_cell(scorecard.name,
+                                                                         style: styles[:blue_normal])
+      sheet.add_row(['Problem / opportunity', scorecard.wicked_problem&.name || 'NOT DEFINED'])
       sheet.add_row(['Community', scorecard.community&.name || 'NOT DEFINED'])
     end
 
     def add_summary(sheet, styles)
       sheet.add_row(['Total Subsystems', total_subsystems], style: styles[:h1])
-      sheet.add_row(['Total Partnering Organisations', total_partnering_organisations], style: styles[:h1])
+      sheet.add_row(['Total Partnering Stakeholders', total_partnering_organisations], style: styles[:h1])
       sheet.add_row(
         ["Total #{scorecard_model_name} Initiatives", total_transition_card_initiatives],
         style: styles[:h1]
@@ -74,7 +70,7 @@ module Reports
       max_organisations = organisations_per_subsystem.values.map(&:count).max || 0
 
       sheet.add_row(
-        ['Subsystem ', 'Total Organisations'] + Array.new(max_organisations, 'Organisations'),
+        ['Subsystem ', 'Total Stakeholders'] + Array.new(max_organisations, 'Stakeholders'),
         style: styles[:h3]
       )
       organisations_per_subsystem.each do |subsystem, organisations|
@@ -93,7 +89,7 @@ module Reports
     # NOTE: Not sure what Emily requires here. The following code restricts the
     #       number of partnering organisations and initiatives to those that are
     #       part of the subsystems.
-    #       The code above is the same as the code in Reports::TransitionCardStakeholders
+    #       The code above is the same as the code in Reports::ImpactCardStakeholders
     #
     # def total_partnering_organisations
     #   subsystem_tags_query.flat_map(&:initiatives).flat_map(&:organisations).uniq.count

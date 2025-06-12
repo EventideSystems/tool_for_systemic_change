@@ -1,0 +1,10 @@
+<%= 
+  link_to(
+    edit_target_path(target), 
+    data: { turbo_frame: dom_id(target, :link) }
+  ) do %>
+  <h3 class="text-xl font-semibold text-zinc-950 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 mb-2 <%= local_assigns[:link_class] %>" title="<%= target.name %>">
+    <%= render 'data_model_elements/link_text', element: target %>
+  </h3>
+<% end %>
+<%= render 'data_model_elements/description', element: target %>

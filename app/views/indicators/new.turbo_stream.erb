@@ -1,0 +1,11 @@
+<%= turbo_stream.update dom_id(@target, :new_indicator) do %>
+  <%= 
+    render(
+      'data_model_elements/form', 
+      element: @indicator, 
+      url: target_indicators_path(@target), 
+      cancel_path: target_indicators_path(@target),
+      max_position: @max_position
+    ) 
+  %>
+<% end %>

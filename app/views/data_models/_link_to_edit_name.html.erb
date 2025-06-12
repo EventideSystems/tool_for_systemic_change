@@ -1,0 +1,6 @@
+<%= link_to edit_name_data_model_path(data_model), data: { turbo_frame: dom_id(data_model, :edit_name) } do %>
+  <span class="inline-flex group">
+    <%= data_model.name %>
+    <%= render_icon :edit, classes: "ml-1 mt-[0.1em] invisible group-hover:visible" %>    
+  </span>                
+<% end %>

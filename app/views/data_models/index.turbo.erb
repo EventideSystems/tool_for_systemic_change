@@ -1,0 +1,8 @@
+<%= turbo_stream.update :stylesheet do %>
+  <%= render 'stylesheet', data_models: @all_data_models %>
+<% end %>
+
+<%= turbo_stream.update :list do %>
+  <%= render partial: 'data_model', collection: @data_models, as: :data_model %>
+  <%= render partial: 'pagination' %>
+<% end %>

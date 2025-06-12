@@ -5,17 +5,12 @@
 class ReportsController < ApplicationController
   sidebar_item :reports
 
-  def index # rubocop:disable Metrics/MethodLength
+  def index
     authorize(:report, :index?)
 
     @scorecards = policy_scope(Scorecard).order(:name)
-    @grouped_scorecards = @scorecards.group_by(&:type).transform_keys do |key|
-      case key
-      when 'TransitionCard' then current_workspace.transition_card_model_name
-      when 'SustainableDevelopmentGoalAlignmentCard' then current_workspace.sdgs_alignment_card_model_name
-      else
-        'Impact Card'
-      end
+    @grouped_scorecards = @scorecards.group_by do |scorecard|
+      scorecard.data_model.name
     end.transform_values do |scorecards| # rubocop:disable Style/MultilineBlockChain
       scorecards.map do |scorecard|
         [scorecard.name, scorecard.id]
@@ -23,8 +18,8 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    authorize(:report, :transition_card_activity?)
+  def impact_card_activity # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize(:report, :impact_card_activity?)
 
     @date_from = ActiveSupport::TimeZone[current_user.time_zone].parse(params[:date_from]).beginning_of_day.utc
 
@@ -33,7 +28,7 @@ class ReportsController < ApplicationController
     @date_to = Date.parse(params[:date_to]).end_of_day
     @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
 
-    @report = Reports::TransitionCardActivity.new(@scorecard, @date_from, @date_to)
+    @report = Reports::ImpactCardActivity.new(@scorecard, @date_from, @date_to)
 
     respond_to do |format|
       format.xlsx do
@@ -72,15 +67,15 @@ class ReportsController < ApplicationController
     end
   end
 
-  def transition_card_stakeholders
+  def impact_card_stakeholders
     authorize(:report, :index?)
 
     @scorecard = current_workspace.scorecards.find(params[:scorecard_id])
-    @report = Reports::TransitionCardStakeholders.new(@scorecard)
+    @report = Reports::ImpactCardStakeholders.new(@scorecard)
     send_data(
       @report.to_xlsx.read,
       type: Mime[:xlsx],
-      filename: "#{transition_card_stakeholders_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
+      filename: "#{impact_card_stakeholders_base_filename(@scorecard)}#{time_stamp_suffix}.xlsx"
     )
   end
 
@@ -150,7 +145,7 @@ class ReportsController < ApplicationController
     "#{report_filename_prefix(scorecard)}_Comments"
   end
 
-  def transition_card_stakeholders_base_filename(scorecard)
+  def impact_card_stakeholders_base_filename(scorecard)
     "#{report_filename_prefix(scorecard)}_Stakeholders"
   end
 
@@ -159,7 +154,7 @@ class ReportsController < ApplicationController
   end
 
   def report_filename_prefix(scorecard)
-    scorecard.model_name.human.delete(' ')
+    scorecard.data_model.name.tr(' ', '_')
   end
 
   def time_stamp_suffix

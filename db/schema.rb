@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_06_122909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -80,7 +80,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "code"
+    t.string "short_name"
+    t.string "color"
     t.index ["deleted_at"], name: "index_characteristics_on_deleted_at"
+    t.index ["focus_area_id", "code"], name: "index_characteristics_on_focus_area_id_and_code", unique: true
     t.index ["focus_area_id"], name: "index_characteristics_on_focus_area_id"
     t.index ["position"], name: "index_characteristics_on_position"
   end
@@ -138,6 +142,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
+  create_table "data_models", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "short_name"
+    t.string "description"
+    t.string "status", default: "active", null: false
+    t.string "color", default: "#0d9488", null: false
+    t.bigint "workspace_id"
+    t.boolean "public_model", default: false
+    t.datetime "deleted_at"
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "author"
+    t.string "license"
+    t.index ["name", "workspace_id"], name: "index_data_models_on_name_and_workspace_id", unique: true, where: "((workspace_id IS NOT NULL) AND (deleted_at IS NULL))"
+    t.index ["workspace_id"], name: "index_data_models_on_workspace_id"
+  end
+
   create_table "deprecated_checklist_item_comments", force: :cascade do |t|
     t.bigint "checklist_item_id"
     t.string "comment"
@@ -155,12 +177,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "scorecard_type", default: "TransitionCard"
-    t.bigint "workspace_id"
+    t.string "deprecated_scorecard_type", default: "TransitionCard"
+    t.bigint "deprecated_workspace_id"
+    t.bigint "data_model_id"
+    t.string "code"
+    t.string "short_name"
+    t.string "color"
+    t.index ["data_model_id", "code"], name: "index_focus_area_groups_on_data_model_id_and_code", unique: true
+    t.index ["data_model_id"], name: "index_focus_area_groups_on_data_model_id"
     t.index ["deleted_at"], name: "index_focus_area_groups_on_deleted_at"
+    t.index ["deprecated_scorecard_type"], name: "index_focus_area_groups_on_deprecated_scorecard_type"
+    t.index ["deprecated_workspace_id"], name: "index_focus_area_groups_on_deprecated_workspace_id"
     t.index ["position"], name: "index_focus_area_groups_on_position"
-    t.index ["scorecard_type"], name: "index_focus_area_groups_on_scorecard_type"
-    t.index ["workspace_id"], name: "index_focus_area_groups_on_workspace_id"
   end
 
   create_table "focus_areas", id: :serial, force: :cascade do |t|
@@ -172,23 +200,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.integer "position"
     t.datetime "deleted_at", precision: nil
     t.string "icon_name", default: ""
-    t.string "actual_color"
-    t.string "planned_color"
+    t.string "color"
+    t.string "code"
+    t.string "short_name"
     t.index ["deleted_at"], name: "index_focus_areas_on_deleted_at"
+    t.index ["focus_area_group_id", "code"], name: "index_focus_areas_on_focus_area_group_id_and_code", unique: true
     t.index ["focus_area_group_id"], name: "index_focus_areas_on_focus_area_group_id"
     t.index ["position"], name: "index_focus_areas_on_position"
-  end
-
-  create_table "imports", id: :serial, force: :cascade do |t|
-    t.integer "workspace_id"
-    t.integer "user_id"
-    t.text "import_data"
-    t.integer "status", default: 0
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "type"
-    t.index ["user_id"], name: "index_imports_on_user_id"
-    t.index ["workspace_id"], name: "index_imports_on_workspace_id"
   end
 
   create_table "initiatives", id: :serial, force: :cascade do |t|
@@ -261,12 +279,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
     t.datetime "deleted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "type", default: "TransitionCard"
+    t.string "deprecated_type", default: "TransitionCard"
     t.integer "linked_scorecard_id"
     t.boolean "share_ecosystem_map", default: true
     t.boolean "share_thematic_network_map", default: true
+    t.bigint "data_model_id"
+    t.index ["data_model_id"], name: "index_scorecards_on_data_model_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
-    t.index ["type"], name: "index_scorecards_on_type"
+    t.index ["deprecated_type"], name: "index_scorecards_on_deprecated_type"
     t.index ["workspace_id"], name: "index_scorecards_on_workspace_id"
   end
 
@@ -406,7 +426,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
   add_foreign_key "checklist_item_changes", "users"
   add_foreign_key "checklist_items", "characteristics", column: "previous_characteristic_id"
   add_foreign_key "checklist_items", "users"
-  add_foreign_key "focus_area_groups", "workspaces"
+  add_foreign_key "data_models", "workspaces"
+  add_foreign_key "focus_area_groups", "data_models"
+  add_foreign_key "focus_area_groups", "workspaces", column: "deprecated_workspace_id"
+  add_foreign_key "scorecards", "data_models"
 
   create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
@@ -615,11 +638,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_24_021635) do
       characteristics.deleted_at,
       characteristics.created_at,
       characteristics.updated_at,
-      focus_area_groups.scorecard_type,
-      focus_area_groups.workspace_id
-     FROM ((characteristics
+      characteristics.code,
+      characteristics.short_name,
+      characteristics.color,
+      focus_area_groups.data_model_id,
+      data_models.workspace_id
+     FROM (((characteristics
        JOIN focus_areas ON ((characteristics.focus_area_id = focus_areas.id)))
        JOIN focus_area_groups ON ((focus_areas.focus_area_group_id = focus_area_groups.id)))
+       JOIN data_models ON ((focus_area_groups.data_model_id = data_models.id)))
     WHERE ((characteristics.deleted_at IS NULL) AND (focus_areas.deleted_at IS NULL) AND (focus_area_groups.deleted_at IS NULL))
     ORDER BY focus_areas."position", characteristics."position";
   SQL

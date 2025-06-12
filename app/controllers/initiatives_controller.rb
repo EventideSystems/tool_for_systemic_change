@@ -8,7 +8,7 @@ class InitiativesController < ApplicationController
 
   before_action :set_initiative, only: %i[show edit update destroy]
   before_action :set_focus_area_groups, only: [:show]
-  before_action :set_scorecards_and_types, only: %i[show new edit]
+  before_action :set_scorecards, only: %i[show new edit]
   before_action :set_subsystem_tags, only: %i[index show]
 
   sidebar_item :initiatives
@@ -173,9 +173,11 @@ class InitiativesController < ApplicationController
 
   def set_focus_area_groups
     @focus_areas_groups = \
-      FocusAreaGroup
+      @initiative
+      .scorecard
+      .data_model
+      .focus_area_groups
       .includes(:focus_areas)
-      .where(scorecard_type: @initiative.scorecard.type, workspace_id: @initiative.scorecard.workspace_id)
       .order(:position)
   end
 
@@ -187,16 +189,8 @@ class InitiativesController < ApplicationController
   # SMELL: Duplication of code in reports_controller
   ScorecardType = Struct.new('ScorecardType', :name, :scorecards)
 
-  def set_scorecards_and_types
+  def set_scorecards
     @scorecards = policy_scope(Scorecard).order(:name)
-
-    @scorecard_types =
-      Workspace::SCORECARD_TYPES.map do |scorecard_type|
-        ScorecardType.new(
-          scorecard_type.model_name.human.pluralize,
-          policy_scope(Scorecard).order(:name).where(type: scorecard_type.name)
-        )
-      end
   end
 
   def set_subsystem_tags

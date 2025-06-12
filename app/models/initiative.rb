@@ -91,16 +91,6 @@ class Initiative < ApplicationRecord
     incomplete.where(finished_at.lt(Time.zone.today)).where(dates_confirmed: true)
   }
 
-  scope :transition_cards,
-        lambda {
-          joins(:scorecard).where('scorecards.type': 'TransitionCard')
-        }
-
-  scope :sdgs_alignment_cards,
-        lambda {
-          joins(:scorecard).where('scorecards.type': 'SustainableDevelopmentGoalAlignmentCard')
-        }
-
   def checklist_items_ordered_by_ordered_focus_area(selected_date: nil, focus_areas: nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     checklist_items = ChecklistItem
                       .includes(
@@ -108,7 +98,8 @@ class Initiative < ApplicationRecord
                         characteristic: { focus_area: :focus_area_group }
                       ).where(
                         'checklist_items.initiative_id' => id,
-                        'focus_area_groups_focus_areas_2.scorecard_type' => scorecard.type
+                        'focus_area_groups_focus_areas_2.data_model_id' =>
+                          scorecard.data_model_id
                       ).order(
                         'focus_area_groups_focus_areas_2.position',
                         'focus_areas_characteristics.position',
@@ -158,12 +149,10 @@ class Initiative < ApplicationRecord
   end
 
   # TODO: Move to a service object
-  def create_missing_checklist_items! # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    missing_characteristic_ids = Characteristic
-                                 .per_scorecard_type_for_workspace(
-                                   scorecard.type,
-                                   scorecard.workspace
-                                 ).pluck(:id) - checklist_items.map(&:characteristic_id)
+  def create_missing_checklist_items! # rubocop:disable Metrics/MethodLength
+    missing_characteristic_ids ||= Characteristic
+                                   .per_data_model(scorecard.data_model_id)
+                                   .pluck(:id) - checklist_items.map(&:characteristic_id)
 
     return if missing_characteristic_ids.empty?
 

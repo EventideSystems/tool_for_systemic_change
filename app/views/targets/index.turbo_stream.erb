@@ -1,0 +1,3 @@
+<%= turbo_stream.update dom_id(@goal, :new_target) do %>
+  <%= render 'targets/link_to_new_element', parent: @goal %>
+<% end %>

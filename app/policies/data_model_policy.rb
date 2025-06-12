@@ -16,7 +16,9 @@ class DataModelPolicy < ApplicationPolicy
     end
   end
 
-  def index? = true
+  def index?
+    system_admin? # Temporarily restrict to system admins
+  end
 
   def show?
     system_admin? || record_in_scope?

@@ -8,6 +8,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  characteristic_id :bigint
+#  data_model_id     :bigint
 #  focus_area_id     :bigint
 #
 # Indexes
@@ -18,4 +19,5 @@
 class TargetsNetworkMapping < ApplicationRecord
   belongs_to :focus_area
   belongs_to :characteristic
+  belongs_to :data_model, optional: true
 end

@@ -8,6 +8,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  characteristic_id :bigint
+#  data_model_id     :bigint
 #  focus_area_id     :bigint
 #
 # Indexes

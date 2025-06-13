@@ -169,7 +169,11 @@ module Insights
     end
 
     def targets_network_mapping
-      @targets_network_mapping ||= TargetsNetworkMapping.includes(:focus_area, :characteristic).all
+      @targets_network_mapping ||=
+        TargetsNetworkMapping
+        .where(data_model: transition_card.data_model)
+        .includes(:focus_area, :characteristic)
+        .all
     end
   end
 end

@@ -1,264 +1,264 @@
 ---
-:name: Sustainable Development Goals and Targets
-:description: Two-tier SDGs data model, focusing on Goals and Targets
-:goals:
-- :name: SDGs Targets
-  :color: "#c445aa"
-  :targets:
-  - :name: End poverty in all its forms everywhere
-    :short_name: No Poverty
-    :description: Goal 1 calls for an end to poverty in all its manifestations, including
+name: Sustainable Development Goals and Targets
+description: Two-tier SDGs data model, focusing on Goals and Targets
+goals:
+- name: SDGs Targets
+  color: "#c445aa"
+  targets:
+  - name: End poverty in all its forms everywhere
+    short_name: No Poverty
+    description: Goal 1 calls for an end to poverty in all its manifestations, including
       extreme poverty, over the next 15 years. All people everywhere, including the
       poorest and most vulnerable, should enjoy a basic standard of living and social
       protection benefits.
-    :code: '1'
-    :color: "#E5243B"
-    :indicators:
-    - :name: By 2030, eradicate extreme poverty for all people everywhere, currently
+    code: '1'
+    color: "#E5243B"
+    indicators:
+    - name: By 2030, eradicate extreme poverty for all people everywhere, currently
         measured as people living on less than $1.25 a day
-      :short_name: Eradicate Extreme Poverty
-      :description: By 2030, eradicate extreme poverty for all people everywhere,
+      short_name: Eradicate Extreme Poverty
+      description: By 2030, eradicate extreme poverty for all people everywhere,
         currently measured as people living on less than $1.25 a day
-      :code: '1.1'
-    - :name: By 2030, reduce at least by half the proportion of men, women and children
+      code: '1.1'
+    - name: By 2030, reduce at least by half the proportion of men, women and children
         of all ages living in poverty in all its dimensions according to national
         definitions
-      :short_name: Reduce Poverty by at Least 50%
-      :description: By 2030, reduce at least by half the proportion of men, women
+      short_name: Reduce Poverty by at Least 50%
+      description: By 2030, reduce at least by half the proportion of men, women
         and children of all ages living in poverty in all its dimensions according
         to national definitions
-      :code: '1.2'
-    - :name: Implement nationally appropriate social protection systems and measures
+      code: '1.2'
+    - name: Implement nationally appropriate social protection systems and measures
         for all, including floors, and by 2030 achieve substantial coverage of the
         poor and the vulnerable
-      :short_name: Implement Social Protection Systems
-      :description: Implement nationally appropriate social protection systems and
+      short_name: Implement Social Protection Systems
+      description: Implement nationally appropriate social protection systems and
         measures for all, including floors, and by 2030 achieve substantial coverage
         of the poor and the vulnerable
-      :code: '1.3'
-    - :name: By 2030, ensure that all men and women, in particular the poor and the
+      code: '1.3'
+    - name: By 2030, ensure that all men and women, in particular the poor and the
         vulnerable, have equal rights to economic resources, as well as access to
         basic services, ownership and control over land and other forms of property,
         inheritance, natural resources, appropriate new technology and financial services,
         including microfinance
-      :short_name: Equal Rights to Ownership, Basic Services, Technology and Economic
+      short_name: Equal Rights to Ownership, Basic Services, Technology and Economic
         Resources
-      :description: By 2030, ensure that all men and women, in particular the poor
+      description: By 2030, ensure that all men and women, in particular the poor
         and the vulnerable, have equal rights to economic resources, as well as access
         to basic services, ownership and control over land and other forms of property,
         inheritance, natural resources, appropriate new technology and financial services,
         including microfinance
-      :code: '1.4'
-    - :name: By 2030, build the resilience of the poor and those in vulnerable situations
+      code: '1.4'
+    - name: By 2030, build the resilience of the poor and those in vulnerable situations
         and reduce their exposure and vulnerability to climate-related extreme events
         and other economic, social and environmental shocks and disasters
-      :short_name: Build Resilience to Environmental, Economic and Social Disasters
-      :description: By 2030, build the resilience of the poor and those in vulnerable
+      short_name: Build Resilience to Environmental, Economic and Social Disasters
+      description: By 2030, build the resilience of the poor and those in vulnerable
         situations and reduce their exposure and vulnerability to climate-related
         extreme events and other economic, social and environmental shocks and disasters
-      :code: '1.5'
-    - :name: Ensure significant mobilization of resources from a variety of sources,
+      code: '1.5'
+    - name: Ensure significant mobilization of resources from a variety of sources,
         including through enhanced development cooperation, in order to provide adequate
         and predictable means for developing countries, in particular least developed
         countries, to implement programmes and policies to end poverty in all its
         dimensions
-      :short_name: Mobilize Resources to Implement Policies to End Poverty
-      :description: Ensure significant mobilization of resources from a variety of
+      short_name: Mobilize Resources to Implement Policies to End Poverty
+      description: Ensure significant mobilization of resources from a variety of
         sources, including through enhanced development cooperation, in order to provide
         adequate and predictable means for developing countries, in particular least
         developed countries, to implement programmes and policies to end poverty in
         all its dimensions
-      :code: 1.a
-    - :name: Create sound policy frameworks at the national, regional and international
+      code: 1.a
+    - name: Create sound policy frameworks at the national, regional and international
         levels, based on pro-poor and gender-sensitive development strategies, to
         support accelerated investment in poverty eradication actions
-      :short_name: Create pro-poor and gender-sensitive policy frameworks
-      :description: Create sound policy frameworks at the national, regional and international
+      short_name: Create pro-poor and gender-sensitive policy frameworks
+      description: Create sound policy frameworks at the national, regional and international
         levels, based on pro-poor and gender-sensitive development strategies, to
         support accelerated investment in poverty eradication actions
-      :code: 1.b
-  - :name: End hunger, achieve food security and improved nutrition and promote sustainable
+      code: 1.b
+  - name: End hunger, achieve food security and improved nutrition and promote sustainable
       agriculture
-    :short_name: Zero Hunger
-    :description: Goal 2 seeks to end hunger and all forms of malnutrition and to
+    short_name: Zero Hunger
+    description: Goal 2 seeks to end hunger and all forms of malnutrition and to
       achieve sustainable food production by 2030. It is premised on the idea that
       everyone should have access to sufficient nutritious food, which will require
       widespread promotion of sustainable agriculture, a doubling of agricultural
       productivity, increased investments and properly functioning food markets.
-    :code: '2'
-    :color: "#DDA63A"
-    :indicators:
-    - :name: By 2030, end hunger and ensure access by all people, in particular the
+    code: '2'
+    color: "#DDA63A"
+    indicators:
+    - name: By 2030, end hunger and ensure access by all people, in particular the
         poor and people in vulnerable situations, including infants, to safe, nutritious
         and sufficient food all year round
-      :short_name: Universal Access to Safe and Nutritious Food
-      :description: By 2030, end hunger and ensure access by all people, in particular
+      short_name: Universal Access to Safe and Nutritious Food
+      description: By 2030, end hunger and ensure access by all people, in particular
         the poor and people in vulnerable situations, including infants, to safe,
         nutritious and sufficient food all year round
-      :code: '2.1'
-    - :name: By 2030, end all forms of malnutrition, including achieving, by 2025,
+      code: '2.1'
+    - name: By 2030, end all forms of malnutrition, including achieving, by 2025,
         the internationally agreed targets on stunting and wasting in children under
         5 years of age, and address the nutritional needs of adolescent girls, pregnant
         and lactating women and older persons
-      :short_name: End All Forms of Malnutrition
-      :description: By 2030, end all forms of malnutrition, including achieving, by
+      short_name: End All Forms of Malnutrition
+      description: By 2030, end all forms of malnutrition, including achieving, by
         2025, the internationally agreed targets on stunting and wasting in children
         under 5 years of age, and address the nutritional needs of adolescent girls,
         pregnant and lactating women and older persons
-      :code: '2.2'
-    - :name: By 2030, double the agricultural productivity and incomes of small-scale
+      code: '2.2'
+    - name: By 2030, double the agricultural productivity and incomes of small-scale
         food producers, in particular women, indigenous peoples, family farmers, pastoralists
         and fishers, including through secure and equal access to land, other productive
         resources and inputs, knowledge, financial services, markets and opportunities
         for value addition and non-farm employment
-      :short_name: Double the Productivity and Incomes of Small-Scale Food Producers
-      :description: By 2030, double the agricultural productivity and incomes of small-scale
+      short_name: Double the Productivity and Incomes of Small-Scale Food Producers
+      description: By 2030, double the agricultural productivity and incomes of small-scale
         food producers, in particular women, indigenous peoples, family farmers, pastoralists
         and fishers, including through secure and equal access to land, other productive
         resources and inputs, knowledge, financial services, markets and opportunities
         for value addition and non-farm employment
-      :code: '2.3'
-    - :name: By 2030, ensure sustainable food production systems and implement resilient
+      code: '2.3'
+    - name: By 2030, ensure sustainable food production systems and implement resilient
         agricultural practices that increase productivity and production, that help
         maintain ecosystems, that strengthen capacity for adaptation to climate change,
         extreme weather, drought, flooding and other disasters and that progressively
         improve land and soil quality
-      :short_name: Sustainable Food Production and Resilient Agricultural Practices
-      :description: By 2030, ensure sustainable food production systems and implement
+      short_name: Sustainable Food Production and Resilient Agricultural Practices
+      description: By 2030, ensure sustainable food production systems and implement
         resilient agricultural practices that increase productivity and production,
         that help maintain ecosystems, that strengthen capacity for adaptation to
         climate change, extreme weather, drought, flooding and other disasters and
         that progressively improve land and soil quality
-      :code: '2.4'
-    - :name: By 2020, maintain the genetic diversity of seeds, cultivated plants and
+      code: '2.4'
+    - name: By 2020, maintain the genetic diversity of seeds, cultivated plants and
         farmed and domesticated animals and their related wild species, including
         through soundly managed and diversified seed and plant banks at the national,
         regional and international levels, and promote access to and fair and equitable
         sharing of benefits arising from the utilization of genetic resources and
         associated traditional knowledge, as internationally agreed
-      :short_name: Maintain the Genetic Diversity in Food Production
-      :description: By 2020, maintain the genetic diversity of seeds, cultivated plants
+      short_name: Maintain the Genetic Diversity in Food Production
+      description: By 2020, maintain the genetic diversity of seeds, cultivated plants
         and farmed and domesticated animals and their related wild species, including
         through soundly managed and diversified seed and plant banks at the national,
         regional and international levels, and promote access to and fair and equitable
         sharing of benefits arising from the utilization of genetic resources and
         associated traditional knowledge, as internationally agreed
-      :code: '2.5'
-    - :name: Increase investment, including through enhanced international cooperation,
+      code: '2.5'
+    - name: Increase investment, including through enhanced international cooperation,
         in rural infrastructure, agricultural research and extension services, technology
         development and plant and livestock gene banks in order to enhance agricultural
         productive capacity in developing countries, in particular least developed
         countries
-      :short_name: Invest in Rural Infrastructure, Agricultural Research, Technology
+      short_name: Invest in Rural Infrastructure, Agricultural Research, Technology
         and Gene Banks
-      :description: Increase investment, including through enhanced international
+      description: Increase investment, including through enhanced international
         cooperation, in rural infrastructure, agricultural research and extension
         services, technology development and plant and livestock gene banks in order
         to enhance agricultural productive capacity in developing countries, in particular
         least developed countries
-      :code: 2.a
-    - :name: Correct and prevent trade restrictions and distortions in world agricultural
+      code: 2.a
+    - name: Correct and prevent trade restrictions and distortions in world agricultural
         markets, including through the parallel elimination of all forms of agricultural
         export subsidies and all export measures with equivalent effect, in accordance
         with the mandate of the Doha Development Round
-      :short_name: Prevent Agricultural Trade Restrictions, Market Distortions and
+      short_name: Prevent Agricultural Trade Restrictions, Market Distortions and
         Export Subsidies
-      :description: Correct and prevent trade restrictions and distortions in world
+      description: Correct and prevent trade restrictions and distortions in world
         agricultural markets, including through the parallel elimination of all forms
         of agricultural export subsidies and all export measures with equivalent effect,
         in accordance with the mandate of the Doha Development Round
-      :code: 2.b
-    - :name: Adopt measures to ensure the proper functioning of food commodity markets
+      code: 2.b
+    - name: Adopt measures to ensure the proper functioning of food commodity markets
         and their derivatives and facilitate timely access to market information,
         including on food reserves, in order to help limit extreme food price volatility
-      :short_name: Ensure Stable Food Commodity Markets and Timely Access to Information
-      :description: Adopt measures to ensure the proper functioning of food commodity
+      short_name: Ensure Stable Food Commodity Markets and Timely Access to Information
+      description: Adopt measures to ensure the proper functioning of food commodity
         markets and their derivatives and facilitate timely access to market information,
         including on food reserves, in order to help limit extreme food price volatility
-      :code: 2.c
-  - :name: Ensure healthy lives and promote well-being for all at all ages
-    :short_name: Good Health and Well-Being
-    :description: Goal 3 aims to ensure health and well-being for all at all ages
+      code: 2.c
+  - name: Ensure healthy lives and promote well-being for all at all ages
+    short_name: Good Health and Well-Being
+    description: Goal 3 aims to ensure health and well-being for all at all ages
       by improving reproductive, maternal and child health; ending the epidemics of
       major communicable diseases; reducing non-communicable and environmental diseases;
       achieving universal health coverage; and ensuring access to safe, affordable
       and effective medicines and vaccines for all.
-    :code: '3'
-    :color: "#4C9F38"
-    :indicators:
-    - :name: By 2030, reduce the global maternal mortality ratio to less than 70 per
+    code: '3'
+    color: "#4C9F38"
+    indicators:
+    - name: By 2030, reduce the global maternal mortality ratio to less than 70 per
         100,000 live births
-      :short_name: Reduce Maternal Mortality
-      :description: By 2030, reduce the global maternal mortality ratio to less than
+      short_name: Reduce Maternal Mortality
+      description: By 2030, reduce the global maternal mortality ratio to less than
         70 per 100,000 live births
-      :code: '3.1'
-    - :name: By 2030, end preventable deaths of newborns and children under 5 years
+      code: '3.1'
+    - name: By 2030, end preventable deaths of newborns and children under 5 years
         of age, with all countries aiming to reduce neonatal mortality to at least
         as low as 12 per 1,000 live births and under-5 mortality to at least as low
         as 25 per 1,000 live births
-      :short_name: End All Preventable Deaths Under 5 Years of Age
-      :description: By 2030, end preventable deaths of newborns and children under
+      short_name: End All Preventable Deaths Under 5 Years of Age
+      description: By 2030, end preventable deaths of newborns and children under
         5 years of age, with all countries aiming to reduce neonatal mortality to
         at least as low as 12 per 1,000 live births and under-5 mortality to at least
         as low as 25 per 1,000 live births
-      :code: '3.2'
-    - :name: By 2030, end the epidemics of AIDS, tuberculosis, malaria and neglected
+      code: '3.2'
+    - name: By 2030, end the epidemics of AIDS, tuberculosis, malaria and neglected
         tropical diseases and combat hepatitis, water-borne diseases and other communicable
         diseases
-      :short_name: Fight Communicable Diseases
-      :description: By 2030, end the epidemics of AIDS, tuberculosis, malaria and
+      short_name: Fight Communicable Diseases
+      description: By 2030, end the epidemics of AIDS, tuberculosis, malaria and
         neglected tropical diseases and combat hepatitis, water-borne diseases and
         other communicable diseases
-      :code: '3.3'
-    - :name: By 2030, reduce by one third premature mortality from non-communicable
+      code: '3.3'
+    - name: By 2030, reduce by one third premature mortality from non-communicable
         diseases through prevention and treatment and promote mental health and well-being
-      :short_name: Reduce Mortality from Non-Communicable Diseases and Promote Mental
+      short_name: Reduce Mortality from Non-Communicable Diseases and Promote Mental
         Health
-      :description: By 2030, reduce by one third premature mortality from non-communicable
+      description: By 2030, reduce by one third premature mortality from non-communicable
         diseases through prevention and treatment and promote mental health and well-being
-      :code: '3.4'
-    - :name: Strengthen the prevention and treatment of substance abuse, including
+      code: '3.4'
+    - name: Strengthen the prevention and treatment of substance abuse, including
         narcotic drug abuse and harmful use of alcohol
-      :short_name: Prevent and Treat Substance Abuse
-      :description: Strengthen the prevention and treatment of substance abuse, including
+      short_name: Prevent and Treat Substance Abuse
+      description: Strengthen the prevention and treatment of substance abuse, including
         narcotic drug abuse and harmful use of alcohol
-      :code: '3.5'
-    - :name: By 2020, halve the number of global deaths and injuries from road traffic
+      code: '3.5'
+    - name: By 2020, halve the number of global deaths and injuries from road traffic
         accidents
-      :short_name: Reduce Road Injuries and Deaths
-      :description: By 2020, halve the number of global deaths and injuries from road
+      short_name: Reduce Road Injuries and Deaths
+      description: By 2020, halve the number of global deaths and injuries from road
         traffic accidents
-      :code: '3.6'
-    - :name: By 2030, ensure universal access to sexual and reproductive health-care
+      code: '3.6'
+    - name: By 2030, ensure universal access to sexual and reproductive health-care
         services, including for family planning, information and education, and the
         integration of reproductive health into national strategies and programmes
-      :short_name: Universal Access to Sexual and Reproductive Care, Family Planning
+      short_name: Universal Access to Sexual and Reproductive Care, Family Planning
         and Education
-      :description: By 2030, ensure universal access to sexual and reproductive health-care
+      description: By 2030, ensure universal access to sexual and reproductive health-care
         services, including for family planning, information and education, and the
         integration of reproductive health into national strategies and programmes
-      :code: '3.7'
-    - :name: Achieve universal health coverage, including financial risk protection,
+      code: '3.7'
+    - name: Achieve universal health coverage, including financial risk protection,
         access to quality essential health-care services and access to safe, effective,
         quality and affordable essential medicines and vaccines for all
-      :short_name: Achieve Universal Health Coverage
-      :description: Achieve universal health coverage, including financial risk protection,
+      short_name: Achieve Universal Health Coverage
+      description: Achieve universal health coverage, including financial risk protection,
         access to quality essential health-care services and access to safe, effective,
         quality and affordable essential medicines and vaccines for all
-      :code: '3.8'
-    - :name: By 2030, substantially reduce the number of deaths and illnesses from
+      code: '3.8'
+    - name: By 2030, substantially reduce the number of deaths and illnesses from
         hazardous chemicals and air, water and soil pollution and contamination
-      :short_name: Reduce Illnesses and Death from Hazardous Chemicals and Pollution
-      :description: By 2030, substantially reduce the number of deaths and illnesses
+      short_name: Reduce Illnesses and Death from Hazardous Chemicals and Pollution
+      description: By 2030, substantially reduce the number of deaths and illnesses
         from hazardous chemicals and air, water and soil pollution and contamination
-      :code: '3.9'
-    - :name: Strengthen the implementation of the World Health Organization Framework
+      code: '3.9'
+    - name: Strengthen the implementation of the World Health Organization Framework
         Convention on Tobacco Control in all countries, as appropriate
-      :short_name: Implement the WHO Framework Convention on Tobacco Control
-      :description: Strengthen the implementation of the World Health Organization
+      short_name: Implement the WHO Framework Convention on Tobacco Control
+      description: Strengthen the implementation of the World Health Organization
         Framework Convention on Tobacco Control in all countries, as appropriate
-      :code: 3.a
-    - :name: Support the research and development of vaccines and medicines for the
+      code: 3.a
+    - name: Support the research and development of vaccines and medicines for the
         communicable and non-communicable diseases that primarily affect developing
         countries, provide access to affordable essential medicines and vaccines,
         in accordance with the Doha Declaration on the TRIPS Agreement and Public
@@ -266,9 +266,9 @@
         the provisions in the Agreement on Trade-Related Aspects of Intellectual Property
         Rights regarding flexibilities to protect public health, and, in particular,
         provide access to medicines for all
-      :short_name: Support Research, Development and Universal Access to Affordable
+      short_name: Support Research, Development and Universal Access to Affordable
         Vaccines and Medicines
-      :description: Support the research and development of vaccines and medicines
+      description: Support the research and development of vaccines and medicines
         for the communicable and non-communicable diseases that primarily affect developing
         countries, provide access to affordable essential medicines and vaccines,
         in accordance with the Doha Declaration on the TRIPS Agreement and Public
@@ -276,1340 +276,1340 @@
         the provisions in the Agreement on Trade-Related Aspects of Intellectual Property
         Rights regarding flexibilities to protect public health, and, in particular,
         provide access to medicines for all
-      :code: 3.b
-    - :name: Substantially increase health financing and the recruitment, development,
+      code: 3.b
+    - name: Substantially increase health financing and the recruitment, development,
         training and retention of the health workforce in developing countries, especially
         in least developed countries and small island developing States
-      :short_name: Increase Health Financing and Support Health Workforce in Developing
+      short_name: Increase Health Financing and Support Health Workforce in Developing
         Countries
-      :description: Substantially increase health financing and the recruitment, development,
+      description: Substantially increase health financing and the recruitment, development,
         training and retention of the health workforce in developing countries, especially
         in least developed countries and small island developing States
-      :code: 3.c
-    - :name: Strengthen the capacity of all countries, in particular developing countries,
+      code: 3.c
+    - name: Strengthen the capacity of all countries, in particular developing countries,
         for early warning, risk reduction and management of national and global health
         risks
-      :short_name: Improve Early Warning Systems for Global Health Risks
-      :description: Strengthen the capacity of all countries, in particular developing
+      short_name: Improve Early Warning Systems for Global Health Risks
+      description: Strengthen the capacity of all countries, in particular developing
         countries, for early warning, risk reduction and management of national and
         global health risks
-      :code: 3.d
-  - :name: Ensure inclusive and equitable quality education and promote lifelong learning
+      code: 3.d
+  - name: Ensure inclusive and equitable quality education and promote lifelong learning
       opportunities for all
-    :short_name: Quality Education
-    :description: Goal 4 focuses on the acquisition of foundational and higher-order
+    short_name: Quality Education
+    description: Goal 4 focuses on the acquisition of foundational and higher-order
       skills; greater and more equitable access to technical and vocational education
       and training and higher education; training throughout life; and the knowledge,
       skills and values needed to function well and contribute to society.
-    :code: '4'
-    :color: "#C5192D"
-    :indicators:
-    - :name: By 2030, ensure that all girls and boys complete free, equitable and
+    code: '4'
+    color: "#C5192D"
+    indicators:
+    - name: By 2030, ensure that all girls and boys complete free, equitable and
         quality primary and secondary education leading to relevant and effective
         learning outcomes
-      :short_name: Free Primary and Secondary Education
-      :description: By 2030, ensure that all girls and boys complete free, equitable
+      short_name: Free Primary and Secondary Education
+      description: By 2030, ensure that all girls and boys complete free, equitable
         and quality primary and secondary education leading to relevant and effective
         learning outcomes
-      :code: '4.1'
-    - :name: By 2030, ensure that all girls and boys have access to quality early
+      code: '4.1'
+    - name: By 2030, ensure that all girls and boys have access to quality early
         childhood development, care and pre-primary education so that they are ready
         for primary education
-      :short_name: Equal Access to Quality Pre-Primary Education
-      :description: By 2030, ensure that all girls and boys have access to quality
+      short_name: Equal Access to Quality Pre-Primary Education
+      description: By 2030, ensure that all girls and boys have access to quality
         early childhood development, care and pre-primary education so that they are
         ready for primary education
-      :code: '4.2'
-    - :name: By 2030, ensure equal access for all women and men to affordable and
+      code: '4.2'
+    - name: By 2030, ensure equal access for all women and men to affordable and
         quality technical, vocational and tertiary education, including university
-      :short_name: Equal Access to Affordable Technical, Vocational and Higher Education
-      :description: By 2030, ensure equal access for all women and men to affordable
+      short_name: Equal Access to Affordable Technical, Vocational and Higher Education
+      description: By 2030, ensure equal access for all women and men to affordable
         and quality technical, vocational and tertiary education, including university
-      :code: '4.3'
-    - :name: By 2030, substantially increase the number of youth and adults who have
+      code: '4.3'
+    - name: By 2030, substantially increase the number of youth and adults who have
         relevant skills, including technical and vocational skills, for employment,
         decent jobs and entrepreneurship
-      :short_name: Increase the Number of People with Relevant Skills for Financial
+      short_name: Increase the Number of People with Relevant Skills for Financial
         Success
-      :description: By 2030, substantially increase the number of youth and adults
+      description: By 2030, substantially increase the number of youth and adults
         who have relevant skills, including technical and vocational skills, for employment,
         decent jobs and entrepreneurship
-      :code: '4.4'
-    - :name: By 2030, eliminate gender disparities in education and ensure equal access
+      code: '4.4'
+    - name: By 2030, eliminate gender disparities in education and ensure equal access
         to all levels of education and vocational training for the vulnerable, including
         persons with disabilities, indigenous peoples and children in vulnerable situations
-      :short_name: Eliminate All Discrimination in Education
-      :description: By 2030, eliminate gender disparities in education and ensure
+      short_name: Eliminate All Discrimination in Education
+      description: By 2030, eliminate gender disparities in education and ensure
         equal access to all levels of education and vocational training for the vulnerable,
         including persons with disabilities, indigenous peoples and children in vulnerable
         situations
-      :code: '4.5'
-    - :name: By 2030, ensure that all youth and a substantial proportion of adults,
+      code: '4.5'
+    - name: By 2030, ensure that all youth and a substantial proportion of adults,
         both men and women, achieve literacy and numeracy
-      :short_name: Universal Literacy and Numeracy
-      :description: By 2030, ensure that all youth and a substantial proportion of
+      short_name: Universal Literacy and Numeracy
+      description: By 2030, ensure that all youth and a substantial proportion of
         adults, both men and women, achieve literacy and numeracy
-      :code: '4.6'
-    - :name: By 2030, ensure that all learners acquire the knowledge and skills needed
+      code: '4.6'
+    - name: By 2030, ensure that all learners acquire the knowledge and skills needed
         to promote sustainable development, including, among others, through education
         for sustainable development and sustainable lifestyles, human rights, gender
         equality, promotion of a culture of peace and non-violence, global citizenship
         and appreciation of cultural diversity and of culture's contribution to sustainable
         development
-      :short_name: Education for Sustainable Development and Global Citizenship
-      :description: By 2030, ensure that all learners acquire the knowledge and skills
+      short_name: Education for Sustainable Development and Global Citizenship
+      description: By 2030, ensure that all learners acquire the knowledge and skills
         needed to promote sustainable development, including, among others, through
         education for sustainable development and sustainable lifestyles, human rights,
         gender equality, promotion of a culture of peace and non-violence, global
         citizenship and appreciation of cultural diversity and of culture's contribution
         to sustainable development
-      :code: '4.7'
-    - :name: Build and upgrade education facilities that are child, disability and
+      code: '4.7'
+    - name: Build and upgrade education facilities that are child, disability and
         gender sensitive and provide safe, non-violent, inclusive and effective learning
         environments for all
-      :short_name: Build and Upgrade Inclusive and Safe Schools
-      :description: Build and upgrade education facilities that are child, disability
+      short_name: Build and Upgrade Inclusive and Safe Schools
+      description: Build and upgrade education facilities that are child, disability
         and gender sensitive and provide safe, non-violent, inclusive and effective
         learning environments for all
-      :code: 4.a
-    - :name: By 2020, substantially expand globally the number of scholarships available
+      code: 4.a
+    - name: By 2020, substantially expand globally the number of scholarships available
         to developing countries, in particular least developed countries, small island
         developing States and African countries, for enrolment in higher education,
         including vocational training and information and communications technology,
         technical, engineering and scientific programmes, in developed countries and
         other developing countries
-      :short_name: Expand Higher Education Scholarships for Developing Countries
-      :description: By 2020, substantially expand globally the number of scholarships
+      short_name: Expand Higher Education Scholarships for Developing Countries
+      description: By 2020, substantially expand globally the number of scholarships
         available to developing countries, in particular least developed countries,
         small island developing States and African countries, for enrolment in higher
         education, including vocational training and information and communications
         technology, technical, engineering and scientific programmes, in developed
         countries and other developing countries
-      :code: 4.b
-    - :name: By 2030, substantially increase the supply of qualified teachers, including
+      code: 4.b
+    - name: By 2030, substantially increase the supply of qualified teachers, including
         through international cooperation for teacher training in developing countries,
         especially least developed countries and small island developing States
-      :short_name: Increase the supply of qualified teachers In Developing Countries
-      :description: By 2030, substantially increase the supply of qualified teachers,
+      short_name: Increase the supply of qualified teachers In Developing Countries
+      description: By 2030, substantially increase the supply of qualified teachers,
         including through international cooperation for teacher training in developing
         countries, especially least developed countries and small island developing
         States
-      :code: 4.c
-  - :name: Achieve gender equality and empower all women and girls
-    :short_name: Gender Equality
-    :description: Goal 5 aims to empower women and girls to reach their full potential,
+      code: 4.c
+  - name: Achieve gender equality and empower all women and girls
+    short_name: Gender Equality
+    description: Goal 5 aims to empower women and girls to reach their full potential,
       which requires eliminating all forms of discrimination and violence against
       them, including harmful practices. It seeks to ensure that they have every opportunity
       for sexual and reproductive health and reproductive rights; receive due recognition
       for their unpaid work; have full access to productive resources; and enjoy equal
       participation with men in political, economic and public life.
-    :code: '5'
-    :color: "#FF3A21"
-    :indicators:
-    - :name: End all forms of discrimination against all women and girls everywhere
-      :short_name: End Discrimination Against Women and Girls
-      :description: End all forms of discrimination against all women and girls everywhere
-      :code: '5.1'
-    - :name: Eliminate all forms of violence against all women and girls in the public
+    code: '5'
+    color: "#FF3A21"
+    indicators:
+    - name: End all forms of discrimination against all women and girls everywhere
+      short_name: End Discrimination Against Women and Girls
+      description: End all forms of discrimination against all women and girls everywhere
+      code: '5.1'
+    - name: Eliminate all forms of violence against all women and girls in the public
         and private spheres, including trafficking and sexual and other types of exploitation
-      :short_name: End All Violence Against and Exploitation of Women and Girls
-      :description: Eliminate all forms of violence against all women and girls in
+      short_name: End All Violence Against and Exploitation of Women and Girls
+      description: Eliminate all forms of violence against all women and girls in
         the public and private spheres, including trafficking and sexual and other
         types of exploitation
-      :code: '5.2'
-    - :name: Eliminate all harmful practices, such as child, early and forced marriage
+      code: '5.2'
+    - name: Eliminate all harmful practices, such as child, early and forced marriage
         and female genital mutilation
-      :short_name: Eliminate Forced Marriages and Genital Mutilation
-      :description: Eliminate all harmful practices, such as child, early and forced
+      short_name: Eliminate Forced Marriages and Genital Mutilation
+      description: Eliminate all harmful practices, such as child, early and forced
         marriage and female genital mutilation
-      :code: '5.3'
-    - :name: Recognize and value unpaid care and domestic work through the provision
+      code: '5.3'
+    - name: Recognize and value unpaid care and domestic work through the provision
         of public services, infrastructure and social protection policies and the
         promotion of shared responsibility within the household and the family as
         nationally appropriate
-      :short_name: Value Unpaid Care and Promote Shared Domestic Responsibilities
-      :description: Recognize and value unpaid care and domestic work through the
+      short_name: Value Unpaid Care and Promote Shared Domestic Responsibilities
+      description: Recognize and value unpaid care and domestic work through the
         provision of public services, infrastructure and social protection policies
         and the promotion of shared responsibility within the household and the family
         as nationally appropriate
-      :code: '5.4'
-    - :name: Ensure women's full and effective participation and equal opportunities
+      code: '5.4'
+    - name: Ensure women's full and effective participation and equal opportunities
         for leadership at all levels of decision-making in political, economic and
         public life
-      :short_name: Ensure Full Participation in Leadership and Decision-Making
-      :description: Ensure women's full and effective participation and equal opportunities
+      short_name: Ensure Full Participation in Leadership and Decision-Making
+      description: Ensure women's full and effective participation and equal opportunities
         for leadership at all levels of decision-making in political, economic and
         public life
-      :code: '5.5'
-    - :name: Ensure universal access to sexual and reproductive health and reproductive
+      code: '5.5'
+    - name: Ensure universal access to sexual and reproductive health and reproductive
         rights as agreed in accordance with the Programme of Action of the International
         Conference on Population and Development and the Beijing Platform for Action
         and the outcome documents of their review conferences
-      :short_name: Universal Access to Reproductive Health and Rights
-      :description: Ensure universal access to sexual and reproductive health and
+      short_name: Universal Access to Reproductive Health and Rights
+      description: Ensure universal access to sexual and reproductive health and
         reproductive rights as agreed in accordance with the Programme of Action of
         the International Conference on Population and Development and the Beijing
         Platform for Action and the outcome documents of their review conferences
-      :code: '5.6'
-    - :name: Undertake reforms to give women equal rights to economic resources, as
+      code: '5.6'
+    - name: Undertake reforms to give women equal rights to economic resources, as
         well as access to ownership and control over land and other forms of property,
         financial services, inheritance and natural resources, in accordance with
         national laws
-      :short_name: Equal Rights to Economic Resources, Property Ownership and Financial
+      short_name: Equal Rights to Economic Resources, Property Ownership and Financial
         Services
-      :description: Undertake reforms to give women equal rights to economic resources,
+      description: Undertake reforms to give women equal rights to economic resources,
         as well as access to ownership and control over land and other forms of property,
         financial services, inheritance and natural resources, in accordance with
         national laws
-      :code: 5.a
-    - :name: Enhance the use of enabling technology, in particular information and
+      code: 5.a
+    - name: Enhance the use of enabling technology, in particular information and
         communications technology, to promote the empowerment of women
-      :short_name: Promote Empowerment of Women through Technology
-      :description: Enhance the use of enabling technology, in particular information
+      short_name: Promote Empowerment of Women through Technology
+      description: Enhance the use of enabling technology, in particular information
         and communications technology, to promote the empowerment of women
-      :code: 5.b
-    - :name: Adopt and strengthen sound policies and enforceable legislation for the
+      code: 5.b
+    - name: Adopt and strengthen sound policies and enforceable legislation for the
         promotion of gender equality and the empowerment of all women and girls at
         all levels
-      :short_name: Adopt and Strengthen Policies and Enforceable Legislation for Gender
+      short_name: Adopt and Strengthen Policies and Enforceable Legislation for Gender
         Equality
-      :description: Adopt and strengthen sound policies and enforceable legislation
+      description: Adopt and strengthen sound policies and enforceable legislation
         for the promotion of gender equality and the empowerment of all women and
         girls at all levels
-      :code: 5.c
-  - :name: Ensure availability and sustainable management of water and sanitation
+      code: 5.c
+  - name: Ensure availability and sustainable management of water and sanitation
       for all
-    :short_name: Clean Water and Sanitation
-    :description: Goal 6 goes beyond drinking water, sanitation and hygiene to also
+    short_name: Clean Water and Sanitation
+    description: Goal 6 goes beyond drinking water, sanitation and hygiene to also
       address the quality and sustainability of water resources. Achieving this Goal,
       which is critical to the survival of people and the planet, means expanding
       international cooperation and garnering the support of local communities in
       improving water and sanitation management.
-    :code: '6'
-    :color: "#26BDE2"
-    :indicators:
-    - :name: By 2030, achieve universal and equitable access to safe and affordable
+    code: '6'
+    color: "#26BDE2"
+    indicators:
+    - name: By 2030, achieve universal and equitable access to safe and affordable
         drinking water for all
-      :short_name: Safe and Affordable Drinking Water
-      :description: By 2030, achieve universal and equitable access to safe and affordable
+      short_name: Safe and Affordable Drinking Water
+      description: By 2030, achieve universal and equitable access to safe and affordable
         drinking water for all
-      :code: '6.1'
-    - :name: By 2030, achieve access to adequate and equitable sanitation and hygiene
+      code: '6.1'
+    - name: By 2030, achieve access to adequate and equitable sanitation and hygiene
         for all and end open defecation, paying special attention to the needs of
         women and girls and those in vulnerable situations
-      :short_name: End Open Defecation and Provide Access to Sanitation and Hygiene
-      :description: By 2030, achieve access to adequate and equitable sanitation and
+      short_name: End Open Defecation and Provide Access to Sanitation and Hygiene
+      description: By 2030, achieve access to adequate and equitable sanitation and
         hygiene for all and end open defecation, paying special attention to the needs
         of women and girls and those in vulnerable situations
-      :code: '6.2'
-    - :name: By 2030, improve water quality by reducing pollution, eliminating dumping
+      code: '6.2'
+    - name: By 2030, improve water quality by reducing pollution, eliminating dumping
         and minimizing release of hazardous chemicals and materials, halving the proportion
         of untreated wastewater and substantially increasing recycling and safe reuse
         globally
-      :short_name: Improve Water Quality, Wastewater Treatment and Safe Reuse
-      :description: By 2030, improve water quality by reducing pollution, eliminating
+      short_name: Improve Water Quality, Wastewater Treatment and Safe Reuse
+      description: By 2030, improve water quality by reducing pollution, eliminating
         dumping and minimizing release of hazardous chemicals and materials, halving
         the proportion of untreated wastewater and substantially increasing recycling
         and safe reuse globally
-      :code: '6.3'
-    - :name: By 2030, substantially increase water-use efficiency across all sectors
+      code: '6.3'
+    - name: By 2030, substantially increase water-use efficiency across all sectors
         and ensure sustainable withdrawals and supply of freshwater to address water
         scarcity and substantially reduce the number of people suffering from water
         scarcity
-      :short_name: Increase Water-Use Efficiency and Ensure Freshwater Supplies
-      :description: By 2030, substantially increase water-use efficiency across all
+      short_name: Increase Water-Use Efficiency and Ensure Freshwater Supplies
+      description: By 2030, substantially increase water-use efficiency across all
         sectors and ensure sustainable withdrawals and supply of freshwater to address
         water scarcity and substantially reduce the number of people suffering from
         water scarcity
-      :code: '6.4'
-    - :name: By 2030, implement integrated water resources management at all levels,
+      code: '6.4'
+    - name: By 2030, implement integrated water resources management at all levels,
         including through transboundary cooperation as appropriate
-      :short_name: Implement Integrated Water Resources Management
-      :description: By 2030, implement integrated water resources management at all
+      short_name: Implement Integrated Water Resources Management
+      description: By 2030, implement integrated water resources management at all
         levels, including through transboundary cooperation as appropriate
-      :code: '6.5'
-    - :name: By 2020, protect and restore water-related ecosystems, including mountains,
+      code: '6.5'
+    - name: By 2020, protect and restore water-related ecosystems, including mountains,
         forests, wetlands, rivers, aquifers and lakes
-      :short_name: Protect and Restore Water-Related Ecosystems
-      :description: By 2020, protect and restore water-related ecosystems, including
+      short_name: Protect and Restore Water-Related Ecosystems
+      description: By 2020, protect and restore water-related ecosystems, including
         mountains, forests, wetlands, rivers, aquifers and lakes
-      :code: '6.6'
-    - :name: By 2030, expand international cooperation and capacity-building support
+      code: '6.6'
+    - name: By 2030, expand international cooperation and capacity-building support
         to developing countries in water- and sanitation-related activities and programmes,
         including water harvesting, desalination, water efficiency, wastewater treatment,
         recycling and reuse technologies
-      :short_name: Expand Water and Sanitation Support to Developing Countries
-      :description: By 2030, expand international cooperation and capacity-building
+      short_name: Expand Water and Sanitation Support to Developing Countries
+      description: By 2030, expand international cooperation and capacity-building
         support to developing countries in water- and sanitation-related activities
         and programmes, including water harvesting, desalination, water efficiency,
         wastewater treatment, recycling and reuse technologies
-      :code: 6.a
-    - :name: Support and strengthen the participation of local communities in improving
+      code: 6.a
+    - name: Support and strengthen the participation of local communities in improving
         water and sanitation management
-      :short_name: Support Local Engagement in Water and Sanitation Management
-      :description: Support and strengthen the participation of local communities
+      short_name: Support Local Engagement in Water and Sanitation Management
+      description: Support and strengthen the participation of local communities
         in improving water and sanitation management
-      :code: 6.b
-  - :name: Ensure access to affordable, reliable, sustainable and modern energy for
+      code: 6.b
+  - name: Ensure access to affordable, reliable, sustainable and modern energy for
       all
-    :short_name: Affordable and Clean Energy
-    :description: Goal 7 seeks to promote broader energy access and increased use
+    short_name: Affordable and Clean Energy
+    description: Goal 7 seeks to promote broader energy access and increased use
       of renewable energy, including through enhanced international cooperation and
       expanded infrastructure and technology for clean energy.
-    :code: '7'
-    :color: "#FCC30B"
-    :indicators:
-    - :name: By 2030, ensure universal access to affordable, reliable and modern energy
+    code: '7'
+    color: "#FCC30B"
+    indicators:
+    - name: By 2030, ensure universal access to affordable, reliable and modern energy
         services
-      :short_name: Universal Access to Modern Energy
-      :description: By 2030, ensure universal access to affordable, reliable and modern
+      short_name: Universal Access to Modern Energy
+      description: By 2030, ensure universal access to affordable, reliable and modern
         energy services
-      :code: '7.1'
-    - :name: By 2030, increase substantially the share of renewable energy in the
+      code: '7.1'
+    - name: By 2030, increase substantially the share of renewable energy in the
         global energy mix
-      :short_name: Increase Global Percentage of Renewable Energy
-      :description: By 2030, increase substantially the share of renewable energy
+      short_name: Increase Global Percentage of Renewable Energy
+      description: By 2030, increase substantially the share of renewable energy
         in the global energy mix
-      :code: '7.2'
-    - :name: By 2030, double the global rate of improvement in energy efficiency
-      :short_name: Double the Improvement in Energy Efficiency
-      :description: By 2030, double the global rate of improvement in energy efficiency
-      :code: '7.3'
-    - :name: By 2030, enhance international cooperation to facilitate access to clean
+      code: '7.2'
+    - name: By 2030, double the global rate of improvement in energy efficiency
+      short_name: Double the Improvement in Energy Efficiency
+      description: By 2030, double the global rate of improvement in energy efficiency
+      code: '7.3'
+    - name: By 2030, enhance international cooperation to facilitate access to clean
         energy research and technology, including renewable energy, energy efficiency
         and advanced and cleaner fossil-fuel technology, and promote investment in
         energy infrastructure and clean energy technology
-      :short_name: Promote Access to Research, Technology and Investments in Clean
+      short_name: Promote Access to Research, Technology and Investments in Clean
         Energy
-      :description: By 2030, enhance international cooperation to facilitate access
+      description: By 2030, enhance international cooperation to facilitate access
         to clean energy research and technology, including renewable energy, energy
         efficiency and advanced and cleaner fossil-fuel technology, and promote investment
         in energy infrastructure and clean energy technology
-      :code: 7.a
-    - :name: By 2030, expand infrastructure and upgrade technology for supplying modern
+      code: 7.a
+    - name: By 2030, expand infrastructure and upgrade technology for supplying modern
         and sustainable energy services for all in developing countries, in particular
         least developed countries, small island developing States and landlocked developing
         countries, in accordance with their respective programmes of support
-      :short_name: Expand and Upgrade Energy Services for Developing Countries
-      :description: By 2030, expand infrastructure and upgrade technology for supplying
+      short_name: Expand and Upgrade Energy Services for Developing Countries
+      description: By 2030, expand infrastructure and upgrade technology for supplying
         modern and sustainable energy services for all in developing countries, in
         particular least developed countries, small island developing States and landlocked
         developing countries, in accordance with their respective programmes of support
-      :code: 7.b
-  - :name: Promote sustained, inclusive and sustainable economic growth, full and
+      code: 7.b
+  - name: Promote sustained, inclusive and sustainable economic growth, full and
       productive employment and decent work for all
-    :short_name: Decent Work and Economic Growth
-    :description: Goal 8 aims to provide opportunities for full and productive employment
+    short_name: Decent Work and Economic Growth
+    description: Goal 8 aims to provide opportunities for full and productive employment
       and decent work for all while eradicating forced labour, human trafficking and
       child labour.
-    :code: '8'
-    :color: "#A21942"
-    :indicators:
-    - :name: Sustain per capita economic growth in accordance with national circumstances
+    code: '8'
+    color: "#A21942"
+    indicators:
+    - name: Sustain per capita economic growth in accordance with national circumstances
         and, in particular, at least 7 per cent gross domestic product growth per
         annum in the least developed countries
-      :short_name: Sustainable Economic Growth
-      :description: Sustain per capita economic growth in accordance with national
+      short_name: Sustainable Economic Growth
+      description: Sustain per capita economic growth in accordance with national
         circumstances and, in particular, at least 7 per cent gross domestic product
         growth per annum in the least developed countries
-      :code: '8.1'
-    - :name: Strengthen the capacity of domestic financial institutions to encourage
+      code: '8.1'
+    - name: Strengthen the capacity of domestic financial institutions to encourage
         and expand access to banking, insurance and financial services for all
-      :short_name: Universal Access to Banking, Insurance and Financial Services
-      :description: Strengthen the capacity of domestic financial institutions to
+      short_name: Universal Access to Banking, Insurance and Financial Services
+      description: Strengthen the capacity of domestic financial institutions to
         encourage and expand access to banking, insurance and financial services for
         all
-      :code: '8.10'
-    - :name: Achieve higher levels of economic productivity through diversification,
+      code: '8.10'
+    - name: Achieve higher levels of economic productivity through diversification,
         technological upgrading and innovation, including through a focus on high-value
         added and labour-intensive sectors
-      :short_name: Diversify, Innovate and Upgrade for Economic Productivity
-      :description: Achieve higher levels of economic productivity through diversification,
+      short_name: Diversify, Innovate and Upgrade for Economic Productivity
+      description: Achieve higher levels of economic productivity through diversification,
         technological upgrading and innovation, including through a focus on high-value
         added and labour-intensive sectors
-      :code: '8.2'
-    - :name: Promote development-oriented policies that support productive activities,
+      code: '8.2'
+    - name: Promote development-oriented policies that support productive activities,
         decent job creation, entrepreneurship, creativity and innovation, and encourage
         the formalization and growth of micro-, small- and medium-sized enterprises,
         including through access to financial services
-      :short_name: Promote Policies to Support Job Creation and Growing Enterprises
-      :description: Promote development-oriented policies that support productive
+      short_name: Promote Policies to Support Job Creation and Growing Enterprises
+      description: Promote development-oriented policies that support productive
         activities, decent job creation, entrepreneurship, creativity and innovation,
         and encourage the formalization and growth of micro-, small- and medium-sized
         enterprises, including through access to financial services
-      :code: '8.3'
-    - :name: Improve progressively, through 2030, global resource efficiency in consumption
+      code: '8.3'
+    - name: Improve progressively, through 2030, global resource efficiency in consumption
         and production and endeavour to decouple economic growth from environmental
         degradation, in accordance with the 10-Year Framework of Programmes on Sustainable
         Consumption and Production, with developed countries taking the lead
-      :short_name: Improve Resource Efficiency in Consumption and Production
-      :description: Improve progressively, through 2030, global resource efficiency
+      short_name: Improve Resource Efficiency in Consumption and Production
+      description: Improve progressively, through 2030, global resource efficiency
         in consumption and production and endeavour to decouple economic growth from
         environmental degradation, in accordance with the 10-Year Framework of Programmes
         on Sustainable Consumption and Production, with developed countries taking
         the lead
-      :code: '8.4'
-    - :name: By 2030, achieve full and productive employment and decent work for all
+      code: '8.4'
+    - name: By 2030, achieve full and productive employment and decent work for all
         women and men, including for young people and persons with disabilities, and
         equal pay for work of equal value
-      :short_name: Full Employment and Decent Work with Equal Pay
-      :description: By 2030, achieve full and productive employment and decent work
+      short_name: Full Employment and Decent Work with Equal Pay
+      description: By 2030, achieve full and productive employment and decent work
         for all women and men, including for young people and persons with disabilities,
         and equal pay for work of equal value
-      :code: '8.5'
-    - :name: By 2020, substantially reduce the proportion of youth not in employment,
+      code: '8.5'
+    - name: By 2020, substantially reduce the proportion of youth not in employment,
         education or training
-      :short_name: Promote Youth Employment, Education and Training
-      :description: By 2020, substantially reduce the proportion of youth not in employment,
+      short_name: Promote Youth Employment, Education and Training
+      description: By 2020, substantially reduce the proportion of youth not in employment,
         education or training
-      :code: '8.6'
-    - :name: Take immediate and effective measures to eradicate forced labour, end
+      code: '8.6'
+    - name: Take immediate and effective measures to eradicate forced labour, end
         modern slavery and human trafficking and secure the prohibition and elimination
         of the worst forms of child labour, including recruitment and use of child
         soldiers, and by 2025 end child labour in all its forms
-      :short_name: End Modern Slavery, Trafficking and Child Labour
-      :description: Take immediate and effective measures to eradicate forced labour,
+      short_name: End Modern Slavery, Trafficking and Child Labour
+      description: Take immediate and effective measures to eradicate forced labour,
         end modern slavery and human trafficking and secure the prohibition and elimination
         of the worst forms of child labour, including recruitment and use of child
         soldiers, and by 2025 end child labour in all its forms
-      :code: '8.7'
-    - :name: Protect labour rights and promote safe and secure working environments
+      code: '8.7'
+    - name: Protect labour rights and promote safe and secure working environments
         for all workers, including migrant workers, in particular women migrants,
         and those in precarious employment
-      :short_name: Protect Labour Rights and Promote Safe Working Environments
-      :description: Protect labour rights and promote safe and secure working environments
+      short_name: Protect Labour Rights and Promote Safe Working Environments
+      description: Protect labour rights and promote safe and secure working environments
         for all workers, including migrant workers, in particular women migrants,
         and those in precarious employment
-      :code: '8.8'
-    - :name: By 2030, devise and implement policies to promote sustainable tourism
+      code: '8.8'
+    - name: By 2030, devise and implement policies to promote sustainable tourism
         that creates jobs and promotes local culture and products
-      :short_name: Promote Beneficial and Sustainable Tourism
-      :description: By 2030, devise and implement policies to promote sustainable
+      short_name: Promote Beneficial and Sustainable Tourism
+      description: By 2030, devise and implement policies to promote sustainable
         tourism that creates jobs and promotes local culture and products
-      :code: '8.9'
-    - :name: Increase Aid for Trade support for developing countries, in particular
+      code: '8.9'
+    - name: Increase Aid for Trade support for developing countries, in particular
         least developed countries, including through the Enhanced Integrated Framework
         for Trade-related Technical Assistance to Least Developed Countries
-      :short_name: Increase Aid for Trade Support
-      :description: Increase Aid for Trade support for developing countries, in particular
+      short_name: Increase Aid for Trade Support
+      description: Increase Aid for Trade support for developing countries, in particular
         least developed countries, including through the Enhanced Integrated Framework
         for Trade-related Technical Assistance to Least Developed Countries
-      :code: 8.a
-    - :name: By 2020, develop and operationalize a global strategy for youth employment
+      code: 8.a
+    - name: By 2020, develop and operationalize a global strategy for youth employment
         and implement the Global Jobs Pact of the International Labour Organization
-      :short_name: Develop a Global Youth Employment Strategy
-      :description: By 2020, develop and operationalize a global strategy for youth
+      short_name: Develop a Global Youth Employment Strategy
+      description: By 2020, develop and operationalize a global strategy for youth
         employment and implement the Global Jobs Pact of the International Labour
         Organization
-      :code: 8.b
-  - :name: Build resilient infrastructure, promote inclusive and sustainable industrialization
+      code: 8.b
+  - name: Build resilient infrastructure, promote inclusive and sustainable industrialization
       and foster innovation
-    :short_name: Industry, Innovation and Infrastructure
-    :description: Goal 9 focuses on the promotion of infrastructure development, industrialization
+    short_name: Industry, Innovation and Infrastructure
+    description: Goal 9 focuses on the promotion of infrastructure development, industrialization
       and innovation. This can be accomplished through enhanced international and
       domestic financial, technological and technical support, research and innovation,
       and increased access to information and communication technology.
-    :code: '9'
-    :color: "#FD6925"
-    :indicators:
-    - :name: Develop quality, reliable, sustainable and resilient infrastructure,
+    code: '9'
+    color: "#FD6925"
+    indicators:
+    - name: Develop quality, reliable, sustainable and resilient infrastructure,
         including regional and trans-border infrastructure, to support economic development
         and human well-being, with a focus on affordable and equitable access for
         all
-      :short_name: Develop Sustainable, Resilient and Inclusive Infrastructures
-      :description: Develop quality, reliable, sustainable and resilient infrastructure,
+      short_name: Develop Sustainable, Resilient and Inclusive Infrastructures
+      description: Develop quality, reliable, sustainable and resilient infrastructure,
         including regional and trans-border infrastructure, to support economic development
         and human well-being, with a focus on affordable and equitable access for
         all
-      :code: '9.1'
-    - :name: Promote inclusive and sustainable industrialization and, by 2030, significantly
+      code: '9.1'
+    - name: Promote inclusive and sustainable industrialization and, by 2030, significantly
         raise industry's share of employment and gross domestic product, in line with
         national circumstances, and double its share in least developed countries
-      :short_name: Promote Inclusive and Sustainable Industrialization
-      :description: Promote inclusive and sustainable industrialization and, by 2030,
+      short_name: Promote Inclusive and Sustainable Industrialization
+      description: Promote inclusive and sustainable industrialization and, by 2030,
         significantly raise industry's share of employment and gross domestic product,
         in line with national circumstances, and double its share in least developed
         countries
-      :code: '9.2'
-    - :name: Increase the access of small-scale industrial and other enterprises,
+      code: '9.2'
+    - name: Increase the access of small-scale industrial and other enterprises,
         in particular in developing countries, to financial services, including affordable
         credit, and their integration into value chains and markets
-      :short_name: Increase Access to Financial Services and Markets
-      :description: Increase the access of small-scale industrial and other enterprises,
+      short_name: Increase Access to Financial Services and Markets
+      description: Increase the access of small-scale industrial and other enterprises,
         in particular in developing countries, to financial services, including affordable
         credit, and their integration into value chains and markets
-      :code: '9.3'
-    - :name: By 2030, upgrade infrastructure and retrofit industries to make them
+      code: '9.3'
+    - name: By 2030, upgrade infrastructure and retrofit industries to make them
         sustainable, with increased resource-use efficiency and greater adoption of
         clean and environmentally sound technologies and industrial processes, with
         all countries taking action in accordance with their respective capabilities
-      :short_name: Upgrade All Industries and Infrastructures for Sustainability
-      :description: By 2030, upgrade infrastructure and retrofit industries to make
+      short_name: Upgrade All Industries and Infrastructures for Sustainability
+      description: By 2030, upgrade infrastructure and retrofit industries to make
         them sustainable, with increased resource-use efficiency and greater adoption
         of clean and environmentally sound technologies and industrial processes,
         with all countries taking action in accordance with their respective capabilities
-      :code: '9.4'
-    - :name: Enhance scientific research, upgrade the technological capabilities of
+      code: '9.4'
+    - name: Enhance scientific research, upgrade the technological capabilities of
         industrial sectors in all countries, in particular developing countries, including,
         by 2030, encouraging innovation and substantially increasing the number of
         research and development workers per 1 million people and public and private
         research and development spending
-      :short_name: Enhance Research and Upgrade Industrial Technologies
-      :description: Enhance scientific research, upgrade the technological capabilities
+      short_name: Enhance Research and Upgrade Industrial Technologies
+      description: Enhance scientific research, upgrade the technological capabilities
         of industrial sectors in all countries, in particular developing countries,
         including, by 2030, encouraging innovation and substantially increasing the
         number of research and development workers per 1 million people and public
         and private research and development spending
-      :code: '9.5'
-    - :name: Facilitate sustainable and resilient infrastructure development in developing
+      code: '9.5'
+    - name: Facilitate sustainable and resilient infrastructure development in developing
         countries through enhanced financial, technological and technical support
         to African countries, least developed countries, landlocked developing countries
         and small island developing States
-      :short_name: Facilitate Sustainable Infrastructure Development for Developing
+      short_name: Facilitate Sustainable Infrastructure Development for Developing
         Countries
-      :description: Facilitate sustainable and resilient infrastructure development
+      description: Facilitate sustainable and resilient infrastructure development
         in developing countries through enhanced financial, technological and technical
         support to African countries, least developed countries, landlocked developing
         countries and small island developing States
-      :code: 9.a
-    - :name: Support domestic technology development, research and innovation in developing
+      code: 9.a
+    - name: Support domestic technology development, research and innovation in developing
         countries, including by ensuring a conducive policy environment for, inter
         alia, industrial diversification and value addition to commodities
-      :short_name: Support Domestic Technology Development and Industrial Diversification
-      :description: Support domestic technology development, research and innovation
+      short_name: Support Domestic Technology Development and Industrial Diversification
+      description: Support domestic technology development, research and innovation
         in developing countries, including by ensuring a conducive policy environment
         for, inter alia, industrial diversification and value addition to commodities
-      :code: 9.b
-    - :name: Significantly increase access to information and communications technology
+      code: 9.b
+    - name: Significantly increase access to information and communications technology
         and strive to provide universal and affordable access to the Internet in least
         developed countries by 2020
-      :short_name: Universal Access to Information and Communications Technology
-      :description: Significantly increase access to information and communications
+      short_name: Universal Access to Information and Communications Technology
+      description: Significantly increase access to information and communications
         technology and strive to provide universal and affordable access to the Internet
         in least developed countries by 2020
-      :code: 9.c
-  - :name: Reduce inequality within and among countries
-    :short_name: Reduced Inequalities
-    :description: Goal 10 calls for reducing inequalities in income, as well as those
+      code: 9.c
+  - name: Reduce inequality within and among countries
+    short_name: Reduced Inequalities
+    description: Goal 10 calls for reducing inequalities in income, as well as those
       based on sex, age, disability, race, class, ethnicity, religion and opportunity—both
       within and among countries. It also aims to ensure safe, orderly and regular
       migration and addresses issues related to representation of developing countries
       in global decision-making and development assistance.
-    :code: '10'
-    :color: "#DD1367"
-    :indicators:
-    - :name: By 2030, progressively achieve and sustain income growth of the bottom
+    code: '10'
+    color: "#DD1367"
+    indicators:
+    - name: By 2030, progressively achieve and sustain income growth of the bottom
         40 per cent of the population at a rate higher than the national average
-      :short_name: Reduce Income Inequalities
-      :description: By 2030, progressively achieve and sustain income growth of the
+      short_name: Reduce Income Inequalities
+      description: By 2030, progressively achieve and sustain income growth of the
         bottom 40 per cent of the population at a rate higher than the national average
-      :code: '10.1'
-    - :name: By 2030, empower and promote the social, economic and political inclusion
+      code: '10.1'
+    - name: By 2030, empower and promote the social, economic and political inclusion
         of all, irrespective of age, sex, disability, race, ethnicity, origin, religion
         or economic or other status
-      :short_name: Promote Universal Social, Economic and Political Inclusion
-      :description: By 2030, empower and promote the social, economic and political
+      short_name: Promote Universal Social, Economic and Political Inclusion
+      description: By 2030, empower and promote the social, economic and political
         inclusion of all, irrespective of age, sex, disability, race, ethnicity, origin,
         religion or economic or other status
-      :code: '10.2'
-    - :name: Ensure equal opportunity and reduce inequalities of outcome, including
+      code: '10.2'
+    - name: Ensure equal opportunity and reduce inequalities of outcome, including
         by eliminating discriminatory laws, policies and practices and promoting appropriate
         legislation, policies and action in this regard
-      :short_name: Ensure Equal Opportunities and End Discrimination
-      :description: Ensure equal opportunity and reduce inequalities of outcome, including
+      short_name: Ensure Equal Opportunities and End Discrimination
+      description: Ensure equal opportunity and reduce inequalities of outcome, including
         by eliminating discriminatory laws, policies and practices and promoting appropriate
         legislation, policies and action in this regard
-      :code: '10.3'
-    - :name: Adopt policies, especially fiscal, wage and social protection policies,
+      code: '10.3'
+    - name: Adopt policies, especially fiscal, wage and social protection policies,
         and progressively achieve greater equality
-      :short_name: Adopt Fiscal and Social Policies that Promote Equality
-      :description: Adopt policies, especially fiscal, wage and social protection
+      short_name: Adopt Fiscal and Social Policies that Promote Equality
+      description: Adopt policies, especially fiscal, wage and social protection
         policies, and progressively achieve greater equality
-      :code: '10.4'
-    - :name: Improve the regulation and monitoring of global financial markets and
+      code: '10.4'
+    - name: Improve the regulation and monitoring of global financial markets and
         institutions and strengthen the implementation of such regulations
-      :short_name: Improved Regulation of Global Financial Markets and Institutions
-      :description: Improve the regulation and monitoring of global financial markets
+      short_name: Improved Regulation of Global Financial Markets and Institutions
+      description: Improve the regulation and monitoring of global financial markets
         and institutions and strengthen the implementation of such regulations
-      :code: '10.5'
-    - :name: Ensure enhanced representation and voice for developing countries in
+      code: '10.5'
+    - name: Ensure enhanced representation and voice for developing countries in
         decision-making in global international economic and financial institutions
         in order to deliver more effective, credible, accountable and legitimate institutions
-      :short_name: Enhanced Representation for Developing Countries in Financial Institutions
-      :description: Ensure enhanced representation and voice for developing countries
+      short_name: Enhanced Representation for Developing Countries in Financial Institutions
+      description: Ensure enhanced representation and voice for developing countries
         in decision-making in global international economic and financial institutions
         in order to deliver more effective, credible, accountable and legitimate institutions
-      :code: '10.6'
-    - :name: Facilitate orderly, safe, regular and responsible migration and mobility
+      code: '10.6'
+    - name: Facilitate orderly, safe, regular and responsible migration and mobility
         of people, including through the implementation of planned and well-managed
         migration policies
-      :short_name: Responsible and Well-Managed Migration Policies
-      :description: Facilitate orderly, safe, regular and responsible migration and
+      short_name: Responsible and Well-Managed Migration Policies
+      description: Facilitate orderly, safe, regular and responsible migration and
         mobility of people, including through the implementation of planned and well-managed
         migration policies
-      :code: '10.7'
-    - :name: Implement the principle of special and differential treatment for developing
+      code: '10.7'
+    - name: Implement the principle of special and differential treatment for developing
         countries, in particular least developed countries, in accordance with World
         Trade Organization agreements
-      :short_name: Special and Differential Treatment for Developing Countries
-      :description: Implement the principle of special and differential treatment
+      short_name: Special and Differential Treatment for Developing Countries
+      description: Implement the principle of special and differential treatment
         for developing countries, in particular least developed countries, in accordance
         with World Trade Organization agreements
-      :code: 10.a
-    - :name: Encourage official development assistance and financial flows, including
+      code: 10.a
+    - name: Encourage official development assistance and financial flows, including
         foreign direct investment, to States where the need is greatest, in particular
         least developed countries, African countries, small island developing States
         and landlocked developing countries, in accordance with their national plans
         and programmes
-      :short_name: Encourage Development Assistance and Investment in Least Developed
+      short_name: Encourage Development Assistance and Investment in Least Developed
         Countries
-      :description: Encourage official development assistance and financial flows,
+      description: Encourage official development assistance and financial flows,
         including foreign direct investment, to States where the need is greatest,
         in particular least developed countries, African countries, small island developing
         States and landlocked developing countries, in accordance with their national
         plans and programmes
-      :code: 10.b
-    - :name: By 2030, reduce to less than 3 per cent the transaction costs of migrant
+      code: 10.b
+    - name: By 2030, reduce to less than 3 per cent the transaction costs of migrant
         remittances and eliminate remittance corridors with costs higher than 5 per
         cent
-      :short_name: Reduce Transaction Costs for Migrant Remittances
-      :description: By 2030, reduce to less than 3 per cent the transaction costs
+      short_name: Reduce Transaction Costs for Migrant Remittances
+      description: By 2030, reduce to less than 3 per cent the transaction costs
         of migrant remittances and eliminate remittance corridors with costs higher
         than 5 per cent
-      :code: 10.c
-  - :name: Make cities and human settlements inclusive, safe, resilient and sustainable
-    :short_name: Sustainable Cities and Communities
-    :description: Goal 11 aims to renew and plan cities and other human settlements
+      code: 10.c
+  - name: Make cities and human settlements inclusive, safe, resilient and sustainable
+    short_name: Sustainable Cities and Communities
+    description: Goal 11 aims to renew and plan cities and other human settlements
       in a way that fosters community cohesion and personal security while stimulating
       innovation and employment.
-    :code: '11'
-    :color: "#FD9D24"
-    :indicators:
-    - :name: By 2030, ensure access for all to adequate, safe and affordable housing
+    code: '11'
+    color: "#FD9D24"
+    indicators:
+    - name: By 2030, ensure access for all to adequate, safe and affordable housing
         and basic services and upgrade slums
-      :short_name: Safe and Affordable Housing
-      :description: By 2030, ensure access for all to adequate, safe and affordable
+      short_name: Safe and Affordable Housing
+      description: By 2030, ensure access for all to adequate, safe and affordable
         housing and basic services and upgrade slums
-      :code: '11.1'
-    - :name: By 2030, provide access to safe, affordable, accessible and sustainable
+      code: '11.1'
+    - name: By 2030, provide access to safe, affordable, accessible and sustainable
         transport systems for all, improving road safety, notably by expanding public
         transport, with special attention to the needs of those in vulnerable situations,
         women, children, persons with disabilities and older persons
-      :short_name: Affordable and Sustainable Transport Systems
-      :description: By 2030, provide access to safe, affordable, accessible and sustainable
+      short_name: Affordable and Sustainable Transport Systems
+      description: By 2030, provide access to safe, affordable, accessible and sustainable
         transport systems for all, improving road safety, notably by expanding public
         transport, with special attention to the needs of those in vulnerable situations,
         women, children, persons with disabilities and older persons
-      :code: '11.2'
-    - :name: By 2030, enhance inclusive and sustainable urbanization and capacity
+      code: '11.2'
+    - name: By 2030, enhance inclusive and sustainable urbanization and capacity
         for participatory, integrated and sustainable human settlement planning and
         management in all countries
-      :short_name: Inclusive and Sustainable Urbanization
-      :description: By 2030, enhance inclusive and sustainable urbanization and capacity
+      short_name: Inclusive and Sustainable Urbanization
+      description: By 2030, enhance inclusive and sustainable urbanization and capacity
         for participatory, integrated and sustainable human settlement planning and
         management in all countries
-      :code: '11.3'
-    - :name: Strengthen efforts to protect and safeguard the world's cultural and
+      code: '11.3'
+    - name: Strengthen efforts to protect and safeguard the world's cultural and
         natural heritage
-      :short_name: Protect the World’s Cultural and Natural Heritage
-      :description: Strengthen efforts to protect and safeguard the world's cultural
+      short_name: Protect the World’s Cultural and Natural Heritage
+      description: Strengthen efforts to protect and safeguard the world's cultural
         and natural heritage
-      :code: '11.4'
-    - :name: By 2030, significantly reduce the number of deaths and the number of
+      code: '11.4'
+    - name: By 2030, significantly reduce the number of deaths and the number of
         people affected and substantially decrease the direct economic losses relative
         to global gross domestic product caused by disasters, including water-related
         disasters, with a focus on protecting the poor and people in vulnerable situations
-      :short_name: Reduce the Adverse Effects of Natural Disasters
-      :description: By 2030, significantly reduce the number of deaths and the number
+      short_name: Reduce the Adverse Effects of Natural Disasters
+      description: By 2030, significantly reduce the number of deaths and the number
         of people affected and substantially decrease the direct economic losses relative
         to global gross domestic product caused by disasters, including water-related
         disasters, with a focus on protecting the poor and people in vulnerable situations
-      :code: '11.5'
-    - :name: By 2030, reduce the adverse per capita environmental impact of cities,
+      code: '11.5'
+    - name: By 2030, reduce the adverse per capita environmental impact of cities,
         including by paying special attention to air quality and municipal and other
         waste management
-      :short_name: Reduce the Environmental Impact of Cities
-      :description: By 2030, reduce the adverse per capita environmental impact of
+      short_name: Reduce the Environmental Impact of Cities
+      description: By 2030, reduce the adverse per capita environmental impact of
         cities, including by paying special attention to air quality and municipal
         and other waste management
-      :code: '11.6'
-    - :name: By 2030, provide universal access to safe, inclusive and accessible,
+      code: '11.6'
+    - name: By 2030, provide universal access to safe, inclusive and accessible,
         green and public spaces, in particular for women and children, older persons
         and persons with disabilities
-      :short_name: Provide Access to Safe and Inclusive Green and Public Spaces
-      :description: By 2030, provide universal access to safe, inclusive and accessible,
+      short_name: Provide Access to Safe and Inclusive Green and Public Spaces
+      description: By 2030, provide universal access to safe, inclusive and accessible,
         green and public spaces, in particular for women and children, older persons
         and persons with disabilities
-      :code: '11.7'
-    - :name: Support positive economic, social and environmental links between urban,
+      code: '11.7'
+    - name: Support positive economic, social and environmental links between urban,
         peri-urban and rural areas by strengthening national and regional development
         planning
-      :short_name: Strong National and Regional Development Planning
-      :description: Support positive economic, social and environmental links between
+      short_name: Strong National and Regional Development Planning
+      description: Support positive economic, social and environmental links between
         urban, peri-urban and rural areas by strengthening national and regional development
         planning
-      :code: 11.a
-    - :name: By 2020, substantially increase the number of cities and human settlements
+      code: 11.a
+    - name: By 2020, substantially increase the number of cities and human settlements
         adopting and implementing integrated policies and plans towards inclusion,
         resource efficiency, mitigation and adaptation to climate change, resilience
         to disasters, and develop and implement, in line with the Sendai Framework
         for Disaster Risk Reduction 2015-2030, holistic disaster risk management at
         all levels
-      :short_name: Implement Policies for Inclusion, Resource Efficiency and Disaster
+      short_name: Implement Policies for Inclusion, Resource Efficiency and Disaster
         Risk Reduction
-      :description: By 2020, substantially increase the number of cities and human
+      description: By 2020, substantially increase the number of cities and human
         settlements adopting and implementing integrated policies and plans towards
         inclusion, resource efficiency, mitigation and adaptation to climate change,
         resilience to disasters, and develop and implement, in line with the Sendai
         Framework for Disaster Risk Reduction 2015-2030, holistic disaster risk management
         at all levels
-      :code: 11.b
-    - :name: Support least developed countries, including through financial and technical
+      code: 11.b
+    - name: Support least developed countries, including through financial and technical
         assistance, in building sustainable and resilient buildings utilizing local
         materials
-      :short_name: Support Least Developed Countries in Sustainable and Resilient
+      short_name: Support Least Developed Countries in Sustainable and Resilient
         Building
-      :description: Support least developed countries, including through financial
+      description: Support least developed countries, including through financial
         and technical assistance, in building sustainable and resilient buildings
         utilizing local materials
-      :code: 11.c
-  - :name: Ensure sustainable consumption and production patterns
-    :short_name: Responsible Consumption and Production
-    :description: Goal 12 aims to promote sustainable consumption and production patterns
+      code: 11.c
+  - name: Ensure sustainable consumption and production patterns
+    short_name: Responsible Consumption and Production
+    description: Goal 12 aims to promote sustainable consumption and production patterns
       through measures such as specific policies and international agreements on the
       management of materials that are toxic to the environment.
-    :code: '12'
-    :color: "#BF8B2E"
-    :indicators:
-    - :name: Implement the 10-Year Framework of Programmes on Sustainable Consumption
+    code: '12'
+    color: "#BF8B2E"
+    indicators:
+    - name: Implement the 10-Year Framework of Programmes on Sustainable Consumption
         and Production Patterns, all countries taking action, with developed countries
         taking the lead, taking into account the development and capabilities of developing
         countries
-      :short_name: Implement the 10-Year Sustainable Consumption and Production Framework
-      :description: Implement the 10-Year Framework of Programmes on Sustainable Consumption
+      short_name: Implement the 10-Year Sustainable Consumption and Production Framework
+      description: Implement the 10-Year Framework of Programmes on Sustainable Consumption
         and Production Patterns, all countries taking action, with developed countries
         taking the lead, taking into account the development and capabilities of developing
         countries
-      :code: '12.1'
-    - :name: By 2030, achieve the sustainable management and efficient use of natural
+      code: '12.1'
+    - name: By 2030, achieve the sustainable management and efficient use of natural
         resources
-      :short_name: Sustainable Management and Use of Natural Resources
-      :description: By 2030, achieve the sustainable management and efficient use
+      short_name: Sustainable Management and Use of Natural Resources
+      description: By 2030, achieve the sustainable management and efficient use
         of natural resources
-      :code: '12.2'
-    - :name: By 2030, halve per capita global food waste at the retail and consumer
+      code: '12.2'
+    - name: By 2030, halve per capita global food waste at the retail and consumer
         levels and reduce food losses along production and supply chains, including
         post-harvest losses
-      :short_name: Halve Global Per Capita Food Waste
-      :description: By 2030, halve per capita global food waste at the retail and
+      short_name: Halve Global Per Capita Food Waste
+      description: By 2030, halve per capita global food waste at the retail and
         consumer levels and reduce food losses along production and supply chains,
         including post-harvest losses
-      :code: '12.3'
-    - :name: By 2020, achieve the environmentally sound management of chemicals and
+      code: '12.3'
+    - name: By 2020, achieve the environmentally sound management of chemicals and
         all wastes throughout their life cycle, in accordance with agreed international
         frameworks, and significantly reduce their release to air, water and soil
         in order to minimize their adverse impacts on human health and the environment
-      :short_name: Responsible Management of Chemicals and Waste
-      :description: By 2020, achieve the environmentally sound management of chemicals
+      short_name: Responsible Management of Chemicals and Waste
+      description: By 2020, achieve the environmentally sound management of chemicals
         and all wastes throughout their life cycle, in accordance with agreed international
         frameworks, and significantly reduce their release to air, water and soil
         in order to minimize their adverse impacts on human health and the environment
-      :code: '12.4'
-    - :name: By 2030, substantially reduce waste generation through prevention, reduction,
+      code: '12.4'
+    - name: By 2030, substantially reduce waste generation through prevention, reduction,
         recycling and reuse
-      :short_name: Substantially Reduce Waste Generation
-      :description: By 2030, substantially reduce waste generation through prevention,
+      short_name: Substantially Reduce Waste Generation
+      description: By 2030, substantially reduce waste generation through prevention,
         reduction, recycling and reuse
-      :code: '12.5'
-    - :name: Encourage companies, especially large and transnational companies, to
+      code: '12.5'
+    - name: Encourage companies, especially large and transnational companies, to
         adopt sustainable practices and to integrate sustainability information into
         their reporting cycle
-      :short_name: Encourage Companies to Adopt Sustainable Practices and Sustainability
+      short_name: Encourage Companies to Adopt Sustainable Practices and Sustainability
         Reporting
-      :description: Encourage companies, especially large and transnational companies,
+      description: Encourage companies, especially large and transnational companies,
         to adopt sustainable practices and to integrate sustainability information
         into their reporting cycle
-      :code: '12.6'
-    - :name: Promote public procurement practices that are sustainable, in accordance
+      code: '12.6'
+    - name: Promote public procurement practices that are sustainable, in accordance
         with national policies and priorities
-      :short_name: Promote Sustainable Public Procurement Practices
-      :description: Promote public procurement practices that are sustainable, in
+      short_name: Promote Sustainable Public Procurement Practices
+      description: Promote public procurement practices that are sustainable, in
         accordance with national policies and priorities
-      :code: '12.7'
-    - :name: By 2030, ensure that people everywhere have the relevant information
+      code: '12.7'
+    - name: By 2030, ensure that people everywhere have the relevant information
         and awareness for sustainable development and lifestyles in harmony with nature
-      :short_name: Promote Universal Understanding of Sustainable Lifestyles
-      :description: By 2030, ensure that people everywhere have the relevant information
+      short_name: Promote Universal Understanding of Sustainable Lifestyles
+      description: By 2030, ensure that people everywhere have the relevant information
         and awareness for sustainable development and lifestyles in harmony with nature
-      :code: '12.8'
-    - :name: Support developing countries to strengthen their scientific and technological
+      code: '12.8'
+    - name: Support developing countries to strengthen their scientific and technological
         capacity to move towards more sustainable patterns of consumption and production
-      :short_name: Support Developing Countries' Scientific and Technological Capacity
+      short_name: Support Developing Countries' Scientific and Technological Capacity
         for Sustainable Consumption and Production
-      :description: Support developing countries to strengthen their scientific and
+      description: Support developing countries to strengthen their scientific and
         technological capacity to move towards more sustainable patterns of consumption
         and production
-      :code: 12.a
-    - :name: Develop and implement tools to monitor sustainable development impacts
+      code: 12.a
+    - name: Develop and implement tools to monitor sustainable development impacts
         for sustainable tourism that creates jobs and promotes local culture and products
-      :short_name: Develop and Implement Tools to Monitor Sustainable Tourism
-      :description: Develop and implement tools to monitor sustainable development
+      short_name: Develop and Implement Tools to Monitor Sustainable Tourism
+      description: Develop and implement tools to monitor sustainable development
         impacts for sustainable tourism that creates jobs and promotes local culture
         and products
-      :code: 12.b
-    - :name: Rationalize inefficient fossil-fuel subsidies that encourage wasteful
+      code: 12.b
+    - name: Rationalize inefficient fossil-fuel subsidies that encourage wasteful
         consumption by removing market distortions, in accordance with national circumstances,
         including by restructuring taxation and phasing out those harmful subsidies,
         where they exist, to reflect their environmental impacts, taking fully into
         account the specific needs and conditions of developing countries and minimizing
         the possible adverse impacts on their development in a manner that protects
         the poor and the affected communities
-      :short_name: Remove Market Distortions that Encourage Wasteful Consumption
-      :description: Rationalize inefficient fossil-fuel subsidies that encourage wasteful
+      short_name: Remove Market Distortions that Encourage Wasteful Consumption
+      description: Rationalize inefficient fossil-fuel subsidies that encourage wasteful
         consumption by removing market distortions, in accordance with national circumstances,
         including by restructuring taxation and phasing out those harmful subsidies,
         where they exist, to reflect their environmental impacts, taking fully into
         account the specific needs and conditions of developing countries and minimizing
         the possible adverse impacts on their development in a manner that protects
         the poor and the affected communities
-      :code: 12.c
-  - :name: Take urgent action to combat climate change and its impacts
-    :short_name: Climate Action
-    :description: Climate change presents the single biggest threat to development,
+      code: 12.c
+  - name: Take urgent action to combat climate change and its impacts
+    short_name: Climate Action
+    description: Climate change presents the single biggest threat to development,
       and its widespread, unprecedented effects disproportionately burden the poorest
       and the most vulnerable. Urgent action is needed not only to combat climate
       change and its impacts, but also to build resilience in responding to climate-related
       hazards and natural disasters.
-    :code: '13'
-    :color: "#3F7E44"
-    :indicators:
-    - :name: Strengthen resilience and adaptive capacity to climate-related hazards
+    code: '13'
+    color: "#3F7E44"
+    indicators:
+    - name: Strengthen resilience and adaptive capacity to climate-related hazards
         and natural disasters in all countries
-      :short_name: Strengthen resilience and Adaptive Capacity to Climate Related
+      short_name: Strengthen resilience and Adaptive Capacity to Climate Related
         Disasters
-      :description: Strengthen resilience and adaptive capacity to climate-related
+      description: Strengthen resilience and adaptive capacity to climate-related
         hazards and natural disasters in all countries
-      :code: '13.1'
-    - :name: Integrate climate change measures into national policies, strategies
+      code: '13.1'
+    - name: Integrate climate change measures into national policies, strategies
         and planning
-      :short_name: Integrate Climate Change Measures into Policies and Planning
-      :description: Integrate climate change measures into national policies, strategies
+      short_name: Integrate Climate Change Measures into Policies and Planning
+      description: Integrate climate change measures into national policies, strategies
         and planning
-      :code: '13.2'
-    - :name: Improve education, awareness-raising and human and institutional capacity
+      code: '13.2'
+    - name: Improve education, awareness-raising and human and institutional capacity
         on climate change mitigation, adaptation, impact reduction and early warning
-      :short_name: Build Knowledge and Capacity to Meet Climate Change
-      :description: Improve education, awareness-raising and human and institutional
+      short_name: Build Knowledge and Capacity to Meet Climate Change
+      description: Improve education, awareness-raising and human and institutional
         capacity on climate change mitigation, adaptation, impact reduction and early
         warning
-      :code: '13.3'
-    - :name: Implement the commitment undertaken by developed-country parties to the
+      code: '13.3'
+    - name: Implement the commitment undertaken by developed-country parties to the
         United Nations Framework Convention on Climate Change to a goal of mobilizing
         jointly $100 billion annually by 2020 from all sources to address the needs
         of developing countries in the context of meaningful mitigation actions and
         transparency on implementation and fully operationalize the Green Climate
         Fund through its capitalization as soon as possible
-      :short_name: Implement the UN Framework Convention on Climate Change
-      :description: Implement the commitment undertaken by developed-country parties
+      short_name: Implement the UN Framework Convention on Climate Change
+      description: Implement the commitment undertaken by developed-country parties
         to the United Nations Framework Convention on Climate Change to a goal of
         mobilizing jointly $100 billion annually by 2020 from all sources to address
         the needs of developing countries in the context of meaningful mitigation
         actions and transparency on implementation and fully operationalize the Green
         Climate Fund through its capitalization as soon as possible
-      :code: 13.a
-    - :name: Promote mechanisms for raising capacity for effective climate change-related
+      code: 13.a
+    - name: Promote mechanisms for raising capacity for effective climate change-related
         planning and management in least developed countries and small island developing
         States, including focusing on women, youth and local and marginalized communities
-      :short_name: Promote Mechanisms to Raise Capacity for Planning and Management
-      :description: Promote mechanisms for raising capacity for effective climate
+      short_name: Promote Mechanisms to Raise Capacity for Planning and Management
+      description: Promote mechanisms for raising capacity for effective climate
         change-related planning and management in least developed countries and small
         island developing States, including focusing on women, youth and local and
         marginalized communities
-      :code: 13.b
-  - :name: Conserve and sustainably use the oceans, seas and marine resources for
+      code: 13.b
+  - name: Conserve and sustainably use the oceans, seas and marine resources for
       sustainable development
-    :short_name: Life Below Water
-    :description: Goal 14 seeks to promote the conservation and sustainable use of
+    short_name: Life Below Water
+    description: Goal 14 seeks to promote the conservation and sustainable use of
       marine and coastal ecosystems, prevent marine pollution and increase the economic
       benefits to small island developing States and LDCs from the sustainable use
       of marine resources.
-    :code: '14'
-    :color: "#0A97D9"
-    :indicators:
-    - :name: By 2025, prevent and significantly reduce marine pollution of all kinds,
+    code: '14'
+    color: "#0A97D9"
+    indicators:
+    - name: By 2025, prevent and significantly reduce marine pollution of all kinds,
         in particular from land-based activities, including marine debris and nutrient
         pollution
-      :short_name: Reduce Marine Pollution
-      :description: By 2025, prevent and significantly reduce marine pollution of
+      short_name: Reduce Marine Pollution
+      description: By 2025, prevent and significantly reduce marine pollution of
         all kinds, in particular from land-based activities, including marine debris
         and nutrient pollution
-      :code: '14.1'
-    - :name: By 2020, sustainably manage and protect marine and coastal ecosystems
+      code: '14.1'
+    - name: By 2020, sustainably manage and protect marine and coastal ecosystems
         to avoid significant adverse impacts, including by strengthening their resilience,
         and take action for their restoration in order to achieve healthy and productive
         oceans
-      :short_name: Protect and Restore Ecosystems
-      :description: By 2020, sustainably manage and protect marine and coastal ecosystems
+      short_name: Protect and Restore Ecosystems
+      description: By 2020, sustainably manage and protect marine and coastal ecosystems
         to avoid significant adverse impacts, including by strengthening their resilience,
         and take action for their restoration in order to achieve healthy and productive
         oceans
-      :code: '14.2'
-    - :name: Minimize and address the impacts of ocean acidification, including through
+      code: '14.2'
+    - name: Minimize and address the impacts of ocean acidification, including through
         enhanced scientific cooperation at all levels
-      :short_name: Reduce Ocean Acidification
-      :description: Minimize and address the impacts of ocean acidification, including
+      short_name: Reduce Ocean Acidification
+      description: Minimize and address the impacts of ocean acidification, including
         through enhanced scientific cooperation at all levels
-      :code: '14.3'
-    - :name: By 2020, effectively regulate harvesting and end overfishing, illegal,
+      code: '14.3'
+    - name: By 2020, effectively regulate harvesting and end overfishing, illegal,
         unreported and unregulated fishing and destructive fishing practices and implement
         science-based management plans, in order to restore fish stocks in the shortest
         time feasible, at least to levels that can produce maximum sustainable yield
         as determined by their biological characteristics
-      :short_name: Sustainable Fishing
-      :description: By 2020, effectively regulate harvesting and end overfishing,
+      short_name: Sustainable Fishing
+      description: By 2020, effectively regulate harvesting and end overfishing,
         illegal, unreported and unregulated fishing and destructive fishing practices
         and implement science-based management plans, in order to restore fish stocks
         in the shortest time feasible, at least to levels that can produce maximum
         sustainable yield as determined by their biological characteristics
-      :code: '14.4'
-    - :name: By 2020, conserve at least 10 per cent of coastal and marine areas, consistent
+      code: '14.4'
+    - name: By 2020, conserve at least 10 per cent of coastal and marine areas, consistent
         with national and international law and based on the best available scientific
         information
-      :short_name: Conserve Coastal and Marine Areas
-      :description: By 2020, conserve at least 10 per cent of coastal and marine areas,
+      short_name: Conserve Coastal and Marine Areas
+      description: By 2020, conserve at least 10 per cent of coastal and marine areas,
         consistent with national and international law and based on the best available
         scientific information
-      :code: '14.5'
-    - :name: By 2020, prohibit certain forms of fisheries subsidies which contribute
+      code: '14.5'
+    - name: By 2020, prohibit certain forms of fisheries subsidies which contribute
         to overcapacity and overfishing, eliminate subsidies that contribute to illegal,
         unreported and unregulated fishing and refrain from introducing new such subsidies,
         recognizing that appropriate and effective special and differential treatment
         for developing and least developed countries should be an integral part of
         the World Trade Organization fisheries subsidies negotiation [c]
-      :short_name: End Subsidies Contributing to Overfishing
-      :description: By 2020, prohibit certain forms of fisheries subsidies which contribute
+      short_name: End Subsidies Contributing to Overfishing
+      description: By 2020, prohibit certain forms of fisheries subsidies which contribute
         to overcapacity and overfishing, eliminate subsidies that contribute to illegal,
         unreported and unregulated fishing and refrain from introducing new such subsidies,
         recognizing that appropriate and effective special and differential treatment
         for developing and least developed countries should be an integral part of
         the World Trade Organization fisheries subsidies negotiation [c]
-      :code: '14.6'
-    - :name: By 2030, increase the economic benefits to small island developing States
+      code: '14.6'
+    - name: By 2030, increase the economic benefits to small island developing States
         and least developed countries from the sustainable use of marine resources,
         including through sustainable management of fisheries, aquaculture and tourism
-      :short_name: Increase the Economic Benefits from Sustainable Use of Marine Resources
-      :description: By 2030, increase the economic benefits to small island developing
+      short_name: Increase the Economic Benefits from Sustainable Use of Marine Resources
+      description: By 2030, increase the economic benefits to small island developing
         States and least developed countries from the sustainable use of marine resources,
         including through sustainable management of fisheries, aquaculture and tourism
-      :code: '14.7'
-    - :name: Increase scientific knowledge, develop research capacity and transfer
+      code: '14.7'
+    - name: Increase scientific knowledge, develop research capacity and transfer
         marine technology, taking into account the Intergovernmental Oceanographic
         Commission Criteria and Guidelines on the Transfer of Marine Technology, in
         order to improve ocean health and to enhance the contribution of marine biodiversity
         to the development of developing countries, in particular small island developing
         States and least developed countries
-      :short_name: Increase Scientific Knowledge, Research and Technology for Ocean
+      short_name: Increase Scientific Knowledge, Research and Technology for Ocean
         Health
-      :description: Increase scientific knowledge, develop research capacity and transfer
+      description: Increase scientific knowledge, develop research capacity and transfer
         marine technology, taking into account the Intergovernmental Oceanographic
         Commission Criteria and Guidelines on the Transfer of Marine Technology, in
         order to improve ocean health and to enhance the contribution of marine biodiversity
         to the development of developing countries, in particular small island developing
         States and least developed countries
-      :code: 14.a
-    - :name: Provide access for small-scale artisanal fishers to marine resources
+      code: 14.a
+    - name: Provide access for small-scale artisanal fishers to marine resources
         and markets
-      :short_name: Support Small Scale Fishers
-      :description: Provide access for small-scale artisanal fishers to marine resources
+      short_name: Support Small Scale Fishers
+      description: Provide access for small-scale artisanal fishers to marine resources
         and markets
-      :code: 14.b
-    - :name: Enhance the conservation and sustainable use of oceans and their resources
+      code: 14.b
+    - name: Enhance the conservation and sustainable use of oceans and their resources
         by implementing international law as reflected in the United Nations Convention
         on the Law of the Sea, which provides the legal framework for the conservation
         and sustainable use of oceans and their resources, as recalled in paragraph
         158 of 'The future we want'
-      :short_name: Implement and Enforce International Sea Law
-      :description: Enhance the conservation and sustainable use of oceans and their
+      short_name: Implement and Enforce International Sea Law
+      description: Enhance the conservation and sustainable use of oceans and their
         resources by implementing international law as reflected in the United Nations
         Convention on the Law of the Sea, which provides the legal framework for the
         conservation and sustainable use of oceans and their resources, as recalled
         in paragraph 158 of 'The future we want'
-      :code: 14.c
-  - :name: Protect, restore and promote sustainable use of terrestrial ecosystems,
+      code: 14.c
+  - name: Protect, restore and promote sustainable use of terrestrial ecosystems,
       sustainably manage forests, combat desertification, and halt and reverse land
       degradation and halt biodiversity loss
-    :short_name: Life on Land
-    :description: Goal 15 focuses on managing forests sustainably, restoring degraded
+    short_name: Life on Land
+    description: Goal 15 focuses on managing forests sustainably, restoring degraded
       lands and successfully combating desertification, reducing degraded natural
       habitats and ending biodiversity loss. All of these efforts in combination will
       help ensure that livelihoods are preserved for those that depend directly on
       forests and other ecosystems, that biodiversity will thrive, and that the benefits
       of these natural resources will be enjoyed for generations to come.
-    :code: '15'
-    :color: "#56C02B"
-    :indicators:
-    - :name: By 2020, ensure the conservation, restoration and sustainable use of
+    code: '15'
+    color: "#56C02B"
+    indicators:
+    - name: By 2020, ensure the conservation, restoration and sustainable use of
         terrestrial and inland freshwater ecosystems and their services, in particular
         forests, wetlands, mountains and drylands, in line with obligations under
         international agreements
-      :short_name: Conserve and Restore Terrestrial and Freshwater Ecosystems
-      :description: By 2020, ensure the conservation, restoration and sustainable
+      short_name: Conserve and Restore Terrestrial and Freshwater Ecosystems
+      description: By 2020, ensure the conservation, restoration and sustainable
         use of terrestrial and inland freshwater ecosystems and their services, in
         particular forests, wetlands, mountains and drylands, in line with obligations
         under international agreements
-      :code: '15.1'
-    - :name: By 2020, promote the implementation of sustainable management of all
+      code: '15.1'
+    - name: By 2020, promote the implementation of sustainable management of all
         types of forests, halt deforestation, restore degraded forests and substantially
         increase afforestation and reforestation globally
-      :short_name: End Deforestation and Restore Degraded Forests
-      :description: By 2020, promote the implementation of sustainable management
+      short_name: End Deforestation and Restore Degraded Forests
+      description: By 2020, promote the implementation of sustainable management
         of all types of forests, halt deforestation, restore degraded forests and
         substantially increase afforestation and reforestation globally
-      :code: '15.2'
-    - :name: By 2030, combat desertification, restore degraded land and soil, including
+      code: '15.2'
+    - name: By 2030, combat desertification, restore degraded land and soil, including
         land affected by desertification, drought and floods, and strive to achieve
         a land degradation-neutral world
-      :short_name: End Desertification and Restore Degraded Land
-      :description: By 2030, combat desertification, restore degraded land and soil,
+      short_name: End Desertification and Restore Degraded Land
+      description: By 2030, combat desertification, restore degraded land and soil,
         including land affected by desertification, drought and floods, and strive
         to achieve a land degradation-neutral world
-      :code: '15.3'
-    - :name: By 2030, ensure the conservation of mountain ecosystems, including their
+      code: '15.3'
+    - name: By 2030, ensure the conservation of mountain ecosystems, including their
         biodiversity, in order to enhance their capacity to provide benefits that
         are essential for sustainable development
-      :short_name: Ensure Conservation of Mountain Ecosystems
-      :description: By 2030, ensure the conservation of mountain ecosystems, including
+      short_name: Ensure Conservation of Mountain Ecosystems
+      description: By 2030, ensure the conservation of mountain ecosystems, including
         their biodiversity, in order to enhance their capacity to provide benefits
         that are essential for sustainable development
-      :code: '15.4'
-    - :name: Take urgent and significant action to reduce the degradation of natural
+      code: '15.4'
+    - name: Take urgent and significant action to reduce the degradation of natural
         habitats, halt the loss of biodiversity and, by 2020, protect and prevent
         the extinction of threatened species
-      :short_name: Protect Biodiversity and Natural Habitats
-      :description: Take urgent and significant action to reduce the degradation of
+      short_name: Protect Biodiversity and Natural Habitats
+      description: Take urgent and significant action to reduce the degradation of
         natural habitats, halt the loss of biodiversity and, by 2020, protect and
         prevent the extinction of threatened species
-      :code: '15.5'
-    - :name: Promote fair and equitable sharing of the benefits arising from the utilization
+      code: '15.5'
+    - name: Promote fair and equitable sharing of the benefits arising from the utilization
         of genetic resources and promote appropriate access to such resources, as
         internationally agreed
-      :short_name: Promote Access to Genetic Resources and Fair Sharing of the Benefits
-      :description: Promote fair and equitable sharing of the benefits arising from
+      short_name: Promote Access to Genetic Resources and Fair Sharing of the Benefits
+      description: Promote fair and equitable sharing of the benefits arising from
         the utilization of genetic resources and promote appropriate access to such
         resources, as internationally agreed
-      :code: '15.6'
-    - :name: Take urgent action to end poaching and trafficking of protected species
+      code: '15.6'
+    - name: Take urgent action to end poaching and trafficking of protected species
         of flora and fauna and address both demand and supply of illegal wildlife
         products
-      :short_name: Eliminate Poaching and Trafficking of Protected Species
-      :description: Take urgent action to end poaching and trafficking of protected
+      short_name: Eliminate Poaching and Trafficking of Protected Species
+      description: Take urgent action to end poaching and trafficking of protected
         species of flora and fauna and address both demand and supply of illegal wildlife
         products
-      :code: '15.7'
-    - :name: By 2020, introduce measures to prevent the introduction and significantly
+      code: '15.7'
+    - name: By 2020, introduce measures to prevent the introduction and significantly
         reduce the impact of invasive alien species on land and water ecosystems and
         control or eradicate the priority species
-      :short_name: Prevent Invasive Alien Species on Land and in Water Ecosystems
-      :description: By 2020, introduce measures to prevent the introduction and significantly
+      short_name: Prevent Invasive Alien Species on Land and in Water Ecosystems
+      description: By 2020, introduce measures to prevent the introduction and significantly
         reduce the impact of invasive alien species on land and water ecosystems and
         control or eradicate the priority species
-      :code: '15.8'
-    - :name: By 2020, integrate ecosystem and biodiversity values into national and
+      code: '15.8'
+    - name: By 2020, integrate ecosystem and biodiversity values into national and
         local planning, development processes, poverty reduction strategies and accounts
-      :short_name: Integrate Ecosystem and Biodiversity in Governmental Planning
-      :description: By 2020, integrate ecosystem and biodiversity values into national
+      short_name: Integrate Ecosystem and Biodiversity in Governmental Planning
+      description: By 2020, integrate ecosystem and biodiversity values into national
         and local planning, development processes, poverty reduction strategies and
         accounts
-      :code: '15.9'
-    - :name: Mobilize and significantly increase financial resources from all sources
+      code: '15.9'
+    - name: Mobilize and significantly increase financial resources from all sources
         to conserve and sustainably use biodiversity and ecosystems
-      :short_name: Increase Financial Resources to Conserve and Sustainably Use Ecosystem
+      short_name: Increase Financial Resources to Conserve and Sustainably Use Ecosystem
         and Biodiversity
-      :description: Mobilize and significantly increase financial resources from all
+      description: Mobilize and significantly increase financial resources from all
         sources to conserve and sustainably use biodiversity and ecosystems
-      :code: 15.a
-    - :name: Mobilize significant resources from all sources and at all levels to
+      code: 15.a
+    - name: Mobilize significant resources from all sources and at all levels to
         finance sustainable forest management and provide adequate incentives to developing
         countries to advance such management, including for conservation and reforestation
-      :short_name: Finance and Incentivize Sustainable Forest Management
-      :description: Mobilize significant resources from all sources and at all levels
+      short_name: Finance and Incentivize Sustainable Forest Management
+      description: Mobilize significant resources from all sources and at all levels
         to finance sustainable forest management and provide adequate incentives to
         developing countries to advance such management, including for conservation
         and reforestation
-      :code: 15.b
-    - :name: Enhance global support for efforts to combat poaching and trafficking
+      code: 15.b
+    - name: Enhance global support for efforts to combat poaching and trafficking
         of protected species, including by increasing the capacity of local communities
         to pursue sustainable livelihood opportunities
-      :short_name: Combat Global Poaching and Trafficking
-      :description: Enhance global support for efforts to combat poaching and trafficking
+      short_name: Combat Global Poaching and Trafficking
+      description: Enhance global support for efforts to combat poaching and trafficking
         of protected species, including by increasing the capacity of local communities
         to pursue sustainable livelihood opportunities
-      :code: 15.c
-  - :name: Promote peaceful and inclusive societies for sustainable development, provide
+      code: 15.c
+  - name: Promote peaceful and inclusive societies for sustainable development, provide
       access to justice for all and build effective, accountable and inclusive institutions
       at all levels
-    :short_name: Peace, Justice and Strong Institutions
-    :description: Goal 16 envisages peaceful and inclusive societies based on respect
+    short_name: Peace, Justice and Strong Institutions
+    description: Goal 16 envisages peaceful and inclusive societies based on respect
       for human rights, the rule of law, good governance at all levels, and transparent,
       effective and accountable institutions. Many countries still face protracted
       violence and armed conflict, and far too many people are poorly supported by
       weak institutions and lack access to justice, information and other fundamental
       freedoms.
-    :code: '16'
-    :color: "#00689D"
-    :indicators:
-    - :name: Significantly reduce all forms of violence and related death rates everywhere
-      :short_name: Reduce Violence Everywhere
-      :description: Significantly reduce all forms of violence and related death rates
+    code: '16'
+    color: "#00689D"
+    indicators:
+    - name: Significantly reduce all forms of violence and related death rates everywhere
+      short_name: Reduce Violence Everywhere
+      description: Significantly reduce all forms of violence and related death rates
         everywhere
-      :code: '16.1'
-    - :name: Ensure public access to information and protect fundamental freedoms,
+      code: '16.1'
+    - name: Ensure public access to information and protect fundamental freedoms,
         in accordance with national legislation and international agreements
-      :short_name: Ensure Public Access to Information and Protect Fundamental Freedoms
-      :description: Ensure public access to information and protect fundamental freedoms,
+      short_name: Ensure Public Access to Information and Protect Fundamental Freedoms
+      description: Ensure public access to information and protect fundamental freedoms,
         in accordance with national legislation and international agreements
-      :code: '16.10'
-    - :name: End abuse, exploitation, trafficking and all forms of violence against
+      code: '16.10'
+    - name: End abuse, exploitation, trafficking and all forms of violence against
         and torture of children
-      :short_name: Protect Children from Abuse, Exploitation, Trafficking and Violence
-      :description: End abuse, exploitation, trafficking and all forms of violence
+      short_name: Protect Children from Abuse, Exploitation, Trafficking and Violence
+      description: End abuse, exploitation, trafficking and all forms of violence
         against and torture of children
-      :code: '16.2'
-    - :name: Promote the rule of law at the national and international levels and
+      code: '16.2'
+    - name: Promote the rule of law at the national and international levels and
         ensure equal access to justice for all
-      :short_name: Promote the Rule of Law And Ensure Equal Access to Justice
-      :description: Promote the rule of law at the national and international levels
+      short_name: Promote the Rule of Law And Ensure Equal Access to Justice
+      description: Promote the rule of law at the national and international levels
         and ensure equal access to justice for all
-      :code: '16.3'
-    - :name: By 2030, significantly reduce illicit financial and arms flows, strengthen
+      code: '16.3'
+    - name: By 2030, significantly reduce illicit financial and arms flows, strengthen
         the recovery and return of stolen assets and combat all forms of organized
         crime
-      :short_name: Combat Organized Crime and Illicit Financial and Arms Flows
-      :description: By 2030, significantly reduce illicit financial and arms flows,
+      short_name: Combat Organized Crime and Illicit Financial and Arms Flows
+      description: By 2030, significantly reduce illicit financial and arms flows,
         strengthen the recovery and return of stolen assets and combat all forms of
         organized crime
-      :code: '16.4'
-    - :name: Substantially reduce corruption and bribery in all their forms
-      :short_name: Substantially Reduce Corruption and Bribery
-      :description: Substantially reduce corruption and bribery in all their forms
-      :code: '16.5'
-    - :name: Develop effective, accountable and transparent institutions at all levels
-      :short_name: Develop Effective, Accountable and Transparent Institutions
-      :description: Develop effective, accountable and transparent institutions at
+      code: '16.4'
+    - name: Substantially reduce corruption and bribery in all their forms
+      short_name: Substantially Reduce Corruption and Bribery
+      description: Substantially reduce corruption and bribery in all their forms
+      code: '16.5'
+    - name: Develop effective, accountable and transparent institutions at all levels
+      short_name: Develop Effective, Accountable and Transparent Institutions
+      description: Develop effective, accountable and transparent institutions at
         all levels
-      :code: '16.6'
-    - :name: Ensure responsive, inclusive, participatory and representative decision-making
+      code: '16.6'
+    - name: Ensure responsive, inclusive, participatory and representative decision-making
         at all levels
-      :short_name: Ensure Responsive, Inclusive and Representative Decision-Making
-      :description: Ensure responsive, inclusive, participatory and representative
+      short_name: Ensure Responsive, Inclusive and Representative Decision-Making
+      description: Ensure responsive, inclusive, participatory and representative
         decision-making at all levels
-      :code: '16.7'
-    - :name: Broaden and strengthen the participation of developing countries in the
+      code: '16.7'
+    - name: Broaden and strengthen the participation of developing countries in the
         institutions of global governance
-      :short_name: Strengthen the Participation in Global Governance
-      :description: Broaden and strengthen the participation of developing countries
+      short_name: Strengthen the Participation in Global Governance
+      description: Broaden and strengthen the participation of developing countries
         in the institutions of global governance
-      :code: '16.8'
-    - :name: By 2030, provide legal identity for all, including birth registration
-      :short_name: Provide Universal Legal Identity
-      :description: By 2030, provide legal identity for all, including birth registration
-      :code: '16.9'
-    - :name: Strengthen relevant national institutions, including through international
+      code: '16.8'
+    - name: By 2030, provide legal identity for all, including birth registration
+      short_name: Provide Universal Legal Identity
+      description: By 2030, provide legal identity for all, including birth registration
+      code: '16.9'
+    - name: Strengthen relevant national institutions, including through international
         cooperation, for building capacity at all levels, in particular in developing
         countries, to prevent violence and combat terrorism and crime
-      :short_name: Strengthen National Institutions to Prevent Violence and Combat
+      short_name: Strengthen National Institutions to Prevent Violence and Combat
         Terrorism and Crime
-      :description: Strengthen relevant national institutions, including through international
+      description: Strengthen relevant national institutions, including through international
         cooperation, for building capacity at all levels, in particular in developing
         countries, to prevent violence and combat terrorism and crime
-      :code: 16.a
-    - :name: Promote and enforce non-discriminatory laws and policies for sustainable
+      code: 16.a
+    - name: Promote and enforce non-discriminatory laws and policies for sustainable
         development
-      :short_name: Promote and Enforce Non-Discriminatory Laws and Policies
-      :description: Promote and enforce non-discriminatory laws and policies for sustainable
+      short_name: Promote and Enforce Non-Discriminatory Laws and Policies
+      description: Promote and enforce non-discriminatory laws and policies for sustainable
         development
-      :code: 16.b
-  - :name: Strengthen the means of implementation and revitalize the Global Partnership
+      code: 16.b
+  - name: Strengthen the means of implementation and revitalize the Global Partnership
       for Sustainable Development
-    :short_name: Partnerships For the Goals
-    :description: The 2030 Agenda requires a revitalized and enhanced global partnership
+    short_name: Partnerships For the Goals
+    description: The 2030 Agenda requires a revitalized and enhanced global partnership
       that mobilizes all available resources from Governments, civil society, the
       private sector, the United Nations system and other actors. Increasing support
       to developing countries, in particular LDCs, landlocked developing countries
       and small island developing States is fundamental to equitable progress for
       all.
-    :code: '17'
-    :color: "#19486A"
-    :indicators:
-    - :name: Strengthen domestic resource mobilization, including through international
+    code: '17'
+    color: "#19486A"
+    indicators:
+    - name: Strengthen domestic resource mobilization, including through international
         support to developing countries, to improve domestic capacity for tax and
         other revenue collection
-      :short_name: Mobilize Resources to Improve Domestic Revenue Collection
-      :description: Strengthen domestic resource mobilization, including through international
+      short_name: Mobilize Resources to Improve Domestic Revenue Collection
+      description: Strengthen domestic resource mobilization, including through international
         support to developing countries, to improve domestic capacity for tax and
         other revenue collection
-      :code: '17.1'
-    - :name: Promote a universal, rules-based, open, non-discriminatory and equitable
+      code: '17.1'
+    - name: Promote a universal, rules-based, open, non-discriminatory and equitable
         multilateral trading system under the World Trade Organization, including
         through the conclusion of negotiations under its Doha Development Agenda
-      :short_name: Promote a Universal Trading System under the WTO
-      :description: Promote a universal, rules-based, open, non-discriminatory and
+      short_name: Promote a Universal Trading System under the WTO
+      description: Promote a universal, rules-based, open, non-discriminatory and
         equitable multilateral trading system under the World Trade Organization,
         including through the conclusion of negotiations under its Doha Development
         Agenda
-      :code: '17.10'
-    - :name: Significantly increase the exports of developing countries, in particular
+      code: '17.10'
+    - name: Significantly increase the exports of developing countries, in particular
         with a view to doubling the least developed countries' share of global exports
         by 2020
-      :short_name: Increase the Exports of Developing Countries
-      :description: Significantly increase the exports of developing countries, in
+      short_name: Increase the Exports of Developing Countries
+      description: Significantly increase the exports of developing countries, in
         particular with a view to doubling the least developed countries' share of
         global exports by 2020
-      :code: '17.11'
-    - :name: Realize timely implementation of duty-free and quota-free market access
+      code: '17.11'
+    - name: Realize timely implementation of duty-free and quota-free market access
         on a lasting basis for all least developed countries, consistent with World
         Trade Organization decisions, including by ensuring that preferential rules
         of origin applicable to imports from least developed countries are transparent
         and simple, and contribute to facilitating market access
-      :short_name: Remove Trade Barriers for Least Developed Countries
-      :description: Realize timely implementation of duty-free and quota-free market
+      short_name: Remove Trade Barriers for Least Developed Countries
+      description: Realize timely implementation of duty-free and quota-free market
         access on a lasting basis for all least developed countries, consistent with
         World Trade Organization decisions, including by ensuring that preferential
         rules of origin applicable to imports from least developed countries are transparent
         and simple, and contribute to facilitating market access
-      :code: '17.12'
-    - :name: Enhance global macroeconomic stability, including through policy coordination
+      code: '17.12'
+    - name: Enhance global macroeconomic stability, including through policy coordination
         and policy coherence
-      :short_name: Enhance Global Macroeconomic Stability
-      :description: Enhance global macroeconomic stability, including through policy
+      short_name: Enhance Global Macroeconomic Stability
+      description: Enhance global macroeconomic stability, including through policy
         coordination and policy coherence
-      :code: '17.13'
-    - :name: Enhance policy coherence for sustainable development
-      :short_name: Enhance Policy Coherence for Sustainable Development
-      :description: Enhance policy coherence for sustainable development
-      :code: '17.14'
-    - :name: Respect each country's policy space and leadership to establish and implement
+      code: '17.13'
+    - name: Enhance policy coherence for sustainable development
+      short_name: Enhance Policy Coherence for Sustainable Development
+      description: Enhance policy coherence for sustainable development
+      code: '17.14'
+    - name: Respect each country's policy space and leadership to establish and implement
         policies for poverty eradication and sustainable development
-      :short_name: Respect National Leadership to Implement Policies for the Sustainable
+      short_name: Respect National Leadership to Implement Policies for the Sustainable
         Development Goals
-      :description: Respect each country's policy space and leadership to establish
+      description: Respect each country's policy space and leadership to establish
         and implement policies for poverty eradication and sustainable development
-      :code: '17.15'
-    - :name: Enhance the Global Partnership for Sustainable Development, complemented
+      code: '17.15'
+    - name: Enhance the Global Partnership for Sustainable Development, complemented
         by multi-stakeholder partnerships that mobilize and share knowledge, expertise,
         technology and financial resources, to support the achievement of the Sustainable
         Development Goals in all countries, in particular developing countries
-      :short_name: Enhance the Global Partnership for Sustainable Development
-      :description: Enhance the Global Partnership for Sustainable Development, complemented
+      short_name: Enhance the Global Partnership for Sustainable Development
+      description: Enhance the Global Partnership for Sustainable Development, complemented
         by multi-stakeholder partnerships that mobilize and share knowledge, expertise,
         technology and financial resources, to support the achievement of the Sustainable
         Development Goals in all countries, in particular developing countries
-      :code: '17.16'
-    - :name: Encourage and promote effective public, public-private and civil society
+      code: '17.16'
+    - name: Encourage and promote effective public, public-private and civil society
         partnerships, building on the experience and resourcing strategies of partnerships
-      :short_name: Encourage Effective Partnerships
-      :description: Encourage and promote effective public, public-private and civil
+      short_name: Encourage Effective Partnerships
+      description: Encourage and promote effective public, public-private and civil
         society partnerships, building on the experience and resourcing strategies
         of partnerships
-      :code: '17.17'
-    - :name: By 2020, enhance capacity-building support to developing countries, including
+      code: '17.17'
+    - name: By 2020, enhance capacity-building support to developing countries, including
         for least developed countries and small island developing States, to increase
         significantly the availability of high-quality, timely and reliable data disaggregated
         by income, gender, age, race, ethnicity, migratory status, disability, geographic
         location and other characteristics relevant in national contexts
-      :short_name: Enhance Availability of Reliable Data
-      :description: By 2020, enhance capacity-building support to developing countries,
+      short_name: Enhance Availability of Reliable Data
+      description: By 2020, enhance capacity-building support to developing countries,
         including for least developed countries and small island developing States,
         to increase significantly the availability of high-quality, timely and reliable
         data disaggregated by income, gender, age, race, ethnicity, migratory status,
         disability, geographic location and other characteristics relevant in national
         contexts
-      :code: '17.18'
-    - :name: By 2030, build on existing initiatives to develop measurements of progress
+      code: '17.18'
+    - name: By 2030, build on existing initiatives to develop measurements of progress
         on sustainable development that complement gross domestic product, and support
         statistical capacity-building in developing countries
-      :short_name: Further Develop Measurements of Progress
-      :description: By 2030, build on existing initiatives to develop measurements
+      short_name: Further Develop Measurements of Progress
+      description: By 2030, build on existing initiatives to develop measurements
         of progress on sustainable development that complement gross domestic product,
         and support statistical capacity-building in developing countries
-      :code: '17.19'
-    - :name: Developed countries to implement fully their official development assistance
+      code: '17.19'
+    - name: Developed countries to implement fully their official development assistance
         commitments, including the commitment by many developed countries to achieve
         the target of 0.7 per cent of gross national income for official development
         assistance (ODA/GNI) to developing countries and 0.15 to 0.20 per cent of
         ODA/GNI to least developed countries; ODA providers are encouraged to consider
         setting a target to provide at least 0.20 per cent of ODA/GNI to least developed
         countries
-      :short_name: Implement All Development Assistance Commitments
-      :description: Developed countries to implement fully their official development
+      short_name: Implement All Development Assistance Commitments
+      description: Developed countries to implement fully their official development
         assistance commitments, including the commitment by many developed countries
         to achieve the target of 0.7 per cent of gross national income for official
         development assistance (ODA/GNI) to developing countries and 0.15 to 0.20
         per cent of ODA/GNI to least developed countries; ODA providers are encouraged
         to consider setting a target to provide at least 0.20 per cent of ODA/GNI
         to least developed countries
-      :code: '17.2'
-    - :name: Mobilize additional financial resources for developing countries from
+      code: '17.2'
+    - name: Mobilize additional financial resources for developing countries from
         multiple sources
-      :short_name: Mobilize Financial Resources for Developing Countries
-      :description: Mobilize additional financial resources for developing countries
+      short_name: Mobilize Financial Resources for Developing Countries
+      description: Mobilize additional financial resources for developing countries
         from multiple sources
-      :code: '17.3'
-    - :name: Assist developing countries in attaining long-term debt sustainability
+      code: '17.3'
+    - name: Assist developing countries in attaining long-term debt sustainability
         through coordinated policies aimed at fostering debt financing, debt relief
         and debt restructuring, as appropriate, and address the external debt of highly
         indebted poor countries to reduce debt distress
-      :short_name: Assist Developing Countries in Attaining Debt Sustainability
-      :description: Assist developing countries in attaining long-term debt sustainability
+      short_name: Assist Developing Countries in Attaining Debt Sustainability
+      description: Assist developing countries in attaining long-term debt sustainability
         through coordinated policies aimed at fostering debt financing, debt relief
         and debt restructuring, as appropriate, and address the external debt of highly
         indebted poor countries to reduce debt distress
-      :code: '17.4'
-    - :name: Adopt and implement investment promotion regimes for least developed
+      code: '17.4'
+    - name: Adopt and implement investment promotion regimes for least developed
         countries
-      :short_name: Invest in Least Developed Countries
-      :description: Adopt and implement investment promotion regimes for least developed
+      short_name: Invest in Least Developed Countries
+      description: Adopt and implement investment promotion regimes for least developed
         countries
-      :code: '17.5'
-    - :name: Enhance North-South, South-South and triangular regional and international
+      code: '17.5'
+    - name: Enhance North-South, South-South and triangular regional and international
         cooperation on and access to science, technology and innovation and enhance
         knowledge-sharing on mutually agreed terms, including through improved coordination
         among existing mechanisms, in particular at the United Nations level, and
         through a global technology facilitation mechanism
-      :short_name: Knowledge Sharing and Cooperation for Access to Science, Technology
+      short_name: Knowledge Sharing and Cooperation for Access to Science, Technology
         and Innovation
-      :description: Enhance North-South, South-South and triangular regional and international
+      description: Enhance North-South, South-South and triangular regional and international
         cooperation on and access to science, technology and innovation and enhance
         knowledge-sharing on mutually agreed terms, including through improved coordination
         among existing mechanisms, in particular at the United Nations level, and
         through a global technology facilitation mechanism
-      :code: '17.6'
-    - :name: Promote the development, transfer, dissemination and diffusion of environmentally
+      code: '17.6'
+    - name: Promote the development, transfer, dissemination and diffusion of environmentally
         sound technologies to developing countries on favourable terms, including
         on concessional and preferential terms, as mutually agreed
-      :short_name: Promote Sustainable Technologies to Developing Countries
-      :description: Promote the development, transfer, dissemination and diffusion
+      short_name: Promote Sustainable Technologies to Developing Countries
+      description: Promote the development, transfer, dissemination and diffusion
         of environmentally sound technologies to developing countries on favourable
         terms, including on concessional and preferential terms, as mutually agreed
-      :code: '17.7'
-    - :name: Fully operationalize the technology bank and science, technology and
+      code: '17.7'
+    - name: Fully operationalize the technology bank and science, technology and
         innovation capacity-building mechanism for least developed countries by 2017
         and enhance the use of enabling technology, in particular information and
         communications technology
-      :short_name: Strengthen the Science, Technology and Innovation Capacity for
+      short_name: Strengthen the Science, Technology and Innovation Capacity for
         Least Developed Countries
-      :description: Fully operationalize the technology bank and science, technology
+      description: Fully operationalize the technology bank and science, technology
         and innovation capacity-building mechanism for least developed countries by
         2017 and enhance the use of enabling technology, in particular information
         and communications technology
-      :code: '17.8'
-    - :name: Enhance international support for implementing effective and targeted
+      code: '17.8'
+    - name: Enhance international support for implementing effective and targeted
         capacity-building in developing countries to support national plans to implement
         all the Sustainable Development Goals, including through North-South, South-South
         and triangular cooperation
-      :short_name: Enhance SDG Capacity in Developing Countries
-      :description: Enhance international support for implementing effective and targeted
+      short_name: Enhance SDG Capacity in Developing Countries
+      description: Enhance international support for implementing effective and targeted
         capacity-building in developing countries to support national plans to implement
         all the Sustainable Development Goals, including through North-South, South-South
         and triangular cooperation
-      :code: '17.9'
+      code: '17.9'

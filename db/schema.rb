@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_06_122909) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_12_084851) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -318,6 +318,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_122909) do
     t.bigint "characteristic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "data_model_id"
     t.index ["characteristic_id"], name: "index_targets_network_mappings_on_characteristic_id"
     t.index ["focus_area_id"], name: "index_targets_network_mappings_on_focus_area_id"
   end

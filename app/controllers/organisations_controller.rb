@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+require 'English'
 require 'csv'
 
 # Controller for managing organisations (aka 'stakeholders')
-class OrganisationsController < ApplicationController
+class OrganisationsController < ApplicationController # rubocop:disable Metrics/ClassLength
   include VerifyPolicies
 
   before_action :set_organisation, only: %i[show edit update destroy]
@@ -73,6 +74,35 @@ class OrganisationsController < ApplicationController
     redirect_to organisations_url, notice: 'Stakeholder was successfully deleted.'
   end
 
+  def import # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize Organisation
+    return unless request.post?
+
+    if params[:csv_file].present?
+      begin
+        import_result = import_organisations_from_csv(params[:csv_file])
+
+        message_parts = ["Successfully imported #{import_result[:created]} stakeholders."]
+
+        if import_result[:duplicates].positive?
+          message_parts << "#{import_result[:duplicates]} stakeholders already exist and were skipped."
+        end
+
+        if import_result[:stakeholder_type_errors].positive?
+          message_parts << "#{import_result[:stakeholder_type_errors]} stakeholders had invalid stakeholder types."
+        end
+
+        message_parts << "#{import_result[:errors].size} other errors occurred." if import_result[:errors].any?
+
+        redirect_to organisations_path, notice: message_parts.join(' ')
+      rescue StandardError => e
+        redirect_to import_organisations_path, alert: "Import failed: #{e.message}"
+      end
+    else
+      redirect_to import_organisations_path, alert: 'Please select a CSV file to upload.'
+    end
+  end
+
   def content_subtitle
     @organisation&.name.presence || super
   end
@@ -130,5 +160,58 @@ class OrganisationsController < ApplicationController
         end
       end
     end
+  end
+
+  def import_organisations_from_csv(file) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    created_count = 0
+    errors = []
+    duplicate_count = 0
+    stakeholder_type_errors = 0
+    stakeholder_types_cache = {}
+
+    # Build cache of stakeholder types for faster lookup
+    current_workspace.stakeholder_types.each do |st|
+      stakeholder_types_cache[st.name.downcase] = st
+    end
+
+    CSV.foreach(file.path, headers: true, force_quotes: true) do |row|
+      # Skip empty rows or rows that appear to be stakeholder type list
+      next if row['Name'].blank? || row['Name'].strip.empty?
+
+      stakeholder_type = nil
+      if row['Stakeholder Type'].present?
+        stakeholder_type = stakeholder_types_cache[row['Stakeholder Type'].downcase]
+        unless stakeholder_type
+          stakeholder_type_errors += 1
+          errors << "Row #{$INPUT_LINE_NUMBER}: Stakeholder type '#{row['Stakeholder Type']}' not found"
+          next
+        end
+      end
+
+      organisation = current_workspace.organisations.build(
+        name: row['Name']&.strip,
+        description: row['Description']&.strip,
+        weblink: row['Weblink']&.strip,
+        stakeholder_type: stakeholder_type
+      )
+
+      authorize organisation
+
+      if organisation.save
+        created_count += 1
+      elsif organisation.errors[:name]&.any? { |error| error.include?('already exists') || error.include?('taken') }
+        # Check if it's a duplicate name error
+        duplicate_count += 1
+      else
+        errors << "Row #{$INPUT_LINE_NUMBER}: #{organisation.errors.full_messages.join(', ')}"
+      end
+    end
+
+    {
+      created: created_count,
+      errors: errors,
+      duplicates: duplicate_count,
+      stakeholder_type_errors: stakeholder_type_errors
+    }
   end
 end

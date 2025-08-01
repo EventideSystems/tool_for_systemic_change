@@ -70,6 +70,10 @@ Rails.application.routes.draw do
   resources :focus_area_groups
   resources :focus_areas
   resources :initiatives do
+    collection do
+      get :import
+      post :import
+    end
     resources :checklist_items do
       member do
         post 'update_comment'
@@ -85,7 +89,12 @@ Rails.application.routes.draw do
   resources :initiatives_subsystem_tags, only: %i[index new create]
   resources :initiatives_organisations, only: %i[index new create]
 
-  resources :organisations
+  resources :organisations do
+    collection do
+      get :import
+      post :import
+    end
+  end
 
   resources :shared,
             constraints: {

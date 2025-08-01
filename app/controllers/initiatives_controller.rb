@@ -2,7 +2,8 @@
 
 # Controller for the Initiative model
 # rubocop:disable Metrics/ClassLength
-class InitiativesController < ApplicationController
+require 'English'
+class InitiativesController < ApplicationController # rubocop:disable Style/Documentation
   include VerifyPolicies
   include InitiativeChildRecords
 
@@ -91,6 +92,35 @@ class InitiativesController < ApplicationController
   def destroy
     @initiative.destroy
     redirect_to(initiatives_path, notice: 'Initiative was successfully deleted.')
+  end
+
+  def import # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    authorize Initiative
+    return unless request.post?
+
+    if params[:csv_file].present?
+      begin
+        import_result = import_initiatives_from_csv(params[:csv_file])
+
+        message_parts = ["Successfully imported #{import_result[:created]} initiatives."]
+
+        if import_result[:duplicates].positive?
+          message_parts << "#{import_result[:duplicates]} initiatives already exist and were skipped."
+        end
+
+        if import_result[:scorecard_errors].positive?
+          message_parts << "#{import_result[:scorecard_errors]} initiatives had invalid impact cards."
+        end
+
+        message_parts << "#{import_result[:errors].size} other errors occurred." if import_result[:errors].any?
+
+        redirect_to initiatives_path, notice: message_parts.join(' ')
+      rescue StandardError => e
+        redirect_to import_initiatives_path, alert: "Import failed: #{e.message}"
+      end
+    else
+      redirect_to import_initiatives_path, alert: 'Please select a CSV file to upload.'
+    end
   end
 
   # NOTE: Will move this to the checklist controller, where it belongs
@@ -213,6 +243,87 @@ class InitiativesController < ApplicationController
       :contact_position,
       :notes
     )
+  end
+
+  def import_initiatives_from_csv(file) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    require 'csv'
+
+    created_count = 0
+    errors = []
+    duplicate_count = 0
+    scorecard_errors = 0
+    scorecards_cache = {}
+
+    # Build cache of scorecards for faster lookup
+    policy_scope(Scorecard).each do |sc|
+      scorecards_cache[sc.name.downcase] = sc
+    end
+
+    CSV.foreach(file.path, headers: true, force_quotes: true) do |row| # rubocop:disable Metrics/BlockLength
+      # Skip empty rows
+      next if row['Name'].blank? || row['Name'].strip.empty?
+
+      scorecard = nil
+      if row['Impact Card Name'].present?
+        scorecard = scorecards_cache[row['Impact Card Name'].downcase]
+        unless scorecard
+          scorecard_errors += 1
+          errors << "Row #{$INPUT_LINE_NUMBER}: Impact card '#{row['Impact Card Name']}' not found"
+          next
+        end
+      end
+
+      # Parse dates
+      started_at = nil
+      finished_at = nil
+
+      begin
+        started_at = Date.parse(row['Started At']) if row['Started At'].present?
+      rescue Date::Error
+        # Ignore invalid dates
+      end
+
+      begin
+        finished_at = Date.parse(row['Finished At']) if row['Finished At'].present?
+      rescue Date::Error
+        # Ignore invalid dates
+      end
+
+      # Check if initiative already exists with same name in same scorecard
+      if scorecard&.initiatives&.exists?(name: row['Name']&.strip)
+        duplicate_count += 1
+        next
+      end
+
+      initiative = Initiative.new(
+        name: row['Name']&.strip,
+        description: row['Description']&.strip,
+        scorecard: scorecard,
+        started_at: started_at,
+        finished_at: finished_at,
+        contact_name: row['Contact Name']&.strip,
+        contact_email: row['Contact Email']&.strip,
+        contact_phone: row['Contact Phone']&.strip,
+        contact_website: row['Contact Website']&.strip,
+        contact_position: row['Contact Position']&.strip,
+        notes: row['Notes']&.strip
+      )
+
+      authorize initiative
+
+      if initiative.save
+        created_count += 1
+      else
+        errors << "Row #{$INPUT_LINE_NUMBER}: #{initiative.errors.full_messages.join(', ')}"
+      end
+    end
+
+    {
+      created: created_count,
+      errors: errors,
+      duplicates: duplicate_count,
+      scorecard_errors: scorecard_errors
+    }
   end
 end
 # rubocop:enable Metrics/ClassLength

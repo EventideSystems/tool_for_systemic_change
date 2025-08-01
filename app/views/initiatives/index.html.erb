@@ -11,6 +11,11 @@
             link_to_primary("Export", initiatives_path(format: :csv), data: { turbo_stream: false })
           %>
           <%- if policy(Initiative).create? %>
+            <%=
+              link_to_primary("Import", import_initiatives_path)
+            %>
+          <%- end %>
+          <%- if policy(Initiative).create? %>
             <div>
               <%= link_to_primary 'Create Initiative', new_initiative_path %>
             </div>

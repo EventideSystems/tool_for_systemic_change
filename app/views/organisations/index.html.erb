@@ -11,6 +11,11 @@
             link_to_primary("Export", organisations_path(format: :csv), data: { turbo_stream: false })
           %>
           <%- if policy(Organisation).create? %>
+            <%=
+              link_to_primary("Import", import_organisations_path)
+            %>
+          <%- end %>
+          <%- if policy(Organisation).create? %>
             <div>
               <%= link_to_primary 'Create Stakeholder', new_organisation_path %>
             </div>

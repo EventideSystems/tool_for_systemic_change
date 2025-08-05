@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["initiativesOrganisations"]
   
   connect() {
-    this.index = this.initiativesOrganisationsTarget.children.length
+    this.index = this.initiativesOrganisationsTarget.querySelectorAll("div.organisation").length
   }
 
   // TODO: Rename to 'addStakeholder' and 'removeStakeholder'

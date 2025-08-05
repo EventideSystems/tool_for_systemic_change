@@ -68,7 +68,7 @@ module ImpactCardsHelper
                            options_from_collection_for_select(scorecards, :id, :name)
                          end
 
-    custom_select_tag(name, collection_options, options)
+    custom_select_tag(name, collection_options, options.merge(required: true))
   end
 
   private

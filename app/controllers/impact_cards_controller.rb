@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 # Controller for the ImpactCard model
 # rubocop:disable Metrics/ClassLength
 class ImpactCardsController < ApplicationController
@@ -59,6 +61,15 @@ class ImpactCardsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.csv do
+        checklist_items = @scorecard.checklist_items
+                                    .joins(initiative: :scorecard, characteristic: :focus_area)
+                                    .order('initiatives.name', 'characteristics.name')
+        send_data(
+          checklist_items_to_csv(checklist_items),
+          filename: "#{@scorecard.name.parameterize}-comments-#{Date.current}.csv"
+        )
+      end
     end
   end
 
@@ -120,6 +131,40 @@ class ImpactCardsController < ApplicationController
     end
 
     redirect_to(impact_cards_path, notice: notice)
+  end
+
+  def import_comments
+    authorize(@scorecard, :update?, policy_class: ScorecardPolicy)
+
+    if request.get?
+      # Show the import form
+      render 'import_comments'
+    elsif params[:csv_file].present?
+      begin
+        import_result = import_checklist_items_from_csv(params[:csv_file], @scorecard)
+
+        message_parts = []
+        if import_result[:updated] > 0
+          message_parts << "Successfully updated #{import_result[:updated]} checklist items."
+        end
+
+        if import_result[:skipped] > 0
+          message_parts << "#{import_result[:skipped]} items were skipped (not found or no changes)."
+        end
+
+        if import_result[:invalid_status_errors] > 0
+          message_parts << "#{import_result[:invalid_status_errors]} items had invalid status values."
+        end
+
+        message_parts << "#{import_result[:errors].size} other errors occurred." if import_result[:errors].any?
+
+        redirect_to impact_card_path(@scorecard), notice: message_parts.join(' ')
+      rescue StandardError => e
+        redirect_to import_comments_impact_card_path(@scorecard), alert: "Import failed: #{e.message}"
+      end
+    else
+      redirect_to import_comments_impact_card_path(@scorecard), alert: 'Please select a CSV file to upload.'
+    end
   end
 
   def shared; end
@@ -271,6 +316,120 @@ class ImpactCardsController < ApplicationController
           end
         end
       end
+    end
+  end
+
+  def checklist_items_to_csv(checklist_items)
+    CSV.generate(headers: true) do |csv|
+      csv << %w[initiative_name characteristic_name status comment]
+
+      checklist_items.each do |item|
+        csv << [
+          item.initiative.name,
+          item.characteristic.name,
+          item.status,
+          item.comment
+        ]
+      end
+    end
+  end
+
+  def import_checklist_items_from_csv(file, scorecard) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    updated_count = 0
+    errors = []
+    skipped_count = 0
+    invalid_status_errors = 0
+
+    # Valid status values
+    valid_statuses = ChecklistItem.statuses.keys - ['no_comment']
+
+    CSV.foreach(file.path, headers: true, force_quotes: true) do |row|
+      # Skip empty rows
+      next if row['initiative_name'].blank? || row['characteristic_name'].blank?
+
+      # Find the checklist item by initiative name and characteristic name within this specific scorecard
+      checklist_item = find_checklist_item_by_names_in_scorecard(
+        row['initiative_name']&.strip,
+        row['characteristic_name']&.strip,
+        scorecard
+      )
+
+      unless checklist_item
+        skipped_count += 1
+        next
+      end
+
+      # Validate status if provided
+      new_status = row['status']&.strip&.downcase
+      if new_status.present? && !valid_statuses.include?(new_status)
+        invalid_status_errors += 1
+        errors << "Row #{$.}: Invalid status '#{new_status}'. Valid values: #{valid_statuses.join(', ')}"
+        next
+      end
+
+      # Check if there are actual changes to make
+      new_comment = row['comment']&.strip
+      changes_to_make = false
+
+      changes_to_make = true if new_status.present? && checklist_item.status != new_status
+
+      changes_to_make = true if new_comment.present? && checklist_item.comment != new_comment
+
+      unless changes_to_make
+        skipped_count += 1
+        next
+      end
+
+      # Store old values for change tracking
+      old_status = checklist_item.status
+
+      # Update the checklist item
+      update_attributes = {}
+      update_attributes[:status] = new_status if new_status.present?
+      update_attributes[:comment] = new_comment if new_comment.present?
+      update_attributes[:user] = current_user
+
+      if checklist_item.update(update_attributes)
+        # Create change record for audit trail
+        checklist_item.checklist_item_changes.create!(
+          user: current_user,
+          starting_status: old_status,
+          ending_status: checklist_item.status,
+          comment: checklist_item.comment,
+          action: 'import',
+          activity: determine_activity(old_status, checklist_item.status)
+        )
+
+        updated_count += 1
+      else
+        errors << "Row #{$.}: #{checklist_item.errors.full_messages.join(', ')}"
+      end
+    end
+
+    {
+      updated: updated_count,
+      errors: errors,
+      skipped: skipped_count,
+      invalid_status_errors: invalid_status_errors
+    }
+  end
+
+  def find_checklist_item_by_names_in_scorecard(initiative_name, characteristic_name, scorecard)
+    # Find checklist item by initiative name and characteristic name within this specific scorecard
+    ChecklistItem.joins(:initiative, :characteristic)
+                 .where(initiatives: { scorecard: scorecard })
+                 .where('LOWER(initiatives.name) = ?', initiative_name.downcase)
+                 .where('LOWER(characteristics.name) = ?', characteristic_name.downcase)
+                 .first
+  end
+
+  def determine_activity(old_status, new_status)
+    if old_status != 'actual' && new_status == 'actual'
+      'addition'
+    elsif old_status == 'actual' && new_status != 'actual'
+      'removal'
+    else
+      'update'
     end
   end
 end

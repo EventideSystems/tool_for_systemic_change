@@ -23,6 +23,10 @@ class ScorecardPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     system_admin? || (current_workspace_admin? && current_workspace_not_expired?)
   end
 
+  def import_comments?
+    update?
+  end
+
   def destroy?
     system_admin? || current_workspace_admin?
   end

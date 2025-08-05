@@ -31,6 +31,10 @@ class ChecklistItemPolicy < ApplicationPolicy # rubocop:disable Style/Documentat
     system_admin? || workspace_admin?(checklist_item_workspace)
   end
 
+  def import?
+    system_admin? || workspace_admin?(current_workspace)
+  end
+
   private
 
   def checklist_item_workspace

@@ -16,6 +16,13 @@
           
     <div class="relative print:hidden">
       <div class="flex justify-end items-center mb-4 space-x-2">         
+        <%= link_to 'Export Comments CSV', impact_card_path(impact_card, format: :csv), 
+            class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500",
+            data: { turbo: false } %>
+        <% if policy(impact_card).update? %>
+          <%= link_to 'Import Comments CSV', import_comments_impact_card_path(impact_card), 
+              class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        <% end %>
         <% if policy(impact_card).add_initiative? %>
           <%= link_to_primary 'Add Initiative', new_impact_card_initiative_path(impact_card) %>
         <% end %>

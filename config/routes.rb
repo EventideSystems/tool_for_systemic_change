@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   end
 
   resources :impact_cards do
+    member do
+      get :import_comments
+      post :import_comments
+    end
     resources :sharing, only: [:index], controller: 'impact_cards/sharing'
     resources :initiatives, only: %i[show new create], controller: 'impact_cards/initiatives'
     resources :stakeholder_network, only: [:index], controller: 'impact_cards/stakeholder_network'

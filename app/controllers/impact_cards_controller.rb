@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'English'
 require 'csv'
 
 # Controller for the ImpactCard model
@@ -133,7 +134,7 @@ class ImpactCardsController < ApplicationController
     redirect_to(impact_cards_path, notice: notice)
   end
 
-  def import_comments
+  def import_comments # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
     authorize(@scorecard, :update?, policy_class: ScorecardPolicy)
 
     if request.get?
@@ -144,15 +145,15 @@ class ImpactCardsController < ApplicationController
         import_result = import_checklist_items_from_csv(params[:csv_file], @scorecard)
 
         message_parts = []
-        if import_result[:updated] > 0
+        if import_result[:updated].positive?
           message_parts << "Successfully updated #{import_result[:updated]} checklist items."
         end
 
-        if import_result[:skipped] > 0
+        if import_result[:skipped].positive?
           message_parts << "#{import_result[:skipped]} items were skipped (not found or no changes)."
         end
 
-        if import_result[:invalid_status_errors] > 0
+        if import_result[:invalid_status_errors].positive?
           message_parts << "#{import_result[:invalid_status_errors]} items had invalid status values."
         end
 
@@ -319,7 +320,7 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def checklist_items_to_csv(checklist_items)
+  def checklist_items_to_csv(checklist_items) # rubocop:disable Metrics/MethodLength
     CSV.generate(headers: true) do |csv|
       csv << %w[initiative_name characteristic_name status comment]
 
@@ -334,7 +335,7 @@ class ImpactCardsController < ApplicationController
     end
   end
 
-  def import_checklist_items_from_csv(file, scorecard) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  def import_checklist_items_from_csv(file, scorecard) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     updated_count = 0
     errors = []
     skipped_count = 0
@@ -343,7 +344,7 @@ class ImpactCardsController < ApplicationController
     # Valid status values
     valid_statuses = ChecklistItem.statuses.keys - ['no_comment']
 
-    CSV.foreach(file.path, headers: true, force_quotes: true) do |row|
+    CSV.foreach(file.path, headers: true, force_quotes: true) do |row| # rubocop:disable Metrics/BlockLength
       # Skip empty rows
       next if row['initiative_name'].blank? || row['characteristic_name'].blank?
 
@@ -369,7 +370,7 @@ class ImpactCardsController < ApplicationController
       new_status = row['status']&.strip&.downcase
       if new_status.present? && !valid_statuses.include?(new_status)
         invalid_status_errors += 1
-        errors << "Row #{$.}: Invalid status '#{new_status}'. Valid values: #{valid_statuses.join(', ')}"
+        errors << "Row #{$INPUT_LINE_NUMBER}: Invalid status '#{new_status}'. Valid values: #{valid_statuses.join(', ')}" # rubocop:disable Layout/LineLength
         next
       end
 
@@ -408,7 +409,7 @@ class ImpactCardsController < ApplicationController
 
         updated_count += 1
       else
-        errors << "Row #{$.}: #{checklist_item.errors.full_messages.join(', ')}"
+        errors << "Row #{$INPUT_LINE_NUMBER}: #{checklist_item.errors.full_messages.join(', ')}"
       end
     end
 

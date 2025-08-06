@@ -64,8 +64,8 @@ class ImpactCardsController < ApplicationController
       format.html
       format.csv do
         checklist_items = @scorecard.checklist_items
-                                    .joins(initiative: :scorecard, characteristic: :focus_area)
-                                    .order('initiatives.name', 'characteristics.name')
+                                    .joins(initiative: :scorecard, characteristic: { focus_area: :focus_area_group })
+                                    .order('initiatives.name', 'focus_area_group.position', 'focus_area.position', 'characteristics.position') # rubocop:disable Layout/LineLength
         send_data(
           checklist_items_to_csv(checklist_items),
           filename: "#{@scorecard.name.parameterize}-comments-#{Date.current}.csv"

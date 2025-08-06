@@ -347,6 +347,12 @@ class ImpactCardsController < ApplicationController
       # Skip empty rows
       next if row['initiative_name'].blank? || row['characteristic_name'].blank?
 
+      # Skip rows with 'no_comment' status (nothing meaningful to import)
+      if row['status']&.strip&.downcase == 'no_comment'
+        skipped_count += 1
+        next
+      end
+
       # Find the checklist item by initiative name and characteristic name within this specific scorecard
       checklist_item = find_checklist_item_by_names_in_scorecard(
         row['initiative_name']&.strip,

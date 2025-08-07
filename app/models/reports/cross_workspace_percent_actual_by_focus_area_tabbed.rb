@@ -5,8 +5,6 @@ module Reports
   class CrossWorkspacePercentActualByFocusAreaTabbed < Base # rubocop:disable Metrics/ClassLength
     attr_reader :workspaces
 
-    MAX_SHEET_NAME_LENGTH = 27
-
     def initialize(workspaces)
       @workspaces = workspaces
       super()
@@ -34,7 +32,7 @@ module Reports
         # rubocop:enable Naming/VariableNumber
 
         focus_area_names.each do |focus_area_name|
-          p.workbook.add_worksheet(name: focus_area_name.truncate(MAX_SHEET_NAME_LENGTH)) do |sheet|
+          p.workbook.add_worksheet(name: sanitize_sheet_name(focus_area_name)) do |sheet|
             sheet.add_row([focus_area_name], style: styles[:header_1]) # rubocop:disable Naming/VariableNumber
             sheet.add_row
             add_header(sheet, styles)
@@ -62,6 +60,9 @@ module Reports
     end
 
     private
+
+    MAX_SHEET_NAME_LENGTH = 27
+    private_constant :MAX_SHEET_NAME_LENGTH
 
     def add_header(sheet, styles)
       sheet.add_row(
@@ -125,6 +126,10 @@ module Reports
       SQL
 
       ActiveRecord::Base.connection.execute(sql)
+    end
+
+    def sanitize_sheet_name(name)
+      name.gsub(/[^a-zA-Z0-9_]/, '-').gsub(/-+/, '-').gsub(/-+$/, '').truncate(MAX_SHEET_NAME_LENGTH)
     end
   end
 end

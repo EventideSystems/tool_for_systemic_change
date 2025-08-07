@@ -129,7 +129,7 @@ module Reports
     end
 
     def sanitize_sheet_name(name)
-      name.gsub(/[^a-zA-Z0-9_\s]/, '-').gsub(/-+/, '-').gsub(/-+$/, '').truncate(MAX_SHEET_NAME_LENGTH)
+      name.gsub(/[^a-zA-Z0-9_\s,]/, '-').gsub(/-+/, '-').gsub(/-+$/, '').truncate(MAX_SHEET_NAME_LENGTH)
     end
   end
 end

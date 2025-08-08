@@ -7,6 +7,9 @@ module InitiativeChildRecords
   def update_stakeholders!(initiative, params)
     return if initiative.blank?
 
+    # Naive cache flushing
+    initiative.scorecard.flush_stakeholder_network_cache
+
     update_child_records!(
       initiative,
       params[:initiatives_organisations_attributes],

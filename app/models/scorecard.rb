@@ -11,6 +11,7 @@
 #  name                       :string
 #  share_ecosystem_map        :boolean          default(TRUE)
 #  share_thematic_network_map :boolean          default(TRUE)
+#  stakeholder_network_cache  :jsonb            not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  community_id               :integer
@@ -30,7 +31,10 @@
 # Foreign Keys
 #
 #  fk_rails_...  (data_model_id => data_models.id)
-#
+
+require 'ostruct'
+
+# Scorecard model representing a collection of initiatives, organisations, and subsystem tags
 class Scorecard < ApplicationRecord
   include Searchable
 
@@ -79,6 +83,20 @@ class Scorecard < ApplicationRecord
     Scorecard.find(linked_scorecard_id).update(linked_scorecard_id: id) if linked_scorecard_id.present?
 
     true
+  end
+
+  def flush_stakeholder_network_cache
+    update(stakeholder_network_cache: {})
+  end
+
+  def stakeholder_network
+    if stakeholder_network_cache.blank?
+      Insights::StakeholderNetwork.new(self).tap do |network|
+        update(stakeholder_network_cache: { nodes: network.nodes, links: network.links })
+      end
+    end
+
+    OpenStruct.new(stakeholder_network_cache.deep_symbolize_keys)
   end
 
   def grid_mode

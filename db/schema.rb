@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_12_084851) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_024913) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_stat_statements"
@@ -284,6 +284,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_084851) do
     t.boolean "share_ecosystem_map", default: true
     t.boolean "share_thematic_network_map", default: true
     t.bigint "data_model_id"
+    t.jsonb "stakeholder_network_cache", default: {}, null: false
     t.index ["data_model_id"], name: "index_scorecards_on_data_model_id"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
     t.index ["deprecated_type"], name: "index_scorecards_on_deprecated_type"
@@ -432,17 +433,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_084851) do
   add_foreign_key "focus_area_groups", "workspaces", column: "deprecated_workspace_id"
   add_foreign_key "scorecards", "data_models"
 
-  create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
-      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
-      deprecated_checklist_item_comments.checklist_item_id,
-      COALESCE((next_versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
-      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.updated_at) AS occuring_at,
-      (versions.object ->> 'status'::text) AS from_status,
-      COALESCE((next_versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
-     FROM ((versions
-       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
-       JOIN deprecated_checklist_item_comments ON (((versions.item_id = deprecated_checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
-  SQL
   create_view "events_checklist_item_checkeds", sql_definition: <<-SQL
       SELECT DISTINCT ON (versions.id) 'updated_checked'::text AS event,
       checklist_items.id AS checklist_item_id,
@@ -602,6 +592,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_12_084851) do
               NULL::text AS text,
               NULL::text AS text
              FROM scorecards) events_transition_card_activities_v02;
+  SQL
+  create_view "checklist_item_updated_comments_view", sql_definition: <<-SQL
+      SELECT DISTINCT ON (versions.id) 'updated_comment'::text AS event,
+      deprecated_checklist_item_comments.checklist_item_id,
+      COALESCE((next_versions.object ->> 'comment'::text), (deprecated_checklist_item_comments.comment)::text) AS comment,
+      COALESCE(((next_versions.object ->> 'updated_at'::text))::timestamp without time zone, deprecated_checklist_item_comments.updated_at) AS occuring_at,
+      (versions.object ->> 'status'::text) AS from_status,
+      COALESCE((next_versions.object ->> 'status'::text), (deprecated_checklist_item_comments.status)::text) AS to_status
+     FROM ((versions
+       LEFT JOIN versions next_versions ON (((versions.item_id = next_versions.item_id) AND ((versions.item_type)::text = (next_versions.item_type)::text) AND (versions.id < next_versions.id))))
+       JOIN deprecated_checklist_item_comments ON (((versions.item_id = deprecated_checklist_item_comments.id) AND ((versions.item_type)::text = 'ChecklistItemComment'::text) AND ((versions.event)::text = 'update'::text) AND ((versions.object ->> 'status'::text) IS NOT NULL))));
   SQL
   create_view "scorecard_changes", sql_definition: <<-SQL
       SELECT initiatives.scorecard_id,

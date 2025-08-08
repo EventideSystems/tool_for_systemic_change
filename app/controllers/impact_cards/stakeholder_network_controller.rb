@@ -12,7 +12,9 @@ module ImpactCards
       @scorecard = Scorecard.find(params[:impact_card_id])
       authorize(@scorecard, :show?)
 
-      @graph = Insights::StakeholderNetwork.new(@scorecard)
+      # @graph = Insights::StakeholderNetwork.new(@scorecard)
+
+      @graph = @scorecard.stakeholder_network
 
       @stakeholder_types = @scorecard.stakeholder_types.order('lower(trim(name))')
       @legend_items = @stakeholder_types.map do |stakeholder_type|

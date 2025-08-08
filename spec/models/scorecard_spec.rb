@@ -11,6 +11,7 @@
 #  name                       :string
 #  share_ecosystem_map        :boolean          default(TRUE)
 #  share_thematic_network_map :boolean          default(TRUE)
+#  stakeholder_network_cache  :jsonb            not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  community_id               :integer

@@ -16,7 +16,10 @@
       </div>
     </div>
   <% end %>
-  <div>
+  <div class="flex items-center space-x-2">
+    <%= link_to 'Export', impact_card_stakeholder_network_index_path(impact_card, format: :csv),
+                class: 'relative isolate inline-flex items-center justify-center gap-x-2 rounded-lg border border-zinc-500 text-sm font-semibold rounded-md bg-zinc-950 dark:bg-zinc-600 px-3 py-1 font-semibold text-white shadow-sm hover:bg-zinc-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500 print:hidden',
+                data: { turbo: false } %>
     <button
       type="button"
       role="menuitem"
